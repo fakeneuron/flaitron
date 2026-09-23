@@ -20,13 +20,14 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Low
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
-- [ ] **CORE-675** [light]🔧 | ft-task-sop-learnings — SPEC/procedures/ft-task.md's Phase 4 restatement omits the "Learnings" checklist item CORE-658 added to SPEC.md and templates/tasknote-template.md — every other Phase 4 item is restated there but this one isn't, so non-Claude runners never see it. Surfaced by CORE-674's SOP-currency check.
+
 ## Future Opportunities
 
 (none)
 
 ## Completed
 
+- [x] **CORE-675** [light]🔧 | ft-task-sop-learnings — Completed 2026-09-23.
 - [x] **CORE-674** [medium]🧩 | release v5.33.0 — Completed 2026-09-23.
 - [x] **FE-126** [light] | vite-config-comment-trim — Completed 2026-09-23.
 - [x] **CORE-673** [light]🔧 | code-review-level-pin — Completed 2026-09-23. Pinned `/code-review medium` at the six sites where the contract names the tool for Phase 3's External review (`ft-task/SKILL.md`, `SPEC.md`, `CAPABILITIES.md`, `README.md`, `GLOSSARY.md`, `subagent-probe-template.md`); `step-5-loop-mode.md` needed no edit. `ultra` stays excluded.

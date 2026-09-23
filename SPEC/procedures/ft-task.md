@@ -438,7 +438,10 @@ time (Step 6).
   where meaningful, verification commands/results, refactors made or deferred
   with rationale, documentation verdict, the `touches:` scope reconciliation
   (`git diff --name-only` vs declared; name undeclared paths), and concrete
-  maintainability effect.
+  maintainability effect. Answer the **Learnings** item: did this task teach
+  something the always-loaded layer (`AGENTS.md` /
+  `.flowtron/tasknote/README.md` §"AI-referenced docs") should carry? Write
+  `N/A` or the line — most closures write `N/A`.
   **Do not** surface a banner here — the recap bundles into Step 6. Recap is
   recap-only; the next-task suggestion lands after the commit.
 

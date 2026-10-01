@@ -111,13 +111,16 @@ every repo that can use them already wires them repo-scoped.
 
 Two agent behaviours make this a correctness rule rather than tidiness:
 
-- **Project scope and user scope enumerate separately.** A slug present in both
-  is listed twice in the session's skill roster. Globbing the shipped inventory
-  into an agent home *and* wiring it repo-scoped therefore doubles flowtron's
-  footprint in every session before any work starts — measured at 36 roster
+- **Project scope and user scope can enumerate separately.** A slug present in
+  both may be listed twice in the session's skill roster. Globbing the shipped
+  inventory into an agent home *and* wiring it repo-scoped can double flowtron's
+  footprint before any work starts — measured at 36 roster
   entries for 18 skills in a flowtron-self session (measured 2026-08-11,
   [[CORE-439]]; the shipped inventory has changed since — the doubling is the
-  point, not the absolute count).
+  point, not the absolute count). Codex CLI 0.159.2's `skills/list` collapsed
+  two same-target utility copies in a later installation check; that does not
+  establish distinct-body precedence or interactive-selector behavior. See
+  [CODEX-VERIFICATION.md](CODEX-VERIFICATION.md#before-and-after) for the receipt.
 - **User-scope collisions resolve by slug, not by body.** Where an agent reads
   more than one home directory, a same-named skill in one shadows the other with
   no regard for which platform authored it. `~/.agents/skills/` is read by Codex,

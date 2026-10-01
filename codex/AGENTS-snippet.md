@@ -94,3 +94,7 @@ Codex wrapper can be served to an agent it was not written for. The agent home
 carries only the global-only utilities, installed one at a time, and only on a
 machine where Codex is the driver. Canonical rule:
 `../docs/PLATFORMS.md` §"One canonical install path per project".
+
+Installation evidence and reproducible fresh-runtime checks live in
+[`docs/CODEX-VERIFICATION.md`](../docs/CODEX-VERIFICATION.md). Discovery
+receipts are separate from workflow and compatibility verification.

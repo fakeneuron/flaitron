@@ -39,7 +39,7 @@ ln -s <path-to-flowtron-checkout>/claude/commands/<skill>.md  ~/.claude/commands
 
 The symlinks point at flowtron's working tree, so they pick up flowtron edits immediately rather than tracking a versioned submodule. To pin a specific version of a skill, copy the files instead of symlinking and re-copy on bump.
 
-Install these **one at a time, from the table above**. An agent home carries only these global-only utilities; anything a project already wires repo-scoped through `.flowtron/core/` must not also be installed globally, or it enumerates twice in every session — see [`PLATFORMS.md`](PLATFORMS.md) §"One canonical install path per project".
+Install these **one at a time, from the table above**. An agent home carries only these global-only utilities; anything a project already wires repo-scoped through `.flowtron/core/` must not also be installed globally, or it can duplicate or shadow repo-scoped skills — see [`PLATFORMS.md`](PLATFORMS.md) §"One canonical install path per project".
 
 If you don't have the skill installed, follow §1.1–1.7 manually below — the skill is a convenience wrapper, not a requirement.
 
@@ -258,7 +258,7 @@ ln -s ~/code/flowtron/claude/skills/<skill>       ~/.claude/skills/<skill>
 ln -s ~/code/flowtron/claude/commands/<skill>.md  ~/.claude/commands/<skill>.md
 ```
 
-Globally installing a slug the repo-scoped wiring above already provides makes it enumerate twice in every session's skill roster, because project scope and user scope are counted separately. The rule and its second failure mode — cross-agent slug shadowing in `~/.agents/skills/`, which is read by Codex, Claude Code, Cursor, and Grok alike — are canonical in [`PLATFORMS.md`](PLATFORMS.md) §"One canonical install path per project".
+Globally installing a slug the repo-scoped wiring above already provides can make it enumerate twice in a session's skill roster. Some runtimes collapse identical targets instead; the bounded Codex observation is in [CODEX-VERIFICATION.md](CODEX-VERIFICATION.md#before-and-after). The rule and its second failure mode — cross-agent slug shadowing in `~/.agents/skills/`, which is read by Codex, Claude Code, Cursor, and Grok alike — are canonical in [`PLATFORMS.md`](PLATFORMS.md) §"One canonical install path per project".
 
 ### 1.3 Paste the workflow block into `AGENTS.md`
 

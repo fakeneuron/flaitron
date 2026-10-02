@@ -2,7 +2,7 @@
 procedure: ft-task
 source: claude/skills/ft-task/ templates/tasknote-template.md
 restates: SPEC.md
-last-verified: v5.27.0 · 2026-09-12
+last-verified: v5.33.0 · 2026-10-01
 ---
 
 # Procedure SOP — `ft-task`
@@ -48,8 +48,8 @@ equivalent where a step calls for one (full ledger:
 | **trigger** | The operator's conversational request to start the task — there is no slash dispatch to rely on. |
 | **autonomous mode** | The operator may ask you to run without stopping at the conditional gates (Claude Code exposes this as `--fast`). Honor it as described under each gate; the concept is platform-neutral, the flag syntax is not. It is also **implied by a PLAN.md row's `[unattended]` marker** when no mode was requested — see Step 1. |
 | **debug mode** | The operator may ask you to drive the task hypothesis-first because the root cause is not yet known (Claude Code exposes this as `--debug`). **Explicit opt-in only** — never infer it from a bug-shaped task description. It adds *content* to Phases 1–4 and no mechanics: no new phase, template, banner, or gate. When requested, **read [`claude/skills/ft-task/step-4-debug-mode.md`](../../claude/skills/ft-task/step-4-debug-mode.md) now** — the mode's single body for Phases 1–4 (the Claude wiring reads the same file). Read its `--fast` / `fast-mode` as autonomous mode and `AskUserQuestion` as a structured ask. |
-| **loop mode** | The operator may ask you to run the task as an execute→verify loop because "done" is one or more machine-checkable commands (Claude Code exposes this as `--loop`). **Explicit opt-in only.** It changes the Phase 2↔3 drive, not the phases: every Acceptance criterion carries a verify command (taste criteria split to one post-loop visual ask), Phase 2→3 repeat under a per-cycle relevance gate and a `loop-max` budget, each verified cycle commits, and a `## 🔁 Iterations` log is the loop's memory. Runs with autonomous-mode semantics once the loop starts; a destructive step parks rather than asking. Contract: [`SPEC/loop.md`](../loop.md); executable steps: `claude/skills/ft-task/step-5-loop-mode.md`. |
-| **unattended mode** | The caller may declare that **no operator is present to answer a gate** (Claude Code exposes this as `--unattended`). It supersets autonomous mode's *autonomy* — nothing ever blocks waiting for an answer — plus exactly one added behavior: the six gates an operator-less run cannot answer **park the tasknote** instead of firing a banner into an empty session. It does **not** inherit autonomous mode's one *delegating* suppression: the visual-confirmation ask is suppressed there because a present operator owns the check, so with nobody present it converts to a park rather than vanishing. Full contract, including which six and what a park writes: [`SPEC/gate-postures.md` §"`--unattended` operator posture"](../gate-postures.md). |
+| **loop mode** | The operator may ask you to run the task as an execute→verify loop because "done" is one or more machine-checkable commands (Claude Code exposes this as `--loop`). **Explicit opt-in only.** It changes the Phase 2↔3 drive, not the phases; cycles run autonomously, destructive steps park. Read [`SPEC/loop.md`](../loop.md) and [`claude/skills/ft-task/step-5-loop-mode.md`](../../claude/skills/ft-task/step-5-loop-mode.md) now. Apply its scaffold addendum and strict Acceptance rule, replace the plain Phase 2↔3 drive with its cycle procedure, and run its one-time taste checks and external review after convergence. Translate `fast-mode` to autonomous mode and `AskUserQuestion` to a structured ask. |
+| **unattended mode** | The caller may declare that **no operator is present to answer a gate** (Claude Code exposes this as `--unattended`). It supersets autonomous mode's *autonomy* — nothing ever blocks waiting for an answer — plus exactly one added behavior: the six gates an operator-less run cannot answer **park the tasknote** instead of firing a banner into an empty session. It does **not** inherit autonomous mode's two *delegating* suppressions: the visual-confirmation ask hands the check to a present operator, and the Re-scope notice hands drift awareness to that operator. With nobody present both convert to parks rather than vanishing. Full contract, including which six and what a park writes: [`SPEC/gate-postures.md` §"`--unattended` operator posture"](../gate-postures.md). |
 
 Autonomous mode and debug mode are **orthogonal and compose** (the repro
 re-verify is not a gate autonomous mode may suppress). Loop mode composes the
@@ -108,6 +108,17 @@ fallback if your surface strips emoji. Full vocabulary:
 [`SPEC/cue-vocabulary.md` §"Operator-cue vocabulary"](../cue-vocabulary.md).
 
 ## Steps
+
+### 0 — Interpret invocation flags
+
+Accept `--fast` / `-f`, `--debug` / `-d`, `--loop`, and `--unattended`
+as an unordered set. When trailing tokens are present, read
+[`claude/skills/ft-task/step-0-flags.md`](../../claude/skills/ft-task/step-0-flags.md)
+and follow its flag validation, inline markers, and conditional fragment loads.
+Translate `fast-mode` to autonomous mode and `AskUserQuestion` to a structured
+ask. Unknown tokens require clarification before proceeding; do not silently
+ignore them. Resolve paths relative to the canonical fragment directory and
+this SOP's contract root, in either self-host or adopter layout.
 
 ### 1 — Locate the task and check its status
 
@@ -171,6 +182,9 @@ continue. Informational only; never block, never rotate on your own. Full
 contract (the 60-row bound, row-count granularity, the never-split-a-cohort
 rule): [`SPEC/plan-filing.md` §"`## Completed` rotation"](../plan-filing.md).
 
+**Filing-length advisory.** If the captured long description exceeds 70 words,
+emit an informational warning and continue; do not block or refile it.
+
 ### 2 — Resolve the area and check the model
 
 Resolve the **Area** by reading the `.flowtron/tasknote/README.md`
@@ -181,13 +195,23 @@ project may deliberately declare a folder it would not produce (`OPS-*` →
 `archive/operations/`). See [`SPEC.md` §"Task ID convention"](../../SPEC.md). No
 row for this prefix → stop and ask; do not guess a folder.
 
+On a concrete mismatch, category under-tier, or missing-tag branch, read
+[`claude/skills/ft-task/step-1.5-model-edge.md`](../../claude/skills/ft-task/step-1.5-model-edge.md).
+Translate its asks to this platform's primitives and preserve every invocation
+flag in re-entry instructions. A concrete mismatch stops and offers switch or
+operator-approved retag; a missing tag asks before scaffold; a category
+under-tier only warns and proceeds. Never silently retag a satisfied category.
+Run the foreign-dirt guard below before any model edit. Run it once for
+entry; Step 3 must not mistake this run's approved writes for foreign dirt.
+
 Check the `[model]` tag against the model you are running as, per
 [`SPEC/model.md`](../model.md). If the task is tagged for a heavier tier or a
 different concrete model than yours, surface that to the operator before doing
 heavy thinking on the wrong model — heavy work should not run on an
 under-tier model silently. **Under unattended mode** there is no operator to
-surface a concrete mismatch to: scaffold the tasknote with `status: blocked`
-and `park-reason: model-mismatch — …`, then halt, rather than asking or
+surface a concrete mismatch to: first pass Step 3 pre-flight, then park with
+`status: blocked` and `park-reason: model-mismatch — …`. Create a note only
+when absent; preserve existing starter/blocked content. Halt rather than asking or
 retagging the PLAN line yourself. The soft under-tier advisory is unchanged —
 it never blocked, so there is nothing to convert.
 
@@ -200,7 +224,8 @@ child is typically an Audit.
 ### 3 — Open or scaffold the tasknote
 
 **Foreign-dirt gate (paper-complete guard).** Before any scaffold / promote /
-resume writes, run `git status --porcelain`. If non-empty: **STOP**, surface
+resume writes, run `git status --porcelain` unless already checked before a
+model edit in Step 2. If foreign dirt exists: **STOP**, surface
 the dirt list, and ask the operator to commit / stash / discard themselves,
 then re-invoke. Do not auto-clean. Full contract:
 [`SPEC.md` §"Paper-complete guard"](../../SPEC.md). **Unattended mode does not
@@ -216,10 +241,15 @@ Check `.flowtron/tasknote/<TASK-ID>.md` and branch on its existence / YAML
 - **Already archived** at `.flowtron/tasknote/archive/<area>/<TASK-ID>.md` →
   stop; the task is closed. Surface the conflict.
 - **`status: starter`** → promote it; the starter context becomes Phase 1
-  input. See [`SPEC/starter.md`](../starter.md).
+  input. Read [`SPEC/starter.md`](../starter.md) and execute
+  [`claude/skills/ft-task/step-3a-promote-starter.md`](../../claude/skills/ft-task/step-3a-promote-starter.md),
+  including the seed drift/fidelity check. Translate its ask primitives.
 - **`status: blocked`** → resume from Phase 2; Phase 1 is already done on a
-  parked tasknote. See [`SPEC/blocked.md`](../blocked.md).
-  Once the parked note is read, name the `park-reason:` you are clearing in
+  parked tasknote. Read [`SPEC/blocked.md`](../blocked.md) and execute
+  [`claude/skills/ft-task/step-3c-resume-blocked.md`](../../claude/skills/ft-task/step-3c-resume-blocked.md),
+  including drift-checking parked work and clearing `park-reason:`. Translate
+  its ask primitives. Once the parked note is read, name the `park-reason:`
+  you are clearing in
   one plain prose line before Phase 2 begins — the step-1 blurb could not have
   known it, and there is no Discovery here to orient the operator. Ordinary
   prose, not a second 🎯 emission.
@@ -255,9 +285,11 @@ ticking each box in the tasknote as you go:
 
 - **Relevance Assessment** (non-negotiable) — `Proceed` / `Re-scope` /
   `De-scope` with a one-line rationale. `Re-scope` rewrites the PLAN.md line +
-  tasknote header before continuing (if the blocker is a hard dependency, park
-  per [`SPEC/blocked.md`](../blocked.md)); `De-scope` jumps to Phase 4 closure
-  with the rationale as the final summary.
+  tasknote header before continuing. A hard prerequisite on a flagless run
+  offers delete-and-halt or park at the 🛠️ gate; autonomous mode defaults to
+  park, and unattended mode parks without making the verdict's PLAN edit
+  ([`SPEC/blocked.md`](../blocked.md)). `De-scope` clears its required gate
+  before Phase 4 closure with the rationale as the final summary.
 - **Read** the relevant source files — when the read set is broad or its shape
   is unknown, consider isolating the search in a **probe**
   ([`templates/subagent-probe-template.md`](../../templates/subagent-probe-template.md))
@@ -290,7 +322,9 @@ ticking each box in the tasknote as you go:
   (read them, don't recall them); surface drift before acting.
 - **Clarify** — use a **structured ask** for anything genuinely ambiguous; if
   nothing is ambiguous, write `No clarifications needed` with the explicit
-  assumptions.
+  assumptions. In autonomous mode, record reasonable assumptions directly
+  instead of adding routine clarification pauses; required operator decisions
+  retain their contract gates.
 - **Populate ✅ Acceptance** with concrete, testable criteria, each naming the
   **verify command** that decides it — a test run, a lint/type-check, a
   `grep -q` on a contract file. A criterion no command decides marks itself
@@ -302,7 +336,8 @@ ticking each box in the tasknote as you go:
 checklist, after the Relevance Assessment, recording answers in Discovery
 Notes. They add no box and no gate; the exit-gate judgment below is unchanged.
 
-**Exit gate (🛠️ Phase 1→2).** `ft-task` uses the `default-skip` flavor: when
+**Exit gate (🛠️ Phase 1→2).** Tick every Phase 1 box first. `ft-task` uses
+the `default-skip` flavor: when
 Discovery surfaced only routine clarifications (or none), emit the inline
 marker `✅ Phase 1 Discovery complete; entering Phase 2 Execution.` and start
 Phase 2 immediately — record the judgment inline ("Discovery surfaced no
@@ -372,14 +407,17 @@ time (Step 6).
   `input-needed` rather than closing over it
   ([`SPEC/gate-postures.md` §"What `--unattended` never relaxes"](../gate-postures.md)).
   Record a **Verification receipt** in Testing
-  Notes: each Acceptance verify command as `command → exit code`, with the
+  Notes: read the runner's tail, not full scrollback, and record each
+  Acceptance verify command as `command → exit code`, with the
   first failure line when non-zero, folded together with the structural
   half — for changed code, confirm no avoidable duplication, dead code,
   unexplained complexity, unnecessary public-surface growth, or stale
   code-facing documentation; otherwise record `N/A` with reason. Then the
   **External review**: brief a read-only sub-agent with
   [`templates/subagent-probe-template.md`](../../templates/subagent-probe-template.md)
-  §"Variant — review probe" and record each finding in Testing Notes with its
+  §"Variant — review probe", scoped to the task's working-tree diff plus
+  commits made by this run (exclude unrelated ahead-of-upstream history),
+  and record each finding in Testing Notes with its
   disposition — a **blocker** returns to Phase 2 (Phase 3 re-runs), a **note**
   is fixed or filed; `N/A` when the diff is too small to grade. Under
   unattended mode a blocker the run cannot fix parks `input-needed`. Rungs,
@@ -414,7 +452,9 @@ time (Step 6).
   contract and the three cases it excludes). Conditional: most closures write
   no pointer. Flip **only this task's**
   PLAN.md line to the stub form
-  `[x] **<TASK-ID>** [model] | shortname — Completed YYYY-MM-DD.`. For a
+  `[x] **<TASK-ID>** [model] | shortname — Completed YYYY-MM-DD.`. Preserve
+  every untouched bracket token and model-suggestion glyph, including the
+  trailing marker run, verbatim on this and any other PLAN rewrite. For a
   standalone task, move the row to the top of `## Completed`; for an epic
   child, preserve its 2-space nesting beneath the active parent in the current
   priority section until `/ft-close-epic` moves the whole cohort. **Verify
@@ -437,11 +477,16 @@ time (Step 6).
   evidence-based recap: 1-2 plain-English sentences, then changed paths/LOC
   where meaningful, verification commands/results, refactors made or deferred
   with rationale, documentation verdict, the `touches:` scope reconciliation
-  (`git diff --name-only` vs declared; name undeclared paths), and concrete
+  (`git diff --name-only` vs declared; name undeclared paths, excluding this
+  task's own tasknote and PLAN row), and concrete
   maintainability effect. Answer the **Learnings** item: did this task teach
   something the always-loaded layer (`AGENTS.md` /
   `.flowtron/tasknote/README.md` §"AI-referenced docs") should carry? Write
   `N/A` or the line — most closures write `N/A`.
+  Persist operator handoffs (manual steps and any proposed commit message)
+  in the note before archive. File each deferred real-world step as an open
+  PLAN row with dependencies where needed; recap prose alone is insufficient
+  ([`SPEC.md` §"Deferred hand-off filing"](../../SPEC.md)).
   **Do not** surface a banner here — the recap bundles into Step 6. Recap is
   recap-only; the next-task suggestion lands after the commit.
 
@@ -476,8 +521,9 @@ nowhere earlier — branching on the
 2. **Mark landed + suggest next move.** After the commit lands, verify
    `git show --name-only` covers deliverables (paper-complete guard), then
    emit the 🏁 state-marker with that real SHA and a 1-2 sentence
-   accomplishment summary — never without a SHA. Then suggest the next task.
-   Use the emoji primary label inline per candidate —
+   accomplishment summary — never without a SHA. Then re-read PLAN.md and verify each suggested candidate is unchecked
+   in an open priority section, never from memory or archived examples.
+   Suggest the next task. Use the emoji primary label inline per candidate —
    `[heavy]🧠` (design), `[medium]🧩` (moderate), `[light]🔧` (mechanical), or
    (rare — manual-only filings) `[xheavy]🔭` (exploratory),
    never the bare `[model]` token. Prefix any `/ft-audit*` candidate with 🔍.

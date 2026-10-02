@@ -1,4 +1,4 @@
-# Codex installation verification
+# Codex verification
 
 CORE-677.2 installation receipt, 2026-10-01. This is a dated observation,
 not a second install roster. Canonical commands remain in
@@ -261,3 +261,213 @@ responses came from fresh processes/sessions, not fabricated model output.
 There is no remaining blocked discovery obligation. Interactive UI rendering,
 workflow execution, SOP currency and compatibility qualification remain outside
 this installation receipt and belong to the subsequent epic children.
+
+## Workflow parity — CORE-677.3
+
+2026-10-01, source checkout `5230396eebf83a798a3dc6d9c92ea13c3f1a0c14`
+plus this task's uncommitted corrections. The matrix below is a dated review,
+not an alternative dispatch contract. Wrapper targets and private fragments
+resolve; the canonical bodies decide flags and lifecycle behavior.
+
+All twelve wrappers apply the centralized Codex translation rules.
+`ft-task` enters `SPEC/procedures/ft-task.md` first, with canonical-body
+fallback. The other eleven enter `claude/skills/<slug>/SKILL.md` directly.
+The self-host inventory includes all twelve; the adopter installation subset
+remains the eight literal commands in the Codex snippet. The two utilities
+are discretionary global/by-reference entries; audit is forked for adopters,
+and release is self-only.
+
+| Exported skill | Inputs and supported flags | Conditional fragments / applicability |
+|---|---|---|
+| `ft-task` | ID; `--fast/-f`, `--debug/-d`, `--loop`, `--unattended`; flags unordered | Flag dispatch, model edges, starter promotion, blocked resume, debug, loop, shared unattended; self/adopter |
+| `ft-micro-task` | ID; `--fast/-f`, `--unattended`; unknown trailing arguments require clarification | Shared task model-edge and unattended fragments; self/adopter |
+| `ft-close-epic` | Audit ID, including legacy numeric child; `--unattended`; no fast/debug | Own unattended-close plus shared unattended; self/adopter |
+| `ft-epic-discovery` | Empty or `--deep`; unknown args require clarification; unattended stops before writes | Own deep pre-pass; self/adopter |
+| `ft-file-followup` | Context/optional ID; `--park/-p`, `--starter`, `--unattended`; park priorities `--low`, `--med/--medium`, `--fut/--future`, `--high` | Flag dispatch, park, starter; self/adopter |
+| `ft-refactor` | Target; `--fast/-f`; other tokens become target text | No private fragment; epic/starter/candidacy contracts; self/adopter |
+| `ft-seed` | No args/flags; explicit rejection | Candidacy contract; self/adopter |
+| `ft-update` | Declares no arguments; no dedicated unknown-flag parser | No private fragment; adopter only, rejects self |
+| `ft-release` | Declares no arguments; no dedicated unknown-flag parser | Dogfood/SOP, standing checks, mirror pairs, tag-message fragments; self only, rejects adopter |
+| `ft-new-project` | Conversational inputs; no defined flag grammar | No private fragment; fresh adoption utility; rejects existing adoption/legacy tooling |
+| `ft-audit-repo` | Empty, `all`, or subtree scope; no fast/unattended support | No private fragment; first-contact utility |
+| `ft-audit` | Eight domains; paths, `all`, `last-commit`, `staged`, domain scopes; no fast/unattended support | `passes/<domain>.md`, conditional bootstrap; self scaffold/adopter unprefixed `audit` fork |
+
+Unsupported flags are not uniformly rejected by an executable parser:
+refactor and audit scope parsing can absorb a flag-shaped token as text.
+Do not infer live rejection from an unsupported declaration. Follow-up
+explicitly rejects park+starter, park+unattended, and starter+unattended;
+priority flags apply only to park. Passing fast+unattended to task is
+redundant, rather than a documented parser rejection.
+
+### Evidenced repairs and SOP currency
+
+The full watched-surface check reads the task skill directory and template
+(`source:`), plus `SPEC.md` (`restates:`) and the modules the SOP invokes.
+Since its old 2026-09-12 stamp: 22 source commits, eight not touching the SOP,
+and 22 SPEC.md commits. The eight candidates were adjudicated: CORE-616's
+receipt-tail instruction and CORE-604.3's model-edge detail needed coverage;
+CORE-658's Learnings was already repaired by CORE-675; CORE-673 is a
+Claude-only review dispatch; CORE-664/622.3 are citation maintenance;
+CORE-605 already matches placement; CORE-603.4 trims description text.
+This task's complete recheck supports `v5.33.0 · 2026-10-01`; a targeted
+patch alone would not have supported that stamp.
+
+Corrections preserve the existing architecture:
+
+- SOP explicitly loads the canonical flag/model/promotion/resume/loop
+  fragments. Loop replaces the plain Phase 2/3 drive and runs review once
+  after convergence. No copied implementation of a mode.
+- Entry writes honor foreign-dirt and collision checks, including unattended
+  mismatch parks; an approved model-row edit does not become foreign dirt
+  on the same run. Existing starter/blocked content is preserved.
+- SOP distinguishes attended dependency delete-or-park, fast park default,
+  and unattended park; both unattended delegation differences are named.
+- Filing-length advisory, Phase 1 tick-through, receipt-tail guidance,
+  task-owned review range, trailing PLAN marker preservation, durable
+  handoff filing, scope exclusions, and fresh next-candidate checks are explicit.
+- Codex bootstrap wrapper chooses the Codex wiring block for installation,
+  staging and symlink verification. Claude settings/entrypoint steps apply
+  only when the project also uses Claude. AGENTS content remains canonical.
+  This repair is statically reviewed; no bootstrap/submodule-network run.
+- Platform structured/deep guidance now matches conditional prose fallback.
+  Official [App Server docs](https://learn.chatgpt.com/docs/app-server#api-overview)
+  expose experimental `tool/requestUserInput`; availability and UI rendering
+  still depend on runtime and mode. The live CLI unknown-flag/model fixtures
+  test prose questions and genuine stops, not a structured UI.
+
+### Fixture protocol
+
+Disposable repositories: `/private/tmp/core677-workflow/<case>/`.
+Each contains the same inclusive interval calculator and four pre-existing
+unit tests (positive interval, singleton, empty, negative interval), local
+workflow metadata, eight adopter links, and a **source copy** under
+`.flowtron/core`. That copy is deliberately not a pinned git submodule;
+CORE-677.2 separately verifies real submodule installation. There is no
+remote, production action, or fixture merge into this repository.
+The epic fixture seeds a completed implementation and passing calculator;
+the dirty fixture adds an operator README change after its baseline commit.
+
+Saved per-case artifacts: `<case>.manifest.json` (prompt, root, source,
+baseline and, for corrected-source cases, SOP hash), `.prompt.txt`,
+`.events.jsonl`, `.stderr`, `.final.txt`, and `.receipt.json`.
+Temporary `run.py` submits at most two independent runs concurrently and
+caps each at 900 seconds. CLI invocations pin `gpt-6.1-sol`, effort `high`,
+`--ephemeral --json --ignore-user-config --ignore-rules`, a fixture working
+root, and workspace-write sandbox. The dirty run uses `-s workspace-write`;
+the other runs use `--approve-for-me`, which retains workspace-write and
+routes requests through automatic approval review. No approval bypass.
+
+Reproduction after recreating a clean fixture from its manifest:
+
+```sh
+codex exec --ephemeral --json --ignore-user-config --ignore-rules \
+  -m gpt-6.1-sol -c 'model_reasoning_effort="high"' \
+  -C /private/tmp/core677-workflow/debug-fast --approve-for-me \
+  -o /private/tmp/core677-workflow/debug-fast.final.txt - \
+  < /private/tmp/core677-workflow/debug-fast.prompt.txt \
+  > /private/tmp/core677-workflow/debug-fast.events.jsonl \
+  2> /private/tmp/core677-workflow/debug-fast.stderr
+```
+
+The prompt is the skill invocation followed by: execute the actual workflow
+in this isolated fixture; do not touch other repositories or install software;
+do not invent operator assent; stop at a gate requiring a genuine reply;
+use the supplied mode and existing tests; no remote operations; record
+unavailable review capability honestly. Loop also supplies `loop-max is 2`.
+Raw transcripts retain exact prompts/commands; summarized receipts below
+are the durable evidence. These runs are conformance observations, not
+cross-model rankings or qualifying report-only DOGFOOD sessions.
+
+### Runtime receipts and coverage
+
+CLI 0.159.2, `gpt-6.1-sol`, effort `high`, as explicitly invoked above.
+The model-mismatch run described its identity as GPT-6; the configured
+CLI model argument is the recorded provenance, not that conversational label.
+Each initial fixture used a fresh process/thread. No gate was answered by
+the test harness and no retag/deployment/parent-flip assent was fabricated.
+
+| Case / exact skill invocation | Observed result and deciding evidence | CLI exit / elapsed |
+|---|---|---|
+| `dirty`: `$ft-task CORE-001` | Foreign-dirt STOP; only seeded `M README.md`; baseline HEAD unchanged, no tasknote | 0 / not captured |
+| `model`: `$ft-task CORE-001` with `[nonexistent-model]` | Concrete mismatch asks switch or retag; clean baseline unchanged, no tasknote | 0 / 41.48s |
+| `unknown`: `$ft-task CORE-001 --bogus` | Usage plus prose clarification; no execution, note, commit or row edit | 0 / 36.78s |
+| `debug-fast`: `$ft-task CORE-001 --debug --fast` | Ranked hypotheses/falsifiers and exact singleton repro; repro 1→0, four-test suite 1→0, compilation 0; final source+PLAN+archive commit `9ca05977db42`, clean tree | 0 / 333.46s |
+| `loop`: `$ft-task CORE-001 --loop --fast; loop-max is 2` | One converged iteration, all five Acceptance commands 0, loop keys/log; cycle `7fe84e004d25` amended into atomic source+PLAN+archive closure `1db13450768c`, clean tree | 0 / 441.71s |
+| `drift`: `$ft-task CORE-001 --unattended` | Re-scope→`status: blocked`, `park-reason: drift`, blocked chip; PLAN/source/HEAD unchanged, no Phase 2–4 or archive | 0 / 152.86s |
+| `epic-close`: `$ft-close-epic CORE-001.N --unattended` | Audit Acceptance/doc sweep, two declared validation commands 0; audit PLAN+archive commit `b15612fd9167`, parent unchecked and cohort nested under Medium; parent-flip explicitly deferred | 0 / 342.93s |
+
+`python3 /private/tmp/core677-workflow/verify.py` → 0 for these seven
+cases. It checks baseline preservation at entry, actual parked metadata,
+completed YAML/date/Acceptance and retired-chip behavior, archive placement,
+clean closure trees, passing calculator tests, real commit contents, loop
+keys/iteration commit object, and deferred parent state. CLI exit 0 alone
+is not a lifecycle pass: a legitimate stop also exits 0.
+
+Snapshot distinction: the dirty case exercised unmodified source HEAD.
+The six corrected-source cases used SOP SHA-256
+`56bc4bad875277843ebd8cf6fd4dcfefa7cc7e668c1dbe1e12136d7ecee66777`.
+Final SOP SHA-256 is
+`f17baa7240f39a4514142253000891929f75f6fe2d317097704e8a41ffdefe13`.
+The later model-edit guard/preserved-existing-note refinements, stamp and
+summary trim received static parity review; those particular model-edit and
+existing-note branches were not live-tested. The explicit loop/flag fragment
+dispatch was already present in the tested snapshot.
+
+Two evidence limits matter:
+
+- Debug, loop and epic notes **record** a clean independent review. Saved
+  CLI JSON does not contain a child reviewer result or identifiable spawn;
+  loop/epic expose only a wait item with empty receiver IDs/states. These
+  receipts prove review recording, not reviewer independence. The parent's
+  separate read-only review of this task checks the captured claims and
+  artifacts; it does not retroactively prove those child reviews. CORE-677.4
+  must capture reviewer context/results where available or retain this limit.
+- The original drift prompt instructed every gate to stop with a concrete
+  question, including the unattended case. It parked correctly but ended
+  with a question. That transcript cannot decide question suppression
+  independently of the conflicting prompt. A corrected retry removes that
+  instruction for unattended mode; its separate result is recorded below.
+
+Failed checks were retained rather than presented as successful runs:
+initial dirty/model/unknown sandbox launches exited 1 before model generation
+(`failed to initialize in-process app-server client: Operation not permitted`).
+Approved retries used the child sandbox described above. The first artifact
+verifier exited 1 on a too-literal `root cause` substring: the note correctly
+used `root-cause` and ranked hypotheses. Its revised check inspects the actual
+hypothesis/repro evidence. An intermediate verifier then exited 1 solely
+because epic execution was still pending; the complete seven-case run passed.
+The loop checker accepts a real logged cycle commit object amended at closure,
+rather than imposing a two-commit branch history the contract does not require.
+An internal debug patch initially failed to match a checkbox line and was
+corrected before closure. Drift's initial compilation cache under `.git` was
+denied; the run used a writable temporary cache and preserved tracked files.
+These are harness/iteration receipts, not silent green substitutions.
+
+| Behavior | Coverage boundary |
+|---|---|
+| All exported names, primary routes, aliases, lazy targets, application scope | Static complete inventory; live discovery remains the separate .2 receipt |
+| Entry dirt, concrete mismatch, unknown task flag / prose fallback | Live stop observations; no real retag/switch or structured UI exercised |
+| Debug+fast, exact repro, strict loop Acceptance and one-cycle convergence | Live; no multi-failure retry/budget exhaustion or every flag ordering |
+| Four-phase source change, receipts, archive/date/checkboxes, atomic SHA | Live debug/loop artifacts; independent-review **recording** only |
+| Unattended drift and audit parent deferral | Live artifacts; question-suppression limit above; no destructive/prerequisite/visual park |
+| Starter promotion/fidelity, blocked resume/reason-clear, legacy/under-tier model, PLAN marker rewrites | Static contract/dispatch review only |
+| Epic filing, deep pre-pass, follow-up modes, micro, refactor, seed, release/update/bootstrap execution | Static routes/flags and applicability only; no lifecycle execution claim |
+| Native structured question UI, bootstrap install/stage behavior | Static guidance/official API and current-app capability observations; no fresh CLI UI/bootstrap run |
+| Grok comparison, same-model SOP control, report-only DOGFOOD and compatibility stamps | Not run in this child; assigned .4/.N, stamps unchanged |
+
+Static regression checks: all twelve wrapper names and relative targets,
+canonical bodies and eight SSOT-derived adopter names; CI Pair B flag parity,
+Pair Q section citations, context budgets, final newlines, and
+`git diff --check`. These checks complement reading the actual dispatch;
+they do not prove live execution of untested cells. No permanent benchmark,
+workflow runner, duplicated roster, or verification service was added.
+
+Corrected `drift-retry`: `$ft-task CORE-001 --unattended`, replacing the
+conflicting stop-with-question sentence with an instruction to record required
+decisions in the park and stop without a live question. CLI → 0, 152.89s;
+the thread ID is retained in its JSONL/verification receipt. This retry used
+the final SOP hash above. It wrote blocked status, `park-reason: drift`, and
+blocked chip; preserved PLAN/source/HEAD; did not enter Phase 2–4 or archive;
+and its final response contained no live question. The final eight-run
+artifact verifier (seven initial cases plus this prompt correction) → 0.
+No source correction was inferred from the conflicting first prompt.

@@ -11,13 +11,21 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-(none)
+- [ ] **CORE-EPIC-678** [heavy]🧠 | sop-headroom — Restore headroom on `SPEC/procedures/ft-task.md` (34,115 → 37,538 bytes since v5.33.0; 462 bytes under the 38,000 cap) by extracting or trimming, not by raising the cap. Discovery supplied by audit-repo 2026-10-02. Surfaced by audit-repo 2026-10-02 (Theme: cold-start headroom).
+  - [ ] **CORE-678.2** [medium]🧩 | procedures-headroom — Extract or trim restatement from `SPEC/procedures/ft-task.md` until `wc -c` is at most 36,200, and refresh that file's figure in `docs/CONTEXT-BUDGET.md`. Cap stays 38,000.
+  - [ ] **CORE-678.N** [medium]🧩 | sop-headroom audit — Audit CORE-EPIC-678.
 
 ## Medium
+
+- [ ] **CORE-EPIC-679** [medium]🧩 | grok-probe-row — Correct the Grok sub-agent trigger so it no longer describes a read-only `subagent_type`. Discovery supplied by audit-repo 2026-10-02. Surfaced by audit-repo 2026-10-02 (Theme: platform rows drift).
+  - [ ] **CORE-679.2** [light]🔧 | grok-spawn-schema — Rewrite the Grok "Sub-agent / isolated exploration" row in `docs/PLATFORMS.md` to the live `spawn_subagent` parameters (`prompt`, `description`, `background`, `isolation`, `resume_from`, `cwd`). State that a probe is read-only only when the prompt says so.
+  - [ ] **CORE-679.N** [light]🔧 | grok-probe-row audit — Audit CORE-EPIC-679.
 
 - [ ] **CORE-660** [medium]🧩 | gate-discipline-trim — Blocked by decay-window depth: the window [[CORE-659]] opened at `f8c44275` has observed 1 run, its own. Parked at Phase 1→2 (`status: blocked`); Discovery, inbound-reference table, and the provenance trim axis are preserved in the tasknote. Resume once N independent runs have archived. Destination decided: `docs/GATE-DISCIPLINE.md`.
 
 ## Low
+
+- [ ] **CORE-680** [light]🔧 [unattended] | epic-forward-window — Delete the Forward-looking paragraph in SPEC/epic.md (lines 99–101): expired backfill exemption, and a repeat of the bracket sentence above it. Record window-start a78a8ae5. After 8 archived epic tasknotes, restore it only if a filer followed that paragraph. Surfaced by audit-context 2026-10-02 (Finding #2, Low).
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
 
@@ -26,6 +34,8 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 (none)
 
 ## Completed
+
+- [x] **CORE-681** [light]🔧 | audit-command-symlink — Replaced gitignored `.claude/commands/audit.md` with a symlink to `claude/commands/ft-audit.md`, so the local `/audit` command states that context declares six passes. Surfaced by audit-context 2026-10-02 (Finding #1, Low), fixed inline.
 
 - [x] **CORE-676** [light] [unattended] | platforms-grok-4.7 — Completed 2026-10-02.
 

@@ -22,6 +22,15 @@ unless correcting a factual error.
 
 ---
 
+## v5.34.0 — Codex verification, a live Grok sub-agent row, and the gate catalog moved out of SPEC
+
+- CORE-EPIC-677 records how Codex discovers and runs flowtron, repairs a workflow-route mismatch, and gives Codex-only new installs a staging command derived from the snippet.
+- The Grok sub-agent row names the live spawn_subagent parameters. A probe is read-only only when the prompt says so.
+- The historical gate-skip catalog moved to docs/GATE-DISCIPLINE.md. SPEC/gate-discipline.md keeps section homes and the refused carve-out.
+- A filing whose PLAN.md dirt is only new task rows now commits those rows with itself.
+
+Also: Grok 4.7 is the calibration default; the ft-task SOP restates the Phase 4 Learnings item; the viz lockfile picks up brace-expansion 5.0.12 and undici 8.11.2.
+
 ## v5.33.0 — a review probe closes Phase 3's self-grading gap, plus context-headroom and viz cleanup
 
 - Phase 3 gains an External review box — a context that did not write the diff grades it against Acceptance before closure, on two rungs (blocker / note). Claude runners use `/code-review medium`; other runners brief a read-only sub-agent.

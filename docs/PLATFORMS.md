@@ -440,7 +440,7 @@ This mirrors the pre-adoption framing in §"Grok Build adoption notes" above._
 
 First-use verification 2026-06-01 (CORE-257). /ft-task skill invocation, model gate (with retag), AskUserQuestion render, and cue emissions (✅ marker + post-closure expectations) exercised under Grok. Structured ask support observed (see trigger table note). Matrix currency lives in docs/AGENT-COMPAT.md.
 
-**Last verified:** `v5.33.0 · 2026-09-23 (dogfooded)`
+**Last verified:** `v5.34.0 · 2026-10-02 (dogfooded)`
 
 ### Codex CLI
 
@@ -479,7 +479,7 @@ sub-agent row were backfilled 2026-08-21 (CORE-460.4) from vendor documentation
 shipped `codex/skills/` wrappers — desk research under Claude Code, not a
 standalone Codex verification session.
 
-**Last verified:** `v5.33.0 · 2026-09-23 (dogfooded)`
+**Last verified:** `v5.33.0 · 2026-09-23 (dogfooded; skipped @ v5.34.0)`
 
 ### Cursor
 
@@ -508,7 +508,7 @@ Cursor-only projects (see §"Worked example: Cursor" and
 
 First-use verification 2026-08-12 ([[CORE-438.5]]): `/ft-task` under Cursor (Grok 4.5) ran DOGFOOD.md's three steps (contract comprehension at `v5.16.0`, full cue-render vocabulary, Phase-1 drive on CORE-438.N with clean Step-3 write boundary). Skill dispatch via `.claude/skills/` compat, Task subagent tool, modes, and `/model`+`/clear` cues confirmed; structured ask confirmed earlier under Cursor in [[CORE-438.1]]. Matrix currency lives in docs/AGENT-COMPAT.md.
 
-**Last verified:** `v5.33.0 · 2026-09-23 (dogfooded)`
+**Last verified:** `v5.33.0 · 2026-09-23 (dogfooded; skipped @ v5.34.0)`
 
 ### Gemini CLI (stub)
 

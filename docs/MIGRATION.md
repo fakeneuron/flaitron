@@ -504,7 +504,7 @@ After §3.2–§3.7 land and `/ft-task` shows in the slash menu, sweep for resid
 
   Confirm every slug it prints appears in your agent's roster (v1.0+ additions; symlinks added in §1.2; `/ft-refactor` added in CORE-463.5; `/ft-seed` added in CORE-619; the worktree pair retired in CORE-572 and `/ft-spec` in CORE-573 — see the retired-skills table below).
 - **Context-surface audit.** Run `/ft-audit context` now (your fork's name, e.g. `/audit context`; unforked, ask your agent to run `.flowtron/core/claude/skills/ft-audit/SKILL.md` with `context` as the domain) — migrations frequently carry over context bloat from the legacy era (stale `CLAUDE.md` workflow tutorials, project-local skills that now shadow `ft-*` namespace, AGENTS.md content redundant with the freshly-pasted block). Findings land as PLAN tickets on the write-step confirmation.
-- **Final pin verification.** `git -C .flowtron/core describe --tags` shows the pinned version recorded at the start (e.g., `v5.33.0`). A mismatch means the submodule drifted off the pin during migration.
+- **Final pin verification.** `git -C .flowtron/core describe --tags` shows the pinned version recorded at the start (e.g., `v5.34.0`). A mismatch means the submodule drifted off the pin during migration.
 - **Cleanup commit.** Bundle the decisions above into a single follow-up commit (`chore: <ID> post-migration cleanup`) OR fold into the §3.9 closure commit if scope is small.
 
 ### 3.9 Commit the migration

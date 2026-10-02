@@ -15,9 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-EPIC-679** [medium]🧩 | grok-probe-row — Correct the Grok sub-agent trigger so it no longer describes a read-only `subagent_type`. Discovery supplied by audit-repo 2026-10-02. Surfaced by audit-repo 2026-10-02 (Theme: platform rows drift).
-  - [x] **CORE-679.2** [light]🔧 | grok-spawn-schema — Completed 2026-10-02.
-  - [x] **CORE-679.N** [light]🔧 | grok-probe-row audit — Completed 2026-10-02.
+- [ ] **CORE-688** [medium]🧩 | calibration-roster — docs/PLATFORMS.md calibration table is stamped 2026-08-27 (Grok row rechecked 2026-10-02). Re-check vendor tops and default-effort bands, then restamp. Surfaced by audit-docs 2026-10-02 (Finding #4, Medium).
 
 ## Low
 
@@ -25,11 +23,23 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
 
+- [ ] **CORE-685** [light]🔧 | security-closure-push — SECURITY.md's lethal-trifecta paragraph says closure commits and pushes. SPEC/post-closure.md only commits. Name push as a separate gated step. Surfaced by audit-docs 2026-10-02 (Finding #1, Medium).
+
+- [ ] **CORE-686** [light]🔧 | unattended-probe-drivers — docs/EXTERNAL-AGENTS.md says all four drivers load unattended-mode.md. Only ft-task, ft-micro-task, and ft-close-epic do. ft-file-followup carries the posture inline. Surfaced by audit-docs 2026-10-02 (Finding #2, Medium).
+
+- [ ] **CORE-687** [light]🔧 | mirror-spec-attribution — docs/CONVENTIONS.md credits SPEC.md with the "for future-AI mid-task discipline" sentence. That sentence is in SPEC/scope-boundaries.md. Surfaced by audit-docs 2026-10-02 (Finding #3, Medium).
+
 ## Future Opportunities
 
 (none)
 
 ## Completed
+
+- [x] **CORE-684** [medium]🧩 | release v5.34.0 — Completed 2026-10-02.
+
+- [x] **CORE-EPIC-679** [medium]🧩 | grok-probe-row — Completed 2026-10-02.
+  - [x] **CORE-679.2** [light]🔧 | grok-spawn-schema — Completed 2026-10-02.
+  - [x] **CORE-679.N** [light]🔧 | grok-probe-row audit — Completed 2026-10-02.
 
 - [x] **CORE-660** [medium]🧩 | gate-discipline-trim — Completed 2026-10-02.
 

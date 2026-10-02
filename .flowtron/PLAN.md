@@ -23,6 +23,8 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-660** [medium]🧩 | gate-discipline-trim — Blocked by decay-window depth: the window [[CORE-659]] opened at `f8c44275` has observed 1 run, its own. Parked at Phase 1→2 (`status: blocked`); Discovery, inbound-reference table, and the provenance trim axis are preserved in the tasknote. Resume once N independent runs have archived. Destination decided: `docs/GATE-DISCIPLINE.md`.
 
+- [ ] **CORE-682** [medium]🧩 | plan-filing-accumulate — When PLAN.md is already dirty at a filing, commit that dirt with the new rows when every added line is a task row and every removed line is blank or a `(none)` placeholder. A non-empty index, or any other PLAN edit, still skips.
+
 ## Low
 
 - [ ] **CORE-680** [light]🔧 [unattended] | epic-forward-window — Delete the Forward-looking paragraph in SPEC/epic.md (lines 99–101): expired backfill exemption, and a repeat of the bracket sentence above it. Record window-start a78a8ae5. After 8 archived epic tasknotes, restore it only if a filer followed that paragraph. Surfaced by audit-context 2026-10-02 (Finding #2, Low).

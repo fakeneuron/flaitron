@@ -23,8 +23,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
 
-- [ ] **CORE-686** [light]🔧 | unattended-probe-drivers — docs/EXTERNAL-AGENTS.md says all four drivers load unattended-mode.md. Only ft-task, ft-micro-task, and ft-close-epic do. ft-file-followup carries the posture inline. Surfaced by audit-docs 2026-10-02 (Finding #2, Medium).
-
 - [ ] **CORE-687** [light]🔧 | mirror-spec-attribution — docs/CONVENTIONS.md credits SPEC.md with the "for future-AI mid-task discipline" sentence. That sentence is in SPEC/scope-boundaries.md. Surfaced by audit-docs 2026-10-02 (Finding #3, Medium).
 
 ## Future Opportunities
@@ -32,6 +30,8 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 (none)
 
 ## Completed
+
+- [x] **CORE-686** [light]🔧 | unattended-probe-drivers — Capability probes names the three tasknote drivers that load `unattended-mode.md`; `/ft-file-followup` keeps the posture inline. Surfaced by audit-docs 2026-10-02 (Finding #2, Medium), fixed inline.
 
 - [x] **CORE-685** [light]🔧 | security-closure-push — Completed 2026-10-02.
 

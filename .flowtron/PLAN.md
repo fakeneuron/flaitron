@@ -17,7 +17,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-EPIC-679** [medium]🧩 | grok-probe-row — Correct the Grok sub-agent trigger so it no longer describes a read-only `subagent_type`. Discovery supplied by audit-repo 2026-10-02. Surfaced by audit-repo 2026-10-02 (Theme: platform rows drift).
   - [x] **CORE-679.2** [light]🔧 | grok-spawn-schema — Completed 2026-10-02.
-  - [ ] **CORE-679.N** [light]🔧 | grok-probe-row audit — Audit CORE-EPIC-679.
+  - [x] **CORE-679.N** [light]🔧 | grok-probe-row audit — Completed 2026-10-02.
 
 - [ ] **CORE-660** [medium]🧩 | gate-discipline-trim — Blocked by decay-window depth: the window [[CORE-659]] opened at `f8c44275` has observed 1 run, its own. Parked at Phase 1→2 (`status: blocked`); Discovery, inbound-reference table, and the provenance trim axis are preserved in the tasknote. Resume once N independent runs have archived. Destination decided: `docs/GATE-DISCIPLINE.md`.
 

@@ -324,6 +324,12 @@ If §1.3's verification sent you to the `CLAUDE.md` shim, add it to the first li
 
 The second line stages exactly the symlinks §1.2 created, read back from the snippet that created them. That snippet is the single source of truth for the adopter-wiring roster ([`claude/AGENTS-snippet.md`](../claude/AGENTS-snippet.md) §"One-time symlink wiring"), so this block restates no path list and cannot fall behind a newly shipped skill. Explicit paths — not `git add .` — keep the migration commit scoped to the flowtron wiring even if your project already has other files under `.claude/` (settings, other skills).
 
+**Codex-only (no `.claude/` wiring).** Replace the second command above with the command below, deriving only the adopter symlinks from [`codex/AGENTS-snippet.md`](../codex/AGENTS-snippet.md) §"One-time skill wiring". The snippet's later self-host glob is outside this block. Keep the first staging command and include whichever exclusion files §1.1 created.
+
+```sh
+awk '/^## One-time skill wiring$/{p=1;next} p && /^## /{p=0} p && /^ln -s/{print $NF}' .flowtron/core/codex/AGENTS-snippet.md | xargs git add
+```
+
 **Cursor-only (no `.claude/` wiring).** The `git add` block above is the Claude-default path. A Cursor-only install from §1.2 never creates those `.claude/` files — adding them fails. Stage the Cursor snippet's symlinks instead (`git add .cursor/` per [`cursor/AGENTS-snippet.md`](../cursor/AGENTS-snippet.md) §"One-time symlink wiring") together with `.gitmodules`, `.flowtron/core`, `.flowtron/PLAN.md`, `.flowtron/tasknote/`, and `AGENTS.md`.
 
 **Grok-only (no `.claude/`, `.agents/skills/`, or `.cursor/skills/` wiring).** Same constraint: the Claude-default `git add` block fails. Stage the Grok snippet's symlinks instead (`git add .grok/` per [`grok/AGENTS-snippet.md`](../grok/AGENTS-snippet.md) §"One-time symlink wiring") together with `.gitmodules`, `.flowtron/core`, `.flowtron/PLAN.md`, `.flowtron/tasknote/`, and `AGENTS.md`.

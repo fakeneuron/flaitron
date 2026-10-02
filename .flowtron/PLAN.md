@@ -17,13 +17,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-660** [medium]🧩 | gate-discipline-trim — Blocked by decay-window depth: the window [[CORE-659]] opened at `f8c44275` has observed 1 run, its own. Parked at Phase 1→2 (`status: blocked`); Discovery, inbound-reference table, and the provenance trim axis are preserved in the tasknote. Resume once N independent runs have archived. Destination decided: `docs/GATE-DISCIPLINE.md`.
 
-- [ ] **CORE-EPIC-677** [heavy] | codex-flowtron — Verify Codex skill installation and workflow adherence, repair evidenced wiring or contract gaps, and compare identical isolated fixtures with Grok Build. Separate static parity, live behavior, and cross-model observations; retain a final evidence and doc-drift audit.
-  - [x] **CORE-677.1** [heavy] | codex-flowtron discovery — Completed 2026-10-01.
-  - [x] **CORE-677.2** [heavy] | codex-install-verify — Completed 2026-10-01.
-  - [x] **CORE-677.3** [heavy] | codex-workflow-parity — Completed 2026-10-01.
-  - [x] **CORE-677.4** [heavy] | codex-grok-compare — Completed 2026-10-02.
-  - [ ] **CORE-677.N** [heavy] | codex-flowtron audit — Audit installation receipts, skill and SOP parity, isolated comparison evidence, unresolved failures, and compatibility claims. Include the fixed per-entry doc-drift sweep across .flowtron/tasknote/README.md's AI-referenced docs; check stamp claims against qualifying live receipts.
-
 ## Low
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
@@ -35,6 +28,13 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 (none)
 
 ## Completed
+
+- [x] **CORE-EPIC-677** [heavy] | codex-flowtron — Completed 2026-10-02.
+  - [x] **CORE-677.1** [heavy] | codex-flowtron discovery — Completed 2026-10-01.
+  - [x] **CORE-677.2** [heavy] | codex-install-verify — Completed 2026-10-01.
+  - [x] **CORE-677.3** [heavy] | codex-workflow-parity — Completed 2026-10-01.
+  - [x] **CORE-677.4** [heavy] | codex-grok-compare — Completed 2026-10-02.
+  - [x] **CORE-677.N** [heavy] | codex-flowtron audit — Completed 2026-10-02.
 
 - [x] **CORE-675** [light]🔧 | ft-task-sop-learnings — Completed 2026-09-23.
 - [x] **CORE-674** [medium]🧩 | release v5.33.0 — Completed 2026-09-23.

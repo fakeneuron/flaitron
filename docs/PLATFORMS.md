@@ -295,7 +295,7 @@ Concrete instantiation:
 
 - **Sibling dir**: `codex/` at the repo root
 - **Adopter-facing snippet**: `codex/AGENTS-snippet.md`
-- **`skills/`**: 11 `SKILL.md` wrappers, one per Claude `ft-*` skill slug.
+- **`skills/`**: 12 `SKILL.md` wrappers, one per Claude `ft-*` skill slug.
   Each keeps short Codex-native metadata, then routes to the agent-neutral SOP
   (`ft-task`) or the canonical Claude skill body, applying the Codex primitive
   translation rules that live once in `codex/AGENTS-snippet.md`

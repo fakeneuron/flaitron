@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-688** [medium]🧩 | calibration-roster — docs/PLATFORMS.md calibration table is stamped 2026-08-27 (Grok row rechecked 2026-10-02). Re-check vendor tops and default-effort bands, then restamp. Surfaced by audit-docs 2026-10-02 (Finding #4, Medium).
+(none)
 
 ## Low
 
@@ -34,6 +34,8 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 (none)
 
 ## Completed
+
+- [x] **CORE-688** [medium]🧩 | calibration-roster — Completed 2026-10-02.
 
 - [x] **CORE-689** [medium]🧩 | release-finding-gate — Completed 2026-10-02.
 

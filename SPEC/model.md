@@ -119,11 +119,14 @@ The match compares the active model's tier against the tag's tier:
 
 Vendor APIs now commonly expose a second axis alongside the choice of named
 model: a reasoning-*effort* setting (Claude's `low` / `medium` / `high` /
-`xhigh` / `max` — the full ladder across the current Claude 5 family, with
-`xhigh` the recommended setting for coding and agentic work; Grok's `low` /
+`xhigh` / `max` — the full ladder across the current Claude 5 family; default
+`high`, except Opus 5.5 which defaults to `medium`, and `xhigh`/`max` is the
+step-up for the hardest agentic work; Grok's `low` /
 `medium` / `high` / `xhigh` — the `xhigh` rung arrived with Grok 4.6, and
-earlier 4.x silently treat it as `high`; Codex's `none` / `low` / `medium` /
-`high` / `xhigh` / `max`, with `minimal` as an even lighter CLI-only rung).
+earlier 4.x silently treat it as `high`; Codex's `low` / `medium` /
+`high` / `xhigh` / `max` on the current Astra and Sol tops, which have no
+`none` — Luna still has `none`, and the CLI's old `minimal` rung maps to
+`low`).
 This is orthogonal to the tier
 ladder above: the *same* named model can be pushed toward `heavy`-band output
 by raising its effort setting, or throttled toward `light`-band output by

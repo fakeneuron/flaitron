@@ -1,6 +1,6 @@
 # Gate machinery
 
-> Lazy-loaded SPEC module. Loaded by `/ft-task`, `/ft-micro-task`, `/ft-epic-discovery`, `/ft-close-epic`, and `/ft-release` whenever an operator-gate decision is in play (Phase 1→2 exit, ready-to-commit). See `SPEC.md` for the always-loaded core spec; this module carries the gate machinery the core §"The 4-phase workflow" and §"Post-closure protocol" anchors point at. Three siblings carry the rest, each loaded on its own trigger: [`SPEC/cue-vocabulary.md`](cue-vocabulary.md) (the cue inventory — glyphs, labels, emission shapes), [`SPEC/gate-discipline.md`](gate-discipline.md) (read before skipping a gate), and [`SPEC/gate-postures.md`](gate-postures.md) (the `--fast` / `--unattended` postures and the flag×surface matrix — loaded only when a flag or the `[unattended]` row marker is set).
+> Lazy-loaded SPEC module. Loaded by `/ft-task`, `/ft-micro-task`, `/ft-epic-discovery`, `/ft-close-epic`, and `/ft-release` whenever an operator-gate decision is in play (Phase 1→2 exit, ready-to-commit). See `SPEC.md` for the always-loaded core spec; this module carries the gate machinery the core §"The 4-phase workflow" and §"Post-closure protocol" anchors point at. Three siblings carry the rest, each loaded on its own trigger: [`SPEC/cue-vocabulary.md`](cue-vocabulary.md) (the cue inventory — glyphs, labels, emission shapes), [`SPEC/gate-discipline.md`](gate-discipline.md) (section homes and the refused carve-out; the historical catalog is [`docs/GATE-DISCIPLINE.md`](../docs/GATE-DISCIPLINE.md)), and [`SPEC/gate-postures.md`](gate-postures.md) (the `--fast` / `--unattended` postures and the flag×surface matrix — loaded only when a flag or the `[unattended]` row marker is set).
 
 The 4-phase workflow's operator-gate machinery lives here: the two standing
 phase-gate banner cues and the cap that fixes them at two, the bounded
@@ -275,15 +275,16 @@ the module before any conversion.
 
 ## Gate discipline — read before skipping a gate
 
-The excuses that precede a skipped gate, and the symptoms an observer would
-see, live in [`SPEC/gate-discipline.md`](gate-discipline.md): §"Rationalizations"
-(each excuse paired with the clause that refutes it), §"Red Flags" (symptoms,
-phrased that way because the assistant exhibiting them is already convinced),
-and §"Refused carve-outs" (arguments raised and refused, recorded so the next
-raise finds the answer). Advisory prose, never a checklist or a validator —
+The section homes, and the full text of §"Refused carve-outs", live in
+[`SPEC/gate-discipline.md`](gate-discipline.md). The historical excuse table
+(§"Rationalizations") and symptom list (§"Red Flags") moved to
+[`docs/GATE-DISCIPLINE.md`](../docs/GATE-DISCIPLINE.md) after [[CORE-659]]'s
+decay window recorded no independent recurrence ([[CORE-660]]). Advisory
+prose, never a checklist or a validator —
 [`docs/VISION.md`](../docs/VISION.md) §"What we won't accept" sets that remedy.
 
 **Standing rule (CORE-386/CORE-388).** Any new escape hatch or gate-surface
 change in this file arrives with matching §"Rationalizations" rows and
-§"Red Flags" lines in that module. The two files are the only homes for this
-prose — alongside the consolidated `/ft-audit` skill's own copy.
+§"Red Flags" lines in that module. The two files are the only homes for a
+**new** row — alongside the consolidated `/ft-audit` skill's own copy.
+`docs/GATE-DISCIPLINE.md` holds the pre-window record and is not a third home.

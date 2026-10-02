@@ -320,9 +320,10 @@ needs:
   a flag or the `[unattended]` row marker is set.
 - [`SPEC/cue-vocabulary.md`](SPEC/cue-vocabulary.md) — the reference. Every
   operator cue's glyph, UPPERCASE label, and emission shape.
-- [`SPEC/gate-discipline.md`](SPEC/gate-discipline.md) — the discipline. The
-  excuses and symptoms that precede a skipped gate, and the carve-outs raised
-  and refused.
+- [`SPEC/gate-discipline.md`](SPEC/gate-discipline.md) — the discipline. Section
+  homes for a new rationalization or red flag, and §"Refused carve-outs" in
+  full. The historical catalog lives in
+  [`docs/GATE-DISCIPLINE.md`](docs/GATE-DISCIPLINE.md).
 
 ### 🎯 Purpose blurb
 

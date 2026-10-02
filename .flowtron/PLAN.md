@@ -19,8 +19,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [x] **CORE-679.2** [light]🔧 | grok-spawn-schema — Completed 2026-10-02.
   - [x] **CORE-679.N** [light]🔧 | grok-probe-row audit — Completed 2026-10-02.
 
-- [ ] **CORE-660** [medium]🧩 | gate-discipline-trim — Blocked by decay-window depth: the window [[CORE-659]] opened at `f8c44275` has observed 1 run, its own. Parked at Phase 1→2 (`status: blocked`); Discovery, inbound-reference table, and the provenance trim axis are preserved in the tasknote. Resume once N independent runs have archived. Destination decided: `docs/GATE-DISCIPLINE.md`.
-
 ## Low
 
 - [ ] **CORE-683** [medium]🧩 | epic-forward-restore — Blocked by decay-window depth: window [[CORE-680]] opened at `a78a8ae5`. After 8 epic tasknotes (`*-EPIC-*` or `*.<sub>`) archive past that SHA, restore `SPEC/epic.md`'s Forward-looking paragraph only if one followed it. Bar is in the archived CORE-680 note.
@@ -32,6 +30,8 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 (none)
 
 ## Completed
+
+- [x] **CORE-660** [medium]🧩 | gate-discipline-trim — Completed 2026-10-02.
 
 - [x] **CORE-EPIC-678** [heavy]🧠 | sop-headroom — Completed 2026-10-02.
   - [x] **CORE-678.2** [medium]🧩 | procedures-headroom — Completed 2026-10-02.

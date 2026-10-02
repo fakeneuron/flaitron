@@ -194,9 +194,8 @@ not ship.
 
 ### Lazy `SPEC/` modules
 
-`procedures/ft-task.md` 34,302 (re-measured [[CORE-678.2]], 2026-10-02;
-the other figures in this list stay the 2026-09-23 stamp) · `gates.md` 20,332 ·
-`gate-postures.md` 20,409 · `gate-discipline.md` 16,077 ·
+`procedures/ft-task.md` 34,302 (re-measured [[CORE-678.2]], 2026-10-02) · `gates.md` 20,332 ·
+`gate-postures.md` 20,409 · `gate-discipline.md` 4,686 (re-measured [[CORE-660]], 2026-10-02) ·
 `plan-filing.md` 17,176 · `tasknote-selection.md` 15,217 ·
 `cue-vocabulary.md` 15,135 · `model.md` 14,636 ·
 `blocked.md` 14,627 · `unattended-candidacy.md` 12,304 ·
@@ -207,6 +206,10 @@ the other figures in this list stay the 2026-09-23 stamp) · `gates.md` 20,332 �
 `tasknote-inserts.md` 4,615 · `purpose-blurb.md` 4,027 ·
 `superseded-claims.md` 2,947 · `starter.md` 2,494 ·
 `versioning.md` 1,219.
+Aside from the two re-measurements named above, these figures stay the
+2026-09-23 stamp. [[CORE-660]] also grew `gates.md` by 112 bytes (20,332 →
+20,444, still under its 25,000 cap) and `SPEC.md` by 84 bytes (46,923 →
+47,007, still under its 53,000 cap), and left both stamped figures in place.
 
 `gates.md` and `tasknote-selection.md` are lazy by declaration and
 near-universal in practice; `plan-filing.md` was too until [[CORE-605]]
@@ -219,7 +222,7 @@ added six of the modules above by moving narrow-use sections out of `SPEC.md`
 — which is why the `SPEC/` total grew while the always-loaded set shrank.
 [[CORE-535.5]] added two more the same way, out of `gates.md`: neither
 `cue-vocabulary.md` (reference — loaded when composing or interpreting a cue)
-nor `gate-discipline.md` (loaded when about to skip a gate) is consulted by an
+nor `gate-discipline.md` (section homes plus the refused carve-out; the historical catalog is `docs/GATE-DISCIPLINE.md`, and [[CORE-659]] dropped the pre-skip load) is consulted by an
 ordinary run, which is why neither earns a budget row. [[CORE-595]] split
 `tasknote-selection.md` (28,952 → 15,236) the same way, moving its three
 PLAN.md-row contracts — filing commits, the `## Completed` stub form, and

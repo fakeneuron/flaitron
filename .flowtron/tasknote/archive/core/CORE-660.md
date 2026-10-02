@@ -1,13 +1,13 @@
 ---
 title: gate-discipline-trim
-status: blocked
-park-reason: drift — Phase 1 Re-scope; decay window opened by CORE-659 has observed 1 run, and that run is its own control
+status: completed
 tags: []
 created: 2026-09-22
 due:
 related-tasks: [CORE-659, CORE-661]
 touches:
   - SPEC/gate-discipline.md
+  - SPEC/gates.md
   - docs/GATE-DISCIPLINE.md
   - docs/CONTEXT-BUDGET.md
   - docs/AGENT-NEUTRALITY.md
@@ -19,7 +19,7 @@ blocked-by:
 
 # CORE-660 | gate-discipline-trim
 
-[← PLAN.md](../PLAN.md) · ⏸ Blocked · 🔗 [[CORE-659]]
+[← PLAN.md](../PLAN.md) · 🟢 In progress · 🔗 [[CORE-659]]
 
 ## 🎯 Goal
 
@@ -29,28 +29,25 @@ the posture semantics `SPEC/gate-postures.md` owns.
 
 ## ✅ Acceptance
 
-> Acceptance below describes the trim **when this task resumes**. It is parked
-> at the Phase 1→2 boundary; nothing here is claimed as met.
-
-- [ ] Decay window carries enough independent runs to read — `git log --diff-filter=A f8c44275..HEAD -- .flowtron/tasknote/archive/ | grep -c '^A'` returns the operator's agreed N (at park: 1, and that one is the window-opening task itself)
-- [ ] `SPEC/gate-discipline.md` materially smaller — `wc -c SPEC/gate-discipline.md` well under the parked 16,077
-- [ ] Moved material lands in `docs/GATE-DISCIPLINE.md` — `test -f docs/GATE-DISCIPLINE.md`
-- [ ] No dangling inbound reference — every row of the Discovery Notes inbound table re-checked; `grep -rn 'gate-discipline' --include='*.md' .` (excluding `archive/`) resolves to surfaces that still exist
-- [ ] `docs/AGENT-NEUTRALITY.md:40`'s 3-site count re-derived if a section heading was dropped — `judgment`: the ledger counts at heading granularity, so only a heading change moves it
-- [ ] `SPEC/gate-postures.md` posture semantics untouched — `git diff --stat SPEC/gate-postures.md` shows prose-only changes; the red-full-suite park and `proceed-on-green` clauses caobunga depends on are byte-identical
-- [ ] `README.md:293` + `SPEC.md:323` roster entries still accurate — `judgment`: both are prose rosters, no command decides wording
+- [x] Decay window carries enough independent runs to read — 34 archive paths added since `f8c44275` (`git log --diff-filter=A … | sed | sort -u | wc -l` → 34). Park recorded 1, the control. No numeric N was stored at the park; this `/ft-task` resume is the read. The marker string appears only in `archive/core/CORE-659.md`, inside the counting instruction, not as an emitted closure line.
+- [x] `SPEC/gate-discipline.md` materially smaller — `wc -c SPEC/gate-discipline.md` → 4,686 (was 16,077)
+- [x] Moved material lands in `docs/GATE-DISCIPLINE.md` — `test -f docs/GATE-DISCIPLINE.md` → 0
+- [x] No dangling inbound reference — live `gate-discipline` mentions outside `archive/` resolve to `SPEC/gate-discipline.md`, `docs/GATE-DISCIPLINE.md`, or a roster name. The three section headings remain.
+- [x] `docs/AGENT-NEUTRALITY.md` 3-site count — `judgment`: no heading dropped (`## Rationalizations`, `## Red Flags`, `## Refused carve-outs` still present), so the row was not edited. The pre-existing duplicated `post-closure.md` clause on that row stays out of scope.
+- [x] `SPEC/gate-postures.md` posture semantics untouched — `git diff --stat SPEC/gate-postures.md` empty. §"Refused carve-outs" still resolves from the deep link.
+- [x] `README.md` layout line and `SPEC.md` roster still name the module, and the README docs index links the new reference — `judgment`: prose rosters, checked by read
 
 ## 🧩 Subtasks
 
 > Deferred with the park — populated so the resume path has concrete steps.
 
-- [ ] Re-measure the decay window (`git log` since `f8c44275`); if still thin, re-gate with the operator before trimming
-- [ ] Count the skip-path marker (`✅ Closure complete; committing autonomously`) across tasknotes archived in the window — CORE-659's stated measurement
-- [ ] Classify the 22 §"Rationalizations" rows and 24 §"Red Flags" bullets: incident-backed (keep) vs. contract-restating (move)
-- [ ] Create `docs/GATE-DISCIPLINE.md` with the moved material; add it to `README.md`'s `docs/` layout list
-- [ ] Trim `SPEC/gate-discipline.md` to the retained material plus a pointer to the new reference
-- [ ] Repair the inbound references in the Discovery Notes table; re-measure `docs/CONTEXT-BUDGET.md:161`
-- [ ] Verify `SPEC/gate-postures.md:206`'s deep link into §"Refused carve-outs" still resolves
+- [x] Re-measure the decay window (`git log` since `f8c44275`); if still thin, re-gate with the operator before trimming
+- [x] Count the skip-path marker (`✅ Closure complete; committing autonomously`) across tasknotes archived in the window — CORE-659's stated measurement
+- [x] Classify the 22 §"Rationalizations" rows and 22 §"Red Flags" bullets (the parked note said 24; the file has 22): none recurred in the window record, so all moved
+- [x] Create `docs/GATE-DISCIPLINE.md` with the moved material; add it to `README.md`'s `docs/` layout list
+- [x] Trim `SPEC/gate-discipline.md` to the retained material plus a pointer to the new reference
+- [x] Repair the inbound references in the Discovery Notes table; re-measure `docs/CONTEXT-BUDGET.md` lazy-module figure (the parked `:161` drifted)
+- [x] Verify `SPEC/gate-postures.md`'s deep link into §"Refused carve-outs" still resolves (line drifted 206 → 196)
 
 ## 🔗 Related
 
@@ -186,42 +183,71 @@ reservation widens or whether attended runs are meant to differ.
 
 ## 🛠️ Phase 2: Execution
 
-- [ ] **Pattern survey** — extended an established pattern or justified a new shape; checked DRY and single-responsibility (SRP) boundaries; preferred composition when it reduced coupling
+- [x] **Pattern survey** — extended an established pattern or justified a new shape; checked DRY and single-responsibility (SRP) boundaries; preferred composition when it reduced coupling
 
-- [ ] **Minimal refactor gate** — refactored only for Acceptance or to prevent duplication, obscured responsibility, or a dependency-boundary violation in the touched path; recorded the reason and deferred unrelated cleanup
+- [x] **Minimal refactor gate** — refactored only for Acceptance or to prevent duplication, obscured responsibility, or a dependency-boundary violation in the touched path; recorded the reason and deferred unrelated cleanup
 
-- [ ] Implemented the minimal solution
+- [x] Implemented the minimal solution
 
-- [ ] Updated/added tests for non-trivial behavior
+- [x] Updated/added tests for non-trivial behavior
 
 **Implementation Notes:**
 
+Pattern is the CORE-535.5 / CORE-604.2 split: keep the loaded module as the home for new rows, move the historical catalog to `docs/`. Resumed by clearing `park-reason: drift — Phase 1 Re-scope; decay window opened by CORE-659 has observed 1 run, and that run is its own control`. Window recount: 34 added archive paths since `f8c44275`; not thin, so no re-gate. The parked "24 red flags" was a miscount; the file has 22 rows and 22 bullets, and the diff of first lines against `HEAD` is empty. None of those items recur as an incident in the window notes, so the whole catalog moved. §"Refused carve-outs" stayed in full because `SPEC/gate-postures.md` deep-links the reasoning. The three headings stayed so `docs/AGENT-NEUTRALITY.md`'s 3-site count does not move. Scope sentence and the "recognizing your own draft sentence" mechanism stayed after review. A header-only table remains under §"Rationalizations" so a new row has a shape to copy. `SPEC/gate-postures.md` was not edited. Tests N/A — prose only.
+
 ## 🧪 Phase 3: Testing & Linting
 
-- [ ] Ran targeted test suite for changed code
+- [x] Ran targeted test suite for changed code — `N/A`: prose-only diff, no test suite covers it
 
-- [ ] Ran lint/type-check on changed code
+- [x] Ran lint/type-check on changed code — `N/A`: no code changed
 
-- [ ] **Verification receipt** — recorded each Acceptance verify command in Testing Notes as `command → exit code`, with the first failure line when non-zero; and, for changed code, confirmed no avoidable duplication, dead code, unexplained complexity, unnecessary public-surface growth, or stale code-facing documentation (otherwise `N/A` with reason)
+- [x] **Verification receipt** — recorded each Acceptance verify command in Testing Notes as `command → exit code`, with the first failure line when non-zero; and, for changed code, confirmed no avoidable duplication, dead code, unexplained complexity, unnecessary public-surface growth, or stale code-facing documentation (otherwise `N/A` with reason)
 
-- [ ] **External review** — a context that did not write the diff graded it against `## ✅ Acceptance`, and every finding is recorded below with its disposition (**blocker** → back to Phase 2; **note** → fixed or filed). `N/A` with a one-line reason when the diff is too small to grade
+- [x] **External review** — a context that did not write the diff graded it against `## ✅ Acceptance`, and every finding is recorded below with its disposition (**blocker** → back to Phase 2; **note** → fixed or filed). `N/A` with a one-line reason when the diff is too small to grade
 
-- [ ] (frontend) Asked the user for visual confirmation (emphasized `👁️ **CONFIRM**` ask on its own line)
+- [x] (frontend) Asked the user for visual confirmation (emphasized `👁️ **CONFIRM**` ask on its own line) — `N/A`: no rendered surface
 
 **Choosing a test strategy:** see SPEC.md §"🧪 Phase 3: Testing & Linting".
 
 **Testing Notes:**
 
+Structural half: `N/A` for duplication/dead code — the edit is a prose split. The scope fence and the mechanism sentence were restored so the loaded module does not lose a boundary the catalog rows never carried.
+
+Verification receipt:
+
+- archive-add count since `f8c44275` → 34 paths, exit 0
+- `wc -c SPEC/gate-discipline.md` → 4686, exit 0 (was 16077)
+- `test -f docs/GATE-DISCIPLINE.md` → 0
+- `git diff --stat SPEC/gate-postures.md` → empty, exit 0
+- live `gate-discipline` grep outside `archive/` → every hit names a file that exists
+- `wc -c SPEC/gates.md` → 20444 (cap 25000); `wc -c SPEC.md` → 47007 (cap 53000)
+
+External review (read-only sub-agent, working-tree diff): blockers none. Notes, all fixed in this run:
+
+- Restored the deleted scope fence and the "recognizing your own draft sentence" sentence.
+- Left a header-only §"Rationalizations" table so a new row has columns to copy.
+- Corrected the marker claim: the one hit is CORE-659 quoting the count instruction, not an emitted closure line.
+- Recorded the `SPEC.md` +84 and `gates.md` +112 stamp drift in `docs/CONTEXT-BUDGET.md` instead of refreshing the cold-start sum.
+- Dropped the unrequested `harness-survey` token from the README `docs/` one-liner.
+
 ## 🚀 Phase 4: Closure
 
-- [ ] **Doc-drift sweep** — for each entry in `.flowtron/tasknote/README.md` §"AI-referenced docs", state "no change" or the update
+- [x] **Doc-drift sweep** — for each entry in `.flowtron/tasknote/README.md` §"AI-referenced docs", state "no change" or the update
 
-- [ ] Closed — every `## ✅ Acceptance` criterion ticked or explicitly annotated (`N/A` / not-met with a one-line reason), YAML `status:` flipped to `completed`, PLAN.md line flipped to stub form `Completed YYYY-MM-DD.` and placed (standalone → top of `## Completed`; epic child → kept nested beneath its active parent — see SPEC/plan-filing.md §"`## Completed` archive convention" if unclear), then tasknote moved to `.flowtron/tasknote/archive/<area>/`
+- [x] Closed — every `## ✅ Acceptance` criterion ticked or explicitly annotated (`N/A` / not-met with a one-line reason), YAML `status:` flipped to `completed`, PLAN.md line flipped to stub form `Completed YYYY-MM-DD.` and placed (standalone → top of `## Completed`; epic child → kept nested beneath its active parent — see SPEC/plan-filing.md §"`## Completed` archive convention" if unclear), then tasknote moved to `.flowtron/tasknote/archive/<area>/`
 
-- [ ] **Evidence-based recap** drafted — changed files/LOC where meaningful, verification commands/results, refactors made or deferred with rationale, documentation verdict, the `touches:` scope reconciliation (`git diff --name-only` vs declared; name undeclared paths), and concrete maintainability effect (surfaces at the 📦 ready-to-commit gate, or inline on conditional skip)
+- [x] **Evidence-based recap** drafted — changed files/LOC where meaningful, verification commands/results, refactors made or deferred with rationale, documentation verdict, the `touches:` scope reconciliation (`git diff --name-only` vs declared; name undeclared paths), and concrete maintainability effect (surfaces at the 📦 ready-to-commit gate, or inline on conditional skip)
 
-- [ ] **Learnings** — did this task teach something the always-loaded layer (AGENTS.md / README §AI-referenced docs) should carry? `N/A` or the line
+- [x] **Learnings** — did this task teach something the always-loaded layer (AGENTS.md / README §AI-referenced docs) should carry? `N/A` or the line
 
 **Final Summary:**
 
-**Archived:** YYYY-MM-DD
+The CORE-659 decay window is 34 archived tasknotes deep and recorded no independent gate-skip excuse, so the 22-row / 22-bullet catalog moved from `SPEC/gate-discipline.md` (16,077 → 4,686 bytes) to `docs/GATE-DISCIPLINE.md`. The SPEC module keeps the three section homes, a header-only table for the next new row, the scope fence, and the full §"Refused carve-outs" text `SPEC/gate-postures.md` deep-links. `SPEC/gate-postures.md` is untouched.
+
+Doc-drift sweep: `README.md` updated (docs index bullet + `docs/` layout one-liner). `SPEC.md` roster updated. `docs/AGENT-NEUTRALITY.md` no change (headings kept; the duplicated post-closure clause stays). `docs/CONTEXT-BUDGET.md` updated (lazy-module size 16,077 → 4,686, stale "loaded when about to skip a gate" reason replaced, stamp aside for the `gates.md` +112 and `SPEC.md` +84 this task left unrefreshed in the cold-start sum). No change: `AGENTS.md`, `docs/MIGRATION.md`, `claude/AGENTS-snippet.md`, `codex/AGENTS-snippet.md`, `cursor/AGENTS-snippet.md`, `grok/AGENTS-snippet.md`, `docs/CONVENTIONS.md`, `CONTRIBUTING.md`, `SECURITY.md`, `docs/PLATFORMS.md`, `claude/CAPABILITIES.md`, `docs/AGENT-COMPAT.md`, `docs/EXTERNAL-AGENTS.md`, `docs/WORKTREES.md`, `docs/VISION.md`. `SPEC/gates.md` is outside the sweep set and was updated so its sibling blurb and standing rule match the move.
+
+`touches:` reconciliation: declared `SPEC/gate-discipline.md`, `SPEC/gates.md`, `docs/GATE-DISCIPLINE.md`, `docs/CONTEXT-BUDGET.md`, `docs/AGENT-NEUTRALITY.md`, `README.md`, `SPEC.md`. `docs/AGENT-NEUTRALITY.md` was declared and not edited. Closure also stages `.flowtron/PLAN.md` and this tasknote's archive move.
+
+Learnings: `N/A`. CORE-659 already recorded that this window's counting method is specific to the trio.
+
+**Archived:** 2026-10-02

@@ -21,13 +21,13 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
 
-- [ ] **CORE-676** [light] [unattended] | platforms-grok-4.7 — `docs/PLATFORMS.md`'s xAI calibration row names Grok 4.6; `grok models` now defaults to `grok-4.7` (plus `grok-4.7-build-fast`). Refresh the row and its effort-ladder note. Surfaced by caobunga CBN-254.
-
 ## Future Opportunities
 
 (none)
 
 ## Completed
+
+- [x] **CORE-676** [light] [unattended] | platforms-grok-4.7 — Completed 2026-10-02.
 
 - [x] **CORE-EPIC-677** [heavy] | codex-flowtron — Completed 2026-10-02.
   - [x] **CORE-677.1** [heavy] | codex-flowtron discovery — Completed 2026-10-01.

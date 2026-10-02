@@ -252,7 +252,7 @@ npm --prefix viz audit --audit-level=high
 
 ## Step 7 — Drive Phase 4: Closure
 
-Walk the closure steps in order. Tag-message review (§7.2) and the bundled 📦 commit-go (§7.4) are explicit gates — wait for the user.
+Walk the closure steps in order. Three waits, each only when it fires, and none of them is a new banner: the §7.1 Medium/Low finding ask (release anyway, or stop), the §7.2 tag-message review, and the bundled 📦 commit-go (§7.4). Wait at each one that fires.
 
 ### 7.1 — Doc-drift sweep (via `/ft-audit docs` subroutine)
 
@@ -262,17 +262,22 @@ Invoke the flowtron-self `ft-audit` skill in **subroutine mode** with the `docs`
 Skill(ft-audit) with args "docs ai-referenced"
 ```
 
-That pass file keeps its placeholders whatever scope you pass, so the dispatcher's §1 step 3 scaffold bootstrap still stops the run before pass 1. Take its **run once** branch: rubric = the doc-set contract above, gates = the CI `drift` job's doc checks run locally (Pair Q section-citation resolver, final-newline, context budget — there is no markdown linter). Then the `docs` domain walks its 5 passes (Claims vs. code · Cross-doc consistency · Cross-references · Currency · Stale content) over the declared doc set and returns the report inline. Per the dispatcher's Subroutine-safe hard rule it does **not** write tickets to `.flowtron/PLAN.md`; the release skill is the orchestrator and decides per finding whether to absorb the fix into the current cut.
+That pass file keeps its placeholders whatever scope you pass, so the dispatcher's §1 step 3 scaffold bootstrap still stops the run before pass 1. Take its **run once** branch: rubric = the doc-set contract above, gates = the CI `drift` job's doc checks run locally (Pair Q section-citation resolver, final-newline, context budget — there is no markdown linter). Then the `docs` domain walks its 5 passes (Claims vs. code · Cross-doc consistency · Cross-references · Currency · Stale content) over the declared doc set and returns the report inline. Per the dispatcher's Subroutine-safe hard rule it does **not** write tickets to `.flowtron/PLAN.md`; the release skill is the orchestrator. Critical / High findings are fixed inline. Medium / Low findings are not disposed one by one, and filing them does not by itself let the cut continue.
 
-For each returned finding:
-- **Critical / High** — fix inline as part of the release cut (the 3 version edits in Phase 2 normally clear the routine SPEC + MIGRATION + SECURITY version-pin drift; anything else surfaced here gets the same treatment).
-- **Medium / Low** — surface to the user with a one-line summary; ask whether to absorb into the release cut or file a followup via `/ft-file-followup`. Default to file-followup if uncertain (release cuts should not balloon).
+Classify each returned finding:
+- **Critical / High** — fix inline as part of the release cut (the 3 version edits in Phase 2 normally clear the routine SPEC + MIGRATION + SECURITY version-pin drift; anything else surfaced here gets the same treatment). Cleared means the finding is gone. A finding that only drops to Medium or Low is held for the ask below. If it is still Critical or High after the inline fix, stop the cut and say why. Release anyway is not available for a finding that is still Critical or High.
+- **Medium / Low** — hold it. Do not file it yet, and do not absorb it inside the ask.
 
-If the sweep reports zero findings, state that explicitly and move on to §7.2.
+If any Medium or Low finding is still open, stop and ask with AskUserQuestion before §7.2. Show every held finding as a one-line summary. Two options, and neither is the default:
 
-**Standing checks — read both fragments now.** Independently of the subroutine
-findings, §7.1 carries two blocks of standing checks that live in sibling
-fragments so this skill stays under its load budget. Read them **in parallel**:
+- **Stop** — do not file, do not enter §7.2, and do not tag. Record the findings in the release tasknote. The cut stays in this working tree until they are fixed here and §7.1 is re-run. A re-run that still reports Medium or Low findings asks again. A re-run that reports none continues into the standing checks below.
+- **Release anyway** — file each held finding via `/ft-file-followup`, record the new task IDs in the release tasknote, then continue the cut. This is the only path that ships with those findings still open.
+
+An empty, unclear, or uncertain reply is **Stop**. This ask is a skill-recipe wait, like the §7.2 tag-message review. It is not bundled into 📦: Stop has to land before §7.2, and folding the choice into commit-go would tag before the operator made it.
+
+If the sweep reports zero findings, or the only findings were Critical / High and those are fixed inline, say so and continue into the standing checks below. **Release anyway** does the same after the follow-ups are filed. **Stop** does not: do not read the standing checks, and do not enter §7.2. Do not invent a third phase-gate banner for this ask — `SPEC/gates.md` §"Operator-gate cues" caps standing banners at 🛠️ and 📦. This is a blocking AskUserQuestion in the same family as Step 1.1.
+
+**Standing checks — read both fragments now** (only when the cut is continuing). Independently of the subroutine findings, §7.1 carries two blocks of standing checks that live in sibling fragments so this skill stays under its load budget. Read them **in parallel**:
 
 - `claude/skills/ft-release/step-7.1-standing-checks.md` — wiring-consumer
   derivation · shipped-skill parity · installed-surface policy · self-wiring

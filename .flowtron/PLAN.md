@@ -25,7 +25,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Low
 
-- [ ] **CORE-680** [light]🔧 [unattended] | epic-forward-window — Delete the Forward-looking paragraph in SPEC/epic.md (lines 99–101): expired backfill exemption, and a repeat of the bracket sentence above it. Record window-start a78a8ae5. After 8 archived epic tasknotes, restore it only if a filer followed that paragraph. Surfaced by audit-context 2026-10-02 (Finding #2, Low).
+- [ ] **CORE-683** [medium]🧩 | epic-forward-restore — Blocked by decay-window depth: window [[CORE-680]] opened at `a78a8ae5`. After 8 epic tasknotes (`*-EPIC-*` or `*.<sub>`) archive past that SHA, restore `SPEC/epic.md`'s Forward-looking paragraph only if one followed it. Bar is in the archived CORE-680 note.
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
 
@@ -34,6 +34,8 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 (none)
 
 ## Completed
+
+- [x] **CORE-680** [light]🔧 [unattended] | epic-forward-window — Completed 2026-10-02.
 
 - [x] **CORE-682** [medium]🧩 | plan-filing-accumulate — Completed 2026-10-02.
 

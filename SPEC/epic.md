@@ -96,10 +96,6 @@ Every audit subtask's
 drifted, surfaces the cumulative slice-local staleness that per-task
 Phase 4 closures can miss.
 
-**Forward-looking.** Applies to new epics; existing in-flight epics need no
-migration. Apply judgment — simple multi-subtask implementations don't need
-the bracket.
-
 **Skills.** The filing-and-Discovery side of the lifecycle (steps 1-2
 above) is codified in `claude/skills/ft-epic-discovery/`; the audit-and-close
 side (steps 4-5) is codified in `claude/skills/ft-close-epic/`. Both are

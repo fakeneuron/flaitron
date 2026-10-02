@@ -21,7 +21,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [x] **CORE-677.1** [heavy] | codex-flowtron discovery — Completed 2026-10-01.
   - [x] **CORE-677.2** [heavy] | codex-install-verify — Completed 2026-10-01.
   - [x] **CORE-677.3** [heavy] | codex-workflow-parity — Completed 2026-10-01.
-  - [ ] **CORE-677.4** [heavy] | codex-grok-compare — Blocked by [[CORE-677.3]]. Run identical bounded completion and gate/park fixtures through Codex wrappers, a same-model/effort Codex SOP control, and Grok Build. Capture prompts, versions, receipts, and closure artifacts in docs/CODEX-VERIFICATION.md; distinguish model from wiring effects. Compatibility refresh requires separate qualifying report-only dogfood receipts.
+  - [x] **CORE-677.4** [heavy] | codex-grok-compare — Completed 2026-10-02.
   - [ ] **CORE-677.N** [heavy] | codex-flowtron audit — Audit installation receipts, skill and SOP parity, isolated comparison evidence, unresolved failures, and compatibility claims. Include the fixed per-entry doc-drift sweep across .flowtron/tasknote/README.md's AI-referenced docs; check stamp claims against qualifying live receipts.
 
 ## Low

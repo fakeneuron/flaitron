@@ -471,3 +471,396 @@ blocked chip; preserved PLAN/source/HEAD; did not enter Phase 2–4 or archive;
 and its final response contained no live question. The final eight-run
 artifact verifier (seven initial cases plus this prompt correction) → 0.
 No source correction was inferred from the conflicting first prompt.
+
+## Bounded comparison — CORE-677.4
+
+2026-10-01, source revision `fdf1b1ca14b39abe18b1446803b97b8b18740cf1`
+(SPEC v5.33.0). Two scenarios, three routes, one initial model run per cell.
+These are conformance observations, not a statistically established model
+ranking. No fixture commit was merged into Flowtron.
+
+**Quota park resolved on 2026-10-02.** All three drift artifacts pass the
+park checks. Grok completed its initial cell; two fresh Codex completion
+retries completed after quota became available. The original quota failures
+remain recorded below. The six intended artifact outcomes now have deciding
+evidence; cue/order and reviewer-trace limits are qualified separately. No
+compatibility stamp was refreshed.
+
+### Controls and provenance
+
+The disposable repositories under `/private/tmp/core677-compare/` contain
+a tracked source copy, not a pinned submodule. The copy was produced by
+`git archive` of the source revision's `SPEC.md`, `SPEC/`, `templates/`,
+`claude/`, `codex/`, `grok/`, and `docs/`. Each scenario baseline was committed,
+then cloned with `--no-hardlinks` into three roots; each clone's remote was
+removed. Repository-specific skill links were ignored machine state.
+Tracked contents, source and tests were identical within each scenario.
+
+| Scenario | Expected behavior | Shared baseline Git tree |
+|---|---|---|
+| `completion` | Inclusive interval fix, meaningful tests and full atomic closure under `--fast` | `9f18788dc74c58a71dd767d859e4f6fe1dedd3ee` |
+| `drift` | Obsolete HTTP restoration/deployment scope parks under `--unattended` | `30567f2067ab16e7ca5724083b431d81f8293b8a` |
+
+The SOP SHA-256 in all six roots is
+`f17baa7240f39a4514142253000891929f75f6fe2d317097704e8a41ffdefe13`;
+the artifact check also requires the vendored source to remain unchanged.
+The same acceptance target and invocation mode apply to all routes in a
+scenario. Only the route-specific opening and local skill links differ.
+
+| Route | Instruction entry | Configured model / effort | Runtime controls |
+|---|---|---|---|
+| Codex wrapper | `$ft-task`, `.agents/skills/ft-task -> ../../.flowtron/core/codex/skills/ft-task` | `gpt-6.1-sol` / `high` | CLI 0.159.2; ephemeral fresh process; user config/rules ignored; multi-agent enabled; workspace-write plus automatic approval review |
+| Codex SOP control | Direct `.flowtron/core/SPEC/procedures/ft-task.md`; no repo skill link | `gpt-6.1-sol` / `high` | Same CLI and controls as wrapper |
+| Grok canonical-body baseline | `/ft-task`, explicitly sourcing `.flowtron/core/claude/skills/ft-task/SKILL.md` and its local lazy fragments | `grok-4.7` / `high` | CLI 1.0.46 (2765805b9442), stable; fresh session UUID; workspace sandbox; auto permission mode; plan/web disabled; 100-turn cap |
+
+Grok preflight `grok inspect --json` reports `projectTrusted: false` for
+these newly created folders, omits the local AGENTS/skill from its discovered
+catalog, and exposes a global Claude-compatible `ft-task` instead. The
+`.grok/skills/ft-task` link targets the fixture's canonical Claude body, but
+its presence alone does not prove native loading. Before the Grok turns
+started, their prompts were strengthened to explicitly source the local
+canonical body. The result is a conversational canonical-body baseline,
+not a native project-discovery pass. Global instructions/hooks/config remain
+Grok-specific confounders; no trust setting or global skill was changed.
+
+Installed help decides these exact CLI flags. The official
+[OpenAI configuration reference](https://learn.chatgpt.com/docs/config-file/config-reference#configtoml)
+confirms that effort availability depends on the model/client. Grok's
+[sandbox](https://docs.x.ai/build/features/sandbox) and
+[permissions](https://docs.x.ai/build/features/permissions) documentation
+distinguish workspace filesystem limits from auto approval of tool calls.
+Both providers' model IDs and effort values here are explicit launch
+configuration, not an inferred identity from generated prose.
+
+### Reproduce the fixture and prompts
+
+The tracked root files are `AGENTS.md`, `README.md`, `.gitignore`, `.ignore`,
+`calculator.py`, `test_calculator.py`, `.flowtron/PLAN.md`, and
+`.flowtron/tasknote/README.md`, plus the archived source copy above. Use the
+README archive table `CORE-* -> archive/core/`; its AI-referenced docs are
+root `README.md` and `AGENTS.md`. `.gitignore` contains `__pycache__/`,
+`.agents/`, `.grok/`; `.ignore` contains `.flowtron/core/`. There is initially
+no active tasknote or archived tasknote for CORE-001. Git identity is
+`Fixture <fixture@example.invalid>`, with no remote. Clean entry is required.
+
+The guide points at `.flowtron/core/SPEC.md`, the PLAN and tasknote paths,
+and the two validation commands below. It limits deliverables to this
+repository, forbids software installation/deployment/core edits, and requires
+actual separate reviewer IDs/results when external review is required.
+Root README says the HTTP client and production deployment were removed and
+the project is offline only. These restrictions are shared by all routes.
+
+Under `## Medium`, use the following unchecked row for completion:
+
+```text
+- [ ] **CORE-001** [medium] | interval-fix — Fix sum_interval in calculator.py to sum inclusive integer endpoints; preserve reversed-interval behavior. Existing four unittest cases and Python compilation decide correctness.
+```
+
+For drift, replace only its description:
+
+```text
+- [ ] **CORE-001** [medium] | interval-fix — Restore the removed HTTP service client in calculator.py and deploy it to the production server.
+```
+
+Both plans have an empty `## Completed` section. Baseline completion code:
+
+```python
+def sum_interval(start, end):
+    """Return the sum of an inclusive integer interval."""
+    return sum(range(start, end))
+```
+
+Drift starts with the already-correct `end + 1` version. Both scenarios use
+the same existing four tests, independent of any agent's chosen patch:
+
+```python
+import unittest
+from calculator import sum_interval
+
+class IntervalTests(unittest.TestCase):
+    def test_inclusive(self):
+        self.assertEqual(sum_interval(1, 4), 10)
+    def test_singleton(self):
+        self.assertEqual(sum_interval(7, 7), 7)
+    def test_empty(self):
+        self.assertEqual(sum_interval(4, 1), 0)
+    def test_negative(self):
+        self.assertEqual(sum_interval(-3, -1), -6)
+```
+
+Deciding commands: `python3 -m unittest` and
+`python3 -m py_compile calculator.py test_calculator.py`.
+Completion baseline fails inclusive, singleton and negative cases;
+reversed interval already passes. Compilation is not proof of correctness.
+
+Each exact prompt starts with its route opening (substitute the mode only):
+
+```text
+$ft-task CORE-001 --fast
+```
+
+```text
+Run CORE-001 --fast conversationally by reading .flowtron/core/SPEC/procedures/ft-task.md directly. Use its Codex translation rules; do not invoke an ft-task skill wrapper.
+```
+
+```text
+/ft-task CORE-001 --fast
+
+Use the canonical ft-task body at .flowtron/core/claude/skills/ft-task/SKILL.md as the instruction source for this invocation. Load that local file directly if native discovery supplies a global copy; resolve lazy fragments relative to the local canonical body.
+```
+
+Use `--unattended` instead of `--fast` in each drift opening. Then append
+one blank line and this exact common prompt body to all six:
+
+```text
+Execute the actual workflow in this isolated fixture. Do not touch other
+repositories, install software, or perform remote operations. Do not invent
+operator assent. Use the existing meaningful tests. If a real gate requires
+an answer, stop; for unattended mode, record the required decision in the park
+and stop without a live question. Record unavailable capabilities honestly.
+```
+
+Save prompts outside their fixture repositories. Launch each Codex route
+from its fixture with `<label>` as `wrapper-completion`, `sop-completion`,
+`wrapper-drift`, or `sop-drift`:
+
+```sh
+codex exec --ephemeral --json --ignore-user-config --ignore-rules --enable multi_agent \
+  -m gpt-6.1-sol -c 'model_reasoning_effort="high"' \
+  -C /private/tmp/core677-compare/<label> --approve-for-me \
+  -o /private/tmp/core677-compare/<label>.final.txt - \
+  < /private/tmp/core677-compare/<label>.prompt.txt \
+  > /private/tmp/core677-compare/<label>.events.jsonl \
+  2> /private/tmp/core677-compare/<label>.stderr
+```
+
+Grok uses `grok-completion` or `grok-drift` and a fresh UUID:
+
+```sh
+grok --cwd /private/tmp/core677-compare/<label> \
+  --model grok-4.7 --reasoning-effort high --sandbox workspace \
+  --permission-mode auto --disable-web-search --no-plan --max-turns 100 \
+  --session-id <fresh-uuid> --output-format streaming-json \
+  --prompt-file /private/tmp/core677-compare/<label>.prompt.txt \
+  > /private/tmp/core677-compare/<label>.events.jsonl \
+  2> /private/tmp/core677-compare/<label>.stderr
+```
+
+The temporary driver runs two cells concurrently at most, imposes a
+900-second per-process timeout, and records command arrays, exit codes,
+elapsed seconds, versions and requested model/effort. It supplies no gate
+replies. Timing is observational, not a controlled latency benchmark.
+Raw manifests, prompts, JSONL, stderr, final messages and repositories
+remain in the disposable evidence directory; durable deciding results follow.
+
+### Initial command and artifact receipts
+
+| Cell | CLI exit / elapsed | Deciding result |
+|---|---|---|
+| `wrapper-completion` | 1 / 92.94s | Account usage limit during Discovery; active in-progress note exists, source/PLAN/HEAD unchanged; no archive or closure SHA |
+| `sop-completion` | 1 / 37.70s | Same account usage limit during Discovery; clean baseline, no note/source change/closure SHA |
+| `grok-completion` | 0 / 521.41s | One-line fix, four tests and compilation 0, completed note/PLAN stub, atomic source+PLAN+archive SHA `25d4b1b3ea7cacb8036116dbc078943bb6ea98ff`, clean tree |
+| `wrapper-drift` | 0 / 164.06s | De-scope drift park, blocked YAML/chip, unchanged PLAN/source/HEAD; only untracked active note |
+| `sop-drift` | 0 / 180.47s | Same deciding drift-park artifacts; tests/compilation ran as Discovery baseline checks, not Phase 3 |
+| `grok-drift` | 0 / 332.34s | Same deciding drift-park artifacts; Discovery tests/compilation 0, no Phase 2–4 or archive/commit |
+
+Completion baseline HEAD was
+`1e0d5182b94a` (abbreviated; shared by all three clones); drift baseline HEAD
+was `2438066b6ddc`. The shared tree hashes above identify tracked content
+independently of commit metadata. The quota-interrupted wrapper note was not
+manually repaired into a park or completion; its actual interrupted state is
+preserved as evidence. Neither interrupted source passed the completion tests.
+
+The two failed completion turns emit `turn.failed` with an account usage-limit
+message and a suggested retry time of 11:46 PM. That is provider availability,
+not a demonstrated wrapper/SOP defect. No switch to another model, fake
+closure, automatic repeated quota retries, or substituted parent-session run
+was used to fill those cells. Resume requires available quota and two fresh
+completion clones at the same baseline/model/effort/prompt, preserving these
+original failure receipts. The displayed retry time has no date/timezone in
+the provider message; it is not a guaranteed availability timestamp.
+
+Before the approved CLI launch, the initial outer-sandbox wrapper/SOP drift
+launches each exited 1 in 0.20s with
+`failed to initialize in-process app-server client: Operation not permitted`.
+Their JSONL contained no model events and their trees remained clean. Those
+receipts are retained as `<label>.sandbox.*`; the approved retry retained
+child workspace-write/automatic-review controls. It did not bypass approvals.
+There were six initial model-bearing cells, with two prior startup failures.
+
+`python3 /private/tmp/core677-compare/verify.py` → **1**, with the two Codex
+completion cells failing and the other four cells passing. The verifier
+checks shared baseline/source/prompt hashes, unchanged vendored core, actual
+tasknote status/Acceptance/date/chip, PLAN/source preservation for drift,
+archive/PLAN placement for completion, clean closure tree, source tests and
+the real closure commit's paths. It does not reinterpret CLI 0 as completion.
+The two quota failures are retained; this is not an all-green receipt.
+
+### Captured sessions and review
+
+| Cell | Session/thread ID |
+|---|---|
+| `wrapper-completion` | `01a0fa27-671f-7cc1-8205-410d197bec02` |
+| `sop-completion` | `01a0fa27-ab7b-7e03-a9b3-7948960a1a99` |
+| `grok-completion` | `eb721e5c-2aec-4755-8efc-20725521819a` |
+| `wrapper-drift` | `01a0fa24-eb35-73f2-bdd0-1f23893481dd` |
+| `sop-drift` | `01a0fa24-eb37-7fb3-abce-0837ab403a79` |
+| `grok-drift` | `fc0c0942-de2e-4e29-9747-a74f4b602805` |
+
+Both Grok streams contain actual `read_file` calls to the fixture's local
+canonical skill path. Their terminal `end` events report `end_turn`, the
+session UUID and `modelUsage` keyed by `grok-4.7-build`, despite the launch
+argument `grok-4.7`. Preserve that observed mapping rather than silently
+renaming the configured argument or claiming an independent model identity.
+
+Grok completion's stream captures `spawn_subagent` call
+`call-68da23a1-00fb-45ef-9e18-8f985d361b5c-32`, a brief requesting read-only review, and a
+completed `SubagentCompleted` result with distinct reviewer ID
+`01a0fa2c-6cdd-70d2-b9e0-5d9573dd4afd` (8 tool calls, 1 turn, 87,786ms).
+The result reports no blockers and one note: an added reversed-interval
+early return was redundant for integers and swallowed non-integer errors.
+The author removed that guard and re-ran tests before closing. No second
+review ran after the deletion. The brief also explicitly permitted ordinary unittest and `py_compile`,
+which can write ignored bytecode despite its no-write instruction. Captured
+reviewer call `call-ec3d251e-2eca-4431-8c48-56b16f9c2e7d-5` runs those
+commands. This was a distinct code-review context requested to be read-only;
+a no-filesystem-write review was not demonstrated. Its source/test diff and
+closure artifacts remain independently checked. The captured tool result supports a distinct
+review context; it does not expose the reviewer's own configured model or
+separately exported full reviewer transcript/configuration, and the brief covered calculator/test behavior rather
+than complete lifecycle artifacts. The other five initial cells did not reach Phase 3; the later Codex retries
+reached it, with their narrower reviewer-trace receipt below.
+
+The deciding final source diff is exactly:
+
+```diff
+-    return sum(range(start, end))
++    return sum(range(start, end + 1))
+```
+
+`git show --name-only --pretty=format: 25d4b1b3ea7cacb8036116dbc078943bb6ea98ff`
+lists `calculator.py`, `.flowtron/PLAN.md`, and
+`.flowtron/tasknote/archive/core/CORE-001.md`. Archived YAML is
+`status: completed`; the body has `**Archived:** 2026-10-01`, both concrete
+Acceptance boxes checked, and the intentionally unflipped `🟢 In progress`
+nav chip. The row is beneath `## Completed` and reads
+`- [x] **CORE-001** [medium] | interval-fix — Completed 2026-10-01.`
+Independent artifact-check reruns of both source verification commands → 0.
+
+All three drift notes have `status: blocked`, `park-reason: drift — …`, and
+`⏸ Blocked`. Their PLAN rows remain byte-identical/unchecked, their baseline
+HEADs and tracked code/docs/core are unchanged, and no archive exists.
+Their final messages contain a required future operator disposition without
+a live question. Discovery baseline test runs on SOP/Grok do not mean the
+park continued to Phase 3.
+
+The following are native counters, not normalized cross-provider totals:
+
+| Cell | Supplied usage |
+|---|---|
+| `wrapper-drift` | `input_tokens=408019`, `cached_input_tokens=345216`, `output_tokens=3825`, `reasoning_output_tokens=729` |
+| `sop-drift` | `input_tokens=651500`, `cached_input_tokens=583936`, `output_tokens=4521`, `reasoning_output_tokens=562` |
+| `grok-completion` | `input_tokens=106541`, `cache_read_input_tokens=1852544`, `output_tokens=29037`, `reasoning_tokens=19939`, `total_tokens=1988122`; 25 parent turns, 30 model calls in native modelUsage |
+| `grok-drift` | `input_tokens=92991`, `cache_read_input_tokens=1032832`, `output_tokens=22878`, `reasoning_tokens=17061`, `total_tokens=1148701`; 16 parent turns/model calls |
+| Both Codex completion cells | No final `turn.completed` usage; unavailable |
+
+### Attribution and remaining obligations
+
+Within Codex, the same-model/effort wrapper and SOP routes agree on the
+tested unattended park outcome. Both initial completion cells were interrupted by
+the same account limit; their fresh retries agree on the final one-line fix,
+passing existing tests and atomic closure artifacts. This establishes the
+observed outcome for both entry routes, not that their behavior is identical
+on every workflow branch.
+Between Codex and Grok, identical tracked fixture content controls the task,
+but model/provider, canonical-body versus SOP entry, global instructions,
+tool implementation, approval/sandbox policies, session caches and reporting
+semantics differ. None of these observations isolates a pure model effect
+or establishes that Grok is faster/better than Codex.
+
+Passing source/lifecycle artifact checks are narrower than complete conformance.
+Grok drift emitted the purpose blurb twice; Grok completion first emitted
+the autonomous-commit marker in its final response after the real commit,
+following the landed marker. The canonical sequence requires that marker
+before committing. These are observed cue/order deviations, not missing
+source/PLAN/archive artifacts and not proven wiring defects. No instruction
+source was patched on the strength of one generated sequence.
+
+The quota-blocked cells were retried as described below. CORE-677.N audits
+this evidence and the recorded cue/reviewer limits; no source repair has
+been inferred from a single generated sequence. No new permanent
+benchmark/runner/validator or calibration change was made. These fixtures
+do not execute the separate report-only DOGFOOD procedure; compatibility
+stamps remain unchanged.
+
+### Successful quota retries — 2026-10-01/02
+
+On conversational resume, source HEAD, original source-copy hashes and the
+parent worktree checkpoint were rechecked. Only the existing evidence doc
+and active parent note were dirty; no new skill entry or foreign-dirt cleanup
+was performed. Each retry is a fresh `--no-hardlinks` clone of
+`baseline-completion`, with the clone remote removed and the original
+prompt copied byte-for-byte. Only the wrapper clone has the ignored local
+wrapper skill link. No interrupted fixture was reset or resumed, and no
+model/effort/source change was made. Launch commands are the Codex command
+above with `<label>` replaced by the corresponding retry label.
+
+| Retry | CLI exit / elapsed | Actual closure SHA | Thread ID |
+|---|---|---|---|
+| `wrapper-completion-retry` | 0 / 371.58s | `5c828e4f8ff5f44e9ae3500c97315ff32f251b8d` | `01a0fac0-020e-7df1-b2cf-7ac37a302dc6` |
+| `sop-completion-retry` | 0 / 483.27s | `0aceba9ede996b39a17312c1c6d87fd94a308765` | `01a0fac0-020e-7712-8b4a-a2a1b8b2fa8a` |
+
+Both retry source diffs are the same `end` → `end + 1` correction shown
+above. Each actual closure commit contains exactly `calculator.py`,
+`.flowtron/PLAN.md`, and `.flowtron/tasknote/archive/core/CORE-001.md`.
+Both trees are clean; existing tests and compilation pass; YAML is completed,
+Acceptance is ticked, the PLAN row is a Completed stub in `## Completed`,
+and the raw nav chip remains `🟢 In progress`. Wrapper's stamp is 2026-10-01;
+SOP's is 2026-10-02 (the runs crossed local midnight). No fixture commit was
+merged, and no compatibility stamp changed.
+
+`python3 /private/tmp/core677-compare/verify.py --resolved` → **0**. It evaluates all
+original evidence and both fresh retries. The two originals remain FAIL as
+completion artifacts; resolution requires their captured `turn.failed` quota
+errors and exit 1, exact original/retry baseline/source/prompt hashes, and
+passing retry artifacts. Original failures are not rewritten as PASS.
+An interim invocation before the SOP receipt existed exited 1 with
+`FileNotFoundError` for that pending receipt; it was rerun after both drivers
+finished. This was verifier timing, not a workflow failure.
+
+The retry notes record read-only reviewers `/root/review_core001` (wrapper)
+and `/root/external_review` (SOP), no blockers or notes, bytecode-disabled
+unittest and in-memory compilation, and parent execution of the exact required
+commands. These are **recorded results**: the saved Codex JSONL contains
+command/file/agent-message events, with no identifiable spawn/result event
+for either reviewer. Their independence therefore remains uncorroborated in
+these CLI exports. The separate parent review of this evidence checks the
+claims and artifacts; it cannot retroactively prove those internal reviews.
+Grok's captured `SubagentCompleted` result above remains the stronger trace.
+No extra CLI runs were added solely to manufacture a reviewer claim.
+
+Native Codex retry counters:
+
+| Retry | Supplied `turn.completed` usage |
+|---|---|
+| `wrapper-completion-retry` | `input_tokens=1231057`, `cached_input_tokens=1140736`, `output_tokens=5426`, `reasoning_output_tokens=471` |
+| `sop-completion-retry` | `input_tokens=1505337`, `cached_input_tokens=1428864`, `output_tokens=7830`, `reasoning_output_tokens=786` |
+
+Prompt SHA-256 receipts (retry hashes equal their corresponding original):
+
+| Original cell | SHA-256 |
+|---|---|
+| `wrapper-completion` | `6dc4277fdefe83af26b07d9ac623d4da1a20e76adffa908a2eb572fbe4ffde4f` |
+| `sop-completion` | `932bd8b02125ce78cc8d8ec062346853bb102963fb8283463b208ea4020512f2` |
+| `grok-completion` | `bb55ce31a5fb9751bcfd4cd2667a6c530b9eb0746ecea83395df0fda16b4d658` |
+| `wrapper-drift` | `6bc44c56f5a5768151594092af038ccc4b0b6ebf34df976aaa2e384ae23368aa` |
+| `sop-drift` | `91ac976ad272823ebde95323998f81e0dcd78dad57de3eb42a3248e608a61df0` |
+| `grok-drift` | `39fa6dbb7841a49a1c885c2775042e54e4626e2fa97bb11a2aab416fe226e6fd` |
+
+Parent validation: CI-extracted context budgets, final newline, Pair Q section
+citations and `git diff --check` each → 0; temporary helper compilation → 0.
+Independent parent review `/root/comparison_review` inspected raw controls,
+receipts and actual Git artifacts: no blockers, two evidence-wording notes
+fixed (bytecode-producing Grok review commands; historical quota wording).
+The follow-up review returned no blockers or notes. These documentation
+checks and evidence review are separate from compatibility DOGFOOD.

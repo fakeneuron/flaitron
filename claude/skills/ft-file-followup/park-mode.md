@@ -88,16 +88,15 @@ Template path (resolved by the host SKILL's Step 0 layout branch):
 
 Then:
 
-1. **Filing-commit pre-check.** Run `git status --porcelain -- .flowtron/PLAN.md`
-   **and** `git diff --cached --quiet` **before any write** and record the
-   result as `auto-commit`: no output and exit 0 → `true`; any output, or a
-   non-zero exit → `false` (PLAN.md already carries foreign edits, or the index
-   already holds staged content that item 5's commit would otherwise publish —
-   either way the filing rides along in the surrounding commit instead). It
-   must run here, not at Step P1 — the no-flag priority question at Step P2
-   waits for the operator, and the tree can gain PLAN.md edits while it waits.
-   Not a gate: it only decides whether item 5 below runs. Contract:
-   `SPEC/plan-filing.md` §"Filing commits".
+1. **Filing-commit pre-check.** Immediately before any write, apply
+   `SPEC/plan-filing.md` §"Filing commits". `git diff --cached --quiet`
+   non-zero → `auto-commit = false`. PLAN.md porcelain empty →
+   `auto-commit = true`. PLAN.md non-empty → `git diff --no-ext-diff -- .flowtron/PLAN.md`:
+   every added line a task row or blank, and every removed
+   line blank or a `(none)` placeholder → `auto-commit = true` and those rows
+   ride in this commit (record their IDs for the body line that section names);
+   any other PLAN change → `auto-commit = false`. Not a gate. Run it here, not
+   at Step P1 — the Step P2 priority question waits for the operator.
 2. `mkdir -p .flowtron/sidequest/`
 3. Copy the template → `.flowtron/sidequest/<TASK-ID>.md`; fill frontmatter, H1,
    nav date, `## Idea`, `## Resume anchor`, `parent:`.
@@ -125,7 +124,11 @@ Then:
    PLAN.md can gain a foreign write in between that `git add` stages unseen.
    The read takes no pathspec because the commit takes none. Every hunk must be
    one this park wrote — the appended row, and the whole sidequest stub as a new
-   file. An unrecognized hunk → `git restore --staged` both paths, skip the
+   file. PLAN.md lines the pre-check classified as accumulated filings — added task
+   rows or blanks, and removed blanks or a `(none)` — are part of this commit,
+   not an unrecognized hunk. When that pre-check recorded
+   IDs, add a second `-m` with the body line `SPEC/plan-filing.md` §"Filing commits"
+   names; the subject stays the fence above. An unrecognized hunk → `git restore --staged` both paths, skip the
    commit, and say so in the Step P5 reply exactly as the `auto-commit = false`
    case. Never unstage the foreign hunk and commit the rest. Contract:
    `SPEC/plan-filing.md` §"Filing commits".

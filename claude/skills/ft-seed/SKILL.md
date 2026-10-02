@@ -135,16 +135,16 @@ nothing to seed, and stop. No gate, no commit.
 
 In one continuous motion, after the reply:
 
-1. **Filing-commit pre-check.** Run `git status --porcelain -- .flowtron/PLAN.md`
-   **and** `git diff --cached --quiet` **before any write** and record the
-   result as `auto-commit`: no output from the first and exit 0 from the
-   second → `auto-commit = true`; any output, or a non-zero exit →
-   `auto-commit = false` (PLAN.md already carries foreign edits, or the index
-   already holds staged content — either way the write rides along in the
-   surrounding commit instead). Run it here, after the gate — the reply can
-   take a while, and a reading taken before it can be stale. Not a gate:
-   nothing stops either way; it only decides whether item 3 runs. Contract:
-   `SPEC/plan-filing.md` §"Filing commits".
+1. **Filing-commit pre-check.** Immediately before any write, apply
+   `SPEC/plan-filing.md` §"Filing commits". `git diff --cached --quiet`
+   non-zero → `auto-commit = false`. PLAN.md porcelain empty →
+   `auto-commit = true`. PLAN.md non-empty → `git diff --no-ext-diff -- .flowtron/PLAN.md`:
+   every added line a task row or blank, and every removed
+   line blank or a `(none)` placeholder → `auto-commit = true` and those rows
+   ride in this commit (record their IDs for the body line that section names);
+   any other PLAN change → `auto-commit = false`. Not a gate. Run it here,
+   after the gate — the reply can take a while. The token insertions in item 2
+   are this motion's own write, not part of the dirt this reading classifies.
 
 2. **Insert the token.** On each confirmed row, and **only** those, insert
    ` [unattended]` immediately after the `[model]` segment and any
@@ -170,7 +170,12 @@ In one continuous motion, after the reply:
    autosave, a concurrent session — that `git add` then stages unseen. The
    read takes no pathspec because the commit takes none. Every hunk must be
    one this skill wrote: a single-line change on a confirmed row, adding
-   exactly ` [unattended]`. An unrecognized hunk → `git restore --staged
+   exactly ` [unattended]`. PLAN.md lines the pre-check classified as accumulated filings — added
+   task rows or blanks, and removed blanks or a `(none)` — are part of this
+   commit, not an unrecognized hunk.
+   When that pre-check recorded IDs, add a second `-m` with the body line
+   `SPEC/plan-filing.md` §"Filing commits" names; the subject stays the fence
+   above. An unrecognized hunk → `git restore --staged
    .flowtron/PLAN.md`, skip the commit, and report it exactly as the
    `auto-commit = false` case. Never unstage the foreign hunk and commit the
    rest.

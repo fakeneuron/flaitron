@@ -163,12 +163,13 @@ The operator may decline the `.N` audit child for a short, low-risk plan
 
 Only after the Step 4 go (or `fast-mode = true`).
 
-**Filing-commit pre-check first.** Run `git status --porcelain --
-.flowtron/PLAN.md` **and** `git diff --cached --quiet` **before any write**:
-no output and exit 0 → `auto-commit = true`; any output, or a non-zero exit →
-`auto-commit = false` (PLAN.md is dirty or the index already holds staged
-content; the filing rides along in the surrounding commit). Contract:
-`SPEC/plan-filing.md` §"Filing commits".
+**Filing-commit pre-check first.** Immediately before any write, apply
+`SPEC/plan-filing.md` §"Filing commits". `git diff --cached --quiet` non-zero →
+`auto-commit = false`. PLAN.md porcelain empty → `auto-commit = true`. PLAN.md
+non-empty → `git diff --no-ext-diff -- .flowtron/PLAN.md`: every added line a
+task row or blank, and every removed line blank or a `(none)` placeholder →
+`auto-commit = true` and those rows ride in this commit (record their IDs for
+the body line that section names); any other PLAN change → `auto-commit = false`.
 
 1. **Resolve the epic ID.** Scan `.flowtron/PLAN.md` AND
    `.flowtron/tasknote/archive/<area>/` for the highest used numeric suffix
@@ -228,10 +229,15 @@ git commit -m "chore: file <AREA>-EPIC-<next-N> refactor plan — <shortname>"
 
 **Post-stage verification.** Every hunk in that diff must be one this
 filing wrote — the appended PLAN.md rows, any confirmed reconcile edit, and
-each starter file as a new file. An unrecognized hunk → `git restore
---staged` every staged path, skip the commit, and report it exactly as the
-`auto-commit = false` case below. Never unstage the foreign hunk and commit
-the rest. Full contract: `SPEC/plan-filing.md` §"Filing commits".
+each starter file as a new file. PLAN.md lines the pre-check classified as accumulated filings — added
+task rows or blanks, and removed blanks or a `(none)` — are part of this
+commit, not an unrecognized hunk.
+When that pre-check recorded IDs, add a second `-m` with the body line
+`SPEC/plan-filing.md` §"Filing commits" names; the subject stays the fence
+above. An unrecognized hunk → `git restore --staged` every staged path, skip
+the commit, and report it exactly as the `auto-commit = false` case below.
+Never unstage the foreign hunk and commit the rest. Full contract:
+`SPEC/plan-filing.md` §"Filing commits".
 
 Commit only — never push; the Step 4 approval is the commit authorization.
 `auto-commit = false` → skip and say so. Emit **no 🏁 marker** — that is

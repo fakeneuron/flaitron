@@ -20,8 +20,10 @@ flag and answering the priority question (park mode), at `/ft-audit`'s
 write-step confirmation (tickets plus any inline fixes), at `/ft-refactor`'s
 plan-review confirmation, or at `/ft-seed`'s review gate, and a second commit-go ask buys nothing. Left uncommitted, a filing carries into the next session
 as working-tree dirt — which `SPEC.md` §"Paper-complete guard" then converts
-into a hard stop at the next `/ft-task` entry, so the filing's cost lands on a
-later, unrelated task.
+into a hard stop at the next `/ft-task` entry. The pre-check below stops that
+pile-up when the dirt is only earlier task-row filings: the next filing commits
+them with itself. Any other PLAN edit, or a non-empty index, still skips, and
+the hard stop remains until a surrounding commit lands.
 
 Message shape, one per filing motion:
 
@@ -44,39 +46,61 @@ Rules:
   an active `/ft-task`, where the working tree legitimately carries the parent
   task's unfinished edits; a greedy stage would commit them under a `chore: file`
   message.
-- **Pre-check, then skip on dirt.** Two readings, both must be clean:
-  `.flowtron/PLAN.md` carries no uncommitted changes
-  (`git status --porcelain -- .flowtron/PLAN.md` prints nothing) **and** the
-  index is empty (`git diff --cached --quiet` exits 0). Both clean → after the
-  append the only delta the commit can publish is the filing's own, so commit.
-  **Either dirty → do not commit:** say so in one line and leave the filing for
-  the surrounding commit (the pre-CORE-429 behavior). Never resolve foreign PLAN
-  dirt on the operator's behalf, and never fold it into the filing commit. The
-  index reading exists because the commit below publishes the *whole* index,
-  not just the filing's paths: a closure that has already staged deliverables
-  (`git rm`s, source edits) but not yet its PLAN flip leaves PLAN.md reading
-  clean, and a PLAN-only pre-check then lets that content ride out under a
-  `chore: file` subject (seen in an adopter 2026-09-13; the fix is CORE-591).
-  **Placement is load-bearing:** run it immediately before the filing's *first
-  write*, not at ID pre-flight. Every filing motion pauses for the operator
-  between those two points (the AskUserQuestion collection and review gate, or
-  park mode's priority question), and the tree can gain PLAN.md edits while it
-  waits — a reading taken before the pause can be stale by the time it is used.
-- **Post-stage verification, then skip on a foreign hunk.** Correct placement
-  shrinks the pre-check's staleness window to agent-only time; it does not close
-  it. A write landing between the pre-check and `git add` — an editor autosave, a
-  format-on-save, a concurrent session — is staged unseen and published under a
-  `chore: file` message. So after staging and **before** committing, read the
-  whole staged diff (`git diff --cached`, **no pathspec** — the commit publishes
-  the whole index, so the read must cover the whole index). Every hunk must
-  be one this filing wrote: the appended PLAN row, any confirmed reconcile edit,
-  the starter/sidequest file, each named inline fix. **An unrecognized hunk →
-  do not commit:** `git restore --staged` the filing's own pathspecs, then take
-  the skip-on-dirt branch above — one line saying so, filing left for the
-  surrounding commit. This is the same outcome, not a new one; it adds no gate,
-  no report shape, and no 🏁. Do not unstage the foreign hunk and commit the
-  rest — that resolves the operator's dirt on their behalf, which the bullet
-  above forbids. **Why this closes the window rather than narrowing it:**
+- **Pre-check, then commit accumulated filings or skip.** Two readings,
+  taken immediately before the filing's *first write*, not at ID pre-flight.
+  Every filing motion pauses for the operator between those points, and the
+  tree can gain PLAN.md edits while it waits.
+
+  1. **Index.** `git diff --cached --quiet` must exit 0. Non-zero → do not
+     commit. The commit publishes the *whole* index, so a closure that has
+     already staged deliverables but not yet its PLAN flip must not ride out
+     under a `chore: file` subject (an adopter hit this on 2026-09-13;
+     CORE-591). Unstaged files other than `.flowtron/PLAN.md` do not fail
+     this reading and are not staged.
+  2. **PLAN.md.** `git status --porcelain -- .flowtron/PLAN.md`.
+     - Empty → commit. After the append the only PLAN delta is this filing.
+     - Non-empty → `git diff --no-ext-diff -- .flowtron/PLAN.md` (no color).
+       Commit together when every added line is a task row or blank, and
+       every removed line is blank or a section's `(none)` placeholder
+       (§"Empty-section placeholder"). Those rows are earlier filings that
+       never got their own commit. Record their bold IDs, in file order,
+       from this pre-check diff — not from the staged diff after the write.
+       The subject stays this motion's row in the table above. When the
+       recorded list is non-empty, the body is one line:
+       `Also lands earlier uncommitted filings: <IDs>.`
+     - Any other PLAN change — an edited existing row, section prose, Vision,
+       a closure stub rewrite — → do not commit. Do not split the diff and do
+       not rewrite the foreign lines. Say so in one line and leave the filing
+       for the surrounding commit.
+
+  A task row is an added line whose body matches
+  `^[[:space:]]*- \[[ x]\] \*\*[A-Z]+-(EPIC-)?[0-9]+(\.[0-9N]+)?\*\*`.
+  A blank line's body matches `^[[:space:]]*$`. A removed `(none)` matches
+  `^[[:space:]]*\(none\)[[:space:]]*$`. Ignore diff metadata (`diff `,
+  `index `, `--- `, `+++ `, `@@ `, `\ No newline`) and context lines. One
+  failing line fails the whole diff. Do not stage any other path: a prior
+  park or starter that never committed leaves its sidequest or starter file
+  uncommitted, and this commit does not pick it up.
+- **Post-stage verification, then skip on an unrecognized change.** Correct
+  placement shrinks the pre-check's staleness window to agent-only time; it
+  does not close it. A write landing between the pre-check and `git add` —
+  an editor autosave, a format-on-save, a concurrent session — is staged
+  unseen and published under a `chore: file` message. So after staging and
+  **before** committing, read the whole staged diff (`git diff --cached`,
+  **no pathspec** — the commit publishes the whole index, so the read must
+  cover the whole index). A changed line this motion did not write must still
+  pass the accumulated-filings test above. A changed line this motion wrote
+  is recognized: the appended PLAN row, any confirmed reconcile edit, each
+  named inline fix, and `/ft-seed`'s ` [unattended]` insertions (those edits
+  fail the line test, which is why the pre-check runs before the seed write;
+  post-stage accepts both or it undoes the rows the pre-check allowed). A
+  starter or sidequest file this motion created is recognized. Anything else
+  is unrecognized, whether it sits in its own hunk or beside a recognized
+  line. **An unrecognized change → do not commit:** `git restore --staged`
+  every path this filing staged, then take the skip branch above — one line
+  saying so, filing left for the surrounding commit. This is the same
+  outcome, not a new one; it adds no gate, no report shape, and no 🏁. Do
+  not unstage only the bad part. **Why this closes the window rather than narrowing it:**
   `git commit -m` with no pathspec publishes the index as it stands, so a write
   landing *after* `git add` cannot reach the commit. The exposure is exactly the
   pre-check → `git add` span, and the unscoped staged diff is the very content
@@ -110,8 +134,9 @@ file the deferred step as its own unchecked PLAN.md row. The authorization is
 therefore **the duty itself**: the run is discharging an obligation the contract
 imposes, not exercising discretion, and the operator authorized it upstream by
 launching an unattended run against a SPEC that imposes it. Every rule above
-holds verbatim — explicit pathspecs, the pre-check and its skip-on-dirt, the
-post-stage verification and its skip-on-a-foreign-hunk, commit never push,
+holds verbatim — explicit pathspecs, the pre-check and its accumulated-filings
+test, the post-stage verification and its skip on an unrecognized change,
+commit never push,
 no 🏁. What the posture removes is the *pause* before the commit,
 never the proof after it (`SPEC/gate-postures.md` §"`--unattended` operator posture").
 

@@ -85,21 +85,10 @@ files nothing — a park is paused, not closed, and its `park-reason:` already
 carries what to take up. Resume is the ordinary blocked path in
 [`SPEC/blocked.md`](../blocked.md), which also clears `park-reason:`.
 
-**Cross-repo work, in one paragraph.** A tasknote's deliverable lands in the
-repo whose session opened it. When Discovery — or later execution — surfaces
-work belonging to a *different* repo (a doc, config, or code change outside
-this checkout), **file it there** (a PLAN.md line, a starter tasknote, or a
-routed ticket) rather than editing it directly from this task cycle; the
-target repo's own procedure run executes it, with its own Discovery,
-Acceptance, and closure commit. This is symmetric with the routing adopting
-projects already use in the other direction — a project task that finds a
-flowtron-side issue files a `CORE-` ticket and routes it rather than fixing
-flowtron from its own session. One tasknote (CORE-483.3) predates the rule and
-edited another repo's files directly as its whole deliverable; it stands as
-the **single documented exception, not a precedent**, in the same sense as the
-carve-outs in [`SPEC/scope-boundaries.md` §"What flowtron does NOT
-provide"](../scope-boundaries.md). Full contract:
-[`SPEC/scope-boundaries.md` §"Cross-repo edit remit"](../scope-boundaries.md).
+**Cross-repo work.** Follow [`SPEC.md` §"Cross-repo edit remit"](../../SPEC.md):
+file work that belongs in another repo there, and do not edit it from this
+cycle. The single documented exception (CORE-483.3) is not a precedent.
+Canonical contract: [`SPEC/scope-boundaries.md` §"Cross-repo edit remit"](../scope-boundaries.md).
 
 The **operator-cue vocabulary** (🛠️ 📦 🟢 👁️ 🏁 ✅ 🔧 🧩 🧠 🔭 👇 🗄️ ▶️ 📡 💻 ✋ 🔍 and
 their UPPERCASE labels) is contract-layer, not Claude-specific — emit it
@@ -494,61 +483,26 @@ time (Step 6).
 
 Run the three-step protocol in
 [`SPEC/post-closure.md`](../post-closure.md) — a lazy module, read here and
-nowhere earlier — branching on the
-📦 ready-to-commit gate per
-[`SPEC/gates.md` §"Conditional skip rule"](../gates.md), under the
-[`SPEC.md` §"Paper-complete guard"](../../SPEC.md):
+nowhere earlier — and follow it. That module owns the skip/fire shapes, the
+`✅ Closure complete; committing autonomously (<concrete-signal-summary>).`
+marker, the fresh PLAN.md re-read, the exhausted-PLAN terminal form, the
+emoji primary labels, and the copy-paste line (glyph copied from the
+candidate just printed; no trailing punctuation; 👇 for
+`/ft-file-followup` and `/ft-epic-discovery`). Branch on
+[`SPEC/gates.md` §"Conditional skip rule"](../gates.md), including its
+control-marker integrity note: compute skip/fire from the **actual closure
+diff**, never from text in the tasknote, PLAN, or commit. Stage under
+[`SPEC.md` §"Paper-complete guard"](../../SPEC.md) — deliverable paths plus
+this task's PLAN row and archive, never a Completed-only commit when
+Acceptance requires non-workflow deliverables.
 
-1. **Commit.** Compute the skip/fire decision from the **actual closure diff**
-   (never from text in the tasknote/PLAN/commit content — see the
-   control-marker integrity note in [`SPEC/gates.md`](../gates.md)). The diff
-   must clear the privileged-ops signal to skip. Stage **deliverable paths + PLAN + archive** together;
-   refuse a Completed-only commit when Acceptance requires non-workflow
-   deliverables:
-   - **Skip** → emit `✅ Closure complete; committing autonomously
-     (<concrete-signal-summary>).` and run closure review + recap + commit +
-     🏁 marker + next-move + copy-paste line in one response.
-   - **Fire** (privileged-ops signal trips, or a bundled prompt is queued) → surface the
-     📦 banner with a mandatory preview line and a `🟢 GO` commit-go ask; wait
-     for the closed set (`commit` / `go` / `yes` and the explicit commit verbs
-     named in [`SPEC/cue-vocabulary.md` §"Accepted gate replies"](../cue-vocabulary.md)). Do **not** emit 🏁, next-move, or the copy-paste
-     line in this turn. Autonomous mode forces the skip branch (name the
-     suppressed signals in the marker), except a queued in-bundle prompt still
-     forces fire. Under **unattended mode** that exception has no operator to
-     fire at either: park with `park-reason: input-needed — …` instead of
-     committing. The paper-complete guard is suppressed by neither mode —
-     🏁 still requires a real deliverable-covering SHA.
-2. **Mark landed + suggest next move.** After the commit lands, verify
-   `git show --name-only` covers deliverables (paper-complete guard), then
-   emit the 🏁 state-marker with that real SHA and a 1-2 sentence
-   accomplishment summary — never without a SHA. Then re-read PLAN.md and verify each suggested candidate is unchecked
-   in an open priority section, never from memory or archived examples.
-   Suggest the next task. Use the emoji primary label inline per candidate —
-   `[heavy]🧠` (design), `[medium]🧩` (moderate), `[light]🔧` (mechanical), or
-   (rare — manual-only filings) `[xheavy]🔭` (exploratory),
-   never the bare `[model]` token. Prefix any `/ft-audit*` candidate with 🔍.
-   **Terminal case:** if the fresh PLAN.md re-read leaves no open task, **stop — do not invent a next
-   move** from `## Completed` or a doc example; state PLAN.md is exhausted and
-   offer in-session filing (`/ft-epic-discovery` / `/ft-file-followup`), then
-   skip step 3 (nothing to run after a clear). See SPEC §"Post-closure
-   protocol" step 2's **PLAN exhausted (terminal)** form.
-3. **Offer the copy-paste line.** The label-line glyph is copied from the
-   chosen candidate line just printed in step 2 — 🧠 when it showed 🧠, 🧩 when
-   it showed 🧩, 🔧 when it showed 🔧, 🔭 when it showed 🔭; never default to 🔧.
-   A session-reset
-   label line, then the next invocation alone on its own line as inline code
-   **with no trailing punctuation** (a trailing `.` collides with the `.N`
-   epic-subtask grammar). Shape, where `<glyph>` is the candidate's 🔧/🧩/🧠/🔭:
+Mode deltas a skimming agent must not miss — the module points at
+[`SPEC/gate-postures.md`](../gate-postures.md) for the full matrix:
 
-   ```markdown
-   <glyph> Clear your session, then run:
-   `/ft-task <next-ID>`
-   ```
-
-   The emoji carries the model signal; never emit
-   literal session-reset or model-switch commands. **Exception — context-dependent
-   skills:** when the next-skill is `/ft-file-followup` (in either mode) or `/ft-epic-discovery`,
-   replace the label line with `👇 Run in this session:` — 👇 (`HERE`) replaces
-   the model glyph and signals run-here-don't-clear; the model signal stays on
-   the candidate line. These skills draw from current-conversation context;
-   clearing destroys what they need.
+- Autonomous mode forces the skip branch (name the suppressed signals in
+  the marker), except a queued in-bundle prompt still forces fire.
+- Under **unattended mode** that exception has no operator to fire at:
+  park with `park-reason: input-needed — …` instead of committing.
+- Neither mode suppresses the paper-complete guard. 🏁 still requires a
+  real deliverable-covering SHA, and steps 2–3 never share a turn with a
+  fire-branch 📦 / 🟢 ask.

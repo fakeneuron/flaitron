@@ -12,7 +12,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## High
 
 - [ ] **CORE-EPIC-678** [heavy]🧠 | sop-headroom — Restore headroom on `SPEC/procedures/ft-task.md` (34,115 → 37,538 bytes since v5.33.0; 462 bytes under the 38,000 cap) by extracting or trimming, not by raising the cap. Discovery supplied by audit-repo 2026-10-02. Surfaced by audit-repo 2026-10-02 (Theme: cold-start headroom).
-  - [ ] **CORE-678.2** [medium]🧩 | procedures-headroom — Extract or trim restatement from `SPEC/procedures/ft-task.md` until `wc -c` is at most 36,200, and refresh that file's figure in `docs/CONTEXT-BUDGET.md`. Cap stays 38,000.
+  - [x] **CORE-678.2** [medium]🧩 | procedures-headroom — Completed 2026-10-02.
   - [ ] **CORE-678.N** [medium]🧩 | sop-headroom audit — Audit CORE-EPIC-678.
 
 ## Medium

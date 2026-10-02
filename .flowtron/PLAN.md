@@ -17,6 +17,8 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-688** [medium]🧩 | calibration-roster — docs/PLATFORMS.md calibration table is stamped 2026-08-27 (Grok row rechecked 2026-10-02). Re-check vendor tops and default-effort bands, then restamp. Surfaced by audit-docs 2026-10-02 (Finding #4, Medium).
 
+- [ ] **CORE-689** [medium]🧩 | release-finding-gate — /ft-release files Medium/Low findings and still cuts the release. Add a gate: release anyway, or stop so the findings are fixed before the cut. Surfaced by the v5.34.0 cut.
+
 ## Low
 
 - [ ] **CORE-683** [medium]🧩 | epic-forward-restore — Blocked by decay-window depth: window [[CORE-680]] opened at `a78a8ae5`. After 8 epic tasknotes (`*-EPIC-*` or `*.<sub>`) archive past that SHA, restore `SPEC/epic.md`'s Forward-looking paragraph only if one followed it. Bar is in the archived CORE-680 note.

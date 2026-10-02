@@ -77,11 +77,18 @@ any-AI-assistant threat model.
 - **The lethal trifecta — git as the exfil channel.** In an adopter repo
   the skills combine all three legs of the "lethal trifecta": access to
   private local data, exposure to untrusted contributor content, and an
-  exfiltration channel. Blocking `Bash(curl *)` does not close the channel
-  — flowtron's own closure protocol commits and pushes, so a commit
-  message, branch name, or pushed file is itself an exfil surface (e.g. an
-  injected instruction to append `$(… | base64)` to the commit body). The
-  human 📦 ready-to-commit gate is the control that closes this when the
+  exfiltration channel. Blocking `Bash(curl *)` does not close the channel.
+  The closure protocol commits locally
+  ([`SPEC/post-closure.md`](SPEC/post-closure.md)); a commit message,
+  branch name, or staged file is itself an exfil surface (e.g. an
+  injected instruction to append `$(… | base64)` to the commit body).
+  **Push is a separate gated step.** Ordinary commit-go does not
+  authorize `git push`, and ordinary task closure never pushes. A release
+  cut's push is its own push-go inside the 📦 bundle; commit-go includes
+  that push only after push-go is Yes. Any other push waits for an
+  operator gate. A pushed file becomes an exfil surface only after that
+  gate. The human 📦 ready-to-commit gate closes the local-commit surface
+  when the
   closure diff trips privileged-ops (non-documentation files under
   migrations, auth, secrets, or external integrations; credential keywords
   in any file, documentation included) or a bundled in-📦 prompt is queued;

@@ -4,6 +4,8 @@
 
 After a tasknote is archived, run the three-step protocol (commit / mark landed / offer copy-paste line). Step 1 branches on the **conditional skip rule** — the privileged-ops signal, the bundled-prompt override, and the on-skip/on-fire routing all live in [`SPEC/gates.md` §"Conditional skip rule"](gates.md); what `--fast` and `--unattended` do to it is one row of [`SPEC/gate-postures.md` §"Flag precedence and surface matrix"](gate-postures.md). On skip, the closure auto-commits behind a `✅ Closure complete; committing autonomously (…)` marker; on fire, proceed with step 1 below. Steps 2–3 run **only after** a deliverable-covering SHA — never in the same turn as a fire-branch 📦 / 🟢 ask.
 
+**Push is a separate gated step.** Ordinary commit-go, the autonomous-commit marker, and a `--fast` or `--unattended` skip authorize a local commit only. They do not authorize `git push`, and ordinary task closure never pushes. The one closure that does push is `/ft-release`: push-go is its own prompt inside the 📦 bundle ([`SPEC/gates.md` §"Operator-gate cues"](gates.md)), and only a Yes there lets the following commit-go include the push. A decline leaves the commit and tag local. Any other push is an operator-gated command, not a step of this protocol.
+
 1. **Commit (bundled gate, fire branch).** Surface the bundled ready-to-commit gate behind the 📦 cue (per [`SPEC/gates.md` §"Operator-gate cues"](gates.md) — preview line mandatory) and wait for commit-go. The bundle has three parts:
 
    - **Closure review** — per-entry doc-drift verdicts, new PLAN.md stub-form line, archive path.

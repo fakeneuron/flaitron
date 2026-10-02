@@ -11,9 +11,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-- [ ] **CORE-EPIC-678** [heavy]🧠 | sop-headroom — Restore headroom on `SPEC/procedures/ft-task.md` (34,115 → 37,538 bytes since v5.33.0; 462 bytes under the 38,000 cap) by extracting or trimming, not by raising the cap. Discovery supplied by audit-repo 2026-10-02. Surfaced by audit-repo 2026-10-02 (Theme: cold-start headroom).
-  - [x] **CORE-678.2** [medium]🧩 | procedures-headroom — Completed 2026-10-02.
-  - [ ] **CORE-678.N** [medium]🧩 | sop-headroom audit — Audit CORE-EPIC-678.
+(none)
 
 ## Medium
 
@@ -34,6 +32,10 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 (none)
 
 ## Completed
+
+- [x] **CORE-EPIC-678** [heavy]🧠 | sop-headroom — Completed 2026-10-02.
+  - [x] **CORE-678.2** [medium]🧩 | procedures-headroom — Completed 2026-10-02.
+  - [x] **CORE-678.N** [medium]🧩 | sop-headroom audit — Completed 2026-10-02.
 
 - [x] **CORE-680** [light]🔧 [unattended] | epic-forward-window — Completed 2026-10-02.
 

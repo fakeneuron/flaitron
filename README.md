@@ -108,6 +108,8 @@ serves it; Grok-only projects follow [`grok/AGENTS-snippet.md`](grok/AGENTS-snip
 - [docs/GATE-DISCIPLINE.md](docs/GATE-DISCIPLINE.md) — historical catalog of
   gate-skip excuses and observer symptoms, moved out of `SPEC/gate-discipline.md`
   after the CORE-659 decay window recorded no independent recurrence
+- [docs/CODEX-VERIFICATION.md](docs/CODEX-VERIFICATION.md) — dated Codex
+  installation receipt (CORE-677.2): discovery and repair observations
 - [docs/CONTEXT-BUDGET.md](docs/CONTEXT-BUDGET.md) — per-file byte budgets for
   the surfaces an agent loads to run one task, the measured ledger behind them,
   and the CI and release-time checks that keep them honest
@@ -299,7 +301,7 @@ runtime lives in the runner; the contract lives in flowtron.
 - `codex/` — Codex skill wrappers for the full `ft-*` inventory plus Codex-specific wiring notes
 - `cursor/` — Cursor thin wiring (`AGENTS-snippet.md` + `procedures/ft-task.md` pointer; no skill wrappers — adopters wire canonical `claude/skills/` bodies)
 - `grok/` — Grok thin wiring (`AGENTS-snippet.md` + `procedures/ft-task.md` pointer; no skill wrappers — adopters wire canonical `claude/skills/` bodies)
-- `docs/` — philosophy, vision, glossary, migration, conventions, version history, agent-neutrality, platforms, agent-compat, dogfood, worktrees, gate-discipline, external-agents, and context-budget docs
+- `docs/` — philosophy, vision, glossary, migration, conventions, version history, agent-neutrality, platforms, agent-compat, dogfood, worktrees, gate-discipline, external-agents, harness-survey, codex-verification, and context-budget docs
 - `.flowtron/` — flowtron's own roadmap and tasknotes (self-hosted)
 - `viz/` — Vite/React visualizer (priority-grouped list + optional board mode)
 - `tools/` — operator-side fleet scripts (`update-adopters.mjs`, the singular CLI carve-out — see `SPEC/scope-boundaries.md` §"What flowtron does NOT provide" — plus its portable `update-adopters.test.mjs` suite)

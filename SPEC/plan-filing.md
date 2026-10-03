@@ -1,6 +1,6 @@
 # PLAN.md filing
 
-> Lazy-loaded SPEC module. Loaded at the two moments a PLAN.md row changes hands with git: by the filing motions (`/ft-file-followup` and its `--park` / `--starter` modes, `/ft-audit`, `/ft-refactor`) when they commit their own filing, and by every closing runner (`/ft-task`, `/ft-micro-task`, `/ft-epic-discovery`, `/ft-close-epic`, `/ft-release`) at the Phase 4 stub flip — plus the visualizer as a `## Completed` history consumer. See `SPEC.md` for the always-loaded core spec, and the sibling [`SPEC/tasknote-selection.md`](tasknote-selection.md) for the use/skip thresholds, the filing-discipline word budget, and the downstream-impact reconciliation scan that decide *what* to file.
+> Lazy-loaded SPEC module. Loaded at the two moments a PLAN.md row changes hands with git: by the filing motions (`/ft-file-followup` and its `--park` / `--starter` modes, `/ft-audit`, `/ft-refactor`) and `/ft-seed` when they commit their own write, and by every closing runner (`/ft-task`, `/ft-micro-task`, `/ft-epic-discovery`, `/ft-close-epic`, `/ft-release`) at the Phase 4 stub flip — plus the visualizer as a `## Completed` history consumer. See `SPEC.md` for the always-loaded core spec, and the sibling [`SPEC/tasknote-selection.md`](tasknote-selection.md) for the use/skip thresholds, the filing-discipline word budget, and the downstream-impact reconciliation scan that decide *what* to file.
 
 Three contracts, one subject — what happens to a PLAN.md row once it is
 written: §"Filing commits" (how a filing lands in git), §"`## Completed`
@@ -155,7 +155,7 @@ found, but confirms and applies no edit — a run with no operator never perform
 the operator's motion.
 
 **Execution skills keep their commit-go gate.** This section governs the five
-filing motions above and nothing else. `/ft-task`, `/ft-micro-task`,
+filing motions above and `/ft-seed`'s write, and nothing else. `/ft-task`, `/ft-micro-task`,
 `/ft-epic-discovery`, `/ft-close-epic`, `/ft-release`,
 `/ft-new-project`, and `/ft-update` are unchanged: their commits
 land deliverables or cut releases, and it is the 📦 conditional skip rule

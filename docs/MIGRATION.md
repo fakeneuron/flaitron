@@ -235,7 +235,7 @@ ln -s ../../claude/commands/*.md .claude/commands/
 ln -s ../../claude/skills/*      .claude/skills/
 ```
 
-The relative `../../` paths are clone-location independent, and the symlinks land under the ignored `.claude/` directory, so they never enter git history. This gives the complete `/ft-*` surface (all audit variants, release, new-project, etc.) to any agent started inside the tree. It is expected rather than optional: [`PLATFORMS.md`](PLATFORMS.md) §"Installed-surface policy" treats a shipped `ft-*` slug with no `.claude/` symlink as a wiring miss, and `/ft-release` §7.1 checks for one. The glob also wires `/ft-update`, which is intentional — the skill is adopter-only but bails in flowtron-self with a clear message rather than silently misbehaving, so wiring it here is harmless. The `ft-` prefix remains flowtron's reserved namespace.
+The relative `../../` paths are clone-location independent, and the symlinks land under the ignored `.claude/` directory, so they never enter git history. This gives the complete `/ft-*` surface (`/ft-audit`, `/ft-audit-repo`, release, new-project, etc.) to any agent started inside the tree. It is expected rather than optional: [`PLATFORMS.md`](PLATFORMS.md) §"Installed-surface policy" treats a shipped `ft-*` slug with no `.claude/` symlink as a wiring miss, and `/ft-release` §7.1 checks for one. The glob also wires `/ft-update`, which is intentional — the skill is adopter-only but bails in flowtron-self with a clear message rather than silently misbehaving, so wiring it here is harmless. The `ft-` prefix remains flowtron's reserved namespace.
 
 Codex maintainers wire the same way, from the parallel wrapper inventory:
 

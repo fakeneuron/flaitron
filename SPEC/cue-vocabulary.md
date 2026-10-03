@@ -112,7 +112,7 @@ the non-command manual step (a secret, a click, an out-of-band approve) —
 pasting a *command* into the TTY is 💻 TERM, not ✋ ACTION.
 
 A destructive 🗄️/▶️/📡/💻 action MAY escalate from inline prefix to a banner — see
-"Destructive-action escalation" below. ✋ ACTION never escalates (it is a
+[`SPEC/gates.md`](gates.md) §"Destructive-action escalation". ✋ ACTION never escalates (it is a
 manual operator step, not an assistant-executed command).
 
 ## Inline asks (existing cues, carrying word labels)
@@ -175,7 +175,7 @@ emitted.
 
 ## Accepted gate replies
 
-Two layers. `SPEC/gates.md` is the cite-once owner; skills point here rather
+Two layers. This section is the cite-once owner; skills point here rather
 than forking a third token list.
 
 **Closed commit-go set** — 📦 ready-to-commit and standalone 🟢 `GO`.
@@ -198,7 +198,7 @@ set; that under-accept is the failure this clause exists to stop. The
 examples are not a closed list.
 
 `go` and `yep` sit in both layers on purpose. The split is per-cue (see
-Rationalizations: approval is per-cue, not ambient), not per-word.
+[`docs/GATE-DISCIPLINE.md`](../docs/GATE-DISCIPLINE.md) §"Rationalizations": approval is per-cue, not ambient), not per-word.
 
 **Destructive-action banners are out.** They remain a safety control
 (`--fast` does not suppress them) and are **not** covered by
@@ -239,7 +239,7 @@ matching"). All four also serve as tier glyphs, and 🧩 additionally heads the
 (§"Glyph layers and reuse").
 
 👇 (`HERE`) replaces the model glyph on the copy-paste **label line** when the
-next-skill is context-dependent (`/ft-file-followup` in either mode /
+next-skill is context-dependent (`/ft-file-followup` in any mode /
 `/ft-epic-discovery` — clearing the session destroys the context they draw on).
 It signals *where* to run, not task weight: the 🔧/🧩/🧠/🔭 model signal stays on
 the candidate line just printed above.

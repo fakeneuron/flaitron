@@ -23,11 +23,51 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
 
+- [ ] **CORE-691** [light]🔧 [unattended] | doc-crossfile-cite-sweep — Multi-file pointer/count sweep: retarget `SPEC/procedures/ft-task.md:440` to `SPEC/superseded-claims.md`; name the file in bare §-cites at `SPEC/blocked.md:31` (`SPEC/plan-parser.md`) and `SPEC/gates.md:50` (`SPEC.md`); repoint `README.md:28` to `claude/skills/ft-release/step-7.1-standing-checks.md`; fix `SPEC/blocked.md:226` (`not-started` is a retired template default) and add "Explicitly out of scope" to `SPEC/starter.md:28`; normalize `.flowtron/core/docs/…` → `../docs/…` at `codex/AGENTS-snippet.md:51`, `cursor/AGENTS-snippet.md:82,100`, `grok/AGENTS-snippet.md:87`; glossary count ~71 → ~73 in `README.md:76` and `docs/GLOSSARY.md:7`. Surfaced by audit-docs 2026-10-03 (Findings #5, #14, #15, #16, Low).
+
 ## Future Opportunities
 
 (none)
 
 ## Completed
+
+- [x] **CORE-710** [light]🔧 | neutrality-capabilities-loop — `docs/AGENT-NEUTRALITY.md` CAPABILITIES trigger list adds `--starter` and `/code-review`; the `SPEC/loop.md` rows ledger `/ft-task --loop` and `step-5-loop-mode.md`. Surfaced by audit-docs 2026-10-03 (Finding #23, Low), fixed inline.
+
+- [x] **CORE-709** [light]🔧 | neutrality-postclosure-dup — `docs/AGENT-NEUTRALITY.md` drops the duplicated `SPEC/post-closure.md` clause. Surfaced by audit-docs 2026-10-03 (Finding #22, Low), fixed inline.
+
+- [x] **CORE-708** [light]🔧 | vision-updater-exception — `docs/VISION.md` Zero-scripts bullet names the bounded `tools/update-adopters.mjs` exception. Surfaced by audit-docs 2026-10-03 (Finding #21, Low), fixed inline.
+
+- [x] **CORE-707** [light]🔧 | migration-audit-variants — `docs/MIGRATION.md` self-host wiring parenthetical names `/ft-audit`, `/ft-audit-repo` instead of "all audit variants". Surfaced by audit-docs 2026-10-03 (Finding #20, Low), fixed inline.
+
+- [x] **CORE-706** [light]🔧 | external-agents-worktree-pair — `docs/EXTERNAL-AGENTS.md` parallelism sentence names isolated worktrees (`WORKTREES.md`) instead of the retired worktree skill pair. Surfaced by audit-docs 2026-10-03 (Finding #19, Medium), fixed inline.
+
+- [x] **CORE-705** [light]🔧 | conventions-commit-types — `docs/CONVENTIONS.md` active commit types add `refactor:`, `perf:`, `test:`, `ci:`. Surfaced by audit-docs 2026-10-03 (Finding #18, Low), fixed inline.
+
+- [x] **CORE-704** [light]🔧 | readme-codex-verification — README doc index lists `docs/CODEX-VERIFICATION.md`; the `docs/` layout bullet adds harness-survey and codex-verification. Surfaced by audit-docs 2026-10-03 (Finding #17, Low), fixed inline.
+
+- [x] **CORE-703** [light]🔧 | neutrality-candidacy-section — `docs/AGENT-NEUTRALITY.md` `SPEC/unattended-candidacy.md` row cites §"Surfaces and mirrors". Surfaced by audit-docs 2026-10-03 (Finding #13, Medium), fixed inline.
+
+- [x] **CORE-702** [light]🔧 | plan-parser-segment-cite — `SPEC/plan-parser.md` cites `SPEC/task-line-segments.md` §"Segment table" for the captured markers and the `[handoff]` precedence. Surfaced by audit-docs 2026-10-03 (Finding #12, Medium), fixed inline.
+
+- [x] **CORE-701** [light]🔧 | loop-destructive-cite — `SPEC/loop.md` destructive-action carve-out cites `SPEC/gates.md` §"Destructive-action escalation". Surfaced by audit-docs 2026-10-03 (Finding #11, Medium), fixed inline.
+
+- [x] **CORE-700** [light]🔧 | scope-boundaries-multiuser-mirror — `SPEC/scope-boundaries.md` Multi-user bullet carries its PR-rejection-mirror label to `docs/VISION.md`. Surfaced by audit-docs 2026-10-03 (Finding #10, Low), fixed inline.
+
+- [x] **CORE-699** [light]🔧 | plan-filing-seed-roster — `SPEC/plan-filing.md` header loader list and execution-skill fence name `/ft-seed` beside the five filing motions. Surfaced by audit-docs 2026-10-03 (Finding #9, Low), fixed inline.
+
+- [x] **CORE-698** [light]🔧 | snippet-followup-unattended — `claude/AGENTS-snippet.md` `--unattended` bullet names `/ft-file-followup --unattended` as the operator-less filing path. Surfaced by audit-docs 2026-10-03 (Finding #8, Low), fixed inline.
+
+- [x] **CORE-697** [light]🔧 | snippet-update-adopter-subset — `claude/AGENTS-snippet.md` bump paragraph says `/ft-update` adds a symlink for a brand-new adopter-subset skill. Surfaced by audit-docs 2026-10-03 (Finding #7, Low), fixed inline.
+
+- [x] **CORE-696** [light]🔧 | cue-vocabulary-split-pointers — `SPEC/cue-vocabulary.md` retargets the destructive-escalation and Rationalizations pointers, owns its cite-once §"Accepted gate replies", and says `/ft-file-followup` "in any mode". Surfaced by audit-docs 2026-10-03 (Finding #6, Medium), fixed inline.
+
+- [x] **CORE-695** [light]🔧 | external-agents-step0-scope — `docs/EXTERNAL-AGENTS.md` Capability-probes row says `step-0-flags.md` holds the flag parse, conflict refusals, and mode dispatch. Surfaced by audit-docs 2026-10-03 (Finding #4, Low), fixed inline.
+
+- [x] **CORE-694** [light]🔧 | versioning-ft-update — `SPEC/versioning.md` names `/ft-update` as the mechanical bump path. Surfaced by audit-docs 2026-10-03 (Finding #3, Medium), fixed inline.
+
+- [x] **CORE-693** [light]🔧 | capabilities-claude-syntax — `claude/CAPABILITIES.md` names the `Agent` tool (formerly `Task`) and the full `/code-review` level list. Surfaced by audit-docs 2026-10-03 (Finding #2, Medium), fixed inline.
+
+- [x] **CORE-692** [light]🔧 | capabilities-unattended-surfaces — `claude/CAPABILITIES.md` `--unattended` row names four `--fast` surfaces with both delegations (👁️ suppression, Re-scope notice) not inherited. Surfaced by audit-docs 2026-10-03 (Finding #1, Medium), fixed inline.
 
 - [x] **CORE-690** [medium]🧩 | release v5.35.0 — Completed 2026-10-02.
 

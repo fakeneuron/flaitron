@@ -72,8 +72,8 @@ semantics** (see [`SPEC/gate-postures.md`](gate-postures.md) §"`--fast` operato
   than closure.
 
 **Destructive-action carve-out.** The one thing that does **not** collapse
-is the destructive 🗄️/▶️/📡/💻 escalation ([`SPEC/cue-vocabulary.md`](cue-vocabulary.md)
-§"Operator-cue vocabulary" → "Destructive-action escalation"). `--fast`
+is the destructive 🗄️/▶️/📡/💻 escalation ([`SPEC/gates.md`](gates.md)
+§"Destructive-action escalation"). `--fast`
 never suppresses it, and a loop cannot fire a blocking banner into an
 unattended session. So when a cycle needs a destructive or irreversible
 command (a migration, a `git push`, an `rm`), the loop **parks the tasknote

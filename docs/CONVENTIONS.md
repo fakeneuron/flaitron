@@ -14,7 +14,7 @@ Commit subjects follow [Conventional Commits 1.0](https://www.conventionalcommit
 <type>: <TASK-ID> — <description>
 ```
 
-Types in active use: `feat:`, `fix:`, `chore:`, `docs:`. Scope segments (`feat(area):`) are not used — the `<TASK-ID>` prefix carries area information via its `CORE-` / `FE-` / `BE-` / `DB-` / `DEPLOY-` / `TEST-` prefix.
+Types in active use: `feat:`, `fix:`, `chore:`, `docs:`, `refactor:`, `perf:`, `test:`, `ci:`. Scope segments (`feat(area):`) are not used — the `<TASK-ID>` prefix carries area information via its `CORE-` / `FE-` / `BE-` / `DB-` / `DEPLOY-` / `TEST-` prefix.
 
 **Breaking changes** use the canonical `!` indicator on new commits:
 

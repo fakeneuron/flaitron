@@ -36,8 +36,8 @@ additionally accepts three real-board decorations without parsing them into
 - **Stacked `[model]` tokens** — `[fable] [light]`: the first bracket token is
   captured as `model`; trailing bracket tokens are tolerated and dropped —
   *except* `[unattended]` and `[handoff]`, which are canonical grammar and
-  captured (see the segment table in [`SPEC.md`](../SPEC.md) §"Task-line
-  format").
+  captured (see [`SPEC/task-line-segments.md`](task-line-segments.md)
+  §"Segment table").
 - **Leading status glyph** — a nav-header chip (`🟢`/`⏸`/`✅`/`⚪`/`🌱`) between
   the checkbox and the bold ID (`- [ ] ⏸ **ID**`).
 
@@ -66,8 +66,8 @@ is rescued, for either marker:
   `[model]`.
 
 A row carrying **both** markers parses with both booleans set — it is
-mis-authored rather than rejected, and [`SPEC.md`](../SPEC.md) §"Task-line
-format" says which one a reader honours (`[handoff]`).
+mis-authored rather than rejected, and [`SPEC/task-line-segments.md`](task-line-segments.md)
+§"Segment table" says which one a reader honours (`[handoff]`).
 
 **Rewrites must preserve the trailing bracket-token run verbatim.** A
 task-line rewrite — a Re-scope note ([`SPEC.md`](../SPEC.md) §"📝 Phase 1: Discovery"), a model

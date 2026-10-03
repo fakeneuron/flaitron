@@ -19,7 +19,7 @@ Flowtron is **not** for teams, monorepos at scale, large open-source projects wi
 Recap of [SPEC.md](../SPEC.md) §"Core principles" — outward-facing. The contract version is canonical; this page is the identity statement.
 
 - **Markdown over JSON.** Plans and tasknotes are markdown files: human-editable, AI-scannable in diffs, partial-update-safe. JSON is for tools that parse; nothing here does. *(SPEC #1)*
-- **Zero scripts.** Every operation is `cp`, `mv`, or editing markdown. There is no `flowtron new`, no validator, no daemon. Skills wrap the same operations the user would run by hand. *(SPEC #2)*
+- **Zero scripts.** Every operation is `cp`, `mv`, or editing markdown. There is no `flowtron new`, no validator, no daemon (one operator-side fleet updater, `tools/update-adopters.mjs`, is the bounded exception — see [SPEC/scope-boundaries.md](../SPEC/scope-boundaries.md) §"What flowtron does NOT provide"). Skills wrap the same operations the user would run by hand. *(SPEC #2)*
 - **One task per context window.** Tasknotes are sized so the assistant holds the whole scope in working memory: plan entry · checklist · files touched · tradeoffs. Anything larger becomes an epic with subtasks. *(SPEC #3)*
 - **Relevance before action.** Every tasknote opens with a Relevance Assessment (`Proceed` / `Re-scope` / `De-scope`) — plans go stale faster than they're updated; killing zombie work is cheaper than executing it. *(SPEC #4)*
 - **Versioned and pinned.** Adopting projects pin a specific flowtron commit. Updates ride a deliberate bump — no force-upgrades. *(SPEC #5)*

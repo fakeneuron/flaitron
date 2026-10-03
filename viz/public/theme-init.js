@@ -3,7 +3,7 @@
 // dev-server CSP can forbid inline scripts. Runs render-blocking in <head>.
 (function () {
   try {
-    var stored = localStorage.getItem('flowtron-viz-theme') || localStorage.getItem('theme');
+    var stored = localStorage.getItem('flaitron-viz-theme') || localStorage.getItem('theme');
     var dark =
       stored === 'dark' ||
       (stored !== 'light' &&

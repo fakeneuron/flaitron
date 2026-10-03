@@ -20,7 +20,7 @@ export function groupBy<T, K extends string | number>(
 // PLAN.md wins on completion: if the row is `[x]` in PLAN.md, the row is
 // authoritatively done regardless of frontmatter status. Phase 4 closure now
 // asserts the `status: completed` flip (SPEC §"🚀 Phase 4: Closure"), but this
-// fallback stays: adopters pinned to a pre-fix flowtron keep producing
+// fallback stays: adopters pinned to a pre-fix flaitron keep producing
 // `in-progress` archives, and the oldest archives predate frontmatter entirely.
 export function effectiveStatus(task: Task, tn: Tasknote | undefined): TasknoteStatus | null {
   if (task.completed) return 'completed';
@@ -35,9 +35,9 @@ export function displaySection(task: Task): Priority {
   return task.completed ? 'Completed' : task.priority;
 }
 
-// Version-currency of an adopter's pinned flowtron release vs the latest
+// Version-currency of an adopter's pinned flaitron release vs the latest
 // released tag. 'unknown' (no pinned version readable, or no tag resolved —
-// e.g. the flowtron checkout itself) renders no dot: unknown ≠ stale.
+// e.g. the flaitron checkout itself) renders no dot: unknown ≠ stale.
 type VersionCurrency = 'current' | 'behind' | 'unknown';
 
 export function versionCurrency(

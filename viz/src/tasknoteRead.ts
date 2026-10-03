@@ -5,14 +5,14 @@ import { realpathWithin, safeReaddir } from './fsSafe.ts';
 import type { Tasknote } from './tasknote.ts';
 
 // Read every `*.md` tasknote directly inside `dir`. Shared by
-// `devApi.createActiveHandler` (the active `.flowtron/tasknote/` dir) and
+// `devApi.createActiveHandler` (the active `.flaitron/tasknote/` dir) and
 // `archiveCache.readArchive` (one archive area dir per call): both need the
 // identical readdir → containment → parse → drop loop, and a leaf module keeps
 // them from importing each other.
 //
 // `realBase` must be the project root already resolved through symlinks (via
 // `safeRealpath`), never `dir` itself. Anchoring containment on the leaf
-// directory would be vacuous: if `tasknote/` (or `archive/`, or `.flowtron/`)
+// directory would be vacuous: if `tasknote/` (or `archive/`, or `.flaitron/`)
 // is itself a symlink, everything under its target is trivially "inside" it, so
 // only the root is a meaningful bound. Symlinked project roots stay legitimate:
 // the root resolves first, then nothing below it may escape.

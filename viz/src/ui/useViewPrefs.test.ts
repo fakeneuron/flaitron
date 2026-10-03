@@ -4,7 +4,7 @@ import { useViewPrefs } from './useViewPrefs';
 import { DEFAULT_PREFS, type VisibilityPrefs } from '../visibilityPrefs';
 import { VIEW_MODE_KEY } from '../viewMode';
 
-const prefsKey = (project: string) => `flowtron-viz-prefs:${project}`;
+const prefsKey = (project: string) => `flaitron-viz-prefs:${project}`;
 
 const withDensity = (density: VisibilityPrefs['density']): VisibilityPrefs => ({
   ...DEFAULT_PREFS,

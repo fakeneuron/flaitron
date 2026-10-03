@@ -1,6 +1,6 @@
 import { readLocal, writeLocal } from './storage';
 
-const ACTIVE_PROJECT_KEY = 'flowtron-viz-active-project';
+const ACTIVE_PROJECT_KEY = 'flaitron-viz-active-project';
 
 export const readStoredProject = (): string | null => readLocal(ACTIVE_PROJECT_KEY);
 

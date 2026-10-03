@@ -47,7 +47,7 @@ export const DEFAULT_PREFS: VisibilityPrefs = {
   palette: 'default',
 };
 
-const KEY_PREFIX = 'flowtron-viz-prefs:';
+const KEY_PREFIX = 'flaitron-viz-prefs:';
 
 const storageKey = (project: string): string => `${KEY_PREFIX}${project}`;
 

@@ -190,7 +190,7 @@ export function createOnWatchError(label: string): (error: unknown) => void {
     const code = (error as { code?: unknown } | null)?.code;
     const message = error instanceof Error ? error.message : String(error);
     const where = typeof code === 'string' ? `${label} watcher error (${code})` : `${label} watcher error`;
-    console.error(`[flowtronWatch] ${where}: ${message} — watching degraded until the dev server restarts`);
+    console.error(`[flaitronWatch] ${where}: ${message} — watching degraded until the dev server restarts`);
   };
 }
 

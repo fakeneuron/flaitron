@@ -12,8 +12,8 @@ let root: string;
 let outside: string;
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'flowtron-viz-workspace-'));
-  outside = await mkdtemp(join(tmpdir(), 'flowtron-viz-outside-'));
+  root = await mkdtemp(join(tmpdir(), 'flaitron-viz-workspace-'));
+  outside = await mkdtemp(join(tmpdir(), 'flaitron-viz-outside-'));
 });
 
 afterEach(async () => {
@@ -25,7 +25,7 @@ async function makeAdopter(
   name: string,
   opts: { withTasknoteDir?: boolean } = {},
 ): Promise<void> {
-  const projectDir = join(root, name, '.flowtron');
+  const projectDir = join(root, name, '.flaitron');
   await mkdir(projectDir, { recursive: true });
   await writeFile(join(projectDir, 'PLAN.md'), `## High\n\n- [ ] **${name.toUpperCase()}-001** — seed\n`);
   if (opts.withTasknoteDir ?? true) {
@@ -38,7 +38,7 @@ async function makeNonAdopterDir(name: string): Promise<void> {
 }
 
 describe('discoverProjects', () => {
-  it('finds dirs with .flowtron/PLAN.md and skips others', async () => {
+  it('finds dirs with .flaitron/PLAN.md and skips others', async () => {
     await makeAdopter('alpha');
     await makeAdopter('beta');
     await makeNonAdopterDir('gamma');
@@ -60,11 +60,11 @@ describe('discoverProjects', () => {
     expect(projects[0]).toEqual({
       name: 'alpha',
       root: join(root, 'alpha'),
-      planPath: join(root, 'alpha', '.flowtron', 'PLAN.md'),
-      planArchivePath: join(root, 'alpha', '.flowtron', 'PLAN-ARCHIVE.md'),
-      tasknoteDir: join(root, 'alpha', '.flowtron', 'tasknote'),
-      archiveDir: join(root, 'alpha', '.flowtron', 'tasknote', 'archive'),
-      flowtronVersion: null,
+      planPath: join(root, 'alpha', '.flaitron', 'PLAN.md'),
+      planArchivePath: join(root, 'alpha', '.flaitron', 'PLAN-ARCHIVE.md'),
+      tasknoteDir: join(root, 'alpha', '.flaitron', 'tasknote'),
+      archiveDir: join(root, 'alpha', '.flaitron', 'tasknote', 'archive'),
+      flaitronVersion: null,
     });
   });
 
@@ -75,13 +75,13 @@ describe('discoverProjects', () => {
 
     expect(projects).toHaveLength(1);
     expect(projects[0].name).toBe('lonely');
-    expect(projects[0].tasknoteDir).toBe(join(root, 'lonely', '.flowtron', 'tasknote'));
+    expect(projects[0].tasknoteDir).toBe(join(root, 'lonely', '.flaitron', 'tasknote'));
   });
 
   it('skips dotfiles and dot-dirs', async () => {
     await makeAdopter('visible');
-    await mkdir(join(root, '.hidden', '.flowtron'), { recursive: true });
-    await writeFile(join(root, '.hidden', '.flowtron', 'PLAN.md'), '## High\n');
+    await mkdir(join(root, '.hidden', '.flaitron'), { recursive: true });
+    await writeFile(join(root, '.hidden', '.flaitron', 'PLAN.md'), '## High\n');
 
     const projects = await discoverProjects(root);
 
@@ -97,20 +97,20 @@ describe('discoverProjects', () => {
     await makeAdopter('honest');
     const secret = join(outside, 'secret.md');
     await writeFile(secret, '## High\n\n- [ ] **SECRET-001** — leaked\n');
-    await mkdir(join(root, 'escaper', '.flowtron'), { recursive: true });
-    await symlink(secret, join(root, 'escaper', '.flowtron', 'PLAN.md'));
+    await mkdir(join(root, 'escaper', '.flaitron'), { recursive: true });
+    await symlink(secret, join(root, 'escaper', '.flaitron', 'PLAN.md'));
 
     const projects = await discoverProjects(root);
 
     expect(projects.map((p) => p.name)).toEqual(['honest']);
   });
 
-  it('drops a project whose .flowtron dir resolves outside the project root', async () => {
+  it('drops a project whose .flaitron dir resolves outside the project root', async () => {
     await makeAdopter('honest');
     await mkdir(join(outside, 'stash'), { recursive: true });
     await writeFile(join(outside, 'stash', 'PLAN.md'), '## High\n');
     await mkdir(join(root, 'escaper'), { recursive: true });
-    await symlink(join(outside, 'stash'), join(root, 'escaper', '.flowtron'));
+    await symlink(join(outside, 'stash'), join(root, 'escaper', '.flaitron'));
 
     const projects = await discoverProjects(root);
 
@@ -119,15 +119,15 @@ describe('discoverProjects', () => {
 
   it('still discovers a project whose root is itself a symlink', async () => {
     const realProject = join(outside, 'linked-adopter');
-    await mkdir(join(realProject, '.flowtron', 'tasknote'), { recursive: true });
-    await writeFile(join(realProject, '.flowtron', 'PLAN.md'), '## High\n');
+    await mkdir(join(realProject, '.flaitron', 'tasknote'), { recursive: true });
+    await writeFile(join(realProject, '.flaitron', 'PLAN.md'), '## High\n');
     await symlink(realProject, join(root, 'linked'));
 
     const projects = await discoverProjects(root);
 
     expect(projects.map((p) => p.name)).toEqual(['linked']);
     expect(projects[0].root).toBe(join(root, 'linked'));
-    expect(projects[0].planPath).toBe(join(root, 'linked', '.flowtron', 'PLAN.md'));
+    expect(projects[0].planPath).toBe(join(root, 'linked', '.flaitron', 'PLAN.md'));
   });
 });
 
@@ -180,12 +180,12 @@ describe('latestReleaseTag', () => {
 });
 
 describe('workspaceRoot', () => {
-  it('uses FLOWTRON_VIZ_WORKSPACE when set', () => {
-    expect(workspaceRoot({ FLOWTRON_VIZ_WORKSPACE: '/custom/path' })).toBe('/custom/path');
+  it('uses FLAITRON_VIZ_WORKSPACE when set', () => {
+    expect(workspaceRoot({ FLAITRON_VIZ_WORKSPACE: '/custom/path' })).toBe('/custom/path');
   });
 
   it('expands a leading ~ in the env value', () => {
-    const out = workspaceRoot({ FLOWTRON_VIZ_WORKSPACE: '~/projects' });
+    const out = workspaceRoot({ FLAITRON_VIZ_WORKSPACE: '~/projects' });
     expect(out.startsWith('/')).toBe(true);
     expect(out.endsWith('/projects')).toBe(true);
     expect(out).not.toContain('~');
@@ -196,7 +196,7 @@ describe('workspaceRoot', () => {
     expect(unset.endsWith('/code')).toBe(true);
     expect(unset).not.toContain('~');
 
-    const empty = workspaceRoot({ FLOWTRON_VIZ_WORKSPACE: '' });
+    const empty = workspaceRoot({ FLAITRON_VIZ_WORKSPACE: '' });
     expect(empty).toBe(unset);
   });
 });

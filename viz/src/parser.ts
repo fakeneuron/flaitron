@@ -7,7 +7,7 @@ export type Priority =
   | 'Future Opportunities'
   | 'Completed';
 
-// Recommended set: 'heavy' | 'medium' | 'light' (flowtron's primary category
+// Recommended set: 'heavy' | 'medium' | 'light' (flaitron's primary category
 // labels — see SPEC §"Task-line format"). Concrete model names (e.g. 'fable',
 // 'opus', 'sonnet', 'haiku', 'grok', 'gpt-5', 'gemini-pro') are valid
 // precision tokens; the TASK_LINE regex accepts any short lowercase token
@@ -49,7 +49,7 @@ const SECTION_HEADINGS = new Set<Priority>(PRIORITIES);
 // carry a `## Critical` section keep parsing without data loss.
 const LEGACY_CRITICAL_HEADING = 'Critical';
 
-// Rotated-history heading (`## Completed 2026-07`). `.flowtron/PLAN-ARCHIVE.md`
+// Rotated-history heading (`## Completed 2026-07`). `.flaitron/PLAN-ARCHIVE.md`
 // groups its month blocks under these, newest month first; the rows beneath are
 // verbatim `PLAN.md` stubs, so only the heading needs teaching — the task-line
 // grammar below is untouched. Mapped onto the canonical `Completed` priority
@@ -311,9 +311,9 @@ const LOWERCASE_TO_PRIORITY = new Map<string, Priority>(
 // hand-authoring mistakes — collected as diagnostics instead of silently dropped.
 const CHECKBOX_BULLET = /^\s*-\s+\[[ xX]\]/;
 
-// Pre-flowtron legacy record: a completed historical line whose bold
+// Pre-flaitron legacy record: a completed historical line whose bold
 // token was never an `<AREA>-NNN` ID (`**P1**`, `**flowtron v5.2.0 bump**`) —
-// it predates flowtron's ID convention and has no tasknote to promote it to.
+// it predates flaitron's ID convention and has no tasknote to promote it to.
 // The grammar allows only a bare `**token**` optionally followed by an
 // em/en-dash description — no room for `[!critical]`/`[model]`/`| shortname`,
 // so a line carrying any of those never matches here and still falls through
@@ -453,7 +453,7 @@ function scanDocument(markdown: string): PlanParseResult {
   return { tasks, unparsed, nearMissHeadings };
 }
 
-// `PLAN.md` plus, optionally, the rotated history in `.flowtron/PLAN-ARCHIVE.md`.
+// `PLAN.md` plus, optionally, the rotated history in `.flaitron/PLAN-ARCHIVE.md`.
 // Rotation moves closed rows out of `PLAN.md` verbatim, so a board that reads
 // only the first file loses every rotated month; concatenating the second
 // restores whole history. Absence is an empty archive, never an error — the file

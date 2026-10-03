@@ -30,7 +30,7 @@ import {
   SSE_DEBOUNCE_MS,
   SSE_HEARTBEAT_MS,
   WATCH_HOT_OPTIONS,
-} from './src/flowtronWatch.ts';
+} from './src/flaitronWatch.ts';
 import { watchSets } from './src/watchSet.ts';
 
 // Static nonce stamped onto every Vite-injected <script> (the React-refresh
@@ -39,7 +39,7 @@ import { watchSets } from './src/watchSet.ts';
 // Vite's dev server injects an inline preamble script. A fixed value (rather
 // than per-response random) is an accepted trade-off for a loopback-only dev
 // tool — the win is keeping the directive honestly inline-free.
-const DEV_CSP_NONCE = 'flowtron-dev';
+const DEV_CSP_NONCE = 'flaitron-dev';
 
 // Defense-in-depth CSP for the dev server (the only deployment surface).
 // script-src: 'self' + nonce, no 'unsafe-inline' — our theme-init.js is now an
@@ -58,7 +58,7 @@ const DEV_CSP = [
   "frame-ancestors 'none'",
 ].join('; ');
 
-function flowtronApi(): Plugin {
+function flaitronApi(): Plugin {
   const sseClients = new Set<ServerResponse>();
   let hotWatcher: ReturnType<typeof chokidar.watch> | null = null;
   let archiveWatcher: ReturnType<typeof chokidar.watch> | null = null;
@@ -68,12 +68,12 @@ function flowtronApi(): Plugin {
   const heartbeat = createHeartbeat(sseClients, SSE_HEARTBEAT_MS);
 
   return {
-    name: 'flowtron-api',
+    name: 'flaitron-api',
     async configureServer(server) {
       const root = workspaceRoot();
       const discovered = await discoverProjects(root);
       for (const p of discovered) projects.set(p.name, p);
-      // Resolved from the viz dir — git walks up to the flowtron checkout.
+      // Resolved from the viz dir — git walks up to the flaitron checkout.
       const latestRelease = await latestReleaseTag(fileURLToPath(new URL('.', import.meta.url)));
 
       if (server.httpServer) {
@@ -129,7 +129,7 @@ function flowtronApi(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [react(), tailwindcss(), flowtronApi()],
+  plugins: [react(), tailwindcss(), flaitronApi()],
   // Stamp DEV_CSP_NONCE onto Vite-injected <script>/<style> tags so the dev
   // CSP's script-src can omit 'unsafe-inline' (see DEV_CSP above).
   html: { cspNonce: DEV_CSP_NONCE },

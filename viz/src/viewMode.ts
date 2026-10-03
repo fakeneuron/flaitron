@@ -2,7 +2,7 @@ import { readLocal, writeLocal } from './storage';
 
 export type ViewMode = 'list' | 'board';
 
-export const VIEW_MODE_KEY = 'flowtron-viz-view';
+export const VIEW_MODE_KEY = 'flaitron-viz-view';
 
 const DEFAULT_VIEW_MODE: ViewMode = 'list';
 

@@ -87,7 +87,7 @@ export function createProjectsHandler(
   return guarded((req, res) => {
     const list = Array.from(projects.values()).map((p) => ({
       name: p.name,
-      flowtronVersion: p.flowtronVersion,
+      flaitronVersion: p.flaitronVersion,
     }));
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({ latestRelease, projects: list }));
@@ -106,7 +106,7 @@ export function createPlanHandler(
     try {
       // Same project-root containment createPlanArchiveHandler / createActiveHandler
       // apply: discoverProjects only validates planPath once, at scan time — without
-      // a per-request check, a `.flowtron/PLAN.md` (or an ancestor) swapped to a
+      // a per-request check, a `.flaitron/PLAN.md` (or an ancestor) swapped to a
       // symlink afterward would let any readable file on disk reach /api/plan.
       const realRoot = await safeRealpath(project.root);
       const realPlan = realRoot === null ? null : await realpathWithin(realRoot, project.planPath);
@@ -123,7 +123,7 @@ export function createPlanHandler(
   });
 }
 
-// `.flowtron/PLAN-ARCHIVE.md` is optional history: it does not exist until a
+// `.flaitron/PLAN-ARCHIVE.md` is optional history: it does not exist until a
 // project's first `## Completed` rotation, and many adopters will never rotate.
 // Absence is an empty archive, never an error (SPEC/plan-filing.md
 // §"`## Completed` rotation" — "consumers treat absence as an empty archive").
@@ -174,7 +174,7 @@ export function createActiveHandler(
     }
     try {
       // Same project-root containment archiveCache.readArchive applies: a
-      // symlinked `.flowtron/tasknote/` would otherwise let any readable file
+      // symlinked `.flaitron/tasknote/` would otherwise let any readable file
       // on disk reach /api/active.
       const realRoot = await safeRealpath(project.root);
       if (realRoot === null) {

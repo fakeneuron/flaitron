@@ -51,9 +51,9 @@ export const ProjectSelector: React.FC<Props> = ({
     const currency = versionCurrency(version, latestRelease ?? null);
     const currencyLabel =
       currency === 'current'
-        ? ` (flowtron up to date, ${version})`
+        ? ` (flaitron up to date, ${version})`
         : currency === 'behind'
-          ? ` (flowtron outdated: ${version}, latest ${latestRelease})`
+          ? ` (flaitron outdated: ${version}, latest ${latestRelease})`
           : '';
     return (
       <button

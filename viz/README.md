@@ -1,7 +1,7 @@
-# Flowtron visualizer (`viz/`)
+# Flaitron visualizer (`viz/`)
 
-Read-only Vite/React/TypeScript view of every flowtron-adopting project under
-`${FLOWTRON_VIZ_WORKSPACE:-~/code}`. Operator-facing runbook (workspace scan,
+Read-only Vite/React/TypeScript view of every flaitron-adopting project under
+`${FLAITRON_VIZ_WORKSPACE:-~/code}`. Operator-facing runbook (workspace scan,
 port, adopter submodule path) lives in the repo-root
 [`README.md` §Visualizer](../README.md#visualizer); threat model in
 [`SECURITY.md` §Visualizer](../SECURITY.md#visualizer-viz-dev-server-scope).
@@ -24,7 +24,7 @@ Inside `viz/`, drop the `--prefix viz`.
 
 ### `package.json`'s `version` field is not maintained
 
-It does not track the flowtron release version — the git tag is the sole
+It does not track the flaitron release version — the git tag is the sole
 version authority for viz. It briefly mirrored a runtime `VIZ_VERSION`
 constant (`FE-056`), which CORE-478 later deleted as dead code, dropping the
 `/ft-release` bump step along with it. Don't wire it back into the release
@@ -45,7 +45,7 @@ table: a tier may import from tiers below it, never above.
 
 Files under `src/ui/` **must not** import `node:*` builtins or any Node-only
 tier module (`devApi`, `workspace`, `fsSafe`, `tasknoteRead`, `tasknote-parse`,
-`archiveCache`, `flowtronWatch`, `watchSet`, `originGuard`, `apiResponse`). They import shared pure modules via
+`archiveCache`, `flaitronWatch`, `watchSet`, `originGuard`, `apiResponse`). They import shared pure modules via
 `../…` and sibling UI modules via `./…` only.
 
 This is enforced by an eslint `no-restricted-imports` rule scoped to
@@ -71,8 +71,8 @@ encoder/decoder without pulling `node:path` into the bundle.
 ### Entrypoints
 
 - **Browser:** `src/main.tsx` mounts `ui/App` into `#root`.
-- **Node:** `vite.config.ts` registers the `flowtron-api` plugin, which wires
-  `workspace` / `devApi` / `flowtronWatch` / `archiveCache` onto the dev server.
+- **Node:** `vite.config.ts` registers the `flaitron-api` plugin, which wires
+  `workspace` / `devApi` / `flaitronWatch` / `archiveCache` onto the dev server.
 
 ### Layout sketch
 
@@ -96,7 +96,7 @@ viz/
     tasknoteRead.ts       Node-only (contained tasknote-dir reader)
     tasknote-parse.ts     Node-only (frontmatter split + js-yaml parse)
     archiveCache.ts       Node-only
-    flowtronWatch.ts      Node-only
+    flaitronWatch.ts      Node-only
     watchSet.ts           Node-only
     originGuard.ts        Node-only
     apiResponse.ts        Node-only

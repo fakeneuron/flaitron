@@ -51,13 +51,13 @@ describe('ProjectSelector', () => {
     );
 
     const fresh = screen.getByRole('button', {
-      name: 'Project: fresh (flowtron up to date, v5.6.0)',
+      name: 'Project: fresh (flaitron up to date, v5.6.0)',
     });
     expect(fresh.querySelector('[data-currency="current"]')).toBeTruthy();
     expect(fresh.querySelector('[data-currency="behind"]')).toBeNull();
 
     const stale = screen.getByRole('button', {
-      name: 'Project: stale (flowtron outdated: v5.4.0, latest v5.6.0)',
+      name: 'Project: stale (flaitron outdated: v5.4.0, latest v5.6.0)',
     });
     expect(stale.querySelector('[data-currency="behind"]')).toBeTruthy();
     expect(stale.querySelector('[data-currency="current"]')).toBeNull();

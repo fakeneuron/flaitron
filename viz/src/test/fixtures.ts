@@ -24,7 +24,7 @@ interface FetchSeed {
 export function makeTasknote(partial: Partial<Tasknote> & Pick<Tasknote, 'id'>): Tasknote {
   return {
     id: partial.id,
-    path: partial.path ?? `/.flowtron/tasknote/${partial.id}.md`,
+    path: partial.path ?? `/.flaitron/tasknote/${partial.id}.md`,
     frontmatter: partial.frontmatter ?? {
       title: partial.id,
       status: 'in-progress',
@@ -51,9 +51,9 @@ export function makeTasknote(partial: Partial<Tasknote> & Pick<Tasknote, 'id'>):
 function seedFetch(seed: FetchSeed): void {
   const defaultActive = seed.active ?? [];
   const defaultArchive = seed.archive ?? [];
-  const projects = (seed.projects ?? ['flowtron']).map((name) => ({
+  const projects = (seed.projects ?? ['flaitron']).map((name) => ({
     name,
-    flowtronVersion: seed.projectVersions?.[name] ?? null,
+    flaitronVersion: seed.projectVersions?.[name] ?? null,
   }));
   const projectsPayload = { latestRelease: seed.latestRelease ?? null, projects };
   const perProject = seed.perProject ?? {};

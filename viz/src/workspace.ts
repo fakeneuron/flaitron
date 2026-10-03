@@ -14,7 +14,7 @@ export interface ProjectDescriptor {
   planArchivePath: string;
   tasknoteDir: string;
   archiveDir: string;
-  flowtronVersion: string | null;
+  flaitronVersion: string | null;
 }
 
 // expandHome/workspaceRoot/isFile mirror tools/update-adopters.mjs verbatim
@@ -27,7 +27,7 @@ function expandHome(path: string): string {
 }
 
 export function workspaceRoot(env: NodeJS.ProcessEnv = process.env): string {
-  const raw = env.FLOWTRON_VIZ_WORKSPACE;
+  const raw = env.FLAITRON_VIZ_WORKSPACE;
   return expandHome(raw && raw.length > 0 ? raw : '~/code');
 }
 
@@ -56,14 +56,14 @@ async function pinnedVersion(specPath: string): Promise<string | null> {
   }
 }
 
-// Latest released flowtron tag, resolved from the repo enclosing `repoDir`
-// (git walks up from cwd, so the viz dir resolves the flowtron checkout).
+// Latest released flaitron tag, resolved from the repo enclosing `repoDir`
+// (git walks up from cwd, so the viz dir resolves the flaitron checkout).
 // Read once at dev-server startup — a release cut mid-session shows up on
 // the next restart, which matches how /ft-release restarts the gate anyway.
 //
 // Shares its name with tools/update-adopters.mjs's latestReleaseTag but not
 // its signature: that one takes zero args and always resolves against the
-// fixed FLOWTRON_REPO constant, while this one needs an explicit repoDir
+// fixed FLAITRON_REPO constant, while this one needs an explicit repoDir
 // since viz discovers adopter projects at arbitrary paths. Deliberate, not a
 // slip — same shape as the workspaceRoot mirror above.
 export async function latestReleaseTag(repoDir: string): Promise<string | null> {
@@ -95,19 +95,19 @@ export async function discoverProjects(root: string): Promise<ProjectDescriptor[
     const projectRoot = join(root, entry.name);
     // A symlinked project root is legitimate and stays discoverable;
     // what must not escape is the PLAN.md below it. `isFile`'s stat follows
-    // symlinks, so without this a `.flowtron/PLAN.md` (or `.flowtron/`) link
+    // symlinks, so without this a `.flaitron/PLAN.md` (or `.flaitron/`) link
     // pointing anywhere on disk would make that file readable at /api/plan.
     const realRoot = await safeRealpath(projectRoot);
     if (realRoot === null) continue;
-    const planPath = join(projectRoot, '.flowtron', 'PLAN.md');
+    const planPath = join(projectRoot, '.flaitron', 'PLAN.md');
     const realPlan = await realpathWithin(realRoot, planPath);
     if (realPlan === null || !(await isFile(realPlan))) continue;
     // Deliberately not containment-checked: this read yields only a
     // `v\d+.\d+.\d+` regex match (no file content reaches the wire), and
-    // `.flowtron/core -> ~/code/flowtron` is a plausible local-dev symlink
+    // `.flaitron/core -> ~/code/flaitron` is a plausible local-dev symlink
     // that containment would break for no security gain.
-    const flowtronSpec = join(projectRoot, '.flowtron', 'core', 'SPEC.md');
-    const flowtronVersion = await pinnedVersion(flowtronSpec);
+    const flaitronSpec = join(projectRoot, '.flaitron', 'core', 'SPEC.md');
+    const flaitronVersion = await pinnedVersion(flaitronSpec);
     projects.push({
       name: entry.name,
       root: projectRoot,
@@ -115,10 +115,10 @@ export async function discoverProjects(root: string): Promise<ProjectDescriptor[
       // Optional sibling: it does not exist until a project's first
       // `## Completed` rotation, so unlike planPath its presence is not a
       // discovery gate and it is containment-checked at request time instead.
-      planArchivePath: join(projectRoot, '.flowtron', 'PLAN-ARCHIVE.md'),
-      tasknoteDir: join(projectRoot, '.flowtron', 'tasknote'),
-      archiveDir: join(projectRoot, '.flowtron', 'tasknote', 'archive'),
-      flowtronVersion,
+      planArchivePath: join(projectRoot, '.flaitron', 'PLAN-ARCHIVE.md'),
+      tasknoteDir: join(projectRoot, '.flaitron', 'tasknote'),
+      archiveDir: join(projectRoot, '.flaitron', 'tasknote', 'archive'),
+      flaitronVersion,
     });
   }
   projects.sort((a, b) => a.name.localeCompare(b.name));

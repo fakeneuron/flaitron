@@ -327,8 +327,8 @@ describe('App — project switching', () => {
   });
 
   it('fetches /api/projects, renders chips, and marks the stored or first project active', async () => {
-    window.localStorage.setItem('flowtron-viz-active-project', 'fintown');
-    renderApp({ plan, active, projects: ['flowtron', 'fintown', 'invisipaw'] });
+    window.localStorage.setItem('flaitron-viz-active-project', 'fintown');
+    renderApp({ plan, active, projects: ['flaitron', 'fintown', 'invisipaw'] });
 
     await waitFor(() =>
       expect(screen.getByRole('button', { name: 'Project: fintown' })).toHaveAttribute(
@@ -336,39 +336,39 @@ describe('App — project switching', () => {
         'true',
       ),
     );
-    expect(screen.getByRole('button', { name: 'Project: flowtron' })).toHaveAttribute(
+    expect(screen.getByRole('button', { name: 'Project: flaitron' })).toHaveAttribute(
       'aria-pressed',
       'false',
     );
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Flowtron — fintown');
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Flaitron — fintown');
   });
 
-  it('shows the pinned flowtron version in the header when known', async () => {
+  it('shows the pinned flaitron version in the header when known', async () => {
     renderApp({
       plan,
       active,
-      projects: ['flowtron'],
-      projectVersions: { flowtron: 'v5.16.0' },
+      projects: ['flaitron'],
+      projectVersions: { flaitron: 'v5.16.0' },
     });
 
     await waitFor(() => expect(screen.getByText('CORE-100')).toBeInTheDocument());
-    expect(screen.getByText(/flowtron v5\.16\.0/)).toBeInTheDocument();
+    expect(screen.getByText(/flaitron v5\.16\.0/)).toBeInTheDocument();
   });
 
   it('omits the header version segment when the project pin is unknown', async () => {
     renderApp({
       plan,
       active,
-      projects: ['flowtron'],
-      projectVersions: { flowtron: null },
+      projects: ['flaitron'],
+      projectVersions: { flaitron: null },
     });
 
     await waitFor(() => expect(screen.getByText('CORE-100')).toBeInTheDocument());
-    expect(screen.queryByText(/· flowtron/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/· flaitron/)).not.toBeInTheDocument();
   });
 
   it('falls back to the first project when stored value is unknown', async () => {
-    window.localStorage.setItem('flowtron-viz-active-project', 'gone-project');
+    window.localStorage.setItem('flaitron-viz-active-project', 'gone-project');
     renderApp({ plan, active, projects: ['alpha', 'beta'] });
 
     await waitFor(() =>
@@ -381,7 +381,7 @@ describe('App — project switching', () => {
 
   it('on switch: updates active state, persists to localStorage, and resets filters', async () => {
     const user = userEvent.setup();
-    renderApp({ plan, active, projects: ['flowtron', 'fintown'] });
+    renderApp({ plan, active, projects: ['flaitron', 'fintown'] });
 
     await waitFor(() => expect(screen.getByText('CORE-100')).toBeInTheDocument());
 
@@ -396,7 +396,7 @@ describe('App — project switching', () => {
         'true',
       ),
     );
-    expect(window.localStorage.getItem('flowtron-viz-active-project')).toBe('fintown');
+    expect(window.localStorage.getItem('flaitron-viz-active-project')).toBe('fintown');
     expect(screen.getByRole('searchbox')).toHaveValue('');
   });
 });
@@ -428,7 +428,7 @@ describe('App — load() partial failure on project switch', () => {
     renderApp({
       plan,
       active,
-      projects: ['flowtron', 'fintown'],
+      projects: ['flaitron', 'fintown'],
       perProject: {
         fintown: { fail: { archive: 500 } },
       },
@@ -439,7 +439,7 @@ describe('App — load() partial failure on project switch', () => {
     await user.click(screen.getByRole('button', { name: 'Project: fintown' }));
 
     await waitFor(() =>
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Flowtron — fintown'),
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Flaitron — fintown'),
     );
     await waitFor(() =>
       expect(screen.getByText(/Archive list failed: HTTP 500/)).toBeInTheDocument(),
@@ -588,7 +588,7 @@ describe('App — settings modal', () => {
   it('Reset to defaults restores tags OFF / model ON and detail-sections ON', async () => {
     const user = userEvent.setup();
     window.localStorage.setItem(
-      'flowtron-viz-prefs:flowtron',
+      'flaitron-viz-prefs:flaitron',
       JSON.stringify({
         version: 1,
         rowChips: { tags: true, model: false, related: false, due: false },
@@ -610,14 +610,14 @@ describe('App — settings modal', () => {
   it('per-project: switching projects reloads prefs from that project key', async () => {
     const user = userEvent.setup();
     window.localStorage.setItem(
-      'flowtron-viz-prefs:fintown',
+      'flaitron-viz-prefs:fintown',
       JSON.stringify({
         version: 1,
         rowChips: { tags: true, model: false, related: false, due: false },
         detailSections: { goal: true, acceptance: true, subtasks: true },
       }),
     );
-    renderApp({ plan, active, projects: ['flowtron', 'fintown'] });
+    renderApp({ plan, active, projects: ['flaitron', 'fintown'] });
 
     await waitFor(() => expect(screen.getByText('CORE-100')).toBeInTheDocument());
     expect(screen.queryByText('viz')).not.toBeInTheDocument();
@@ -762,7 +762,7 @@ describe('App — density modes', () => {
   it('Reset to defaults restores Default density', async () => {
     const user = userEvent.setup();
     window.localStorage.setItem(
-      'flowtron-viz-prefs:flowtron',
+      'flaitron-viz-prefs:flaitron',
       JSON.stringify({
         version: 1,
         rowChips: { tags: false, model: true, related: false, due: false },
@@ -784,7 +784,7 @@ describe('App — density modes', () => {
   it('per-project: switching projects reloads density from that project key', async () => {
     const user = userEvent.setup();
     window.localStorage.setItem(
-      'flowtron-viz-prefs:fintown',
+      'flaitron-viz-prefs:fintown',
       JSON.stringify({
         version: 1,
         rowChips: { tags: false, model: true, related: false, due: false },
@@ -792,7 +792,7 @@ describe('App — density modes', () => {
         density: 'comfortable',
       }),
     );
-    renderApp({ plan, active, projects: ['flowtron', 'fintown'] });
+    renderApp({ plan, active, projects: ['flaitron', 'fintown'] });
 
     await waitFor(() => expect(screen.getByText('CORE-100')).toBeInTheDocument());
     expect(rowPadClasses()).toContain('px-2.5 py-1.5');
@@ -876,7 +876,7 @@ describe('App — palette modes', () => {
   it('Reset to defaults restores Default palette', async () => {
     const user = userEvent.setup();
     window.localStorage.setItem(
-      'flowtron-viz-prefs:flowtron',
+      'flaitron-viz-prefs:flaitron',
       JSON.stringify({
         version: 2,
         rowChips: { id: true, tags: false, model: true, related: false, due: false },
@@ -901,7 +901,7 @@ describe('App — palette modes', () => {
   it('per-project: switching projects reloads palette from that project key', async () => {
     const user = userEvent.setup();
     window.localStorage.setItem(
-      'flowtron-viz-prefs:fintown',
+      'flaitron-viz-prefs:fintown',
       JSON.stringify({
         version: 2,
         rowChips: { id: true, tags: false, model: true, related: false, due: false },
@@ -911,7 +911,7 @@ describe('App — palette modes', () => {
         palette: 'linear',
       }),
     );
-    renderApp({ plan, active, projects: ['flowtron', 'fintown'] });
+    renderApp({ plan, active, projects: ['flaitron', 'fintown'] });
 
     await waitFor(() => expect(screen.getByText('CORE-100')).toBeInTheDocument());
 
@@ -966,7 +966,7 @@ describe('App — [!critical] flag', () => {
   });
 
   it('omits the Critical column from the board (no longer a Priority value)', async () => {
-    window.localStorage.setItem('flowtron-viz-view', 'board');
+    window.localStorage.setItem('flaitron-viz-view', 'board');
     const plan = `## High
 
 - [ ] **CORE-1** [!critical] | urgent — Urgent
@@ -1255,7 +1255,7 @@ describe('App — completed-bucket grouping', () => {
   });
 
   it('evicts a checked Medium row from the board Medium column into below-board Completed', async () => {
-    window.localStorage.setItem('flowtron-viz-view', 'board');
+    window.localStorage.setItem('flaitron-viz-view', 'board');
     const plan = `## High
 
 - [ ] **CORE-3** | high — High task
@@ -1336,7 +1336,7 @@ describe('App — App-level characterization gaps', () => {
     await waitFor(() => expect(document.querySelector('.overflow-x-auto')).not.toBeNull());
     expect(boardButton).toHaveAttribute('aria-pressed', 'true');
     expect(listButton).toHaveAttribute('aria-pressed', 'false');
-    expect(window.localStorage.getItem('flowtron-viz-view')).toBe('board');
+    expect(window.localStorage.getItem('flaitron-viz-view')).toBe('board');
   });
 
   it('shows "No tasks in this project" in list view when every priority section is empty', async () => {
@@ -1453,7 +1453,7 @@ describe('App — App-level characterization gaps', () => {
     renderApp({
       plan,
       perProject: {
-        flowtron: { fail: { plan: 500 } },
+        flaitron: { fail: { plan: 500 } },
       },
     });
 

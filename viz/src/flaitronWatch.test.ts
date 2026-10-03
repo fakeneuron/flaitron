@@ -18,7 +18,7 @@ import {
   WATCH_HOT_OPTIONS,
   WATCH_POLL_MS,
   type ChangeHit,
-} from './flowtronWatch';
+} from './flaitronWatch';
 import type { ProjectDescriptor } from './workspace';
 
 interface FakeRes {
@@ -38,7 +38,7 @@ function makeRes(): { res: ServerResponse; state: FakeRes } {
 let root: string;
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'flowtron-viz-watch-'));
+  root = await mkdtemp(join(tmpdir(), 'flaitron-viz-watch-'));
   vi.useFakeTimers();
 });
 
@@ -49,7 +49,7 @@ afterEach(async () => {
 
 async function makeProject(name: string): Promise<ProjectDescriptor> {
   const projectRoot = join(root, name);
-  const projectDir = join(projectRoot, '.flowtron');
+  const projectDir = join(projectRoot, '.flaitron');
   const tasknoteDir = join(projectDir, 'tasknote');
   const archiveDir = join(tasknoteDir, 'archive');
   await mkdir(join(archiveDir, 'core'), { recursive: true });
@@ -61,7 +61,7 @@ async function makeProject(name: string): Promise<ProjectDescriptor> {
     planArchivePath: join(projectDir, 'PLAN-ARCHIVE.md'),
     tasknoteDir,
     archiveDir,
-    flowtronVersion: null,
+    flaitronVersion: null,
   };
 }
 
@@ -80,7 +80,7 @@ describe('watcher option pins (chokidar 5 depths)', () => {
   });
 
   it('watches archives natively with depth 1', () => {
-    const roots = ['/ws/alpha/.flowtron/tasknote/archive'];
+    const roots = ['/ws/alpha/.flaitron/tasknote/archive'];
     expect(archiveWatchOptions(roots)).toMatchObject({
       ignoreInitial: true,
       depth: 1,
@@ -95,21 +95,21 @@ describe('watcher option pins (chokidar 5 depths)', () => {
 // directories: `ignored` gates traversal as well as events.
 describe('ignoreNonMarkdown', () => {
   it('ignores non-markdown files', () => {
-    expect(ignoreNonMarkdown('/ws/a/.flowtron/tasknote/notes.txt', FILE)).toBe(true);
+    expect(ignoreNonMarkdown('/ws/a/.flaitron/tasknote/notes.txt', FILE)).toBe(true);
   });
 
   it('keeps markdown files', () => {
-    expect(ignoreNonMarkdown('/ws/a/.flowtron/tasknote/CORE-001.md', FILE)).toBe(false);
+    expect(ignoreNonMarkdown('/ws/a/.flaitron/tasknote/CORE-001.md', FILE)).toBe(false);
   });
 
   it('keeps directories and stats-less pre-checks so traversal can reach files', () => {
-    expect(ignoreNonMarkdown('/ws/a/.flowtron/tasknote/archive', DIR)).toBe(false);
-    expect(ignoreNonMarkdown('/ws/a/.flowtron/tasknote/archive')).toBe(false);
+    expect(ignoreNonMarkdown('/ws/a/.flaitron/tasknote/archive', DIR)).toBe(false);
+    expect(ignoreNonMarkdown('/ws/a/.flaitron/tasknote/archive')).toBe(false);
   });
 });
 
 describe('ignoreOutsideArchiveArea (reader-matching reach)', () => {
-  const archiveRoot = '/ws/alpha/.flowtron/tasknote/archive';
+  const archiveRoot = '/ws/alpha/.flaitron/tasknote/archive';
   const ignored = ignoreOutsideArchiveArea([archiveRoot]);
 
   it('keeps <archiveRoot>/<area>/<file>.md — the shape readArchive reads', () => {
@@ -134,7 +134,7 @@ describe('ignoreOutsideArchiveArea (reader-matching reach)', () => {
   });
 
   it('is per-root', () => {
-    const other = '/ws/beta/.flowtron/tasknote/archive';
+    const other = '/ws/beta/.flaitron/tasknote/archive';
     expect(ignoreOutsideArchiveArea([archiveRoot, other])(join(other, 'fe', 'FE-001.md'), FILE)).toBe(
       false,
     );
@@ -346,7 +346,7 @@ describe('createOnWatchError', () => {
     expect(() => onError(err)).not.toThrow();
     expect(spy).toHaveBeenCalledOnce();
     expect(spy.mock.calls[0]?.[0]).toBe(
-      '[flowtronWatch] hot watcher error (EMFILE): too many open files — watching degraded until the dev server restarts',
+      '[flaitronWatch] hot watcher error (EMFILE): too many open files — watching degraded until the dev server restarts',
     );
     spy.mockRestore();
   });
@@ -356,7 +356,7 @@ describe('createOnWatchError', () => {
     createOnWatchError('archive')(new Error('boom'));
 
     expect(spy.mock.calls[0]?.[0]).toBe(
-      '[flowtronWatch] archive watcher error: boom — watching degraded until the dev server restarts',
+      '[flaitronWatch] archive watcher error: boom — watching degraded until the dev server restarts',
     );
     spy.mockRestore();
   });
@@ -368,8 +368,8 @@ describe('createOnWatchError', () => {
     expect(() => onError('EBUSY')).not.toThrow();
     expect(() => onError(null)).not.toThrow();
     expect(spy.mock.calls.map((c) => c[0])).toEqual([
-      '[flowtronWatch] hot watcher error: EBUSY — watching degraded until the dev server restarts',
-      '[flowtronWatch] hot watcher error: null — watching degraded until the dev server restarts',
+      '[flaitronWatch] hot watcher error: EBUSY — watching degraded until the dev server restarts',
+      '[flaitronWatch] hot watcher error: null — watching degraded until the dev server restarts',
     ]);
     spy.mockRestore();
   });

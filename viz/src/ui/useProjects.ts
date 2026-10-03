@@ -3,7 +3,7 @@ import { readStoredProject, writeStoredProject } from '../projectStorage';
 
 interface ProjectInfo {
   name: string;
-  flowtronVersion: string | null;
+  flaitronVersion: string | null;
 }
 
 interface ProjectsResponse {
@@ -38,7 +38,7 @@ export function useProjects(): {
         const list = payload.projects;
         const names = list.map((p) => p.name);
         const versions: Record<string, string | null> = {};
-        for (const p of list) versions[p.name] = p.flowtronVersion ?? null;
+        for (const p of list) versions[p.name] = p.flaitronVersion ?? null;
         setProjects(names);
         setProjectVersions(versions);
         setLatestRelease(payload.latestRelease ?? null);

@@ -14,7 +14,7 @@ interface WatchSets {
 // and v5 treats every path literally, so escaping `[` or `*` in a project
 // directory name would corrupt the path rather than protect it. The `*.md` /
 // `*/*.md` reach the globs used to carry now lives in the `depth` + `ignored`
-// options beside the watchers in `flowtronWatch.ts`.
+// options beside the watchers in `flaitronWatch.ts`.
 export function watchSets(projects: Iterable<ProjectDescriptor>): WatchSets {
   const hot: string[] = [];
   const archive: string[] = [];

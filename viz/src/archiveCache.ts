@@ -6,7 +6,7 @@ import type { ProjectDescriptor } from './workspace.ts';
 
 async function readArchive(project: ProjectDescriptor): Promise<Tasknote[]> {
   // Containment base is the project root resolved through symlinks, not the
-  // archive dir: if `archive/` (or `tasknote/`, or `.flowtron/`) is itself a
+  // archive dir: if `archive/` (or `tasknote/`, or `.flaitron/`) is itself a
   // symlink, everything under its target is trivially "inside" it, so only the
   // root is a meaningful bound. Symlinked project roots stay legitimate:
   // they resolve first, then nothing below may escape.

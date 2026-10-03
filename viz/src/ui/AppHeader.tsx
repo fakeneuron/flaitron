@@ -65,14 +65,14 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
           <div>
             <h1 className="flex items-center gap-2 text-lg font-semibold">
               <img src="/LOGO.webp" alt="" aria-hidden="true" className="h-6 w-auto" />
-              Flowtron — {activeProject ?? '…'}
+              Flaitron — {activeProject ?? '…'}
             </h1>
             <p className="text-sm text-slate-600 dark:text-slate-400">
               {filteredCount === total
                 ? `${total} tasks · ${inProgress} in progress${starterSuffix}`
                 : `${filteredCount} of ${total} matching · ${inProgress} in progress${starterSuffix}`}
               {projectVersions[activeProject ?? '']
-                ? ` · flowtron ${projectVersions[activeProject ?? '']}`
+                ? ` · flaitron ${projectVersions[activeProject ?? '']}`
                 : null}
               {unparsedCount > 0 && <HeaderBadge>⚠ {unparsedCount} unparsed</HeaderBadge>}
               {duplicateEpicCount > 0 && (

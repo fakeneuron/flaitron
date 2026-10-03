@@ -7,7 +7,7 @@ describe('theme storage key', () => {
   });
 
   it('reads the namespaced key when present', () => {
-    window.localStorage.setItem('flowtron-viz-theme', 'dark');
+    window.localStorage.setItem('flaitron-viz-theme', 'dark');
     expect(readPreference()).toBe('dark');
   });
 
@@ -17,7 +17,7 @@ describe('theme storage key', () => {
   });
 
   it('prefers the namespaced key over the legacy key when both are set', () => {
-    window.localStorage.setItem('flowtron-viz-theme', 'light');
+    window.localStorage.setItem('flaitron-viz-theme', 'light');
     window.localStorage.setItem('theme', 'dark');
     expect(readPreference()).toBe('light');
   });
@@ -25,7 +25,7 @@ describe('theme storage key', () => {
   it('writes only to the namespaced key, leaving any legacy key untouched', () => {
     window.localStorage.setItem('theme', 'dark');
     writePreference('light');
-    expect(window.localStorage.getItem('flowtron-viz-theme')).toBe('light');
+    expect(window.localStorage.getItem('flaitron-viz-theme')).toBe('light');
     expect(window.localStorage.getItem('theme')).toBe('dark');
   });
 });

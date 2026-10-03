@@ -93,8 +93,8 @@ let root: string;
 let outside: string;
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'flowtron-viz-dev-api-'));
-  outside = await mkdtemp(join(tmpdir(), 'flowtron-viz-dev-api-outside-'));
+  root = await mkdtemp(join(tmpdir(), 'flaitron-viz-dev-api-'));
+  outside = await mkdtemp(join(tmpdir(), 'flaitron-viz-dev-api-outside-'));
 });
 
 afterEach(async () => {
@@ -111,7 +111,7 @@ async function makeProject(
   } = {},
 ): Promise<ProjectDescriptor> {
   const projectRoot = join(root, name);
-  const projectDir = join(projectRoot, '.flowtron');
+  const projectDir = join(projectRoot, '.flaitron');
   const tasknoteDir = join(projectDir, 'tasknote');
   const archiveDir = join(tasknoteDir, 'archive');
   await mkdir(archiveDir, { recursive: true });
@@ -131,7 +131,7 @@ async function makeProject(
     planArchivePath,
     tasknoteDir,
     archiveDir,
-    flowtronVersion: null,
+    flaitronVersion: null,
   };
 }
 
@@ -140,11 +140,11 @@ describe('projectFromQuery', () => {
     const proj: ProjectDescriptor = {
       name: 'alpha',
       root: '/tmp/alpha',
-      planPath: '/tmp/alpha/.flowtron/PLAN.md',
-      planArchivePath: '/tmp/alpha/.flowtron/PLAN-ARCHIVE.md',
-      tasknoteDir: '/tmp/alpha/.flowtron/tasknote',
-      archiveDir: '/tmp/alpha/.flowtron/tasknote/archive',
-      flowtronVersion: null,
+      planPath: '/tmp/alpha/.flaitron/PLAN.md',
+      planArchivePath: '/tmp/alpha/.flaitron/PLAN-ARCHIVE.md',
+      tasknoteDir: '/tmp/alpha/.flaitron/tasknote',
+      archiveDir: '/tmp/alpha/.flaitron/tasknote/archive',
+      flaitronVersion: null,
     };
     const projects = new Map([['alpha', proj]]);
     const req = makeReq({ url: '/api/plan?project=alpha' });
@@ -222,8 +222,8 @@ describe('createProjectsHandler', () => {
     expect(JSON.parse(state.body)).toEqual({
       latestRelease: 'v5.6.0',
       projects: [
-        { name: 'alpha', flowtronVersion: null },
-        { name: 'beta', flowtronVersion: null },
+        { name: 'alpha', flaitronVersion: null },
+        { name: 'beta', flaitronVersion: null },
       ],
     });
   });
@@ -238,7 +238,7 @@ describe('createProjectsHandler', () => {
 
     expect(JSON.parse(state.body)).toEqual({
       latestRelease: null,
-      projects: [{ name: 'alpha', flowtronVersion: null }],
+      projects: [{ name: 'alpha', flaitronVersion: null }],
     });
   });
 });
@@ -326,7 +326,7 @@ describe('createPlanHandler', () => {
 
   it('returns a typed 500 when PLAN.md cannot be read', async () => {
     const alpha = await makeProject('alpha');
-    const broken = { ...alpha, planPath: join(root, 'alpha', '.flowtron', 'nope.md') };
+    const broken = { ...alpha, planPath: join(root, 'alpha', '.flaitron', 'nope.md') };
     const handler = createPlanHandler(new Map([['alpha', broken]]));
     const req = makeReq({
       url: '/api/plan?project=alpha',
@@ -344,7 +344,7 @@ describe('createPlanHandler', () => {
   });
 
   it('returns a typed 500 when PLAN.md symlinks outside the project root', async () => {
-    const outside = await mkdtemp(join(tmpdir(), 'flowtron-outside-'));
+    const outside = await mkdtemp(join(tmpdir(), 'flaitron-outside-'));
     const secret = join(outside, 'secret.md');
     await writeFile(secret, '## High\n\n- [ ] **LEAK-001** — leaked\n');
     const alpha = await makeProject('alpha');
@@ -410,7 +410,7 @@ describe('createPlanArchiveHandler', () => {
   });
 
   it('returns an empty body when the archive symlinks outside the project root', async () => {
-    const outside = await mkdtemp(join(tmpdir(), 'flowtron-outside-'));
+    const outside = await mkdtemp(join(tmpdir(), 'flaitron-outside-'));
     const secret = join(outside, 'secret.md');
     await writeFile(secret, '## Completed 2026-07\n\n- [x] **LEAK-001** — Completed 2026-07-14.\n');
     const alpha = await makeProject('alpha');
@@ -574,21 +574,21 @@ created: 2026-08-21
 
 # SECRET-001 | leaked
 `;
-    // Project root is real, but `.flowtron/tasknote` points out of the tree.
+    // Project root is real, but `.flaitron/tasknote` points out of the tree.
     const stash = join(outside, 'stash');
     await mkdir(stash, { recursive: true });
     await writeFile(join(stash, 'SECRET-001.md'), outsideNote);
     const projectRoot = join(root, 'escaper');
-    await mkdir(join(projectRoot, '.flowtron'), { recursive: true });
-    await symlink(stash, join(projectRoot, '.flowtron', 'tasknote'));
+    await mkdir(join(projectRoot, '.flaitron'), { recursive: true });
+    await symlink(stash, join(projectRoot, '.flaitron', 'tasknote'));
     const escaper: ProjectDescriptor = {
       name: 'escaper',
       root: projectRoot,
-      planPath: join(projectRoot, '.flowtron', 'PLAN.md'),
-      planArchivePath: join(projectRoot, '.flowtron', 'PLAN-ARCHIVE.md'),
-      tasknoteDir: join(projectRoot, '.flowtron', 'tasknote'),
-      archiveDir: join(projectRoot, '.flowtron', 'tasknote', 'archive'),
-      flowtronVersion: null,
+      planPath: join(projectRoot, '.flaitron', 'PLAN.md'),
+      planArchivePath: join(projectRoot, '.flaitron', 'PLAN-ARCHIVE.md'),
+      tasknoteDir: join(projectRoot, '.flaitron', 'tasknote'),
+      archiveDir: join(projectRoot, '.flaitron', 'tasknote', 'archive'),
+      flaitronVersion: null,
     };
     const handler = createActiveHandler(new Map([['escaper', escaper]]));
     const req = makeReq({
@@ -613,7 +613,7 @@ created: 2026-08-21
 # CORE-999 | hi
 `;
     const realProject = join(outside, 'linked-adopter');
-    const realTasknoteDir = join(realProject, '.flowtron', 'tasknote');
+    const realTasknoteDir = join(realProject, '.flaitron', 'tasknote');
     await mkdir(realTasknoteDir, { recursive: true });
     await writeFile(join(realTasknoteDir, 'CORE-999.md'), tasknote);
     const linkedRoot = join(root, 'linked');
@@ -621,11 +621,11 @@ created: 2026-08-21
     const linked: ProjectDescriptor = {
       name: 'linked',
       root: linkedRoot,
-      planPath: join(linkedRoot, '.flowtron', 'PLAN.md'),
-      planArchivePath: join(linkedRoot, '.flowtron', 'PLAN-ARCHIVE.md'),
-      tasknoteDir: join(linkedRoot, '.flowtron', 'tasknote'),
-      archiveDir: join(linkedRoot, '.flowtron', 'tasknote', 'archive'),
-      flowtronVersion: null,
+      planPath: join(linkedRoot, '.flaitron', 'PLAN.md'),
+      planArchivePath: join(linkedRoot, '.flaitron', 'PLAN-ARCHIVE.md'),
+      tasknoteDir: join(linkedRoot, '.flaitron', 'tasknote'),
+      archiveDir: join(linkedRoot, '.flaitron', 'tasknote', 'archive'),
+      flaitronVersion: null,
     };
     const handler = createActiveHandler(new Map([['linked', linked]]));
     const req = makeReq({

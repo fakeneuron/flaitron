@@ -2,7 +2,7 @@ import { readLocal, writeLocal } from '../storage';
 
 export type ThemePreference = 'light' | 'dark';
 
-const STORAGE_KEY = 'flowtron-viz-theme';
+const STORAGE_KEY = 'flaitron-viz-theme';
 const LEGACY_STORAGE_KEY = 'theme';
 
 export function readPreference(): ThemePreference {

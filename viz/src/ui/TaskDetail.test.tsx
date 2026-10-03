@@ -13,8 +13,8 @@ const fm = (overrides: Partial<TasknoteFrontmatter> = {}): TasknoteFrontmatter =
 
 describe('vscodeFileHref', () => {
   it('builds a vscode://file link for an absolute path', () => {
-    expect(vscodeFileHref('/Users/x/.flowtron/tasknote/FE-064.md')).toBe(
-      'vscode://file/Users/x/.flowtron/tasknote/FE-064.md',
+    expect(vscodeFileHref('/Users/x/.flaitron/tasknote/FE-064.md')).toBe(
+      'vscode://file/Users/x/.flaitron/tasknote/FE-064.md',
     );
   });
 

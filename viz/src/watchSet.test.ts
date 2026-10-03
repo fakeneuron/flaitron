@@ -4,16 +4,16 @@ import { projectForActiveTasknote, projectForPath, watchSets } from './watchSet'
 import type { ProjectDescriptor } from './workspace';
 
 function project(name: string, root: string): ProjectDescriptor {
-  const flowtron = join(root, name, '.flowtron');
-  const tasknoteDir = join(flowtron, 'tasknote');
+  const flaitron = join(root, name, '.flaitron');
+  const tasknoteDir = join(flaitron, 'tasknote');
   return {
     name,
     root: join(root, name),
-    planPath: join(flowtron, 'PLAN.md'),
-    planArchivePath: join(flowtron, 'PLAN-ARCHIVE.md'),
+    planPath: join(flaitron, 'PLAN.md'),
+    planArchivePath: join(flaitron, 'PLAN-ARCHIVE.md'),
     tasknoteDir,
     archiveDir: join(tasknoteDir, 'archive'),
-    flowtronVersion: null,
+    flaitronVersion: null,
   };
 }
 
@@ -105,7 +105,7 @@ describe('projectForPath', () => {
   });
 
   it('returns undefined for an unknown path', () => {
-    expect(projectForPath('/ws/other/.flowtron/PLAN.md', projects)).toBeUndefined();
+    expect(projectForPath('/ws/other/.flaitron/PLAN.md', projects)).toBeUndefined();
   });
 
   it('does not match a sibling path that string-prefixes archiveDir without being inside it', () => {

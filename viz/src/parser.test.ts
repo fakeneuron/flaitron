@@ -316,7 +316,7 @@ describe('parsePlan', () => {
   // Footgun 1 (SPEC §"Task-line format"): the `!` prefix belongs to
   // `[!critical]` alone, so `[!unattended]` matches no slot and the WHOLE line
   // fails the grammar. Pinned so a future grammar change has to move the docs
-  // with it — flowtron surfaces the row as a diagnostic, but adopter readers
+  // with it — flaitron surfaces the row as a diagnostic, but adopter readers
   // with no diagnostics channel drop it silently.
   it('drops the whole line for [!unattended] and surfaces it as an unparsed diagnostic', () => {
     const md = [
@@ -571,7 +571,7 @@ describe('parsePlan', () => {
   });
 });
 
-// `.flowtron/PLAN-ARCHIVE.md` groups rotated rows under
+// `.flaitron/PLAN-ARCHIVE.md` groups rotated rows under
 // `## Completed <YYYY-MM>` headings. If the heading matched nothing, every row
 // below it would be skipped and rotated history would vanish from the board.
 describe('rotated `## Completed <YYYY-MM>` history', () => {
@@ -826,15 +826,15 @@ All segments optional.
     expect(parsePlanWithDiagnostics(md).tasks.map((t) => t.id)).toEqual(['CORE-001']);
   });
 
-  // Pre-flowtron legacy records (bold label with no <AREA>-NNN shape)
+  // Pre-flaitron legacy records (bold label with no <AREA>-NNN shape)
   // are excluded from both tasks and unparsed diagnostics — but only when
   // completed, to avoid masking a hand-authoring typo of a real ID.
   it('silently excludes completed legacy-label lines from both tasks and unparsed', () => {
     const md = `## Completed
 
 - [x] **flowtron v5.2.0 bump** — Completed 2026-06-03 (\`d2c9766\`). Submodule pin reconciled.
-- [x] **P1** — CLI core. Pre-flowtron historical task — no flowtron tasknote.
-- [x] **P3-1** — OCR robustness fixes. Pre-flowtron tasknote: archive/P3-1.md.
+- [x] **P1** — CLI core. Pre-flaitron historical task — no flaitron tasknote.
+- [x] **P3-1** — OCR robustness fixes. Pre-flaitron tasknote: archive/P3-1.md.
 `;
     const { tasks, unparsed } = parsePlanWithDiagnostics(md);
     expect(tasks).toEqual([]);

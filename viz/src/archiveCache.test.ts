@@ -9,8 +9,8 @@ let root: string;
 let outside: string;
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'flowtron-viz-archive-cache-'));
-  outside = await mkdtemp(join(tmpdir(), 'flowtron-viz-archive-outside-'));
+  root = await mkdtemp(join(tmpdir(), 'flaitron-viz-archive-cache-'));
+  outside = await mkdtemp(join(tmpdir(), 'flaitron-viz-archive-outside-'));
 });
 
 afterEach(async () => {
@@ -23,7 +23,7 @@ async function makeProject(
   files: Record<string, string> = {},
 ): Promise<ProjectDescriptor> {
   const projectRoot = join(root, name);
-  const projectDir = join(projectRoot, '.flowtron');
+  const projectDir = join(projectRoot, '.flaitron');
   const tasknoteDir = join(projectDir, 'tasknote');
   const archiveDir = join(tasknoteDir, 'archive');
   await mkdir(archiveDir, { recursive: true });
@@ -39,7 +39,7 @@ async function makeProject(
     planArchivePath: join(projectDir, 'PLAN-ARCHIVE.md'),
     tasknoteDir,
     archiveDir,
-    flowtronVersion: null,
+    flaitronVersion: null,
   };
 }
 
@@ -72,11 +72,11 @@ describe('createArchiveCache', () => {
     const project: ProjectDescriptor = {
       name: 'empty',
       root: join(root, 'empty'),
-      planPath: join(root, 'empty', '.flowtron', 'PLAN.md'),
-      planArchivePath: join(root, 'empty', '.flowtron', 'PLAN-ARCHIVE.md'),
-      tasknoteDir: join(root, 'empty', '.flowtron', 'tasknote'),
-      archiveDir: join(root, 'empty', '.flowtron', 'tasknote', 'archive'),
-      flowtronVersion: null,
+      planPath: join(root, 'empty', '.flaitron', 'PLAN.md'),
+      planArchivePath: join(root, 'empty', '.flaitron', 'PLAN-ARCHIVE.md'),
+      tasknoteDir: join(root, 'empty', '.flaitron', 'tasknote'),
+      archiveDir: join(root, 'empty', '.flaitron', 'tasknote', 'archive'),
+      flaitronVersion: null,
     };
     const cache = createArchiveCache();
 
@@ -236,17 +236,17 @@ describe('createArchiveCache', () => {
     await mkdir(stash, { recursive: true });
     await writeFile(join(stash, 'SECRET-001.md'), tasknote('SECRET-001', 'leaked'));
     const projectRoot = join(root, 'escaper');
-    const tasknoteDir = join(projectRoot, '.flowtron', 'tasknote');
+    const tasknoteDir = join(projectRoot, '.flaitron', 'tasknote');
     await mkdir(tasknoteDir, { recursive: true });
     await symlink(join(outside, 'stash'), join(tasknoteDir, 'archive'));
     const project: ProjectDescriptor = {
       name: 'escaper',
       root: projectRoot,
-      planPath: join(projectRoot, '.flowtron', 'PLAN.md'),
-      planArchivePath: join(projectRoot, '.flowtron', 'PLAN-ARCHIVE.md'),
+      planPath: join(projectRoot, '.flaitron', 'PLAN.md'),
+      planArchivePath: join(projectRoot, '.flaitron', 'PLAN-ARCHIVE.md'),
       tasknoteDir,
       archiveDir: join(tasknoteDir, 'archive'),
-      flowtronVersion: null,
+      flaitronVersion: null,
     };
 
     expect(await createArchiveCache().get(project)).toEqual([]);
@@ -254,7 +254,7 @@ describe('createArchiveCache', () => {
 
   it('still reads archives under a symlinked project root', async () => {
     const realProject = join(outside, 'linked-adopter');
-    const archiveDir = join(realProject, '.flowtron', 'tasknote', 'archive');
+    const archiveDir = join(realProject, '.flaitron', 'tasknote', 'archive');
     await mkdir(join(archiveDir, 'core'), { recursive: true });
     await writeFile(join(archiveDir, 'core', 'CORE-001.md'), tasknote('CORE-001', 'kept'));
     const linkedRoot = join(root, 'linked');
@@ -262,11 +262,11 @@ describe('createArchiveCache', () => {
     const project: ProjectDescriptor = {
       name: 'linked',
       root: linkedRoot,
-      planPath: join(linkedRoot, '.flowtron', 'PLAN.md'),
-      planArchivePath: join(linkedRoot, '.flowtron', 'PLAN-ARCHIVE.md'),
-      tasknoteDir: join(linkedRoot, '.flowtron', 'tasknote'),
-      archiveDir: join(linkedRoot, '.flowtron', 'tasknote', 'archive'),
-      flowtronVersion: null,
+      planPath: join(linkedRoot, '.flaitron', 'PLAN.md'),
+      planArchivePath: join(linkedRoot, '.flaitron', 'PLAN-ARCHIVE.md'),
+      tasknoteDir: join(linkedRoot, '.flaitron', 'tasknote'),
+      archiveDir: join(linkedRoot, '.flaitron', 'tasknote', 'archive'),
+      flaitronVersion: null,
     };
 
     const notes = await createArchiveCache().get(project);

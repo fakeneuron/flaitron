@@ -1,27 +1,27 @@
 #!/usr/bin/env node
-// update-adopters — batch-bump flowtron adopter pins to the latest release.
+// update-adopters — batch-bump flaitron adopter pins to the latest release.
 //
-// The singular script exception to SPEC.md §"What flowtron does NOT provide"
+// The singular script exception to SPEC.md §"What flaitron does NOT provide"
 // (see the carve-out there): operator-side fleet maintenance across ~/code,
 // not workflow machinery inside a project. It batches the /ft-update recipe:
 // for every adopter pinned behind the latest released tag, move the
-// .flowtron/core submodule pin and commit — locally only, never pushing.
+// .flaitron/core submodule pin and commit — locally only, never pushing.
 //
 // Usage:
 //   node tools/update-adopters.mjs            # dry-run: report what would happen
 //   node tools/update-adopters.mjs --apply    # perform the bumps + commits
 //   node tools/update-adopters.mjs --root <dir>   # workspace override
-//                                             # (default $FLOWTRON_VIZ_WORKSPACE or ~/code)
+//                                             # (default $FLAITRON_VIZ_WORKSPACE or ~/code)
 //
 // Exit codes: 0 = every adopter checked (or bumped) cleanly — skips and drift
 // are reported outcomes, not failures; 1 = at least one adopter failed its
 // check or bump (the ✗ lines, which go to stderr), or a pre-flight guard
-// aborted; 2 = usage error (bad CLI args, or FLOWTRON_UPDATE_LATEST set to a
+// aborted; 2 = usage error (bad CLI args, or FLAITRON_UPDATE_LATEST set to a
 // non-semver value). A failure never aborts the sweep, so the exit status is
 // what a wrapper script has to read.
 //
 // Per-adopter safety gates (any hit → skip that repo, report why):
-//   - .flowtron/core/SPEC.md's Version line is unreadable → the current pin
+//   - .flaitron/core/SPEC.md's Version line is unreadable → the current pin
 //     can't be established, so no range can be reasoned about
 //   - adopter repo's HEAD is detached (tag checkout, mid-bisect, mid-rebase)
 //     → a bump commit here would have no branch to land on and be orphaned
@@ -36,31 +36,46 @@
 //     (lightweight tag, or annotated with an empty message) → fail closed
 //     rather than assume non-breaking; see migrationBearingTags
 //   - staged changes in the adopter's index → a commit here would surprise
-//   - dirty .flowtron/core submodule worktree
+//   - dirty .flaitron/core submodule worktree
 //   - the committed gitlink (or the latest tag's commit) can't be resolved at
 //     all → the pin can't be verified either way, so report the git error
 //     rather than the ✓ current this used to fall through to
 //
-// Gitlink-drift detection: even when the checked-out .flowtron/core/SPEC.md reads
+// Rename migration (v6.0.0, CORE-711.3): an adopter still on the pre-rename
+// .flowtron/core layout is classified `migrate`, not `bump` — automatically, no
+// flag. --apply then moves .flowtron/ → .flaitron/ (untracked contents travel),
+// renames the submodule (path, name, .git/modules dir, gitfile, .git/config
+// section), points the .gitmodules url at the renamed repo, re-points tracked
+// symlinks whose target runs through .flowtron/, rewrites tracked .gitignore
+// rules naming it (else files they ignored, moved along, resurface as
+// untracked), and bumps the pin — all in one commit, unwound on any failure. Every gate above still applies, on the
+// pre-rename submodule path, plus two of its own: the latest release must be
+// RENAME_TAG or later (a v5 pin moved into .flaitron/ would read paths that do
+// not exist there), and .flaitron/ must not already exist. The migration-bearing
+// gate is lifted for RENAME_TAG only — its Migration block is exactly the move
+// this performs; any other bearing release in the range still skips.
+//
+// Gitlink-drift detection: even when the checked-out .flaitron/core/SPEC.md reads
 // the latest release, the superproject's committed submodule pin can still record
-// an older commit (the tag was checked out inside .flowtron/core but the pin was
+// an older commit (the tag was checked out inside .flaitron/core but the pin was
 // never committed). The submodule worktree is clean, so the dirty-worktree gate
 // misses it — a fresh clone would revert to the stale pin. Such a repo is reported
-// as `drift` (not `current`); the fix is `git add .flowtron/core` + commit, or
+// as `drift` (not `current`); the fix is `git add .flaitron/core` + commit, or
 // /ft-update. Report-only — never auto-committed. When either side of that
 // comparison can't be resolved, the lookup returns an unresolved sentinel and
 // the adopter is skipped with git's message: an unverifiable pin is reported as
 // unverified, never as current.
 //
 // The reverse also happens: the committed pin already matches the latest tag,
-// but the checked-out .flowtron/core worktree (what SPEC.md reads) is behind —
+// but the checked-out .flaitron/core worktree (what SPEC.md reads) is behind —
 // e.g. after a superproject checkout without `git submodule update`. Left
 // undetected, `checkAdopter` would classify this as an ordinary `bump` and
 // `applyBump` would stage a gitlink identical to HEAD, then fail to commit it
 // ("nothing to commit"); the resulting rollback resets the worktree back to
 // the stale SHA, un-fixing a repo that only needed `git submodule update`. So
 // this direction is detected up front too and reported as `drift` before any
-// bump-path work runs.
+// bump-path work runs. (Neither drift direction applies to a migrate: its
+// commit restages the gitlink alongside the layout move, so it is never empty.)
 //
 // Mid-bump rollback: applyBump mutates the adopter (submodule checkout, then a
 // staged gitlink) before it commits, and every step after the checkout can fail.
@@ -74,12 +89,13 @@
 // to it rather than swallowed.
 //
 // The bump commit itself passes --no-verify: it is a pathspec commit touching only
-// the .flowtron/core gitlink, a pure pin move with no adopter-authored content for a
+// the .flaitron/core gitlink, a pure pin move with no adopter-authored content for a
 // pre-commit or commit-msg hook to lint. --no-verify skips only those two hooks
 // (prepare-commit-msg and post-commit still run); during a fleet-wide sweep,
 // skipping pre-commit/commit-msg keeps the commit's success contingent only on
 // the gitlink move that produced it, rather than on unrelated adopter-hook
-// failures or side effects.
+// failures or side effects. The migrate commit passes it for the same reason: it
+// carries only what the migration itself staged.
 //
 // Not covered (by design — run /ft-update in the repo for these): per-project
 // symlink wiring for newly shipped skills, and audit-fork drift scans. When a
@@ -88,9 +104,22 @@
 // wiring surface.
 
 import { execFile } from 'node:child_process';
-import { readdir, readFile, realpath, stat } from 'node:fs/promises';
+import {
+  lstat,
+  mkdir,
+  readdir,
+  readFile,
+  readlink,
+  realpath,
+  rename,
+  rmdir,
+  stat,
+  symlink,
+  unlink,
+  writeFile,
+} from 'node:fs/promises';
 import { homedir } from 'node:os';
-import { dirname, join, resolve } from 'node:path';
+import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
 
@@ -101,8 +130,17 @@ if (Number(process.versions.node.split('.')[0]) < 20) {
 
 const execFileAsync = promisify(execFile);
 
-const FLOWTRON_REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const SUBMODULE_PATH = join('.flowtron', 'core');
+const FLAITRON_REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const FLAITRON_DIR = '.flaitron';
+const SUBMODULE_PATH = join(FLAITRON_DIR, 'core');
+// The pre-rename layout the v6 migration reads. The old name survives in this
+// script only where the migration (or the legacy .flowtron/flowtron detection)
+// has to read it.
+const PRE_RENAME_DIR = '.flowtron';
+const PRE_RENAME_SUBMODULE_PATH = join(PRE_RENAME_DIR, 'core');
+// The release that ships the rename. Its own Migration block is the move
+// applyMigrate performs, so only this tag is lifted from the migration gate.
+const RENAME_TAG = 'v6.0.0';
 // Cursor and Grok are "thin bundle" wiring surfaces: neither ships its own
 // skills directory — both symlink canonical claude/skills/ bodies into their
 // own <platform>/skills/ path — so their surface config is identical bar
@@ -112,7 +150,7 @@ function thinClaudeSkillsSurface(label, snippetPath) {
     label,
     snippetPath,
     diffPaths: ['claude/skills/'],
-    snippetKeyPattern: /\.flowtron\/core\/(claude\/skills\/\S+)/,
+    snippetKeyPattern: /\.flaitron\/core\/(claude\/skills\/\S+)/,
     addedKeyForFile(path) {
       const skill = path.match(/^(claude\/skills\/[^/]+)/);
       return skill ? skill[1] : null;
@@ -125,7 +163,7 @@ const WIRING_SURFACES = [
     label: 'Claude .claude/',
     snippetPath: 'claude/AGENTS-snippet.md',
     diffPaths: ['claude/skills/', 'claude/commands/'],
-    snippetKeyPattern: /\.flowtron\/core\/(claude\/(?:skills|commands)\/\S+)/,
+    snippetKeyPattern: /\.flaitron\/core\/(claude\/(?:skills|commands)\/\S+)/,
     addedKeyForFile(path) {
       const skill = path.match(/^(claude\/skills\/[^/]+)/);
       if (skill) return skill[1];
@@ -138,7 +176,7 @@ const WIRING_SURFACES = [
     label: 'Codex .agents/skills',
     snippetPath: 'codex/AGENTS-snippet.md',
     diffPaths: ['codex/skills/'],
-    snippetKeyPattern: /\.flowtron\/core\/(codex\/skills\/\S+)/,
+    snippetKeyPattern: /\.flaitron\/core\/(codex\/skills\/\S+)/,
     addedKeyForFile(path) {
       const skill = path.match(/^(codex\/skills\/[^/]+)/);
       return skill ? skill[1] : null;
@@ -148,10 +186,10 @@ const WIRING_SURFACES = [
   thinClaudeSkillsSurface('Grok .grok/skills', 'grok/AGENTS-snippet.md'),
 ];
 
-// FLOWTRON_FETCH_TIMEOUT_MS override read at call time (not cached at module
+// FLAITRON_FETCH_TIMEOUT_MS override read at call time (not cached at module
 // load) so tests can shrink it per-case without a child-process boundary.
 function fetchTimeoutMs() {
-  const raw = Number(process.env.FLOWTRON_FETCH_TIMEOUT_MS);
+  const raw = Number(process.env.FLAITRON_FETCH_TIMEOUT_MS);
   return Number.isFinite(raw) && raw > 0 ? raw : 30000;
 }
 
@@ -228,7 +266,7 @@ function expandHome(path) {
 }
 
 function workspaceRoot(rootArg) {
-  const raw = rootArg ?? process.env.FLOWTRON_VIZ_WORKSPACE;
+  const raw = rootArg ?? process.env.FLAITRON_VIZ_WORKSPACE;
   return expandHome(raw && raw.length > 0 ? raw : '~/code');
 }
 
@@ -257,6 +295,16 @@ async function isFile(path) {
 async function isDir(path) {
   try {
     return (await stat(path)).isDirectory();
+  } catch {
+    return false;
+  }
+}
+
+// lstat, not stat: a dangling symlink still occupies the name a rename targets.
+async function pathExists(path) {
+  try {
+    await lstat(path);
+    return true;
   } catch {
     return false;
   }
@@ -291,7 +339,7 @@ export async function pinnedVersion(specPath) {
 // the commit is tagged, else a short SHA.
 export async function describePin(sha) {
   try {
-    const tags = (await git(FLOWTRON_REPO, 'tag', '--points-at', sha))
+    const tags = (await git(FLAITRON_REPO, 'tag', '--points-at', sha))
       .split('\n')
       .map((l) => l.trim())
       .filter((t) => parseSemverTag(t));
@@ -332,13 +380,13 @@ async function recordedGitlinkSha(repo) {
   }
 }
 
-// The canonical commit SHA a release tag resolves to in FLOWTRON_REPO, or the
+// The canonical commit SHA a release tag resolves to in FLAITRON_REPO, or the
 // unresolved sentinel when the tag can't be resolved locally. Commit SHAs are
-// content-identical across clones, so FLOWTRON_REPO is the canonical source —
+// content-identical across clones, so FLAITRON_REPO is the canonical source —
 // no adopter-side fetch needed.
 async function canonicalTagSha(tag) {
   try {
-    return (await git(FLOWTRON_REPO, 'rev-parse', `${tag}^{commit}`)).trim();
+    return (await git(FLAITRON_REPO, 'rev-parse', `${tag}^{commit}`)).trim();
   } catch (e) {
     return unresolved(gitErrorLine(e));
   }
@@ -356,20 +404,20 @@ export async function gitlinkDrift(repo, latest) {
   }
   const latestSha = await cachedCanonicalTagSha(latest);
   if (isUnresolved(latestSha)) {
-    return unresolved(`could not resolve ${latest} in ${FLOWTRON_REPO}: ${latestSha.error}`);
+    return unresolved(`could not resolve ${latest} in ${FLAITRON_REPO}: ${latestSha.error}`);
   }
   if (recorded === latestSha) return null;
   return `committed gitlink at ${await describePin(recorded)}, worktree SPEC.md at ${latest} — commit the pin (git add ${SUBMODULE_PATH}) or run /ft-update`;
 }
 
 // Shares its name with viz/src/workspace.ts's latestReleaseTag but not its
-// signature: this one always resolves against the fixed FLOWTRON_REPO
-// constant (this script only ever bumps flowtron adopters), while viz's
+// signature: this one always resolves against the fixed FLAITRON_REPO
+// constant (this script only ever bumps flaitron adopters), while viz's
 // takes an explicit repoDir because it discovers adopter projects at
 // arbitrary paths. Same-name-different-signature is deliberate, not a slip —
 // see the workspaceRoot comment below for the precedent.
 export async function latestReleaseTag() {
-  const stdout = await git(FLOWTRON_REPO, 'tag', '--sort=-v:refname');
+  const stdout = await git(FLAITRON_REPO, 'tag', '--sort=-v:refname');
   return stdout.split('\n').map((l) => l.trim()).find((l) => parseSemverTag(l)) ?? null;
 }
 
@@ -377,7 +425,7 @@ export async function latestReleaseTag() {
 export async function tagsInRange(fromTag, toTag) {
   const from = parseSemverTag(fromTag);
   const to = parseSemverTag(toTag);
-  const stdout = await git(FLOWTRON_REPO, 'tag', '--sort=v:refname');
+  const stdout = await git(FLAITRON_REPO, 'tag', '--sort=v:refname');
   return stdout
     .split('\n')
     .map((l) => l.trim())
@@ -401,9 +449,9 @@ export async function migrationBearingTags(tags) {
   for (const tag of tags) {
     // %(objecttype) is "tag" for annotated tags, "commit" for lightweight.
     const objecttype = (
-      await git(FLOWTRON_REPO, 'tag', '-l', '--format=%(objecttype)', tag)
+      await git(FLAITRON_REPO, 'tag', '-l', '--format=%(objecttype)', tag)
     ).trim();
-    const contents = await git(FLOWTRON_REPO, 'tag', '-l', '--format=%(contents)', tag);
+    const contents = await git(FLAITRON_REPO, 'tag', '-l', '--format=%(contents)', tag);
     // Lightweight / missing / empty-message tags have no release Migration
     // block to trust — treat as bearing rather than silently non-breaking.
     if (objecttype !== 'tag' || !contents.trim()) {
@@ -434,7 +482,7 @@ export async function migrationBearingTags(tags) {
 async function wiredSkillKeys(toTag, surface) {
   let snippet;
   try {
-    snippet = await git(FLOWTRON_REPO, 'show', `${toTag}:${surface.snippetPath}`);
+    snippet = await git(FLAITRON_REPO, 'show', `${toTag}:${surface.snippetPath}`);
   } catch {
     return null; // snippet unreadable at toTag — caller falls back to coarse check
   }
@@ -449,7 +497,7 @@ async function wiredSkillKeys(toTag, surface) {
 
 async function addedFilesForSurface(fromTag, toTag, surface) {
   const stdout = await git(
-    FLOWTRON_REPO,
+    FLAITRON_REPO,
     'diff',
     '--name-only',
     '--diff-filter=A',
@@ -494,17 +542,21 @@ export function formatSkillsNote(surfaces) {
 
 export async function discoverAdopters(root) {
   const entries = await readdir(root, { withFileTypes: true });
-  const flowtronReal = await realOrResolve(FLOWTRON_REPO);
+  const flaitronReal = await realOrResolve(FLAITRON_REPO);
   const adopters = [];
   const legacy = [];
   for (const entry of entries) {
     if (!(entry.isDirectory() || entry.isSymbolicLink())) continue;
     if (entry.name.startsWith('.')) continue;
     const repo = join(root, entry.name);
-    if ((await realOrResolve(repo)) === flowtronReal) continue; // flowtron itself: /ft-release territory
-    if (await isFile(join(repo, SUBMODULE_PATH, 'SPEC.md'))) {
+    if ((await realOrResolve(repo)) === flaitronReal) continue; // flaitron itself: /ft-release territory
+    // Pre-rename first: a repo carrying both layouts must reach checkAdopter's
+    // `.flaitron/ already exists` gate rather than be bumped with .flowtron/ left behind.
+    if (await isFile(join(repo, PRE_RENAME_SUBMODULE_PATH, 'SPEC.md'))) {
+      adopters.push({ name: entry.name, repo, preRename: true });
+    } else if (await isFile(join(repo, SUBMODULE_PATH, 'SPEC.md'))) {
       adopters.push({ name: entry.name, repo });
-    } else if (await isDir(join(repo, '.flowtron', 'flowtron'))) {
+    } else if (await isDir(join(repo, PRE_RENAME_DIR, 'flowtron'))) {
       legacy.push(entry.name);
     }
   }
@@ -515,8 +567,8 @@ export async function discoverAdopters(root) {
 // Per-process caches keyed by the `(fromTag, toTag)` pair checkAdopter calls
 // them with. `latest` is fixed for a whole sweep and adopters commonly share
 // the same `current` pin, so a large sweep would otherwise repeat identical
-// FLOWTRON_REPO git spawns per adopter (CORE-490). Safe without invalidation:
-// a sweep is one short-lived process and FLOWTRON_REPO's tags don't change
+// FLAITRON_REPO git spawns per adopter (CORE-490). Safe without invalidation:
+// a sweep is one short-lived process and FLAITRON_REPO's tags don't change
 // mid-run. Cache and return the in-flight promise itself (not an async
 // wrapper around it) so concurrent callers on the same key — and tests
 // asserting memoization via promise identity — share the exact same
@@ -546,7 +598,7 @@ export function cachedNewSkillWiringSurfaces(fromTag, toTag) {
 // is called once per adopter for the sweep-constant `latest` (via gitlinkDrift
 // and the reverse-drift guard) and again for a commonly-shared `current` (the
 // missing-pinned-tag guard) — a large sweep otherwise repeats identical
-// FLOWTRON_REPO git spawns per adopter for tags that never change mid-run
+// FLAITRON_REPO git spawns per adopter for tags that never change mid-run
 // (CORE-493). Same safety argument as above: one short-lived process per sweep.
 const canonicalShaCache = new Map();
 export function cachedCanonicalTagSha(tag) {
@@ -563,13 +615,33 @@ export function cachedCanonicalTagSha(tag) {
 // prior gate computed (current, recordedGitlink, currentVersion/latestVersion,
 // range/bearing) — an array of independent gate functions would need a
 // threaded context object, a larger refactor than this naming cleanup's
-// scope. Left inline.
-export async function checkAdopter(adopter, latest) {
-  const { repo } = adopter;
-  const sub = join(repo, SUBMODULE_PATH);
+// scope. Left inline. A pre-rename adopter (`adopter.preRename`) rides the same
+// gates on its .flowtron/core path — see the header's "Rename migration" note
+// for the two gates it adds, the drift guards it skips, and the scoped lift.
+// `renameTag` is a test seam: no real RENAME_TAG exists until it ships.
+export async function checkAdopter(adopter, latest, { renameTag = RENAME_TAG } = {}) {
+  const { repo, preRename = false } = adopter;
+  const subPath = preRename ? PRE_RENAME_SUBMODULE_PATH : SUBMODULE_PATH;
+  const sub = join(repo, subPath);
   const current = await pinnedVersion(join(sub, 'SPEC.md'));
   if (current === null) return { status: 'skip', reason: 'unreadable pinned SPEC.md version' };
-  if (current === latest) {
+  if (preRename) {
+    const latestVersion = parseSemverTag(latest);
+    if (!latestVersion || compareSemver(latestVersion, parseSemverTag(renameTag)) < 0) {
+      return {
+        status: 'skip',
+        current,
+        reason: `still on ${PRE_RENAME_DIR}/ — the move to ${FLAITRON_DIR}/ needs ${renameTag} or later (latest is ${latest})`,
+      };
+    }
+    if (await pathExists(join(repo, FLAITRON_DIR))) {
+      return {
+        status: 'skip',
+        current,
+        reason: `${FLAITRON_DIR}/ already exists alongside ${PRE_RENAME_DIR}/ — reconcile by hand before migrating`,
+      };
+    }
+  } else if (current === latest) {
     const drift = await gitlinkDrift(repo, latest);
     // Unresolved is not "no drift": this branch returns without touching git
     // again, so reporting `current` here would render a git failure as a clean
@@ -593,15 +665,17 @@ export async function checkAdopter(adopter, latest) {
   // early return above, this path continues into the detached-HEAD and
   // staged-diff gates, which rethrow any non-exit-1 git failure (CORE-366) —
   // a broken repo still fails loudly, it just fails there.
-  const recordedGitlink = await recordedGitlinkSha(repo);
-  if (!isUnresolved(recordedGitlink)) {
-    const latestSha = await cachedCanonicalTagSha(latest);
-    if (!isUnresolved(latestSha) && recordedGitlink === latestSha) {
-      return {
-        status: 'drift',
-        current,
-        reason: `committed gitlink already at ${latest}, worktree SPEC.md at ${current} — run git submodule update in .flowtron/core (or /ft-update) to sync the worktree; nothing to commit`,
-      };
+  if (!preRename) {
+    const recordedGitlink = await recordedGitlinkSha(repo);
+    if (!isUnresolved(recordedGitlink)) {
+      const latestSha = await cachedCanonicalTagSha(latest);
+      if (!isUnresolved(latestSha) && recordedGitlink === latestSha) {
+        return {
+          status: 'drift',
+          current,
+          reason: `committed gitlink already at ${latest}, worktree SPEC.md at ${current} — run git submodule update in ${SUBMODULE_PATH} (or /ft-update) to sync the worktree; nothing to commit`,
+        };
+      }
     }
   }
 
@@ -626,13 +700,13 @@ export async function checkAdopter(adopter, latest) {
     return {
       status: 'skip',
       current,
-      reason: `pinned ahead of latest release ${latest} — bumping would downgrade; run git fetch --tags in ${FLOWTRON_REPO} and re-run`,
+      reason: `pinned ahead of latest release ${latest} — bumping would downgrade; run git fetch --tags in ${FLAITRON_REPO} and re-run`,
     };
   }
 
   // Missing-pinned-tag guard: `current` is just the string `pinnedVersion`
   // parsed out of SPEC.md's Version line — nothing above confirms a tag by
-  // that name still exists in FLOWTRON_REPO. If it was deleted or renamed
+  // that name still exists in FLAITRON_REPO. If it was deleted or renamed
   // upstream (or the pin was hand-edited to a value that never existed),
   // `tagsInRange` below would compute a numeric range against a boundary
   // that was never actually released — silently wrong rather than a clear
@@ -641,16 +715,19 @@ export async function checkAdopter(adopter, latest) {
     return {
       status: 'skip',
       current,
-      reason: `pinned tag ${current} not found in ${FLOWTRON_REPO} — run git fetch --tags in ${FLOWTRON_REPO} and re-run`,
+      reason: `pinned tag ${current} not found in ${FLAITRON_REPO} — run git fetch --tags in ${FLAITRON_REPO} and re-run`,
     };
   }
 
   const bearing = await cachedMigrationBearingTags(current, latest);
-  if (bearing.length > 0) {
+  // Scoped lift: the rename release's Migration block is the move applyMigrate
+  // performs, so a pre-rename adopter clears that one tag — and only that one.
+  const blocking = preRename ? bearing.filter((tag) => tag !== renameTag) : bearing;
+  if (blocking.length > 0) {
     return {
       status: 'skip',
       current,
-      reason: `migration-bearing release(s) in range: ${bearing.join(', ')} — run /ft-update manually`,
+      reason: `migration-bearing release(s) in range: ${blocking.join(', ')} — run /ft-update manually`,
     };
   }
 
@@ -665,17 +742,17 @@ export async function checkAdopter(adopter, latest) {
 
   const subStatus = await git(sub, 'status', '--porcelain');
   if (subStatus.trim().length > 0) {
-    return { status: 'skip', current, reason: 'dirty .flowtron/core worktree' };
+    return { status: 'skip', current, reason: `dirty ${subPath} worktree` };
   }
 
   const skillsNote = formatSkillsNote(await cachedNewSkillWiringSurfaces(current, latest));
-  return { status: 'bump', current, skillsNote };
+  return { status: preRename ? 'migrate' : 'bump', current, skillsNote };
 }
 
 // Belt-and-suspenders for applyBump: SPEC.md's Version line can't distinguish
 // a tag from a wrong commit that happens to carry a matching version string.
 // Cross-check the checked-out SHA against the canonical tag SHA in
-// FLOWTRON_REPO — same source gitlinkDrift already trusts.
+// FLAITRON_REPO — same source gitlinkDrift already trusts.
 export function verifyPinnedSha(checkedOutSha, canonicalSha, latest) {
   if (checkedOutSha !== canonicalSha) {
     throw new Error(
@@ -707,6 +784,27 @@ async function rollbackBump(repo, sub, priorSha, staged) {
   return residue.length > 0 ? residue.join('; ') : null;
 }
 
+// Check out `latest` in `sub` and prove it is the canonical release: SPEC.md's
+// Version line must read it, and the checked-out SHA must match FLAITRON_REPO's
+// tag. Shared by applyBump and applyMigrate; both call it inside their rollback
+// window.
+async function checkoutVerified(sub, latest) {
+  await git(sub, 'checkout', '--quiet', latest);
+  const confirmed = await pinnedVersion(join(sub, 'SPEC.md'));
+  if (confirmed !== latest) {
+    throw new Error(`post-checkout SPEC.md reads ${confirmed}, expected ${latest}`);
+  }
+  const checkedOutSha = (await git(sub, 'rev-parse', 'HEAD')).trim();
+  // Reuses canonicalTagSha's sentinel contract (CORE-490.2) instead of a second
+  // hand-inlined `git rev-parse` — and the cache (CORE-493) means this is
+  // usually already warm from checkAdopter's own resolution of `latest`.
+  const canonicalSha = await cachedCanonicalTagSha(latest);
+  if (isUnresolved(canonicalSha)) {
+    throw new Error(`could not resolve canonical SHA for ${latest} in ${FLAITRON_REPO}: ${canonicalSha.error}`);
+  }
+  verifyPinnedSha(checkedOutSha, canonicalSha, latest);
+}
+
 export async function applyBump(adopter, latest) {
   const { repo } = adopter;
   const sub = join(repo, SUBMODULE_PATH);
@@ -718,20 +816,7 @@ export async function applyBump(adopter, latest) {
   const priorSha = (await git(sub, 'rev-parse', 'HEAD')).trim();
   let staged = false;
   try {
-    await git(sub, 'checkout', '--quiet', latest);
-    const confirmed = await pinnedVersion(join(sub, 'SPEC.md'));
-    if (confirmed !== latest) {
-      throw new Error(`post-checkout SPEC.md reads ${confirmed}, expected ${latest}`);
-    }
-    const checkedOutSha = (await git(sub, 'rev-parse', 'HEAD')).trim();
-    // Reuses canonicalTagSha's sentinel contract (CORE-490.2) instead of a second
-    // hand-inlined `git rev-parse` — and the cache (CORE-493) means this is
-    // usually already warm from checkAdopter's own resolution of `latest`.
-    const canonicalSha = await cachedCanonicalTagSha(latest);
-    if (isUnresolved(canonicalSha)) {
-      throw new Error(`could not resolve canonical SHA for ${latest} in ${FLOWTRON_REPO}: ${canonicalSha.error}`);
-    }
-    verifyPinnedSha(checkedOutSha, canonicalSha, latest);
+    await checkoutVerified(sub, latest);
     await git(repo, 'add', SUBMODULE_PATH);
     staged = true;
     // Pathspec commit: only the submodule gitlink lands, never unrelated work.
@@ -744,7 +829,7 @@ export async function applyBump(adopter, latest) {
       '--quiet',
       '--no-verify',
       '-m',
-      `chore: bump flowtron ${current} → ${latest}`,
+      `chore: bump flaitron ${current} → ${latest}`,
       '--',
       SUBMODULE_PATH,
     );
@@ -757,9 +842,227 @@ export async function applyBump(adopter, latest) {
   }
 }
 
+// Every `.flowtron` path segment in `text` (a symlink target, a .gitignore)
+// becomes `.flaitron`, or null when none occurs and the caller leaves it alone.
+// A segment is `.flowtron` not glued to a neighbouring name character, so
+// `../flowtron` and `.flowtron-old` stay put. Global: a link reaching into the
+// submodule's own self-host dir renames there too.
+export function renamedDirSegments(text) {
+  const next = text.replace(/(?<![\w.-])\.flowtron(?![\w.-])/g, FLAITRON_DIR);
+  return next === text ? null : next;
+}
+
+// …/flowtron(.git) → …/flaitron(.git), https or scp-style; a url not ending in
+// the old repo name (a fork, a mirror) comes back unchanged.
+export function renamedRemoteUrl(url) {
+  return url.replace(/(^|[/:])flowtron(\.git)?$/, `$1flaitron$2`);
+}
+
+// The submodule's name as .gitmodules records it for `path` — read, never
+// assumed equal to the path (the legacy .flowtron/flowtron move kept old names).
+async function submoduleName(repo, path) {
+  const out = await git(repo, 'config', '--file', '.gitmodules', '--get-regexp', '^submodule\\..*\\.path$');
+  for (const line of out.split('\n')) {
+    const space = line.indexOf(' ');
+    if (space !== -1 && line.slice(space + 1) === path) {
+      return line.slice('submodule.'.length, space - '.path'.length);
+    }
+  }
+  throw new Error(`no .gitmodules entry has path ${path}`);
+}
+
+async function trackedGitignores(repo) {
+  const out = await git(repo, 'ls-files', '-z', '--', ':(glob)**/.gitignore');
+  return out.split('\0').filter(Boolean);
+}
+
+async function trackedSymlinks(repo) {
+  const out = await git(repo, 'ls-files', '--stage', '-z');
+  return out
+    .split('\0')
+    .filter((entry) => entry.startsWith('120000 '))
+    .map((entry) => entry.slice(entry.indexOf('\t') + 1));
+}
+
+// Run applyMigrate's undo stack newest-first, so every undo sees the layout its
+// own step produced. Best-effort like rollbackBump: returns null when the repo
+// is fully restored, else the residue each failed undo left behind.
+async function unwind(undo) {
+  const residue = [];
+  for (const [leftBehind, revert] of undo.reverse()) {
+    try {
+      await revert();
+    } catch (e) {
+      residue.push(`${leftBehind} (${e.message})`);
+    }
+  }
+  return residue.length > 0 ? residue.join('; ') : null;
+}
+
+// The v6 rename migration (see the header's "Rename migration" note): verified
+// checkout of `latest` at the old path, then the layout move, then one commit.
+// Each mutation pushes its undo as soon as it lands; any failure unwinds them.
+export async function applyMigrate(adopter, latest) {
+  const { repo } = adopter;
+  const oldSub = join(repo, PRE_RENAME_SUBMODULE_PATH);
+  const gitmodules = join(repo, '.gitmodules');
+  // Same fetch-outside-the-window shape as applyBump.
+  await git(oldSub, 'fetch', '--tags', '--quiet', 'origin', { timeout: fetchTimeoutMs() });
+
+  // Everything an undo restores is captured before the first mutation. Paths are
+  // physical (realpath), because the gitfile ⇄ core.worktree pair is written as
+  // relative paths and a symlinked prefix (macOS /var → /private/var) would
+  // otherwise miscount the `..` hops between them.
+  const priorSha = (await git(oldSub, 'rev-parse', 'HEAD')).trim();
+  const oldName = await submoduleName(repo, PRE_RENAME_SUBMODULE_PATH);
+  const newName = SUBMODULE_PATH; // name == path, git's own default
+  const oldModDir = (await git(oldSub, 'rev-parse', '--absolute-git-dir')).trim();
+  const superGitDir = await realpath((await git(repo, 'rev-parse', '--absolute-git-dir')).trim());
+  const newModDir = join(superGitDir, 'modules', newName);
+  const newSub = join(await realpath(repo), SUBMODULE_PATH);
+  const gitmodulesText = await readFile(gitmodules, 'utf8');
+  const gitfileText = await readFile(join(oldSub, '.git'), 'utf8');
+  const oldWorktree = (
+    await git(repo, 'config', '--file', join(oldModDir, 'config'), 'core.worktree')
+  ).trim();
+  const oldUrl = (
+    await git(repo, 'config', '--file', '.gitmodules', `submodule.${oldName}.url`)
+  ).trim();
+  const oldConfigUrl = (await git(repo, 'config', `submodule.${oldName}.url`)).trim();
+  const oldOriginUrl = (await git(oldSub, 'remote', 'get-url', 'origin')).trim();
+
+  const undo = [];
+  try {
+    undo.push(['submodule left at the new tag', () => git(oldSub, 'checkout', '--quiet', priorSha)]);
+    await checkoutVerified(oldSub, latest);
+
+    // 1. Move the tree. git mv carries untracked files along and rewrites the
+    //    .gitmodules path + core.worktree; checkAdopter verified the index was
+    //    clean, so a plain reset restores it exactly.
+    await git(repo, 'mv', PRE_RENAME_DIR, FLAITRON_DIR);
+    undo.push([
+      `${FLAITRON_DIR}/ left in place of ${PRE_RENAME_DIR}/`,
+      async () => {
+        await rename(join(repo, FLAITRON_DIR), join(repo, PRE_RENAME_DIR));
+        await writeFile(gitmodules, gitmodulesText);
+        await git(repo, 'config', '--file', join(oldModDir, 'config'), 'core.worktree', oldWorktree);
+        await git(repo, 'reset', '--quiet');
+      },
+    ]);
+
+    // 2. git mv leaves the submodule's name — and so its .git/modules/<name>
+    //    gitdir — behind. Move the gitdir under the new name and re-point the
+    //    gitfile ⇄ core.worktree pair at each other.
+    await mkdir(dirname(newModDir), { recursive: true });
+    await rename(oldModDir, newModDir);
+    undo.push([
+      `submodule gitdir left at ${newModDir}`,
+      async () => {
+        await mkdir(dirname(oldModDir), { recursive: true });
+        await rename(newModDir, oldModDir);
+        await rmdir(dirname(newModDir)).catch(() => {});
+        await writeFile(join(newSub, '.git'), gitfileText);
+      },
+    ]);
+    // The old name's now-empty parent (.git/modules/.flowtron); rmdir refuses a
+    // non-empty dir, so this (and its mirror in the undo) can never take
+    // anything else with it.
+    await rmdir(dirname(oldModDir)).catch(() => {});
+    await writeFile(join(newSub, '.git'), `gitdir: ${relative(newSub, newModDir)}\n`);
+    await git(
+      repo,
+      'config',
+      '--file',
+      join(newModDir, 'config'),
+      'core.worktree',
+      relative(newModDir, newSub),
+    );
+
+    // 3. Rename the submodule itself, point its url at the renamed repo, and let
+    //    `submodule sync` carry that url into .git/config and the gitdir's origin.
+    //    (.gitmodules edits are undone by step 1's text restore.)
+    await git(repo, 'config', '--file', '.gitmodules', '--rename-section', `submodule.${oldName}`, `submodule.${newName}`);
+    await git(repo, 'config', '--file', '.gitmodules', `submodule.${newName}.url`, renamedRemoteUrl(oldUrl));
+    await git(repo, 'config', '--rename-section', `submodule.${oldName}`, `submodule.${newName}`);
+    undo.push([
+      '.git/config submodule section left renamed',
+      () => git(repo, 'config', '--rename-section', `submodule.${newName}`, `submodule.${oldName}`),
+    ]);
+    await git(repo, 'submodule', 'sync', '--quiet', '--', SUBMODULE_PATH);
+    undo.push([
+      'submodule url left at the renamed repo',
+      async () => {
+        await git(repo, 'config', `submodule.${newName}.url`, oldConfigUrl);
+        await git(newSub, 'remote', 'set-url', 'origin', oldOriginUrl);
+      },
+    ]);
+
+    // 4. Re-point tracked symlinks whose target runs through the old dir. A
+    //    tracked link missing (or retyped) in the worktree is the adopter's own
+    //    unstaged change — left alone.
+    const toStage = [];
+    for (const path of await trackedSymlinks(repo)) {
+      const link = join(repo, path);
+      const target = await readlink(link).catch(() => null);
+      const next = target === null ? null : renamedDirSegments(target);
+      if (next === null) continue;
+      await unlink(link);
+      undo.push([
+        `symlink ${path} left re-pointed`,
+        async () => {
+          await unlink(link).catch(() => {});
+          await symlink(target, link);
+        },
+      ]);
+      await symlink(next, link);
+      toStage.push(path);
+    }
+
+    // 5. Ignore rules naming the old dir (`.flowtron/screenshots/`) stop
+    //    matching what step 1 moved, so ignored files would resurface as
+    //    untracked. Rewrite every tracked .gitignore; one carrying the adopter's
+    //    own unstaged edits is rewritten in place but left unstaged, so the
+    //    commit never sweeps those edits in.
+    for (const path of await trackedGitignores(repo)) {
+      const file = join(repo, path);
+      const text = await readFile(file, 'utf8').catch(() => null);
+      const next = text === null ? null : renamedDirSegments(text);
+      if (next === null) continue;
+      let clean = true;
+      try {
+        await git(repo, 'diff', '--quiet', '--', path);
+      } catch (e) {
+        if (e.code !== 1) throw e;
+        clean = false;
+      }
+      undo.push([`${path} left rewritten`, () => writeFile(file, text)]);
+      await writeFile(file, next);
+      if (clean) toStage.push(path);
+    }
+
+    // 6. Stage what steps 2–5 left unstaged and commit the whole migration. No
+    //    pathspec: the index was clean, so it holds only this migration's work.
+    //    --no-verify: same reasoning as the bump commit (header note).
+    await git(repo, 'add', '--', '.gitmodules', SUBMODULE_PATH, ...toStage);
+    await git(
+      repo,
+      'commit',
+      '--quiet',
+      '--no-verify',
+      '-m',
+      `chore: migrate ${PRE_RENAME_DIR} → ${FLAITRON_DIR}, bump flaitron ${adopter.current} → ${latest}`,
+    );
+  } catch (e) {
+    const residue = await unwind(undo);
+    if (residue) e.message = `${e.message} (rollback incomplete: ${residue})`;
+    throw e;
+  }
+}
+
 // Print one adopter's check result and fold it into the running counts. The
-// apply branch performs the bump inline (awaiting applyBump); all other
-// branches are pure presentation over the already-computed result.
+// apply branch performs the bump (or migrate) inline, awaiting applyBump or
+// applyMigrate; all other branches are pure presentation over the
+// already-computed result. A migrate counts as a bump — it is one, plus the move.
 async function reportResult(adopter, result, latest, apply, counts) {
   if (result.status === 'current') {
     counts.current += 1;
@@ -772,19 +1075,22 @@ async function reportResult(adopter, result, latest, apply, counts) {
     const at = result.current ? ` (${result.current})` : '';
     console.log(`  ⏭ ${adopter.name}${at}: skipped — ${result.reason}`);
   } else if (apply) {
+    const migrate = result.status === 'migrate';
+    const move = migrate ? `migrated ${PRE_RENAME_DIR}/ → ${FLAITRON_DIR}/ and ` : '';
     try {
-      await applyBump({ ...adopter, current: result.current }, latest);
+      await (migrate ? applyMigrate : applyBump)({ ...adopter, current: result.current }, latest);
       counts.bumped += 1;
       console.log(
-        `  ⬆ ${adopter.name}: bumped ${result.current} → ${latest}, committed${result.skillsNote}`,
+        `  ⬆ ${adopter.name}: ${move}bumped ${result.current} → ${latest}, committed${result.skillsNote}`,
       );
     } catch (e) {
       counts.failed += 1;
-      console.error(`  ✗ ${adopter.name}: bump failed — ${e.message}`);
+      console.error(`  ✗ ${adopter.name}: ${migrate ? 'migrate' : 'bump'} failed — ${e.message}`);
     }
   } else {
     counts.planned += 1;
-    console.log(`  ⬆ ${adopter.name}: would bump ${result.current} → ${latest}${result.skillsNote}`);
+    const move = result.status === 'migrate' ? `migrate ${PRE_RENAME_DIR}/ → ${FLAITRON_DIR}/ and ` : '';
+    console.log(`  ⬆ ${adopter.name}: would ${move}bump ${result.current} → ${latest}${result.skillsNote}`);
   }
 }
 
@@ -807,12 +1113,12 @@ async function main(argv = process.argv.slice(2)) {
   // entry point takes `latest` as a parameter; this is the only place the
   // choice is made internally. When the env is set, require a semver tag
   // (CORE-432.4) — empty/garbage must not be misreported as "no release tags".
-  const override = process.env.FLOWTRON_UPDATE_LATEST;
+  const override = process.env.FLAITRON_UPDATE_LATEST;
   let latest;
   if (override !== undefined) {
     if (!parseSemverTag(override)) {
       console.error(
-        `FLOWTRON_UPDATE_LATEST is set but invalid (got ${JSON.stringify(override)}); expected a semver release tag like v1.2.3`,
+        `FLAITRON_UPDATE_LATEST is set but invalid (got ${JSON.stringify(override)}); expected a semver release tag like v1.2.3`,
       );
       process.exit(2);
     }
@@ -821,12 +1127,12 @@ async function main(argv = process.argv.slice(2)) {
     latest = await latestReleaseTag();
   }
   if (!latest) {
-    console.error(`No release tag found in ${FLOWTRON_REPO} — nothing to compare against.`);
+    console.error(`No release tag found in ${FLAITRON_REPO} — nothing to compare against.`);
     process.exit(1);
   }
 
   const mode = args.apply ? 'APPLY' : 'DRY-RUN';
-  console.log(`flowtron update-adopters — ${mode}`);
+  console.log(`flaitron update-adopters — ${mode}`);
   console.log(`  workspace: ${root}`);
   console.log(`  latest release: ${latest}\n`);
 
@@ -845,7 +1151,7 @@ async function main(argv = process.argv.slice(2)) {
   }
 
   if (adopters.length === 0) {
-    console.log('No .flowtron/core adopters found.');
+    console.log(`No ${SUBMODULE_PATH} or ${PRE_RENAME_SUBMODULE_PATH} adopters found.`);
     return;
   }
 
@@ -879,4 +1185,4 @@ if (isMain) {
   });
 }
 
-export { FLOWTRON_REPO, SUBMODULE_PATH, realOrResolve };
+export { FLAITRON_REPO, PRE_RENAME_SUBMODULE_PATH, RENAME_TAG, SUBMODULE_PATH, realOrResolve };

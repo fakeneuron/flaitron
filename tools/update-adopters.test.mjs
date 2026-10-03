@@ -3,7 +3,7 @@
 
 import assert from 'node:assert/strict';
 import { execFile } from 'node:child_process';
-import { mkdtemp, mkdir, readFile, rm, symlink, writeFile } from 'node:fs/promises';
+import { lstat, mkdtemp, mkdir, readFile, readlink, rm, stat, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { after, before, describe, it } from 'node:test';
@@ -11,9 +11,12 @@ import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
 
 import {
-  FLOWTRON_REPO,
+  FLAITRON_REPO,
+  PRE_RENAME_SUBMODULE_PATH,
+  RENAME_TAG,
   SUBMODULE_PATH,
   applyBump,
+  applyMigrate,
   cachedCanonicalTagSha,
   cachedMigrationBearingTags,
   cachedNewSkillWiringSurfaces,
@@ -30,6 +33,8 @@ import {
   parseSemverTag,
   pinnedVersion,
   realOrResolve,
+  renamedDirSegments,
+  renamedRemoteUrl,
   tagsInRange,
   verifyPinnedSha,
 } from './update-adopters.mjs';
@@ -41,7 +46,7 @@ const WORKSPACE_TS = fileURLToPath(new URL('../viz/src/workspace.ts', import.met
 async function runCli(args, { expectFail = false, env = {} } = {}) {
   try {
     const { stdout, stderr } = await execFileAsync(process.execPath, [SCRIPT, ...args], {
-      cwd: FLOWTRON_REPO,
+      cwd: FLAITRON_REPO,
       env: { ...process.env, ...env },
     });
     return { code: 0, stdout, stderr };
@@ -85,7 +90,7 @@ let latest;
 let previous;
 
 before(async () => {
-  const tags = (await git(FLOWTRON_REPO, 'tag', '--sort=-v:refname'))
+  const tags = (await git(FLAITRON_REPO, 'tag', '--sort=-v:refname'))
     .split('\n')
     .map((l) => l.trim())
     .filter((t) => parseSemverTag(t));
@@ -106,7 +111,7 @@ before(async () => {
     '-q',
     '--local',
     '--no-hardlinks',
-    FLOWTRON_REPO,
+    FLAITRON_REPO,
     join(mirrorDir, 'core'),
   ]);
 });
@@ -116,7 +121,7 @@ after(async () => {
 });
 
 /**
- * Build a minimal adopter superproject under `root/name` with `.flowtron/core`
+ * Build a minimal adopter superproject under `root/name` with `.flaitron/core`
  * cloned from the shared mirror and checked out at `pinTag`.
  */
 async function makeAdopter(root, name, pinTag) {
@@ -140,6 +145,71 @@ async function makeAdopter(root, name, pinTag) {
   await gitQuiet(repo, 'add', SUBMODULE_PATH);
   await gitQuiet(repo, 'commit', '-q', '-m', `pin ${pinTag}`);
   return { name, repo, sub };
+}
+
+const PRE_RENAME_URL = 'https://github.com/fakeneuron/flowtron.git';
+const RENAMED_URL = 'https://github.com/fakeneuron/flaitron.git';
+
+async function exists(path) {
+  try {
+    await lstat(path);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * A pre-rename adopter shaped like the fleet (CORE-711.1 survey): a real
+ * submodule at `.flowtron/core` (name == path, absorbed gitdir), tracked
+ * `.flowtron/` content, a skill symlink into the submodule, a link onto
+ * `.flowtron/` itself, one unrelated link, and a .gitignore rule under
+ * `.flowtron/` (18 of 23 adopters ignore `.flowtron/screenshots/`). `.gitmodules` carries the GitHub
+ * url while `.git/config` keeps the local mirror, so applyMigrate's fetch never
+ * leaves the machine.
+ */
+async function makePreRenameAdopter(root, name, pinTag) {
+  const repo = join(root, name);
+  await mkdir(repo, { recursive: true });
+  await gitQuiet(repo, 'init', '-q');
+  await gitQuiet(repo, 'config', 'user.email', 'core-711-3@test.local');
+  await gitQuiet(repo, 'config', 'user.name', 'CORE-711.3');
+  await gitQuiet(
+    repo,
+    '-c',
+    'protocol.file.allow=always',
+    'submodule',
+    'add',
+    '-q',
+    join(mirrorDir, 'core'),
+    PRE_RENAME_SUBMODULE_PATH,
+  );
+  const sub = join(repo, PRE_RENAME_SUBMODULE_PATH);
+  await gitQuiet(sub, 'checkout', '-q', pinTag);
+  await gitQuiet(
+    repo,
+    'config',
+    '--file',
+    '.gitmodules',
+    `submodule.${PRE_RENAME_SUBMODULE_PATH}.url`,
+    PRE_RENAME_URL,
+  );
+  await writeFile(join(repo, '.flowtron', 'PLAN.md'), '# Plan\n');
+  await mkdir(join(repo, '.claude', 'skills'), { recursive: true });
+  await symlink('../../.flowtron/core/claude/skills/ft-task', join(repo, '.claude', 'skills', 'ft-task'));
+  await mkdir(join(repo, 'vault'));
+  await symlink('../.flowtron', join(repo, 'vault', 'flowtron'));
+  await writeFile(join(repo, 'README.md'), '# readme\n');
+  await symlink('README.md', join(repo, 'readme-link'));
+  await writeFile(join(repo, '.gitignore'), '.flowtron/screenshots/\nnode_modules/\n');
+  await gitQuiet(repo, 'add', '-A');
+  await gitQuiet(repo, 'commit', '-q', '-m', `pin ${pinTag}`);
+  return { name, repo, sub, preRename: true };
+}
+
+/** A tag one major above `tag` — a rename release guaranteed not to exist yet. */
+function nextMajor(tag) {
+  return `v${parseSemverTag(tag)[0] + 1}.0.0`;
 }
 
 describe('parseArgs / pure helpers', () => {
@@ -238,12 +308,12 @@ describe('migrationBearingTags (real tags)', () => {
   it('classifies empty annotation (lightweight tag) as migration-bearing', async () => {
     const tag = `v0.0.0-core-424-3-empty-${process.pid}`;
     try {
-      await git(FLOWTRON_REPO, 'tag', tag); // lightweight — no -a/-m
+      await git(FLAITRON_REPO, 'tag', tag); // lightweight — no -a/-m
       const bearing = await migrationBearingTags([tag]);
       assert.deepEqual(bearing, [tag]);
     } finally {
       try {
-        await git(FLOWTRON_REPO, 'tag', '-d', tag);
+        await git(FLAITRON_REPO, 'tag', '-d', tag);
       } catch {
         // already gone
       }
@@ -256,7 +326,7 @@ describe('latestReleaseTag (real tags)', () => {
   // it no longer exercises this export incidentally (TEST-003).
   it('returns the newest semver tag in the checkout', async () => {
     const newest = await latestReleaseTag();
-    const tags = (await git(FLOWTRON_REPO, 'tag', '--sort=-v:refname'))
+    const tags = (await git(FLAITRON_REPO, 'tag', '--sort=-v:refname'))
       .split('\n')
       .map((l) => l.trim())
       .filter((t) => parseSemverTag(t));
@@ -309,7 +379,7 @@ describe('checkAdopter classification (fixtures)', () => {
     const adopter = await makeAdopter(root, 'unresolved-gitlink-repo', latest);
     // Injected failure: the submodule (what pinnedVersion reads off disk) stays
     // intact, but the superproject's own git dir is gone, so `rev-parse
-    // HEAD:.flowtron/core` fails. This lands in the `current === latest` branch,
+    // HEAD:.flaitron/core` fails. This lands in the `current === latest` branch,
     // which used to early-return `current` off that failure.
     await rmTree(join(adopter.repo, '.git'));
     const result = await checkAdopter(adopter, latest);
@@ -328,7 +398,7 @@ describe('checkAdopter classification (fixtures)', () => {
     assert.match(result.reason, /staged changes/i);
   });
 
-  it('skip: dirty .flowtron/core worktree', async () => {
+  it('skip: dirty .flaitron/core worktree', async () => {
     const adopter = await makeAdopter(root, 'dirty-repo', previous);
     await writeFile(join(adopter.sub, 'DIRTY.md'), 'dirt\n');
     const result = await checkAdopter(adopter, latest);
@@ -410,7 +480,7 @@ describe('checkAdopter classification (fixtures)', () => {
 });
 
 describe('discoverAdopters', () => {
-  it('finds .flowtron/core adopters and legacy layout', async () => {
+  it('finds .flaitron/core adopters and legacy layout', async () => {
     const root = await mkdtemp(join(tmpdir(), 'ft-upd-disc-'));
     const adopter = await makeAdopter(root, 'alpha', latest);
     const legacy = join(root, 'legacy-proj');
@@ -429,22 +499,22 @@ describe('discoverAdopters', () => {
     await assert.rejects(() => discoverAdopters(root), /ENOENT/);
   });
 
-  // CORE-592 — a bare `resolve(repo) === FLOWTRON_REPO` string compare never
+  // CORE-592 — a bare `resolve(repo) === FLAITRON_REPO` string compare never
   // matches when the two sides reach the same real directory via differently
   // spelled paths (e.g. a workspace root that differs from the invocation
   // path only by case, on a case-insensitive volume). A symlink alias is the
   // portable stand-in: same defect shape, deterministic on every filesystem.
   it('realOrResolve resolves a symlink alias to the same real path as its target', async () => {
     const root = await mkdtemp(join(tmpdir(), 'ft-upd-realpath-'));
-    const alias = join(root, 'flowtron-alias');
-    await symlink(FLOWTRON_REPO, alias, 'dir');
+    const alias = join(root, 'flaitron-alias');
+    await symlink(FLAITRON_REPO, alias, 'dir');
     const [aliasReal, repoReal] = await Promise.all([
       realOrResolve(alias),
-      realOrResolve(FLOWTRON_REPO),
+      realOrResolve(FLAITRON_REPO),
     ]);
     assert.equal(aliasReal, repoReal);
     // The comparison the old code used would have missed this alias.
-    assert.notEqual(resolve(alias), FLOWTRON_REPO);
+    assert.notEqual(resolve(alias), FLAITRON_REPO);
     await rmTree(root);
   });
 });
@@ -469,20 +539,20 @@ describe('gitlinkDrift / describePin', () => {
   });
 
   it('describePin resolves a tagged SHA', async () => {
-    const sha = (await git(FLOWTRON_REPO, 'rev-parse', `${latest}^{commit}`)).trim();
+    const sha = (await git(FLAITRON_REPO, 'rev-parse', `${latest}^{commit}`)).trim();
     assert.equal(await describePin(sha), latest);
   });
 });
 
-describe('FLOWTRON_UPDATE_LATEST seam validation (CORE-432.4)', () => {
+describe('FLAITRON_UPDATE_LATEST seam validation (CORE-432.4)', () => {
   it('exits 2 naming the env var when set to empty', async () => {
     const root = await mkdtemp(join(tmpdir(), 'ft-upd-env-empty-'));
     const { code, stderr } = await runCli(['--root', root], {
       expectFail: true,
-      env: { FLOWTRON_UPDATE_LATEST: '' },
+      env: { FLAITRON_UPDATE_LATEST: '' },
     });
     assert.equal(code, 2);
-    assert.match(stderr, /FLOWTRON_UPDATE_LATEST/);
+    assert.match(stderr, /FLAITRON_UPDATE_LATEST/);
     assert.match(stderr, /invalid/);
     await rmTree(root);
   });
@@ -491,10 +561,10 @@ describe('FLOWTRON_UPDATE_LATEST seam validation (CORE-432.4)', () => {
     const root = await mkdtemp(join(tmpdir(), 'ft-upd-env-bad-'));
     const { code, stderr } = await runCli(['--root', root], {
       expectFail: true,
-      env: { FLOWTRON_UPDATE_LATEST: 'not-a-tag' },
+      env: { FLAITRON_UPDATE_LATEST: 'not-a-tag' },
     });
     assert.equal(code, 2);
-    assert.match(stderr, /FLOWTRON_UPDATE_LATEST/);
+    assert.match(stderr, /FLAITRON_UPDATE_LATEST/);
     assert.match(stderr, /not-a-tag/);
     await rmTree(root);
   });
@@ -515,7 +585,7 @@ describe('dry-run CLI (--root fixture)', () => {
     await gitQuiet(staged.repo, 'add', 'x.txt');
 
     const { stdout } = await runCli(['--root', root], {
-      env: { FLOWTRON_UPDATE_LATEST: latest },
+      env: { FLAITRON_UPDATE_LATEST: latest },
     });
     assert.match(stdout, /DRY-RUN/);
     assert.match(stdout, /✓ cli-current: current/);
@@ -529,18 +599,18 @@ describe('dry-run CLI (--root fixture)', () => {
   it('empty workspace prints no-adopters message', async () => {
     const root = await mkdtemp(join(tmpdir(), 'ft-upd-empty-'));
     const { stdout } = await runCli(['--root', root]);
-    assert.match(stdout, /No \.flowtron\/core adopters found/);
+    assert.match(stdout, /No \.flaitron\/core or \.flowtron\/core adopters found/);
     await rmTree(root);
   });
 
-  // CORE-601 — a workspace with zero .flowtron/core adopters still reports
+  // CORE-601 — a workspace with zero .flaitron/core adopters still reports
   // legacy-layout repos instead of the early return swallowing them.
   it('legacy-only workspace reports legacy repos, not just no-adopters', async () => {
     const root = await mkdtemp(join(tmpdir(), 'ft-upd-legacy-only-'));
     await mkdir(join(root, 'legacy-proj', '.flowtron', 'flowtron'), { recursive: true });
     const { stdout } = await runCli(['--root', root]);
     assert.match(stdout, /legacy-layout repos skipped.*legacy-proj/);
-    assert.match(stdout, /No \.flowtron\/core adopters found/);
+    assert.match(stdout, /No \.flaitron\/core or \.flowtron\/core adopters found/);
     await rmTree(root);
   });
 
@@ -550,11 +620,11 @@ describe('dry-run CLI (--root fixture)', () => {
     const root = join(tmpdir(), 'ft-upd-cli-missing-does-not-exist');
     const { code, stdout, stderr } = await runCli(['--root', root], {
       expectFail: true,
-      env: { FLOWTRON_UPDATE_LATEST: latest },
+      env: { FLAITRON_UPDATE_LATEST: latest },
     });
     assert.equal(code, 1);
     assert.match(stderr, /not a readable directory/);
-    assert.doesNotMatch(stdout, /No \.flowtron\/core adopters found/);
+    assert.doesNotMatch(stdout, /No \.flaitron\/core or \.flowtron\/core adopters found/);
   });
 });
 
@@ -571,12 +641,12 @@ describe('sandboxed --apply', () => {
     await applyBump({ ...adopter, current: result.current }, latest);
 
     const pin = (await git(adopter.repo, 'rev-parse', `HEAD:${SUBMODULE_PATH}`)).trim();
-    const latestSha = (await git(FLOWTRON_REPO, 'rev-parse', `${latest}^{commit}`)).trim();
+    const latestSha = (await git(FLAITRON_REPO, 'rev-parse', `${latest}^{commit}`)).trim();
     assert.equal(pin, latestSha);
     assert.equal(await pinnedVersion(join(adopter.sub, 'SPEC.md')), latest);
 
     const msg = (await git(adopter.repo, 'log', '-1', '--format=%s')).trim();
-    assert.match(msg, new RegExp(`bump flowtron ${previous.replace(/\./g, '\\.')} → ${latest.replace(/\./g, '\\.')}`));
+    assert.match(msg, new RegExp(`bump flaitron ${previous.replace(/\./g, '\\.')} → ${latest.replace(/\./g, '\\.')}`));
 
     // Pathspec: commit touches only the gitlink.
     const files = (await git(adopter.repo, 'show', '--name-only', '--pretty=format:', 'HEAD'))
@@ -588,7 +658,7 @@ describe('sandboxed --apply', () => {
     // CLI apply path also works end-to-end on a second behind adopter.
     await makeAdopter(root, 'apply-cli', previous);
     const { stdout } = await runCli(['--apply', '--root', root], {
-      env: { FLOWTRON_UPDATE_LATEST: latest },
+      env: { FLAITRON_UPDATE_LATEST: latest },
     });
     assert.match(stdout, /APPLY/);
     // apply-me is already current after applyBump; apply-cli should bump.
@@ -636,7 +706,7 @@ describe('sandboxed --apply', () => {
 
     const { code, stdout, stderr } = await runCli(['--apply', '--root', root], {
       expectFail: true,
-      env: { FLOWTRON_UPDATE_LATEST: latest },
+      env: { FLAITRON_UPDATE_LATEST: latest },
     });
 
     assert.equal(code, 1);
@@ -733,9 +803,9 @@ describe('applyBump fetch timeout (CORE-585)', () => {
 
     const adopter = await makeAdopter(root, 'stalled-fetch', previous);
 
-    const prevTimeout = process.env.FLOWTRON_FETCH_TIMEOUT_MS;
+    const prevTimeout = process.env.FLAITRON_FETCH_TIMEOUT_MS;
     const prevPath = process.env.PATH;
-    process.env.FLOWTRON_FETCH_TIMEOUT_MS = '300';
+    process.env.FLAITRON_FETCH_TIMEOUT_MS = '300';
     process.env.PATH = `${shimDir}:${prevPath}`;
     try {
       await assert.rejects(
@@ -744,11 +814,270 @@ describe('applyBump fetch timeout (CORE-585)', () => {
       );
     } finally {
       process.env.PATH = prevPath;
-      if (prevTimeout === undefined) delete process.env.FLOWTRON_FETCH_TIMEOUT_MS;
-      else process.env.FLOWTRON_FETCH_TIMEOUT_MS = prevTimeout;
+      if (prevTimeout === undefined) delete process.env.FLAITRON_FETCH_TIMEOUT_MS;
+      else process.env.FLAITRON_FETCH_TIMEOUT_MS = prevTimeout;
     }
 
     await rmTree(root);
+  });
+});
+
+describe('rename migration helpers (CORE-711.3)', () => {
+  it('renamedDirSegments rewrites every .flowtron path segment, nothing else', () => {
+    assert.equal(
+      renamedDirSegments('../../.flowtron/core/claude/skills/ft-task'),
+      '../../.flaitron/core/claude/skills/ft-task',
+    );
+    assert.equal(renamedDirSegments('../.flowtron'), '../.flaitron');
+    assert.equal(renamedDirSegments('.flowtron/core/.flowtron/x'), '.flaitron/core/.flaitron/x');
+    assert.equal(
+      renamedDirSegments('# shots (`.flowtron/screenshots/`)\n.flowtron/screenshots/\n!/.flowtron/keep\n'),
+      '# shots (`.flaitron/screenshots/`)\n.flaitron/screenshots/\n!/.flaitron/keep\n',
+    );
+    assert.equal(renamedDirSegments('README.md'), null);
+    assert.equal(renamedDirSegments('../flowtron/x'), null);
+    assert.equal(renamedDirSegments('../.flowtron-old/x'), null);
+    assert.equal(renamedDirSegments('my.flowtron/x'), null);
+  });
+
+  it('renamedRemoteUrl renames only a trailing flowtron repo segment', () => {
+    assert.equal(renamedRemoteUrl(PRE_RENAME_URL), RENAMED_URL);
+    assert.equal(
+      renamedRemoteUrl('git@github.com:fakeneuron/flowtron.git'),
+      'git@github.com:fakeneuron/flaitron.git',
+    );
+    assert.equal(
+      renamedRemoteUrl('https://github.com/fakeneuron/flowtron'),
+      'https://github.com/fakeneuron/flaitron',
+    );
+    assert.equal(
+      renamedRemoteUrl('https://example.com/myflowtron.git'),
+      'https://example.com/myflowtron.git',
+    );
+  });
+});
+
+describe('rename migration (CORE-711.3)', () => {
+  let root;
+
+  before(async () => {
+    root = await mkdtemp(join(tmpdir(), 'ft-upd-mig-'));
+  });
+
+  after(async () => {
+    await rmTree(root);
+  });
+
+  it('discoverAdopters flags a pre-rename adopter', async () => {
+    const ws = await mkdtemp(join(tmpdir(), 'ft-upd-mig-disc-'));
+    try {
+      await makePreRenameAdopter(ws, 'old-layout', latest);
+      await makeAdopter(ws, 'new-layout', latest);
+      const { adopters } = await discoverAdopters(ws);
+      assert.equal(adopters.find((a) => a.name === 'old-layout')?.preRename, true);
+      assert.equal(adopters.find((a) => a.name === 'new-layout')?.preRename, undefined);
+    } finally {
+      await rmTree(ws);
+    }
+  });
+
+  it('migrate: pre-rename adopter once latest reaches the rename tag', async () => {
+    const adopter = await makePreRenameAdopter(root, 'classify-migrate', previous);
+    const result = await checkAdopter(adopter, latest, { renameTag: latest });
+    assert.equal(result.status, 'migrate');
+    assert.equal(result.current, previous);
+    assert.equal(typeof result.skillsNote, 'string');
+  });
+
+  it('skip: latest below the rename tag', async () => {
+    const adopter = await makePreRenameAdopter(root, 'below-floor', previous);
+    const renameTag = nextMajor(latest);
+    const result = await checkAdopter(adopter, latest, { renameTag });
+    assert.equal(result.status, 'skip');
+    assert.match(result.reason, /still on \.flowtron\//);
+    assert.match(result.reason, new RegExp(`needs ${renameTag.replace(/\./g, '\\.')} or later`));
+  });
+
+  it('skip: .flaitron/ already exists alongside .flowtron/', async () => {
+    const adopter = await makePreRenameAdopter(root, 'both-layouts', previous);
+    await mkdir(join(adopter.repo, '.flaitron'));
+    const result = await checkAdopter(adopter, latest, { renameTag: latest });
+    assert.equal(result.status, 'skip');
+    assert.match(result.reason, /\.flaitron\/ already exists/);
+  });
+
+  // v5.0.0 is a real BREAKING release, so it stands in for the rename tag:
+  // v4.5.0..v5.0.0 is exactly [v5.0.0].
+  it('lift is scoped: only the rename tag, and only for a pre-rename adopter', async () => {
+    const pre = await makePreRenameAdopter(root, 'lift-pre', 'v4.5.0');
+    const lifted = await checkAdopter(pre, 'v5.0.0', { renameTag: 'v5.0.0' });
+    assert.equal(lifted.status, 'migrate');
+
+    // Same range, but v5.0.0 is not the rename tag → still blocks.
+    const notRename = await checkAdopter(pre, 'v5.0.0', { renameTag: 'v4.5.0' });
+    assert.equal(notRename.status, 'skip');
+    assert.match(notRename.reason, /migration-bearing release\(s\) in range: v5\.0\.0/);
+
+    // Same range and rename tag, but an already-renamed adopter gets no lift.
+    const renamed = await makeAdopter(root, 'lift-renamed', 'v4.5.0');
+    const plain = await checkAdopter(renamed, 'v5.0.0', { renameTag: 'v5.0.0' });
+    assert.equal(plain.status, 'skip');
+    assert.match(plain.reason, /migration-bearing.*v5\.0\.0/);
+  });
+
+  it('apply: one commit moves the layout, renames the submodule, re-points links', async () => {
+    const adopter = await makePreRenameAdopter(root, 'apply-migrate', previous);
+    const { repo } = adopter;
+    await writeFile(join(repo, '.flowtron', 'notes.txt'), 'untracked\n');
+    await writeFile(join(repo, 'unrelated.txt'), 'keep out\n');
+    await mkdir(join(repo, '.flowtron', 'screenshots'));
+    await writeFile(join(repo, '.flowtron', 'screenshots', 'shot.png'), 'png\n');
+    const headBefore = (await git(repo, 'rev-parse', 'HEAD')).trim();
+
+    const result = await checkAdopter(adopter, latest, { renameTag: latest });
+    assert.equal(result.status, 'migrate');
+    await applyMigrate({ ...adopter, current: result.current }, latest);
+
+    // Exactly one new commit, carrying the migration.
+    assert.equal((await git(repo, 'rev-parse', 'HEAD~1')).trim(), headBefore);
+    const msg = (await git(repo, 'log', '-1', '--format=%s')).trim();
+    assert.equal(msg, `chore: migrate .flowtron → .flaitron, bump flaitron ${previous} → ${latest}`);
+
+    // Layout: the whole dir moved, untracked contents included.
+    assert.equal(await exists(join(repo, '.flowtron')), false);
+    assert.equal(await readFile(join(repo, '.flaitron', 'PLAN.md'), 'utf8'), '# Plan\n');
+    assert.equal(await readFile(join(repo, '.flaitron', 'notes.txt'), 'utf8'), 'untracked\n');
+
+    // Submodule renamed end to end: name, path, url, gitdir, gitfile, config.
+    const gitmodules = await readFile(join(repo, '.gitmodules'), 'utf8');
+    assert.match(gitmodules, /\[submodule "\.flaitron\/core"\]/);
+    assert.match(gitmodules, /path = \.flaitron\/core/);
+    assert.match(gitmodules, new RegExp(`url = ${RENAMED_URL.replace(/\./g, '\\.')}`));
+    assert.doesNotMatch(gitmodules, /flowtron/);
+    assert.equal(await exists(join(repo, '.git', 'modules', '.flaitron', 'core')), true);
+    assert.equal(await exists(join(repo, '.git', 'modules', '.flowtron')), false);
+    assert.equal(
+      await readFile(join(repo, SUBMODULE_PATH, '.git'), 'utf8'),
+      'gitdir: ../../.git/modules/.flaitron/core\n',
+    );
+    assert.doesNotMatch(await readFile(join(repo, '.git', 'config'), 'utf8'), /\.flowtron/);
+    assert.equal(
+      (await git(repo, 'config', `submodule.${SUBMODULE_PATH}.url`)).trim(),
+      RENAMED_URL,
+    );
+    assert.equal(
+      (await git(join(repo, SUBMODULE_PATH), 'remote', 'get-url', 'origin')).trim(),
+      RENAMED_URL,
+    );
+    const latestSha = (await git(FLAITRON_REPO, 'rev-parse', `${latest}^{commit}`)).trim();
+    assert.equal(
+      (await git(repo, 'submodule', 'status')).trimEnd(),
+      ` ${latestSha} ${SUBMODULE_PATH} (${latest})`,
+    );
+    assert.equal((await git(repo, 'rev-parse', `HEAD:${SUBMODULE_PATH}`)).trim(), latestSha);
+
+    // Links through .flowtron/ re-pointed (and resolving); the unrelated one untouched.
+    const skillLink = join(repo, '.claude', 'skills', 'ft-task');
+    assert.equal(await readlink(skillLink), '../../.flaitron/core/claude/skills/ft-task');
+    assert.ok((await stat(skillLink)).isDirectory());
+    assert.equal(await readlink(join(repo, 'vault', 'flowtron')), '../.flaitron');
+    assert.equal(await readlink(join(repo, 'readme-link')), 'README.md');
+
+    // Ignore rules follow the move, so the moved screenshot stays ignored.
+    assert.equal(
+      await git(repo, 'show', 'HEAD:.gitignore'),
+      '.flaitron/screenshots/\nnode_modules/\n',
+    );
+    assert.equal(await readFile(join(repo, '.flaitron', 'screenshots', 'shot.png'), 'utf8'), 'png\n');
+
+    // Nothing unrelated landed; nothing the migration touched is left unstaged
+    // (and the ignored screenshot does not resurface as untracked).
+    const status = (await git(repo, 'status', '--porcelain')).trim().split('\n').sort();
+    assert.deepEqual(status, ['?? .flaitron/notes.txt', '?? unrelated.txt']);
+
+    // The result is an ordinary, current renamed adopter.
+    const recheck = await checkAdopter({ name: adopter.name, repo }, latest);
+    assert.equal(recheck.status, 'current');
+  });
+
+  it('rollback: a rejected commit restores the exact pre-migrate repo', async () => {
+    const adopter = await makePreRenameAdopter(root, 'migrate-rollback', previous);
+    const { repo, sub } = adopter;
+    await writeFile(join(repo, '.flowtron', 'notes.txt'), 'untracked\n');
+    // Fail at the very last step so every undo has to run. prepare-commit-msg,
+    // not pre-commit — the migrate commit passes --no-verify.
+    const hooks = join(repo, '.git', 'hooks');
+    await mkdir(hooks, { recursive: true });
+    await writeFile(join(hooks, 'prepare-commit-msg'), '#!/bin/sh\nexit 1\n', { mode: 0o755 });
+    await gitQuiet(repo, 'config', 'core.hooksPath', hooks);
+
+    const snapshot = async () => ({
+      head: (await git(repo, 'rev-parse', 'HEAD')).trim(),
+      subHead: (await git(sub, 'rev-parse', 'HEAD')).trim(),
+      gitmodules: await readFile(join(repo, '.gitmodules'), 'utf8'),
+      config: await readFile(join(repo, '.git', 'config'), 'utf8'),
+      gitfile: await readFile(join(sub, '.git'), 'utf8'),
+      moduleConfig: await readFile(join(repo, '.git', 'modules', '.flowtron', 'core', 'config'), 'utf8'),
+      skillLink: await readlink(join(repo, '.claude', 'skills', 'ft-task')),
+      dirLink: await readlink(join(repo, 'vault', 'flowtron')),
+      gitignore: await readFile(join(repo, '.gitignore'), 'utf8'),
+      status: await git(repo, 'status', '--porcelain'),
+      submoduleStatus: await git(repo, 'submodule', 'status'),
+    });
+    const before = await snapshot();
+
+    await assert.rejects(
+      () => applyMigrate({ ...adopter, current: previous }, latest),
+      (e) => {
+        assert.doesNotMatch(e.message, /rollback incomplete/);
+        return true;
+      },
+    );
+
+    assert.deepEqual(await snapshot(), before);
+    assert.equal(await exists(join(repo, '.flaitron')), false);
+    assert.equal(await exists(join(repo, '.git', 'modules', '.flaitron')), false);
+    assert.equal(await readFile(join(repo, '.flowtron', 'notes.txt'), 'utf8'), 'untracked\n');
+  });
+
+  it('apply: a .gitignore with unstaged edits is rewritten in place but kept out of the commit', async () => {
+    const adopter = await makePreRenameAdopter(root, 'dirty-gitignore', previous);
+    const { repo } = adopter;
+    await writeFile(join(repo, '.gitignore'), '.flowtron/screenshots/\nnode_modules/\nmine/\n');
+
+    await applyMigrate({ ...adopter, current: previous }, latest);
+
+    assert.equal(
+      await readFile(join(repo, '.gitignore'), 'utf8'),
+      '.flaitron/screenshots/\nnode_modules/\nmine/\n',
+    );
+    assert.equal(
+      await git(repo, 'show', 'HEAD:.gitignore'),
+      '.flowtron/screenshots/\nnode_modules/\n',
+    );
+    assert.equal((await git(repo, 'status', '--porcelain')).trim(), 'M .gitignore');
+  });
+
+  it('dry-run CLI reports a pre-rename adopter by where latest sits against RENAME_TAG', async () => {
+    const ws = await mkdtemp(join(tmpdir(), 'ft-upd-mig-cli-'));
+    try {
+      await makePreRenameAdopter(ws, 'cli-pre', previous);
+      const { stdout } = await runCli(['--root', ws], {
+        env: { FLAITRON_UPDATE_LATEST: latest },
+      });
+      // Self-healing like the fixture pair: before the rename release ships the
+      // fixture `latest` sits below it; once a later all-clear release exists it won't.
+      if (compareSemver(parseSemverTag(latest), parseSemverTag(RENAME_TAG)) < 0) {
+        assert.match(
+          stdout,
+          /⏭ cli-pre \(v[\d.]+\): skipped — still on \.flowtron\/ — the move to \.flaitron\/ needs v6\.0\.0 or later/,
+        );
+      } else {
+        assert.match(stdout, /⬆ cli-pre: would migrate \.flowtron\/ → \.flaitron\/ and bump/);
+      }
+    } finally {
+      await rmTree(ws);
+    }
   });
 });
 

@@ -20,7 +20,7 @@ actually review. No scripts, daemons, databases, or schemas to maintain.
 
 ![The flowtron visualizer showing flowtron's own PLAN.md — open tasks by priority, phase-progress dots, and the completed archive](.flowtron/screenshots/viz-board.png)
 
-Flowtron is built with flowtron: **1053 tasks** closed through this exact
+Flowtron is built with flowtron: **1057 tasks** closed through this exact
 workflow between 2026-04-28 and 2026-10-02 (as of 2026-10-02) — each one with
 a tasknote preserved in [`.flowtron/tasknote/archive/`](.flowtron/tasknote/archive/).
 Count and date range are recomputed each release by `/ft-release` §7.1's
@@ -101,7 +101,7 @@ serves it; Grok-only projects follow [`grok/AGENTS-snippet.md`](grok/AGENTS-snip
   `docs/AGENT-COMPAT.md` `last-verified` row
 - [docs/WORKTREES.md](docs/WORKTREES.md) — worktree convention for parallel
   epic children: the five locked decisions (location, branch naming,
-  tasknote handling, cleanup) and the four-command start / end procedure
+  skill naming, tasknote handling, cleanup) and the four-command start / end procedure
 - [docs/HARNESS-SURVEY.md](docs/HARNESS-SURVEY.md) — dated comparisons of
   flowtron against contemporary harnesses and trackers: differentiators, gaps,
   overkill, and the seed list for the next wider pass

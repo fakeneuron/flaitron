@@ -29,6 +29,8 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-690** [medium]🧩 | release v5.35.0 — Completed 2026-10-02.
+
 - [x] **CORE-687** [light]🔧 | mirror-spec-attribution — `docs/CONVENTIONS.md` credits `SPEC/scope-boundaries.md` with the "for future-AI mid-task discipline" sentence. Surfaced by audit-docs 2026-10-02 (Finding #3, Medium), fixed inline.
 
 - [x] **CORE-686** [light]🔧 | unattended-probe-drivers — Capability probes names the three tasknote drivers that load `unattended-mode.md`; `/ft-file-followup` keeps the posture inline. Surfaced by audit-docs 2026-10-02 (Finding #2, Medium), fixed inline.

@@ -152,7 +152,8 @@ are read from the table, never retyped. Run from the repository root:
 exact=$(awk '/^## Budgets$/,/^## Known over budget/' docs/CONTEXT-BUDGET.md \
         | grep -E '^\| `[^`]+` \| [0-9,]+ \|' \
         | sed -E 's/^\| `([^`]+)` \|.*/\1/' \
-        | grep -v '\*')
+        | grep -v '\*' \
+        | tr '\n' ' ')
 while IFS='|' read -r surface budget; do
   budget=${budget//,/}
   case "$surface" in
@@ -180,7 +181,11 @@ done < <(awk '/^## Budgets$/,/^## Known over budget/' docs/CONTEXT-BUDGET.md \
 
 `$exact` is the set of non-glob rows, excluded from the glob row's expansion so
 the most specific row wins (`ft-release`'s own row exempts it from the glob
-row's cap). A row ending in `/**` is a **directory total**: the `**` arm sums
+row's cap). The `tr '\n' ' '` is load-bearing: command substitution keeps the
+awk rows as newlines, and `case " $exact "` only matches a space-delimited
+path. Without it the exemption never fires, and a file between the glob cap
+and its own row (ft-release at 34,641 against 33,000 / 40,000, CORE-690) fails
+the glob. A row ending in `/**` is a **directory total**: the `**` arm sums
 every file under that directory with the same `find … -exec cat | wc -c`
 idiom the ledger refresh below uses, and compares the sum — it is not a glob to
 expand, and it neither exempts nor is exempted by the per-file rows, so a

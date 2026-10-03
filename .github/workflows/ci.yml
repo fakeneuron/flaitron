@@ -100,10 +100,15 @@ jobs:
       - name: Context budget (docs/CONTEXT-BUDGET.md §"Budgets")
         run: |
           bad=
+          # Collapse newlines. $(...) keeps them, and the case pattern below
+          # matches a space-delimited path. Without tr, a specific row never
+          # exempts its file from the glob row (CORE-690: ft-release at 34641
+          # failed the 33000 glob while staying under its own 40000 row).
           exact=$(awk '/^## Budgets$/,/^## Known over budget/' docs/CONTEXT-BUDGET.md \
                   | grep -E '^\| `[^`]+` \| [0-9,]+ \|' \
                   | sed -E 's/^\| `([^`]+)` \|.*/\1/' \
-                  | grep -v '\*')
+                  | grep -v '\*' \
+                  | tr '\n' ' ')
           while IFS='|' read -r surface budget; do
             budget=${budget//,/}
             case "$surface" in

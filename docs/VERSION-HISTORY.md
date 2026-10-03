@@ -22,6 +22,15 @@ unless correcting a factual error.
 
 ---
 
+## v5.35.0 — the release cut stops on Medium and Low findings
+
+- /ft-release stops and asks when a docs sweep still has Medium or Low findings. Release anyway files them. Stop holds the cut.
+- Closure commits and does not push. Push stays its own gated step.
+- Capability probes and the platform trigger rows limit unattended-mode.md to the three tasknote drivers. /ft-file-followup keeps the posture inline.
+- The context-budget check exempts a specific row from the skill glob, so ft-release's 40,000 cap is the one that applies.
+
+Also: calibration roster restamped; the neutrality ledger recounts flag sites after the gate-catalog move; the README names all five worktree decisions.
+
 ## v5.34.0 — Codex verification, a live Grok sub-agent row, and the gate catalog moved out of SPEC
 
 - CORE-EPIC-677 records how Codex discovers and runs flowtron, repairs a workflow-route mismatch, and gives Codex-only new installs a staging command derived from the snippet.

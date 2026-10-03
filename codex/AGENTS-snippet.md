@@ -48,7 +48,7 @@ skill name to invoke a Flowtron skill. Global utility skills such as
 `ft-new-project` and `ft-audit-repo` may be installed in the user skill directory when desired;
 `ft-release` remains flowtron-self-only and is not part of the adopter snippet.
 The canonical category table lives in
-`.flowtron/core/docs/PLATFORMS.md` §"Installed-surface policy".
+`../docs/PLATFORMS.md` §"Installed-surface policy".
 Codex's built-in CLI slash commands do not define arbitrary custom `/ft-*`
 commands; the stable exported surface is the `ft-*` skill name.
 

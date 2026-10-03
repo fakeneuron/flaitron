@@ -79,7 +79,7 @@ This snippet wires the adopter-installed subset: the tasknote family,
 `ft-new-project` and `ft-audit-repo` may be installed in the user skill directory when desired;
 `ft-release` remains flowtron-self-only and is not part of the adopter snippet.
 The canonical category table lives in
-`.flowtron/core/docs/PLATFORMS.md` §"Installed-surface policy", and the
+`../docs/PLATFORMS.md` §"Installed-surface policy", and the
 install-once rule this block obeys is
 `../docs/PLATFORMS.md` §"One canonical install path per project".
 
@@ -97,7 +97,7 @@ simply stops being model-invocable and becomes command-only, because the
 description is what an agent reads to decide to reach for it.
 
 This is worth knowing if you fork a flowtron skill under an unprefixed name per
-`.flowtron/core/docs/MIGRATION.md` §1.2.1: keep `": "` out of the description,
+`../docs/MIGRATION.md` §1.2.1: keep `": "` out of the description,
 or quote the scalar. Four upstream skill bodies carried this defect until it was
 measured in live Cursor sessions and repaired.
 

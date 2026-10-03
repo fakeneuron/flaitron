@@ -47,7 +47,7 @@ How `--fast` and `--unattended` reach these banners, the 👁️ ask, and every
 other gate surface is settled in one place: [`SPEC/gate-postures.md`](gate-postures.md)
 §"Flag precedence and surface matrix".
 
-The **preview line** is **mandatory** on every banner: 1-2 sentence plain-English summary of *what executes on approval*, for scanning intent ("what am I greenlighting?"). File paths, LOC counts, and key decisions belong in the recap (§"🚀 Phase 4: Closure"), not the preview.
+The **preview line** is **mandatory** on every banner: 1-2 sentence plain-English summary of *what executes on approval*, for scanning intent ("what am I greenlighting?"). File paths, LOC counts, and key decisions belong in the recap (`SPEC.md` §"🚀 Phase 4: Closure"), not the preview.
 
 Once Phase 1 closes, Phase 2 → Phase 3 → Phase 4 closure ops **flow continuously without intermediate gates**. The recap drafts during closure ops and bundles into the 📦 ready-to-commit motion alongside the closure review (per-entry doc-drift verdicts, PLAN.md line preview, archive path) and the proposed commit message — see §"Conditional skip rule" for fire/skip branching.
 

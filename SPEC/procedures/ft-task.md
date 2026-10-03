@@ -437,7 +437,7 @@ time (Step 6).
   archived tasknote, append the one-line
   `> **⚠️ Superseded by [[<TASK-ID>]]** — <what was falsified>` pointer under
   that note's nav header and stage it in the same commit — append-only, never
-  rewriting the original text (`SPEC.md` §"Tasknote frontmatter" carries the
+  rewriting the original text (`SPEC/superseded-claims.md` carries the
   contract and the three cases it excludes). Conditional: most closures write
   no pointer. Flip **only this task's**
   PLAN.md line to the stub form

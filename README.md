@@ -25,7 +25,7 @@ workflow between 2026-04-28 and 2026-10-02 (as of 2026-10-02) — each one with
 a tasknote preserved in [`.flowtron/tasknote/archive/`](.flowtron/tasknote/archive/).
 Count and date range are recomputed each release by `/ft-release` §7.1's
 "Standing README task-counter check" (one archived tasknote per closed task,
-standalone or epic child) — see `claude/skills/ft-release/SKILL.md`.
+standalone or epic child) — see `claude/skills/ft-release/step-7.1-standing-checks.md`.
 
 ## Quickstart
 
@@ -73,7 +73,7 @@ serves it; Grok-only projects follow [`grok/AGENTS-snippet.md`](grok/AGENTS-snip
   is for, the principles (recap of SPEC), and the PR/suggestion archetypes
   flowtron deliberately rejects
 - [docs/GLOSSARY.md](docs/GLOSSARY.md) — alphabetized one-line definitions for
-  ~71 load-bearing terms, phases, markers, and grammar elements (lazy-loaded
+  ~73 load-bearing terms, phases, markers, and grammar elements (lazy-loaded
   pointer to SPEC anchors)
 - [docs/MIGRATION.md](docs/MIGRATION.md) — adoption guide for fresh projects
   and migration from a prior workflow system

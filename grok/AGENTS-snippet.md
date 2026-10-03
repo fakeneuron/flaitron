@@ -84,7 +84,7 @@ This snippet wires the adopter-installed subset: the tasknote family,
 `ft-new-project` and `ft-audit-repo` may be installed in the user skill directory when desired;
 `ft-release` remains flowtron-self-only and is not part of the adopter snippet.
 The canonical category table lives in
-`.flowtron/core/docs/PLATFORMS.md` §"Installed-surface policy", and the
+`../docs/PLATFORMS.md` §"Installed-surface policy", and the
 install-once rule this block obeys is
 `../docs/PLATFORMS.md` §"One canonical install path per project".
 

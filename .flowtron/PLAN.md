@@ -23,13 +23,13 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
 
-- [ ] **CORE-691** [light]🔧 [unattended] | doc-crossfile-cite-sweep — Multi-file pointer/count sweep: retarget `SPEC/procedures/ft-task.md:440` to `SPEC/superseded-claims.md`; name the file in bare §-cites at `SPEC/blocked.md:31` (`SPEC/plan-parser.md`) and `SPEC/gates.md:50` (`SPEC.md`); repoint `README.md:28` to `claude/skills/ft-release/step-7.1-standing-checks.md`; fix `SPEC/blocked.md:226` (`not-started` is a retired template default) and add "Explicitly out of scope" to `SPEC/starter.md:28`; normalize `.flowtron/core/docs/…` → `../docs/…` at `codex/AGENTS-snippet.md:51`, `cursor/AGENTS-snippet.md:82,100`, `grok/AGENTS-snippet.md:87`; glossary count ~71 → ~73 in `README.md:76` and `docs/GLOSSARY.md:7`. Surfaced by audit-docs 2026-10-03 (Findings #5, #14, #15, #16, Low).
-
 ## Future Opportunities
 
 (none)
 
 ## Completed
+
+- [x] **CORE-691** [light]🔧 | doc-crossfile-cite-sweep — Completed 2026-10-03.
 
 - [x] **CORE-710** [light]🔧 | neutrality-capabilities-loop — `docs/AGENT-NEUTRALITY.md` CAPABILITIES trigger list adds `--starter` and `/code-review`; the `SPEC/loop.md` rows ledger `/ft-task --loop` and `step-5-loop-mode.md`. Surfaced by audit-docs 2026-10-03 (Finding #23, Low), fixed inline.
 

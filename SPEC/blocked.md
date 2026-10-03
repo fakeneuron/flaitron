@@ -28,7 +28,7 @@ a tasknote.
 
 **Phase 1 entry (Re-scope path).** If Discovery surfaces a real-but-blocked
 prerequisite, the verdict is `Re-scope`. Add `Blocked by [[ID]]` to the
-PLAN.md long description (canonical wikilink form, see §"Long-description
+PLAN.md long description (canonical wikilink form, see `SPEC/plan-parser.md` §"Long-description
 conventions"). On a flagless run a `Re-scope` verdict **always** fires the 🛠️
 Phase 1→2 gate ([`SPEC/gates.md`](gates.md) §"Phase 1→2 exit gate"), so the
 operator is already present at exactly this point; the banner's preview line
@@ -223,7 +223,7 @@ contract the caller reports to; the two writes are the caller's, exactly as the
 **Scoped to `in-progress`.** The other two refused statuses are not this case
 and take no shortcut:
 
-- `not-started` is the template default and should never appear on a note the
+- `not-started` is a retired template default and should never appear on a note the
   runners scaffolded; treat it as a filing error, not an interrupted run.
 - `completed` means Phase 4 ran but the archive move or the commit did not —
   closure was interrupted *inside* the atomic step. That is paper-complete

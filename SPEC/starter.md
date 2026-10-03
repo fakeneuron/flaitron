@@ -26,7 +26,8 @@ open questions for promotion, related tasks>
 ```
 
 Sub-headings within `## 🌱 Starter context` (Why this exists / Solution shape /
-Files to touch / Decisions / Open at promotion / Related) are conventional
+Files to touch / Explicitly out of scope / Decisions / Open at promotion /
+Related) are conventional
 but optional — drop any with nothing to capture. The canonical layout lives
 in `templates/tasknote-starter-template.md`.
 

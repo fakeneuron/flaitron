@@ -15,7 +15,9 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-(none)
+- [ ] **CORE-EPIC-711** [heavy]🧠 | flaitron-rebrand — Rename flowtron → flaitron across the app, the `.flowtron/` folder and `.flowtron/core` submodule path, every live internal reference, the GitHub repo and URLs, and every adopter (one fleet wave), plus external references (`~/Code` siblings incl. natabula, `~/fakeneuron/`, `~/.claude/`, judedelparte GitHub branding). Legacy/archived tasknotes stay untouched; `ft-*` skill prefix stays. Breaking — ships as v6.0.0 after the rename (no separate v5.x release first). Filed via /ft-epic-discovery; refined at .1 closure.
+  - [ ] **CORE-711.1** [heavy]🧠 | flaitron-rebrand discovery — Starter filed 2026-10-03: inventory every flowtron reference (repo, fleet, global, external), settle migration shape, and file children .2..(M+1) per SPEC/epic.md.
+  - [ ] **CORE-711.N** [heavy]🧠 | flaitron-rebrand audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line), plus a zero-stray-`flowtron` grep outside the legacy-tasknote fence. Filed now with the reserved terminal `.N` suffix.
 
 ## Low
 

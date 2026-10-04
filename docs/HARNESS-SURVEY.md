@@ -5,7 +5,8 @@ frameworks, and trackers. Each pass is a dated section; a later pass appends
 rather than rewrites, so the record shows what the field looked like when a
 decision was made. Read when planning a survey pass, when a "should flaitron
 do X?" question comes up, or when [`docs/VISION.md`](VISION.md) §"What we
-won't accept" needs a current counter-example.
+won't accept" needs a current counter-example. Passes dated before v6.0.0
+call the project by its [former name](../README.md#formerly-flowtron).
 
 Method for every pass: read `SPEC.md` + `docs/VISION.md` first, then the
 field, then rank gaps by *would it change task outcomes* and overkill by

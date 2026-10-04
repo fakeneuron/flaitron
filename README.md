@@ -12,6 +12,7 @@
 
 A lightweight, project-agnostic tasknote system for solo AI-assisted coding.
 One source of truth, consumed by adopting projects via git submodule.
+Formerly flowtron — [renamed in v6.0.0](#formerly-flowtron).
 
 The goal: catch the agent before it wastes a session. The four phases, the
 relevance gate, and the acceptance criteria are the checkpoints where you
@@ -323,9 +324,15 @@ major bumps (no separate `CHANGELOG.md`).
 Flaitron is solo-maintained with a personal adopter fleet. The major version
 number counts breaking changes from the May 2026 rapid-iteration period
 (v1.0.0 → v5.0.0 in 25 days), not project maturity — the contract was
-break-free from v5.0.0 (2026-06-01) until v6.0.0, the one-time
-flowtron → flaitron rename (`.flowtron/` → `.flaitron/`). Existing adopters
-follow
+break-free from v5.0.0 (2026-06-01) until v6.0.0, the one-time rename below.
+
+### Formerly flowtron
+
+Until v6.0.0 this project was named flowtron: the repository was
+`fakeneuron/flowtron` and the convention directory `.flowtron/`. v6.0.0
+renamed both to flaitron (`.flaitron/`), with no old-name fallback. Release
+history, archived tasknotes, and dated records written before the rename keep
+the old name. Existing adopters follow
 [docs/MIGRATION.md](docs/MIGRATION.md) §"Upgrading an existing adopter from v5.x".
 
 ## License

@@ -3,7 +3,9 @@
 CORE-677.2 installation receipt, 2026-10-01. This is a dated observation,
 not a second install roster. Canonical commands remain in
 [codex/AGENTS-snippet.md](../codex/AGENTS-snippet.md); policy remains in
-[PLATFORMS.md](PLATFORMS.md#installed-surface-policy).
+[PLATFORMS.md](PLATFORMS.md#installed-surface-policy). It predates v6.0.0, so
+its names and paths — reproduce steps included — are those of the pinned
+v5.33.0 checkout under the [former name](../README.md#formerly-flowtron).
 
 Fresh Codex discovery now exposes all 12 shipped wrappers in the self-host
 checkout and the eight expected repo skills in an isolated pinned adopter.

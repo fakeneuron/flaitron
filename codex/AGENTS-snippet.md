@@ -1,4 +1,4 @@
-# Codex wiring snippet for flowtron
+# Codex wiring snippet for flaitron
 
 This file is the Codex-specific sibling of `claude/AGENTS-snippet.md`.
 The workflow block itself is agent-neutral and remains canonical there for
@@ -23,30 +23,30 @@ parses it; `/ft-release` §7.1 diffs it against the SSOT as a set.
 
 Codex discovers repo-scoped skills from `.agents/skills` in the current
 directory walk. From an adopting project's repository root, after adding the
-flowtron submodule at `.flowtron/core`, wire the adopter-facing Flowtron skill
+flaitron submodule at `.flaitron/core`, wire the adopter-facing Flaitron skill
 subset (tasknote execution family, `ft-seed`, and `ft-update`):
 
 ```sh
 mkdir -p .agents/skills
-ln -s ../../.flowtron/core/codex/skills/ft-close-epic .agents/skills/ft-close-epic
-ln -s ../../.flowtron/core/codex/skills/ft-epic-discovery .agents/skills/ft-epic-discovery
-ln -s ../../.flowtron/core/codex/skills/ft-file-followup .agents/skills/ft-file-followup
-ln -s ../../.flowtron/core/codex/skills/ft-micro-task .agents/skills/ft-micro-task
-ln -s ../../.flowtron/core/codex/skills/ft-refactor .agents/skills/ft-refactor
-ln -s ../../.flowtron/core/codex/skills/ft-seed .agents/skills/ft-seed
-ln -s ../../.flowtron/core/codex/skills/ft-task .agents/skills/ft-task
-ln -s ../../.flowtron/core/codex/skills/ft-update .agents/skills/ft-update
+ln -s ../../.flaitron/core/codex/skills/ft-close-epic .agents/skills/ft-close-epic
+ln -s ../../.flaitron/core/codex/skills/ft-epic-discovery .agents/skills/ft-epic-discovery
+ln -s ../../.flaitron/core/codex/skills/ft-file-followup .agents/skills/ft-file-followup
+ln -s ../../.flaitron/core/codex/skills/ft-micro-task .agents/skills/ft-micro-task
+ln -s ../../.flaitron/core/codex/skills/ft-refactor .agents/skills/ft-refactor
+ln -s ../../.flaitron/core/codex/skills/ft-seed .agents/skills/ft-seed
+ln -s ../../.flaitron/core/codex/skills/ft-task .agents/skills/ft-task
+ln -s ../../.flaitron/core/codex/skills/ft-update .agents/skills/ft-update
 ```
 
-The submodule also brings flowtron's own tasknote archive at
-`.flowtron/core/.flowtron/` (~14 MB, ~1,000 files) — flowtron's history, not
+The submodule also brings flaitron's own tasknote archive at
+`.flaitron/core/.flaitron/` (~14 MB, ~1,000 files) — flaitron's history, not
 this project's context. Keep it out of search tooling with that line in a root
 `.ignore`; the per-tool list is in `../docs/MIGRATION.md` §1.1.
 
 Use `/skills` in Codex or type `$ft-task` / `$ft-update` / another wired
-skill name to invoke a Flowtron skill. Global utility skills such as
+skill name to invoke a Flaitron skill. Global utility skills such as
 `ft-new-project` and `ft-audit-repo` may be installed in the user skill directory when desired;
-`ft-release` remains flowtron-self-only and is not part of the adopter snippet.
+`ft-release` remains flaitron-self-only and is not part of the adopter snippet.
 The canonical category table lives in
 `../docs/PLATFORMS.md` §"Installed-surface policy".
 Codex's built-in CLI slash commands do not define arbitrary custom `/ft-*`
@@ -61,7 +61,7 @@ how Codex translates lands in one place:
 
 - Use a concise prose question when the source skill asks for a structured ask
   and no Codex structured prompt is available.
-- Invoke sibling Flowtron Codex skills by their `ft-*` names when a source step
+- Invoke sibling Flaitron Codex skills by their `ft-*` names when a source step
   references another skill.
 - Treat `.claude/` paths as Claude-only install paths; Codex install paths are
   documented in §"One-time skill wiring" above.
@@ -75,11 +75,11 @@ A wrapper may add a rule of its own — `ft-task` names one for its lazy fragmen
 ## Pinning notes
 
 These relative symlinks point through the project's pinned
-`.flowtron/core` submodule, so the wired skill bodies move only when the
-project deliberately bumps flowtron. Existing symlinks do not need rewiring on
+`.flaitron/core` submodule, so the wired skill bodies move only when the
+project deliberately bumps flaitron. Existing symlinks do not need rewiring on
 a normal version bump; newly shipped adopter-subset skills may need new symlinks.
 
-For flowtron maintainers who want hot-reload behavior while editing this
+For flaitron maintainers who want hot-reload behavior while editing this
 checkout, wire the wrapper inventory **repo-scoped**, from the checkout root:
 
 ```sh

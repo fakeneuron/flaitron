@@ -1,6 +1,6 @@
-# Tasknote Directory (flowtron self-host)
+# Tasknote Directory (flaitron self-host)
 
-This directory holds active tasknotes and archived tasknotes for flowtron's
+This directory holds active tasknotes and archived tasknotes for flaitron's
 own development. The canonical workflow lives in [`SPEC.md`](../../SPEC.md)
 at the repo root; canonical tasknote templates ship at `templates/`.
 
@@ -12,7 +12,7 @@ at the repo root; canonical tasknote templates ship at `templates/`.
 
 ## Area prefixes
 
-Flowtron uses only the canonical prefixes defined in [`SPEC.md` §"Task ID convention"](../../SPEC.md) — `CORE-`, `BE-`, `FE-`, `DB-`, `DEPLOY-`, `TEST-`. No project-specific prefixes.
+Flaitron uses only the canonical prefixes defined in [`SPEC.md` §"Task ID convention"](../../SPEC.md) — `CORE-`, `BE-`, `FE-`, `DB-`, `DEPLOY-`, `TEST-`. No project-specific prefixes.
 
 ## Archive layout
 
@@ -36,7 +36,7 @@ new prefix, it names the folder the prefix lowercased with the trailing `-`
 dropped, then adds the row above; the folder is created when the first tasknote
 in that area lands. An adopter may deliberately declare a folder the default
 would not produce (e.g. `OPS-*` → `archive/operations/`); the row wins. That is
-why `<area>` is read from the table rather than computed. Flowtron itself uses
+why `<area>` is read from the table rather than computed. Flaitron itself uses
 only the canonical prefixes, so its six rows happen to match the default — which
 is exactly the case that makes deriving look safe.
 
@@ -54,15 +54,15 @@ swept, because it drifts against the surfaces that mirror it. Conflating them
 is what made CORE-489.3's correct sweep-coverage fix look like a reversal of
 CORE-194.1 Q3's correct lazy-loading decision (settled by CORE-491).
 
-- `README.md` — public-facing flowtron repo overview
-- `AGENTS.md` — flowtron-self agent guide: repo layout, validation commands, workflow pointers, and platform wiring notes
+- `README.md` — public-facing flaitron repo overview
+- `AGENTS.md` — flaitron-self agent guide: repo layout, validation commands, workflow pointers, and platform wiring notes
 - `SPEC.md` — canonical workflow contract; primary AI cold-start surface
 - `docs/MIGRATION.md` — adoption + bump procedures for adopting projects
 - `claude/AGENTS-snippet.md` — block adopters paste into their AGENTS.md (defines adopters' assistant-facing surface; agent-neutral)
 - `codex/AGENTS-snippet.md` — Codex-specific `.agents/skills` wiring commands and invocation notes
 - `cursor/AGENTS-snippet.md` — Cursor thin wiring (`.cursor/skills/` Cursor-only path; primary path reuses Claude `.claude/` wiring)
 - `grok/AGENTS-snippet.md` — Grok thin wiring (`.grok/skills/` Grok-only path; primary path reuses Claude / Codex / Cursor wiring)
-- `docs/CONVENTIONS.md` — conventions flowtron adheres to and declines (commits, versioning, formatting, CHANGELOG, ADRs) with rationale
+- `docs/CONVENTIONS.md` — conventions flaitron adheres to and declines (commits, versioning, formatting, CHANGELOG, ADRs) with rationale
 - `CONTRIBUTING.md` — solo-maintenance model; how to file issues; when PRs make sense
 - `SECURITY.md` — prompt-injection and supply-chain threat model; informs how skills handle contributor-authored content and submodule bumps
 - `docs/AGENT-NEUTRALITY.md` — ledger of intentional Claude-specific surfaces; audits and Phase 4 sweeps consult this before flagging Claude-Code references in the contract layer
@@ -71,7 +71,7 @@ CORE-194.1 Q3's correct lazy-loading decision (settled by CORE-491).
 - `docs/AGENT-COMPAT.md` — living agent-compatibility matrix: per-agent consume-mode, context entry-point, skill/command primitive, and last-verified currency
 - `docs/EXTERNAL-AGENTS.md` — one-agent-per-tasknote rule, the handoff contract for external CLI agents, the orchestration contract an operator-less caller reports to, the caller-facing stable-surface list (what a reader or dispatcher may hook, and what is out of contract), and the not-an-orchestration-runtime boundary; contract edits that touch delegation, handoff, the unattended posture, template labels, or the task-line grammar routinely drift against it; a closure that moves, renames, or retires a **stable-surface row** files the caller-side row **in the same closure** — filed in the caller's own `PLAN.md` (the cross-repo caller today is caobunga), never left as recap prose for the caller to discover at its next pin bump (`SPEC.md` §"Cross-repo edit remit" · `SPEC.md` §"Deferred hand-off filing")
 - `docs/WORKTREES.md` — the locked isolation convention for parallel epic children (`wt-<ID>` branch + four-command start / end procedure; no skill since CORE-572); named by `docs/EXTERNAL-AGENTS.md` as the isolation layer and cited wherever parallelism is discussed
-- `docs/VISION.md` — canonical statement of flowtron's scope boundaries; mirrored by `SPEC/scope-boundaries.md` §"What flowtron does NOT provide", `docs/CONVENTIONS.md`, and `docs/EXTERNAL-AGENTS.md`. Lazy-loaded: swept, not cold-start
+- `docs/VISION.md` — canonical statement of flaitron's scope boundaries; mirrored by `SPEC/scope-boundaries.md` §"What flaitron does NOT provide", `docs/CONVENTIONS.md`, and `docs/EXTERNAL-AGENTS.md`. Lazy-loaded: swept, not cold-start
 
 `SPEC/*.md` (lazy modules) and `claude/skills/*/SKILL.md` sit outside this
 sweep set, excluded on both counts, so the distinction above does not arise for
@@ -122,7 +122,7 @@ CI-status gate).
 **Landed at CORE-622.3 (2026-09-20), because the false-positive shape moved.**
 The third filing came from `/ft-audit-repo` with the two declinations'
 evidence changed underneath it: CORE-620 rotated the `## Completed` rows that
-quoted their own drift into `.flowtron/PLAN-ARCHIVE.md`, which the check
+quoted their own drift into `.flaitron/PLAN-ARCHIVE.md`, which the check
 excludes alongside the tasknote archive (both write-once), and CORE-609 ruled a
 bold-lead paragraph a valid target, so the resolver reads `**Title` as well as
 `# Title`. Re-measured at HEAD across 132 live files and 611 path-bearing

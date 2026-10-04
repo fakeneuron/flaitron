@@ -39,8 +39,8 @@ Message shape, one per filing motion:
 Rules:
 
 - **Explicit pathspecs only.** Stage the filing's own paths by name —
-  `.flowtron/PLAN.md`, plus `.flowtron/tasknote/<ID>.md` (starter) or
-  `.flowtron/sidequest/<ID>.md` (park), plus each inline-fix source path
+  `.flaitron/PLAN.md`, plus `.flaitron/tasknote/<ID>.md` (starter) or
+  `.flaitron/sidequest/<ID>.md` (park), plus each inline-fix source path
   (`/ft-audit` §5 trivial-fix carve-out). **Never** `git commit -a`,
   `git add .`, or `git add -A`. A follow-up is routinely filed from *inside*
   an active `/ft-task`, where the working tree legitimately carries the parent
@@ -55,11 +55,11 @@ Rules:
      commit. The commit publishes the *whole* index, so a closure that has
      already staged deliverables but not yet its PLAN flip must not ride out
      under a `chore: file` subject (an adopter hit this on 2026-09-13;
-     CORE-591). Unstaged files other than `.flowtron/PLAN.md` do not fail
+     CORE-591). Unstaged files other than `.flaitron/PLAN.md` do not fail
      this reading and are not staged.
-  2. **PLAN.md.** `git status --porcelain -- .flowtron/PLAN.md`.
+  2. **PLAN.md.** `git status --porcelain -- .flaitron/PLAN.md`.
      - Empty → commit. After the append the only PLAN delta is this filing.
-     - Non-empty → `git diff --no-ext-diff -- .flowtron/PLAN.md` (no color).
+     - Non-empty → `git diff --no-ext-diff -- .flaitron/PLAN.md` (no color).
        Commit together when every added line is a task row or blank, and
        every removed line is blank or a section's `(none)` placeholder
        (§"Empty-section placeholder"). Those rows are earlier filings that
@@ -171,7 +171,7 @@ Closed task lines collapse to a stub form:
 ```
 
 The long description drops — the archived tasknote at
-`.flowtron/tasknote/archive/<area>/<TASK-ID>.md` is the canonical record. So
+`.flaitron/tasknote/archive/<area>/<TASK-ID>.md` is the canonical record. So
 never park anything durable there: a correction, caveat, or decision left in a
 long description is deleted on a schedule (`SPEC.md` §"Tasknote frontmatter" →
 factual corrections). Phase 4 closure rewrites the line to the stub form (not just the
@@ -203,7 +203,7 @@ is the canonical record.
 ## `## Completed` rotation
 
 `## Completed` grows without bound: every closure appends a row and nothing
-ever removes one. Tasknotes rotate to `.flowtron/tasknote/archive/<area>/`,
+ever removes one. Tasknotes rotate to `.flaitron/tasknote/archive/<area>/`,
 but their PLAN lines never did — so the plan file, which every task reads at
 Step 1 and re-reads at post-closure, carries the entire project history
 forever. **Rotation bounds the section without deleting anything.**
@@ -214,7 +214,7 @@ also the advisory trigger below (one number, not two) — CORE-604.4 collapsed
 the earlier 100-row bound / 150-row advisory split, which had drifted into
 describing a gap nobody depended on.
 
-**The rotation file.** `.flowtron/PLAN-ARCHIVE.md`, a sibling of `PLAN.md`.
+**The rotation file.** `.flaitron/PLAN-ARCHIVE.md`, a sibling of `PLAN.md`.
 Rotated rows are grouped under `## Completed <YYYY-MM>` headings, newest month
 first. Rows move **verbatim** — same stub form, same nesting, same text. The
 file is **append-only**: a rotated row is never rewritten or reordered once
@@ -255,13 +255,13 @@ surfaces a one-line advisory and continues — never blocking, never editing.
 This mirrors the ~50/70-word filing-discipline advisory in
 [`SPEC/tasknote-selection.md`](tasknote-selection.md)
 §"PLAN.md filing-discipline thresholds" — the control is the human at the
-gate, not a validator (`SPEC.md` §"What flowtron does NOT provide").
+gate, not a validator (`SPEC.md` §"What flaitron does NOT provide").
 
 **Why a second file and not a retention window.** Deleting rows past a window
 would destroy the inline-audit-fix records described above, and truncate the
 all-time history the visualizer reads. Rotation loses nothing.
 
-**Why this does not re-open the single-plan-file decision.** flowtron's
+**Why this does not re-open the single-plan-file decision.** flaitron's
 founding adopter migrations collapsed `PLAN.md` + `ROADMAP.md` +
 `PLAN_ARCHIVE.md` + `FUTURE_OPPORTUNITIES.md` into one file, because *active*
 planning spread across four files meant no single place answered "what is
@@ -288,7 +288,7 @@ and never surfaces it as an unparsed line.
 
 The convention lived only in that template-plus-test pairing, with no SPEC
 module stating it, which is exactly how it silently dropped once: CORE-655
-through CORE-657 filed into `.flowtron/PLAN.md`'s `## High` section and
+through CORE-657 filed into `.flaitron/PLAN.md`'s `## High` section and
 deleted its `(none)` placeholder as an incidental side effect, and nothing
 restored it once those rows completed and `## High` emptied back out again.
 CORE-668 fixed the live drift; this section is the contract that lets a

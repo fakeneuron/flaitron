@@ -1,6 +1,6 @@
 ---
 name: ft-update
-description: Bump an adopter project's pinned Flowtron submodule from Codex and re-wire newly shipped Flowtron skills.
+description: Bump an adopter project's pinned Flaitron submodule from Codex and re-wire newly shipped Flaitron skills.
 ---
 
 # ft-update - Codex wrapper

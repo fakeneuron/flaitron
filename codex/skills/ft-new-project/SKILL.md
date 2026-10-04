@@ -1,6 +1,6 @@
 ---
 name: ft-new-project
-description: "Bootstrap a fresh project with Flowtron from Codex: submodule, PLAN, tasknote README, AGENTS.md block, and wiring."
+description: "Bootstrap a fresh project with Flaitron from Codex: submodule, PLAN, tasknote README, AGENTS.md block, and wiring."
 ---
 
 # ft-new-project - Codex wrapper

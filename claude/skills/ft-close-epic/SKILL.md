@@ -1,9 +1,9 @@
 ---
 name: ft-close-epic
-description: Close a flowtron epic by scaffolding and driving its audit `.N` tasknote in one motion. With `--unattended`, runs with no operator present: the audit still closes and commits, and the parent-flip is deferred to the operator.
+description: Close a flaitron epic by scaffolding and driving its audit `.N` tasknote in one motion. With `--unattended`, runs with no operator present: the audit still closes and commits, and the parent-flip is deferred to the operator.
 ---
 
-# close-epic — flowtron epic audit + close driver
+# close-epic — flaitron epic audit + close driver
 
 You are scaffolding and driving the audit `.N` subtask of an epic, then prompting the user whether to flip the parent epic to `Completed`. The full lifecycle contract lives in `<SPEC_DIR>/epic.md` — this skill is the executable interpretation of the lifecycle's audit-and-close side, not a replacement. Treat `SPEC/epic.md` as authoritative when this file is silent or in tension.
 
@@ -13,12 +13,12 @@ The skill takes the **audit subtask ID** as `args` — canonically the reserved 
 
 Two layouts. Pick by which file exists:
 
-- **Adopter project:** `.flowtron/core/SPEC.md` exists → `<root>` = `.flowtron/core/`.
-- **Flowtron self-host:** repo-root `SPEC.md` with heading `# Flowtron — Workflow Specification` → `<root>` = repo-root.
+- **Adopter project:** `.flaitron/core/SPEC.md` exists → `<root>` = `.flaitron/core/`.
+- **Flaitron self-host:** repo-root `SPEC.md` with heading `# Flaitron — Workflow Specification` → `<root>` = repo-root.
 
 If neither matches, bail.
 
-Paths: SPEC=`<root>SPEC.md`, SPEC_DIR=`<root>SPEC/`, template=`<root>templates/tasknote-template.md`, PLAN=`.flowtron/PLAN.md`, tasknote dir=`.flowtron/tasknote/`.
+Paths: SPEC=`<root>SPEC.md`, SPEC_DIR=`<root>SPEC/`, template=`<root>templates/tasknote-template.md`, PLAN=`.flaitron/PLAN.md`, tasknote dir=`.flaitron/tasknote/`.
 
 UNATTENDED (shared `--unattended` fragment, owned by `/ft-task`): `<root>claude/skills/ft-task/unattended-mode.md`.
 SKILL_DIR (lazy fragment `unattended-close-epic.md` — this skill's own `--unattended` deltas): `<root>claude/skills/ft-close-epic/`.
@@ -31,10 +31,10 @@ When `unattended-mode = true`, Read `<SKILL_DIR>/unattended-close-epic.md`, `<UN
 
 ## Step 1 — Pre-flight
 
-- `.flowtron/PLAN.md` must exist (cwd is a flowtron-adopting project or flowtron itself).
+- `.flaitron/PLAN.md` must exist (cwd is a flaitron-adopting project or flaitron itself).
 - **Foreign-dirt gate (paper-complete guard).** Before scaffold writes, run `git status --porcelain`. If non-empty: **STOP**, surface the dirt list, ask the operator to commit / stash / discard themselves, then re-invoke. Do not auto-clean. See SPEC §"Paper-complete guard". **`--unattended` does not relax this** — it terminates and writes nothing, per the fragment's §"Steps 1-2 — Pre-scaffold stops".
 - Parse `args` as `<AREA>-<NUMBER>.<SUB>` (where `.<SUB>` is a number or the reserved literal `.N` — both parse per SPEC §"Task ID convention"):
-  - **Area** resolves by reading the `.flowtron/tasknote/README.md` §"Archive layout" table — every prefix, canonical ones included; `<area>` is **never derived from the ID** (SPEC §"Task ID convention"). No row for this prefix → stop and ask; do not guess a folder.
+  - **Area** resolves by reading the `.flaitron/tasknote/README.md` §"Archive layout" table — every prefix, canonical ones included; `<area>` is **never derived from the ID** (SPEC §"Task ID convention"). No row for this prefix → stop and ask; do not guess a folder.
   - **`.<SUB>` segment is required** — `/ft-close-epic` only runs against epic subtasks, not standalone tasks. If the ID matches `<AREA>-<NUMBER>` (no `.<SUB>` suffix), stop and tell the user "`/ft-close-epic` runs against the audit `.N` subtask of an epic, not a standalone task. Use `/ft-task <ID>` for standalone tasks."
 - Check `<tasknote dir>/<AUDIT-SUBTASK-ID>.md`:
   - If the file already exists with `status: in-progress`, stop and tell the user the audit tasknote is already in flight. Recommend continuing conversationally (e.g., "continue CORE-057.6") rather than restarting — this skill is start-only by design.
@@ -45,7 +45,7 @@ When `unattended-mode = true`, Read `<SKILL_DIR>/unattended-close-epic.md`, `<UN
 
 ## Step 2 — Validate audit position and check sibling state
 
-Read `.flowtron/PLAN.md`. Locate the parent epic ID by stripping the `.<SUB>` suffix and looking for `<AREA>-EPIC-<NUMBER>`:
+Read `.flaitron/PLAN.md`. Locate the parent epic ID by stripping the `.<SUB>` suffix and looking for `<AREA>-EPIC-<NUMBER>`:
 
 - If no parent epic line is found in PLAN.md (active OR `## Completed`), stop and tell the user no parent epic `<AREA>-EPIC-<NUMBER>` exists for the given audit ID. The audit subtask must be filed under a parent epic via `/ft-epic-discovery`.
 - If the parent epic line lives under `## Completed`, stop and surface the conflict — the parent has already been closed.
@@ -54,7 +54,7 @@ Read `.flowtron/PLAN.md`. Locate the parent epic ID by stripping the `.<SUB>` su
 
 ```text
 ⚠️ PLAN.md `## Completed` holds <N> rows (>60). Consider rotating the
-   oldest rows to `.flowtron/PLAN-ARCHIVE.md`. Proceeding.
+   oldest rows to `.flaitron/PLAN-ARCHIVE.md`. Proceeding.
 ```
 
 Informational only — never block, never rotate. Rotation is an operator motion; the bound, the month-block granularity, and the two never-split rules are canonical in SPEC/plan-filing.md §"`## Completed` rotation".
@@ -99,18 +99,18 @@ Pre-populate `## 🎯 Goal`, `## ✅ Acceptance`, and `## 🧩 Subtasks` with th
 
 **Goal (one sentence):**
 
-> Verify the completed `<AREA>-EPIC-<NUMBER>` (`<shortname>`) cohort sits coherently in the codebase: cumulative doc-drift sweep across `.flowtron/tasknote/README.md` §"AI-referenced docs", naming/style consistency across the cohort's deliverables, and follow-up filings for any miss.
+> Verify the completed `<AREA>-EPIC-<NUMBER>` (`<shortname>`) cohort sits coherently in the codebase: cumulative doc-drift sweep across `.flaitron/tasknote/README.md` §"AI-referenced docs", naming/style consistency across the cohort's deliverables, and follow-up filings for any miss.
 
 **Acceptance (parameterized; the first criterion is the fixed doc-drift line per `SPEC/epic.md` §"Audit acceptance — fixed doc-drift line" and is non-negotiable):**
 
 ```markdown
-- [ ] **Doc-drift sweep (fixed line, per SPEC/epic.md §"Audit acceptance — fixed doc-drift line")** — for each entry in `.flowtron/tasknote/README.md` §"AI-referenced docs", state "no change" or the specific update. Always present; surfaces cumulative slice-local staleness that per-task Phase 4 closures can miss.
+- [ ] **Doc-drift sweep (fixed line, per SPEC/epic.md §"Audit acceptance — fixed doc-drift line")** — for each entry in `.flaitron/tasknote/README.md` §"AI-referenced docs", state "no change" or the specific update. Always present; surfaces cumulative slice-local staleness that per-task Phase 4 closures can miss.
 - [ ] Cohort coherence inventory: each implementation child's deliverables read against the others (naming consistency, style parity, no contradictory cross-refs)
 - [ ] No regressions surfaced in earlier-shipped cohort children's surfaces
 - [ ] Audit findings recorded in Implementation Notes; misses cited as candidates for `/ft-file-followup <NEW-ID>` filing (filed AFTER audit closure to preserve `/ft-file-followup`'s filing-discipline gate)
 - [ ] Single `feat: <AUDIT-SUBTASK-ID> — audit <AREA>-EPIC-<NUMBER>` (or `chore: ...` if no code edits land) commit lands
 - [ ] PLAN.md line for `<AUDIT-SUBTASK-ID>` flipped to stub form `Completed YYYY-MM-DD.`
-- [ ] Tasknote moved to `.flowtron/tasknote/archive/<area>/<AUDIT-SUBTASK-ID>.md`
+- [ ] Tasknote moved to `.flaitron/tasknote/archive/<area>/<AUDIT-SUBTASK-ID>.md`
 - [ ] Parent-flip prompt surfaced after audit closure (skill Step 8) — user confirms or declines flipping `<AREA>-EPIC-<NUMBER>` to `Completed` and moving the cohort to `## Completed`
 ```
 
@@ -118,7 +118,7 @@ Pre-populate `## 🎯 Goal`, `## ✅ Acceptance`, and `## 🧩 Subtasks` with th
 
 ```markdown
 - [ ] Inventory cohort children's archived tasknotes — read each implementation child's Final Summary + Implementation Notes; capture deliverables in Discovery Notes
-- [ ] Walk `.flowtron/tasknote/README.md` §"AI-referenced docs" entries — fixed doc-drift sweep
+- [ ] Walk `.flaitron/tasknote/README.md` §"AI-referenced docs" entries — fixed doc-drift sweep
 - [ ] Cohort coherence pass — naming consistency, style parity, no contradictory cross-refs across the cohort's deliverables
 - [ ] Surface audit findings in Implementation Notes; cite each miss as a `/ft-file-followup <NEW-ID>` candidate
 - [ ] Phase 4: flip `<AUDIT-SUBTASK-ID>` PLAN line to stub form + archive tasknote
@@ -181,7 +181,7 @@ Walk the Phase 4 checklist for the audit subtask itself under SPEC §"Paper-comp
 
 ## Step 8 — Parent-epic flip eligibility (no banner)
 
-After the audit closes cleanly, scan `.flowtron/PLAN.md` for the parent epic line + all its children. Determine eligibility:
+After the audit closes cleanly, scan `.flaitron/PLAN.md` for the parent epic line + all its children. Determine eligibility:
 
 - All children `[x]` (including the audit just closed) → **all-children-closed**: parent-flip is eligible. The Yes/No prompt fires inside Step 9's 📦 bundle.
 - Any child `[ ]` (typical only when Step 2's early-audit gate was bypassed) → **not-all-closed**: parent-flip is **not eligible**. Note the open children for surfacing inside Step 9's bundle as a heads-up; the prompt is skipped.
@@ -236,4 +236,4 @@ Skill-specific next-move shape:
 - **Audit follow-ups → `/ft-file-followup`.** Misses logged in Implementation Notes as `/ft-file-followup <NEW-ID>` candidates; user invokes per miss after closure (preserves the 50w/70w cap at its natural boundary).
 - **Parent-flip is a prompt, not automatic.** Skill never silently flips. User confirms (default Yes); declines leave cohort nested for a later flip. Under `--unattended` the prompt does not fire at all and the flip is **deferred**, never auto-approved — the irreversible cohort move stays operator-owned in every posture.
 - **`--unattended` is the only flag.** No `--fast` (the epic skills never took one, so there is nothing to be a superset of) and no `--debug`. Contract: SPEC/gate-postures.md §"`/ft-close-epic` under the posture". `/ft-epic-discovery` accepts neither — opening an epic is a scoping conversation, and there is nobody to have it with.
-- **Auto-wired into adopters.** Symlinked via `claude/skills/ft-new-project/` + `docs/MIGRATION.md` §1.2 + `claude/AGENTS-snippet.md`'s symlink section. Existing adopters pick up on next flowtron version bump.
+- **Auto-wired into adopters.** Symlinked via `claude/skills/ft-new-project/` + `docs/MIGRATION.md` §1.2 + `claude/AGENTS-snippet.md`'s symlink section. Existing adopters pick up on next flaitron version bump.

@@ -6,7 +6,7 @@
 > conversational paragraph, hand-off) are **bypassed** in this mode.
 
 Park an **idea or quick fix** without breaking the current session. The lightest
-persistent filing motion: one tiny stub at `.flowtron/sidequest/<TASK-ID>.md`,
+persistent filing motion: one tiny stub at `.flaitron/sidequest/<TASK-ID>.md`,
 one PLAN line under the right priority section, then straight back to work.
 
 **Lighter than a default `/ft-file-followup` filing:** no review gate, no
@@ -28,7 +28,7 @@ genuinely ambiguous — park mode auto-allocates rather than surfacing a
 suggested ID for confirmation.
 
 Run the host SKILL's Step 1a pre-flight against the resolved ID, plus one park-
-specific check: the ID must NOT already exist at `.flowtron/sidequest/<ID>.md`.
+specific check: the ID must NOT already exist at `.flaitron/sidequest/<ID>.md`.
 On any conflict, stop and ask for a different ID — do not guess.
 
 ## Step P2 — Resolve priority
@@ -83,22 +83,22 @@ execute **now** → `/ft-micro-task`, not this mode.
 
 Template path (resolved by the host SKILL's Step 0 layout branch):
 
-- **Adopter:** `.flowtron/core/templates/sidequest-template.md`
-- **Flowtron self-host:** `templates/sidequest-template.md`
+- **Adopter:** `.flaitron/core/templates/sidequest-template.md`
+- **Flaitron self-host:** `templates/sidequest-template.md`
 
 Then:
 
 1. **Filing-commit pre-check.** Immediately before any write, apply
    `SPEC/plan-filing.md` §"Filing commits". `git diff --cached --quiet`
    non-zero → `auto-commit = false`. PLAN.md porcelain empty →
-   `auto-commit = true`. PLAN.md non-empty → `git diff --no-ext-diff -- .flowtron/PLAN.md`:
+   `auto-commit = true`. PLAN.md non-empty → `git diff --no-ext-diff -- .flaitron/PLAN.md`:
    every added line a task row or blank, and every removed
    line blank or a `(none)` placeholder → `auto-commit = true` and those rows
    ride in this commit (record their IDs for the body line that section names);
    any other PLAN change → `auto-commit = false`. Not a gate. Run it here, not
    at Step P1 — the Step P2 priority question waits for the operator.
-2. `mkdir -p .flowtron/sidequest/`
-3. Copy the template → `.flowtron/sidequest/<TASK-ID>.md`; fill frontmatter, H1,
+2. `mkdir -p .flaitron/sidequest/`
+3. Copy the template → `.flaitron/sidequest/<TASK-ID>.md`; fill frontmatter, H1,
    nav date, `## Idea`, `## Resume anchor`, `parent:`.
 4. Append under `## <Priority>`:
 
@@ -114,7 +114,7 @@ Then:
    work's edits:
 
    ```sh
-   git add .flowtron/PLAN.md .flowtron/sidequest/<TASK-ID>.md
+   git add .flaitron/PLAN.md .flaitron/sidequest/<TASK-ID>.md
    git diff --cached   # whole index, no pathspec
    git commit -m "chore: file <TASK-ID> park — <shortname>"
    ```
@@ -148,7 +148,7 @@ Reply in **≤70 words total** using this exact shape — no extra sections, no
 reconcile notes, no promotion lecture:
 
 ```text
-📌 **<TASK-ID>** parked **<Priority>** → `.flowtron/sidequest/<TASK-ID>.md` · committed `<sha>`
+📌 **<TASK-ID>** parked **<Priority>** → `.flaitron/sidequest/<TASK-ID>.md` · committed `<sha>`
 
 **Resuming:** <resume anchor, one sentence>
 ```
@@ -187,7 +187,7 @@ SKILL's Step 5 hand-off, which ends its turn.
   `tasknote-starter-template.md` (the row already exists, so the `--starter`
   filer's must-not-exist pre-flight refuses the ID — a manual edit, PLAN row
   untouched).
-  **Delete `.flowtron/sidequest/<ID>.md` after promotion** — CORE-359.3 cleaned
+  **Delete `.flaitron/sidequest/<ID>.md` after promotion** — CORE-359.3 cleaned
   up an orphan stub left by a promotion that skipped this step.
 - **Context-dependent:** draws from the current conversation — run in-session,
   not after `/clear`.

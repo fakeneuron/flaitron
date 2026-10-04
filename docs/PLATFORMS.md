@@ -1,6 +1,6 @@
 # Multi-platform wiring pattern
 
-Flowtron's contract is agent-neutral; its execution-surface wiring is
+Flaitron's contract is agent-neutral; its execution-surface wiring is
 per-platform. This doc explains the two-layer model that separates them
 and the symmetric plug-in pattern additional platforms follow if a
 contributor ships their wiring. Today Claude Code and Codex CLI have full
@@ -30,19 +30,19 @@ wiring but don't *depend* on it for contract semantics).
 
 ## Today's surface
 
-| Platform | How it consumes flowtron | What ships in this repo |
+| Platform | How it consumes flaitron | What ships in this repo |
 |---|---|---|
 | **Claude Code** | Wiring layer + contract layer. Six tasknote skills (`/ft-task` — which carries debug mode behind `--debug` and loop mode behind `--loop` — `/ft-micro-task`, `/ft-file-followup` (which carries park mode behind `--park` and starter mode behind `--starter`), `/ft-epic-discovery`, `/ft-close-epic`, `/ft-refactor`) drive the SPEC's 4-phase workflow inline; the parameterized `/ft-audit <domain>` skill runs the 5-pass recipe over eight domains and `/ft-audit-repo` runs the first-contact holistic recipe; standalone skills `/ft-new-project`, `/ft-release`, `/ft-seed`, `/ft-update` follow their own recipes. | `claude/` — `AGENTS-snippet.md` + `commands/*.md` + `skills/*/SKILL.md` (+ lazy fragments). Adopter installs follow the subset policy below and the executable commands in `claude/AGENTS-snippet.md` §"One-time symlink wiring". |
 | **Codex CLI** | Wiring layer + contract layer. Codex consumes the same `AGENTS.md` paste-block, then exposes the adopter subset as repo-scoped skills. `ft-task` routes through the agent-neutral SOP; the other shipped wrappers route to the canonical skill bodies with Codex primitive translation. Those bodies' trailing operator flags come with them — see §"Non-Claude capability triggers". | `codex/` — `AGENTS-snippet.md` + `skills/*/SKILL.md` wrappers, plus the retained `procedures/ft-task.md` pointer. Adopter installs follow the subset policy below and the executable commands in `codex/AGENTS-snippet.md`; Codex invocation is via `/skills` or `$ft-task` / `$ft-update`, not arbitrary custom `/ft-*` CLI commands. |
 | **Cursor** | Wiring layer + contract layer (thin). Cursor reads `AGENTS.md` and discovers skills from `.cursor/skills/`, `.agents/skills/`, and `.claude/skills/` (compat). No Cursor-specific skill wrappers ship — adopters wire the canonical `claude/skills/` bodies. | `cursor/` — `AGENTS-snippet.md` + `procedures/ft-task.md` pointer only. If the project is already wired for Claude Code, it is already wired for Cursor; Cursor-only projects follow the `.cursor/skills/` block in `cursor/AGENTS-snippet.md`. |
 | **Grok Build** | Wiring layer + contract layer (thin, Cursor-shaped). Grok reads `AGENTS.md` and discovers skills from `.grok/skills/` (native), `.claude/skills/` (Claude compat, default on), `.cursor/skills/` (Cursor compat, default on), and `.agents/skills/` at each tier. No Grok-specific skill wrappers ship — adopters reuse the canonical `claude/skills/` bodies already wired for Claude, Codex, or Cursor. Those bodies' trailing operator flags come with them — see §"Non-Claude capability triggers". | `grok/` — `AGENTS-snippet.md` + `procedures/ft-task.md` pointer only. If the project is already wired for Claude Code, Codex, or Cursor, it is already wired for Grok; Grok-only projects follow the `.grok/skills/` block in `grok/AGENTS-snippet.md`. For Grok Build adoption specifics, see §"Grok Build adoption notes" below. |
-| **Sourcegraph Amp, Aider, Gemini CLI** | Contract layer only. The platform reads `AGENTS.md`, sees flowtron's paste-block, and drives the contract conversationally — relevance gate, phase boundaries, post-closure protocol all live in `SPEC.md`. No full platform-specific skill bundle required. | Adopters paste the `AGENTS.md` block from `claude/AGENTS-snippet.md` §"Block to paste into AGENTS.md"; that block is agent-neutral by design. |
+| **Sourcegraph Amp, Aider, Gemini CLI** | Contract layer only. The platform reads `AGENTS.md`, sees flaitron's paste-block, and drives the contract conversationally — relevance gate, phase boundaries, post-closure protocol all live in `SPEC.md`. No full platform-specific skill bundle required. | Adopters paste the `AGENTS.md` block from `claude/AGENTS-snippet.md` §"Block to paste into AGENTS.md"; that block is agent-neutral by design. |
 
 A platform doesn't need its own wiring to be useful. Most adopters paste
 the `AGENTS.md` block and drive conversationally. Wiring is an *optional
 uplift* that adds slash-command ergonomics — relevant only when the
 platform offers a skill/command primitive and a contributor wants to
-expose flowtron through it.
+expose flaitron through it.
 
 For the at-a-glance per-agent view — consume-mode, context entry-point,
 skill/command primitive, and how current each row is — see the living
@@ -54,29 +54,29 @@ companion and references the table above rather than re-deriving it.
 
 Four terms keep the wiring docs precise:
 
-- **Shipped inventory** — the upstream files flowtron publishes under a
+- **Shipped inventory** — the upstream files flaitron publishes under a
   platform directory (`claude/`, `codex/`). This can be broader than what an
   adopter installs into a project.
 - **Adopter-installed subset** — symlinks or copies that belong in an adopting
-  project's repo-scoped wiring directory, pinned through `.flowtron/core/`.
+  project's repo-scoped wiring directory, pinned through `.flaitron/core/`.
 - **Global-only utilities** — machine-local skills used before a project is
-  wired, across many projects, or while maintaining flowtron itself. These live
+  wired, across many projects, or while maintaining flaitron itself. These live
   under the user's agent home (`~/.claude/skills`, `~/.agents/skills`, or the
   platform equivalent), not in every adopter repo.
-- **Flowtron-self-only skills** — upstream maintenance skills that must not be
+- **Flaitron-self-only skills** — upstream maintenance skills that must not be
   installed in adopter projects. They may still ship in the upstream inventory
-  so flowtron can dogfood them under that platform.
+  so flaitron can dogfood them under that platform.
 
 Canonical policy:
 
-| Surface | Shipped inventory | Adopter-installed subset | Global-only utilities | Flowtron-self-only |
+| Surface | Shipped inventory | Adopter-installed subset | Global-only utilities | Flaitron-self-only |
 |---|---|---|---|---|
 | **Claude Code** | Full `ft-*` command + skill inventory under `claude/commands/` and `claude/skills/`. | The tasknote execution family (`ft-task`, `ft-micro-task`, `ft-file-followup`, `ft-epic-discovery`, `ft-close-epic`, `ft-refactor`), `ft-seed`, and `ft-update`. The `ft-audit` scaffold is forked/overlaid locally under an unprefixed name, not symlinked as an upstream `ft-*` project skill. | `ft-new-project` and `ft-audit-repo`. | `ft-release`. |
 | **Codex CLI** | Full `ft-*` wrapper inventory under `codex/skills/`, kept in parity with Claude's shipped skill slugs. | Same policy as Claude, translated to `.agents/skills/`: tasknote execution family (including `ft-refactor`), `ft-seed`, and `ft-update`. Focused audits remain fork/overlay surfaces rather than verbatim upstream project symlinks. | Same utility set as Claude, installed in Codex's user skill directory when desired. | `ft-release`. |
 | **Cursor** | Thin bundle: `cursor/AGENTS-snippet.md` + `cursor/procedures/ft-task.md` only — no `cursor/skills/` wrappers. | Same adopter subset as Claude, targeting either existing `.claude/skills/` (Cursor compat load — preferred when Claude is already wired) or `.cursor/skills/` for Cursor-only projects, always symlinking canonical `claude/skills/` bodies. | Same utility set as Claude, installed in Cursor's user skill directory when desired. | N/A — no Cursor `ft-release` surface. |
 | **Grok Build** | Thin bundle: `grok/AGENTS-snippet.md` + `grok/procedures/ft-task.md` only — no `grok/skills/` wrappers. | Same adopter subset as Claude, targeting existing `.claude/skills/` (Grok Claude-compat — preferred when Claude is already wired), `.agents/skills/` (when Codex is already wired), or `.cursor/skills/` (when Cursor-only is already wired). Grok-only projects symlink the same canonical `claude/skills/` bodies into `.grok/skills/` (native) per `grok/AGENTS-snippet.md`. | Same utility set as Claude, installed in `~/.grok/skills/` when desired. | N/A — no Grok `ft-release` surface. |
 
-The distinction is deliberate. Shipping a wrapper means flowtron can maintain,
+The distinction is deliberate. Shipping a wrapper means flaitron can maintain,
 test, and dogfood a platform-equivalent recipe; it does not automatically mean
 every adopting project should expose that recipe as repo-scoped wiring. The
 per-platform `AGENTS-snippet.md` files are the executable install source and
@@ -84,15 +84,15 @@ must be kept aligned to this policy. Release guardrails verifying these
 surfaces stay aligned ship in `/ft-release` §7.1's installed-surface check
 ([[CORE-349.5]]).
 
-**Flowtron's own checkout is not an adopter.** The adopter-installed subset
-above governs projects that consume flowtron through `.flowtron/core/`. Flowtron
+**Flaitron's own checkout is not an adopter.** The adopter-installed subset
+above governs projects that consume flaitron through `.flaitron/core/`. Flaitron
 itself dogfoods everything it ships, so its repo-scoped `.claude/skills/` and
 `.claude/commands/` mirror the **full** shipped inventory one-for-one —
 including the global-only utilities, `ft-release`, and `ft-update` (adopter-only
 and bails immediately here, but a no-op *wiring miss* would be its absence, not
 its presence). A shipped `ft-*` slug with no `.claude/` symlink is a wiring
 miss, not a policy choice; that is the exact gap that left `/ft-spec`
-unrunnable in flowtron's own checkout for a month after it shipped. Machine-global `~/.claude/` installs stay discretionary per
+unrunnable in flaitron's own checkout for a month after it shipped. Machine-global `~/.claude/` installs stay discretionary per
 [`MIGRATION.md`](MIGRATION.md) §1.0 — but *discretionary* governs **which**
 utilities you install, not how many copies of a slug exist; see the rule below.
 Only *broken* links there are drift. `/ft-release` §7.1 verifies both surfaces.
@@ -103,7 +103,7 @@ The categories above say *which* skills install where. This says **how many
 times**: once. Repo-scoped wiring is canonical — the copy that should run is the
 one wired into the project you are working in, whether that is an adopter's
 `.claude/skills/`, `.agents/skills/`, `.cursor/skills/`, or `.grok/skills/`
-pinned through `.flowtron/core/`, or flowtron's own full mirror. An agent home
+pinned through `.flaitron/core/`, or flaitron's own full mirror. An agent home
 (`~/.claude/skills`, `~/.agents/skills`, `~/.grok/skills`, or the platform
 equivalent) therefore carries **only the global-only utilities**. The
 adopter-installed subset and `ft-release` are never installed globally, because
@@ -113,9 +113,9 @@ Two agent behaviours make this a correctness rule rather than tidiness:
 
 - **Project scope and user scope can enumerate separately.** A slug present in
   both may be listed twice in the session's skill roster. Globbing the shipped
-  inventory into an agent home *and* wiring it repo-scoped can double flowtron's
+  inventory into an agent home *and* wiring it repo-scoped can double flaitron's
   footprint before any work starts — measured at 36 roster
-  entries for 18 skills in a flowtron-self session (measured 2026-08-11,
+  entries for 18 skills in a flaitron-self session (measured 2026-08-11,
   [[CORE-439]]; the shipped inventory has changed since — the doubling is the
   point, not the absolute count). Codex CLI 0.159.2's `skills/list` collapsed
   two same-target utility copies in a later installation check; that does not
@@ -140,7 +140,7 @@ When a contributor ships wiring for a new platform (`codex`, `grok`,
 repo root, named after the platform:
 
 ```text
-flowtron/
+flaitron/
 ├── claude/         # Claude Code wiring
 ├── codex/          # Codex skill wrappers + ft-task procedure pointer
 ├── grok/           # Grok thin wiring (snippet + ft-task procedure pointer; Cursor-shaped compat)
@@ -149,7 +149,7 @@ flowtron/
 
 The structural decision is locked at [[CORE-154.3]]: no parent
 `wiring/` dir, no rename of `claude/`. Adopter symlinks already in
-production point at `../../.flowtron/core/claude/...` — that path
+production point at `../../.flaitron/core/claude/...` — that path
 stability is a
 non-negotiable per [[CORE-154.1]] Constitution.
 
@@ -228,12 +228,12 @@ Sectioned like `claude/AGENTS-snippet.md`:
    are relative symlinks; for another platform they might be
    `cp` / `install` / a platform-specific registration command.
    Alongside them, one line telling the adopter to keep the
-   submodule's dogfood archive (`.flowtron/core/.flowtron/`) out of
+   submodule's dogfood archive (`.flaitron/core/.flaitron/`) out of
    the platform's search and context tooling, naming that platform's
    ignore mechanism and pointing at `docs/MIGRATION.md` §1.1 for the
    per-tool list (per [[CORE-632.3]]).
 3. **Pinning notes** — how the platform's wiring tracks the
-   submodule's pinned flowtron commit. Symlinks track automatically;
+   submodule's pinned flaitron commit. Symlinks track automatically;
    copies need re-copying on bump; other mechanisms documented inline.
 
 ### Single-source-of-truth posture
@@ -253,12 +253,12 @@ divergence (and divergence is documented here).
 
 | Surface | Status | Notes |
 |---|---|---|
-| `AGENTS.md` paste-block visible to the platform | **Mandatory** | The contract entry-point. Without this, the AI has no flowtron context. |
+| `AGENTS.md` paste-block visible to the platform | **Mandatory** | The contract entry-point. Without this, the AI has no flaitron context. |
 | `<platform>/AGENTS-snippet.md` (or equivalent adopter-facing doc) | Strongly recommended | Adopters need a single canonical doc for the wiring commands. |
-| `<platform>/commands/` + `<platform>/skills/` | Optional | A platform without its own command/skill *wrappers* can still ship a thin snippet that points adopters at another platform's canonical bodies (Cursor, Grok) or run flowtron conversationally (Amp / Aider / Gemini CLI today). Grok Build is Cursor-shaped: it loads those bodies from `.claude/skills/` / `.agents/skills/` / `.cursor/skills/` without its own wrappers, and Grok-only projects follow `grok/AGENTS-snippet.md`. Codex uses `skills/` only because its documented reusable workflow primitive is skills selected via `/skills` or `$name`, not arbitrary custom slash commands. |
+| `<platform>/commands/` + `<platform>/skills/` | Optional | A platform without its own command/skill *wrappers* can still ship a thin snippet that points adopters at another platform's canonical bodies (Cursor, Grok) or run flaitron conversationally (Amp / Aider / Gemini CLI today). Grok Build is Cursor-shaped: it loads those bodies from `.claude/skills/` / `.agents/skills/` / `.cursor/skills/` without its own wrappers, and Grok-only projects follow `grok/AGENTS-snippet.md`. Codex uses `skills/` only because its documented reusable workflow primitive is skills selected via `/skills` or `$name`, not arbitrary custom slash commands. |
 | Operator force-skip flag (e.g., `--fast`) | Optional | Mirror SPEC §"Operator-gate cues" in the platform's flag syntax if convenient. Concept is platform-neutral; syntax is wiring detail. |
 | Install/symlink mechanism | Optional | Depends on the platform's skill-consumption model. Claude Code uses relative symlinks; others may use copies or registry calls. |
-| `/ft-release` skill equivalent | Flowtron-self only | Release-cutting is only relevant if the platform is being used to maintain flowtron upstream. Skip in adopter contexts. |
+| `/ft-release` skill equivalent | Flaitron-self only | Release-cutting is only relevant if the platform is being used to maintain flaitron upstream. Skip in adopter contexts. |
 
 ## Worked example: Claude Code
 
@@ -275,7 +275,7 @@ Concrete instantiation:
 - **Adopter install**: relative symlinks for the adopter-installed subset from
   `.claude/commands/*` and `.claude/skills/*` into the submodule, per
   `claude/AGENTS-snippet.md` §"One-time symlink wiring". The relative
-  paths survive `git clone` and pin to whichever flowtron commit the
+  paths survive `git clone` and pin to whichever flaitron commit the
   submodule is checked out at.
 - **Operator flags**: canonical roster, per-flag syntax, gate behavior, and
   when to reach for each in [`../claude/CAPABILITIES.md`](../claude/CAPABILITIES.md)
@@ -305,9 +305,9 @@ Concrete instantiation:
 - **Adopter install**: relative symlinks for the adopter-installed subset from
   `.agents/skills/*` into the submodule, per `codex/AGENTS-snippet.md`
   §"One-time skill wiring". The relative paths survive `git clone` and pin to
-  whichever flowtron commit the submodule is checked out at.
+  whichever flaitron commit the submodule is checked out at.
 - **Invocation**: Codex exposes skills through `/skills` selection and
-  `$ft-task` / `$ft-update` style mentions. Flowtron preserves the same
+  `$ft-task` / `$ft-update` style mentions. Flaitron preserves the same
   exported `ft-*` names, but does not claim Codex supports arbitrary custom
   `/ft-*` slash commands.
 - **Operator flags**: same spellings as the canonical skill bodies the wrappers
@@ -357,7 +357,7 @@ Concrete instantiation of the thin-bundle shape (Cursor-shaped discovery):
 ## Grok Build adoption notes
 
 xAI's [Grok Build](https://x.ai/cli) CLI (launched May 2026) adopts
-flowtron via a **Cursor-shaped thin path**: it reads `AGENTS.md` and
+flaitron via a **Cursor-shaped thin path**: it reads `AGENTS.md` and
 discovers skills from `.claude/skills/` and `.agents/skills/` as
 compatibility surfaces (plus `.cursor/skills/` and native `.grok/skills/`),
 so a project already wired for Claude Code, Codex, or Cursor is already
@@ -367,9 +367,9 @@ Grok-specific skill wrappers exist. Adopters paste the `AGENTS.md` block
 per [`MIGRATION.md`](MIGRATION.md) §1.3. Amp / Aider / Gemini CLI remain
 the contract-layer-only path (see §"Today's surface").
 
-| Quirk | Behavior | Flowtron implication |
+| Quirk | Behavior | Flaitron implication |
 |---|---|---|
-| **Context-load semantics** | Grok Build reads three context files: `AGENTS.md` (open standard), `CLAUDE.md` (Anthropic-popularized; Grok-compat fallback), and `GROK.md` (Grok-canonical, at `.grok/GROK.md` with cwd walk-up + `~/.grok/GROK.md` global fallback) | Use `AGENTS.md` — already the paste-block target and the cross-vendor canonical entry point. `GROK.md` is orthogonal to flowtron. |
+| **Context-load semantics** | Grok Build reads three context files: `AGENTS.md` (open standard), `CLAUDE.md` (Anthropic-popularized; Grok-compat fallback), and `GROK.md` (Grok-canonical, at `.grok/GROK.md` with cwd walk-up + `~/.grok/GROK.md` global fallback) | Use `AGENTS.md` — already the paste-block target and the cross-vendor canonical entry point. `GROK.md` is orthogonal to flaitron. |
 | **AGENTS.md visibility** | Grok Build "picks up AGENTS.md before it does anything" per xAI launch coverage — same load-before-act semantic as Claude Code | Paste-block is visible without configuration; no truncation noted in launch narratives |
 | **Skill / command primitives** | Native: `.grok/skills/<name>/` (cwd-walk to repo root) + `~/.grok/skills/` + plugin paths + `[skills] paths` in `~/.grok/config.toml`. Compat (default on): `.claude/skills/` / `.claude/commands/`, `.cursor/skills/`, and `.agents/skills/` at each tier. Skill bodies are markdown; user-invocable skills auto-wire as `/<skill-name>` slash commands | If Claude, Codex, or Cursor is already wired, Grok is already served — no second install. Grok-only projects follow `grok/AGENTS-snippet.md` §"One-time symlink wiring". The `ft-` namespace per `SPEC/layout.md` §"Skill namespace" reserves skill names cross-platform. Those bodies' trailing operator flags are available as soon as they load — see §"Non-Claude capability triggers". |
 
@@ -412,8 +412,8 @@ non-default effort setting.
 ## Non-Claude capability triggers
 
 _Mirrors the per-trigger shape in [`../claude/CAPABILITIES.md`](../claude/CAPABILITIES.md) —
-**what it is · syntax · what it controls in flowtron · when to reach for it** — for the
-non-Claude agents in the matrix. Flowtron has not run a session under several
+**what it is · syntax · what it controls in flaitron · when to reach for it** — for the
+non-Claude agents in the matrix. Flaitron has not run a session under several
 of these agents. Grok Build, Codex CLI, and Cursor now carry
 first-use observations; remaining stub rows reflect vendor documentation and
 launch coverage. Update a row on first-use observation if anything diverges.
@@ -421,22 +421,22 @@ This mirrors the pre-adoption framing in §"Grok Build adoption notes" above._
 
 ### Grok Build
 
-| Trigger | Syntax | What it controls in flowtron | When to reach for it |
+| Trigger | Syntax | What it controls in flaitron | When to reach for it |
 |---|---|---|---|
 | **Effort / thinking level** | A `reasoning_effort` (Chat Completions) / `reasoning.effort` (Responses API) parameter — `low` / `medium` / `high` / `xhigh` (default `high`; `xhigh` since 4.6, earlier 4.x treat it as `high`). | Maps to the `[heavy]` / `[medium]` / `[light]` PLAN-line tokens. Heavier reasoning suits Discovery-heavy or cross-cutting tasknotes; lighter suits mechanical edits. | Match the running effort level to the task's `[model]` token. Switch before invoking the skill if the task's `[model]` differs from the current session's effort setting. |
-| **Skill invocation** | `/ft-task` (and peer `/ft-*`) after wiring — Grok auto-exposes skills as slash commands. Discovery paths: `.grok/skills/` (native); `.claude/skills/` and `.claude/commands/` (Claude compat, default on); `.cursor/skills/` (Cursor compat, default on); `.agents/skills/` at each tier. | Drives the full 4-phase tasknote runner and peer skills from the same canonical `claude/skills/` bodies Claude Code uses — no Grok-specific wrappers. | Normal flowtron operations under Grok. Prefer repo-scoped wiring; if Claude `.claude/`, Codex `.agents/skills/`, or Cursor `.cursor/skills/` is already present, stop — Grok is already served. Grok-only projects follow `grok/AGENTS-snippet.md`. |
+| **Skill invocation** | `/ft-task` (and peer `/ft-*`) after wiring — Grok auto-exposes skills as slash commands. Discovery paths: `.grok/skills/` (native); `.claude/skills/` and `.claude/commands/` (Claude compat, default on); `.cursor/skills/` (Cursor compat, default on); `.agents/skills/` at each tier. | Drives the full 4-phase tasknote runner and peer skills from the same canonical `claude/skills/` bodies Claude Code uses — no Grok-specific wrappers. | Normal flaitron operations under Grok. Prefer repo-scoped wiring; if Claude `.claude/`, Codex `.agents/skills/`, or Cursor `.cursor/skills/` is already present, stop — Grok is already served. Grok-only projects follow `grok/AGENTS-snippet.md`. |
 | **Force-skip (`--fast`)** | Trailing `--fast` / `-f` on the skill invocation (same spelling as the Claude skill bodies). Available when Grok has loaded those bodies from `.claude/skills/`, `.agents/skills/`, `.cursor/skills/`, or `.grok/skills/`. | Suppresses the 👁️ visual-confirmation ask and 📦 signal trips; Re-scope downgrades to an inline ⚠️ notice, De-scope still fires 🛠️. Also implied by an `[unattended]` PLAN.md row marker when no flag is passed. | Routine autonomous runs where the operator owns visual confirmation and commit review. |
-| **Unattended posture (`--unattended`)** | Trailing `--unattended` (no short alias) on `/ft-task`, `/ft-micro-task`, and `/ft-close-epic` — plus `/ft-file-followup`, which takes the posture as a filing motion rather than a tasknote driver. Those three load the shared `unattended-mode.md` fragment, and Grok resolves it relative to the loaded body. `/ft-file-followup` keeps the posture inline and does not load the fragment. `/ft-close-epic` additionally loads its own `unattended-close-epic.md` sibling, resolved the same way. | Operator-less posture — supersets `--fast`'s autonomy, not its delegations (never pass both). `--fast`'s 📦 and 🛠️ suppressions stay suppressed; its 👁️ suppression is **not** inherited, because it hands the visual check to an operator this posture declares absent. On top of that the six gates a run with no operator cannot answer (🛠️ drift carve-out, destructive-action escalation, prerequisite ✋ ACTION, Step 1.5 concrete-model STOP, queued bundled in-📦 prompt, Phase 3 👁️ visual ask) **park** the tasknote — `status: blocked` plus a closed-set `park-reason:` code — instead of firing a banner into an empty session. Removes pauses, never proof: the paper-complete guard is untouched. On `/ft-close-epic` it is not a `--fast` superset (that skill never took one) and the parent-flip is **deferred** rather than parked — the `.N` audit closes and commits, the parent line stays open, and the cohort move stays operator-owned. | An orchestrator or headless session driving a flowtron task with nobody watching. Skip it when you are present — `--fast` already covers "do not ask me", and a park costs a resume. |
+| **Unattended posture (`--unattended`)** | Trailing `--unattended` (no short alias) on `/ft-task`, `/ft-micro-task`, and `/ft-close-epic` — plus `/ft-file-followup`, which takes the posture as a filing motion rather than a tasknote driver. Those three load the shared `unattended-mode.md` fragment, and Grok resolves it relative to the loaded body. `/ft-file-followup` keeps the posture inline and does not load the fragment. `/ft-close-epic` additionally loads its own `unattended-close-epic.md` sibling, resolved the same way. | Operator-less posture — supersets `--fast`'s autonomy, not its delegations (never pass both). `--fast`'s 📦 and 🛠️ suppressions stay suppressed; its 👁️ suppression is **not** inherited, because it hands the visual check to an operator this posture declares absent. On top of that the six gates a run with no operator cannot answer (🛠️ drift carve-out, destructive-action escalation, prerequisite ✋ ACTION, Step 1.5 concrete-model STOP, queued bundled in-📦 prompt, Phase 3 👁️ visual ask) **park** the tasknote — `status: blocked` plus a closed-set `park-reason:` code — instead of firing a banner into an empty session. Removes pauses, never proof: the paper-complete guard is untouched. On `/ft-close-epic` it is not a `--fast` superset (that skill never took one) and the parent-flip is **deferred** rather than parked — the `.N` audit closes and commits, the parent line stays open, and the cohort move stays operator-owned. | An orchestrator or headless session driving a flaitron task with nobody watching. Skip it when you are present — `--fast` already covers "do not ask me", and a park costs a resume. |
 | **Debug mode (`--debug`)** | Trailing `--debug` / `-d` (composes with `--fast`). Same availability as `--fast`: the flag lives in the loaded skill body, not in a Grok-specific wrapper. | Adds hypothesis-first Phase 1 scaffolding + Phase 3 repro re-verify. | Bugs, regressions, flaky behavior when the root cause is not yet known. |
-| **Park mode (`--park`)** | Trailing `--park` / `-p` on `/ft-file-followup` (composes with the priority flags `--low` / `--med` / `--fut` / `--high` in any order). Same availability as `--fast`: the flag and its `park-mode.md` lazy fragment live in the loaded skill body, and Grok resolves the fragment relative to that body. | Replaces the default filing flow — auto-allocates an ID, writes a tiny `.flowtron/sidequest/<ID>.md` stub alongside the PLAN.md line, and skips the review gate, the reconciliation scan, and the hand-off. | Parking an idea or quick fix mid-session when you are not switching context now. |
-| **Starter mode (`--starter`)** | Trailing `--starter` on `/ft-file-followup` (no short alias; composes with neither `--park` nor `--unattended` — both refused terminally). Same availability as `--park`: the flag and its `starter-mode.md` lazy fragment live in the loaded skill body, and Grok resolves the fragment (and the `SPEC/starter.md` module it reads) relative to that body. | Overlays the default filing flow — same ID suggestion, collection, review gate, and reconciliation scan — but writes the drafted `## 🌱 Starter context` body to `.flowtron/tasknote/<ID>.md` at `status: starter`, points the PLAN.md line at it, treats the >70w cap as a recorded override, and commits both paths together; `/ft-task <ID>` promotes it. | A task discovered mid-flow with rich context worth persisting but not ready to start, or a description that will not fit the 70w cap. |
+| **Park mode (`--park`)** | Trailing `--park` / `-p` on `/ft-file-followup` (composes with the priority flags `--low` / `--med` / `--fut` / `--high` in any order). Same availability as `--fast`: the flag and its `park-mode.md` lazy fragment live in the loaded skill body, and Grok resolves the fragment relative to that body. | Replaces the default filing flow — auto-allocates an ID, writes a tiny `.flaitron/sidequest/<ID>.md` stub alongside the PLAN.md line, and skips the review gate, the reconciliation scan, and the hand-off. | Parking an idea or quick fix mid-session when you are not switching context now. |
+| **Starter mode (`--starter`)** | Trailing `--starter` on `/ft-file-followup` (no short alias; composes with neither `--park` nor `--unattended` — both refused terminally). Same availability as `--park`: the flag and its `starter-mode.md` lazy fragment live in the loaded skill body, and Grok resolves the fragment (and the `SPEC/starter.md` module it reads) relative to that body. | Overlays the default filing flow — same ID suggestion, collection, review gate, and reconciliation scan — but writes the drafted `## 🌱 Starter context` body to `.flaitron/tasknote/<ID>.md` at `status: starter`, points the PLAN.md line at it, treats the >70w cap as a recorded override, and commits both paths together; `/ft-task <ID>` promotes it. | A task discovered mid-flow with rich context worth persisting but not ready to start, or a description that will not fit the 70w cap. |
 | **Loop mode (`--loop`)** | Trailing `--loop` on `/ft-task` (no short alias; composes with `--fast` / `--unattended` in either order). Same availability as `--fast`: the flag, its `step-5-loop-mode.md` lazy fragment, and the `SPEC/loop.md` contract live in the loaded skill body's tree, and Grok resolves them relative to that body. | Runs the Phase 2↔3 execute→verify cycle as an inline loop against a machine-checkable Acceptance target — every criterion carries a verify command, the loop iterates under a per-cycle relevance gate and a `loop-max` budget, commits per verified iteration, and logs to `## 🔁 Iterations`; a destructive step parks the tasknote rather than firing a banner. | Converge-until-a-check-passes work: a suite driven to green, a metric iterated under a threshold. Not for one-pass work with no repeatable verify command. |
 | **Deep pre-pass (`--deep`)** | Trailing `--deep` on `/ft-epic-discovery` (no short alias). Same availability as `--fast`: the flag and its `step-5.5-deep-prepass.md` lazy fragment live in the loaded skill body, and Grok resolves the fragment relative to that body. | Stages three discrete rounds — constitution → specify → clarify — into a `## 🧭 Deep Pre-pass` section of the `.1` tasknote before Phase 1 Discovery begins, each closing on a review-and-confirm gate. Staging ahead of the phase workflow, not a phase; the default flow is unchanged. | High-uncertainty epics where the shared design surface or per-child scope is genuinely unclear at filing time. The three stage gates are structured asks — observed rendering cleanly under Grok in the 2026-06-01 CORE-257 dogfood, and degrading to prose without contract impact where the primitive is absent (see the structured-ask row below). |
 | **Model / session switch** | In-session `/model <name>` (alias `/m`) switches the active model without restarting the session (`docs.x.ai/build/modes-and-commands`). | Ensures the task runs at its assigned `[heavy]` / `[medium]` / `[light]` depth. The post-closure candidate list from `/ft-task` signals the target model via the `[heavy]`🧠 / `[medium]`🧩 / `[light]`🔧 / `[xheavy]`🔭 emoji label (never a literal `/model` command). | Before starting a task whose `[model]` differs from the current session's model. |
-| **Context freshness** | In-session `/clear` (alias of `/new`) starts a fresh session in place (`docs.x.ai/build/modes-and-commands`). | Resets the context window so the next task starts cold — "one task per context window" in practice. | Between tasks, before starting the next flowtron skill invocation, so each tasknote runs in a clean context. |
+| **Context freshness** | In-session `/clear` (alias of `/new`) starts a fresh session in place (`docs.x.ai/build/modes-and-commands`). | Resets the context window so the next task starts cold — "one task per context window" in practice. | Between tasks, before starting the next flaitron skill invocation, so each tasknote runs in a clean context. |
 | **Structured ask** | Observed to work: the 2026-06-01 CORE-257 dogfood rendered a clean multi-option UI under the Grok 4.3 interactive TUI. Undocumented by xAI — launch coverage described no `AskUserQuestion` equivalent, so a **prose ask** (free-text question, conversational reply) remains the guaranteed fallback. | Realizes Phase 1 clarification asks and other decision points. Where the structured primitive is present the operator selects a labeled option; where it isn't, the same ask degrades to prose without contract impact. | Reach for the structured ask by default and let it degrade to prose. Treat prose as the floor, not the ceiling — the earlier "always prose per launch docs" reading is superseded by the CORE-257 observation, though the multi-option render may be a TUI enhancement rather than base-CLI behavior. Multi-option forks phrased to read cleanly either way survive both surfaces. |
 | **Sub-agent / isolated exploration** | Native `spawn_subagent`. Parameters: `prompt`, `description`, `background`, `isolation`, `resume_from`, `cwd`. `background` defaults to true; the public guide's spawn table names it `run_in_background`. `isolation` is `none` or `worktree`. No agent-type or role parameter — put a role in the prompt. Observed on Grok 4.7 (2026-10-02). The 2026-08-20 `subagent_type` (`general` / `explore` / `plan`) is not on this tool. | Realizes the **probe** / **delegate** split (README.md §"Sessions, loops, and sub-agents") natively. A probe is read-only only when the prompt says so; the tool does not enforce it. A delegate is a sub-agent handed one `tasknote/<ID>.md`. `isolation: worktree` keeps the child's edits out of the parent workspace. `resume_from` continues a finished sub-agent. No second-session approximation required. | Phase 1 Discovery with a broad or unknown-shaped read set — spawn a sub-agent, put the read-only bound in the prompt, and brief it with `templates/subagent-probe-template.md`. |
-| **Procedure pointer** | `grok/procedures/ft-task.md` ships in the flowtron repo, routing grok agents to `SPEC/procedures/ft-task.md` when asked to start a flowtron task (CORE-271.4). | Contract-only / SOP entry path when the operator asks to load the agent-neutral procedure rather than a skill body. | Use when testing the SOP or when skill discovery is unavailable; normal runs prefer `/ft-task` via loaded skill bodies. |
+| **Procedure pointer** | `grok/procedures/ft-task.md` ships in the flaitron repo, routing grok agents to `SPEC/procedures/ft-task.md` when asked to start a flaitron task (CORE-271.4). | Contract-only / SOP entry path when the operator asks to load the agent-neutral procedure rather than a skill body. | Use when testing the SOP or when skill discovery is unavailable; normal runs prefer `/ft-task` via loaded skill bodies. |
 
 First-use verification 2026-06-01 (CORE-257). /ft-task skill invocation, model gate (with retag), AskUserQuestion render, and cue emissions (✅ marker + post-closure expectations) exercised under Grok. Structured ask support observed (see trigger table note). Matrix currency lives in docs/AGENT-COMPAT.md.
 
@@ -447,28 +447,28 @@ First-use verification 2026-06-01 (CORE-257). /ft-task skill invocation, model g
 Codex wiring bundle ships under `codex/skills/`, with repo-scoped install
 instructions in `codex/AGENTS-snippet.md`. Procedure pointer wrapper
 retained (CORE-271.4): `codex/procedures/ft-task.md` routes Codex agents to
-`SPEC/procedures/ft-task.md` when asked to start a flowtron task by SOP rather
+`SPEC/procedures/ft-task.md` when asked to start a flaitron task by SOP rather
 than by skill.
 
-| Trigger | Syntax | What it controls in flowtron | When to reach for it |
+| Trigger | Syntax | What it controls in flaitron | When to reach for it |
 |---|---|---|---|
 | **Effort / thinking level** | A `reasoning_effort` parameter — `low` / `medium` / `high` / `xhigh` / `max` on GPT-6 Astra and GPT-6.1 Sol (neither has `none`; Luna still does). The app labels `low` as Light. Codex's model page says start Astra at Light and Luna at High; Sol's API default is `medium`. The old CLI `minimal` rung maps to `low`. | Maps to the `[heavy]` / `[medium]` / `[light]` PLAN-line tokens. Heavier reasoning suits Discovery-heavy or cross-cutting tasknotes; lighter suits mechanical edits. | Match the running effort level to the task's `[model]` token. Switch before invoking the skill if the task's `[model]` differs from the current session's effort setting. |
-| **Skill invocation** | Use `/skills` in Codex or mention `$ft-task`, `$ft-update`, etc. after wiring the Codex adopter subset under `.agents/skills/` | Exposes the adopter-facing Flowtron workflows as Codex-native skills while preserving the same exported names as Claude | Use for normal Flowtron operations in Codex. Do not expect arbitrary custom `/ft-*` CLI commands; Codex's documented custom workflow primitive is skills. |
+| **Skill invocation** | Use `/skills` in Codex or mention `$ft-task`, `$ft-update`, etc. after wiring the Codex adopter subset under `.agents/skills/` | Exposes the adopter-facing Flaitron workflows as Codex-native skills while preserving the same exported names as Claude | Use for normal Flaitron operations in Codex. Do not expect arbitrary custom `/ft-*` CLI commands; Codex's documented custom workflow primitive is skills. |
 | **Force-skip (`--fast`)** | Trailing `--fast` / `-f` on the skill invocation. Codex is the one non-Claude platform that ships its own wrappers, so availability runs through them: `ft-task`'s wrapper reads `SPEC/procedures/ft-task.md` first; its Step 0 directly loads the canonical `step-0-flags.md` when trailing tokens are present. The canonical whole skill remains a fallback for uncovered edges. The SOP translates the same flags and fragments to neutral primitives. | Suppresses the 👁️ visual-confirmation ask and 📦 signal trips; Re-scope downgrades to an inline ⚠️ notice, De-scope still fires 🛠️. Also implied by an `[unattended]` PLAN.md row marker when no flag is passed. | Routine autonomous runs where the operator owns visual confirmation and commit review. |
-| **Unattended posture (`--unattended`)** | Trailing `--unattended` (no short alias) on the three tasknote drivers, plus `/ft-file-followup` as a filing motion. Same SOP-first routing as `--fast` — the SOP names *unattended mode* as a neutral primitive and records `--unattended` as its Claude spelling; the three tasknote drivers' canonical bodies carry the literal parse and the shared `unattended-mode.md` fragment. `/ft-file-followup` keeps the posture inline and does not load the fragment. The `ft-micro-task` / `ft-close-epic` wrappers route straight to their canonical bodies; `ft-close-epic`'s body loads its own `unattended-close-epic.md` sibling alongside the shared fragment. | Operator-less posture — supersets `--fast`'s autonomy, not its delegations (never pass both). `--fast`'s 📦 and 🛠️ suppressions stay suppressed; its 👁️ suppression is **not** inherited, because it hands the visual check to an operator this posture declares absent. On top of that the six gates a run with no operator cannot answer (🛠️ drift carve-out, destructive-action escalation, prerequisite ✋ ACTION, Step 1.5 concrete-model STOP, queued bundled in-📦 prompt, Phase 3 👁️ visual ask) **park** the tasknote — `status: blocked` plus a closed-set `park-reason:` code — instead of firing a banner into an empty session. Removes pauses, never proof: the paper-complete guard is untouched. On `/ft-close-epic` it is not a `--fast` superset (that skill never took one) and the parent-flip is **deferred** rather than parked — the `.N` audit closes and commits, the parent line stays open, and the cohort move stays operator-owned. | An orchestrator or headless session driving a flowtron task with nobody watching. Skip it when you are present — `--fast` already covers "do not ask me", and a park costs a resume. |
+| **Unattended posture (`--unattended`)** | Trailing `--unattended` (no short alias) on the three tasknote drivers, plus `/ft-file-followup` as a filing motion. Same SOP-first routing as `--fast` — the SOP names *unattended mode* as a neutral primitive and records `--unattended` as its Claude spelling; the three tasknote drivers' canonical bodies carry the literal parse and the shared `unattended-mode.md` fragment. `/ft-file-followup` keeps the posture inline and does not load the fragment. The `ft-micro-task` / `ft-close-epic` wrappers route straight to their canonical bodies; `ft-close-epic`'s body loads its own `unattended-close-epic.md` sibling alongside the shared fragment. | Operator-less posture — supersets `--fast`'s autonomy, not its delegations (never pass both). `--fast`'s 📦 and 🛠️ suppressions stay suppressed; its 👁️ suppression is **not** inherited, because it hands the visual check to an operator this posture declares absent. On top of that the six gates a run with no operator cannot answer (🛠️ drift carve-out, destructive-action escalation, prerequisite ✋ ACTION, Step 1.5 concrete-model STOP, queued bundled in-📦 prompt, Phase 3 👁️ visual ask) **park** the tasknote — `status: blocked` plus a closed-set `park-reason:` code — instead of firing a banner into an empty session. Removes pauses, never proof: the paper-complete guard is untouched. On `/ft-close-epic` it is not a `--fast` superset (that skill never took one) and the parent-flip is **deferred** rather than parked — the `.N` audit closes and commits, the parent line stays open, and the cohort move stays operator-owned. | An orchestrator or headless session driving a flaitron task with nobody watching. Skip it when you are present — `--fast` already covers "do not ask me", and a park costs a resume. |
 | **Debug mode (`--debug`)** | Trailing `--debug` / `-d` (composes with `--fast` in either order); named in `codex/skills/ft-task/SKILL.md`'s own frontmatter. Same SOP-first routing as `--fast` — the SOP names *debug mode* as a neutral primitive, the canonical body carries the parse and the `step-4-debug-mode.md` lazy fragment. | Adds hypothesis-first Phase 1 scaffolding + Phase 3 repro re-verify. | Bugs, regressions, flaky behavior when the root cause is not yet known. Explicit opt-in — never inferred from a bug-shaped task description. |
-| **Park mode (`--park`)** | Trailing `--park` / `-p` on `ft-file-followup` (composes with the priority flags `--low` / `--med` / `--fut` / `--high` in any order); named in that wrapper's frontmatter. Unlike `ft-task`, this wrapper routes straight to the canonical body, so the flag and its `park-mode.md` lazy fragment resolve relative to that body. | Replaces the default filing flow — auto-allocates an ID, writes a tiny `.flowtron/sidequest/<ID>.md` stub alongside the PLAN.md line, and skips the review gate, the reconciliation scan, and the hand-off. | Parking an idea or quick fix mid-session when you are not switching context now. |
-| **Starter mode (`--starter`)** | Trailing `--starter` on `ft-file-followup` (no short alias; composes with neither `--park` nor `--unattended` — both refused terminally); named in that wrapper's frontmatter. Same direct routing as `--park` — the wrapper delegates to the canonical body, so the flag, its `starter-mode.md` lazy fragment, and the `SPEC/starter.md` module it reads resolve relative to that body. | Overlays the default filing flow — same ID suggestion, collection, review gate, and reconciliation scan — but writes the drafted `## 🌱 Starter context` body to `.flowtron/tasknote/<ID>.md` at `status: starter`, points the PLAN.md line at it, treats the >70w cap as a recorded override, and commits both paths together; `/ft-task <ID>` promotes it. | A task discovered mid-flow with rich context worth persisting but not ready to start, or a description that will not fit the 70w cap. |
+| **Park mode (`--park`)** | Trailing `--park` / `-p` on `ft-file-followup` (composes with the priority flags `--low` / `--med` / `--fut` / `--high` in any order); named in that wrapper's frontmatter. Unlike `ft-task`, this wrapper routes straight to the canonical body, so the flag and its `park-mode.md` lazy fragment resolve relative to that body. | Replaces the default filing flow — auto-allocates an ID, writes a tiny `.flaitron/sidequest/<ID>.md` stub alongside the PLAN.md line, and skips the review gate, the reconciliation scan, and the hand-off. | Parking an idea or quick fix mid-session when you are not switching context now. |
+| **Starter mode (`--starter`)** | Trailing `--starter` on `ft-file-followup` (no short alias; composes with neither `--park` nor `--unattended` — both refused terminally); named in that wrapper's frontmatter. Same direct routing as `--park` — the wrapper delegates to the canonical body, so the flag, its `starter-mode.md` lazy fragment, and the `SPEC/starter.md` module it reads resolve relative to that body. | Overlays the default filing flow — same ID suggestion, collection, review gate, and reconciliation scan — but writes the drafted `## 🌱 Starter context` body to `.flaitron/tasknote/<ID>.md` at `status: starter`, points the PLAN.md line at it, treats the >70w cap as a recorded override, and commits both paths together; `/ft-task <ID>` promotes it. | A task discovered mid-flow with rich context worth persisting but not ready to start, or a description that will not fit the 70w cap. |
 | **Loop mode (`--loop`)** | Trailing `--loop` on `ft-task` (no short alias; composes with `--fast` / `--unattended` in either order). Same SOP-first routing as `--fast` — the SOP names *loop mode* as a neutral primitive; the canonical body carries the parse, the `step-5-loop-mode.md` lazy fragment, and the `SPEC/loop.md` contract it drives. | Runs the Phase 2↔3 execute→verify cycle as an inline loop against a machine-checkable Acceptance target — every criterion carries a verify command, the loop iterates under a per-cycle relevance gate and a `loop-max` budget, commits per verified iteration, and logs to `## 🔁 Iterations`; a destructive step parks the tasknote rather than firing a banner. | Converge-until-a-check-passes work: a suite driven to green, a metric iterated under a threshold. Not for one-pass work with no repeatable verify command. |
 | **Deep pre-pass (`--deep`)** | Trailing `--deep` on `ft-epic-discovery` (no short alias); named in that wrapper's `description:`. Same direct routing as `--park` — the wrapper delegates to the canonical body, which owns the flag and its `step-5.5-deep-prepass.md` lazy fragment, so the fragment resolves relative to that body with no two-step SOP hop. | Stages three discrete rounds — constitution → specify → clarify — into a `## 🧭 Deep Pre-pass` section of the `.1` tasknote before Phase 1 Discovery begins, each closing on a review-and-confirm gate. Staging ahead of the phase workflow, not a phase; the default flow is unchanged. | High-uncertainty epics where the shared design surface or per-child scope is genuinely unclear at filing time. The three stage gates are structured asks. Use an available Codex structured prompt; `codex/AGENTS-snippet.md` §"Translation rules" falls back to a **prose ask** when none is available. Budget for three review-and-confirm rounds in either form. |
 | **Model / session switch** | In-session `/model` changes the active model mid-session (`learn.chatgpt.com/docs/developer-commands`). Orthogonal to the effort ladder in the first row — Codex exposes reasoning depth and model choice separately. | Ensures the task runs at its assigned `[heavy]` / `[medium]` / `[light]` depth (Step 1.5 gate). The post-closure candidate list signals the target via the `[heavy]`🧠 / `[medium]`🧩 / `[light]`🔧 / `[xheavy]`🔭 emoji label, never a literal `/model` command. | Before starting a task whose `[model]` differs from the current session's model. |
-| **Context freshness** | In-session `/clear` clears the terminal and starts a fresh chat; `/compact` summarizes the visible chat to free tokens without a full reset (`learn.chatgpt.com/docs/developer-commands`). | `/clear` resets the context window so the next task starts cold — "one task per context window" in practice. `/compact` is a mid-task relief valve, not a substitute for a between-task reset: it keeps the finished task's residue in the summary. | `/clear` between tasks, before the next flowtron skill invocation. Reach for `/compact` only when a single tasknote genuinely outgrows the window. |
+| **Context freshness** | In-session `/clear` clears the terminal and starts a fresh chat; `/compact` summarizes the visible chat to free tokens without a full reset (`learn.chatgpt.com/docs/developer-commands`). | `/clear` resets the context window so the next task starts cold — "one task per context window" in practice. `/compact` is a mid-task relief valve, not a substitute for a between-task reset: it keeps the finished task's residue in the summary. | `/clear` between tasks, before the next flaitron skill invocation. Reach for `/compact` only when a single tasknote genuinely outgrows the window. |
 | **Structured ask** | Availability depends on runtime and mode. Official [App Server documentation](https://learn.chatgpt.com/docs/app-server#api-overview) exposes experimental `tool/requestUserInput`; that API alone does not establish an option picker in every Codex surface. `codex/AGENTS-snippet.md` §"Translation rules" requires a **prose ask** only when no suitable structured prompt is available. | Realizes clarification and decision points with the available primitive; prose fallback preserves the same question and approval obligation. | Use a structured prompt when available and appropriate; otherwise ask in prose and wait for a genuine reply. See [CODEX-VERIFICATION.md](CODEX-VERIFICATION.md) for dated runtime coverage. |
 | **Sub-agent / isolated exploration** | Native subagents. Three built-in agents ship — `explorer` (read-heavy codebase exploration), `worker` (execution-focused), `default` (general-purpose fallback) — plus custom agents as standalone TOML files under `.codex/agents/` (project) or `~/.codex/agents/` (personal), each declaring `name` / `description` / `developer_instructions` and optionally pinning `sandbox_mode = "read-only"`; subagents otherwise inherit the parent's sandbox policy. Spawned by asking in natural language ("spawn two agents", "delegate this in parallel"); `/agent` (alias `/subagents`) switches between and inspects the running agent threads. Concurrency limits and `default_subagent_model` live in `config.toml`'s `[agents]` section. | Realizes the **probe** / **delegate** split (README.md §"Sessions, loops, and sub-agents") natively — `explorer`, or a custom agent pinned `sandbox_mode = "read-only"`, maps to a bounded read-only **probe**; `worker` / `default`, or a fresh session handed one `tasknote/<ID>.md`, realizes **delegate**. The second-session approximation this row previously prescribed is no longer required. | Phase 1 Discovery with a broad or unknown-shaped read set — ask for an `explorer` subagent instead of reading inline, and brief it with `templates/subagent-probe-template.md`. Skip it for a narrow, known read set: every subagent runs its own model and tool loop. |
-| **Procedure pointer** | `codex/procedures/ft-task.md` ships in the flowtron repo, routing Codex agents to `SPEC/procedures/ft-task.md` | Provides a contract-only fallback for `ft-task` when the operator asks to load the SOP directly or the skill bundle is not wired | Use when the Codex skill bundle is unavailable or when testing the agent-neutral SOP. |
+| **Procedure pointer** | `codex/procedures/ft-task.md` ships in the flaitron repo, routing Codex agents to `SPEC/procedures/ft-task.md` | Provides a contract-only fallback for `ft-task` when the operator asks to load the SOP directly or the skill bundle is not wired | Use when the Codex skill bundle is unavailable or when testing the agent-neutral SOP. |
 
 First-use verification 2026-06-01 (CORE-258): a Codex/GPT-5 session consumed
-the root `AGENTS.md` + `SPEC.md`, resumed a blocked flowtron task
+the root `AGENTS.md` + `SPEC.md`, resumed a blocked flaitron task
 conversationally, updated the Codex matrix row, and completed the closure
 bookkeeping without a native `/ft-task` bundle. Operator cues rendered
 legibly in conversation; labels remained the durable fallback. The four flag
@@ -489,18 +489,18 @@ that wiring already exists, or symlink them into `.cursor/skills/` for
 Cursor-only projects (see §"Worked example: Cursor" and
 `cursor/AGENTS-snippet.md`).
 
-| Trigger | Syntax | What it controls in flowtron | When to reach for it |
+| Trigger | Syntax | What it controls in flaitron | When to reach for it |
 |---|---|---|---|
-| **Skill invocation** | `/ft-task` (and peer `/ft-*`) after wiring — Cursor auto-exposes skills as slash commands. Discovery paths: `.claude/skills/` (compat), `.cursor/skills/`, `.agents/skills/` (project); `~/.cursor/skills/` + `~/.agents/skills/` (user). | Drives the full 4-phase tasknote runner and peer skills from the same canonical `claude/skills/` bodies Claude Code uses — no Cursor-specific wrappers. | Normal flowtron operations under Cursor. Prefer repo-scoped wiring; if Claude `.claude/` is already present, stop — Cursor is already served. |
+| **Skill invocation** | `/ft-task` (and peer `/ft-*`) after wiring — Cursor auto-exposes skills as slash commands. Discovery paths: `.claude/skills/` (compat), `.cursor/skills/`, `.agents/skills/` (project); `~/.cursor/skills/` + `~/.agents/skills/` (user). | Drives the full 4-phase tasknote runner and peer skills from the same canonical `claude/skills/` bodies Claude Code uses — no Cursor-specific wrappers. | Normal flaitron operations under Cursor. Prefer repo-scoped wiring; if Claude `.claude/` is already present, stop — Cursor is already served. |
 | **Force-skip (`--fast`)** | Trailing `--fast` / `-f` on the skill invocation (same spelling as the Claude skill bodies). | Suppresses the 👁️ visual-confirmation ask and 📦 signal trips; Re-scope downgrades to an inline ⚠️ notice, De-scope still fires 🛠️. Also implied by an `[unattended]` PLAN.md row marker when no flag is passed. | Routine autonomous runs where the operator owns visual confirmation and commit review. |
-| **Unattended posture (`--unattended`)** | Trailing `--unattended` (no short alias) on `/ft-task`, `/ft-micro-task`, and `/ft-close-epic` — plus `/ft-file-followup`, which takes the posture as a filing motion rather than a tasknote driver. Those three load the shared `unattended-mode.md` fragment. `/ft-file-followup` keeps the posture inline and does not load the fragment. `/ft-close-epic` additionally loads its own `unattended-close-epic.md` sibling. | Operator-less posture — supersets `--fast`'s autonomy, not its delegations (never pass both). `--fast`'s 📦 and 🛠️ suppressions stay suppressed; its 👁️ suppression is **not** inherited, because it hands the visual check to an operator this posture declares absent. On top of that the six gates a run with no operator cannot answer (🛠️ drift carve-out, destructive-action escalation, prerequisite ✋ ACTION, Step 1.5 concrete-model STOP, queued bundled in-📦 prompt, Phase 3 👁️ visual ask) **park** the tasknote — `status: blocked` plus a closed-set `park-reason:` code — instead of firing a banner into an empty session. Removes pauses, never proof: the paper-complete guard is untouched. On `/ft-close-epic` it is not a `--fast` superset (that skill never took one) and the parent-flip is **deferred** rather than parked — the `.N` audit closes and commits, the parent line stays open, and the cohort move stays operator-owned. | An orchestrator or headless session driving a flowtron task with nobody watching. Skip it when you are present — `--fast` already covers "do not ask me", and a park costs a resume. |
+| **Unattended posture (`--unattended`)** | Trailing `--unattended` (no short alias) on `/ft-task`, `/ft-micro-task`, and `/ft-close-epic` — plus `/ft-file-followup`, which takes the posture as a filing motion rather than a tasknote driver. Those three load the shared `unattended-mode.md` fragment. `/ft-file-followup` keeps the posture inline and does not load the fragment. `/ft-close-epic` additionally loads its own `unattended-close-epic.md` sibling. | Operator-less posture — supersets `--fast`'s autonomy, not its delegations (never pass both). `--fast`'s 📦 and 🛠️ suppressions stay suppressed; its 👁️ suppression is **not** inherited, because it hands the visual check to an operator this posture declares absent. On top of that the six gates a run with no operator cannot answer (🛠️ drift carve-out, destructive-action escalation, prerequisite ✋ ACTION, Step 1.5 concrete-model STOP, queued bundled in-📦 prompt, Phase 3 👁️ visual ask) **park** the tasknote — `status: blocked` plus a closed-set `park-reason:` code — instead of firing a banner into an empty session. Removes pauses, never proof: the paper-complete guard is untouched. On `/ft-close-epic` it is not a `--fast` superset (that skill never took one) and the parent-flip is **deferred** rather than parked — the `.N` audit closes and commits, the parent line stays open, and the cohort move stays operator-owned. | An orchestrator or headless session driving a flaitron task with nobody watching. Skip it when you are present — `--fast` already covers "do not ask me", and a park costs a resume. |
 | **Debug mode (`--debug`)** | Trailing `--debug` / `-d` (composes with `--fast`). | Adds hypothesis-first Phase 1 scaffolding + Phase 3 repro re-verify. | Bugs, regressions, flaky behavior when the root cause is not yet known. |
-| **Park mode (`--park`)** | Trailing `--park` / `-p` on `/ft-file-followup` (composes with the priority flags `--low` / `--med` / `--fut` / `--high` in any order). The flag and its `park-mode.md` lazy fragment live in the loaded skill body. | Replaces the default filing flow — auto-allocates an ID, writes a tiny `.flowtron/sidequest/<ID>.md` stub alongside the PLAN.md line, and skips the review gate, the reconciliation scan, and the hand-off. | Parking an idea or quick fix mid-session when you are not switching context now. |
-| **Starter mode (`--starter`)** | Trailing `--starter` on `/ft-file-followup` (no short alias; composes with neither `--park` nor `--unattended` — both refused terminally). The flag, its `starter-mode.md` lazy fragment, and the `SPEC/starter.md` module it reads live in the loaded skill body's tree, and Cursor resolves them relative to that body. | Overlays the default filing flow — same ID suggestion, collection, review gate, and reconciliation scan — but writes the drafted `## 🌱 Starter context` body to `.flowtron/tasknote/<ID>.md` at `status: starter`, points the PLAN.md line at it, treats the >70w cap as a recorded override, and commits both paths together; `/ft-task <ID>` promotes it. | A task discovered mid-flow with rich context worth persisting but not ready to start, or a description that will not fit the 70w cap. |
+| **Park mode (`--park`)** | Trailing `--park` / `-p` on `/ft-file-followup` (composes with the priority flags `--low` / `--med` / `--fut` / `--high` in any order). The flag and its `park-mode.md` lazy fragment live in the loaded skill body. | Replaces the default filing flow — auto-allocates an ID, writes a tiny `.flaitron/sidequest/<ID>.md` stub alongside the PLAN.md line, and skips the review gate, the reconciliation scan, and the hand-off. | Parking an idea or quick fix mid-session when you are not switching context now. |
+| **Starter mode (`--starter`)** | Trailing `--starter` on `/ft-file-followup` (no short alias; composes with neither `--park` nor `--unattended` — both refused terminally). The flag, its `starter-mode.md` lazy fragment, and the `SPEC/starter.md` module it reads live in the loaded skill body's tree, and Cursor resolves them relative to that body. | Overlays the default filing flow — same ID suggestion, collection, review gate, and reconciliation scan — but writes the drafted `## 🌱 Starter context` body to `.flaitron/tasknote/<ID>.md` at `status: starter`, points the PLAN.md line at it, treats the >70w cap as a recorded override, and commits both paths together; `/ft-task <ID>` promotes it. | A task discovered mid-flow with rich context worth persisting but not ready to start, or a description that will not fit the 70w cap. |
 | **Loop mode (`--loop`)** | Trailing `--loop` on `/ft-task` (no short alias; composes with `--fast` / `--unattended` in either order). The flag, its `step-5-loop-mode.md` lazy fragment, and the `SPEC/loop.md` contract live in the loaded skill body's tree, and Cursor resolves them relative to that body. | Runs the Phase 2↔3 execute→verify cycle as an inline loop against a machine-checkable Acceptance target — every criterion carries a verify command, the loop iterates under a per-cycle relevance gate and a `loop-max` budget, commits per verified iteration, and logs to `## 🔁 Iterations`; a destructive step parks the tasknote rather than firing a banner. | Converge-until-a-check-passes work: a suite driven to green, a metric iterated under a threshold. Not for one-pass work with no repeatable verify command. |
 | **Deep pre-pass (`--deep`)** | Trailing `--deep` on `/ft-epic-discovery` (no short alias). The flag and its `step-5.5-deep-prepass.md` lazy fragment live in the loaded skill body, and Cursor resolves the fragment relative to that body. | Stages three discrete rounds — constitution → specify → clarify — into a `## 🧭 Deep Pre-pass` section of the `.1` tasknote before Phase 1 Discovery begins, each closing on a review-and-confirm gate. Staging ahead of the phase workflow, not a phase; the default flow is unchanged. | High-uncertainty epics where the shared design surface or per-child scope is genuinely unclear at filing time. The three stage gates use Cursor's native multi-option ask where present, degrading to prose otherwise. Distinct from Plan mode two rows below: `--deep` stages the *epic's* scope durably into the `.1` tasknote, Plan mode shapes one session's approach. |
 | **Model / session switch** | CLI: `/model`. IDE: model picker. Post-closure next-move cues use the `[heavy]`🧠 / `[medium]`🧩 / `[light]`🔧 / `[xheavy]`🔭 emoji label (never a literal `/model` instruction in the suggestion text). | Ensures the task runs at its assigned `[model]` depth (Step 1.5 gate). | Before starting a task whose `[model]` differs from the current session. |
-| **Context freshness** | CLI: `/clear`. IDE: new chat. | Resets the context window so the next task starts cold — "one task per context window" in practice. | Between tasks, before the next flowtron skill invocation. |
+| **Context freshness** | CLI: `/clear`. IDE: new chat. | Resets the context window so the next task starts cold — "one task per context window" in practice. | Between tasks, before the next flaitron skill invocation. |
 | **Modes** | Agent / Plan / Ask / Debug — switchable mid-session (Cursor mode picker / `SwitchMode` where exposed). | Agent is the default execution surface for `/ft-task`. Plan suits high-ambiguity Discovery before scaffolding; Ask is read-only exploration; Debug is for hypothesis-led investigation (orthogonal to skill `--debug`, which is soft scaffolding inside a tasknote). | Reach for Plan when Discovery would otherwise thrash; stay in Agent for routine Phase 2–4. |
 | **Structured ask** | Native Cursor multi-option ask ("Ask questions" tool). Observed to render a clean multi-option UI under Cursor ([[CORE-438.1]]); availability can be model/agent-surface dependent — a session without the tool degrades to a **prose ask** with no contract impact. | Realizes Phase 1 clarification asks and other discrete decision points. | Reach for the structured ask by default; treat prose as the floor. Phrase multi-option forks to read cleanly either way. |
 | **Sub-agent / isolated exploration** | Native `Task` tool; custom agent definitions under `.cursor/agents/` (+ `.claude/agents/` compat). Supports `readonly` / background frontmatter. | Realizes the **probe** / **delegate** split (README.md §"Sessions, loops, and sub-agents") natively — no second-session approximation required. | Phase 1 Discovery with a broad or unknown-shaped read set; brief probes with `templates/subagent-probe-template.md`. |
@@ -512,7 +512,7 @@ First-use verification 2026-08-12 ([[CORE-438.5]]): `/ft-task` under Cursor (Gro
 
 ### Gemini CLI (stub)
 
-Contract-only agent; no capability-trigger research has been conducted for flowtron
+Contract-only agent; no capability-trigger research has been conducted for flaitron
 sessions under Gemini CLI. See [`AGENT-COMPAT.md`](AGENT-COMPAT.md) for the current
 matrix row. Update this stub on first-use observation.
 
@@ -520,7 +520,7 @@ matrix row. Update this stub on first-use observation.
 
 ### Aider (stub)
 
-Contract-only agent; no capability-trigger research has been conducted for flowtron
+Contract-only agent; no capability-trigger research has been conducted for flaitron
 sessions under Aider. See [`AGENT-COMPAT.md`](AGENT-COMPAT.md) for the current
 matrix row. Update this stub on first-use observation.
 
@@ -528,7 +528,7 @@ matrix row. Update this stub on first-use observation.
 
 ### Sourcegraph Amp (stub)
 
-Contract-only agent; no capability-trigger research has been conducted for flowtron
+Contract-only agent; no capability-trigger research has been conducted for flaitron
 sessions under Sourcegraph Amp. See [`AGENT-COMPAT.md`](AGENT-COMPAT.md) for the
 current matrix row. Update this stub on first-use observation.
 
@@ -552,7 +552,7 @@ current matrix row. Update this stub on first-use observation.
 This doc does **not**:
 
 - Decide whether a new platform's wiring is worth shipping — judgment
-  call by the contributor; flowtron makes no recommendation.
+  call by the contributor; flaitron makes no recommendation.
 - Translate skill content for non-Claude-Code platforms — each
   platform's wiring author decides which skills to translate and how.
 - Provide migration tooling for existing adopters — none needed by
@@ -565,7 +565,7 @@ This doc does **not**:
 
 ## Related
 
-- [`SPEC/layout.md`](../SPEC/layout.md) §"Working in the flowtron repo itself" — repo
+- [`SPEC/layout.md`](../SPEC/layout.md) §"Working in the flaitron repo itself" — repo
   layout including the `claude/` locator + this doc's forward-pointer
 - [`AGENT-NEUTRALITY.md`](AGENT-NEUTRALITY.md) — the content-layer
   ledger this doc operationalizes structurally

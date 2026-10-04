@@ -14,7 +14,7 @@ last-verified: v5.33.0 · 2026-10-01
 > [`claude/skills/ft-task/SKILL.md`](../../claude/skills/ft-task/SKILL.md)
 > directly. See [`SPEC/procedures/README.md`](README.md) for the layer.
 
-This SOP describes how to **drive** the flowtron 4-phase tasknote workflow
+This SOP describes how to **drive** the flaitron 4-phase tasknote workflow
 for one task. It is the *floor* that narrows the adherence gap for agents
 without Claude Code's skill machinery — it **routes** to the canonical
 contract rather than restating it. The authority for every rule below is
@@ -111,7 +111,7 @@ this SOP's contract root, in either self-host or adopter layout.
 
 ### 1 — Locate the task and check its status
 
-Read `.flowtron/PLAN.md` and find the line containing `**<TASK-ID>**`. If the
+Read `.flaitron/PLAN.md` and find the line containing `**<TASK-ID>**`. If the
 ID is absent, stop and ask whether to add it or use a different ID.
 
 **Status gate (non-negotiable).** Re-read the located line. If it is checked
@@ -137,7 +137,7 @@ mode does not require the row to carry it. What a marked row *does* imply, on
 an attended run where no mode was requested, is **autonomous mode**: a row
 declared safe with nobody present needs no pauses when somebody is, so treat
 it as an autonomous-mode run and say so inline
-([`SPEC/gate-postures.md` §"`--fast` operator override"](../gate-postures.md)). Flowtron never writes the marker; seeding it
+([`SPEC/gate-postures.md` §"`--fast` operator override"](../gate-postures.md)). Flaitron never writes the marker; seeding it
 is an operator act, so a caller choosing work autonomously treats an
 **unmarked row as undecided, not approved**. Grammar, position, and the two
 ways authors mis-write it:
@@ -166,7 +166,7 @@ expects no reply, blocks nothing, and is suppressed by neither `--fast` nor
 **`## Completed`-rotation advisory.** While `PLAN.md` is open, count the
 checked rows under `## Completed` (nested epic children included). Past
 **60**, surface a one-line `⚠️` advisory naming the count and suggesting the
-operator rotate the oldest rows to `.flowtron/PLAN-ARCHIVE.md` — then
+operator rotate the oldest rows to `.flaitron/PLAN-ARCHIVE.md` — then
 continue. Informational only; never block, never rotate on your own. Full
 contract (the 60-row bound, row-count granularity, the never-split-a-cohort
 rule): [`SPEC/plan-filing.md` §"`## Completed` rotation"](../plan-filing.md).
@@ -176,7 +176,7 @@ emit an informational warning and continue; do not block or refile it.
 
 ### 2 — Resolve the area and check the model
 
-Resolve the **Area** by reading the `.flowtron/tasknote/README.md`
+Resolve the **Area** by reading the `.flaitron/tasknote/README.md`
 §"Archive layout" table — every task, every prefix, canonical ones included.
 `<area>` is **never derived from the ID**: lowercasing the prefix is the
 adopter's declaration-time default, not a resolution you may perform, and a
@@ -224,10 +224,10 @@ on the next invocation. Report the dirt machine-readably and terminate without
 writing — likewise for the archived / in-flight collisions below, where a
 tasknote for this ID already exists and there is nothing new to park.
 
-Check `.flowtron/tasknote/<TASK-ID>.md` and branch on its existence / YAML
+Check `.flaitron/tasknote/<TASK-ID>.md` and branch on its existence / YAML
 `status:`:
 
-- **Already archived** at `.flowtron/tasknote/archive/<area>/<TASK-ID>.md` →
+- **Already archived** at `.flaitron/tasknote/archive/<area>/<TASK-ID>.md` →
   stop; the task is closed. Surface the conflict.
 - **`status: starter`** → promote it; the starter context becomes Phase 1
   input. Read [`SPEC/starter.md`](../starter.md) and execute
@@ -248,15 +248,15 @@ Check `.flowtron/tasknote/<TASK-ID>.md` and branch on its existence / YAML
   note is recovered by park-then-resume, not by restarting. See
   [`SPEC/blocked.md`](../blocked.md) §"Resuming an interrupted run".
 - **Absent** → **First, sidequest-stub retirement**: if
-  `.flowtron/sidequest/<TASK-ID>.md` exists, this scaffold is a sidequest
+  `.flaitron/sidequest/<TASK-ID>.md` exists, this scaffold is a sidequest
   promotion — delete it now. Contract:
   [`claude/skills/ft-file-followup/park-mode.md`](../../claude/skills/ft-file-followup/park-mode.md)
-  §Notes → "Promotion" ("Delete `.flowtron/sidequest/<ID>.md` after
+  §Notes → "Promotion" ("Delete `.flaitron/sidequest/<ID>.md` after
   promotion"); this executes it at the point a promoting run actually writes,
   instead of relying on the promoter to remember a rule stated only in that
   fragment and `docs/GLOSSARY.md`. Then scaffold fresh: copy
   `templates/tasknote-template.md` to
-  `.flowtron/tasknote/<TASK-ID>.md` and fill the frontmatter + body per
+  `.flaitron/tasknote/<TASK-ID>.md` and fill the frontmatter + body per
   [`SPEC.md` §"Tasknote frontmatter"](../../SPEC.md) and
   [§"Tasknote body shape"](../../SPEC.md). Set `status: in-progress`,
   `created:` to today, `title:` from the shortname, `related-tasks:` from any
@@ -292,7 +292,7 @@ ticking each box in the tasknote as you go:
   touched responsibilities, dependency direction, existing abstractions, nearby
   duplication, and any required in-scope refactor or deferred cleanup; otherwise
   record `N/A` with reason.
-- **Archive skim** — list `.flowtron/tasknote/archive/<area>/` and look for
+- **Archive skim** — list `.flaitron/tasknote/archive/<area>/` and look for
   prior tasknotes touching the files in scope (if YAML `touches:` is set,
   prefer those paths); also open IDs named by `## 🔗 Related`, YAML
   `supersedes:`, and any ⚠️ `Superseded by` pointer on the hits — still
@@ -425,7 +425,7 @@ time (Step 6).
   to Phase 2, not closure.
 - **Phase 4: Closure (auto-run)** — [`SPEC.md` §"🚀 Phase 4"](../../SPEC.md)
   + [`SPEC.md` §"Paper-complete guard"](../../SPEC.md). Run the doc-drift
-  sweep across `.flowtron/tasknote/README.md` §"AI-referenced docs" (per
+  sweep across `.flaitron/tasknote/README.md` §"AI-referenced docs" (per
   entry: "no change" or the specific update). Tick every `## ✅ Acceptance`
   criterion the work satisfied and annotate any it did not (`N/A` / not-met
   with a one-line reason) — never leave a box silently unticked. Do **not**
@@ -460,7 +460,7 @@ time (Step 6).
   outstanding — fix it and re-check rather than moving.
   Applies identically under autonomous and unattended mode; neither relaxes
   it. Move the tasknote to
-  `.flowtron/tasknote/archive/<area>/<TASK-ID>.md` — but only when deliverable
+  `.flaitron/tasknote/archive/<area>/<TASK-ID>.md` — but only when deliverable
   paths are ready to stage in the **same** atomic closure commit (do not flip
   if you cannot proceed to commit). Ban collateral Completed flips. Draft an
   evidence-based recap: 1-2 plain-English sentences, then changed paths/LOC
@@ -470,7 +470,7 @@ time (Step 6).
   task's own tasknote and PLAN row), and concrete
   maintainability effect. Answer the **Learnings** item: did this task teach
   something the always-loaded layer (`AGENTS.md` /
-  `.flowtron/tasknote/README.md` §"AI-referenced docs") should carry? Write
+  `.flaitron/tasknote/README.md` §"AI-referenced docs") should carry? Write
   `N/A` or the line — most closures write `N/A`.
   Persist operator handoffs (manual steps and any proposed commit message)
   in the note before archive. File each deferred real-world step as an open

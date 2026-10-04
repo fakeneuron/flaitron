@@ -10,7 +10,7 @@ Contract: `SPEC.md` §"📝 Phase 1: Discovery" (read step) and `README.md`
 tasknote is a **delegate**, not a probe — different rules, see the README.
 
 This is a copy-paste artifact, not a lifecycle file. Nothing is written to
-`.flowtron/`; the probe's return is pasted (or summarized) into the parent
+`.flaitron/`; the probe's return is pasted (or summarized) into the parent
 tasknote's Discovery Notes by the session that spawned it.
 
 ---
@@ -108,7 +108,7 @@ Testing Notes, and owns whether a blocker really is one.
 - **The parent still owns the judgment.** A probe reports; it does not decide
   whether the task is still relevant, what the scope is, or what to do next.
   Those stay in the session that holds the tasknote.
-- **No machinery.** Flowtron ships this brief and this return shape and nothing
+- **No machinery.** Flaitron ships this brief and this return shape and nothing
   else — no runner, no dispatcher, no fan-out (`docs/VISION.md` §"What we won't
   accept"). Which sub-agent primitive spawns the probe is the operator's and
   the platform's business.

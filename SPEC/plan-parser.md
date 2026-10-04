@@ -6,7 +6,7 @@
 priority heading. The parser soft-migrates this: tasks under a `## Critical`
 heading parse with `priority: 'High'` and `critical: true` — equivalent to
 filing each row under `## High` with an explicit `[!critical]` flag. Adopters
-on older flowtron versions don't lose rows when they bump; migration of the
+on older flaitron versions don't lose rows when they bump; migration of the
 PLAN.md heading itself is optional cleanup.
 
 Adopting projects' visualizers parse the task line per `viz/src/parser.ts`
@@ -110,7 +110,7 @@ diagnostics. This lets a grammar-reference example carrying a literal
 without polluting the task list.
 
 **Legacy label lines (excluded, not tolerated).** Some adopter PLAN.md files
-predate flowtron entirely and carry completed historical records whose bold
+predate flaitron entirely and carry completed historical records whose bold
 token was never an `<AREA>-NNN` ID (`**P1**`, `**flowtron v5.2.0 bump**`).
 Unlike the decorative tolerances above, these aren't parsed into a `Task` at
 all — a completed (`[x]`) checkbox line with a bare `**token**` (optionally

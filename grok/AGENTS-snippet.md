@@ -1,4 +1,4 @@
-# Grok Build wiring snippet for flowtron
+# Grok Build wiring snippet for flaitron
 
 This file is the Grok-specific sibling of `claude/AGENTS-snippet.md`. The
 workflow block itself is agent-neutral and remains canonical there; this file
@@ -43,32 +43,32 @@ because adopters copy-paste it and `tools/update-adopters.mjs` parses it;
 For a **Grok-only project** — one with no `.claude/`, no `.agents/skills/`,
 and no `.cursor/skills/` wiring — install the same adopter subset under
 Grok's own directory instead. Run from the project root after adding the
-flowtron submodule at `.flowtron/core`:
+flaitron submodule at `.flaitron/core`:
 
 ```sh
 mkdir -p .grok/skills
-ln -s ../../.flowtron/core/claude/skills/ft-close-epic .grok/skills/ft-close-epic
-ln -s ../../.flowtron/core/claude/skills/ft-epic-discovery .grok/skills/ft-epic-discovery
-ln -s ../../.flowtron/core/claude/skills/ft-file-followup .grok/skills/ft-file-followup
-ln -s ../../.flowtron/core/claude/skills/ft-micro-task .grok/skills/ft-micro-task
-ln -s ../../.flowtron/core/claude/skills/ft-refactor .grok/skills/ft-refactor
-ln -s ../../.flowtron/core/claude/skills/ft-seed .grok/skills/ft-seed
-ln -s ../../.flowtron/core/claude/skills/ft-task .grok/skills/ft-task
-ln -s ../../.flowtron/core/claude/skills/ft-update .grok/skills/ft-update
+ln -s ../../.flaitron/core/claude/skills/ft-close-epic .grok/skills/ft-close-epic
+ln -s ../../.flaitron/core/claude/skills/ft-epic-discovery .grok/skills/ft-epic-discovery
+ln -s ../../.flaitron/core/claude/skills/ft-file-followup .grok/skills/ft-file-followup
+ln -s ../../.flaitron/core/claude/skills/ft-micro-task .grok/skills/ft-micro-task
+ln -s ../../.flaitron/core/claude/skills/ft-refactor .grok/skills/ft-refactor
+ln -s ../../.flaitron/core/claude/skills/ft-seed .grok/skills/ft-seed
+ln -s ../../.flaitron/core/claude/skills/ft-task .grok/skills/ft-task
+ln -s ../../.flaitron/core/claude/skills/ft-update .grok/skills/ft-update
 ```
 
 The targets are `claude/skills/` on purpose — those are the canonical skill
 bodies, not Grok-specific copies. The relative paths are intentional: they
-survive `git clone` and pin to whichever flowtron commit the submodule is
+survive `git clone` and pin to whichever flaitron commit the submodule is
 checked out at. Commit the symlinks (`git add .grok/`).
 
-The submodule also brings flowtron's own tasknote archive at
-`.flowtron/core/.flowtron/` (~14 MB, ~1,000 files) — flowtron's history, not
+The submodule also brings flaitron's own tasknote archive at
+`.flaitron/core/.flaitron/` (~14 MB, ~1,000 files) — flaitron's history, not
 this project's context. Keep it out of search tooling with that line in a root
 `.ignore`; the per-tool list is in `../docs/MIGRATION.md` §1.1.
 
 A Grok skill auto-exposes as `/<skill-name>`, so `/ft-task <TASK-ID>` works
-after wiring with no command stubs to install. Flowtron's `claude/commands/`
+after wiring with no command stubs to install. Flaitron's `claude/commands/`
 wrappers are **not** part of this Grok-only block: skill bodies carry the
 whole procedure. When Claude `.claude/commands/` is already present, Grok's
 Claude-compat scan already loads those stubs.
@@ -82,7 +82,7 @@ wires Codex too.
 This snippet wires the adopter-installed subset: the tasknote family,
 `/ft-seed`, and `/ft-update`. Global utility skills such as
 `ft-new-project` and `ft-audit-repo` may be installed in the user skill directory when desired;
-`ft-release` remains flowtron-self-only and is not part of the adopter snippet.
+`ft-release` remains flaitron-self-only and is not part of the adopter snippet.
 The canonical category table lives in
 `../docs/PLATFORMS.md` §"Installed-surface policy", and the
 install-once rule this block obeys is
@@ -93,16 +93,16 @@ invoke `/ft-task`. The skill should appear with its description text.
 
 ## Pinning notes
 
-These relative symlinks point through the project's pinned `.flowtron/core`
+These relative symlinks point through the project's pinned `.flaitron/core`
 submodule, so the wired skill bodies move only when the project deliberately
-bumps flowtron. Existing symlinks do not need rewiring on a normal version bump;
+bumps flaitron. Existing symlinks do not need rewiring on a normal version bump;
 newly shipped adopter-subset skills may need new symlinks, which `/ft-update`
 adds.
 
 Do **not** glob the skill inventory into an agent home (`~/.grok/skills/`,
 `~/.agents/skills/`, `~/.cursor/skills/`, or `~/.claude/skills/`). Project
 scope and user scope enumerate separately, so a globally installed copy
-doubles flowtron's footprint in every session before any work starts; and
+doubles flaitron's footprint in every session before any work starts; and
 user-scope collisions resolve by slug without regard to which platform
 authored the body, so a globally installed Codex wrapper can be served to a
 Grok session it was not written for. The agent home carries only the

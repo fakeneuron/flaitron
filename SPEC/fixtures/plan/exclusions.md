@@ -61,7 +61,7 @@ Multi-line comment.
 
 ## Completed
 
-- [x] **P1** — Pre-flowtron record; excluded silently.
+- [x] **P1** — Pre-flaitron record; excluded silently.
 - [x] **flowtron v5.2.0 bump** — Bare label with no ID shape; excluded silently.
 - [x] **v1 launch**
 - [ ] **P2** — Pending legacy-shaped row; surfaces as unparsed.

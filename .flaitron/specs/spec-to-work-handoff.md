@@ -22,7 +22,7 @@ related-tasks: [[CORE-EPIC-352]]
 
 ## 🎯 Goal
 
-Let a drafted `.flowtron/specs/<slug>.md` optionally serve as the brief for
+Let a drafted `.flaitron/specs/<slug>.md` optionally serve as the brief for
 `/ft-epic-discovery` and `/ft-starter-task`, so the design captured in a spec
 flows into filed PLAN work without the operator re-typing it. "Done" = both
 skills accept a spec reference, read the file as their brief, and run their
@@ -37,7 +37,7 @@ normal filing flow unchanged when no spec is given.
   from it into the starter tasknote.
 - Purely additive & optional — invoking either skill with no spec is
   byte-identical to today. A spec is never required.
-- No new subsystem or parser: the skill *Reads* a markdown file; `.flowtron/specs/`
+- No new subsystem or parser: the skill *Reads* a markdown file; `.flaitron/specs/`
   stays an operator scratchpad; `/ft-spec` still files nothing itself.
 - Agent-neutral: prose-level reading, no schema/validator; contract-only agents
   get the optional input named in the SOP.
@@ -46,7 +46,7 @@ normal filing flow unchanged when no spec is given.
 
 Add an optional arg — `--spec <slug-or-path>` — to `/ft-epic-discovery` and
 `/ft-starter-task`. When present, the skill's brief-gathering step Reads
-`.flowtron/specs/<slug>.md` and treats the six sections as the design brief:
+`.flaitron/specs/<slug>.md` and treats the six sections as the design brief:
 Goal → epic/task goal, Requirements + Design → scope, 🧩 Tasks → candidate
 children/scope. The spec is an *input*, not a driver — the skill still runs its
 own Discovery and operator-review gates; nothing is auto-filed.

@@ -3,7 +3,7 @@ name: ft-refactor
 description: Plan a refactor of one named target as a sequenced, behavior-preserving epic. Read-only depth analysis, an operator-reviewed plan, then files the epic and implementation children. Never edits code. With `--fast` (`-f`), suppresses the conditional gates on filing.
 ---
 
-# ft-refactor — flowtron refactor depth planner
+# ft-refactor — flaitron refactor depth planner
 
 You are planning a refactor of **one named target** and filing the result as
 a sequenced epic. `/ft-refactor` is a **depth planner that files** — it sits
@@ -13,7 +13,7 @@ Discovery): it performs the depth
 analysis itself, surfaces the plan for operator review, and on the
 operator's go files the epic + per-child starter tasknotes in one motion.
 
-**Read-only hard rule.** `.flowtron/PLAN.md` and `.flowtron/tasknote/` get
+**Read-only hard rule.** `.flaitron/PLAN.md` and `.flaitron/tasknote/` get
 written (Step 5). Source files do NOT — no code edits, no formatters, no
 "fix while I'm in here," no matter how small the move. Every code change
 this skill plans happens later, through normal `/ft-task` cycles on the
@@ -31,12 +31,12 @@ autonomy.
 
 Two layouts. Pick by which file exists:
 
-- **Adopter project:** `.flowtron/core/SPEC.md` exists → `<root>` = `.flowtron/core/`.
-- **Flowtron self-host:** repo-root `SPEC.md` with heading `# Flowtron — Workflow Specification` → `<root>` = repo-root.
+- **Adopter project:** `.flaitron/core/SPEC.md` exists → `<root>` = `.flaitron/core/`.
+- **Flaitron self-host:** repo-root `SPEC.md` with heading `# Flaitron — Workflow Specification` → `<root>` = repo-root.
 
 If neither matches, bail.
 
-Paths: SPEC=`<root>SPEC.md`, SPEC_DIR (lazy modules `epic.md` · `starter.md`)=`<root>SPEC/`, starter template=`<root>templates/tasknote-starter-template.md`, PLAN=`.flowtron/PLAN.md`, tasknote dir=`.flowtron/tasknote/` (always).
+Paths: SPEC=`<root>SPEC.md`, SPEC_DIR (lazy modules `epic.md` · `starter.md`)=`<root>SPEC/`, starter template=`<root>templates/tasknote-starter-template.md`, PLAN=`.flaitron/PLAN.md`, tasknote dir=`.flaitron/tasknote/` (always).
 
 ## Step 1 — Parse args
 
@@ -123,7 +123,7 @@ one `/ft-task` cycle. Sequencing doctrine:
   needs clauses 1–4 only. Every clause must hold; when one is uncertain the
   row is not a candidate. A candidate is **proposed, never seeded** — the
   token lands only through the Step 4 review, never on a starter note.
-  Flowtron itself never writes `[unattended]` on its own discretion
+  Flaitron itself never writes `[unattended]` on its own discretion
   (`SPEC/task-line-segments.md`).
 
 ## Step 4 — Review gate
@@ -166,13 +166,13 @@ Only after the Step 4 go (or `fast-mode = true`).
 **Filing-commit pre-check first.** Immediately before any write, apply
 `SPEC/plan-filing.md` §"Filing commits". `git diff --cached --quiet` non-zero →
 `auto-commit = false`. PLAN.md porcelain empty → `auto-commit = true`. PLAN.md
-non-empty → `git diff --no-ext-diff -- .flowtron/PLAN.md`: every added line a
+non-empty → `git diff --no-ext-diff -- .flaitron/PLAN.md`: every added line a
 task row or blank, and every removed line blank or a `(none)` placeholder →
 `auto-commit = true` and those rows ride in this commit (record their IDs for
 the body line that section names); any other PLAN change → `auto-commit = false`.
 
-1. **Resolve the epic ID.** Scan `.flowtron/PLAN.md` AND
-   `.flowtron/tasknote/archive/<area>/` for the highest used numeric suffix
+1. **Resolve the epic ID.** Scan `.flaitron/PLAN.md` AND
+   `.flaitron/tasknote/archive/<area>/` for the highest used numeric suffix
    in the chosen area across regular AND epic IDs (they share the suffix
    per SPEC §"Task ID convention"); `next-N = max-used + 1` →
    `<AREA>-EPIC-<next-N>`. Surface the resolved IDs; the operator may
@@ -222,7 +222,7 @@ the body line that section names); any other PLAN change → `auto-commit = fals
 and the starter files **by name** — never `git commit -a` / `git add .`:
 
 ```sh
-git add .flowtron/PLAN.md <starter-file-paths>
+git add .flaitron/PLAN.md <starter-file-paths>
 git diff --cached   # whole index, no pathspec
 git commit -m "chore: file <AREA>-EPIC-<next-N> refactor plan — <shortname>"
 ```

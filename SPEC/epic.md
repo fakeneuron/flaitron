@@ -91,7 +91,7 @@ tasknotes in one window, auto-dispatch, or a job graph. See
 
 Every audit subtask's
 `## ✅ Acceptance` includes a doc-drift sweep across
-`.flowtron/tasknote/README.md` §"AI-referenced docs": for each entry,
+`.flaitron/tasknote/README.md` §"AI-referenced docs": for each entry,
 "no change" or the update. Always present — ticks fast when nothing
 drifted, surfaces the cumulative slice-local staleness that per-task
 Phase 4 closures can miss.

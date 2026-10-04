@@ -30,11 +30,11 @@ related-tasks: []
 **Relevance:** Proceed | Re-scope | De-scope — <one-line rationale>
 **Best Practices Review:** <responsibilities, dependency direction, existing abstractions, duplication, and any in-scope refactor or deferred cleanup; OR N/A with reason>
 **Drift check:** <paths/line numbers/function names cited in PLAN.md still match current code, AND the plan neither contradicts a SPEC contract nor diverges from its PLAN.md line; OR "no drift" / specific findings>
-**Archive skim:** <relevant findings from `.flowtron/tasknote/archive/<area>/` (prefer YAML `touches:`; also follow Related / `supersedes` / ⚠️), OR "no prior tasknotes touch these paths" — on an absent or empty `archive/<area>/`, re-check `<area>` against the README table first; a derived-and-wrong folder reads exactly like an empty one>
+**Archive skim:** <relevant findings from `.flaitron/tasknote/archive/<area>/` (prefer YAML `touches:`; also follow Related / `supersedes` / ⚠️), OR "no prior tasknotes touch these paths" — on an absent or empty `archive/<area>/`, re-check `<area>` against the README table first; a derived-and-wrong folder reads exactly like an empty one>
 **Declared scope:** <YAML `touches:` filled with the paths this task expects to edit; OR "N/A — no file deliverable">
 **Pattern survey:** <neighboring code or sibling shape extended, OR justification for a new shape>
 **Implementation:** <ad-hoc free text — what changed, key decisions, anything load-bearing for future readers>
-**Docs touched:** <per-entry verdict for `.flowtron/tasknote/README.md` §"AI-referenced docs" — "no change" or the update>
+**Docs touched:** <per-entry verdict for `.flaitron/tasknote/README.md` §"AI-referenced docs" — "no change" or the update>
 
 ## ✅ Recap
 

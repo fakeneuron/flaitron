@@ -9,7 +9,7 @@
 # Comments in this copy are reworded to stand alone (CORE-652.2); the
 # allowlist rules are byte-identical to the source. An operator-side refresh
 # will show the comment diff — review it before overwriting.
-title = "flowtron gitleaks baseline"
+title = "flaitron gitleaks baseline"
 
 [extend]
 useDefault = true
@@ -31,13 +31,13 @@ useDefault = true
 
 [[allowlists]]
 description = """
-Archived flowtron tasknotes. Write-once by policy (SPEC §"Tasknote
+Archived flaitron tasknotes. Write-once by policy (SPEC §"Tasknote
 frontmatter"), so a false positive in one cannot be fixed by editing the
 historical record. Prose in a closed tasknote is documentation of past work,
 never a live credential surface.
 Measured hits: two archived tasknotes across two fleet repos.
 """
-paths = ['''(^|/)\.flowtron/tasknote/archive/.*\.md$''']
+paths = ['''(^|/)\.flaitron/tasknote/archive/.*\.md$''']
 
 [[allowlists]]
 description = """

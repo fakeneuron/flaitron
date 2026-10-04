@@ -1,4 +1,4 @@
-# Cursor wiring snippet for flowtron
+# Cursor wiring snippet for flaitron
 
 This file is the Cursor-specific sibling of `claude/AGENTS-snippet.md`. The
 workflow block itself is agent-neutral and remains canonical there; this file
@@ -39,32 +39,32 @@ because adopters copy-paste it and `tools/update-adopters.mjs` parses it;
 
 For a **Cursor-only project** — one with no `.claude/` wiring — install the same
 adopter subset under Cursor's own directory instead. Run from the project root
-after adding the flowtron submodule at `.flowtron/core`:
+after adding the flaitron submodule at `.flaitron/core`:
 
 ```sh
 mkdir -p .cursor/skills
-ln -s ../../.flowtron/core/claude/skills/ft-close-epic .cursor/skills/ft-close-epic
-ln -s ../../.flowtron/core/claude/skills/ft-epic-discovery .cursor/skills/ft-epic-discovery
-ln -s ../../.flowtron/core/claude/skills/ft-file-followup .cursor/skills/ft-file-followup
-ln -s ../../.flowtron/core/claude/skills/ft-micro-task .cursor/skills/ft-micro-task
-ln -s ../../.flowtron/core/claude/skills/ft-refactor .cursor/skills/ft-refactor
-ln -s ../../.flowtron/core/claude/skills/ft-seed .cursor/skills/ft-seed
-ln -s ../../.flowtron/core/claude/skills/ft-task .cursor/skills/ft-task
-ln -s ../../.flowtron/core/claude/skills/ft-update .cursor/skills/ft-update
+ln -s ../../.flaitron/core/claude/skills/ft-close-epic .cursor/skills/ft-close-epic
+ln -s ../../.flaitron/core/claude/skills/ft-epic-discovery .cursor/skills/ft-epic-discovery
+ln -s ../../.flaitron/core/claude/skills/ft-file-followup .cursor/skills/ft-file-followup
+ln -s ../../.flaitron/core/claude/skills/ft-micro-task .cursor/skills/ft-micro-task
+ln -s ../../.flaitron/core/claude/skills/ft-refactor .cursor/skills/ft-refactor
+ln -s ../../.flaitron/core/claude/skills/ft-seed .cursor/skills/ft-seed
+ln -s ../../.flaitron/core/claude/skills/ft-task .cursor/skills/ft-task
+ln -s ../../.flaitron/core/claude/skills/ft-update .cursor/skills/ft-update
 ```
 
 The targets are `claude/skills/` on purpose — those are the canonical skill
 bodies, not Cursor-specific copies. The relative paths are intentional: they
-survive `git clone` and pin to whichever flowtron commit the submodule is
+survive `git clone` and pin to whichever flaitron commit the submodule is
 checked out at. Commit the symlinks (`git add .cursor/`).
 
-The submodule also brings flowtron's own tasknote archive at
-`.flowtron/core/.flowtron/` (~14 MB, ~1,000 files) — flowtron's history, not
+The submodule also brings flaitron's own tasknote archive at
+`.flaitron/core/.flaitron/` (~14 MB, ~1,000 files) — flaitron's history, not
 this project's context. Keep it out of indexing and AI access with that line
 in a root `.cursorignore`; the per-tool list is in `../docs/MIGRATION.md` §1.1.
 
 A Cursor skill auto-exposes as `/<skill-name>`, so `/ft-task <TASK-ID>` works
-after wiring with no command stubs to install. Flowtron's `claude/commands/`
+after wiring with no command stubs to install. Flaitron's `claude/commands/`
 wrappers are **not** part of this block: Cursor's compatibility loading covers
 `.claude/skills/` but not `.claude/commands/`, and the skill bodies carry the
 whole procedure, so the wrappers add nothing here.
@@ -77,7 +77,7 @@ them separate avoids a slug collision between the canonical bodies and Codex's
 This snippet wires the adopter-installed subset: the tasknote family,
 `/ft-seed`, and `/ft-update`. Global utility skills such as
 `ft-new-project` and `ft-audit-repo` may be installed in the user skill directory when desired;
-`ft-release` remains flowtron-self-only and is not part of the adopter snippet.
+`ft-release` remains flaitron-self-only and is not part of the adopter snippet.
 The canonical category table lives in
 `../docs/PLATFORMS.md` §"Installed-surface policy", and the
 install-once rule this block obeys is
@@ -96,16 +96,16 @@ roster but loads with an **empty description**. Nothing errors — the skill
 simply stops being model-invocable and becomes command-only, because the
 description is what an agent reads to decide to reach for it.
 
-This is worth knowing if you fork a flowtron skill under an unprefixed name per
+This is worth knowing if you fork a flaitron skill under an unprefixed name per
 `../docs/MIGRATION.md` §1.2.1: keep `": "` out of the description,
 or quote the scalar. Four upstream skill bodies carried this defect until it was
 measured in live Cursor sessions and repaired.
 
 ## Pinning notes
 
-These relative symlinks point through the project's pinned `.flowtron/core`
+These relative symlinks point through the project's pinned `.flaitron/core`
 submodule, so the wired skill bodies move only when the project deliberately
-bumps flowtron. Existing symlinks do not need rewiring on a normal version bump;
+bumps flaitron. Existing symlinks do not need rewiring on a normal version bump;
 newly shipped adopter-subset skills may need new symlinks, which `/ft-update`
 adds.
 
@@ -117,7 +117,7 @@ start a fresh session rather than expecting the running one to reload.
 
 Do **not** glob the skill inventory into an agent home (`~/.cursor/skills/`,
 `~/.agents/skills/`, or `~/.claude/skills/`). Project scope and user scope
-enumerate separately, so a globally installed copy doubles flowtron's footprint
+enumerate separately, so a globally installed copy doubles flaitron's footprint
 in every session before any work starts; and user-scope collisions resolve by
 slug without regard to which platform authored the body, so a globally installed
 Codex wrapper can be served to a Cursor session it was not written for. The

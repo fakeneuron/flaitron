@@ -1,6 +1,6 @@
 # Fixture — rotated `## Completed <YYYY-MM>` history
 
-`.flowtron/PLAN-ARCHIVE.md` grammar (`SPEC/plan-filing.md` §"`## Completed`
+`.flaitron/PLAN-ARCHIVE.md` grammar (`SPEC/plan-filing.md` §"`## Completed`
 rotation"): month-block headings map onto the `Completed` priority, rows
 beneath are verbatim stubs. A consumer that never reads the archive may skip
 this file.

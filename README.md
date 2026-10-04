@@ -1,13 +1,13 @@
-# flowtron
+# flaitron
 
 <p align="center">
-  <img src="LOGO.webp" alt="flowtron logo" width="200">
+  <img src="LOGO.webp" alt="flaitron logo" width="200">
 </p>
 
 <p align="center">
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/fakeneuron/flowtron?style=flat-square&color=blue" alt="License: MIT"></a>
-  <a href="https://github.com/fakeneuron/flowtron/releases"><img src="https://img.shields.io/github/v/release/fakeneuron/flowtron?style=flat-square&label=version&color=brightgreen" alt="Latest version"></a>
-  <a href="https://github.com/fakeneuron/flowtron/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/fakeneuron/flowtron/ci.yml?style=flat-square" alt="CI build status"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/fakeneuron/flaitron?style=flat-square&color=blue" alt="License: MIT"></a>
+  <a href="https://github.com/fakeneuron/flaitron/releases"><img src="https://img.shields.io/github/v/release/fakeneuron/flaitron?style=flat-square&label=version&color=brightgreen" alt="Latest version"></a>
+  <a href="https://github.com/fakeneuron/flaitron/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/fakeneuron/flaitron/ci.yml?style=flat-square" alt="CI build status"></a>
 </p>
 
 A lightweight, project-agnostic tasknote system for solo AI-assisted coding.
@@ -18,24 +18,24 @@ relevance gate, and the acceptance criteria are the checkpoints where you
 look — and one task per context window keeps each one small enough to
 actually review. No scripts, daemons, databases, or schemas to maintain.
 
-![The flowtron visualizer showing flowtron's own PLAN.md — open tasks by priority, phase-progress dots, and the completed archive](.flowtron/screenshots/viz-board.png)
+![The flaitron visualizer showing flaitron's own PLAN.md — open tasks by priority, phase-progress dots, and the completed archive](.flaitron/screenshots/viz-board.png)
 
-Flowtron is built with flowtron: **1057 tasks** closed through this exact
+Flaitron is built with flaitron: **1057 tasks** closed through this exact
 workflow between 2026-04-28 and 2026-10-02 (as of 2026-10-02) — each one with
-a tasknote preserved in [`.flowtron/tasknote/archive/`](.flowtron/tasknote/archive/).
+a tasknote preserved in [`.flaitron/tasknote/archive/`](.flaitron/tasknote/archive/).
 Count and date range are recomputed each release by `/ft-release` §7.1's
 "Standing README task-counter check" (one archived tasknote per closed task,
 standalone or epic child) — see `claude/skills/ft-release/step-7.1-standing-checks.md`.
 
 ## Quickstart
 
-**Once per machine** — clone flowtron anywhere and wire the bootstrap skill:
+**Once per machine** — clone flaitron anywhere and wire the bootstrap skill:
 
 ```sh
-git clone https://github.com/fakeneuron/flowtron.git ~/code/flowtron
+git clone https://github.com/fakeneuron/flaitron.git ~/code/flaitron
 mkdir -p ~/.claude/skills ~/.claude/commands
-ln -s ~/code/flowtron/claude/skills/ft-new-project      ~/.claude/skills/ft-new-project
-ln -s ~/code/flowtron/claude/commands/ft-new-project.md ~/.claude/commands/ft-new-project.md
+ln -s ~/code/flaitron/claude/skills/ft-new-project      ~/.claude/skills/ft-new-project
+ln -s ~/code/flaitron/claude/commands/ft-new-project.md ~/.claude/commands/ft-new-project.md
 ```
 
 **Once per project** — from the project root (a git repo with an `AGENTS.md`
@@ -45,11 +45,11 @@ or `CLAUDE.md`):
 /ft-new-project
 ```
 
-That adds the flowtron submodule, wires the adopter skill subset — the tasknote
+That adds the flaitron submodule, wires the adopter skill subset — the tasknote
 family, `/ft-seed`, and `/ft-update`, whose exact roster is the
 `ln -s` block in [`claude/AGENTS-snippet.md`](claude/AGENTS-snippet.md)
-§"One-time symlink wiring" — and drops in the `.flowtron/` skeleton in one
-pass. Then file a task in `.flowtron/PLAN.md` and run it:
+§"One-time symlink wiring" — and drops in the `.flaitron/` skeleton in one
+pass. Then file a task in `.flaitron/PLAN.md` and run it:
 
 ```sh
 /ft-task CORE-001
@@ -69,15 +69,15 @@ serves it; Grok-only projects follow [`grok/AGENTS-snippet.md`](grok/AGENTS-snip
   lifecycle, relevance gate, paper-complete guard, versioning rules)
 - [docs/PHILOSOPHY.md](docs/PHILOSOPHY.md) — the "why": drift across prior
   per-project workflows and the principles that stuck
-- [docs/VISION.md](docs/VISION.md) — outward-facing identity: who flowtron
+- [docs/VISION.md](docs/VISION.md) — outward-facing identity: who flaitron
   is for, the principles (recap of SPEC), and the PR/suggestion archetypes
-  flowtron deliberately rejects
+  flaitron deliberately rejects
 - [docs/GLOSSARY.md](docs/GLOSSARY.md) — alphabetized one-line definitions for
   ~73 load-bearing terms, phases, markers, and grammar elements (lazy-loaded
   pointer to SPEC anchors)
 - [docs/MIGRATION.md](docs/MIGRATION.md) — adoption guide for fresh projects
   and migration from a prior workflow system
-- [docs/CONVENTIONS.md](docs/CONVENTIONS.md) — conventions flowtron adheres to
+- [docs/CONVENTIONS.md](docs/CONVENTIONS.md) — conventions flaitron adheres to
   (Conventional Commits, SemVer, GFM, Diátaxis, GitHub Actions CI) and
   declines (CHANGELOG, ADR registry, release automation, pre-commit hooks, MCP
   servers, package-manager / marketplace distribution, template override
@@ -94,16 +94,16 @@ serves it; Grok-only projects follow [`grok/AGENTS-snippet.md`](grok/AGENTS-snip
   Cursor-shaped: `.claude/skills/` / `.agents/skills/` / `.cursor/skills/`
   compat plus Grok-only `.grok/skills/`); others conversational)
 - [docs/AGENT-COMPAT.md](docs/AGENT-COMPAT.md) — living agent-compatibility
-  matrix: which AI coding agents flowtron supports, their contract
+  matrix: which AI coding agents flaitron supports, their contract
   entry-points, skill primitives, and last-verified currency
 - [docs/DOGFOOD.md](docs/DOGFOOD.md) — pasteable verification procedure any AI
-  agent runs to confirm flowtron compatibility and refresh its
+  agent runs to confirm flaitron compatibility and refresh its
   `docs/AGENT-COMPAT.md` `last-verified` row
 - [docs/WORKTREES.md](docs/WORKTREES.md) — worktree convention for parallel
   epic children: the five locked decisions (location, branch naming,
   skill naming, tasknote handling, cleanup) and the four-command start / end procedure
 - [docs/HARNESS-SURVEY.md](docs/HARNESS-SURVEY.md) — dated comparisons of
-  flowtron against contemporary harnesses and trackers: differentiators, gaps,
+  flaitron against contemporary harnesses and trackers: differentiators, gaps,
   overkill, and the seed list for the next wider pass
 - [docs/GATE-DISCIPLINE.md](docs/GATE-DISCIPLINE.md) — historical catalog of
   gate-skip excuses and observer symptoms, moved out of `SPEC/gate-discipline.md`
@@ -129,44 +129,44 @@ serves it; Grok-only projects follow [`grok/AGENTS-snippet.md`](grok/AGENTS-snip
 
 ## Visualizer
 
-`viz/` is a read-only view of every flowtron-adopting project under
+`viz/` is a read-only view of every flaitron-adopting project under
 your workspace — a priority-grouped list by default, with an optional
 board mode. Open tasks with an active tasknote in
-each project's `.flowtron/tasknote/` are flagged **In progress**. The
+each project's `.flaitron/tasknote/` are flagged **In progress**. The
 header-rail project selector swaps the active project;
-the header subhead shows task counts, in-progress count, and the flowtron
-version the selected project is using (from its `.flowtron/core/SPEC.md`).
+the header subhead shows task counts, in-progress count, and the flaitron
+version the selected project is using (from its `.flaitron/core/SPEC.md`).
 Each project chip carries a version-currency dot — green when the project is
-pinned at the latest released flowtron tag, red when it's behind, none when
+pinned at the latest released flaitron tag, red when it's behind, none when
 no pin is readable. Filters and scroll position reset on switch.
 
-Run **once per machine** from flowtron's own checkout — there is no
+Run **once per machine** from flaitron's own checkout — there is no
 per-project install step. The dev server is pinned to port `5120` with
 `strictPort`, so a second instance fails fast rather than scanning the same
 workspace on a different port.
 
 ```sh
-cd ~/code/flowtron/viz
+cd ~/code/flaitron/viz
 npm install
 npm run dev
 ```
 
-The scanner globs `${FLOWTRON_VIZ_WORKSPACE:-~/code}/*/.flowtron/PLAN.md` to
+The scanner globs `${FLAITRON_VIZ_WORKSPACE:-~/code}/*/.flaitron/PLAN.md` to
 discover projects; the directory name (e.g., `myproject`) becomes the project
-label. Dirs without a `.flowtron/PLAN.md` are silently skipped. Set
-`FLOWTRON_VIZ_WORKSPACE` if your projects live somewhere other than
+label. Dirs without a `.flaitron/PLAN.md` are silently skipped. Set
+`FLAITRON_VIZ_WORKSPACE` if your projects live somewhere other than
 `~/code/`. Discovery (and the latest-release tag) runs once at dev-server
 start — restart to pick up newly adopted or removed projects, or a tag cut
 mid-session; live updates cover file changes inside already-discovered
 projects only.
 
-Adopter projects' own `.flowtron/core/viz/` continues to work (read-only
+Adopter projects' own `.flaitron/core/viz/` continues to work (read-only
 submodule, unchanged) but is no longer the recommended path — prefer the
 single global instance above.
 
 ## Working in markdown vaults
 
-Flowtron is editor-agnostic — markdown files in git remain the source of
+Flaitron is editor-agnostic — markdown files in git remain the source of
 truth — but two of its choices happen to fit markdown-vault tools
 (Obsidian, Foam, Logseq) natively:
 
@@ -175,7 +175,7 @@ truth — but two of its choices happen to fit markdown-vault tools
 - The YAML frontmatter on every tasknote (`status`, `tags`, `due`,
   `related-tasks`) is the shape vault-tool query plugins consume.
 
-**Obsidian.** Open the project root (or just `.flowtron/`) as a vault and
+**Obsidian.** Open the project root (or just `.flaitron/`) as a vault and
 tasknotes become a queryable, graph-viewable knowledge base with no extra
 wiring. A minimal
 [Dataview](https://blacksmithgu.github.io/obsidian-dataview/) snippet
@@ -184,7 +184,7 @@ wiring. A minimal
 ````markdown
 ```dataview
 TABLE status, due
-FROM ".flowtron/tasknote"
+FROM ".flaitron/tasknote"
 WHERE status != "completed"
 SORT due
 ```
@@ -205,7 +205,7 @@ These tools are opt-in companion surfaces. None of the above is required.
 
 Autonomous AI coding agents — Claude Code sessions, sub-agents, fresh
 context windows — need persistent memory that survives the context window:
-state on disk they can reload and resume from. Flowtron's markdown state
+state on disk they can reload and resume from. Flaitron's markdown state
 model already is that layer:
 
 - `PLAN.md` — durable intent: priorities, open tasks, and recent
@@ -239,7 +239,7 @@ run: …") hands that step to the operator. An agent that chains tasks
 autonomously in one session skips the reset and accretes context; an
 *unbounded* sub-agent — one turned loose without a stated scope or a
 defined thing to return — starts a fresh context outside the workflow's
-gates and archive trail. Neither breaks flowtron — but both quietly drop
+gates and archive trail. Neither breaks flaitron — but both quietly drop
 the discipline the sizing principle depends on. The safe patterns:
 
 - **One tasknote per session.** A fresh session *is* the reset, and it's
@@ -261,7 +261,7 @@ the discipline the sizing principle depends on. The safe patterns:
   still let a gate fire, `--unattended` parks the tasknote instead of
   firing a banner into an empty session
   ([`SPEC/gate-postures.md`](SPEC/gate-postures.md) §"`--unattended` operator posture").
-  The contract lives in flowtron; the runtime that decides *when* to run
+  The contract lives in flaitron; the runtime that decides *when* to run
   unattended is still the caller's.
 - **A delegate gets exactly one tasknote.** A delegated context that
   reads one `tasknote/<ID>.md` and works its scope inherits the full
@@ -284,27 +284,27 @@ the discipline the sizing principle depends on. The safe patterns:
   the review-probe variant of the same brief.
 
 This is guidance, not machinery — but the loop case has a contract.
-Flowtron ships no loop *runtime*: the runner, scheduler, and session
+Flaitron ships no loop *runtime*: the runner, scheduler, and session
 lifetime are Claude Code's `/loop` (or any equivalent), by design
-([docs/VISION.md](docs/VISION.md) §"What we won't accept"). What flowtron
+([docs/VISION.md](docs/VISION.md) §"What we won't accept"). What flaitron
 *does* ship is the markdown **contract a loop reports to** — how gates
 collapse, when a loop parks, and how iterations are logged — in
 [SPEC.md](SPEC.md) §"Loop tasks" ([SPEC/loop.md](SPEC/loop.md)). The
-runtime lives in the runner; the contract lives in flowtron.
+runtime lives in the runner; the contract lives in flaitron.
 
 ## Repo layout
 
 - `SPEC.md` — workflow contract (authoritative)
 - `SPEC/` — lazy SPEC modules (epic, starter, blocked, model, versioning, gates, gate-postures, cue-vocabulary, gate-discipline, post-closure, tasknote-selection, plan-filing, loop, layout, plan-parser, task-line-segments, scope-boundaries, tasknote-inserts, purpose-blurb, superseded-claims, unattended-candidacy) plus `procedures/` (pasteable skill procedures) and `fixtures/plan/` (task-line grammar conformance fixtures shared by every PLAN.md parser); loaded on demand by skills
 - `templates/` — canonical tasknote templates (full, micro, starter, sidequest) plus spec, loop-heartbeat, audit-overlay, and subagent-probe templates, and the `PLAN.md` / `tasknote-README.md` seed files
-- `claude/` — Claude Code skills + slash commands (adopter-facing snippet plus the full shipped `ft-*` inventory; adopter projects wire the policy subset, while flowtron-self-only skills like `/ft-release` stay upstream-only)
+- `claude/` — Claude Code skills + slash commands (adopter-facing snippet plus the full shipped `ft-*` inventory; adopter projects wire the policy subset, while flaitron-self-only skills like `/ft-release` stay upstream-only)
 - `codex/` — Codex skill wrappers for the full `ft-*` inventory plus Codex-specific wiring notes
 - `cursor/` — Cursor thin wiring (`AGENTS-snippet.md` + `procedures/ft-task.md` pointer; no skill wrappers — adopters wire canonical `claude/skills/` bodies)
 - `grok/` — Grok thin wiring (`AGENTS-snippet.md` + `procedures/ft-task.md` pointer; no skill wrappers — adopters wire canonical `claude/skills/` bodies)
 - `docs/` — philosophy, vision, glossary, migration, conventions, version history, agent-neutrality, platforms, agent-compat, dogfood, worktrees, gate-discipline, external-agents, harness-survey, codex-verification, and context-budget docs
-- `.flowtron/` — flowtron's own roadmap and tasknotes (self-hosted)
+- `.flaitron/` — flaitron's own roadmap and tasknotes (self-hosted)
 - `viz/` — Vite/React visualizer (priority-grouped list + optional board mode)
-- `tools/` — operator-side fleet scripts (`update-adopters.mjs`, the singular CLI carve-out — see `SPEC/scope-boundaries.md` §"What flowtron does NOT provide" — plus its portable `update-adopters.test.mjs` suite)
+- `tools/` — operator-side fleet scripts (`update-adopters.mjs`, the singular CLI carve-out — see `SPEC/scope-boundaries.md` §"What flaitron does NOT provide" — plus its portable `update-adopters.test.mjs` suite)
 - `CONTRIBUTING.md` — solo-maintenance model; issue and PR guidance
 - `SECURITY.md` — threat model and vulnerability reporting
 - `LICENSE` — MIT
@@ -316,15 +316,15 @@ See [SPEC.md](SPEC.md) for the current contract version, the repo's git tags
 for full release notes, and [docs/VERSION-HISTORY.md](docs/VERSION-HISTORY.md)
 for a curated, moderately-coarse highlight reel.
 
-Adopting projects pin a specific flowtron commit via git submodule and bump
+Adopting projects pin a specific flaitron commit via git submodule and bump
 deliberately. Each release tag's annotated message lists migration steps for
 major bumps (no separate `CHANGELOG.md`).
 
-Flowtron is solo-maintained with a personal adopter fleet. The major version
+Flaitron is solo-maintained with a personal adopter fleet. The major version
 number counts breaking changes from the May 2026 rapid-iteration period
 (v1.0.0 → v5.0.0 in 25 days), not project maturity — the contract has been
 break-free since v5.0.0 (2026-06-01).
 
 ## License
 
-Flowtron is [MIT-licensed](LICENSE).
+Flaitron is [MIT-licensed](LICENSE).

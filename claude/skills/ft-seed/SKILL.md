@@ -1,12 +1,12 @@
 ---
 name: ft-seed
-description: Seed `[unattended]` onto an existing `.flowtron/PLAN.md` in one attended pass — walk every open row with the `SPEC/unattended-candidacy.md` predicate, show the candidates with the token in place inside one prose review gate, write the token only on the rows the operator keeps, and commit the write. Use when the user asks to seed, bulk-mark, or sweep a plan for `[unattended]` rows. Attended-only, no flags; thin procedural skill, no tasknote.
+description: Seed `[unattended]` onto an existing `.flaitron/PLAN.md` in one attended pass — walk every open row with the `SPEC/unattended-candidacy.md` predicate, show the candidates with the token in place inside one prose review gate, write the token only on the rows the operator keeps, and commit the write. Use when the user asks to seed, bulk-mark, or sweep a plan for `[unattended]` rows. Attended-only, no flags; thin procedural skill, no tasknote.
 ---
 
 # seed — bulk `[unattended]` seeding of an existing plan
 
 You are seeding the `[unattended]` marker onto rows of a project's existing
-`.flowtron/PLAN.md`. Every filing skill already *proposes* the marker for the
+`.flaitron/PLAN.md`. Every filing skill already *proposes* the marker for the
 row it is about to write, but candidacy fires only at filing time — a plan
 filed before that contract existed, or by hand, has no path to the token but
 hand-editing. This skill is that path: one walk, one gate, and a write that
@@ -15,10 +15,10 @@ it edits PLAN.md rows and commits; it does **not** scaffold a tasknote. The
 skill takes **no arguments and no flags**.
 
 The skill is markdown-only — the assistant runs git inline via its Bash tool,
-no shell scripts (per `SPEC/scope-boundaries.md` §"What flowtron does NOT
+no shell scripts (per `SPEC/scope-boundaries.md` §"What flaitron does NOT
 provide").
 
-**The rule this skill exists under.** Flowtron itself never writes
+**The rule this skill exists under.** Flaitron itself never writes
 `[unattended]` — seeding is an operator act (`SPEC/task-line-segments.md`;
 `SPEC/unattended-candidacy.md` §"Recommend, never write"). This skill does not
 change who writes the token. It changes *when the question is asked*: instead
@@ -29,10 +29,10 @@ operator's confirmation at Step 3 is the act; nothing unconfirmed reaches disk.
 
 Two layouts. Pick by which file exists:
 
-- **Adopter project:** `.flowtron/core/SPEC.md` exists → `<root>` = `.flowtron/core/`.
-- **Flowtron self-host:** repo-root `SPEC.md` with heading `# Flowtron — Workflow Specification` → `<root>` = repo-root.
+- **Adopter project:** `.flaitron/core/SPEC.md` exists → `<root>` = `.flaitron/core/`.
+- **Flaitron self-host:** repo-root `SPEC.md` with heading `# Flaitron — Workflow Specification` → `<root>` = repo-root.
 
-If neither matches, bail. `PLAN` is `.flowtron/PLAN.md` on both layouts; if it
+If neither matches, bail. `PLAN` is `.flaitron/PLAN.md` on both layouts; if it
 is absent, bail — there is nothing to seed.
 
 If `args` is non-empty, stop and say so: this skill accepts no task ID and no
@@ -50,7 +50,7 @@ applied from that text, not from memory or from this file.
 Read `PLAN`. Collect every **open** row — `- [ ]`, at any nesting depth — under
 the four active headings `## High` / `## Medium` / `## Low` /
 `## Future Opportunities`. `## Completed` is out of scope, and so is
-`.flowtron/PLAN-ARCHIVE.md`; a closed row has nothing to dispatch. Also
+`.flaitron/PLAN-ARCHIVE.md`; a closed row has nothing to dispatch. Also
 collect, for clause 6, the checkbox state of every row (open or closed) so an
 epic child's stem predecessor can be resolved without a second read.
 
@@ -79,7 +79,7 @@ in place, and the token is written at Step 4 only if the operator's
 confirmation keeps it. This skill accepts neither `--fast` nor
 `--unattended`, so only the attended branch applies — the
 `unattended-candidates:` emission line never fires from this surface. Neither
-the candidacy nor its result adds a cue, banner, or checklist box. Flowtron
+the candidacy nor its result adds a cue, banner, or checklist box. Flaitron
 itself never writes `[unattended]` on its own discretion
 (`SPEC/task-line-segments.md`).
 
@@ -138,7 +138,7 @@ In one continuous motion, after the reply:
 1. **Filing-commit pre-check.** Immediately before any write, apply
    `SPEC/plan-filing.md` §"Filing commits". `git diff --cached --quiet`
    non-zero → `auto-commit = false`. PLAN.md porcelain empty →
-   `auto-commit = true`. PLAN.md non-empty → `git diff --no-ext-diff -- .flowtron/PLAN.md`:
+   `auto-commit = true`. PLAN.md non-empty → `git diff --no-ext-diff -- .flaitron/PLAN.md`:
    every added line a task row or blank, and every removed
    line blank or a `(none)` placeholder → `auto-commit = true` and those rows
    ride in this commit (record their IDs for the body line that section names);
@@ -159,7 +159,7 @@ In one continuous motion, after the reply:
    pathspec only — **never** `git commit -a`, `git add .`, or `git add -A`:
 
    ```sh
-   git add .flowtron/PLAN.md
+   git add .flaitron/PLAN.md
    git diff --cached   # whole index, no pathspec
    git commit -m "chore: seed [unattended] — <N> rows"
    ```
@@ -176,7 +176,7 @@ In one continuous motion, after the reply:
    When that pre-check recorded IDs, add a second `-m` with the body line
    `SPEC/plan-filing.md` §"Filing commits" names; the subject stays the fence
    above. An unrecognized hunk → `git restore --staged
-   .flowtron/PLAN.md`, skip the commit, and report it exactly as the
+   .flaitron/PLAN.md`, skip the commit, and report it exactly as the
    `auto-commit = false` case. Never unstage the foreign hunk and commit the
    rest.
 

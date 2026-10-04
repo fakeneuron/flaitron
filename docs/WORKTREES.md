@@ -1,8 +1,8 @@
 # Worktree Convention for Parallel Epic Children
 
-Flowtron's default execution model is strictly serial within a tasknote and serial across siblings under an epic. For adopters with large backlogs of *independent* children (e.g. a 20-child follow-up wave after a discovery epic), the stash/branch-swap overhead becomes real.
+Flaitron's default execution model is strictly serial within a tasknote and serial across siblings under an epic. For adopters with large backlogs of *independent* children (e.g. a 20-child follow-up wave after a discovery epic), the stash/branch-swap overhead becomes real.
 
-This document records the adopted convention for executing independent epic children in isolated git worktrees. It is a direct adoption of the `using-git-worktrees` pattern from obra/superpowers, lifted into flowtron as this convention doc plus the [Procedure](#procedure) below — four git commands each way, run by hand or by whatever agent is in the session. The pattern is **workflow-orthogonal**: it does not change the 4-phase contract, the relevance gate, or any post-closure protocol inside a tasknote.
+This document records the adopted convention for executing independent epic children in isolated git worktrees. It is a direct adoption of the `using-git-worktrees` pattern from obra/superpowers, lifted into flaitron as this convention doc plus the [Procedure](#procedure) below — four git commands each way, run by hand or by whatever agent is in the session. The pattern is **workflow-orthogonal**: it does not change the 4-phase contract, the relevance gate, or any post-closure protocol inside a tasknote.
 
 See [[CORE-EPIC-215]] (and its .1 Discovery [[CORE-215.1]]) for the origin, locked decisions, and sibling precedent [[CORE-EPIC-195]].
 
@@ -10,8 +10,8 @@ See [[CORE-EPIC-215]] (and its .1 Discovery [[CORE-215.1]]) for the origin, lock
 
 | Area                  | Choice                                      | Rationale |
 |-----------------------|---------------------------------------------|-----------|
-| Location              | `<project>-worktrees/wt-<TASK-ID>/`, a sibling of the project checkout | Keeps the primary project checkout clean; mirrors the `viz/` co-location pattern used in flowtron self-host. Derived from the checkout rather than a fixed home path, so it is correct wherever a project lives — and for projects under the viz workspace root it resolves inside it, so global viz scans (`${FLOWTRON_VIZ_WORKSPACE:-~/code}/*/.flowtron/PLAN.md`) continue to work without special config. |
-| Branch naming         | `wt-<TASK-ID>` (e.g. `wt-CORE-215.3`)      | Short, unambiguous, instantly recognizable as a flowtron worktree; avoids collision with normal feature branches. |
+| Location              | `<project>-worktrees/wt-<TASK-ID>/`, a sibling of the project checkout | Keeps the primary project checkout clean; mirrors the `viz/` co-location pattern used in flaitron self-host. Derived from the checkout rather than a fixed home path, so it is correct wherever a project lives — and for projects under the viz workspace root it resolves inside it, so global viz scans (`${FLAITRON_VIZ_WORKSPACE:-~/code}/*/.flaitron/PLAN.md`) continue to work without special config. |
+| Branch naming         | `wt-<TASK-ID>` (e.g. `wt-CORE-215.3`)      | Short, unambiguous, instantly recognizable as a flaitron worktree; avoids collision with normal feature branches. |
 | Skill naming          | *Demoted* — no skill; the [Procedure](#procedure) below is the executable form | Shipped as `/ft-worktree-start` + `/ft-worktree-end` from CORE-215.3/.4; [[CORE-572]] retired both after 3.5 months with no `wt-` branch ever created here or in an adopter. The bodies were shell wrapping around the four commands each way, so the doc now carries them directly. |
 | Tasknote handling     | Copy the active tasknote into the worktree | The agent working in the isolated checkout needs the full Phase 1 context (Goal, Acceptance, Discovery Notes, resolved questions). Copy is simple, reviewable, and avoids symlink/hardlink edge cases across machines. |
 | Merge / cleanup       | Verify merge (or explicit discard), `git worktree remove`, archive the *copied* tasknote from the *main* checkout | The worktree is a throwaway execution environment. Cleanup discipline lives in the end procedure so the main checkout's archive and git history remain the source of truth. |
@@ -61,9 +61,9 @@ git show-ref --verify --quiet "refs/heads/wt-${TASK_ID}" && echo "branch exists 
 test -e "$WT_DIR" && echo "dir exists — a prior start never ended; inspect before removing"
 
 git worktree add -b "wt-${TASK_ID}" "$WT_DIR"          # branch from HEAD + checkout in one step
-mkdir -p "$WT_DIR/.flowtron/tasknote"
-cp ".flowtron/tasknote/${TASK_ID}.md" "$WT_DIR/.flowtron/tasknote/"
-cp ".flowtron/tasknote/README.md"     "$WT_DIR/.flowtron/tasknote/"   # area table for the worktree session
+mkdir -p "$WT_DIR/.flaitron/tasknote"
+cp ".flaitron/tasknote/${TASK_ID}.md" "$WT_DIR/.flaitron/tasknote/"
+cp ".flaitron/tasknote/README.md"     "$WT_DIR/.flaitron/tasknote/"   # area table for the worktree session
 ```
 
 Before `add`, read the child's YAML: if `blocked-by:` names a PLAN line that is still `- [ ]`, **warn** and let the operator decide — never refuse. Then hand off: open a *fresh* session in `$WT_DIR` and run `/ft-task <TASK-ID>` there (with `--loop` for a goal loop — run Phase 1 in main first, isolate, then re-invoke with the flag). The main-checkout tasknote stays untouched; it is the coordination point until the end half runs.
@@ -74,7 +74,7 @@ Before `add`, read the child's YAML: if `blocked-by:` names a PLAN line that is 
 git branch --merged | grep -q "wt-${TASK_ID}" || echo "NOT merged — merge first, or confirm an explicit discard"
 git log --oneline "HEAD..wt-${TASK_ID}"                 # what the branch carries beyond HEAD
 
-cp "$WT_DIR/.flowtron/tasknote/archive/<area>/${TASK_ID}.md" ".flowtron/tasknote/archive/<area>/"   # skip on discard
+cp "$WT_DIR/.flaitron/tasknote/archive/<area>/${TASK_ID}.md" ".flaitron/tasknote/archive/<area>/"   # skip on discard
 git worktree remove "$WT_DIR"                          # refuses on a dirty tree — commit or stash inside it first
 git branch -D "wt-${TASK_ID}"                          # optional; the reflog keeps it recoverable for a while
 ```
@@ -87,7 +87,7 @@ Three rules the commands above encode, worth stating plainly:
 
 A `git branch --list 'wt-*'` with no matching `git worktree list` entry is an orphan from a start that never ended — clean it the same way.
 
-## Relationship to the Rest of Flowtron
+## Relationship to the Rest of Flaitron
 
 - **No 4-phase change inside a worktree.** The relevance gate, operator cues (🛠️ / 📦), conditional skip rule, and post-closure protocol are unchanged inside any tasknote that happens to run here. Fan-out / child YAML (CORE-445.3) is a planning declaration, not a second lifecycle.
 - **Epic lifecycle still governs.** The `.1` Discovery + children + `.N` Audit bracket (see [`SPEC/epic.md`](../SPEC/epic.md)) owns multi-child work; worktrees are the execution accelerator for the independent subset, declared on `.1` as optional `## 🌳 Fan-out`.

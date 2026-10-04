@@ -1,5 +1,5 @@
 # Project command interface — hand-authored, not generated from the
-# operator-private fleet template. flowtron's only stack is the `viz/`
+# operator-private fleet template. flaitron's only stack is the `viz/`
 # visualizer: no root `package.json`/`pyproject.toml`, and `viz/` sits outside
 # the `frontend`/`backend`/`landing`/`worker` subdir set that template detects.
 # Every recipe below delegates to `npm --prefix viz …`, matching the commands

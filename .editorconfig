@@ -9,4 +9,4 @@ trim_trailing_whitespace = true
 insert_final_newline = true
 
 [*.md]
-# inherit defaults (no hard-break trailing-spaces used in flowtron docs)
+# inherit defaults (no hard-break trailing-spaces used in flaitron docs)

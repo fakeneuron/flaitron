@@ -1,15 +1,15 @@
-# Flowtron Agent Guide
+# Flaitron Agent Guide
 
 ## Workflow
 
-This repository is **flowtron** itself. The canonical workflow contract lives
+This repository is **flaitron** itself. The canonical workflow contract lives
 in `SPEC.md`; read it before starting non-trivial work.
 
-- Plans live in `.flowtron/PLAN.md`.
-- Rotated `## Completed` rows live in `.flowtron/PLAN-ARCHIVE.md` (closed rows
+- Plans live in `.flaitron/PLAN.md`.
+- Rotated `## Completed` rows live in `.flaitron/PLAN-ARCHIVE.md` (closed rows
   only, append-only — see `SPEC/plan-filing.md` §"`## Completed` rotation").
-- Active tasknotes live in `.flowtron/tasknote/<TASK-ID>.md`.
-- Completed tasknotes live in `.flowtron/tasknote/archive/<area>/<TASK-ID>.md`.
+- Active tasknotes live in `.flaitron/tasknote/<TASK-ID>.md`.
+- Completed tasknotes live in `.flaitron/tasknote/archive/<area>/<TASK-ID>.md`.
 - Tasknote templates live in `templates/`.
 - Lazy workflow modules live in `SPEC/` and are loaded when the task shape
   calls for them.
@@ -38,7 +38,7 @@ in `SPEC.md`; read it before starting non-trivial work.
   above: `/ft-audit`, `/ft-audit-repo`, `/ft-new-project`, `/ft-seed`. Full roster + naming convention:
   `SPEC/layout.md` §"Skill namespace".
 
-Flowtron self-hosts its own roadmap. For non-trivial edits, follow the
+Flaitron self-hosts its own roadmap. For non-trivial edits, follow the
 tasknote lifecycle: `SPEC.md` §"The 4-phase workflow". Do not skip phases
 once a tasknote is open — whether a change needs a tasknote at all is
 decided by `SPEC/tasknote-selection.md` §"When to use a tasknote (and when
@@ -64,7 +64,7 @@ not to)".
   purpose blurb, superseded claims, `[unattended]` candidacy, and
   `SPEC/procedures/` agent-neutral SOPs, and `SPEC/fixtures/plan/` task-line
   grammar conformance fixtures.
-- `.flowtron/` — flowtron's own plan and tasknotes.
+- `.flaitron/` — flaitron's own plan and tasknotes.
 - `claude/` — Claude Code wiring: commands, skills, and the historical
   source for the agent-neutral adopter snippet.
 - `codex/` — Codex CLI skill wrappers and wiring notes.
@@ -106,7 +106,7 @@ The suite is a release gate; do not substitute a live adopter-fleet dry run or
 an `--apply` operation for it.
 
 CI's `drift` job additionally runs Pair R, grepping every checked
-`.flowtron/PLAN.md` / `.flowtron/PLAN-ARCHIVE.md` stub row for the
+`.flaitron/PLAN.md` / `.flaitron/PLAN-ARCHIVE.md` stub row for the
 `| shortname` `SPEC/plan-filing.md` §"`## Completed` archive convention"
 requires — additive to the seven commands above, not part of the
 `validate`-job "passing" roster `/ft-release` §7.1 Pair H binds byte-for-byte
@@ -132,7 +132,7 @@ The visualizer dev server is pinned to port `5120` with `strictPort`.
 - Keep markdown GitHub-Flavored Markdown compatible.
 - Follow `.editorconfig`: UTF-8, LF endings, 2-space indentation, trim
   trailing whitespace, final newline.
-- This repo is not an adopter checkout. There is no `.flowtron/core/`
+- This repo is not an adopter checkout. There is no `.flaitron/core/`
   submodule here; `SPEC.md` at the root is the source of truth.
 
 ## Platform Notes

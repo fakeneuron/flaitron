@@ -1,13 +1,13 @@
 ---
 name: ft-audit-repo
-description: First-contact holistic repo audit for freshly adopting projects — Repo Map discovery (read-before-judging), thin cross-cutting sweep, thematic synthesis (3–5 themes with won't-fix tradeoffs + done-signals), milestone-sequenced plan filed as flowtron epics in `.flowtron/PLAN.md`, and delegation recommendations for focused `/ft-audit <domain>` runs. Use when the user asks for a first-contact audit of a freshly adopted repo, with no specific domain named. Stack-neutral, strictly read-only, no fork — run by reference from the submodule. See `docs/MIGRATION.md` §1.2.1.
+description: First-contact holistic repo audit for freshly adopting projects — Repo Map discovery (read-before-judging), thin cross-cutting sweep, thematic synthesis (3–5 themes with won't-fix tradeoffs + done-signals), milestone-sequenced plan filed as flaitron epics in `.flaitron/PLAN.md`, and delegation recommendations for focused `/ft-audit <domain>` runs. Use when the user asks for a first-contact audit of a freshly adopted repo, with no specific domain named. Stack-neutral, strictly read-only, no fork — run by reference from the submodule. See `docs/MIGRATION.md` §1.2.1.
 ---
 
-# audit-repo — flowtron first-contact holistic audit skill
+# audit-repo — flaitron first-contact holistic audit skill
 
-Principal-engineer first look at an unfamiliar repo: map before judging, synthesize what the map reveals into themes, sequence the work into milestones filed as native flowtron epics, and delegate depth to the parameterized audit skill's domains. **Strictly read-only — the only file this skill ever writes is `.flowtron/PLAN.md` (§6), and only after explicit confirmation.**
+Principal-engineer first look at an unfamiliar repo: map before judging, synthesize what the map reveals into themes, sequence the work into milestones filed as native flaitron epics, and delegate depth to the parameterized audit skill's domains. **Strictly read-only — the only file this skill ever writes is `.flaitron/PLAN.md` (§6), and only after explicit confirmation.**
 
-**No fork.** Unlike the parameterized `ft-audit` scaffold, this skill is not forked: it runs at first contact, before any per-stack customization exists, and is stack-neutral by design — there is no §0 forker checklist. Invoke it by reference from the read-only submodule path (`.flowtron/core/claude/skills/ft-audit-repo/SKILL.md`), per `docs/MIGRATION.md` §1.2.1.
+**No fork.** Unlike the parameterized `ft-audit` scaffold, this skill is not forked: it runs at first contact, before any per-stack customization exists, and is stack-neutral by design — there is no §0 forker checklist. Invoke it by reference from the read-only submodule path (`.flaitron/core/claude/skills/ft-audit-repo/SKILL.md`), per `docs/MIGRATION.md` §1.2.1.
 
 ## 1. Scope & ground rules (do this first, always)
 
@@ -42,7 +42,7 @@ Use the family finding format:
 - Recommended fix: concrete suggestion or ≤5-line snippet
 ```
 
-This block deliberately **omits** the parameterized skill's `Operator action:` line and its disqualification filter (`ft-audit` §3, §6). Sweep findings feed §4 synthesis and §5 delegation — they do not become standalone tickets outside the milestone plan, so a sweep finding is theme evidence, not a dispatch unit, and a diagnostic observation that no single agent instruction resolves is exactly what first contact is looking for. Dispatchability is required one level down instead: §6's milestone children are written in flowtron's task-line grammar and are dispatchable by construction.
+This block deliberately **omits** the parameterized skill's `Operator action:` line and its disqualification filter (`ft-audit` §3, §6). Sweep findings feed §4 synthesis and §5 delegation — they do not become standalone tickets outside the milestone plan, so a sweep finding is theme evidence, not a dispatch unit, and a diagnostic observation that no single agent instruction resolves is exactly what first contact is looking for. Dispatchability is required one level down instead: §6's milestone children are written in flaitron's task-line grammar and are dispatchable by construction.
 
 ## 4. Thematic synthesis (3–5 themes)
 
@@ -67,16 +67,16 @@ Present, in order:
 4. **Recommended focused audits** — the §5 table.
 5. **Questions for the user** — anything ambiguous that blocks the plan. Use `AskUserQuestion`, not prose.
 
-**`[unattended]` candidacy** (mirror of `SPEC/unattended-candidacy.md` §"Three postures" — Read that module now, at this write step). Run its §"Candidacy predicate" over each drafted implementation-child line as shown in the item-3 preview — `[model]`, any `[!critical]`, the description, any `Blocked by` clause. The `<AREA>-EPIC-<N>` parent and the `.N` audit placeholder are **never candidates**. Every clause must hold; when one is uncertain the row is not a candidate. A candidate is **proposed, never seeded**: it is shown in the item-3 preview with the token in place, and the "after the user confirms" write step below writes it only on rows the confirmation kept. This skill accepts neither `--fast` nor `--unattended`, so only the attended branch applies — the `unattended-candidates:` emission line never fires from this surface. Flowtron itself never writes `[unattended]` on its own discretion (`SPEC/task-line-segments.md`).
+**`[unattended]` candidacy** (mirror of `SPEC/unattended-candidacy.md` §"Three postures" — Read that module now, at this write step). Run its §"Candidacy predicate" over each drafted implementation-child line as shown in the item-3 preview — `[model]`, any `[!critical]`, the description, any `Blocked by` clause. The `<AREA>-EPIC-<N>` parent and the `.N` audit placeholder are **never candidates**. Every clause must hold; when one is uncertain the row is not a candidate. A candidate is **proposed, never seeded**: it is shown in the item-3 preview with the token in place, and the "after the user confirms" write step below writes it only on rows the confirmation kept. This skill accepts neither `--fast` nor `--unattended`, so only the attended branch applies — the `unattended-candidates:` emission line never fires from this surface. Flaitron itself never writes `[unattended]` on its own discretion (`SPEC/task-line-segments.md`).
 
-**After** the user confirms, write the plan into `.flowtron/PLAN.md` using flowtron's task-line grammar:
+**After** the user confirms, write the plan into `.flaitron/PLAN.md` using flaitron's task-line grammar:
 
 - One `- [ ] **<AREA>-EPIC-<N>**` parent per milestone, plus its implementation children and a closing `.N` audit placeholder. **Skip the `.1` Discovery child** — this run supplied the epic-level discovery; note it on the parent line (`Discovery supplied by audit-repo YYYY-MM-DD.`).
 - **2-space indent every child and the `.N` placeholder under their parent** — same convention as `ft-epic-discovery` and `ft-refactor` (SPEC/epic.md §"Child placement invariant"). Never file a cohort flat.
 - Tag effort per line: `[heavy]🧠` (design, ambiguity, cross-module) / `[light]🔧` (mechanical, clear-diff); `[medium]🧩` where it genuinely fits. Never `[xheavy]` — manual-only, never auto-filed here.
 - A child carrying a confirmed `[unattended]` candidate writes the token immediately after `[model]`; a child the user drops or reshapes loses it. Parents and `.N` placeholders never carry it.
 - Append `Surfaced by audit-repo YYYY-MM-DD (Theme: <name>)` to each parent so the origin's traceable.
-- Milestone-0 goes under `## High`; later milestones under `## Medium` / `## Future Opportunities` by urgency. Pick the next free `<N>` per area prefix (valid prefixes in `.flowtron/tasknote/README.md` §"Area prefixes").
+- Milestone-0 goes under `## High`; later milestones under `## Medium` / `## Future Opportunities` by urgency. Pick the next free `<N>` per area prefix (valid prefixes in `.flaitron/tasknote/README.md` §"Area prefixes").
 - User pushes back on a milestone or child → drop or reshape it before writing.
 
 A genuinely healthy repo can yield zero milestones — say so explicitly, keep the delegation recommendations, and skip the write.
@@ -89,4 +89,4 @@ A genuinely healthy repo can yield zero milestones — say so explicitly, keep t
 - **Breadth here, depth there.** This skill never replaces a focused audit — it decides which ones are worth running.
 - **Don't repeat the gates.** If lint/tests already flagged it, count it once as gate output (and Milestone-0 evidence), not as enumerated findings.
 - **One epic per milestone**, children per work item — not one epic per finding.
-- **No final summary of what you just did.** The report + the `.flowtron/PLAN.md` diff *are* the deliverable.
+- **No final summary of what you just did.** The report + the `.flaitron/PLAN.md` diff *are* the deliverable.

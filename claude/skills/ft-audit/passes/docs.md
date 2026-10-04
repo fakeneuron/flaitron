@@ -9,9 +9,9 @@
 ## Scope & rubric hints (→ dispatcher §1)
 
 - **Default scope (`all`/empty):** `<default doc-set glob>` _(forker: set this)_
-- **Extra scope tokens:** `ai-referenced` → walk `.flowtron/tasknote/README.md` §"AI-referenced docs".
+- **Extra scope tokens:** `ai-referenced` → walk `.flaitron/tasknote/README.md` §"AI-referenced docs".
 - **Rubric slots** (contracts the docs must reflect, not generic good writing):
-  - `<rubric file 1>` — _(forker: e.g. `.flowtron/tasknote/README.md` §"AI-referenced docs" — canonical doc-set contract)_
+  - `<rubric file 1>` — _(forker: e.g. `.flaitron/tasknote/README.md` §"AI-referenced docs" — canonical doc-set contract)_
   - `<rubric file 2>` — _(forker: e.g. `README.md` — public-facing first impression)_
   - `<rubric file 3>` — _(forker: e.g. `docs/ARCHITECTURE.md` — design source-of-truth)_
 - **Verification gates:**
@@ -42,5 +42,5 @@
 - **Carve-out note** (dispatcher §5): doc audits hit the trivial-fix carve-out often — most doc-drift fixes are exactly skip-the-tasknote sized.
 - **Hard rules:**
   - **Don't audit code, audit the docs about the code.** If the docs are accurate but the code is wrong, that's a code finding — out of scope here. Use the `general` / `backend` / etc. domain for that.
-  - **Archived tasknotes are write-once.** Skip `.flowtron/tasknote/archive/` entirely — those are historical records, not living docs.
+  - **Archived tasknotes are write-once.** Skip `.flaitron/tasknote/archive/` entirely — those are historical records, not living docs.
   - _(forker: append project-specific hard rules if any.)_

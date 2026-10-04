@@ -3,7 +3,7 @@
 One **cycle** of a recurring maintenance pass. The runtime (cadence,
 re-invocation, session lifetime) belongs to `/loop` or any equivalent runner;
 **this file is the per-cycle contract** the loop reports to. Contract details:
-`.flowtron/core/SPEC/loop.md` (`SPEC/loop.md` in the flowtron repo).
+`.flaitron/core/SPEC/loop.md` (`SPEC/loop.md` in the flaitron repo).
 
 Copy this file to `.claude/loop.md`, replace the **Duties** with your project's,
 then run it under a loop runner. Each invocation executes **exactly one cycle**
@@ -26,7 +26,7 @@ greps — no full audit). This is the per-cycle relevance gate
 - Is there any plausible signal of work since the last cycle? (recent commits,
   new/unfiled items, a quick check that flips red)
 - If **nothing plausible** → append one *empty-cycle* line to
-  `.flowtron/LOOP-LOG.md` (§4), stop the cycle. No PLAN edit, no commit needed.
+  `.flaitron/LOOP-LOG.md` (§4), stop the cycle. No PLAN edit, no commit needed.
 - If the Discovery-level assumptions this heartbeat was set up under no longer
   hold (the target moved) → log `stop` and terminate; hand back to the operator.
 
@@ -43,7 +43,7 @@ repetition). Ordering **is** priority.
 Replace the list below with your project's duties, cheapest-detection-first:
 
 <!--
-  WORKED EXAMPLE — flowtron self-host (dogfood). Replace for your project.
+  WORKED EXAMPLE — flaitron self-host (dogfood). Replace for your project.
 
   1. Wikilink / cross-ref integrity — grep for dangling `[[TASK-ID]]` wikilinks
      and broken relative doc links. Found → file one ≤50w PLAN line per broken ref.
@@ -64,7 +64,7 @@ If **no** duty finds work, treat the cycle as empty (§1 empty-cycle path).
 
 ## 3 · Write-back — PLAN.md (one line per finding)
 
-For each finding, append **one** task line to `.flowtron/PLAN.md`, under the
+For each finding, append **one** task line to `.flaitron/PLAN.md`, under the
 right priority section, using the task-line grammar
 (`SPEC.md` §"Task-line format"):
 
@@ -80,7 +80,7 @@ right priority section, using the task-line grammar
 ## 4 · Write-back — LOOP-LOG.md (one line per cycle)
 
 Append **one** line per cycle (including empty cycles — this is the heartbeat's
-proof-of-life) to `.flowtron/LOOP-LOG.md`. The log is the loop's memory and its
+proof-of-life) to `.flaitron/LOOP-LOG.md`. The log is the loop's memory and its
 staleness signal: the **most-recent date is the de-facto `loop-last-run`**
 (`SPEC/loop.md` §"Frontmatter keys") — a long-stale top line means the loop
 stopped being re-invoked (sessions expire ~7 days; a heartbeat is babysitting,

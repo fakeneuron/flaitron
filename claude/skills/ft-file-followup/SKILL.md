@@ -3,7 +3,7 @@ name: ft-file-followup
 description: File a mid-flow follow-up task from inside an active tasknote. With `--park`, parks an idea or quick fix without losing it (tiny stub, resume inline). With `--starter`, files a starter tasknote with rich AI-captured context for work not ready to start. With `--unattended`, files with no operator present, auto-allocating the ID and suppressing review gates.
 ---
 
-# file-followup — flowtron lightweight follow-up filer
+# file-followup — flaitron lightweight follow-up filer
 
 You are filing a **follow-up task** for the task ID provided in `args`, or for
 the suggested ID confirmed during input collection when `args` is omitted. The
@@ -16,7 +16,7 @@ A default `/ft-file-followup` filing produces **zero artifacts on disk beyond a 
 
 This skill is **filing-only**, and its default flow is the lightest of its three weights: use it as-is when the description fits in ≤50 words and no rich context (file survey / open questions / design decisions) needs to persist. If the description would breach 70 words or rich context warrants preserving, re-invoke with `--starter` — the SKILL surfaces this gate at Step 2.
 
-Two flags deviate from both paragraphs above. **Park mode (`--park`)** writes a tiny stub at `.flowtron/sidequest/<ID>.md` in addition to the PLAN.md line, skips the review gate and the reconciliation scan, and resumes the interrupted work inline instead of handing off — full flow: `park-mode.md`. **Starter mode (`--starter`)** writes a starter tasknote at `.flowtron/tasknote/<ID>.md` carrying the rich context, keeps every gate, and suffixes the PLAN.md line with a pointer to it — full flow: `starter-mode.md`. Step 0 loads whichever fragment its flag names, via the `step-0-flags.md` fragment it reads whenever a flag is present.
+Two flags deviate from both paragraphs above. **Park mode (`--park`)** writes a tiny stub at `.flaitron/sidequest/<ID>.md` in addition to the PLAN.md line, skips the review gate and the reconciliation scan, and resumes the interrupted work inline instead of handing off — full flow: `park-mode.md`. **Starter mode (`--starter`)** writes a starter tasknote at `.flaitron/tasknote/<ID>.md` carrying the rich context, keeps every gate, and suffixes the PLAN.md line with a pointer to it — full flow: `starter-mode.md`. Step 0 loads whichever fragment its flag names, via the `step-0-flags.md` fragment it reads whenever a flag is present.
 
 If the task ID is missing, suggest one during input collection instead of
 requiring it up front. If a non-flag token is present but doesn't match
@@ -27,10 +27,10 @@ the user for a valid task ID.
 
 Two layouts. Pick by which file exists:
 
-- **Adopter project:** `.flowtron/core/SPEC.md` exists → SPEC=`.flowtron/core/SPEC.md`, SPEC_DIR=`.flowtron/core/SPEC/`, SKILL_DIR=`.flowtron/core/claude/skills/ft-file-followup/`, templates=`.flowtron/core/templates/` (`sidequest-template.md` for park mode, `tasknote-starter-template.md` for starter mode).
-- **Flowtron self-host:** repo-root `SPEC.md` with heading `# Flowtron — Workflow Specification` → SPEC=`SPEC.md`, SPEC_DIR=`SPEC/`, SKILL_DIR=`claude/skills/ft-file-followup/`, templates=`templates/`.
+- **Adopter project:** `.flaitron/core/SPEC.md` exists → SPEC=`.flaitron/core/SPEC.md`, SPEC_DIR=`.flaitron/core/SPEC/`, SKILL_DIR=`.flaitron/core/claude/skills/ft-file-followup/`, templates=`.flaitron/core/templates/` (`sidequest-template.md` for park mode, `tasknote-starter-template.md` for starter mode).
+- **Flaitron self-host:** repo-root `SPEC.md` with heading `# Flaitron — Workflow Specification` → SPEC=`SPEC.md`, SPEC_DIR=`SPEC/`, SKILL_DIR=`claude/skills/ft-file-followup/`, templates=`templates/`.
 
-If neither matches, bail. PLAN=`.flowtron/PLAN.md`, tasknote dir=`.flowtron/tasknote/`, sidequest dir=`.flowtron/sidequest/` either way.
+If neither matches, bail. PLAN=`.flaitron/PLAN.md`, tasknote dir=`.flaitron/tasknote/`, sidequest dir=`.flaitron/sidequest/` either way.
 
 **Parse `args`.** Initialize `park-mode = false`, `starter-mode = false`, and
 `unattended-mode = false`. If no token in `args` starts with `-`, the flagless
@@ -53,10 +53,10 @@ collecting the rest of the fields (park mode auto-allocates instead — see
 
 1. Choose the likely **Area** from conversation context (`CORE`, `FE`, `BE`,
    `DB`, `DEPLOY`, `TEST`, or a project-specific prefix declared in
-   `.flowtron/tasknote/README.md`). If the area is genuinely ambiguous, ask one
+   `.flaitron/tasknote/README.md`). If the area is genuinely ambiguous, ask one
    short area question before suggesting an ID.
-2. Scan `.flowtron/PLAN.md`, `.flowtron/tasknote/`,
-   `.flowtron/tasknote/archive/`, and `.flowtron/sidequest/` for IDs with that
+2. Scan `.flaitron/PLAN.md`, `.flaitron/tasknote/`,
+   `.flaitron/tasknote/archive/`, and `.flaitron/sidequest/` for IDs with that
    prefix.
 3. Suggest the lowest unused next numeric task ID for that prefix. Use the
    next integer after the highest existing non-epic task number; skip any ID
@@ -80,11 +80,11 @@ question cannot be asked either; stop:
 
 ## Step 1a — Pre-flight checks
 
-- Resolve the **Area** by reading the `.flowtron/tasknote/README.md` §"Archive layout" table — every task, every prefix, canonical ones included. `<area>` is **never derived from the task ID**: lowercasing the prefix is the adopter's declaration-time default, not a resolution you may perform, and a project may deliberately declare a folder it would not produce (`OPS-*` → `archive/operations/`). See SPEC §"Task ID convention". If the table has no row for this prefix, stop and ask — do not guess a folder.
+- Resolve the **Area** by reading the `.flaitron/tasknote/README.md` §"Archive layout" table — every task, every prefix, canonical ones included. `<area>` is **never derived from the task ID**: lowercasing the prefix is the adopter's declaration-time default, not a resolution you may perform, and a project may deliberately declare a folder it would not produce (`OPS-*` → `archive/operations/`). See SPEC §"Task ID convention". If the table has no row for this prefix, stop and ask — do not guess a folder.
 - The task ID must NOT already exist in PLAN.md. If it does, stop and ask whether the user meant a different ID — `/ft-file-followup` files NEW tasks; reusing an existing entry is out of scope.
-- `.flowtron/tasknote/<TASK-ID>.md` must NOT already exist. If it does, stop. Surface the conflict (could be in-flight, blocked, completed, starter, or already a follow-up that was promoted). In starter mode this is the path being written, so the check is load-bearing rather than defensive.
-- `.flowtron/tasknote/archive/<area>/<TASK-ID>.md` must NOT already exist. If it does, stop — the ID has been used and archived; pick a fresh ID.
-- **Park mode only:** `.flowtron/sidequest/<TASK-ID>.md` must NOT already exist either. On conflict, stop and ask for a different ID.
+- `.flaitron/tasknote/<TASK-ID>.md` must NOT already exist. If it does, stop. Surface the conflict (could be in-flight, blocked, completed, starter, or already a follow-up that was promoted). In starter mode this is the path being written, so the check is load-bearing rather than defensive.
+- `.flaitron/tasknote/archive/<area>/<TASK-ID>.md` must NOT already exist. If it does, stop — the ID has been used and archived; pick a fresh ID.
+- **Park mode only:** `.flaitron/sidequest/<TASK-ID>.md` must NOT already exist either. On conflict, stop and ask for a different ID.
 
 **When `unattended-mode = true`**, every check above still runs and still stops
 — but it **terminates and writes nothing** instead of asking for a different ID,
@@ -145,7 +145,7 @@ Keep the paragraph under ~80 words. If the conversation has surfaced more contex
 
 **Downstream-impact reconciliation scan** (per SPEC/tasknote-selection.md §"Downstream-impact reconciliation" — authoritative for triggers, scan steps, and vocabulary). After drafting the new line, scan **active** PLAN entries (`High` / `Medium` / `Low` / `Future Opportunities`; `## Completed` is out of scope) for ones that share a surface with the new follow-up — same files, subsystem, contract, or a cited `[[wikilink]]` dependency. For each, classify impact (stale / contradictory / redundant / unaffected) and propose one reconcile action (merge / nest / edit / delete / leave). Routine filings that obviously touch nothing downstream (first task in a fresh area, a self-contained ticket) skip the scan — apply judgment, then note "no downstream impact" in the review surface. **Propose only — never edit an existing line before the user confirms** (the user-confirm gate is the existing review below, not a separate approval).
 
-**`[unattended]` candidacy** (mirror of `SPEC/unattended-candidacy.md` §"Three postures" — Read that module now, at this write step). Run its §"Candidacy predicate" over the drafted line exactly as Step 4 will append it — `[model]`, any `[!critical]`, the description, any `Blocked by` clause; clause 6 applies only when the ID is an epic subtask the user asked for. Every clause must hold; when one is uncertain the row is not a candidate. A candidate is **proposed, never seeded**: it is shown in the review below with the token in place, and the token is written at Step 4 only if the operator's confirmation keeps it. Flowtron itself never writes `[unattended]` on its own discretion (`SPEC/task-line-segments.md`).
+**`[unattended]` candidacy** (mirror of `SPEC/unattended-candidacy.md` §"Three postures" — Read that module now, at this write step). Run its §"Candidacy predicate" over the drafted line exactly as Step 4 will append it — `[model]`, any `[!critical]`, the description, any `Blocked by` clause; clause 6 applies only when the ID is an epic subtask the user asked for. Every clause must hold; when one is uncertain the row is not a candidate. A candidate is **proposed, never seeded**: it is shown in the review below with the token in place, and the token is written at Step 4 only if the operator's confirmation keeps it. Flaitron itself never writes `[unattended]` on its own discretion (`SPEC/task-line-segments.md`).
 
 **Surface for review.** Show the user, in one short message:
 
@@ -182,7 +182,7 @@ Edit per their feedback before writing anything. Do not skip the review. The rec
 
 In one continuous motion, after the user has confirmed the Step 3 review (including any reconcile proposals) — or, under `unattended-mode = true`, immediately, since Step 3 surfaced no gate to confirm:
 
-1. **Filing-commit pre-check.** Immediately before the append, apply `SPEC/plan-filing.md` §"Filing commits". `git diff --cached --quiet` non-zero → `auto-commit = false` (item 4 publishes the whole index, so a closure's staged deliverables must not ship under this subject). PLAN.md porcelain empty → `auto-commit = true`. PLAN.md non-empty → `git diff --no-ext-diff -- .flowtron/PLAN.md`: every added line a task row or blank, and every removed line blank or a `(none)` placeholder → `auto-commit = true` and those rows ride in this commit (record their IDs for the body line that section names); any other PLAN change → `auto-commit = false`. Not a gate. Steps 2-3 span operator turns, so a pre-flight reading can be stale.
+1. **Filing-commit pre-check.** Immediately before the append, apply `SPEC/plan-filing.md` §"Filing commits". `git diff --cached --quiet` non-zero → `auto-commit = false` (item 4 publishes the whole index, so a closure's staged deliverables must not ship under this subject). PLAN.md porcelain empty → `auto-commit = true`. PLAN.md non-empty → `git diff --no-ext-diff -- .flaitron/PLAN.md`: every added line a task row or blank, and every removed line blank or a `(none)` placeholder → `auto-commit = true` and those rows ride in this commit (record their IDs for the body line that section names); any other PLAN change → `auto-commit = false`. Not a gate. Steps 2-3 span operator turns, so a pre-flight reading can be stale.
 
 2. **Append the PLAN.md entry.** Append a new entry under the appropriate `## <Priority>` heading using the canonical task-line grammar (SPEC §"Task-line format"; a dependency on another row is `Blocked by [[<ID>]]`, wikilink-only — `SPEC/plan-parser.md` §"Long-description conventions"):
 
@@ -204,12 +204,12 @@ In one continuous motion, after the user has confirmed the Step 3 review (includ
 4. **Commit the filing** (when `auto-commit = true` from step 1 above). The filing's **last** write, so confirmed reconcile edits land with it. Stage the one path by name — never `git commit -a` / `git add .` / `git add -A`, since a mid-flow filing sits in a working tree carrying the parent `/ft-task`'s unfinished edits:
 
    ```sh
-   git add .flowtron/PLAN.md
+   git add .flaitron/PLAN.md
    git diff --cached   # post-stage verification — whole index, no pathspec; read before committing
    git commit -m "chore: file <TASK-ID> follow-up — <shortname>"
    ```
 
-   **Post-stage verification is not optional.** The item-1 pre-check reads the working tree and the index; the commit publishes the index, and PLAN.md can gain a foreign write in between (an editor autosave, a concurrent session) that `git add` then stages unseen. Read the **whole** staged diff — no pathspec, since the commit takes the whole index — and confirm every hunk is one this filing wrote — the appended row, plus any confirmed reconcile edit from item 3. PLAN.md lines the pre-check classified as accumulated filings — added task rows or blanks, and removed blanks or a `(none)` — are part of this commit, not an unrecognized hunk. When that pre-check recorded IDs, add a second `-m` with the body line `SPEC/plan-filing.md` §"Filing commits" names; the subject stays the fence above. An unrecognized hunk → `git restore --staged .flowtron/PLAN.md`, skip the commit, and report it exactly as the `auto-commit = false` case at Step 5. Never unstage the foreign hunk and commit the rest. Because `git commit -m` publishes the index as it stands, nothing landing after `git add` can reach the commit — so this read closes the window rather than narrowing it. Never narrow the commit with a pathspec (`git commit --only`) instead: that commits the working tree of the named path, bypassing the index this read just verified.
+   **Post-stage verification is not optional.** The item-1 pre-check reads the working tree and the index; the commit publishes the index, and PLAN.md can gain a foreign write in between (an editor autosave, a concurrent session) that `git add` then stages unseen. Read the **whole** staged diff — no pathspec, since the commit takes the whole index — and confirm every hunk is one this filing wrote — the appended row, plus any confirmed reconcile edit from item 3. PLAN.md lines the pre-check classified as accumulated filings — added task rows or blanks, and removed blanks or a `(none)` — are part of this commit, not an unrecognized hunk. When that pre-check recorded IDs, add a second `-m` with the body line `SPEC/plan-filing.md` §"Filing commits" names; the subject stays the fence above. An unrecognized hunk → `git restore --staged .flaitron/PLAN.md`, skip the commit, and report it exactly as the `auto-commit = false` case at Step 5. Never unstage the foreign hunk and commit the rest. Because `git commit -m` publishes the index as it stands, nothing landing after `git add` can reach the commit — so this read closes the window rather than narrowing it. Never narrow the commit with a pathspec (`git commit --only`) instead: that commits the working tree of the named path, bypassing the index this read just verified.
 
    Commit only — never push. `auto-commit = false` → skip this step entirely and note it in Step 5. Full contract: SPEC/plan-filing.md §"Filing commits".
 
@@ -235,7 +235,7 @@ In one continuous motion, after the user has confirmed the Step 3 review (includ
 
 Surface to the user, in one short message:
 
-- `<TASK-ID>` filed at `.flowtron/PLAN.md` under `## <Priority>` with model `<model>`, `committed <sha>` — or, when Step 4.4 was skipped, `left uncommitted (PLAN.md or the index already carried other changes)`.
+- `<TASK-ID>` filed at `.flaitron/PLAN.md` under `## <Priority>` with model `<model>`, `committed <sha>` — or, when Step 4.4 was skipped, `left uncommitted (PLAN.md or the index already carried other changes)`.
 - The follow-up sits as a one-line PLAN.md entry until `/ft-task <TASK-ID>` (or `/ft-micro-task` for a one-shot) fires.
 - (Conversational paragraph from Step 4.5 is included in this response.)
 

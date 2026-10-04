@@ -136,11 +136,11 @@ jobs:
 
       - name: Final newline (.editorconfig insert_final_newline)
         run: |
-          # `.flowtron/tasknote/archive/` is excluded like Pair P/Q above: it's
+          # `.flaitron/tasknote/archive/` is excluded like Pair P/Q above: it's
           # write-once history predating this check, not a live surface to ratchet.
           bad=
           while IFS= read -r f; do
-            case "$f" in .flowtron/tasknote/archive/*) continue ;; esac
+            case "$f" in .flaitron/tasknote/archive/*) continue ;; esac
             [ -s "$f" ] || continue
             [ -z "$(tail -c1 "$f")" ] || { echo "NO FINAL NEWLINE  $f"; bad=1; }
           done < <(git grep -Il '' -- .)
@@ -184,7 +184,7 @@ jobs:
       - name: Pair C — template back-link depth
         run: |
           if grep -rn '](\.\./\.\./PLAN\.md)' templates/; then
-            echo "template back-link is one level too deep; skills write templates one level under .flowtron/"
+            echo "template back-link is one level too deep; skills write templates one level under .flaitron/"
             exit 1
           fi
 
@@ -213,7 +213,7 @@ jobs:
           while IFS= read -r cmd; do
             [ -z "$cmd" ] && continue
             for f in AGENTS.md .github/workflows/ci.yml docs/CONVENTIONS.md \
-                     .flowtron/tasknote/README.md; do
+                     .flaitron/tasknote/README.md; do
               grep -q -F "$cmd" "$f" || { echo "MISSING VALIDATION CMD $f :: $cmd"; bad=1; }
             done
             awk '/^## Step 6 /, /^## Step 7 /' claude/skills/ft-release/SKILL.md \
@@ -413,7 +413,7 @@ jobs:
           #   next ## heading, so Subtasks boxes never enter the grep.
           bad=
           floor=2026-09-20
-          for f in .flowtron/tasknote/archive/*/*.md; do
+          for f in .flaitron/tasknote/archive/*/*.md; do
             d=$(grep -m1 -oE '^\*\*Archived:\*\* +[0-9]{4}-[0-9]{2}-[0-9]{2}' "$f" | sed -E 's/.* //' || true)
             [ -n "$d" ] || continue
             [[ "$d" < "$floor" ]] && continue
@@ -432,8 +432,10 @@ jobs:
           # brand/ kit cites the operator's private layer) that no checkout can
           # resolve, so it is neither a miss nor a match; the '~/' pattern is
           # quoted because bash tilde-expands an unquoted case pattern. A
-          # .flowtron/core/ prefix is the adopter view of this repo and is
-          # stripped; the four skill-local path variables (<SPEC_DIR>, <SKILL_DIR>,
+          # .flaitron/core/ prefix is the adopter view of this repo and is
+          # stripped; a pre-rename .flowtron/ path (v5-era history kept as
+          # written — closed PLAN rows, MIGRATION's v4 recipe) resolves at its
+          # v6 location, so it gets the same treatment; the four skill-local path variables (<SPEC_DIR>, <SKILL_DIR>,
           # <FT>, <tasknote dir>) resolve to what every Step 0 sets them to, so a
           # skill→module citation is read, not skipped. A path is tried
           # repo-root-relative, then relative to the citing file.
@@ -457,7 +459,8 @@ jobs:
           while IFS= read -r f; do
             while IFS='|' read -r path sec; do
               case "$path$sec" in ''|*'<'*|*'…'*|*'\'*|/*|'~/'*) continue ;; esac
-              path=${path#.flowtron/core/}
+              path=${path#.flowtron/core/}; path=${path#.flaitron/core/}
+              case "$path" in .flowtron/*) path=.flaitron/${path#.flowtron/} ;; esac
               case "$path" in
                 ./*|../*) t="$(dirname "$f")/$path" ;;
                 *) t="$path"; [ -f "$t" ] || t="$(dirname "$f")/$path" ;;
@@ -467,8 +470,8 @@ jobs:
             done < <({ grep -oE '`[^`]+\.md` §"[^"]+"' "$f" | sed -E 's/^`([^`]+)` §"(.*)"$/\1|\2/' || true
                        grep -oE '\]\([^)]+\.md\) §"[^"]+"' "$f" | sed -E 's/^\]\(([^)]+)\) §"(.*)"$/\1|\2/' || true
                        grep -oE '(^|[^`(/A-Za-z0-9_.<>-])[A-Za-z0-9_./-]+\.md §"[^"]+"' "$f" | sed -E 's/^[^A-Za-z0-9_.]*([^ ]+) §"(.*)"$/\1|\2/' || true
-                     } | sed -E 's#^<SPEC_DIR>/#SPEC/#; s#^<SKILL_DIR>/#./#; s#^<FT>/##; s#^<tasknote dir>/#.flowtron/tasknote/#')
-          done < <(git ls-files '*.md' | grep -v -e '^\.flowtron/tasknote/archive/' -e '^\.flowtron/PLAN-ARCHIVE\.md$')
+                     } | sed -E 's#^<SPEC_DIR>/#SPEC/#; s#^<SKILL_DIR>/#./#; s#^<FT>/##; s#^<tasknote dir>/#.flaitron/tasknote/#')
+          done < <(git ls-files '*.md' | grep -v -e '^\.flaitron/tasknote/archive/' -e '^\.flaitron/PLAN-ARCHIVE\.md$')
           [ -z "$bad" ] || exit 1
 
       - name: Pair R — checked PLAN stub rows carry a shortname pipe
@@ -488,7 +491,7 @@ jobs:
           # (§"Exception — inline audit fixes") ends in "fixed inline."
           # instead, so it never matches the tail and needs no carve-out.
           bad=
-          for f in .flowtron/PLAN.md .flowtron/PLAN-ARCHIVE.md; do
+          for f in .flaitron/PLAN.md .flaitron/PLAN-ARCHIVE.md; do
             [ -f "$f" ] || continue
             while IFS= read -r line; do
               case "$line" in *' | '*) continue ;; esac

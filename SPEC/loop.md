@@ -14,27 +14,27 @@ ready-made per-cycle contract at
 
 ## Runtime vs. contract — the boundary
 
-Flowtron answers *what* the assistant does and how it stays scoped. An
+Flaitron answers *what* the assistant does and how it stays scoped. An
 iteration loop adds *when it runs and how long it keeps going* — and that
-half is **not** flowtron's to own.
+half is **not** flaitron's to own.
 
 **Claude Code's `/loop` (or any equivalent runner) is the runtime.** It
-owns cadence, scheduling, re-invocation, and session lifetime. Flowtron
+owns cadence, scheduling, re-invocation, and session lifetime. Flaitron
 ships **no loop runner, scheduler, daemon, or session-state tooling** — see
 [`docs/VISION.md`](../docs/VISION.md) §"What we won't accept".
 
 **`SPEC/loop.md` is the contract the loop reports to.** Every termination
-and safety property a loop needs already exists as a flowtron pattern; this
+and safety property a loop needs already exists as a flaitron pattern; this
 module names how they compose under repetition:
 
-| Loop need | Flowtron pattern it reuses |
+| Loop need | Flaitron pattern it reuses |
 |---|---|
 | Termination condition | `## ✅ Acceptance` criteria (met → stop) |
 | "Still the right work?" | Core Principle #4 relevance gate, per-cycle |
 | Runaway backstop | `loop-max:` hard iteration ceiling |
 | Blast-radius control | `wt-<ID>` worktree isolation ([`docs/WORKTREES.md`](../docs/WORKTREES.md)) |
 | Hard-stop escape hatch | `status: blocked` park ([`SPEC/blocked.md`](blocked.md)) |
-| Loop memory | `## 🔁 Iterations` append-only log (below); the heartbeat shape logs to `.flowtron/LOOP-LOG.md` per [`templates/loop-heartbeat-template.md`](../templates/loop-heartbeat-template.md) |
+| Loop memory | `## 🔁 Iterations` append-only log (below); the heartbeat shape logs to `.flaitron/LOOP-LOG.md` per [`templates/loop-heartbeat-template.md`](../templates/loop-heartbeat-template.md) |
 
 "One tasknote per session" (README §"Sessions, loops, and sub-agents")
 holds under looping: a loop **deepens within-task autonomy on exactly one
@@ -145,6 +145,6 @@ legacy and non-loop tasknotes omit them, and tools ignore them when absent.
 **No `loop-interval` key — deliberate.** Cadence (every N minutes, on a
 cron, on demand) belongs to the `/loop` *invocation* — the runtime — not to
 the tasknote *file* — the contract. Baking an interval into the tasknote
-would pull scheduler state into flowtron, which the runtime/contract
+would pull scheduler state into flaitron, which the runtime/contract
 boundary above explicitly keeps out. A heartbeat's honest death signal is a
 stale `loop-last-run:`, not a promised interval the file cannot enforce.

@@ -36,7 +36,7 @@ glyph carries two meanings.
 
 ## Glyph layers and reuse
 
-Flowtron emits glyphs on three layers, and the uniqueness rule above is scoped
+Flaitron emits glyphs on three layers, and the uniqueness rule above is scoped
 to the **first** one:
 
 1. **Operator cues** — this vocabulary (the tables below). Uniqueness

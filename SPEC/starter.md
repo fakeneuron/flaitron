@@ -35,7 +35,7 @@ in `templates/tasknote-starter-template.md`.
 
 1. **Filing** (mid-flow): when AI surfaces rich context that warrants
    preserving, `/ft-file-followup [ID] --starter` writes the starter file at
-   `.flowtron/tasknote/<ID>.md` and appends the PLAN.md entry under the
+   `.flaitron/tasknote/<ID>.md` and appends the PLAN.md entry under the
    appropriate priority section. If the ID is omitted, the skill suggests one
    for review before writing. (`/ft-refactor` writes its child starters from
    the template directly, one per implementation child.)

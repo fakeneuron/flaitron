@@ -1,6 +1,6 @@
 # `ft-task` — Grok pointer
 
-When the operator asks you to start a flowtron task (e.g. "start `CORE-004`",
+When the operator asks you to start a flaitron task (e.g. "start `CORE-004`",
 "work on `FE-012`"), load the agent-neutral procedure SOP:
 
 [`SPEC/procedures/ft-task.md`](../../SPEC/procedures/ft-task.md)

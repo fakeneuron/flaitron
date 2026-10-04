@@ -1,15 +1,15 @@
 ---
 name: ft-release
-description: Cut a flowtron release — version bump, doc-currency shifts, doc-drift sweep, single `feat:` commit, annotated tag, VERSION-HISTORY prepend, push. Use when the user asks to cut or ship a flowtron release. Flowtron-self only (global symlink); never installed in adopter projects. Encodes the CORE-048 / CORE-046 / CORE-043 release recipe.
+description: Cut a flaitron release — version bump, doc-currency shifts, doc-drift sweep, single `feat:` commit, annotated tag, VERSION-HISTORY prepend, push. Use when the user asks to cut or ship a flaitron release. Flaitron-self only (global symlink); never installed in adopter projects. Encodes the CORE-048 / CORE-046 / CORE-043 release recipe.
 ---
 
-# release — flowtron self-host release skill
+# release — flaitron self-host release skill
 
-You are cutting a flowtron release. The recipe is canonical (CORE-048 / CORE-046 / CORE-043 precedents): SPEC.md version bump · docs/MIGRATION.md pin bump · doc-drift sweep · single `feat:` commit · annotated tag · curated `docs/VERSION-HISTORY.md` prepend · push. This skill scaffolds and drives a release tasknote through the full 4-phase flow.
+You are cutting a flaitron release. The recipe is canonical (CORE-048 / CORE-046 / CORE-043 precedents): SPEC.md version bump · docs/MIGRATION.md pin bump · doc-drift sweep · single `feat:` commit · annotated tag · curated `docs/VERSION-HISTORY.md` prepend · push. This skill scaffolds and drives a release tasknote through the full 4-phase flow.
 
-This skill is **flowtron-self only**. It is symlinked under `~/.claude/skills/ft-release` and `~/.claude/commands/ft-release.md` for global invocation, but it never runs in adopter projects. Step 0 enforces this.
+This skill is **flaitron-self only**. It is symlinked under `~/.claude/skills/ft-release` and `~/.claude/commands/ft-release.md` for global invocation, but it never runs in adopter projects. Step 0 enforces this.
 
-The release task is normally filed in `.flowtron/PLAN.md` as a one-line entry before `/ft-release` runs — for example:
+The release task is normally filed in `.flaitron/PLAN.md` as a one-line entry before `/ft-release` runs — for example:
 
 ```text
 - [ ] **<TASK-ID>** [model] | release vX.Y.Z — Cut vX.Y.Z minor release tagging <FEAT-A> + <FEAT-B> since v<prev>.
@@ -17,19 +17,19 @@ The release task is normally filed in `.flowtron/PLAN.md` as a one-line entry be
 
 `/ft-release` scans PLAN for the entry and drives it. If no such entry exists, Step 1 offers to draft and file one itself (task ID, version, and description all self-computed from repo state) rather than just bouncing the user to file it by hand. The skill takes **no arguments**.
 
-## Step 0 — Verify cwd is the flowtron repo
+## Step 0 — Verify cwd is the flaitron repo
 
-The skill bails if invoked outside flowtron's own checkout:
+The skill bails if invoked outside flaitron's own checkout:
 
-- `SPEC.md` exists at the repo root with the heading `# Flowtron — Workflow Specification` on line 1.
-- `.flowtron/PLAN.md` exists (flowtron's own PLAN.md, not an adopter's `.flowtron/core/PLAN.md`).
-- `.flowtron/core/SPEC.md` does NOT exist (its presence means we're inside an adopting project — `/ft-release` must not run there).
+- `SPEC.md` exists at the repo root with the heading `# Flaitron — Workflow Specification` on line 1.
+- `.flaitron/PLAN.md` exists (flaitron's own PLAN.md, not an adopter's `.flaitron/core/PLAN.md`).
+- `.flaitron/core/SPEC.md` does NOT exist (its presence means we're inside an adopting project — `/ft-release` must not run there).
 
-If any check fails, stop. Tell the user `/ft-release` only runs from inside the flowtron repo (typical: `~/code/flowtron`). Do not modify any files.
+If any check fails, stop. Tell the user `/ft-release` only runs from inside the flaitron repo (typical: `~/code/flaitron`). Do not modify any files.
 
 ## Step 1 — Find the pending release task in PLAN.md
 
-Read `.flowtron/PLAN.md`. Scan un-checked task lines under `## High | Medium | Low` (and `## Critical` if a legacy heading is still present — see SPEC §"Task-line format"; skip `## Completed` and `## Future Opportunities`) whose `| <shortname>` segment matches `release v*` (case-insensitive — e.g., `release vX.Y.Z`).
+Read `.flaitron/PLAN.md`. Scan un-checked task lines under `## High | Medium | Low` (and `## Critical` if a legacy heading is still present — see SPEC §"Task-line format"; skip `## Completed` and `## Future Opportunities`) whose `| <shortname>` segment matches `release v*` (case-insensitive — e.g., `release vX.Y.Z`).
 
 - **Zero matches.** Don't just bounce the user to file it by hand — offer to draft and file the line now (Step 1.1 below), same as if it had already existed. Only fall back to stopping if the user declines.
 - **Multiple matches.** Stop. List the matches and tell the user `/ft-release` requires exactly one pending release task. Ask them to close/de-scope the duplicates or restructure to a single line. Do not scaffold.
@@ -42,10 +42,10 @@ Parse the **target version** from the shortname: `release v<X.Y.Z>` → `vX.Y.Z`
 Runs only when Step 1 found no pending `release v*` line. Computes the same version/bump-kind facts Step 2 would, just earlier, so the two never disagree — this step does not replace Step 2's own confirmation, it just gets the PLAN line in place first.
 
 1. **Compute the proposed version.** Read `SPEC.md:3` for the current version. Run `git describe --tags --abbrev=0` and confirm it matches — if it doesn't, stop and surface the drift exactly as Step 2 would (don't file a new release line over an already-broken state). Run `git log <last-tag>..HEAD --oneline`, classify each commit by Conventional-Commits prefix (same rule as Step 2: `feat!:`/`BREAKING CHANGE:` → major, `feat:` → minor, everything else → patch), and take the highest-rank classification as the proposed bump kind. Apply it to the current version for the proposed new version. If there are zero commits since the last tag, stop and tell the user there is nothing to release yet.
-2. **Suggest a task ID.** Flowtron-self release tasknotes always use the `CORE` area (every prior `release v*` entry does). Scan `.flowtron/PLAN.md`, `.flowtron/tasknote/`, and `.flowtron/tasknote/archive/core/` for the highest existing `CORE-<N>` and suggest `CORE-<N+1>`.
+2. **Suggest a task ID.** Flaitron-self release tasknotes always use the `CORE` area (every prior `release v*` entry does). Scan `.flaitron/PLAN.md`, `.flaitron/tasknote/`, and `.flaitron/tasknote/archive/core/` for the highest existing `CORE-<N>` and suggest `CORE-<N+1>`.
 3. **Draft the shortname, model, and description.** Shortname: `release v<A.B.C>`. Model: `[medium]🧩` (matches every prior release entry). Long description: `Cut v<A.B.C> <bump-kind> release tagging <FEAT-A> + <FEAT-B> since v<prev>.` — name the feature-level task IDs found in the classified commit log (e.g. from `feat: <TASK-ID> — ...` subjects), not every individual commit.
 4. **Surface the draft and ask.** AskUserQuestion with the fully drafted line shown verbatim (e.g. `- [ ] **CORE-<N>** [medium]🧩 | release vA.B.C — ...`) and options: **File it and continue** (default) / **Let me edit the task ID, version, or description first** / **I'll file it myself — stop here**. Honor edits before filing.
-5. **On accept, append the line** under `## Medium` in `.flowtron/PLAN.md` (bottom of the section, or replacing a `(none)` placeholder) using the canonical task-line grammar. Do **not** commit this edit separately — flowtron's own release history shows the pending line and its Step 7.3 flip-to-Completed have always landed in the single release commit together, never as a standalone filing commit, so this follows the same pattern. Then proceed exactly as if Step 1 had found this line as its one match — capture the same fields, and skip re-deriving the bump proposal in Step 2 since it was already computed here.
+5. **On accept, append the line** under `## Medium` in `.flaitron/PLAN.md` (bottom of the section, or replacing a `(none)` placeholder) using the canonical task-line grammar. Do **not** commit this edit separately — flaitron's own release history shows the pending line and its Step 7.3 flip-to-Completed have always landed in the single release commit together, never as a standalone filing commit, so this follows the same pattern. Then proceed exactly as if Step 1 had found this line as its one match — capture the same fields, and skip re-deriving the bump proposal in Step 2 since it was already computed here.
 6. **On decline ("I'll file it myself"),** stop with the original message: "No pending `release v*` task in PLAN.md. File a one-liner first (e.g., `**<TASK-ID>** [model] | release vX.Y.Z — ...`), then run `/ft-release` again." Do not scaffold.
 
 ## Step 2 — Verify state and propose bump kind
@@ -110,7 +110,7 @@ Before scaffolding the tasknote (Step 3), self-assess whether the **remaining co
 
 ## Step 3 — Scaffold the release tasknote
 
-Copy `templates/tasknote-template.md` to `.flowtron/tasknote/<TASK-ID>.md` and populate the frontmatter:
+Copy `templates/tasknote-template.md` to `.flaitron/tasknote/<TASK-ID>.md` and populate the frontmatter:
 
 - `title:` — the PLAN-line shortname (e.g., `release vX.Y.Z`).
 - `status:` — `in-progress`.
@@ -129,13 +129,13 @@ Acceptance (parameterized):
 - [ ] SECURITY.md release-tag example pin bumped `vX.Y.Z` → `vA.B.C`
 - [ ] Dogfood gate resolved — every dogfooded row (Claude / Grok / Codex / Cursor) refreshed from a real verification run at `vA.B.C`, or recorded `skipped @ vA.B.C` (per `docs/AGENT-COMPAT.md` §"Reading the cells")
 - [ ] SOP-currency check run — `SPEC/procedures/*.md` reported clean, or drift candidates adjudicated and a follow-up filed (stamps left un-bumped either way)
-- [ ] Phase 4 doc-drift sweep run across all `.flowtron/tasknote/README.md` §"AI-referenced docs" entries
-- [ ] Single `feat: <TASK-ID> — flowtron vA.B.C (...)` commit lands
+- [ ] Phase 4 doc-drift sweep run across all `.flaitron/tasknote/README.md` §"AI-referenced docs" entries
+- [ ] Single `feat: <TASK-ID> — flaitron vA.B.C (...)` commit lands
 - [ ] Annotated `vA.B.C` tag created with adopter-facing release notes
 - [ ] `docs/VERSION-HISTORY.md` prepended with a curated entry for `vA.B.C` (minor/major: headline + 2–4 main bullets + optional secondary; patch: one-line subject)
 - [ ] Tag pushed to origin
 - [ ] PLAN.md line flipped to stub form under `## Completed`
-- [ ] Tasknote archived to `.flowtron/tasknote/archive/core/<TASK-ID>.md`
+- [ ] Tasknote archived to `.flaitron/tasknote/archive/core/<TASK-ID>.md`
 ```
 
 Subtasks (parameterized): mirror CORE-048's 6-line subtask list with the same shape — line-numbered references will need re-resolution via grep at execution time (they drift between releases).
@@ -147,7 +147,7 @@ Walk the Phase 1 checklist per SPEC §"📝 Phase 1: Discovery". Most boxes tick
 - **Reviewed PLAN.md** — already done in Step 1 of this skill.
 - **Relevance Assessment** — Verdict: Proceed. Rationale: bump pattern is well-established; commit log + version drift verified in Step 2.
 - **Read relevant source files** — `SPEC.md:3`, `docs/MIGRATION.md` example pin (grep for `describe --tags`).
-- **Archive skim** — `.flowtron/tasknote/archive/core/` for prior release tasknotes (CORE-048, CORE-046, CORE-043). Note any structural drift in their precedents that this release should account for.
+- **Archive skim** — `.flaitron/tasknote/archive/core/` for prior release tasknotes (CORE-048, CORE-046, CORE-043). Note any structural drift in their precedents that this release should account for.
 - **Drift check** — verify the cited locations: `SPEC.md:3` reads `**Version:** vX.Y.Z`; docs/MIGRATION.md grep returns one example pin at `(e.g., \`vX.Y.Z\`)`. Surface any drift before continuing.
 - **Adopter migration impact** — for each commit since the last tag, classify whether it requires adopter action (new template section, new doc-set entry, BREAKING change with migration steps). Capture findings in Discovery Notes — feeds the Migration block of the tag message in Phase 4. CORE-047 (in CORE-048's release) is the canonical example of a context-sensitive migration block.
 - **Clarifying questions** — typically none. If the bump is major, or if any commit's adopter impact is ambiguous, AskUserQuestion to confirm the migration block contents.
@@ -256,13 +256,13 @@ Walk the closure steps in order. Three waits, each only when it fires, and none 
 
 ### 7.1 — Doc-drift sweep (via `/ft-audit docs` subroutine)
 
-Invoke the flowtron-self `ft-audit` skill in **subroutine mode** with the `docs` domain and the `ai-referenced` scope token. The bundled `passes/docs.md` leaves its default-scope slot a forker placeholder, so the AI-referenced docs set declared in `.flowtron/tasknote/README.md` §"AI-referenced docs" is reachable only by naming the token — a bare `docs` resolves to the unfilled default and stops to ask:
+Invoke the flaitron-self `ft-audit` skill in **subroutine mode** with the `docs` domain and the `ai-referenced` scope token. The bundled `passes/docs.md` leaves its default-scope slot a forker placeholder, so the AI-referenced docs set declared in `.flaitron/tasknote/README.md` §"AI-referenced docs" is reachable only by naming the token — a bare `docs` resolves to the unfilled default and stops to ask:
 
 ```text
 Skill(ft-audit) with args "docs ai-referenced"
 ```
 
-That pass file keeps its placeholders whatever scope you pass, so the dispatcher's §1 step 3 scaffold bootstrap still stops the run before pass 1. Take its **run once** branch: rubric = the doc-set contract above, gates = the CI `drift` job's doc checks run locally (Pair Q section-citation resolver, final-newline, context budget — there is no markdown linter). Then the `docs` domain walks its 5 passes (Claims vs. code · Cross-doc consistency · Cross-references · Currency · Stale content) over the declared doc set and returns the report inline. Per the dispatcher's Subroutine-safe hard rule it does **not** write tickets to `.flowtron/PLAN.md`; the release skill is the orchestrator. Critical / High findings are fixed inline. Medium / Low findings are not disposed one by one, and filing them does not by itself let the cut continue.
+That pass file keeps its placeholders whatever scope you pass, so the dispatcher's §1 step 3 scaffold bootstrap still stops the run before pass 1. Take its **run once** branch: rubric = the doc-set contract above, gates = the CI `drift` job's doc checks run locally (Pair Q section-citation resolver, final-newline, context budget — there is no markdown linter). Then the `docs` domain walks its 5 passes (Claims vs. code · Cross-doc consistency · Cross-references · Currency · Stale content) over the declared doc set and returns the report inline. Per the dispatcher's Subroutine-safe hard rule it does **not** write tickets to `.flaitron/PLAN.md`; the release skill is the orchestrator. Critical / High findings are fixed inline. Medium / Low findings are not disposed one by one, and filing them does not by itself let the cut continue.
 
 Classify each returned finding:
 - **Critical / High** — fix inline as part of the release cut (the 3 version edits in Phase 2 normally clear the routine SPEC + MIGRATION + SECURITY version-pin drift; anything else surfaced here gets the same treatment). Cleared means the finding is gone. A finding that only drops to Medium or Low is held for the ask below. If it is still Critical or High after the inline fix, stop the cut and say why. Release anyway is not available for a finding that is still Critical or High.
@@ -303,20 +303,20 @@ Read `claude/skills/ft-release/step-7.2-tag-message.md` now — it carries the f
 
 Write the tasknote's `**Final Summary:**` block (one paragraph: what shipped + adopter-impact summary) and set `**Archived:** YYYY-MM-DD`.
 
-Edit `.flowtron/PLAN.md`:
+Edit `.flaitron/PLAN.md`:
 
 - Replace the un-checked release task line with stub form: `- [x] **<TASK-ID>** [<model>] | <shortname> — Completed YYYY-MM-DD.` (drop the long description per SPEC/plan-filing.md §"`## Completed` archive convention").
 - Move the line from its current section to the top of `## Completed`.
 
-Move the tasknote file with a plain `mv` — it was copied fresh in Step 3 and never committed, so it is **untracked** and `git mv` fails (`fatal: not under version control`): `mv .flowtron/tasknote/<TASK-ID>.md .flowtron/tasknote/archive/core/<TASK-ID>.md`. The §7.4 `git add` stages the archived file.
+Move the tasknote file with a plain `mv` — it was copied fresh in Step 3 and never committed, so it is **untracked** and `git mv` fails (`fatal: not under version control`): `mv .flaitron/tasknote/<TASK-ID>.md .flaitron/tasknote/archive/core/<TASK-ID>.md`. The §7.4 `git add` stages the archived file.
 
 ### 7.4 — Stage and surface the 📦 ready-to-commit gate
 
 Stage explicitly (do NOT use `git add .` or `-A` — there may be unrelated unstaged work):
 
 ```sh
-git add SPEC.md docs/MIGRATION.md SECURITY.md docs/VERSION-HISTORY.md .flowtron/PLAN.md
-git add .flowtron/tasknote/archive/core/<TASK-ID>.md
+git add SPEC.md docs/MIGRATION.md SECURITY.md docs/VERSION-HISTORY.md .flaitron/PLAN.md
+git add .flaitron/tasknote/archive/core/<TASK-ID>.md
 # If the §5 dogfood-gate walk landed any refresh/skip edits, also stage the touched stamp files
 # (a git add of an unchanged file is a no-op, so listing all three is safe):
 git add docs/AGENT-COMPAT.md docs/PLATFORMS.md claude/CAPABILITIES.md
@@ -324,7 +324,7 @@ git add docs/AGENT-COMPAT.md docs/PLATFORMS.md claude/CAPABILITIES.md
 
 (The Step 7.3 `mv` left the archived tasknote untracked; the explicit `git add` here stages it.)
 
-Surface the bundled 📦 ready-to-commit gate per SPEC/gates.md §"Operator-gate cues" (banner block + mandatory 1-2 sentence preview line summarising what executes on commit-go — typically "cut flowtron vA.B.C: commit the 3 version edits + any dogfood-gate stamp refreshes/skips + PLAN.md flip + tasknote archive, create annotated `vA.B.C` tag, push branch + tag to origin, and publish a GitHub Release for `vA.B.C` (or hold local, unpublished, if push-go declined)"). Alongside the SPEC-defined bundle (closure review · recap · proposed commit message), this skill carries:
+Surface the bundled 📦 ready-to-commit gate per SPEC/gates.md §"Operator-gate cues" (banner block + mandatory 1-2 sentence preview line summarising what executes on commit-go — typically "cut flaitron vA.B.C: commit the 3 version edits + any dogfood-gate stamp refreshes/skips + PLAN.md flip + tasknote archive, create annotated `vA.B.C` tag, push branch + tag to origin, and publish a GitHub Release for `vA.B.C` (or hold local, unpublished, if push-go declined)"). Alongside the SPEC-defined bundle (closure review · recap · proposed commit message), this skill carries:
 
 - **Dogfood-gate resolution (enforcement)** — confirm the §5 walk resolved **every** dogfooded row **by re-running `step-5-dogfood-sop.md` step 5 from file state now** (the grep loop over the walk's ledger; must print nothing) — never from memory of what the walk wrote, since a parallel session can overwrite a stamp between §5 and here (CORE-588) — and surface the per-agent summary inside the closure review:
 
@@ -353,7 +353,7 @@ Surface the bundled 📦 ready-to-commit gate per SPEC/gates.md §"Operator-gate
   (default Yes; No leaves the commit + tag local for manual push)
   ```
 
-- **Commit message** — `feat: <TASK-ID> — flowtron vA.B.C (<one-clause summary>)`.
+- **Commit message** — `feat: <TASK-ID> — flaitron vA.B.C (<one-clause summary>)`.
 
 - **Tag message** — locked at §7.2; included by reference (the user has already approved it). Surfaced here so the user sees the full atomic motion — commit + tag + optional push — when granting commit-go.
 
@@ -365,7 +365,7 @@ On 🟢 GO commit-go (push-go answer already captured in the §7.4 bundle), run 
 
 1. ▶️ RUN: `git commit` with the surfaced message.
 2. ▶️ RUN: `git tag -a vA.B.C -F -` with the approved message from §7.2 (HEREDOC).
-3. **If push-go was Yes** — ▶️ RUN: `git push origin <current-branch>` then `git push origin vA.B.C`, then ▶️ RUN: `gh release create vA.B.C --latest --title "<title>" --notes "<notes>"` — title is the §7.2 locked tag message's first line (`flowtron vA.B.C — <headline>`), notes is everything after it, `--latest` marks it the repo's latest release (flowtron cuts releases linearly off `main`, so this is always correct — no need to ask). A release can't be created for a tag that isn't on origin yet, so this always runs after the tag push, never before or in place of it.
+3. **If push-go was Yes** — ▶️ RUN: `git push origin <current-branch>` then `git push origin vA.B.C`, then ▶️ RUN: `gh release create vA.B.C --latest --title "<title>" --notes "<notes>"` — title is the §7.2 locked tag message's first line (`flaitron vA.B.C — <headline>`), notes is everything after it, `--latest` marks it the repo's latest release (flaitron cuts releases linearly off `main`, so this is always correct — no need to ask). A release can't be created for a tag that isn't on origin yet, so this always runs after the tag push, never before or in place of it.
    **If push-go was No** — stop after the tag; §8's 🏁 marker names the manual push + `gh release create` commands as a follow-up step.
 
 Verify each operation before the next (`git log -1 --stat`, `git tag --list vA.B.C`, and on push-go Yes also `git ls-remote --tags origin vA.B.C` and `gh release view vA.B.C`). The separate prose "ask explicitly before pushing" pause from earlier revisions is collapsed — push approval is captured upstream as the bundled push-go prompt at §7.4, per SPEC §"Operator-gate cues" ("skill-level extensions (epic parent-flip, release push-go) bundle into 📦").
@@ -378,7 +378,7 @@ The post-closure protocol is canonical in `SPEC/post-closure.md` — **Read it n
 - **🏁 post-commit state-marker** — once §7.5's operations land (commit + tag + push + release create on push-go Yes; commit + tag only on push-go No), emit the marker per `SPEC/post-closure.md` step 2:
 
   ```markdown
-  🏁 **<TASK-ID> — committed `<sha>`, tagged `vA.B.C`, published release** · archived to `.flowtron/tasknote/archive/core/<TASK-ID>.md`
+  🏁 **<TASK-ID> — committed `<sha>`, tagged `vA.B.C`, published release** · archived to `.flaitron/tasknote/archive/core/<TASK-ID>.md`
   <1-2 sentence plain-English summary of what shipped + adopter-impact>
   ```
 
@@ -388,7 +388,7 @@ The post-closure protocol is canonical in `SPEC/post-closure.md` — **Read it n
 
 ## Notes
 
-- **Flowtron-self only.** This skill is never symlinked into adopter projects. Adopters consume flowtron via submodule pin and the manual bump procedure in `docs/MIGRATION.md` §"Pinning and bumping".
+- **Flaitron-self only.** This skill is never symlinked into adopter projects. Adopters consume flaitron via submodule pin and the manual bump procedure in `docs/MIGRATION.md` §"Pinning and bumping".
 - **Context-budget escape hatch (Step 2.5).** A full cut is a long session. If the remaining context budget looks tight at invocation, the skill offers to defer the whole cut to a fresh `/ft-release` chat (re-entry is `/ft-release`, not `/ft-task <TASK-ID>` — the recipe lives here) rather than driving inline on thin headroom. Comfortable budgets skip the hatch and drive inline as before.
-- **Why no args.** A flowtron release is a coordinated cut — there is at most one pending `release v*` task in PLAN at a time. The PLAN-line filing normally happens before `/ft-release` runs, or Step 1.1 drafts and files it on the spot when none exists yet (still gated by an AskUserQuestion review — never a silent write). Multiple un-cut releases queued is a process smell; the skill bails to surface it.
+- **Why no args.** A flaitron release is a coordinated cut — there is at most one pending `release v*` task in PLAN at a time. The PLAN-line filing normally happens before `/ft-release` runs, or Step 1.1 drafts and files it on the spot when none exists yet (still gated by an AskUserQuestion review — never a silent write). Multiple un-cut releases queued is a process smell; the skill bails to surface it.
 - **Tag-message review is mandatory.** The auto-draft seeds the structure; the user is expected to review and edit. CORE-048's deviation from CORE-046's `No required project-side edits` boilerplate (calling out CORE-047's adopter action item) is the canonical example of context-sensitive editing — a rote auto-draft would have missed it.

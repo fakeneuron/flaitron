@@ -1,6 +1,6 @@
-# Flowtron adoption snippet
+# Flaitron adoption snippet
 
-Paste the block below into your project's `AGENTS.md`, then run the symlink commands once to wire flowtron's slash commands into your project's `.claude/`.
+Paste the block below into your project's `AGENTS.md`, then run the symlink commands once to wire flaitron's slash commands into your project's `.claude/`.
 
 ---
 
@@ -11,26 +11,26 @@ Paste the block below into your project's `AGENTS.md`, then run the symlink comm
 ```markdown
 ## Workflow
 
-This project uses **flowtron** for task tracking. The canonical workflow contract lives at `.flowtron/core/SPEC.md` — read it before starting non-trivial work.
+This project uses **flaitron** for task tracking. The canonical workflow contract lives at `.flaitron/core/SPEC.md` — read it before starting non-trivial work.
 
-- Plans live in `.flowtron/PLAN.md`. Once `## Completed` outgrows its bound, closed rows rotate verbatim into a sibling `.flowtron/PLAN-ARCHIVE.md` (append-only; absent until the first rotation) — contract: `.flowtron/core/SPEC/plan-filing.md` §"`## Completed` rotation".
-- Tasknotes live in `.flowtron/tasknote/<TASK-ID>.md` while active and `.flowtron/tasknote/archive/<area>/<TASK-ID>.md` once closed.
-- Start a task with `/ft-task <TASK-ID>` (e.g., `/ft-task BE-014`). The slash command scaffolds the tasknote from the flowtron template and drives Phase 1 Discovery before any code is written. Contract-only agents without `/ft-task`: load `.flowtron/core/<platform>/procedures/ft-task.md` (if one exists for your platform) — it routes to the agent-neutral SOP at `.flowtron/core/SPEC/procedures/ft-task.md`.
-- Other filing skills for non-task-shaped work: `/ft-micro-task <ID>`, `/ft-file-followup [ID]` (`--park [--low|--med|--fut|--high]`, `--starter`), `/ft-epic-discovery`, `/ft-close-epic <ID>`. Which shape fits which work: `.flowtron/core/SPEC/tasknote-selection.md` §"When to use a tasknote (and when not to)"; epic lifecycle: `.flowtron/core/SPEC/epic.md`.
-- Filing a new task and mid-flow direction-changing decisions run a **downstream-impact reconciliation** scan so the plan stays cohesive as it grows: the new task/decision is checked against existing active PLAN entries for stale / contradictory / redundant overlap, and one reconcile action (merge / nest / edit / delete / leave) is proposed per impacted entry behind a user-confirm gate — the plan is never auto-rewritten. Contract: `.flowtron/core/SPEC/tasknote-selection.md` §"Downstream-impact reconciliation".
-- For independent children of a multi-child epic, the optional worktree convention (location `<p>-worktrees/wt-<ID>/` alongside the project checkout, branch `wt-<ID>`, tasknote copy) lets you execute siblings in parallel isolated checkouts. Convention and the four-command start / end procedure: `.flowtron/core/docs/WORKTREES.md` — no skill; run it by hand or ask the agent to.
+- Plans live in `.flaitron/PLAN.md`. Once `## Completed` outgrows its bound, closed rows rotate verbatim into a sibling `.flaitron/PLAN-ARCHIVE.md` (append-only; absent until the first rotation) — contract: `.flaitron/core/SPEC/plan-filing.md` §"`## Completed` rotation".
+- Tasknotes live in `.flaitron/tasknote/<TASK-ID>.md` while active and `.flaitron/tasknote/archive/<area>/<TASK-ID>.md` once closed.
+- Start a task with `/ft-task <TASK-ID>` (e.g., `/ft-task BE-014`). The slash command scaffolds the tasknote from the flaitron template and drives Phase 1 Discovery before any code is written. Contract-only agents without `/ft-task`: load `.flaitron/core/<platform>/procedures/ft-task.md` (if one exists for your platform) — it routes to the agent-neutral SOP at `.flaitron/core/SPEC/procedures/ft-task.md`.
+- Other filing skills for non-task-shaped work: `/ft-micro-task <ID>`, `/ft-file-followup [ID]` (`--park [--low|--med|--fut|--high]`, `--starter`), `/ft-epic-discovery`, `/ft-close-epic <ID>`. Which shape fits which work: `.flaitron/core/SPEC/tasknote-selection.md` §"When to use a tasknote (and when not to)"; epic lifecycle: `.flaitron/core/SPEC/epic.md`.
+- Filing a new task and mid-flow direction-changing decisions run a **downstream-impact reconciliation** scan so the plan stays cohesive as it grows: the new task/decision is checked against existing active PLAN entries for stale / contradictory / redundant overlap, and one reconcile action (merge / nest / edit / delete / leave) is proposed per impacted entry behind a user-confirm gate — the plan is never auto-rewritten. Contract: `.flaitron/core/SPEC/tasknote-selection.md` §"Downstream-impact reconciliation".
+- For independent children of a multi-child epic, the optional worktree convention (location `<p>-worktrees/wt-<ID>/` alongside the project checkout, branch `wt-<ID>`, tasknote copy) lets you execute siblings in parallel isolated checkouts. Convention and the four-command start / end procedure: `.flaitron/core/docs/WORKTREES.md` — no skill; run it by hand or ask the agent to.
 - For bugs and unexpected behavior, `/ft-task <TASK-ID> --debug` adds a hypothesis-first cadence (expected/observed → ranked hypotheses → minimal repro → re-verify) inside Phase 1 Discovery, plus a Phase 3 obligation to re-run that exact repro after the fix. Soft scaffolding, not a gate; composes with `--fast` in either order.
-- When a task is driven by an orchestrator or headless session with **no operator present**, add `--unattended` (on `/ft-task`, `/ft-micro-task`, or `/ft-close-epic`): gates nobody is there to answer **park** the tasknote (`status: blocked` plus a machine-readable `park-reason:` code) instead of firing a banner into an empty session. Never pass it together with `--fast`. What it supersets, what it never relaxes, and the per-gate conversion map: `.flowtron/core/SPEC/gate-postures.md` §"`--unattended` operator posture". `/ft-file-followup --unattended` files a deferred step with no operator present (`.flowtron/core/SPEC/plan-filing.md` §"Filing commits").
-- For converge-until-a-check-passes work (a suite going green, a metric crossing a threshold), `/ft-task <TASK-ID> --loop` runs the Phase 2↔3 execute→verify cycle as an inline loop against a machine-checkable Acceptance target. Loop budget, per-cycle relevance gate, and autonomy semantics: `.flowtron/core/SPEC/loop.md`. The recurring-maintenance (heartbeat) shape ships as `.flowtron/core/templates/loop-heartbeat-template.md`.
-- To seed `[unattended]` across a plan that predates per-row candidacy: `/ft-seed` — walks every open PLAN.md row with the candidacy predicate, shows the candidates inside one review gate, and writes the marker only on the rows you keep. Flowtron never writes it unconfirmed. Contract: `.flowtron/core/SPEC/unattended-candidacy.md` §"Seeding an existing plan".
-- To bump the flowtron version pin: `/ft-update` — shows the current→target changelog, moves the submodule, adds symlinks for any newly shipped skills, runs a smoke check, and stages the commit.
-- Before filing, a design worked out in conversation can be captured as a review-first spec: copy `.flowtron/core/templates/spec-template.md` to `.flowtron/specs/<slug>.md` and fill its six sections. A spec never files a PLAN.md line or scaffolds a tasknote. When to reach for one: `.flowtron/core/SPEC/tasknote-selection.md` §"When to use a tasknote (and when not to)".
-- `/ft-refactor <target> [--fast]` plans a behavior-preserving refactor of one named file, module, or subsystem: a read-only depth survey, then — on your go — an epic of starter-seeded children run through normal `/ft-task` cycles. It never edits source. When to reach for it: `.flowtron/core/SPEC/tasknote-selection.md` §"When to use a tasknote (and when not to)".
-- Standard tasknotes (`/ft-task`) run the 4-phase workflow in serial order per `.flowtron/core/SPEC.md` §"The 4-phase workflow", followed by the post-closure protocol (commit + next-task suggestion). Do not skip phases once a tasknote is open — whether a change needs a tasknote at all is decided by `.flowtron/core/SPEC/tasknote-selection.md` §"When to use a tasknote (and when not to)". `/ft-micro-task` uses a lighter single-section ceremony in place of the full 4-phase flow.
+- When a task is driven by an orchestrator or headless session with **no operator present**, add `--unattended` (on `/ft-task`, `/ft-micro-task`, or `/ft-close-epic`): gates nobody is there to answer **park** the tasknote (`status: blocked` plus a machine-readable `park-reason:` code) instead of firing a banner into an empty session. Never pass it together with `--fast`. What it supersets, what it never relaxes, and the per-gate conversion map: `.flaitron/core/SPEC/gate-postures.md` §"`--unattended` operator posture". `/ft-file-followup --unattended` files a deferred step with no operator present (`.flaitron/core/SPEC/plan-filing.md` §"Filing commits").
+- For converge-until-a-check-passes work (a suite going green, a metric crossing a threshold), `/ft-task <TASK-ID> --loop` runs the Phase 2↔3 execute→verify cycle as an inline loop against a machine-checkable Acceptance target. Loop budget, per-cycle relevance gate, and autonomy semantics: `.flaitron/core/SPEC/loop.md`. The recurring-maintenance (heartbeat) shape ships as `.flaitron/core/templates/loop-heartbeat-template.md`.
+- To seed `[unattended]` across a plan that predates per-row candidacy: `/ft-seed` — walks every open PLAN.md row with the candidacy predicate, shows the candidates inside one review gate, and writes the marker only on the rows you keep. Flaitron never writes it unconfirmed. Contract: `.flaitron/core/SPEC/unattended-candidacy.md` §"Seeding an existing plan".
+- To bump the flaitron version pin: `/ft-update` — shows the current→target changelog, moves the submodule, adds symlinks for any newly shipped skills, runs a smoke check, and stages the commit.
+- Before filing, a design worked out in conversation can be captured as a review-first spec: copy `.flaitron/core/templates/spec-template.md` to `.flaitron/specs/<slug>.md` and fill its six sections. A spec never files a PLAN.md line or scaffolds a tasknote. When to reach for one: `.flaitron/core/SPEC/tasknote-selection.md` §"When to use a tasknote (and when not to)".
+- `/ft-refactor <target> [--fast]` plans a behavior-preserving refactor of one named file, module, or subsystem: a read-only depth survey, then — on your go — an epic of starter-seeded children run through normal `/ft-task` cycles. It never edits source. When to reach for it: `.flaitron/core/SPEC/tasknote-selection.md` §"When to use a tasknote (and when not to)".
+- Standard tasknotes (`/ft-task`) run the 4-phase workflow in serial order per `.flaitron/core/SPEC.md` §"The 4-phase workflow", followed by the post-closure protocol (commit + next-task suggestion). Do not skip phases once a tasknote is open — whether a change needs a tasknote at all is decided by `.flaitron/core/SPEC/tasknote-selection.md` §"When to use a tasknote (and when not to)". `/ft-micro-task` uses a lighter single-section ceremony in place of the full 4-phase flow.
 <!-- KEEP IN SYNC (CORE-519): mirrors AGENTS.md's "Do not skip phases" sentence — same claim, same SPEC/tasknote-selection.md pointer. Editing one requires checking the other. -->
 <!-- KEEP IN SYNC (CORE-516): mirrors AGENTS.md:36 — same `[model]` concept, same SPEC/model.md pointer. Editing one requires checking the other. -->
-- Each PLAN.md task line carries a `[model]` segment naming the model tier or name the task should run on end-to-end; adopters may use any short token. If the loaded model doesn't match, surface the mismatch before continuing. Contract: `.flowtron/core/SPEC/model.md` §"Model field".
-- The `.flowtron/core/` submodule is read-only here. Edits go upstream to flowtron and arrive via deliberate version bumps — see `.flowtron/core/SPEC/versioning.md`. The pin is the submodule gitlink (`git -C .flowtron/core describe --tags`), also readable as the `**Version:**` line of `.flowtron/core/SPEC.md`; no project file restates it.
+- Each PLAN.md task line carries a `[model]` segment naming the model tier or name the task should run on end-to-end; adopters may use any short token. If the loaded model doesn't match, surface the mismatch before continuing. Contract: `.flaitron/core/SPEC/model.md` §"Model field".
+- The `.flaitron/core/` submodule is read-only here. Edits go upstream to flaitron and arrive via deliberate version bumps — see `.flaitron/core/SPEC/versioning.md`. The pin is the submodule gitlink (`git -C .flaitron/core describe --tags`), also readable as the `**Version:**` line of `.flaitron/core/SPEC.md`; no project file restates it.
 ```
 
 ### Check that Claude Code loads it
@@ -54,7 +54,7 @@ Components use the design tokens in `frontend/src/styles/tokens.css`; never
 hardcode a hex value.
 ```
 
-Flowtron's per-file byte budgets for its own shipped surfaces are in [`docs/CONTEXT-BUDGET.md`](../docs/CONTEXT-BUDGET.md).
+Flaitron's per-file byte budgets for its own shipped surfaces are in [`docs/CONTEXT-BUDGET.md`](../docs/CONTEXT-BUDGET.md).
 
 Two limits worth knowing before you move anything:
 
@@ -86,50 +86,50 @@ substitution.** `/ft-release` §7.1's installed-surface check derives its expect
 set from here and diffs all four blocks against it; there is no hand-maintained
 roster left to drift.
 
-Run these from the project root after adding the flowtron submodule at `.flowtron/core/`:
+Run these from the project root after adding the flaitron submodule at `.flaitron/core/`:
 
 ```sh
 mkdir -p .claude/commands .claude/skills
-ln -s ../../.flowtron/core/claude/commands/ft-task.md            .claude/commands/ft-task.md
-ln -s ../../.flowtron/core/claude/commands/ft-micro-task.md      .claude/commands/ft-micro-task.md
-ln -s ../../.flowtron/core/claude/commands/ft-file-followup.md   .claude/commands/ft-file-followup.md
-ln -s ../../.flowtron/core/claude/commands/ft-epic-discovery.md  .claude/commands/ft-epic-discovery.md
-ln -s ../../.flowtron/core/claude/commands/ft-close-epic.md      .claude/commands/ft-close-epic.md
-ln -s ../../.flowtron/core/claude/skills/ft-task            .claude/skills/ft-task
-ln -s ../../.flowtron/core/claude/skills/ft-micro-task      .claude/skills/ft-micro-task
-ln -s ../../.flowtron/core/claude/skills/ft-file-followup   .claude/skills/ft-file-followup
-ln -s ../../.flowtron/core/claude/skills/ft-epic-discovery  .claude/skills/ft-epic-discovery
-ln -s ../../.flowtron/core/claude/skills/ft-close-epic      .claude/skills/ft-close-epic
-ln -s ../../.flowtron/core/claude/commands/ft-update.md       .claude/commands/ft-update.md
-ln -s ../../.flowtron/core/claude/skills/ft-update            .claude/skills/ft-update
-ln -s ../../.flowtron/core/claude/commands/ft-refactor.md     .claude/commands/ft-refactor.md
-ln -s ../../.flowtron/core/claude/skills/ft-refactor          .claude/skills/ft-refactor
-ln -s ../../.flowtron/core/claude/commands/ft-seed.md         .claude/commands/ft-seed.md
-ln -s ../../.flowtron/core/claude/skills/ft-seed              .claude/skills/ft-seed
+ln -s ../../.flaitron/core/claude/commands/ft-task.md            .claude/commands/ft-task.md
+ln -s ../../.flaitron/core/claude/commands/ft-micro-task.md      .claude/commands/ft-micro-task.md
+ln -s ../../.flaitron/core/claude/commands/ft-file-followup.md   .claude/commands/ft-file-followup.md
+ln -s ../../.flaitron/core/claude/commands/ft-epic-discovery.md  .claude/commands/ft-epic-discovery.md
+ln -s ../../.flaitron/core/claude/commands/ft-close-epic.md      .claude/commands/ft-close-epic.md
+ln -s ../../.flaitron/core/claude/skills/ft-task            .claude/skills/ft-task
+ln -s ../../.flaitron/core/claude/skills/ft-micro-task      .claude/skills/ft-micro-task
+ln -s ../../.flaitron/core/claude/skills/ft-file-followup   .claude/skills/ft-file-followup
+ln -s ../../.flaitron/core/claude/skills/ft-epic-discovery  .claude/skills/ft-epic-discovery
+ln -s ../../.flaitron/core/claude/skills/ft-close-epic      .claude/skills/ft-close-epic
+ln -s ../../.flaitron/core/claude/commands/ft-update.md       .claude/commands/ft-update.md
+ln -s ../../.flaitron/core/claude/skills/ft-update            .claude/skills/ft-update
+ln -s ../../.flaitron/core/claude/commands/ft-refactor.md     .claude/commands/ft-refactor.md
+ln -s ../../.flaitron/core/claude/skills/ft-refactor          .claude/skills/ft-refactor
+ln -s ../../.flaitron/core/claude/commands/ft-seed.md         .claude/commands/ft-seed.md
+ln -s ../../.flaitron/core/claude/skills/ft-seed              .claude/skills/ft-seed
 ```
 
-The relative paths are intentional — they survive `git clone` and pin to whichever flowtron commit the submodule is checked out at. Commit the symlinks (`git add .claude/`).
+The relative paths are intentional — they survive `git clone` and pin to whichever flaitron commit the submodule is checked out at. Commit the symlinks (`git add .claude/`).
 
-The submodule also brings flowtron's own tasknote archive at `.flowtron/core/.flowtron/` (~14 MB, ~1,000 files) — flowtron's history, not this project's context. Keep it out of Grep, Glob, and `@file` with a `Read(./.flowtron/core/.flowtron/**)` deny rule in `.claude/settings.json`; the per-tool list and the rule's one cost are in [`docs/MIGRATION.md`](../docs/MIGRATION.md) §1.1.
+The submodule also brings flaitron's own tasknote archive at `.flaitron/core/.flaitron/` (~14 MB, ~1,000 files) — flaitron's history, not this project's context. Keep it out of Grep, Glob, and `@file` with a `Read(./.flaitron/core/.flaitron/**)` deny rule in `.claude/settings.json`; the per-tool list and the rule's one cost are in [`docs/MIGRATION.md`](../docs/MIGRATION.md) §1.1.
 
-This snippet wires the adopter-installed subset: tasknote family, `/ft-seed`, and `/ft-update`. Global utilities live in the user's agent home when desired; `/ft-release` is flowtron-self-only.
+This snippet wires the adopter-installed subset: tasknote family, `/ft-seed`, and `/ft-update`. Global utilities live in the user's agent home when desired; `/ft-release` is flaitron-self-only.
 
 To verify Claude Code wiring: invoke `/ft-task` in a fresh Claude Code session. The command should appear in the menu (alongside the other wired adopter-subset skills) with the description from `commands/ft-task.md`. For Codex, use the sibling `codex/AGENTS-snippet.md` wiring and invoke the skill through `/skills` or `$ft-task`. For Cursor, Claude wiring is already enough (Cursor loads `.claude/skills/` as a compatibility surface); Cursor-only projects use the sibling `cursor/AGENTS-snippet.md` instead. For Grok, Claude, Codex, or Cursor wiring is already enough (Grok loads those dirs as compatibility surfaces); Grok-only projects use the sibling `grok/AGENTS-snippet.md` instead.
 
-## Bumping the pinned flowtron version
+## Bumping the pinned flaitron version
 
 Run `/ft-update` from the project root to bump the pin: it shows the current→target version + the annotated-tag changelog for confirmation, moves the submodule pin, re-wires symlinks for any newly shipped skills, runs a smoke check, and stages the bump with a proposed commit. The symlinks above don't change for *existing* skills — they always track whatever the submodule currently points at; `/ft-update` only adds a symlink when the bump ships a brand-new adopter-subset skill.
 
-Manual equivalent, if `/ft-update` isn't wired: flowtron has no `CHANGELOG.md` — release notes and migration steps live in the annotated tag message (`git -C .flowtron/core show vX.Y.Z`) and the per-release tasknote in `.flowtron/core/.flowtron/tasknote/archive/core/`. Fetch + checkout the target tag inside `.flowtron/core`, then `git add .flowtron/core` to record the new pin (not `git submodule update`, which restores the current pin).
+Manual equivalent, if `/ft-update` isn't wired: flaitron has no `CHANGELOG.md` — release notes and migration steps live in the annotated tag message (`git -C .flaitron/core show vX.Y.Z`) and the per-release tasknote in `.flaitron/core/.flaitron/tasknote/archive/core/`. Fetch + checkout the target tag inside `.flaitron/core`, then `git add .flaitron/core` to record the new pin (not `git submodule update`, which restores the current pin).
 
 ## Visualizer
 
-The flowtron visualizer is a single global instance — run it **once per machine** from flowtron's own checkout, not from this project's `.flowtron/core/viz/`:
+The flaitron visualizer is a single global instance — run it **once per machine** from flaitron's own checkout, not from this project's `.flaitron/core/viz/`:
 
 ```sh
-cd ~/code/flowtron/viz
+cd ~/code/flaitron/viz
 npm install
 npm run dev
 ```
 
-It scans `${FLOWTRON_VIZ_WORKSPACE:-~/code}/*/.flowtron/PLAN.md` and renders every adopting project; the header-rail project selector swaps the active project. The header subhead shows task counts, in-progress count, and the flowtron version the selected project is using (from its `.flowtron/core/SPEC.md`). Port `5120` is pinned with `strictPort`, so a second instance fails fast. The adopter-side `.flowtron/core/viz/` still works for offline / submodule-pinned use, but the global instance above is the recommended path.
+It scans `${FLAITRON_VIZ_WORKSPACE:-~/code}/*/.flaitron/PLAN.md` and renders every adopting project; the header-rail project selector swaps the active project. The header subhead shows task counts, in-progress count, and the flaitron version the selected project is using (from its `.flaitron/core/SPEC.md`). Port `5120` is pinned with `strictPort`, so a second instance fails fast. The adopter-side `.flaitron/core/viz/` still works for offline / submodule-pinned use, but the global instance above is the recommended path.

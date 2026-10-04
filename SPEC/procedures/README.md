@@ -1,7 +1,7 @@
 # Procedure SOPs
 
 Agent-neutral **procedure SOPs**: the source-of-truth projection of a
-flowtron *execution procedure* (e.g. driving the `/ft-task` 4-phase
+flaitron *execution procedure* (e.g. driving the `/ft-task` 4-phase
 workflow) for contract-only agents that lack Claude Code's skill
 machinery.
 
@@ -89,7 +89,7 @@ later generator epic reconciles the two; today the SOP is hand-authored
 
 ## Loading convention
 
-1. A contract-only agent is asked to run a flowtron procedure (e.g.
+1. A contract-only agent is asked to run a flaitron procedure (e.g.
    "start CORE-123" → the `ft-task` procedure).
 2. The agent's per-platform wrapper `<platform>/procedures/<procedure>.md`
    routes it to `SPEC/procedures/<procedure>.md` (it points; it does not

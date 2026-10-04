@@ -37,8 +37,8 @@ reference.
 
 ## 🧩 Tasks
 
-Proposed decomposition into Flowtron work. Each line names a **suggested**
-Flowtron type plus a one-line scope. Conversion stays operator-driven — run
+Proposed decomposition into Flaitron work. Each line names a **suggested**
+Flaitron type plus a one-line scope. Conversion stays operator-driven — run
 the named skill yourself; a spec never files PLAN entries or tasknotes.
 
 - **[epic]** `<scope>` — file via `/ft-epic-discovery`

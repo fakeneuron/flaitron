@@ -1,9 +1,9 @@
 ---
 name: ft-epic-discovery
-description: File a new flowtron epic and drive its `.1` Discovery tasknote in one motion, filing parent, `.1`, and `.N` audit PLAN lines and scaffolding `.1` with tailored pre-fill. With `--deep`, stages a constitution-specify-clarify pre-pass for high-uncertainty epics before Phase 1 Discovery begins.
+description: File a new flaitron epic and drive its `.1` Discovery tasknote in one motion, filing parent, `.1`, and `.N` audit PLAN lines and scaffolding `.1` with tailored pre-fill. With `--deep`, stages a constitution-specify-clarify pre-pass for high-uncertainty epics before Phase 1 Discovery begins.
 ---
 
-# ft-epic-discovery — flowtron epic filing + Discovery driver
+# ft-epic-discovery — flaitron epic filing + Discovery driver
 
 You are filing a new epic and driving its `.1` Discovery tasknote in one motion. The full lifecycle contract lives in `<SPEC_DIR>/epic.md` — this skill is the executable interpretation of the lifecycle's filing-and-Discovery side, not a replacement. Treat `SPEC/epic.md` as authoritative when this file is silent or in tension.
 
@@ -13,8 +13,8 @@ The skill takes one optional argument: `--deep`. When passed, it stages a `const
 
 Two layouts. Pick by which file exists:
 
-- **Adopter project:** `.flowtron/core/SPEC.md` exists → `<root>` = `.flowtron/core/`.
-- **Flowtron self-host:** repo-root `SPEC.md` with heading `# Flowtron — Workflow Specification` → `<root>` = repo-root.
+- **Adopter project:** `.flaitron/core/SPEC.md` exists → `<root>` = `.flaitron/core/`.
+- **Flaitron self-host:** repo-root `SPEC.md` with heading `# Flaitron — Workflow Specification` → `<root>` = repo-root.
 
 If neither matches, bail.
 
@@ -23,13 +23,13 @@ Paths this skill uses:
 - SPEC_DIR (lazy modules `epic.md` · `post-closure.md`): `<root>SPEC/`
 - SKILL_DIR (lazy fragment `step-5.5-deep-prepass.md`): `<root>claude/skills/ft-epic-discovery/`
 - Template: `<root>templates/tasknote-template.md`
-- PLAN: `.flowtron/PLAN.md`, tasknote dir: `.flowtron/tasknote/` (always)
+- PLAN: `.flaitron/PLAN.md`, tasknote dir: `.flaitron/tasknote/` (always)
 
 After resolving paths, Read `<SPEC_DIR>/epic.md` for the canonical lifecycle before drafting anything.
 
 ## Step 1 — Pre-flight
 
-- `.flowtron/PLAN.md` must exist (cwd is a flowtron-adopting project or flowtron itself).
+- `.flaitron/PLAN.md` must exist (cwd is a flaitron-adopting project or flaitron itself).
 - **Foreign-dirt gate (paper-complete guard).** Before PLAN writes / scaffold, run `git status --porcelain`. If non-empty: **STOP**, surface the dirt list, ask the operator to commit / stash / discard themselves, then re-invoke. Do not auto-clean. See SPEC §"Paper-complete guard".
 - The conversation should already have surfaced enough context to motivate filing an epic: a problem worth bracketing with Discovery + Audit subtasks, not a single-task scope. If the conversation has only surfaced a single-task scope, surface to the user: "This looks like single-task scope rather than an epic — recommend `/ft-file-followup [ID] --starter` or a one-line PLAN.md filing instead." Do not proceed unless the user confirms epic scope.
 
@@ -53,7 +53,7 @@ The skill recognizes one optional argument: `--deep`. Branch:
 
 Use AskUserQuestion to gather all inputs in one motion. Pre-populate from conversation context where possible — the AI proposes; the user confirms or overrides:
 
-1. **Area** — per SPEC §"Task ID convention"; any project-specific prefixes declared in `.flowtron/tasknote/README.md`. AI proposes from conversation context.
+1. **Area** — per SPEC §"Task ID convention"; any project-specific prefixes declared in `.flaitron/tasknote/README.md`. AI proposes from conversation context.
 2. **Shortname** — concise label up to ~30 chars (e.g., `expand-shipped-skills`, `viz-keyboard-overhaul`). Used as the parent epic's `| shortname` segment.
 3. **Priority** — `High | Medium | Low | Future Opportunities`. AI proposes its best read. For urgent epics, propose `High` with a `[!critical]` flag on the parent (see `SPEC/task-line-segments.md`).
 4. **Model** — see `SPEC/model.md` §"Model field" (and its "Practical guidance and agent-aware defaults" subsection) for examples and realistic defaults (mid-tier models like Grok/Sonnet often `[medium]`, or `[light]` for mechanical work); AI proposes a token (primary labels or specific name); goes on every PLAN.md line this skill writes.
@@ -63,7 +63,7 @@ The user may decline the audit subtask if the epic is a simple multi-child imple
 
 ## Step 3 — Resolve next available `<AREA>-EPIC-<N>`
 
-Scan `.flowtron/PLAN.md` AND `.flowtron/tasknote/archive/<area>/` for the highest used numeric suffix in the chosen area, considering BOTH regular task IDs (`<AREA>-NNN`, `<AREA>-NNN.M`) AND epic IDs (`<AREA>-EPIC-NNN`). Per SPEC §"Task ID convention": `<AREA>-EPIC-<N>` and `<AREA>-<N>.<sub>` share the numeric suffix — the epic and its children use the same N.
+Scan `.flaitron/PLAN.md` AND `.flaitron/tasknote/archive/<area>/` for the highest used numeric suffix in the chosen area, considering BOTH regular task IDs (`<AREA>-NNN`, `<AREA>-NNN.M`) AND epic IDs (`<AREA>-EPIC-NNN`). Per SPEC §"Task ID convention": `<AREA>-EPIC-<N>` and `<AREA>-<N>.<sub>` share the numeric suffix — the epic and its children use the same N.
 
 Compute `next-N = max-used + 1`. The new parent epic ID = `<AREA>-EPIC-<next-N>`; children will be `<AREA>-<next-N>.1` (Discovery), `<AREA>-<next-N>.2..(M+1)` (implementation, filed during Phase 2), and `<AREA>-<next-N>.N` (audit — the reserved literal suffix, filed now).
 
@@ -83,7 +83,7 @@ The user may override the numeric suffix (e.g., to align with an externally-trac
 
 ## Step 4 — File the PLAN.md lines
 
-Append to `.flowtron/PLAN.md` under the chosen `## <Priority>` heading. Use the canonical task-line grammar (SPEC §"Task-line format"; a dependency on another row is `Blocked by [[<ID>]]`, wikilink-only — `SPEC/plan-parser.md` §"Long-description conventions"). Three lines (or two if N excludes audit), nested with 2-space indent under the parent for the subtask lines:
+Append to `.flaitron/PLAN.md` under the chosen `## <Priority>` heading. Use the canonical task-line grammar (SPEC §"Task-line format"; a dependency on another row is `Blocked by [[<ID>]]`, wikilink-only — `SPEC/plan-parser.md` §"Long-description conventions"). Three lines (or two if N excludes audit), nested with 2-space indent under the parent for the subtask lines:
 
 ```markdown
 - [ ] **<AREA>-EPIC-<next-N>** [<model>] | <shortname> — One-paragraph epic description (filed via /ft-epic-discovery; refined at .1 closure).
@@ -95,7 +95,7 @@ Placement:
 
 - If the priority section already has entries, append to the bottom of that section.
 - If the section carries a `(none)` placeholder, replace the placeholder with the new entries.
-- Preserve the 2-space child indent on the `.1` and `.N` lines (per CORE-EPIC-057 cohort in `.flowtron/PLAN.md`: `  - [ ] **CORE-057.1** ...`).
+- Preserve the 2-space child indent on the `.1` and `.N` lines (per CORE-EPIC-057 cohort in `.flaitron/PLAN.md`: `  - [ ] **CORE-057.1** ...`).
 
 Do NOT pre-write `.2..(M+1)` lines here — that is the Discovery's Phase 2 deliverable.
 
@@ -116,14 +116,14 @@ Pre-populate `## 🎯 Goal`, `## ✅ Acceptance`, and `## 🧩 Subtasks` with th
 
 **Goal (one sentence):**
 
-> Scope the `<AREA>-EPIC-<next-N>` epic (`<shortname>`) before any implementation child fires; deliverable = filed concrete child scopes for `<AREA>-<next-N>.2..(M+1)` in `.flowtron/PLAN.md`.
+> Scope the `<AREA>-EPIC-<next-N>` epic (`<shortname>`) before any implementation child fires; deliverable = filed concrete child scopes for `<AREA>-<next-N>.2..(M+1)` in `.flaitron/PLAN.md`.
 
 **Acceptance (parameterized):**
 
 ```markdown
 - [ ] Shared design surface inventoried for the epic (sources, adopter wiring, SPEC contract impact, templates) — captured in Discovery Notes
 - [ ] Open scoping questions resolved with the user via AskUserQuestion — captured in a "Resolved scoping" table in Discovery Notes
-- [ ] Concrete child scopes for <AREA>-<next-N>.2 .. <AREA>-<next-N>.<M+1> filed in .flowtron/PLAN.md (each line under the 50w target / 70w hard cap per SPEC/tasknote-selection.md §"PLAN.md filing-discipline thresholds")
+- [ ] Concrete child scopes for <AREA>-<next-N>.2 .. <AREA>-<next-N>.<M+1> filed in .flaitron/PLAN.md (each line under the 50w target / 70w hard cap per SPEC/tasknote-selection.md §"PLAN.md filing-discipline thresholds")
 - [ ] Audit line <AREA>-<next-N>.N reviewed and confirmed as-filed (or rewritten if the Discovery surfaces a scope shift)
 - [ ] Phase 4 doc-drift sweep at closure: typically no AI-referenced doc updates land in pure Discovery filing (contract edits land inside the implementation children)
 ```
@@ -132,11 +132,11 @@ Pre-populate `## 🎯 Goal`, `## ✅ Acceptance`, and `## 🧩 Subtasks` with th
 
 ```markdown
 - [ ] Inventory shared design surface (source files, adopter-wiring surfaces, SPEC contract impact, templates) — log in Discovery Notes
-- [ ] Skim .flowtron/tasknote/archive/<area>/ for relevant precedents — log load-bearing findings in Discovery Notes
+- [ ] Skim .flaitron/tasknote/archive/<area>/ for relevant precedents — log load-bearing findings in Discovery Notes
 - [ ] Drift check on cited paths and concepts — flag any drift before re-interpreting the epic
 - [ ] Surface open scoping questions via AskUserQuestion (typical: per-child shortname + scope + adopter-wiring policy) — record answers in a "Resolved scoping" table
 - [ ] Draft refined long descriptions for <AREA>-<next-N>.2 .. <AREA>-<next-N>.<M+1>; word-count each (≤50w target / 70w hard cap)
-- [ ] Phase 2: write the drafted child lines into .flowtron/PLAN.md under <AREA>-EPIC-<next-N> with 2-space indent
+- [ ] Phase 2: write the drafted child lines into .flaitron/PLAN.md under <AREA>-EPIC-<next-N> with 2-space indent
 - [ ] Phase 3: markdown mental-pass on the PLAN.md edits (grammar / indent / cross-refs)
 - [ ] Phase 4: doc-drift sweep + flip .1 PLAN line to stub form + archive tasknote
 ```
@@ -184,12 +184,12 @@ Do not enter Phase 2 until every Phase 1 box is ticked. Once ticked, apply the S
 The Phase 2 deliverable is the filed child lines. Walk the Phase 2 checklist:
 
 - **Pattern survey** — the existing CORE-EPIC-057 children are the closest precedent for the cohort-children filing pattern (2-space indent under the parent; `[<model>]` tag preserved on every line; em-dash separator; per-child long description ≤50w target / 70w hard cap).
-- **Implemented the minimal solution** — write the drafted `.2..(M+1)` child lines into `.flowtron/PLAN.md` directly under the existing `.1` Discovery line, before the `.N` audit line (or at the bottom if the epic excluded audit). Preserve the 2-space child indent. Word-count each line; rewrite if any breach the 70w cap.
+- **Implemented the minimal solution** — write the drafted `.2..(M+1)` child lines into `.flaitron/PLAN.md` directly under the existing `.1` Discovery line, before the `.N` audit line (or at the bottom if the epic excluded audit). Preserve the 2-space child indent. Word-count each line; rewrite if any breach the 70w cap.
 - **Updated/added tests** — N/A (pure PLAN.md filing; no executable code surface).
 
 **Downstream-impact reconciliation scan.** SPEC/tasknote-selection.md §"Downstream-impact reconciliation" is authoritative for the triggers, the three scan steps, the impact classes, and the reconcile actions. The child cohort is a **new-task filing** trigger, so run the scan after writing the `.2..(M+1)` lines — scoping it to the **rest of** the active PLAN, since the just-filed children are themselves out of scope. A fresh-area epic whose children obviously touch nothing already filed skips it (judgment) — note "no downstream impact" and move on. Its user-confirm is an **AskUserQuestion-style review prompt, not a new banner** — the two-banner cap (🛠️ Phase 1→2 + 📦 ready-to-commit) is preserved, consistent with Step 5.5's per-stage gates.
 
-**`[unattended]` candidacy** (mirror of `SPEC/unattended-candidacy.md` §"Three postures" — Read that module now, at this write step). Run its §"Candidacy predicate" over each `.2..(M+1)` line as just written **and** over the `.N` audit row Step 4 filed — `[model]`, any `[!critical]`, the description, any `Blocked by` clause. Step 4's parent + `.1` lines are **never proposed** (clauses 5–6 by construction) and are not re-evaluated here. Clause 6 on this surface: the `.1` is this tasknote and closes at Step 9 of the same motion, so the implementation child with no filed predecessor reads its predecessor as closed; every later child is admitted only when its stem predecessor — per the Fan-out classification Discovery settled (filled below), or `.k-1` when undeclared — is proposed in the same pass; `.N` needs only clauses 1–4. Every clause must hold; when one is uncertain the row is not a candidate. A candidate is **proposed, never seeded**: it is shown in the review prompt below with the token in place, and the token is written only on rows the operator's confirmation keeps. This skill accepts neither `--fast` nor `--unattended` (Step 1.5), so only the attended branch applies — the `unattended-candidates:` emission line never fires from this surface. Flowtron itself never writes `[unattended]` on its own discretion (`SPEC/task-line-segments.md`).
+**`[unattended]` candidacy** (mirror of `SPEC/unattended-candidacy.md` §"Three postures" — Read that module now, at this write step). Run its §"Candidacy predicate" over each `.2..(M+1)` line as just written **and** over the `.N` audit row Step 4 filed — `[model]`, any `[!critical]`, the description, any `Blocked by` clause. Step 4's parent + `.1` lines are **never proposed** (clauses 5–6 by construction) and are not re-evaluated here. Clause 6 on this surface: the `.1` is this tasknote and closes at Step 9 of the same motion, so the implementation child with no filed predecessor reads its predecessor as closed; every later child is admitted only when its stem predecessor — per the Fan-out classification Discovery settled (filled below), or `.k-1` when undeclared — is proposed in the same pass; `.N` needs only clauses 1–4. Every clause must hold; when one is uncertain the row is not a candidate. A candidate is **proposed, never seeded**: it is shown in the review prompt below with the token in place, and the token is written only on rows the operator's confirmation keeps. This skill accepts neither `--fast` nor `--unattended` (Step 1.5), so only the attended branch applies — the `unattended-candidates:` emission line never fires from this surface. Flaitron itself never writes `[unattended]` on its own discretion (`SPEC/task-line-segments.md`).
 
 **The review prompt fires when either the scan proposes an action or the predicate admits a row** — the same AskUserQuestion-style prompt, one more trigger; with neither, no prompt, as before. It shows each candidate line with `[unattended]` in place after `[<model>]` and any model-suggestion glyph (SPEC §"Task-line format"; position footgun in `SPEC/plan-parser.md`), naming the clause-6 predecessor where one applies, alongside any reconcile proposals. The operator's assent keeps a token; an edit that drops it drops it; a declined row shows no token and says nothing. After the confirmation, add the token to each confirmed row in place — the just-written children and the Step 4 `.N` alike: insert it after `[<model>]` and copy every other segment verbatim. Neither the candidacy nor the reconcile proposal adds a cue, banner, or checklist box.
 
@@ -245,7 +245,7 @@ The three-step post-closure protocol (commit / suggest next move / offer copy-pa
 - **Audit subtask is optional.** Per `SPEC/epic.md` line 11, simpler multi-child implementations don't need the Discovery + Audit bracket. Step 2's AskUserQuestion offers the option to skip the audit; in that case Step 4 files only the parent + `.1` and the epic has no `.N` audit slot.
 - **M can shift during Discovery.** If the Discovery surfaces that the implementation-child count M was wrong (scope shrinks or grows), Phase 2 in Step 7 files a different number of numeric children (`.2..(M+1)`) — the audit's reserved `.N` suffix is unaffected and never renumbers. Document the shift in Implementation Notes.
 - **Parent description is a placeholder.** The parent epic's long description filed in Step 4 is a one-paragraph placeholder; the Discovery's Final Summary refines it at closure time. The visualizer parses both states identically.
-- **Auto-wired into adopters.** Symlinked into adopter projects via `claude/skills/ft-new-project/SKILL.md` Step 3 + `docs/MIGRATION.md` §1.2 + `claude/AGENTS-snippet.md`'s "One-time symlink wiring" section. New adopter projects bootstrapping via `/ft-new-project` get this skill automatically; existing adopters pick it up on next flowtron version bump.
+- **Auto-wired into adopters.** Symlinked into adopter projects via `claude/skills/ft-new-project/SKILL.md` Step 3 + `docs/MIGRATION.md` §1.2 + `claude/AGENTS-snippet.md`'s "One-time symlink wiring" section. New adopter projects bootstrapping via `/ft-new-project` get this skill automatically; existing adopters pick it up on next flaitron version bump.
 - **Compare with `/ft-close-epic`** — the sibling skill that scaffolds + drives the audit `.N` tasknote at the end of an epic and prompts the user to flip the parent line to `Completed`. `/ft-epic-discovery` opens an epic; `/ft-close-epic` closes it.
 - **Compare with `/ft-task`** — `/ft-task <ID>` runs an existing PLAN.md entry (starter, in-progress, or fresh) through the 4-phase workflow. `/ft-epic-discovery` files a new epic AND its first child AND drives that first child to closure. The two skills don't overlap.
 - **Compare with `/ft-file-followup --starter`** — `/ft-file-followup [ID] --starter` files a single starter tasknote with rich AI-captured context. `/ft-epic-discovery` files an epic + its first two child lines + drives a full Discovery. Use `--starter` when scope is single-task; use `/ft-epic-discovery` when scope warrants the Discovery + Audit bracket. **Cross-session handoff:** when an epic brief is fully formed in the current session but `/ft-epic-discovery` itself will run in a fresh session (e.g., `/clear` planned, model swap), file a starter now to park the brief — next session reads the starter file as context before invoking `/ft-epic-discovery`. See `claude/skills/ft-file-followup/starter-mode.md` §Notes "Proactive invocation on cross-session handoff".

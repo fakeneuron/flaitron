@@ -134,12 +134,12 @@ waiting for an answer — and it adds exactly one behavior on top. Where
 `--fast` still lets a gate fire, `--unattended` **parks the tasknote**
 instead of firing a banner into an empty session.
 
-**Runtime stays out.** Flowtron ships no orchestrator, scheduler,
+**Runtime stays out.** Flaitron ships no orchestrator, scheduler,
 dispatcher, or session daemon (see [`docs/VISION.md`](../docs/VISION.md)
 §"What we won't accept"). This posture is the **contract an orchestrator
 reports to** — the same boundary [`SPEC/loop.md`](loop.md) draws for loop
 runners, widened from one runner to any operator-less caller. Contract in
-flowtron, runtime in the caller.
+flaitron, runtime in the caller.
 
 ### What is inherited, and what is not
 
@@ -212,7 +212,7 @@ entered from a gate rather than from a hard dependency:
   from a destructive-action park without a transcript. The reason key and
   its code tokens live in [`SPEC/blocked.md`](blocked.md) §"Park reason".
 - **Stop.** Do not run Phase 3 or Phase 4. The tasknote stays at
-  `.flowtron/tasknote/<TASK-ID>.md`, the PLAN.md line stays unchecked, and
+  `.flaitron/tasknote/<TASK-ID>.md`, the PLAN.md line stays unchecked, and
   Phase 1 plus any partial Phase 2 work is preserved verbatim.
 
 Resume is unchanged: re-running the skill against the parked tasknote

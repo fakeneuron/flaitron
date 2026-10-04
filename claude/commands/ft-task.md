@@ -1,9 +1,9 @@
 ---
-description: Start a flowtron tasknote for the given task ID and drive it through the SPEC's 4-phase workflow. With `--debug`, adds a hypothesis-first cadence for bugs and unexpected behavior. With `--loop`, iterates Phase 2↔3 until a machine-checkable Acceptance check passes. With `--fast`, suppresses the conditional gates. With `--unattended`, runs the operator-less posture — gates park the tasknote instead of firing a banner.
+description: Start a flaitron tasknote for the given task ID and drive it through the SPEC's 4-phase workflow. With `--debug`, adds a hypothesis-first cadence for bugs and unexpected behavior. With `--loop`, iterates Phase 2↔3 until a machine-checkable Acceptance check passes. With `--fast`, suppresses the conditional gates. With `--unattended`, runs the operator-less posture — gates park the tasknote instead of firing a banner.
 argument-hint: <TASK-ID> [--debug | -d] [--loop] [--fast | -f] [--unattended]
 ---
 
-Invoke the `ft-task` skill with `args="$ARGUMENTS"`. The skill scaffolds `.flowtron/tasknote/$ARGUMENTS.md` from the flowtron template, runs Phase 1 Discovery, and continues through phases 2-4 plus the post-closure protocol.
+Invoke the `ft-task` skill with `args="$ARGUMENTS"`. The skill scaffolds `.flaitron/tasknote/$ARGUMENTS.md` from the flaitron template, runs Phase 1 Discovery, and continues through phases 2-4 plus the post-closure protocol.
 
 If `$ARGUMENTS` is empty, ask the user for a task ID before invoking the skill.
 
@@ -17,4 +17,4 @@ Usage:
 
 The flags are orthogonal and compose in any order; the skill's Step 0 defines each mode.
 
-For small file + execute one-shots, use `/ft-micro-task <TASK-ID>`. For lightweight follow-up filings, use `/ft-file-followup [TASK-ID]` (no tasknote artifact; `--starter` files a rich-context starter instead). For opening a new epic, use `/ft-epic-discovery`. For closing one, use `/ft-close-epic`. For bootstrapping a fresh repo with flowtron, use `/ft-new-project`.
+For small file + execute one-shots, use `/ft-micro-task <TASK-ID>`. For lightweight follow-up filings, use `/ft-file-followup [TASK-ID]` (no tasknote artifact; `--starter` files a rich-context starter instead). For opening a new epic, use `/ft-epic-discovery`. For closing one, use `/ft-close-epic`. For bootstrapping a fresh repo with flaitron, use `/ft-new-project`.

@@ -3,7 +3,7 @@
 > Lazy-loaded SPEC module. Loaded by `/ft-task` Step 3c when an existing tasknote has `status: blocked`, at Step 5 if a hard dependency surfaces mid-Phase-2, and at Step 0 under `--unattended` (every gate conversion writes a park, and the `park-reason:` code set lives here). See `SPEC.md` for the always-loaded core spec.
 
 A task can be **blocked** at two distinct points in its lifecycle, and
-flowtron records each at a different layer. The two signals are independent
+flaitron records each at a different layer. The two signals are independent
 — they describe different states and serve different consumers. A third,
 optional tasknote-YAML key `blocked-by:` is a *planning* claim (durable
 file ownership / predecessor), not a don't-start gate and not a park —
@@ -90,7 +90,7 @@ mandatory under `--unattended`, recommended otherwise),
 optionally add `Blocked by [[ID]]` to the PLAN.md line (recommended for viz
 visibility, not required — the two signals stay independent), and stop. Do
 not run Phase 3 or Phase 4. The tasknote sits at
-`.flowtron/tasknote/<TASK-ID>.md` until the blocker clears.
+`.flaitron/tasknote/<TASK-ID>.md` until the blocker clears.
 
 **Parked state.** A blocked tasknote is paused, not closed — Phase 4 is
 reserved for actual completion (or a Phase 1 De-scope). The tasknote is not
@@ -213,11 +213,11 @@ parked work, flip back to `in-progress`, restore the `🟢 In progress` chip,
 remove `park-reason:`, continue Phase 2. No new flag, no second resume path,
 and no executable change to any runner.
 
-**Flowtron performs neither write.** It ships no crash detector, no supervisor,
+**Flaitron performs neither write.** It ships no crash detector, no supervisor,
 and no session daemon (`docs/VISION.md` §"What we won't accept") — a runner
 cannot annotate a note in a session that no longer exists. This section is the
 contract the caller reports to; the two writes are the caller's, exactly as the
-`--unattended` posture is flowtron's contract and the orchestrator is not
+`--unattended` posture is flaitron's contract and the orchestrator is not
 ([`SPEC/gate-postures.md`](gate-postures.md) §"`--unattended` operator posture").
 
 **Scoped to `in-progress`.** The other two refused statuses are not this case

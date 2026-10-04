@@ -1,13 +1,13 @@
 # Context budget
 
-Per-file byte budgets for the surfaces an agent loads to run one flowtron task,
+Per-file byte budgets for the surfaces an agent loads to run one flaitron task,
 and the measured ledger of what each surface costs today.
 
 This is a **mechanism** under [SPEC.md](../SPEC.md) Core Principle #3 ("One task
 per context window"), not a new principle. [[CORE-382]] deliberately demoted
-context economy from flowtron's pitch to a mechanism; this doc keeps it there.
+context economy from flaitron's pitch to a mechanism; this doc keeps it there.
 Nothing below is a promise about how any particular agent allocates its window —
-it is a promise flowtron makes about the size of the files it ships.
+it is a promise flaitron makes about the size of the files it ships.
 
 > **This doc is read at release time, not at task time.** It is not part of the
 > always-loaded set it measures, and adding it there would defeat its own point —
@@ -122,11 +122,11 @@ the cut that made them stale skipped its own standing check.
 **Default-path cold start.** A ledger row, not a budget — nothing here is
 CI-enforced; it sums the surfaces a flagless `/ft-task <ID>.<sub>` reads before
 any Phase 1 write: `claude/commands/ft-task.md` (2,520) + `claude/skills/ft-task/SKILL.md`
-(29,338) + `SPEC.md` (47,007) + `.flowtron/tasknote/README.md` (10,734) +
+(29,338) + `SPEC.md` (47,007) + `.flaitron/tasknote/README.md` (10,734) +
 `templates/tasknote-template.md` (5,635) + `SPEC/gates.md` (20,444) +
 `SPEC/epic.md` (5,959) = **121,637 chars**
-(≈30k tokens; `.flowtron/PLAN.md`'s own band, below, is excluded since it isn't
-a flowtron-shipped surface). Re-measured at [[CORE-674]] — the −231 since [[CORE-664]]'s 121,840 is `gates.md` losing
+(≈30k tokens; `.flaitron/PLAN.md`'s own band, below, is excluded since it isn't
+a flaitron-shipped surface). Re-measured at [[CORE-674]] — the −231 since [[CORE-664]]'s 121,840 is `gates.md` losing
 464 (unrelated trims) against `ft-task/SKILL.md` +218 (CORE-656's review-probe
 box) and `SPEC.md` +15, net of the rest holding flat. Tracks
 the trend [[CORE-EPIC-604]] set out to cut: [[CORE-604.1]] measured ≈172k chars
@@ -174,17 +174,17 @@ stamped to this task rather than to v5.32.0.
 | `SPEC.md` | 47,007 |
 | `claude/skills/ft-task/SKILL.md` | 29,338 |
 | `AGENTS.md` (`CLAUDE.md` is a symlink to it) | 7,599 |
-| `.flowtron/tasknote/README.md` | 10,734 |
+| `.flaitron/tasknote/README.md` | 10,734 |
 | `templates/tasknote-template.md` | 5,635 |
-| `.flowtron/PLAN.md` | ~2–3k (band — see below) |
+| `.flaitron/PLAN.md` | ~2–3k (band — see below) |
 
-**Why `.flowtron/PLAN.md` carries a band and not a number.** Every other surface
+**Why `.flaitron/PLAN.md` carries a band and not a number.** Every other surface
 in this ledger changes only when a task deliberately edits it, so a drifted
 figure there is *signal* — it says an always-loaded surface grew, which is what
 the ratchet exists to catch. PLAN.md changes on **every** closure regardless of
 what the task was about, because closure itself rewrites a task line. Its exact
 size therefore reports how many tasks happen to be open today, not the size of
-anything flowtron ships: an adopter receives `templates/PLAN.md` (measured under
+anything flaitron ships: an adopter receives `templates/PLAN.md` (measured under
 §"Adopter-side always-loaded") and then grows their own. A precise figure here
 would be falsifiable on every commit and informative on none.
 
@@ -193,7 +193,7 @@ Do not "correct" the band back to a `wc -c` reading. [[CORE-537]] chose it over
 would understate its own total without it — and over *marking it
 release-refreshed*, which the §"Ledger" stamp above already says of every row
 and which would still leave this one stale between closures. The row stays
-unbudgeted for the same reason it is banded: flowtron cannot cap a file it does
+unbudgeted for the same reason it is banded: flaitron cannot cap a file it does
 not ship.
 
 ### Lazy `SPEC/` modules
@@ -259,7 +259,7 @@ ft-audit-repo 10,099.
 `ft-task`, `ft-file-followup --starter`, and demoted content; `ft-flowtron`,
 `ft-stats`, and `ft-audit-context` followed at v5.29.0 (CORE-603.2/603.3), the
 last folded into `ft-audit` as its `context` domain — eight fewer rows here
-across the two cuts, not eight fewer surfaces flowtron covers.
+across the two cuts, not eight fewer surfaces flaitron covers.
 
 Lazy fragments are not counted against a skill's row — they arrive later, and
 only on the branch that needs them. Whole-directory totals for the two largest:
@@ -315,7 +315,7 @@ lands it. The standing check in
 [`claude/skills/ft-release/step-7.1-standing-checks.md`](../claude/skills/ft-release/step-7.1-standing-checks.md)
 runs the identical script by hand at every release cut, then additionally
 applies the §"Known over budget" judgment above (which needs
-`.flowtron/PLAN.md` ownership context CI does not have) and refreshes the
+`.flaitron/PLAN.md` ownership context CI does not have) and refreshes the
 §"Ledger" below — both stay release-only.
 
 **Every number lives here and is restated nowhere.** The check measures; this doc
@@ -327,7 +327,7 @@ would be guarding its own stale copy.
 
 ## Not on the doc-drift sweep list
 
-`docs/CONTEXT-BUDGET.md` is deliberately **not** in `.flowtron/tasknote/README.md`
+`docs/CONTEXT-BUDGET.md` is deliberately **not** in `.flaitron/tasknote/README.md`
 §"AI-referenced docs", and should not be added.
 
 [[CORE-491]] settled that membership means *swept for drift*, which this doc's

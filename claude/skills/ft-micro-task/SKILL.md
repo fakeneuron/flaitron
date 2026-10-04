@@ -1,11 +1,11 @@
 ---
 name: ft-micro-task
-description: Start and complete a flowtron micro-tasknote in one shot for tasks above the skip threshold but below full ceremony. With `--fast` (`-f`), forces the autonomous-commit path at closure. With `--unattended`, runs with no operator present, parking at gates instead of asking.
+description: Start and complete a flaitron micro-tasknote in one shot for tasks above the skip threshold but below full ceremony. With `--fast` (`-f`), forces the autonomous-commit path at closure. With `--unattended`, runs with no operator present, parking at gates instead of asking.
 ---
 
-# micro-task — flowtron micro-tasknote runner
+# micro-task — flaitron micro-tasknote runner
 
-You are starting **and completing** a micro-tasknote for the task ID provided in `args` (e.g., `CORE-050`). The full workflow contract lives in flowtron's `SPEC.md` — this skill is the executable interpretation, not a replacement. Treat SPEC.md as authoritative when this file is silent or in tension.
+You are starting **and completing** a micro-tasknote for the task ID provided in `args` (e.g., `CORE-050`). The full workflow contract lives in flaitron's `SPEC.md` — this skill is the executable interpretation, not a replacement. Treat SPEC.md as authoritative when this file is silent or in tension.
 
 A **micro-tasknote** is a single-section lightweight tasknote for tasks above the skip-tasknote threshold (more than a one-line typo, more than ~10 doc lines) but small enough that the full 4-phase ceremony is overkill — typically tasks under ~30 minutes of effort: small audits, focused doc patches, single-file behavior tweaks with no design tradeoffs to record. The non-negotiable contracts (relevance, drift, archive skim, best-practices review, and pattern survey) survive as **bold-prefix prompts** in a single `## ⚡ Notes` section rather than checklist boxes. Closure is one step (recap + flip PLAN + archive).
 
@@ -17,8 +17,8 @@ If `args` is missing or its first token doesn't match `<AREA>-<NUMBER>` (or `<AR
 
 Two layouts. Pick by which file exists:
 
-- **Adopter project:** `.flowtron/core/SPEC.md` exists → `<root>` = `.flowtron/core/`.
-- **Flowtron self-host:** repo-root `SPEC.md` with heading `# Flowtron — Workflow Specification` → `<root>` = repo-root.
+- **Adopter project:** `.flaitron/core/SPEC.md` exists → `<root>` = `.flaitron/core/`.
+- **Flaitron self-host:** repo-root `SPEC.md` with heading `# Flaitron — Workflow Specification` → `<root>` = repo-root.
 
 If neither matches, bail.
 
@@ -29,7 +29,7 @@ Paths this skill uses:
 - MODEL_EDGE (shared Step 1.5 fragment, owned by `/ft-task`): `<root>claude/skills/ft-task/step-1.5-model-edge.md`
 - UNATTENDED (shared `--unattended` fragment, owned by `/ft-task`): `<root>claude/skills/ft-task/unattended-mode.md`
 - Micro template: `<root>templates/tasknote-micro-template.md`
-- PLAN: `.flowtron/PLAN.md`, tasknote dir: `.flowtron/tasknote/` (always)
+- PLAN: `.flaitron/PLAN.md`, tasknote dir: `.flaitron/tasknote/` (always)
 
 Step 1.5 Reads `<SPEC_DIR>/model.md` and `<MODEL_EDGE>` in parallel on its edge-case branches (category under-tier / concrete mismatch / legacy); a satisfied tag proceeds without the read. `<MODEL_EDGE>` is shared across the two model-gate skills — substitute `/ft-micro-task` for its `<SKILL>` placeholder when surfacing a branch.
 
@@ -75,18 +75,18 @@ Two lines: the ID and the `| shortname`, then 1-2 sentences of purpose drawn fro
 
 ```text
 ⚠️ PLAN.md `## Completed` holds <N> rows (>60). Consider rotating the
-   oldest rows to `.flowtron/PLAN-ARCHIVE.md`. Proceeding.
+   oldest rows to `.flaitron/PLAN-ARCHIVE.md`. Proceeding.
 ```
 
 Informational only — never block, never rotate. Rotation is an operator motion; the bound, the month-block granularity, and the two never-split rules are canonical in SPEC/plan-filing.md §"`## Completed` rotation".
 
 **Pre-flight checks:**
 
-- Resolve the **Area** by reading the `.flowtron/tasknote/README.md` §"Archive layout" table — every task, every prefix, canonical ones included. `<area>` is **never derived from the task ID**: lowercasing the prefix is the adopter's declaration-time default, not a resolution you may perform, and a project may deliberately declare a folder it would not produce (`OPS-*` → `archive/operations/`). See SPEC §"Task ID convention". If the table has no row for this prefix, stop and ask — do not guess a folder.
+- Resolve the **Area** by reading the `.flaitron/tasknote/README.md` §"Archive layout" table — every task, every prefix, canonical ones included. `<area>` is **never derived from the task ID**: lowercasing the prefix is the adopter's declaration-time default, not a resolution you may perform, and a project may deliberately declare a folder it would not produce (`OPS-*` → `archive/operations/`). See SPEC §"Task ID convention". If the table has no row for this prefix, stop and ask — do not guess a folder.
 - **Epic-ID dispatch.** If the TASK-ID is `<AREA>-EPIC-<N>` or `<AREA>-<N>.<sub>`, Read `<SPEC_DIR>/epic.md` for the lifecycle contract before continuing. (Micro-tasknotes for epic subtasks are valid — same lifecycle, lighter ceremony.)
 - **Foreign-dirt gate (paper-complete guard).** Before scaffold writes, run `git status --porcelain`. If non-empty: **STOP**, surface the dirt list, ask the operator to commit / stash / discard themselves, then re-invoke. Do not auto-clean. See SPEC §"Paper-complete guard".
-- If `.flowtron/tasknote/<TASK-ID>.md` already exists: stop. The tasknote is in flight or already closed-but-not-archived. Surface the conflict; recommend the user continue conversationally rather than restarting. If the session that started it is gone (killed, out of context, an orchestrator's child that exited), that recommendation is unreachable — name the park-then-resume path in `<SPEC_DIR>/blocked.md` §"Resuming an interrupted run" instead.
-- If `.flowtron/tasknote/archive/<area>/<TASK-ID>.md` already exists: stop. The task is closed and archived. Surface the conflict.
+- If `.flaitron/tasknote/<TASK-ID>.md` already exists: stop. The tasknote is in flight or already closed-but-not-archived. Surface the conflict; recommend the user continue conversationally rather than restarting. If the session that started it is gone (killed, out of context, an orchestrator's child that exited), that recommendation is unreachable — name the park-then-resume path in `<SPEC_DIR>/blocked.md` §"Resuming an interrupted run" instead.
+- If `.flaitron/tasknote/archive/<area>/<TASK-ID>.md` already exists: stop. The task is closed and archived. Surface the conflict.
 
 ## Step 1.5 — Model gate (BEFORE scaffolding)
 
@@ -103,9 +103,9 @@ Branch on the verdict:
 
 ## Step 2 — Scaffold the micro-tasknote
 
-**Sidequest-stub retirement.** If `.flowtron/sidequest/<TASK-ID>.md` exists, this scaffold is a sidequest promotion — delete it now (`rm .flowtron/sidequest/<TASK-ID>.md`). Contract: `claude/skills/ft-file-followup/park-mode.md` §Notes → "Promotion" ("Delete `.flowtron/sidequest/<ID>.md` after promotion"); this executes it at the point a promoting run actually writes, instead of relying on the promoter to remember a rule stated only in that fragment and `docs/GLOSSARY.md`.
+**Sidequest-stub retirement.** If `.flaitron/sidequest/<TASK-ID>.md` exists, this scaffold is a sidequest promotion — delete it now (`rm .flaitron/sidequest/<TASK-ID>.md`). Contract: `claude/skills/ft-file-followup/park-mode.md` §Notes → "Promotion" ("Delete `.flaitron/sidequest/<ID>.md` after promotion"); this executes it at the point a promoting run actually writes, instead of relying on the promoter to remember a rule stated only in that fragment and `docs/GLOSSARY.md`.
 
-Copy the micro template (path resolved in Step 0) to `.flowtron/tasknote/<TASK-ID>.md`. Frontmatter and body shape: see SPEC §"Tasknote frontmatter" + §"Tasknote body shape" + `SPEC/tasknote-selection.md` §"When to use a tasknote (and when not to)" micro carve-out for the `## ⚡ Notes` / `## ✅ Recap` skeleton.
+Copy the micro template (path resolved in Step 0) to `.flaitron/tasknote/<TASK-ID>.md`. Frontmatter and body shape: see SPEC §"Tasknote frontmatter" + §"Tasknote body shape" + `SPEC/tasknote-selection.md` §"When to use a tasknote (and when not to)" micro carve-out for the `## ⚡ Notes` / `## ✅ Recap` skeleton.
 
 **Skill-specific scaffold values:**
 
@@ -122,9 +122,9 @@ Skill-specific imperatives on top of the SPEC contracts:
 
 - **Relevance:** if `Re-scope`, a meaningful re-scope usually means promote to `/ft-task` — archive the micro and re-invoke `/ft-task <ID>`. If `De-scope`, jump to Step 4 with the de-scope rationale as the recap.
 - **Declared scope:** fill the note's **Declared scope** line — YAML `touches:` with the paths this task expects to edit, or `N/A — no file deliverable`. Reconciled in the Recap against `git diff --name-only`; a recorded fact, never a gate (SPEC §"Tasknote frontmatter").
-- **Archive skim recipe:** `ls .flowtron/tasknote/archive/<area>/`, then `grep -l <path> .flowtron/tasknote/archive/<area>/*.md` for source paths in scope (prefer YAML `touches:` when set). Read hits; also open IDs named by Related / `supersedes` / ⚠️ pointers — still grep + read, no query engine; log load-bearing findings inline. Empty or absent `archive/<area>/` → re-check `<area>` against the README table before believing it (a derived-and-wrong folder reads exactly like an empty one); once confirmed, `no prior tasknotes` and move on.
+- **Archive skim recipe:** `ls .flaitron/tasknote/archive/<area>/`, then `grep -l <path> .flaitron/tasknote/archive/<area>/*.md` for source paths in scope (prefer YAML `touches:` when set). Read hits; also open IDs named by Related / `supersedes` / ⚠️ pointers — still grep + read, no query engine; log load-bearing findings inline. Empty or absent `archive/<area>/` → re-check `<area>` against the README table before believing it (a derived-and-wrong folder reads exactly like an empty one); once confirmed, `no prior tasknotes` and move on.
 
-Then **do the work**: extend an established pattern or justify a new one; check DRY and responsibility boundaries; refactor only when Acceptance requires it or the touched path would otherwise introduce duplication, obscure responsibility, or violate a dependency boundary. Record that reason and defer unrelated cleanup. Run targeted tests + lint/type-check on changed files, then record the **Verification receipt** inline — each command as `command → exit code` with the first failure line when non-zero — and confirm alongside it the canonical structural quality assertions for changed code (otherwise `N/A` with reason). Micro-tasknotes have no Testing Notes section; the receipt goes in the **Implementation** bold-prefix. Update **Implementation** bold-prefix as you go (what changed, key decisions). At closure-readiness fill **Docs touched:** per `.flowtron/tasknote/README.md` §"AI-referenced docs" (the micro-tasknote equivalent of `/ft-task`'s Phase 4 doc-drift sweep): "no change" or the specific update.
+Then **do the work**: extend an established pattern or justify a new one; check DRY and responsibility boundaries; refactor only when Acceptance requires it or the touched path would otherwise introduce duplication, obscure responsibility, or violate a dependency boundary. Record that reason and defer unrelated cleanup. Run targeted tests + lint/type-check on changed files, then record the **Verification receipt** inline — each command as `command → exit code` with the first failure line when non-zero — and confirm alongside it the canonical structural quality assertions for changed code (otherwise `N/A` with reason). Micro-tasknotes have no Testing Notes section; the receipt goes in the **Implementation** bold-prefix. Update **Implementation** bold-prefix as you go (what changed, key decisions). At closure-readiness fill **Docs touched:** per `.flaitron/tasknote/README.md` §"AI-referenced docs" (the micro-tasknote equivalent of `/ft-task`'s Phase 4 doc-drift sweep): "no change" or the specific update.
 
 If a hard dependency surfaces, abandon the micro-tasknote and re-file as `/ft-task` (or a `/ft-file-followup --starter` starter) — micro-tasks are not designed to park. Surface and ask.
 
@@ -135,7 +135,7 @@ The single closure step. Per SPEC §"Paper-complete guard", flip PLAN/archive on
 1. **Fill ✅ Recap** — evidence-based final summary: changed paths/LOC where meaningful, verification results, refactors made or deferred with rationale, documentation verdict, and maintainability effect.
 2. **Flip YAML `status:`** — `in-progress` → `completed`; set `Archived:` to today's date (`YYYY-MM-DD`).
 3. **Update PLAN.md** — flip the line to the stub form (see SPEC/plan-filing.md §"`## Completed` archive convention" if unclear). For a standalone task, move the row to the top of `## Completed`; for an epic child, preserve its 2-space nesting beneath the active parent until `/ft-close-epic` moves the whole cohort.
-4. **Verify, then move** — before the `mv`, run `grep -q '^status: completed$' .flowtron/tasknote/<TASK-ID>.md`; a failing result means step 2's status flip is still outstanding — fix it and re-run rather than moving (the Acceptance-box half of `/ft-task`'s same check is vacuous here — micro-tasknotes carry no `## ✅ Acceptance` section). Same idiom as `/ft-release` §7.1 Pair P and `/ft-task`'s pre-move gate; applies identically under `--fast`/`--unattended`. Then `mv .flowtron/tasknote/<TASK-ID>.md .flowtron/tasknote/archive/<area>/<TASK-ID>.md`.
+4. **Verify, then move** — before the `mv`, run `grep -q '^status: completed$' .flaitron/tasknote/<TASK-ID>.md`; a failing result means step 2's status flip is still outstanding — fix it and re-run rather than moving (the Acceptance-box half of `/ft-task`'s same check is vacuous here — micro-tasknotes carry no `## ✅ Acceptance` section). Same idiom as `/ft-release` §7.1 Pair P and `/ft-task`'s pre-move gate; applies identically under `--fast`/`--unattended`. Then `mv .flaitron/tasknote/<TASK-ID>.md .flaitron/tasknote/archive/<area>/<TASK-ID>.md`.
 5. **Recap to the user** per SPEC §"🚀 Phase 4: Closure" — brief summary + optional verification request. **Recap is recap-only**; the next-task suggestion belongs in Step 5, not the recap. Wait for confirmation.
 
 Closure flips three things — YAML `status:`, the PLAN.md line, and the tasknote location — matching `/ft-task`'s Phase 4 per SPEC §"🚀 Phase 4: Closure". The `status:` write lands while the tasknote is still active, so SPEC §"Tasknote frontmatter" write-once does not reach it. Do not treat archive/Completed as done until Step 5's commit lands with deliverables.

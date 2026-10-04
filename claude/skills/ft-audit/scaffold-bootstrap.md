@@ -4,7 +4,7 @@
 
 The bootstrap adds **install repair**, never audit mechanics. Domain resolution, scope resolution, pass order, capped findings, finding format, closing sections, the write-to-PLAN step, and the hard rules are untouched by everything below — it runs once, ahead of pass 1, and returns either resolved values or an explicit degraded-run acknowledgement.
 
-Flowtron ships this skill as a **stack-neutral scaffold** whose scope, rubric,
+Flaitron ships this skill as a **stack-neutral scaffold** whose scope, rubric,
 and gate slots stay placeholders until a fork fills them. Run against unfilled
 slots, an audit has no project contracts to grade against: the rubric load
 finds nothing to open, the gates are uninvokable strings, and every "Why it
@@ -52,8 +52,8 @@ degraded*.
 
 ## 2. Resolve the install context
 
-- **Adopter** — `.flowtron/core/claude/skills/ft-audit/` resolves from the repo root. All three branches below are available; a thin overlay's referenced scaffold is `.flowtron/core/claude/skills/ft-audit/SKILL.md`.
-- **Flowtron-self** — no `.flowtron/core/` submodule, but repo-root `SPEC.md` exists with heading `# Flowtron — Workflow Specification` (the same detection `passes/context.md` §"Scope & rubric hints" uses for flowtron-mode). All three branches below are available; a thin overlay's referenced scaffold is the in-tree `claude/skills/ft-audit/SKILL.md` — there is no submodule to point at.
+- **Adopter** — `.flaitron/core/claude/skills/ft-audit/` resolves from the repo root. All three branches below are available; a thin overlay's referenced scaffold is `.flaitron/core/claude/skills/ft-audit/SKILL.md`.
+- **Flaitron-self** — no `.flaitron/core/` submodule, but repo-root `SPEC.md` exists with heading `# Flaitron — Workflow Specification` (the same detection `passes/context.md` §"Scope & rubric hints" uses for flaitron-mode). All three branches below are available; a thin overlay's referenced scaffold is the in-tree `claude/skills/ft-audit/SKILL.md` — there is no submodule to point at.
 - **Non-adopter** — neither resolves. A thin overlay's referenced-scaffold path would not resolve either, so **do not offer fork+fill**; offer only *run once* and *proceed degraded*, and say in one line why the fork option is absent.
 
 ## 3. Auto-derive candidate values
@@ -140,7 +140,7 @@ the step-3 derivation and then refusing to use it. Fork+fill remains the
 single *persistent* seam; the other two are a one-shot and an honest
 refusal.
 
-## 5. Fork + fill (adopter and flowtron-self repos, on explicit confirm only)
+## 5. Fork + fill (adopter and flaitron-self repos, on explicit confirm only)
 
 Install a **thin overlay** — it carries only the deltas and inherits every
 future scaffold improvement, which is exactly the "only the §0 surface
@@ -151,14 +151,14 @@ lookup depend on the install context resolved in step 2.
 
 ```sh
 mkdir -p .claude/skills/audit
-cp .flowtron/core/templates/audit-overlay-template.md .claude/skills/audit/SKILL.md
-cp .flowtron/core/claude/commands/ft-audit.md         .claude/commands/audit.md
+cp .flaitron/core/templates/audit-overlay-template.md .claude/skills/audit/SKILL.md
+cp .flaitron/core/claude/commands/ft-audit.md         .claude/commands/audit.md
 ```
 
-Set `flowtron-reconciled:` to the currently pinned flowtron tag (`git -C
-.flowtron/core describe --tags`).
+Set `flaitron-reconciled:` to the currently pinned flaitron tag (`git -C
+.flaitron/core describe --tags`).
 
-**Flowtron-self:**
+**Flaitron-self:**
 
 ```sh
 mkdir -p .claude/skills/audit
@@ -166,14 +166,14 @@ cp templates/audit-overlay-template.md .claude/skills/audit/SKILL.md
 cp claude/commands/ft-audit.md         .claude/commands/audit.md
 ```
 
-Set `flowtron-reconciled:` to this checkout's own tag (`git describe --tags`),
+Set `flaitron-reconciled:` to this checkout's own tag (`git describe --tags`),
 and keep the copied `SKILL.md`'s in-tree "Referenced scaffold" line
 (`claude/skills/ft-audit/SKILL.md`) rather than the adopter submodule path —
-there is no `.flowtron/core/` submodule here to reference
+there is no `.flaitron/core/` submodule here to reference
 (`docs/MIGRATION.md` §1.2.2).
 
 In both cases, fill the overlay's `## Deltas` block with the derived values,
-leave `flowtron-tracks: ft-audit` as shipped, and remove the template's
+leave `flaitron-tracks: ft-audit` as shipped, and remove the template's
 trailing forker note. Leave the not-derivable slots as clearly-marked
 placeholders and tell the operator they are outstanding.
 

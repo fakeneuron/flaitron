@@ -12,7 +12,7 @@ of its ordinary pass, without changing who writes the token.
 
 ## Recommend, never write
 
-**Flowtron itself never writes `[unattended]` — seeding is an operator act.**
+**Flaitron itself never writes `[unattended]` — seeding is an operator act.**
 That sentence is [`SPEC/task-line-segments.md`](task-line-segments.md)'s and CORE-494's,
 and this module preserves it verbatim. Candidacy is a *recommendation*: the
 filer names the rows the predicate below admits, and the token lands on a row

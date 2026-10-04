@@ -1,6 +1,6 @@
 # Agent compatibility matrix
 
-A living, at-a-glance matrix of the AI coding agents flowtron is built to
+A living, at-a-glance matrix of the AI coding agents flaitron is built to
 work with: how each consumes the contract, what context entry-point it
 reads, what skill/command primitive it offers, and when each row was last
 verified. This is the *capability/currency* companion to
@@ -9,7 +9,7 @@ and [`AGENT-NEUTRALITY.md`](AGENT-NEUTRALITY.md) (the *content* ledger —
 which Claude-specific references are intentionally load-bearing).
 
 Audience: occasional. Read this to see at a glance which agents are
-supported and how current each row is, before adopting flowtron under a
+supported and how current each row is, before adopting flaitron under a
 new agent or refreshing a row.
 
 ## Scope of this matrix
@@ -37,9 +37,9 @@ for its Grok Build notes. The agent-neutral workflow contract itself
 | **Grok Build** | Wiring + contract (thin, Cursor-shaped) | `AGENTS.md` | Thin `grok/` bundle — `AGENTS-snippet.md` + `procedures/ft-task.md`; no skill wrappers. Discovers `.claude/skills/` and `.agents/skills/` (and `.cursor/skills/`) as compat surfaces plus native `.grok/skills/`; auto-wired as `/<name>`. Adopters reuse canonical `claude/skills/` bodies (stop if Claude/Codex/Cursor already wired; Grok-only follows `grok/AGENTS-snippet.md`). Those bodies' operator flags come with them ([`PLATFORMS.md` §"Non-Claude capability triggers"](PLATFORMS.md#non-claude-capability-triggers)) | `v5.35.0 · 2026-10-02 (dogfooded)` |
 | **Codex CLI** | Wiring + contract | `AGENTS.md` | `.agents/skills/` repo-scoped skills — full `ft-*` bundle shipped under `codex/skills/`, adopter repos wire the policy subset; `codex/procedures/ft-task.md` pointer wrapper retained. `ft-task` enters `SPEC/procedures/ft-task.md` with canonical-body fallback; other wrappers enter the canonical `claude/skills/` bodies. Their operator flags come with them ([`PLATFORMS.md` §"Non-Claude capability triggers"](PLATFORMS.md#non-claude-capability-triggers)) | `v5.33.0 · 2026-09-23 (dogfooded; skipped @ v5.35.0)` |
 | **Cursor** | Wiring + contract (thin) | `AGENTS.md` | Thin `cursor/` bundle — `AGENTS-snippet.md` + `procedures/ft-task.md`; no skill wrappers. Adopters wire canonical `claude/skills/` bodies (reuse `.claude/` when already present, or `.cursor/skills/` for Cursor-only). Those bodies' operator flags come with them ([`PLATFORMS.md` §"Non-Claude capability triggers"](PLATFORMS.md#non-claude-capability-triggers)) | `v5.33.0 · 2026-09-23 (dogfooded; skipped @ v5.35.0)` |
-| **Gemini CLI** | Contract only | `AGENTS.md` | Native primitive exists; no flowtron bundle | unverified |
-| **Aider** | Contract only | `AGENTS.md` | Native primitive exists; no flowtron bundle | unverified |
-| **Sourcegraph Amp** | Contract only | `AGENTS.md` | Native primitive exists; no flowtron bundle | unverified |
+| **Gemini CLI** | Contract only | `AGENTS.md` | Native primitive exists; no flaitron bundle | unverified |
+| **Aider** | Contract only | `AGENTS.md` | Native primitive exists; no flaitron bundle | unverified |
+| **Sourcegraph Amp** | Contract only | `AGENTS.md` | Native primitive exists; no flaitron bundle | unverified |
 
 ### Reading the cells
 
@@ -49,18 +49,18 @@ for its Grok Build notes. The agent-neutral workflow contract itself
   loads the canonical `claude/skills/` bodies via a documented compat or
   native scan (Cursor, Grok) without its own wrappers;
   `Contract only` means the agent reads `AGENTS.md` and drives the
-  contract conversationally with no flowtron-specific machinery. Mirrors
+  contract conversationally with no flaitron-specific machinery. Mirrors
   PLATFORMS.md §"Today's surface".
-- **Context entry-point** — flowtron's content reaches every agent through
+- **Context entry-point** — flaitron's content reaches every agent through
   the open-standard `AGENTS.md` paste-block. Several agents also read a
   native context file (`CLAUDE.md`, `GROK.md`, `GEMINI.md`, `.cursorrules`,
-  Aider's `CONVENTIONS.md`); those are orthogonal to flowtron, which
+  Aider's `CONVENTIONS.md`); those are orthogonal to flaitron, which
   targets `AGENTS.md` so one paste-block serves all agents. Orthogonal in
   *content* — an agent that turns out not to load `AGENTS.md` is pointed at
   it (symlink or import) rather than given a second copy of the block; see
   [`MIGRATION.md`](MIGRATION.md) §1.3.
 - **Skill / command primitive** — whether the agent exposes a slash-command
-  or skill mechanism, and whether flowtron ships a bundle for it. Claude Code
+  or skill mechanism, and whether flaitron ships a bundle for it. Claude Code
   and Codex CLI have full shipped inventories today; Cursor and Grok are
   thin/Cursor-shaped: they reuse canonical `claude/skills/` bodies via
   `.claude/skills/` / `.agents/skills/` (and Cursor's `.cursor/skills/`,
@@ -70,10 +70,10 @@ for its Grok Build notes. The agent-neutral workflow contract itself
   — their per-agent detail is filed with the non-Claude trigger reference.
 - **Last verified** — when this row was last checked against reality. Format:
   `vX.Y.Z · YYYY-MM[-DD] (context-tag)` where the context tag is one of:
-  - `dogfooded` — verified by running a flowtron session under this agent at
+  - `dogfooded` — verified by running a flaitron session under this agent at
     the stated version
   - `docs-only · YYYY-MM (pre-adoption)` — verified against vendor
-    documentation only; no flowtron session run under this agent
+    documentation only; no flaitron session run under this agent
   - `unverified` — no verification conducted; row rests on launch coverage only
 
   A dogfooded row may additionally carry a `; skipped @ vX.Y.Z` suffix —
@@ -136,9 +136,9 @@ for its Grok Build notes. The agent-neutral workflow contract itself
 Claude Code is verified by continuous dogfooding; Grok, Codex, and Cursor carry
 dogfooded history but are refreshed or explicitly skipped per release.
 Contract-only rows start from vendor documentation and launch coverage until a
-live flowtron session is run under that agent. Grok Build, Codex CLI, and Cursor
+live flaitron session is run under that agent. Grok Build, Codex CLI, and Cursor
 have all been dogfooded; Gemini CLI, Aider, and Sourcegraph Amp remain
-pre-adoption expectations. Flowtron ships full Claude/Codex inventories, a
+pre-adoption expectations. Flaitron ships full Claude/Codex inventories, a
 thin Cursor sibling, and Cursor-shaped Grok compat (`.claude/skills/` /
 `.agents/skills/`); the remaining contract-only agents have no full wiring
 bundle. Update a row on first-use observation if anything diverges. This mirrors
@@ -147,7 +147,7 @@ triggers".
 
 ## Cross-agent cue fallback policy
 
-Flowtron's operator cues are `<glyph> <UPPERCASE-LABEL>` pairs — the canonical
+Flaitron's operator cues are `<glyph> <UPPERCASE-LABEL>` pairs — the canonical
 set lives in [`SPEC/cue-vocabulary.md` §"Operator-cue vocabulary"](../SPEC/cue-vocabulary.md). The
 pairing *is* the cross-agent reliability mechanism: the glyph is a fast-scan
 accelerator; the UPPERCASE ASCII label is the authoritative, durable token.

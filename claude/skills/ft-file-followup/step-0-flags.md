@@ -49,7 +49,7 @@ instead of the host SKILL's Steps 2–5.** Park mode is a distinct filing contra
 Step 1a's pre-flight checks and this step's path resolution, then bypasses the
 AskUserQuestion collection, the review gate, the downstream-impact reconciliation
 scan, the conversational paragraph, and the Step 5 hand-off. It writes a stub at
-`.flowtron/sidequest/<ID>.md` alongside the PLAN.md line, replies in ≤70 words,
+`.flaitron/sidequest/<ID>.md` alongside the PLAN.md line, replies in ≤70 words,
 and continues the interrupted work inline. It also runs **no `[unattended]`
 candidacy** (host SKILL Step 3): the proposal is a review-gate motion and park has no
 review gate; the row is judged when the stub is promoted or run. Emit the inline marker

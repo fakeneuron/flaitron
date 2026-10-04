@@ -1,6 +1,6 @@
 # PLAN.md task-line grammar — conformance fixtures
 
-Shared test cases for every parser that reads a flowtron `PLAN.md`. The
+Shared test cases for every parser that reads a flaitron `PLAN.md`. The
 grammar itself is canonical in [`SPEC.md`](../../../SPEC.md) §"Task-line
 format"; its tolerances, footguns, and exclusions are in
 [`SPEC/plan-parser.md`](../../plan-parser.md). These fixtures pin that prose
@@ -95,5 +95,5 @@ For each `<case>.md`, parse the whole file as a `PLAN.md` and compare with
    `tasks`, and a `tasks` row must not be reported as unparsed.
 
 Adopters reach this directory through the pinned submodule as
-`.flowtron/core/SPEC/fixtures/plan/`. The reference consumer is
+`.flaitron/core/SPEC/fixtures/plan/`. The reference consumer is
 `viz/src/parser.test.ts` §"SPEC/fixtures/plan conformance".

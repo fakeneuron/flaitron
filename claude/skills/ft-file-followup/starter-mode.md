@@ -6,7 +6,7 @@
 > silent, the host SKILL's step applies unchanged; where it speaks, it wins.
 
 File a **starter tasknote**: the host's PLAN.md line **plus** a
-`.flowtron/tasknote/<TASK-ID>.md` carrying rich AI-captured context (rationale,
+`.flaitron/tasknote/<TASK-ID>.md` carrying rich AI-captured context (rationale,
 suspected files, design decisions, open questions) that would otherwise be
 lost or bloat the long description. The starter sits at `status: starter`
 until `/ft-task <ID>` promotes it (its Step 3a path). Lifecycle contract:
@@ -26,7 +26,7 @@ do not use this mode: drop the flag and file the one-line entry.
 
 ## Step S1 — ID and pre-flight
 
-Host Steps 1 and 1a run unchanged. The `.flowtron/tasknote/<TASK-ID>.md`
+Host Steps 1 and 1a run unchanged. The `.flaitron/tasknote/<TASK-ID>.md`
 must-not-exist check there is the one that matters most here — it is the path
 this mode writes.
 
@@ -75,11 +75,11 @@ Host Step 4 runs with these substitutions, in the same continuous motion:
 2. **Write the starter file** before the PLAN.md line. Template path (from
    the host's Step 0 layout branch):
 
-   - **Adopter:** `.flowtron/core/templates/tasknote-starter-template.md`
-   - **Flowtron self-host:** `templates/tasknote-starter-template.md`
+   - **Adopter:** `.flaitron/core/templates/tasknote-starter-template.md`
+   - **Flaitron self-host:** `templates/tasknote-starter-template.md`
 
    ```sh
-   cp <starter template path> .flowtron/tasknote/<TASK-ID>.md
+   cp <starter template path> .flaitron/tasknote/<TASK-ID>.md
    ```
 
    Then fill it: YAML per SPEC §"Tasknote frontmatter" from the Step S2
@@ -94,7 +94,7 @@ Host Step 4 runs with these substitutions, in the same continuous motion:
    not apply here):
 
    ```text
-   - [ ] **<TASK-ID>** [<model>] | <shortname> — <one-line long description>. Filed with starter at `.flowtron/tasknote/<TASK-ID>.md`.
+   - [ ] **<TASK-ID>** [<model>] | <shortname> — <one-line long description>. Filed with starter at `.flaitron/tasknote/<TASK-ID>.md`.
    ```
 
    The Step S2 word count excludes the suffix. A token the S3 review kept
@@ -109,7 +109,7 @@ Host Step 4 runs with these substitutions, in the same continuous motion:
    commit shape from `SPEC/plan-filing.md` §"Filing commits":
 
    ```sh
-   git add .flowtron/PLAN.md .flowtron/tasknote/<TASK-ID>.md
+   git add .flaitron/PLAN.md .flaitron/tasknote/<TASK-ID>.md
    git diff --cached   # whole index, no pathspec
    git commit -m "chore: file <TASK-ID> starter — <shortname>"
    ```
@@ -132,7 +132,7 @@ Host Step 4 runs with these substitutions, in the same continuous motion:
 
 Host Step 5's message, reworded for the artifact:
 
-- Starter filed at `.flowtron/tasknote/<TASK-ID>.md`.
+- Starter filed at `.flaitron/tasknote/<TASK-ID>.md`.
 - PLAN.md entry appended under `## <Priority>` with model `<model>`,
   `committed <sha>` — or `left uncommitted (PLAN.md or the index already
   carried other changes)` when the commit was skipped.

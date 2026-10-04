@@ -16,7 +16,7 @@
 
 On top of that, it adds **exactly one behavior**: where `--fast` still lets a gate fire, `--unattended` **parks the tasknote** instead of firing a banner into an empty session. A conversion *removes* a banner and never adds one. Mint no new cue glyph; the CORE-065 two-banner cap is untouched.
 
-Flowtron ships no orchestrator, scheduler, or session daemon. This posture is the contract an orchestrator reports to — contract in flowtron, runtime in the caller.
+Flaitron ships no orchestrator, scheduler, or session daemon. This posture is the contract an orchestrator reports to — contract in flaitron, runtime in the caller.
 
 ## The park recipe
 
@@ -28,12 +28,12 @@ Every conversion below performs the same four writes, then stops:
 4. Emit one inline marker and **stop**:
 
    ```markdown
-   ⏸ --unattended park — <code>: <one line>. Tasknote parked at `.flowtron/tasknote/<TASK-ID>.md`; PLAN.md line unchanged.
+   ⏸ --unattended park — <code>: <one line>. Tasknote parked at `.flaitron/tasknote/<TASK-ID>.md`; PLAN.md line unchanged.
    ```
 
    `⏸` is the pre-existing nav chip, not a new cue glyph.
 
-**Stop means stop.** Do not run Phase 3 or Phase 4. The tasknote stays at `.flowtron/tasknote/<TASK-ID>.md`, the PLAN.md line stays unchecked, and Phase 1 plus any partial Phase 2 work is preserved verbatim.
+**Stop means stop.** Do not run Phase 3 or Phase 4. The tasknote stays at `.flaitron/tasknote/<TASK-ID>.md`, the PLAN.md line stays unchecked, and Phase 1 plus any partial Phase 2 work is preserved verbatim.
 
 **A park never performs the operator's motion.** The drift park does not make the verdict's PLAN.md edit and does not delete the tasknote; the micro dependency park does not re-file the task. Record what the operator should do on resume in the `park-reason:` prose or the tasknote body — the resuming operator takes it under a real gate.
 
@@ -53,7 +53,7 @@ Six gates convert from *ask and wait* to *park and stop*. The seventh row is the
 | 👁️ `CONFIRM` **visual ask** | `visual-confirm` | Step 5 Phase 3 | the one-time post-loop ask | — *(no separate 👁️ ask)* |
 | Hard dependency mid-execution *(pre-existing park)* | `dependency` | Step 5 Phase 2 | loop body | Step 3 — park + promote note |
 
-**The 👁️ trigger is the emission condition, not a second judgment.** Wherever the run would emit a 👁️ ask, park with `park-reason: visual-confirm — <what needs looking at, and where>` instead. Whether the change needs a visual check at all is decided upstream, exactly where it always was: a task with no rendered surface records the Phase 3 box `N/A`, emits no ask, and never parks. Do **not** invent a gating-vs-corroborating split — "the tests probably cover it" is the judgment this conversion deletes, and **a passing visual baseline does not convert it either**: flowtron cannot tell an approved golden from an auto-minted one, and "does the baseline cover what I changed" is that same split renamed (`SPEC/gate-postures.md` §"Park conversions"). `/ft-micro-task` has no separate 👁️ ask (`SKILL.md` §Step 0), so the row is n/a there rather than a park.
+**The 👁️ trigger is the emission condition, not a second judgment.** Wherever the run would emit a 👁️ ask, park with `park-reason: visual-confirm — <what needs looking at, and where>` instead. Whether the change needs a visual check at all is decided upstream, exactly where it always was: a task with no rendered surface records the Phase 3 box `N/A`, emits no ask, and never parks. Do **not** invent a gating-vs-corroborating split — "the tests probably cover it" is the judgment this conversion deletes, and **a passing visual baseline does not convert it either**: flaitron cannot tell an approved golden from an auto-minted one, and "does the baseline cover what I changed" is that same split renamed (`SPEC/gate-postures.md` §"Park conversions"). `/ft-micro-task` has no separate 👁️ ask (`SKILL.md` §Step 0), so the row is n/a there rather than a park.
 
 **`--loop`'s one-time ask.** Per-cycle 👁️ suppression inside the loop is unchanged — taste criteria were split out to the one-time post-loop ask (`step-5-loop-mode.md` §"Step 6"), so the loop never had an ask to convert (`SPEC/loop.md` §"Gate collapse"). It is that **one-time** ask that parks. A loop that converged is not a loop that finished: park before closure, and record the split-out criteria in the reason prose.
 

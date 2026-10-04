@@ -1,9 +1,9 @@
 # Harness survey
 
-Periodic comparison of flowtron against contemporary AI-coding harnesses,
+Periodic comparison of flaitron against contemporary AI-coding harnesses,
 frameworks, and trackers. Each pass is a dated section; a later pass appends
 rather than rewrites, so the record shows what the field looked like when a
-decision was made. Read when planning a survey pass, when a "should flowtron
+decision was made. Read when planning a survey pass, when a "should flaitron
 do X?" question comes up, or when [`docs/VISION.md`](VISION.md) §"What we
 won't accept" needs a current counter-example.
 

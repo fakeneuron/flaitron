@@ -1,6 +1,6 @@
 # Version history
 
-Curated, moderately-coarse highlights of flowtron releases. Newest first.
+Curated, moderately-coarse highlights of flaitron releases (named flowtron before v6.0.0). Newest first.
 
 This is **not** a [Keep a Changelog](https://keepachangelog.com/) file and not
 a substitute for git tags. Full per-release notes, change groups, and adopter

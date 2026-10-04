@@ -7,7 +7,7 @@
 Use CORE-048's structure as the template:
 
 ```text
-flowtron vA.B.C — <one-clause headline>
+flaitron vA.B.C — <one-clause headline>
 
 <one-paragraph summary derived from commit log + adopter-impact findings>
 

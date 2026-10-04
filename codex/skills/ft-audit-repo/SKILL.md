@@ -1,6 +1,6 @@
 ---
 name: ft-audit-repo
-description: Run the Flowtron first-contact repo audit from Codex. Use to map an unfamiliar repo, synthesize themes, and file milestone epics.
+description: Run the Flaitron first-contact repo audit from Codex. Use to map an unfamiliar repo, synthesize themes, and file milestone epics.
 ---
 
 # ft-audit-repo - Codex wrapper

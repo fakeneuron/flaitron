@@ -1,13 +1,13 @@
 # Security
 
-Flowtron is a solo-maintained workflow system, not a hardened product. This
+Flaitron is a solo-maintained workflow system, not a hardened product. This
 page documents the realistic threat model and the conventions adopters should
 follow. It is short on purpose — anything not covered here is out of scope.
 
 ## Reporting a vulnerability
 
 Open a GitHub issue on this repository. There is no private disclosure
-channel; flowtron has no internet-facing service (the viz dev server is
+channel; flaitron has no internet-facing service (the viz dev server is
 localhost-only; see below), no users beyond its adopters, and no realistic
 class of finding that benefits from embargoed disclosure. If you believe
 you have an exception, say so in the issue and omit exploit details until
@@ -17,7 +17,7 @@ we agree on a path.
 
 ### Prompt injection via user-authored markdown
 
-Flowtron's bundled execution surfaces — Claude Code skills/commands
+Flaitron's bundled execution surfaces — Claude Code skills/commands
 (`/ft-task`, `/ft-audit`, `/ft-release`, `/ft-audit-repo`, and others),
 Codex skill wrappers under `codex/skills/`, and Cursor / Grok thin wiring
 under `cursor/` and `grok/` (snippet + procedure pointer; skills are the
@@ -38,7 +38,7 @@ the runtime's tool allowlist is.
 
 **Adopter mitigations (any AI assistant).**
 
-- Review contributor PRs that touch `.flowtron/` content with the same care
+- Review contributor PRs that touch `.flaitron/` content with the same care
   you would give to a code change. The body of a tasknote is executable
   context, even though it is plain markdown.
 - Treat the first run of a skill against contributor-authored content as a
@@ -54,7 +54,7 @@ the runtime's tool allowlist is.
   long one-off allowlists. Broad globs (`Bash(curl *)`, whole-home `Read(**)`,
   etc.) remain high-risk for prompt injection.
 
-The flowtron skills themselves do not implement a sandbox; the Claude Code
+The flaitron skills themselves do not implement a sandbox; the Claude Code
 harness is the only enforcement layer.
 
 **Contemporary tactic refinements.** The "review the PR diff" mitigation
@@ -67,7 +67,7 @@ any-AI-assistant threat model.
   "ASCII smuggler"), bidirectional overrides (U+202E), or homoglyphs. They
   render blank or benign in a diff view while the model reads them
   verbatim — so visual PR review is necessary but *not sufficient*. Before
-  acting on contributor-authored `.flowtron/` content, scan the changed
+  acting on contributor-authored `.flaitron/` content, scan the changed
   text for the invisible classes specifically (ordinary emoji and
   em-dashes are not the concern; the dangerous codepoints render to
   nothing). For example:
@@ -97,7 +97,7 @@ any-AI-assistant threat model.
   suppress the remaining pause (`--fast`, or the `--unattended` posture)
   on a first run against contributor-authored content.
 
-- **Forged in-content control-markers.** flowtron's safety rests on control
+- **Forged in-content control-markers.** flaitron's safety rests on control
   markers and gates the *assistant* emits about its own actions
   (`✅ Closure complete; committing autonomously …`, the 🛠️/📦 banners) and
   on diff-derived skip-rule signals. A malicious tasknote or `PLAN.md` line
@@ -110,12 +110,12 @@ any-AI-assistant threat model.
 
 ### Submodule supply-chain trust
 
-Adopters pin flowtron as a git submodule at a specific commit. The
+Adopters pin flaitron as a git submodule at a specific commit. The
 contract surface (SPEC.md, skills, templates) is plain text — there is no
-build step, no postinstall script, no executable from flowtron that runs
+build step, no postinstall script, no executable from flaitron that runs
 without the user invoking it.
 
-The realistic compromise path is upstream takeover: if the flowtron
+The realistic compromise path is upstream takeover: if the flaitron
 repository's `main` branch is poisoned, every adopter who bumps the
 submodule pulls in malicious `SKILL.md` content that future skill
 invocations will execute.
@@ -129,7 +129,7 @@ invocations will execute.
   bumping, especially in `claude/skills/` and `claude/commands/`. The
   release tag's annotated message documents migration steps for major
   bumps.
-- If you fork flowtron's skills into your project (the documented
+- If you fork flaitron's skills into your project (the documented
   customization pattern in `docs/MIGRATION.md` §1.2.1), you take over
   review responsibility for that forked copy.
 
@@ -173,10 +173,12 @@ reviewed as one. Do not add repository secrets to this workflow.
 ### Fleet updater (`tools/`)
 
 `tools/update-adopters.mjs` is the singular script exception to
-`SPEC/scope-boundaries.md` §"What flowtron does NOT provide" — operator-side fleet maintenance across
+`SPEC/scope-boundaries.md` §"What flaitron does NOT provide" — operator-side fleet maintenance across
 `~/code`, not workflow machinery inside a project. It batches the
 `/ft-update` recipe across every discovered adopter: bump the pinned
-`.flowtron/core` submodule to the latest release and commit, run manually
+`.flaitron/core` submodule to the latest release and commit — or, for an
+adopter still on the pre-rename `.flowtron/core` layout, move it to
+`.flaitron/` and bump in the same commit (`applyMigrate`) — run manually
 by the maintainer (never on a schedule or in CI). Its execution surface
 differs from the rest of this document: it walks a filesystem tree, shells
 out to `git` across many repos, and can commit inside them.
@@ -191,21 +193,25 @@ out to `git` across many repos, and can commit inside them.
   outside the script's own control — the release tag checked out in an
   adopter's submodule — is validated against `^v\d+\.\d+\.\d+$` before use
   (`parseSemverTag`) and re-validated when supplied via the
-  `FLOWTRON_UPDATE_LATEST` test-seam env var. A malformed or
+  `FLAITRON_UPDATE_LATEST` test-seam env var. A malformed or
   unexpected tag string is rejected rather than passed through.
-- **Canonical-SHA cross-check on checkout.** `applyBump` doesn't trust the
+- **Canonical-SHA cross-check on checkout.** `applyBump` and `applyMigrate`
+  share `checkoutVerified`, which doesn't trust the
   checked-out submodule's own claim of its version — after checkout it
   re-reads SPEC.md's Version line and separately verifies
   the checked-out commit SHA matches the canonical SHA for that tag as
-  resolved in `FLOWTRON_REPO`, not the adopter's own clone
+  resolved in `FLAITRON_REPO`, not the adopter's own clone
   (`verifyPinnedSha`). A moved tag ref or a divergent adopter
   remote fails closed instead of committing a mismatched pin.
-- **Local-commits-never-push.** `applyBump` runs `git add` + `git commit`,
+- **Local-commits-never-push.** `applyBump` and `applyMigrate` run `git add` + `git commit`,
   and the only other network call is `fetch --tags` — there is no
   `git push` anywhere in the script. Every bump commit stays local until
   the operator reviews and pushes it themselves, per repo.
-- **Bump commit passes `--no-verify`.** The commit is a pathspec commit
-  touching only the `.flowtron/core` gitlink. `--no-verify` skips only
+- **Bump and migrate commits pass `--no-verify`.** The bump commit is a
+  pathspec commit touching only the `.flaitron/core` gitlink; the migrate
+  commit carries only what the migration staged (the directory move,
+  `.gitmodules`, re-pointed symlinks, rewritten `.gitignore` rules, the
+  gitlink), after verifying the index held nothing else. `--no-verify` skips only
   `pre-commit`/`commit-msg` — the hooks that could run arbitrary adopter-authored
   code — as a side effect of an unattended fleet sweep; `prepare-commit-msg`/
   `post-commit` still run.
@@ -215,14 +221,16 @@ out to `git` across many repos, and can commit inside them.
 - **Deliberate symlink-following write footprint under the workspace
   root.** `discoverAdopters` follows symlinked directories
   when enumerating the workspace root, and `applyBump` writes into whatever
-  `.flowtron/core` resolves to for each discovered adopter — unlike the viz
+  `.flaitron/core` resolves to for each discovered adopter (`applyMigrate`
+  additionally writes the adopter's `.flowtron/` → `.flaitron/` move, its
+  `.git/config`, and `.git/modules/`) — unlike the viz
   dev server's `discoverProjects` (see "Visualizer" below), there is no
   post-resolution containment check pinning writes inside the workspace
   root. This is a deliberate scope difference, not an oversight: the fleet
   updater is operator-invoked tooling over a workspace the operator already
   controls (typically `~/code`), not a service resolving
   attacker-influenced paths. Do not point `--root` (or
-  `FLOWTRON_VIZ_WORKSPACE`) at a workspace containing symlinks you do not
+  `FLAITRON_VIZ_WORKSPACE`) at a workspace containing symlinks you do not
   trust.
 
 ### Visualizer (`viz/`) dev-server scope
@@ -253,7 +261,7 @@ dev server:
 - Rejects non-GET/HEAD `/api/*` requests with 405, ahead of origin
   validation and business logic (`viz/src/devApi.ts`).
 - Reads files only from projects discovered under
-  `${FLOWTRON_VIZ_WORKSPACE:-~/code}/*/.flowtron/`. There is no
+  `${FLAITRON_VIZ_WORKSPACE:-~/code}/*/.flaitron/`. There is no
   user-controlled path input on any endpoint. That bound is **enforced,
   not assumed**: `discoverProjects` (`viz/src/workspace.ts`),
   `archiveCache.readArchive` (`viz/src/archiveCache.ts`), and the
@@ -262,12 +270,12 @@ dev server:
   inside the project root's own resolved path — the two tasknote-directory
   readers, `readArchive` and `/api/active`, sharing one implementation of that
   check in `readTasknoteDir` (`viz/src/tasknoteRead.ts`) — so a symlinked `PLAN.md`,
-  `PLAN-ARCHIVE.md`, `.flowtron/`, `tasknote/`, or `archive/` cannot pull an
+  `PLAN-ARCHIVE.md`, `.flaitron/`, `tasknote/`, or `archive/` cannot pull an
   arbitrary readable file onto the wire. Project roots that are *themselves* symlinks stay supported
   — the root resolves first, and nothing below it may escape. The one read
-  outside that bound is `.flowtron/core/SPEC.md`, followed through symlinks
+  outside that bound is `.flaitron/core/SPEC.md`, followed through symlinks
   for its `**Version:**` line only — no file content reaches the wire, and
-  containment would break the common `.flowtron/core -> ~/code/flowtron`
+  containment would break the common `.flaitron/core -> ~/code/flaitron`
   local-dev link for no security gain (`viz/src/workspace.ts`).
 - Sends a defense-in-depth `Content-Security-Policy` response header
   (`server.headers` in `vite.config.ts`): `default-src 'self'`,
@@ -303,7 +311,7 @@ a static export); the dev server is not the right shape for that.
 
 ## Adopter scanner false-positive allowlists
 
-Adopters running prompt-injection scanners (e.g., Semgrep rules) or secret-detection scanners (Gitleaks, TruffleHog, Snyk, etc.) will encounter false positives when scanning a repo that vendors flowtron as a submodule. The source is prose in `SPEC.md`, skill files, and this document that quotes the privileged-ops keyword triggers from SPEC/gates.md §"Conditional skip rule".
+Adopters running prompt-injection scanners (e.g., Semgrep rules) or secret-detection scanners (Gitleaks, TruffleHog, Snyk, etc.) will encounter false positives when scanning a repo that vendors flaitron as a submodule. The source is prose in `SPEC.md`, skill files, and this document that quotes the privileged-ops keyword triggers from SPEC/gates.md §"Conditional skip rule".
 
 **The `filepath:regex` allowlist convention**
 
@@ -316,17 +324,17 @@ filepath:regex
 Examples (one per line):
 
 ```
-.flowtron/core/SPEC.md:(API_KEY|SECRET|TOKEN|PASSWORD)
-.flowtron/core/claude/skills/**/*.md:(API_KEY|SECRET|TOKEN|PASSWORD)
-.flowtron/core/SECURITY.md:(API_KEY|SECRET|TOKEN|PASSWORD)
+.flaitron/core/SPEC.md:(API_KEY|SECRET|TOKEN|PASSWORD)
+.flaitron/core/claude/skills/**/*.md:(API_KEY|SECRET|TOKEN|PASSWORD)
+.flaitron/core/SECURITY.md:(API_KEY|SECRET|TOKEN|PASSWORD)
 ```
 
 These suppress only the documented prose examples. Real credential material in your code or env files remains flagged.
 
-**Flowtron-specific guidance**
+**Flaitron-specific guidance**
 
 Add the lines above (adjusted for your submodule path) to your scanner configuration. The examples cover the four uppercase keywords (`API_KEY`, `SECRET`, `TOKEN`, `PASSWORD`) that appear in the Conditional skip rule definition and in explanatory text throughout the tree.
 
 See SPEC/gates.md §"Conditional skip rule" for the authoritative privileged-ops path categories and keyword-trigger clause.
 
-Flowtron does not ship `.prompt-injection-scanignore` or `.secretscanignore` files — zero runtime scanner configuration by design.
+Flaitron does not ship `.prompt-injection-scanignore` or `.secretscanignore` files — zero runtime scanner configuration by design.

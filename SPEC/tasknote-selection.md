@@ -24,7 +24,7 @@
 - The brief spans an epic or multi-task-shaped body of work and you want one reviewable artifact to derive filing decisions from
 - You want operator review of the design before any PLAN.md line or tasknote artifact exists
 
-A spec is a planning artifact, not a filing — it never writes a PLAN.md line or scaffolds a tasknote. Copy `templates/spec-template.md` to `.flowtron/specs/<slug>.md` (create the directory on first use), fill its six sections from the conversation, and review the draft before filing anything from its Tasks section. Convert that section to real work via `/ft-epic-discovery`, `/ft-file-followup --starter`, `/ft-task`, or a direct PLAN.md line. No skill drives this — the `/ft-spec` wrapper was retired by CORE-573; the template and this paragraph were the whole of its value.
+A spec is a planning artifact, not a filing — it never writes a PLAN.md line or scaffolds a tasknote. Copy `templates/spec-template.md` to `.flaitron/specs/<slug>.md` (create the directory on first use), fill its six sections from the conversation, and review the draft before filing anything from its Tasks section. Convert that section to real work via `/ft-epic-discovery`, `/ft-file-followup --starter`, `/ft-task`, or a direct PLAN.md line. No skill drives this — the `/ft-spec` wrapper was retired by CORE-573; the template and this paragraph were the whole of its value.
 
 **Skip the spec (go straight to filing) when:**
 
@@ -77,7 +77,7 @@ before writing the PLAN.md line.
 
 - An idea or **quick fix** surfaces mid-session (while coding a feature, auditing a file, etc.) and you do not want to lose it, but you are **not** switching context now
 - The note fits in ≤80 words and a ≤30w PLAN one-liner — enough to reopen in the next chat, not enough for a review gate
-- You want the lightest **persistent** filing motion: tiny stub at `.flowtron/sidequest/<ID>.md` + one PLAN line at the right priority, then straight back to the interrupted work
+- You want the lightest **persistent** filing motion: tiny stub at `.flaitron/sidequest/<ID>.md` + one PLAN line at the right priority, then straight back to the interrupted work
 
 **Priority flags** (skip the question): `--low` → `## Low` (`pickup: next-chat`); `--med` / `--medium` → `## Medium`; `--fut` / `--future` → `## Future Opportunities`; `--high` → `## High`. **No flag** → one short question (`Low · Medium · Future?`) before any disk write; the AI may parenthesize its best read but does not auto-file.
 
@@ -195,7 +195,7 @@ same as the selection thresholds above.
 surfaces the impacted-entry list with one proposed action per line and waits
 for explicit confirmation; the user accepts, amends, or rejects each, and
 only then are the PLAN.md edits applied. The control is the human at the
-gate, not an automated scorer (consistent with `SPEC.md` §"What flowtron
+gate, not an automated scorer (consistent with `SPEC.md` §"What flaitron
 does NOT provide").
 
 This section is the contract. The filing and runner skills invoke the scan

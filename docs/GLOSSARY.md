@@ -1,8 +1,8 @@
-# Flowtron Glossary
+# Flaitron Glossary
 
-**Lazy-loaded vocabulary reference.** One-line definitions for the load-bearing terms, primitives, phases, markers, and grammar elements of the flowtron workflow contract. Pointers only — the authoritative text lives in `SPEC.md` (and lazy `SPEC/` modules + skills).
+**Lazy-loaded vocabulary reference.** One-line definitions for the load-bearing terms, primitives, phases, markers, and grammar elements of the flaitron workflow contract. Pointers only — the authoritative text lives in `SPEC.md` (and lazy `SPEC/` modules + skills).
 
-Adopted from the GSD-Pi `CONTEXT.md` glossary pattern (the "mega-doc" slice that survived the one-task-per-window filter during CORE-EPIC-194 Discovery). See [CORE-194.1](../.flowtron/tasknote/archive/core/CORE-194.1.md) for the extraction rationale and term-cohort decisions.
+Adopted from the GSD-Pi `CONTEXT.md` glossary pattern (the "mega-doc" slice that survived the one-task-per-window filter during CORE-EPIC-194 Discovery). See [CORE-194.1](../.flaitron/tasknote/archive/core/CORE-194.1.md) for the extraction rationale and term-cohort decisions.
 
 Alphabetized. ~73 entries. Maintained via epic children and audits.
 
@@ -10,9 +10,9 @@ Alphabetized. ~73 entries. Maintained via epic children and audits.
 
 **AGENTS.md** — The agent-neutral block adopters paste into their project `AGENTS.md`; defines the adopter-facing assistant surface (skills, commands, one-time wiring). Source: `claude/AGENTS-snippet.md`. See docs/MIGRATION.md §1.3.
 
-**AI-referenced docs** — The flat list in `.flowtron/tasknote/README.md` §"AI-referenced docs" that every Phase 4 closure and epic-audit subtask walks for the doc-drift sweep. Membership means *swept for drift*, not *loaded at cold start* — the two are independent per-doc properties (CORE-491). `SPEC/` lazy modules and `claude/skills/*` are excluded on both counts.
+**AI-referenced docs** — The flat list in `.flaitron/tasknote/README.md` §"AI-referenced docs" that every Phase 4 closure and epic-audit subtask walks for the doc-drift sweep. Membership means *swept for drift*, not *loaded at cold start* — the two are independent per-doc properties (CORE-491). `SPEC/` lazy modules and `claude/skills/*` are excluded on both counts.
 
-**area prefix** — The leading token of a TASK-ID (e.g. `CORE-`, `FE-`, `BE-`); declares the scope bucket per SPEC §"Task ID convention". Adopters declare extra domain prefixes in their `.flowtron/tasknote/README.md`.
+**area prefix** — The leading token of a TASK-ID (e.g. `CORE-`, `FE-`, `BE-`); declares the scope bucket per SPEC §"Task ID convention". Adopters declare extra domain prefixes in their `.flaitron/tasknote/README.md`.
 
 **audit-family** — The two audit skills and command stubs `/ft-audit{,-repo}`: the forkable stack scaffold `/ft-audit <domain>` — a parameterized dispatcher over an eight-file `passes/` library (`general` · `backend` · `frontend` · `security` · `performance` · `docs` · `structure` · `context`) — plus `/ft-audit-repo`, the no-fork first-contact holistic audit run by reference from the submodule. Forking rules and naming (no `ft-` prefix on forks) in docs/MIGRATION.md §1.2.1.
 
@@ -28,13 +28,13 @@ Alphabetized. ~73 entries. Maintained via epic children and audits.
 
 **Closure (Phase 4)** — The final auto-run phase: mandatory doc-drift sweep, PLAN.md line flip to stub form + archive move, recap draft. Flows directly into the post-closure protocol. See SPEC §"🚀 Phase 4: Closure".
 
-**`## Completed` rotation** — The bound on PLAN.md's `## Completed` section: at most 60 checked rows; past that, a runner skill that reads PLAN.md surfaces a one-line advisory and the operator rotates the oldest rows (current month included; never splitting an epic cohort from its children) into a sibling `.flowtron/PLAN-ARCHIVE.md`. Rows move verbatim, append-only. Viz reads both files. See SPEC/plan-filing.md §"`## Completed` rotation".
+**`## Completed` rotation** — The bound on PLAN.md's `## Completed` section: at most 60 checked rows; past that, a runner skill that reads PLAN.md surfaces a one-line advisory and the operator rotates the oldest rows (current month included; never splitting an epic cohort from its children) into a sibling `.flaitron/PLAN-ARCHIVE.md`. Rows move verbatim, append-only. Viz reads both files. See SPEC/plan-filing.md §"`## Completed` rotation".
 
 **Conditional skip rule** — The deterministic privileged-ops path/keyword test plus bundled-prompt override that decides whether the 📦 ready-to-commit gate fires or the closure auto-commits. Frontend diffs and perf-narrative reasoning do not trip the gate. See SPEC/gates.md §"Conditional skip rule".
 
 **copy-paste line** — The post-closure "suggest next" helper: emoji primary label (`[heavy]🧠` / `[medium]🧩` / `[light]🔧` / `[xheavy]🔭`) + "design / moderate / mechanical / exploratory" prose + shortname, followed by a tight "Clear your session, then run: /ft-task <next-ID>" cue whose label-line glyph matches the chosen candidate's 🔧/🧩/🧠/🔭 (never a default 🔧). Never emits literal `/model` or `/clear` commands.
 
-**CORE-** — The canonical area prefix for cross-cutting, orchestration, and meta tasks (used by flowtron self and every adopter).
+**CORE-** — The canonical area prefix for cross-cutting, orchestration, and meta tasks (used by flaitron self and every adopter).
 
 **[!critical]** — Optional urgency flag in the task-line grammar; renders a red marker and floats the row to the top of its priority bucket (High). Orthogonal to `[model]` and the priority heading. See SPEC/task-line-segments.md.
 
@@ -64,19 +64,19 @@ Alphabetized. ~73 entries. Maintained via epic children and audits.
 
 **follow-up** — A lightweight mid-flow task filed via `/ft-file-followup`; produces a one-line PLAN.md entry plus a short context paragraph delivered conversationally. Below the normal tasknote threshold.
 
-**sidequest** — The lightest persistent mid-flow park, filed via `/ft-file-followup --park`; writes a tiny stub at `.flowtron/sidequest/<ID>.md` plus one PLAN line. Priority via flags (`--low`, `--med`, `--fut`, `--high`) or one short question when omitted. Skips the review gate and the reconciliation scan; replies with priority + resume anchor, then continues the main session inline. Promote via `/ft-micro-task` or `/ft-task` (or expand the stub by hand into a starter), deleting the stub on promotion. (Filed via the retired `/ft-sidequest` skill before v5.15.0 — the artifact is unchanged, only the invocation moved.)
+**sidequest** — The lightest persistent mid-flow park, filed via `/ft-file-followup --park`; writes a tiny stub at `.flaitron/sidequest/<ID>.md` plus one PLAN line. Priority via flags (`--low`, `--med`, `--fut`, `--high`) or one short question when omitted. Skips the review gate and the reconciliation scan; replies with priority + resume anchor, then continues the main session inline. Promote via `/ft-micro-task` or `/ft-task` (or expand the stub by hand into a starter), deleting the stub on promotion. (Filed via the retired `/ft-sidequest` skill before v5.15.0 — the artifact is unchanged, only the invocation moved.)
 
 **`/ft-refactor`** — The refactor **depth planner that files**: takes one named target, runs a read-only survey (dependencies, seams, test coverage, blast radius), surfaces a sequenced behavior-preserving plan for operator review, then files a parent epic + implementation children from `.2` + a `.N` audit, each child a starter seeded with characterization-test and behavior-preservation acceptance. Never edits source — children execute via `/ft-task`. Its epics carry no `.1` Discovery (the run *is* the discovery). Depth counterpart to `/ft-audit structure`'s **breadth sweep**; contrast a hand-drafted spec (`templates/spec-template.md`; plans, never files) and `/ft-epic-discovery` (files, then drives a generic Discovery).
 
-**`/ft-seed`** — The attended **bulk-seeding utility** for `[unattended]`: walks every open row of an existing `.flowtron/PLAN.md` with the `SPEC/unattended-candidacy.md` predicate, shows the candidates with the token in place inside one prose review gate, writes the token only on the rows the operator keeps, and commits the write under §"Filing commits". No flags — remove the gate and it is a report the filers already emit. Skips rows already marked and `[handoff]` rows; seeds, never repairs. The bulk counterpart to the per-row candidacy each filer proposes at its write step. See SPEC/unattended-candidacy.md §"Seeding an existing plan".
+**`/ft-seed`** — The attended **bulk-seeding utility** for `[unattended]`: walks every open row of an existing `.flaitron/PLAN.md` with the `SPEC/unattended-candidacy.md` predicate, shows the candidates with the token in place inside one prose review gate, writes the token only on the rows the operator keeps, and commits the write under §"Filing commits". No flags — remove the gate and it is a report the filers already emit. Skips rows already marked and `[handoff]` rows; seeds, never repairs. The bulk counterpart to the per-row candidacy each filer proposes at its write step. See SPEC/unattended-candidacy.md §"Seeding an existing plan".
 
-**`/ft-update`** — The adopter-side command that bumps a project's pinned flowtron submodule to the latest released tag: shows current→target + changelog, moves the pin, re-wires newly shipped symlinks, runs a smoke check. Consumer-side counterpart to `/ft-release`. Adopter-only (bails in flowtron-self); takes no arguments. See docs/MIGRATION.md.
+**`/ft-update`** — The adopter-side command that bumps a project's pinned flaitron submodule to the latest released tag: shows current→target + changelog, moves the pin, re-wires newly shipped symlinks, runs a smoke check. Consumer-side counterpart to `/ft-release`. Adopter-only (bails in flaitron-self); takes no arguments. See docs/MIGRATION.md.
 
 **goal loop** — The loop-task shape that repeats Phase 2→3 (execute→verify) against a fixed, machine-checkable `## ✅ Acceptance` target until every check passes, `loop-max` is exhausted, or the per-cycle relevance gate says stop. Driven by `/ft-task --loop`; contrast heartbeat. See SPEC/loop.md.
 
 **grammar elements** — The syntactic pieces of the PLAN.md task-line and tasknote body: `[!critical]`, `[model]`, `[unattended]`, `[handoff]`, `| shortname`, `[[TASK-ID]]` wikilink, `Blocked by [[ID]]`, `Completed YYYY-MM-DD.` stub form, etc. See SPEC/task-line-segments.md.
 
-**[handoff]** — Optional task-level marker in the task-line grammar, sitting in the same trailing run as `[unattended]` AFTER `[model]`; the operator's declaration that the row will stop mid-run for a human act that is not another task (a cross-repo filing prompt, a physical-access step, a credential) — not a dependency, not an absent opt-in, a durable property of the work known at filing time. An operator-less caller declines the row even when `[unattended]` is also present; an attended run is unchanged. Flowtron never writes it and no filer proposes it. Parses into `Task.handoff`. Distinct from the `## 🔄 Handoff` tasknote section below. See SPEC/task-line-segments.md and SPEC/unattended-candidacy.md clause 3.
+**[handoff]** — Optional task-level marker in the task-line grammar, sitting in the same trailing run as `[unattended]` AFTER `[model]`; the operator's declaration that the row will stop mid-run for a human act that is not another task (a cross-repo filing prompt, a physical-access step, a credential) — not a dependency, not an absent opt-in, a durable property of the work known at filing time. An operator-less caller declines the row even when `[unattended]` is also present; an attended run is unchanged. Flaitron never writes it and no filer proposes it. Parses into `Task.handoff`. Distinct from the `## 🔄 Handoff` tasknote section below. See SPEC/task-line-segments.md and SPEC/unattended-candidacy.md clause 3.
 
 **Handoff (🔄)** — Optional tasknote body section a session ending mid-task may write so the next reader resumes without reconstructing state: Goal + Acceptance status, key decisions, open questions, relevant paths, next step. Sits in the top block after `## 🔗 Related`; ships in no template, so the single-session happy path pays nothing. Distinct from a park (`status: blocked`), a sidequest's resume anchor, and docs/EXTERNAL-AGENTS.md §"The Handoff Contract" (whole-tasknote transfer to another agent). See SPEC §"Tasknote body shape".
 
@@ -108,7 +108,7 @@ Alphabetized. ~73 entries. Maintained via epic children and audits.
 
 **post-closure protocol** — The three steps that run after a tasknote is archived: commit decision (per Conditional skip rule), suggest-next-move (model-aware), copy-paste line. See `SPEC/post-closure.md`.
 
-**PR / suggestion archetypes** — The eight shapes flowtron deliberately rejects in contributions: schema validators, abstractions without two-project precedent, cross-project query layers beyond the read-only visualizer, multi-user/team features, runtime security scanners / audit daemons, LLM knowledge-base / "wiki layer" subsystems, loop runtimes (runners / schedulers / session daemons), and graph / multi-agent execution runtimes. Terse AI-facing list lives in SPEC; prose mirror in VISION.md. See `SPEC/scope-boundaries.md` §"What flowtron does NOT provide" and docs/VISION.md.
+**PR / suggestion archetypes** — The eight shapes flaitron deliberately rejects in contributions: schema validators, abstractions without two-project precedent, cross-project query layers beyond the read-only visualizer, multi-user/team features, runtime security scanners / audit daemons, LLM knowledge-base / "wiki layer" subsystems, loop runtimes (runners / schedulers / session daemons), and graph / multi-agent execution runtimes. Terse AI-facing list lives in SPEC; prose mirror in VISION.md. See `SPEC/scope-boundaries.md` §"What flaitron does NOT provide" and docs/VISION.md.
 
 **priority level** — The PLAN.md heading under which a task row lives (`## High`, `## Medium`, etc.). The `[!critical]` flag can float a row inside High. See SPEC §"Priority levels".
 
@@ -134,7 +134,7 @@ Alphabetized. ~73 entries. Maintained via epic children and audits.
 
 **status (tasknote frontmatter)** — One of `not-started`, `in-progress`, `completed`, `starter`, or `blocked`. Drives the entire `/ft-task` dispatch logic (scaffold vs. promote vs. resume vs. error).
 
-**submodule pin** — The deliberate, versioned consumption mechanism: adopters add flowtron as a git submodule pinned to a specific commit. Updates occur only via intentional bumps (see docs/MIGRATION.md).
+**submodule pin** — The deliberate, versioned consumption mechanism: adopters add flaitron as a git submodule pinned to a specific commit. Updates occur only via intentional bumps (see docs/MIGRATION.md).
 
 **supersedes** — Optional omit-when-absent tasknote frontmatter array of bare task IDs, written on the *later* note only: this decision replaces that prior one. Distinct from the ⚠️ `Superseded by` pointer (factual-false forward write on the old note) and from Related prose labels `depends-on:` / `related-decision:` (not YAML keys). See SPEC §"Tasknote frontmatter".
 
@@ -146,7 +146,7 @@ Alphabetized. ~73 entries. Maintained via epic children and audits.
 
 **touches** — Tasknote frontmatter array of path/glob strings naming the files this task expects to edit: its **declared scope**. Filled at Phase 1 on any task with file deliverables, reconciled against `git diff --name-only` in the Phase 4 recap as a recorded fact, never a gate. Omit-when-absent in shape (no validator) but omitted only when the task has no file deliverable. Distinct from a starter's `### Files to touch` prose survey. See SPEC §"Tasknote frontmatter".
 
-**[unattended]** — Optional task-level opt-in marker in the task-line grammar, sitting AFTER `[model]`; declares a row safe to dispatch with no operator present, the row-scoped counterpart to the `--unattended` invocation posture. Flowtron never writes it itself — seeding is an operator act, per row at a filer's confirm gate or in bulk via `/ft-seed` — and operator-less callers deny by default on an unmarked row. On an attended `/ft-task` invocation with no flag, it implies `--fast` only, never the `--unattended` posture. See SPEC/task-line-segments.md and SPEC/unattended-candidacy.md.
+**[unattended]** — Optional task-level opt-in marker in the task-line grammar, sitting AFTER `[model]`; declares a row safe to dispatch with no operator present, the row-scoped counterpart to the `--unattended` invocation posture. Flaitron never writes it itself — seeding is an operator act, per row at a filer's confirm gate or in bulk via `/ft-seed` — and operator-less callers deny by default on an unmarked row. On an attended `/ft-task` invocation with no flag, it implies `--fast` only, never the `--unattended` posture. See SPEC/task-line-segments.md and SPEC/unattended-candidacy.md.
 
 **VISION.md** — The outward-facing identity document (who it's for, principles recap including Extension-first, "what we won't accept", why this exists). Lazy-loaded; cross-linked with the SPEC PR-archetypes subsection. Companion to PHILOSOPHY.md (history). See docs/VISION.md.
 
@@ -158,4 +158,4 @@ Alphabetized. ~73 entries. Maintained via epic children and audits.
 
 **Maintenance.** This file is the survivor slice of the GSD-Pi `CONTEXT.md` pattern (see CORE-194.1). It is deliberately lazy-loaded and must never be added to the AI-referenced docs list. New terms are introduced only by epic children or audit follow-ups that also update the authoritative SPEC anchors. Last significant update: CORE-590 (2026-09-12) — added the `[unattended]` entry and extended `grammar elements` to list it.
 
-See [SPEC.md](../SPEC.md) for the contract and [.flowtron/PLAN.md](../.flowtron/PLAN.md) for the current epic context.
+See [SPEC.md](../SPEC.md) for the contract and [.flaitron/PLAN.md](../.flaitron/PLAN.md) for the current epic context.

@@ -1,11 +1,11 @@
-# Flowtron — Workflow Specification
+# Flaitron — Workflow Specification
 
 **Version:** v5.35.0
 **Status:** Stable
 
-## What is Flowtron
+## What is Flaitron
 
-Flowtron is a lightweight, project-agnostic tasknote system for solo
+Flaitron is a lightweight, project-agnostic tasknote system for solo
 AI-assisted coding. One source of truth, consumed by adopting projects via
 git submodule.
 
@@ -21,11 +21,11 @@ to maintain.
 2. **Zero scripts.** All operations are `cp`, `mv`, and editing markdown. Anything more is over-engineering.
 3. **One task per context window.** Tasks are sized so the assistant can hold the entire scope in working memory.
 4. **Relevance before action.** Every task starts with a hard gate: is this still the right work?
-5. **Versioned and pinned.** Adopting projects pin a specific flowtron commit; updates are deliberate.
+5. **Versioned and pinned.** Adopting projects pin a specific flaitron commit; updates are deliberate.
 
-## Layout, and working in the flowtron repo itself
+## Layout, and working in the flaitron repo itself
 
-The adopting-project directory layout, the flowtron repo's own layout,
+The adopting-project directory layout, the flaitron repo's own layout,
 procedure SOPs, and the reserved `ft-` skill-name prefix (adopters MUST NOT
 use it for their own skills): see
 [`SPEC/layout.md`](SPEC/layout.md).
@@ -46,10 +46,10 @@ Canonical area prefixes:
 
 Adopting projects may add domain prefixes (e.g., `OCR-` for a vision-heavy
 project's OCR pipeline). Domain prefixes must be declared in the project's
-`.flowtron/tasknote/README.md`.
+`.flaitron/tasknote/README.md`.
 
 **`<area>` is looked up, never derived from the ID.** The archive folder for a
-prefix is whatever the project's `.flowtron/tasknote/README.md` §"Archive layout"
+prefix is whatever the project's `.flaitron/tasknote/README.md` §"Archive layout"
 table says — read it on every task, for every prefix, canonical ones included.
 Lowercasing the prefix is the *declaration-time default* for adding a row, not a
 resolution an agent may perform: a project may declare a folder the default would
@@ -81,7 +81,7 @@ All of `[!critical]`, `[model]`, `[unattended]`, `[handoff]`, and
 order; at most one of them belongs on a row). The legacy minimal form
 `- [ ] **TASK-ID** — description` still parses for backwards compatibility.
 
-The grammar is additive — flowtron bumps don't require migrating legacy
+The grammar is additive — flaitron bumps don't require migrating legacy
 entries. **A rewrite preserves the trailing bracket-token run verbatim:** it
 changes only the segment it means to change, copying every other bracket token
 and any model-suggestion glyph from the original. A dropped token disarms it
@@ -129,7 +129,7 @@ Every tasknote opens with a YAML frontmatter block carrying machine-parseable
 fields, followed by a Markdown body. The canonical schema lives in `templates/tasknote-template.md`. Valid `status:` values:
 `starter | not-started | in-progress | blocked | completed`.
 
-Flowtron itself does not parse this frontmatter — the field contract exists
+Flaitron itself does not parse this frontmatter — the field contract exists
 so adopting projects' tools (visualizers, dashboards, queries) can consume
 tasknote metadata without scraping the H1 line. Adopting projects can ignore
 the frontmatter and continue working as before.
@@ -152,7 +152,7 @@ globs.
 
 Do **not** add `blocks` (the inverse of `blocked-by`; derivable by grep) or
 `depends-on` (a synonym of `blocked-by`). A Related prose label `depends-on:`
-is not this key. Flowtron ships no validator for these keys. The shipped
+is not this key. Flaitron ships no validator for these keys. The shipped
 templates comment them rather than emitting empty arrays, so the happy-path
 scaffold pays nothing at parse time. Starter `### Files to touch` stays the
 informal prose survey; YAML `touches:` is the short queryable list once the
@@ -283,7 +283,7 @@ are first-class in markdown-vault tooling (Obsidian, Foam, Logseq) and stay
 cheap to write.
 
 **Backwards compatibility** — see §"Tasknote frontmatter" write-once policy.
-Adopting projects pick up the new shape on their next flowtron version bump.
+Adopting projects pick up the new shape on their next flaitron version bump.
 
 ### Optional inserts — Fan-out and Handoff
 
@@ -340,7 +340,7 @@ Mandatory steps:
 - [ ] **Relevance Assessment** — `Proceed` / `Re-scope` / `De-scope` with one-line rationale
 - [ ] Read relevant source files — when the read set is broad or its shape is unknown, consider isolating the search in a **probe** (see below) and recording only its distilled return in Discovery Notes
 - [ ] **Best Practices Review** — when code or module boundaries are in scope, identify the touched responsibilities, established dependency direction and abstractions, and nearby duplication; record any required in-scope refactor or deferred cleanup (otherwise `N/A` with a one-line reason)
-- [ ] **Archive skim** — surface prior decisions on the same files / area by skimming `.flowtron/tasknote/archive/<area>/` for tasknotes that touched the source paths in scope (if YAML `touches:` is set, prefer those paths for the path grep); also open IDs named by `## 🔗 Related`, YAML `supersedes:`, and any ⚠️ `Superseded by` pointer on the hits — still `grep` + read, no query engine; when the grep returns more than a handful of notes (~3 is a fair line), prefer handing the reading to a **probe** (same clause as the read step above) rather than pulling every hit into this window; log relevant findings in Discovery Notes before re-interpreting the task; an absent or empty `archive/<area>/` is a prompt to re-check `<area>` against the README table (§"Task ID convention") before logging "no prior tasknotes" — a derived-and-wrong folder is indistinguishable from a genuinely empty one, and mistaking the two silently voids this step
+- [ ] **Archive skim** — surface prior decisions on the same files / area by skimming `.flaitron/tasknote/archive/<area>/` for tasknotes that touched the source paths in scope (if YAML `touches:` is set, prefer those paths for the path grep); also open IDs named by `## 🔗 Related`, YAML `supersedes:`, and any ⚠️ `Superseded by` pointer on the hits — still `grep` + read, no query engine; when the grep returns more than a handful of notes (~3 is a fair line), prefer handing the reading to a **probe** (same clause as the read step above) rather than pulling every hit into this window; log relevant findings in Discovery Notes before re-interpreting the task; an absent or empty `archive/<area>/` is a prompt to re-check `<area>` against the README table (§"Task ID convention") before logging "no prior tasknotes" — a derived-and-wrong folder is indistinguishable from a genuinely empty one, and mistaking the two silently voids this step
 - [ ] **Drift check** — verify file paths, line numbers, function names, and root-cause hypotheses cited in the task description still match current code, **and** cross-reference the plan this tasknote is forming against its `PLAN.md` line and the SPEC contracts it touches (read them, don't recall them); surface any drift to the user before re-interpreting the task
 - [ ] Asked clarifying questions OR logged "No clarifications needed" with explicit assumptions
 - [ ] Subtasks above populated with concrete, ordered steps, and YAML `touches:` declared with the paths this task expects to edit (omit only on a task with no file deliverable — §"Tasknote frontmatter")
@@ -488,7 +488,7 @@ Neither flag suppresses it, since nothing here asks the operator anything. Under
 unchanged, a blocker the run cannot fix parking `input-needed`
 ([`SPEC/gate-postures.md`](SPEC/gate-postures.md) §"What `--unattended` never
 relaxes"). It adds no phase, no banner, and no cue — one checklist item under the
-existing 🧪 heading, the standing gate count unchanged. Flowtron ships the brief
+existing 🧪 heading, the standing gate count unchanged. Flaitron ships the brief
 and the two rungs; which primitive spawns the reviewer is the runner's business,
 as with any probe.
 
@@ -521,10 +521,10 @@ to a `visual-confirm` park, respectively — is one row of
 
 ### 🚀 Phase 4: Closure
 
-- [ ] **Doc-drift sweep** — for each entry in `.flowtron/tasknote/README.md` §"AI-referenced docs", state "no change" or the update
-- [ ] Closed — every `## ✅ Acceptance` criterion ticked or explicitly annotated (`N/A` / not-met with a one-line reason), tasknote YAML `status:` flipped to `completed`, PLAN.md line flipped to stub form `Completed YYYY-MM-DD.` and placed (standalone → top of `## Completed`; epic child → kept nested beneath its active parent — see [`SPEC/plan-filing.md` §"`## Completed` archive convention"](SPEC/plan-filing.md) if unclear), then tasknote moved to `.flowtron/tasknote/archive/<area>/`
+- [ ] **Doc-drift sweep** — for each entry in `.flaitron/tasknote/README.md` §"AI-referenced docs", state "no change" or the update
+- [ ] Closed — every `## ✅ Acceptance` criterion ticked or explicitly annotated (`N/A` / not-met with a one-line reason), tasknote YAML `status:` flipped to `completed`, PLAN.md line flipped to stub form `Completed YYYY-MM-DD.` and placed (standalone → top of `## Completed`; epic child → kept nested beneath its active parent — see [`SPEC/plan-filing.md` §"`## Completed` archive convention"](SPEC/plan-filing.md) if unclear), then tasknote moved to `.flaitron/tasknote/archive/<area>/`
 - [ ] **Evidence-based recap** drafted — changed files and LOC where meaningful, verification commands and results, refactors made or deferred with rationale, documentation verdict, the `touches:` scope reconciliation, and concrete maintainability effect (surfaces at the 📦 ready-to-commit gate, or inline on conditional skip)
-- [ ] **Learnings** — did this task teach something the always-loaded layer (`AGENTS.md` / `.flowtron/tasknote/README.md` §"AI-referenced docs") should carry? `N/A` or the line
+- [ ] **Learnings** — did this task teach something the always-loaded layer (`AGENTS.md` / `.flaitron/tasknote/README.md` §"AI-referenced docs") should carry? `N/A` or the line
 
 **Push-memory beside pull-memory.** The Phase 1 archive skim is *pull*
 memory — a task reads prior tasknotes when it starts. This item is the
@@ -649,8 +649,8 @@ starter tasknote, or a routed ticket) rather than editing it directly from
 this task cycle. The target repo's own `/ft-task` cycle executes it, with its
 own Discovery, Acceptance, and closure commit. The boundary is symmetric with
 the routing adopting projects already run in the other direction: a task that
-finds a flowtron-side issue files a `CORE-` ticket and routes it, rather than
-fixing flowtron from that project's session.
+finds a flaitron-side issue files a `CORE-` ticket and routes it, rather than
+fixing flaitron from that project's session.
 
 Canonical contract, including the single documented precedent exception: see
 [`SPEC/scope-boundaries.md`](SPEC/scope-boundaries.md).
@@ -661,7 +661,7 @@ A tasknote run under an iteration loop (goal loops, heartbeats): the assistant
 repeats Phase 2 → Phase 3 against a fixed Acceptance target until it is met, a
 budget is exhausted, or a per-cycle relevance check says stop. The runtime —
 cadence, re-invocation, session lifetime — is Claude Code's `/loop` or any
-equivalent runner; flowtron ships no loop runner or scheduler. What flowtron
+equivalent runner; flaitron ships no loop runner or scheduler. What flaitron
 does ship is the **contract the loop reports to**: gate collapse to `--fast`
 semantics (commit per verified iteration; destructive actions park via
 `status: blocked` rather than collapse), a per-cycle relevance gate, a
@@ -758,7 +758,7 @@ five filing motions — follow-up, park, starter, `/ft-audit`, and `/ft-refactor
 and `/ft-seed`'s row edits ride the same contract; execution skills keep
 their commit-go gate), the `## Completed` archive stub-form convention,
 and the `## Completed` rotation bound (the oldest rows spill verbatim to
-`.flowtron/PLAN-ARCHIVE.md` on an operator motion; advisory only, nothing
+`.flaitron/PLAN-ARCHIVE.md` on an operator motion; advisory only, nothing
 deleted).
 
 ## Priority levels
@@ -798,9 +798,9 @@ module's.
 
 Canonical contract: see [`SPEC/versioning.md`](SPEC/versioning.md).
 
-## What flowtron does NOT provide
+## What flaitron does NOT provide
 
-To prevent scope creep, flowtron deliberately omits:
+To prevent scope creep, flaitron deliberately omits:
 
 - A CLI tool (use `cp`, `mv`, and your editor) — one carved-out exception:
   [`tools/update-adopters.mjs`](tools/update-adopters.mjs), the operator-side
@@ -814,7 +814,7 @@ To prevent scope creep, flowtron deliberately omits:
 
 Both carve-outs above are singular exceptions, not precedents. If you find
 yourself wanting any of these, write a project-side helper — do not add them
-to flowtron.
+to flaitron.
 
 Canonical contract: see [`SPEC/scope-boundaries.md`](SPEC/scope-boundaries.md),
-which also carries the PR / suggestion archetypes flowtron does not accept.
+which also carries the PR / suggestion archetypes flaitron does not accept.

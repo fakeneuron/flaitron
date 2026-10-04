@@ -1,18 +1,18 @@
-# Flowtron dogfood procedure
+# Flaitron dogfood procedure
 
 A versioned, pasteable verification procedure any AI agent runs to
-confirm flowtron compatibility and refresh its `docs/AGENT-COMPAT.md`
+confirm flaitron compatibility and refresh its `docs/AGENT-COMPAT.md`
 `last-verified` row. Covers the three verification surfaces: contract
 comprehension, cue-render check, and Phase-1 drive.
 
 Audience: operators running a dogfood session under a new agent or
 re-verifying an existing row before a release cut. Paste this file's
 content (or reference its path) as the opening prompt in the target
-agent's session on the flowtron repo.
+agent's session on the flaitron repo.
 
 ## Prerequisites
 
-1. **The flowtron repo** — run the session in a checkout of flowtron
+1. **The flaitron repo** — run the session in a checkout of flaitron
    itself (not an adopter project). The `last-verified` stamps live
    here.
 2. **The target agent** — the session must run under the agent whose
@@ -41,10 +41,10 @@ Read each file below in full before continuing:
    itself lives in `SPEC/cue-vocabulary.md`).
 5. `templates/tasknote-template.md` — the canonical 4-phase tasknote
    shape.
-6. `.flowtron/tasknote/README.md` — the AI-referenced docs list and
+6. `.flaitron/tasknote/README.md` — the AI-referenced docs list and
    the archive layout.
 
-Log: `Contract comprehension complete. flowtron version: vX.Y.Z.
+Log: `Contract comprehension complete. flaitron version: vX.Y.Z.
 My row: [paste current stamp from AGENT-COMPAT.md].`
 
 ### Step 2 — Cue-render check
@@ -85,11 +85,11 @@ confirm the UPPERCASE label fallback is legible.]`
 
 ### Step 3 — Phase-1 drive
 
-Pick one open task from `.flowtron/PLAN.md` (any unchecked line not
+Pick one open task from `.flaitron/PLAN.md` (any unchecked line not
 under `## Completed`). Run **Phase 1: Discovery** on it as you would
 in a real session, following `SPEC.md` §"📝 Phase 1: Discovery":
 
-**Exhausted-PLAN fallback.** If `.flowtron/PLAN.md` has no open task
+**Exhausted-PLAN fallback.** If `.flaitron/PLAN.md` has no open task
 (every line is under `## Completed` — the PLAN-exhausted terminal
 state), do **not** fabricate a task. Instead exercise Discovery on the
 terminal state itself: review the board, return a **De-scope** verdict
@@ -104,7 +104,7 @@ behavior, and the dogfood passes on it.
 2. **Relevance Assessment** — state Verdict (Proceed / Re-scope /
    De-scope) and Rationale.
 3. Read relevant source files in scope for the task.
-4. **Archive skim** — run `ls .flowtron/tasknote/archive/<area>/`;
+4. **Archive skim** — run `ls .flaitron/tasknote/archive/<area>/`;
    grep for source paths in scope (prefer YAML `touches:` when set);
    also open IDs named by Related / `supersedes` / ⚠️ pointers; log any
    load-bearing findings.
@@ -150,7 +150,7 @@ do **not** edit `docs/AGENT-COMPAT.md`, `claude/CAPABILITIES.md`, or
 it is this block filled in — nothing more, nothing rephrased:**
 
 ```text
-Contract comprehension complete. flowtron version: vX.Y.Z. My row: [stamp as found in docs/AGENT-COMPAT.md].
+Contract comprehension complete. flaitron version: vX.Y.Z. My row: [stamp as found in docs/AGENT-COMPAT.md].
 Cue-render check complete. [non-rendering glyphs, or "all glyphs rendered"; UPPERCASE label fallback legible].
 Phase-1 drive complete. Task: [TASK-ID]. Exit-gate decision: [skip ✅ / fire 🛠️]. git status (session-written files): clean.
 Proposed stamp: vX.Y.Z · YYYY-MM-DD (dogfooded)

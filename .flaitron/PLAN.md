@@ -20,7 +20,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [x] **CORE-711.2** [light]🔧 | viz hard-cut — Completed 2026-10-03.
   - [x] **CORE-711.3** [heavy]🧠 | update-adopters migrate mode — Completed 2026-10-03.
   - [x] **CORE-711.4** [heavy]🧠 | text sweep + self-host move — Completed 2026-10-03.
-  - [ ] **CORE-711.5** [light]🔧 | github + folder renames — Rename GitHub repo → flaitron and update origin; re-point the 13 live global `~/.claude` skill/command symlinks (drop the 10 dangling); operator renames `~/Code/flowtron` → `~/Code/flaitron` outside the session (it ends the session's cwd) and moves the Claude project memory dir. After .4; before CORE-712.
+  - [x] **CORE-711.5** [light]🔧 | github + folder renames — Completed 2026-10-04.
   - [ ] **CORE-711.6** [light]🔧 | natabula handoff — File NAT ticket(s) in natabula's PLAN so its `configs/` deposits, `natabula-align` layout check, fleet scripts, skills, docs and fixtures move to `.flaitron/` before the wave. After .4; parallel with .5.
   - [ ] **CORE-711.7** [heavy]🧠 | fleet wave — Dry-run then `--apply` the .3 migrate mode across all 22 adopters on one confirm; natabula layer-refresh carries the deposits; rewrite adopter prose `.flowtron/` paths and audit-fork `flowtron-reconciled:` / `flowtron-tracks:` keys outside archives; verify with `natabula-align`. Commits stay local, no bulk push. caobunga CBN-278 (`.flaitron/` reader layout) lands first. After CORE-712 (the v6.0.0 tag) + .6.
   - [ ] **CORE-711.8** [light]🔧 | global + external refs — judedelparte site (`content/apps/flowtron.yml`, app icon, tests, sibling app ymls), `~/.claude` CLAUDE.md L44 + settings.json L105 + guard hook, `~/Code/CLAUDE.md`, and `~/fakeneuron/` once the operator adds it as an access root. After .5.

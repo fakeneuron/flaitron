@@ -75,7 +75,7 @@ The submodule ships the full Claude slash-command inventory and matching Codex s
 
 Global utilities (`/ft-new-project`, `/ft-audit-repo`) live in the user's agent home when desired, not in every adopter repo. `/ft-release` is flaitron-self-only. The canonical category table lives in [`docs/PLATFORMS.md`](PLATFORMS.md) §"Installed-surface policy".
 
-**Claude Code install:** open `.flaitron/core/claude/AGENTS-snippet.md` §"One-time symlink wiring" and run the commands from the project root — that file is the single source of truth for Claude wiring (and also holds the §1.3 `AGENTS.md` paste-block). The relative paths in the snippet survive `git clone` and pin to the submodule's current SHA, so symlinks never need touching on a version bump.
+**Claude Code install:** open `.flaitron/core/claude/AGENTS-snippet.md` §"One-time symlink wiring" and run the commands from the project root — that file is the single source of truth for Claude wiring (and also holds the §1.3 `AGENTS.md` paste-block). The relative paths in the snippet survive `git clone` and pin to the submodule's current SHA, so symlinks never need touching on a normal version bump.
 
 **Codex install:** open `.flaitron/core/codex/AGENTS-snippet.md` §"One-time skill wiring" and run the commands from the project root. Codex discovers these repo-scoped subset skills under `.agents/skills/`; invoke them through `/skills` or `$ft-task` / `$ft-update`.
 
@@ -527,7 +527,7 @@ To bump:
    ```
 3. Commit. The parent repo's submodule pointer (the SHA recorded for `.flaitron/core`) changes; `.gitmodules` itself only changes if the URL or branch field changes.
 
-Existing symlinks in `.claude/` and `.agents/skills/` don't need to be touched — they always track whatever the submodule currently points at. The one exception is a release that **retires** a skill: see the note below.
+Existing symlinks in `.claude/` and `.agents/skills/` don't need to be touched — they always track whatever the submodule currently points at. Two exceptions: a release that **retires** a skill (see the note below), and v6.0.0's `.flowtron/` → `.flaitron/` rename, which re-points every symlink (§"Upgrading an existing adopter from v5.x" step 4).
 
 #### Retired skills leave dangling symlinks
 
@@ -594,7 +594,7 @@ flaitron **v6.0.0** renames the project from flowtron, and with it the conventio
    done
    ```
 5. **Rewrite ignore rules** naming `.flowtron/` in any tracked `.gitignore` to `.flaitron/`.
-6. **Update stray references** outside archived tasknotes (which stay as written): `AGENTS.md`, `CLAUDE.md`, active tasknotes, project docs, tool configs (e.g. a `Read(./.flowtron/core/.flowtron/**)` deny rule → `Read(./.flaitron/core/.flaitron/**)`, gitleaks/ignore-file paths, `FLOWTRON_VIZ_WORKSPACE` → `FLAITRON_VIZ_WORKSPACE`), and full-copy audit forks' frontmatter keys `flowtron-reconciled:` / `flowtron-tracks:` → `flaitron-reconciled:` / `flaitron-tracks:`. Confirm clean: `git grep -n flowtron -- ':!.flaitron/tasknote/archive' ':!.flaitron/PLAN-ARCHIVE.md'`.
+6. **Update stray references** outside archived tasknotes (which stay as written): `AGENTS.md`, `CLAUDE.md`, active tasknotes, project docs, tool configs (e.g. a `Read(./.flowtron/core/.flowtron/**)` deny rule → `Read(./.flaitron/core/.flaitron/**)`, gitleaks/ignore-file paths, `FLOWTRON_VIZ_WORKSPACE` → `FLAITRON_VIZ_WORKSPACE`), and audit forks (full-copy and thin overlay): their frontmatter keys `flowtron-reconciled:` / `flowtron-tracks:` → `flaitron-reconciled:` / `flaitron-tracks:`, plus a thin overlay's Referenced-scaffold line `.flowtron/core/claude/skills/ft-audit/SKILL.md` → `.flaitron/core/claude/skills/ft-audit/SKILL.md`. Confirm clean: `git grep -n flowtron -- ':!.flaitron/tasknote/archive' ':!.flaitron/PLAN-ARCHIVE.md'`.
 7. **Stage and commit.** Steps 1–3 staged themselves; steps 4–6 only edited the working tree, so stage them too (`git add -A` on whichever of `.claude`, `.agents`, `.cursor`, `.grok` exist, plus `.gitignore` and the files step 6 touched), then commit the move + re-pin + rewiring as a single bump task (4-phase flow per the note above).
 
 ### Upgrading an existing adopter from v4.x (`_project/` → `.flowtron/`)

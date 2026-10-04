@@ -148,10 +148,11 @@ flaitron/
 ```
 
 The structural decision is locked at [[CORE-154.3]]: no parent
-`wiring/` dir, no rename of `claude/`. Adopter symlinks already in
-production point at `../../.flaitron/core/claude/...` — that path
-stability is a
-non-negotiable per [[CORE-154.1]] Constitution.
+`wiring/` dir, no rename of `claude/`. Adopter symlinks point at
+`../../.flaitron/core/claude/...` (`.flowtron/core/` before v6.0.0) —
+the `claude/` segment's stability is a non-negotiable per [[CORE-154.1]]
+Constitution; v6.0.0's one-time prefix rename is migrated by
+`docs/MIGRATION.md` §"Upgrading an existing adopter from v5.x".
 
 ### Naming conventions
 
@@ -557,7 +558,8 @@ This doc does **not**:
   platform's wiring author decides which skills to translate and how.
 - Provide migration tooling for existing adopters — none needed by
   design ([[CORE-154.1]] Constitution non-negotiable on adopter-symlink
-  stability).
+  stability) beyond the v6.0.0 rename move (`tools/update-adopters.mjs`
+  migrate mode).
 - Adopt any specific platform's conventions (Codex CLI's command
   shape, grok-cli's skill format, Cursor's MCP semantics, …) — those
   are external; this doc is the *pattern*, not the per-platform

@@ -20,8 +20,8 @@ actually review. No scripts, daemons, databases, or schemas to maintain.
 
 ![The flaitron visualizer showing flaitron's own PLAN.md — open tasks by priority, phase-progress dots, and the completed archive](.flaitron/screenshots/viz-board.png)
 
-Flaitron is built with flaitron: **1057 tasks** closed through this exact
-workflow between 2026-04-28 and 2026-10-02 (as of 2026-10-02) — each one with
+Flaitron is built with flaitron: **1062 tasks** closed through this exact
+workflow between 2026-04-28 and 2026-10-03 (as of 2026-10-03) — each one with
 a tasknote preserved in [`.flaitron/tasknote/archive/`](.flaitron/tasknote/archive/).
 Count and date range are recomputed each release by `/ft-release` §7.1's
 "Standing README task-counter check" (one archived tasknote per closed task,
@@ -322,8 +322,11 @@ major bumps (no separate `CHANGELOG.md`).
 
 Flaitron is solo-maintained with a personal adopter fleet. The major version
 number counts breaking changes from the May 2026 rapid-iteration period
-(v1.0.0 → v5.0.0 in 25 days), not project maturity — the contract has been
-break-free since v5.0.0 (2026-06-01).
+(v1.0.0 → v5.0.0 in 25 days), not project maturity — the contract was
+break-free from v5.0.0 (2026-06-01) until v6.0.0, the one-time
+flowtron → flaitron rename (`.flowtron/` → `.flaitron/`). Existing adopters
+follow
+[docs/MIGRATION.md](docs/MIGRATION.md) §"Upgrading an existing adopter from v5.x".
 
 ## License
 

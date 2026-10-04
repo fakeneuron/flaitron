@@ -1,6 +1,6 @@
 ---
 title: release v6.0.0
-status: in-progress
+status: completed
 tags: []
 created: 2026-10-04
 due:
@@ -24,7 +24,7 @@ blocked-by:
 
 # CORE-712 | release v6.0.0
 
-[← PLAN.md](../PLAN.md) · 🟢 In progress (⏸ parked) · 🔗 [[CORE-711.2]] [[CORE-711.3]] [[CORE-711.4]] [[CORE-711.9]] [[CORE-691]] [[CORE-711.5]] [[CORE-690]]
+[← PLAN.md](../PLAN.md) · ✅ Completed · 🔗 [[CORE-711.2]] [[CORE-711.3]] [[CORE-711.4]] [[CORE-711.9]] [[CORE-691]] [[CORE-711.5]] [[CORE-690]]
 
 ## 🎯 Goal
 
@@ -42,7 +42,7 @@ The first `/ft-release` drive reached the 📦 gate and the operator declined to
 - The README task counter. The parked run set it to 1062 as of 2026-10-03 in `d43ad4d2`; recompute it.
 - The VERSION-HISTORY entry, re-locked together with the tag message.
 
-**Locked tag-message draft (re-review at resume).** Add CORE-711.9 and the `d43ad4d2` fixes to Changes, and confirm the repo URL and folder references now hold.
+**Locked tag-message draft (re-review at resume).** Re-locked 2026-10-04 at resume with the CORE-711.9 bullet and the cross-agent line filled; the final text is the `v6.0.0` tag message (`git show v6.0.0`). Add CORE-711.9 and the `d43ad4d2` fixes to Changes, and confirm the repo URL and folder references now hold.
 
 ```text
 flaitron v6.0.0 — flowtron is now flaitron (.flowtron/ → .flaitron/, hard cut)
@@ -77,27 +77,27 @@ Sentinel note: the `Migration (BREAKING …)` heading makes `migrationBearingTag
 
 ## ✅ Acceptance
 
-- [ ] SPEC.md `**Version:** v5.35.0` → `v6.0.0`
-- [ ] docs/MIGRATION.md example pin bumped `v5.35.0` → `v6.0.0`
-- [ ] SECURITY.md release-tag example pin bumped `v5.35.0` → `v6.0.0`
-- [ ] Dogfood gate resolved — every dogfooded row (Claude / Grok / Codex / Cursor) refreshed from a real verification run at `v6.0.0`, or recorded `skipped @ v6.0.0` (per `docs/AGENT-COMPAT.md` §"Reading the cells")
-- [ ] SOP-currency check run — `SPEC/procedures/*.md` reported clean, or drift candidates adjudicated and a follow-up filed (stamps left un-bumped either way)
-- [ ] Phase 4 doc-drift sweep run across all `.flaitron/tasknote/README.md` §"AI-referenced docs" entries
-- [ ] Single `feat: CORE-712 — flaitron v6.0.0 (...)` commit lands
-- [ ] Annotated `v6.0.0` tag created with adopter-facing release notes
-- [ ] `docs/VERSION-HISTORY.md` prepended with a curated entry for `v6.0.0` (major: headline + 2–4 main bullets + optional secondary)
-- [ ] Tag pushed to origin
-- [ ] PLAN.md line flipped to stub form under `## Completed`
-- [ ] Tasknote archived to `.flaitron/tasknote/archive/core/CORE-712.md`
+- [x] SPEC.md `**Version:** v5.35.0` → `v6.0.0`
+- [x] docs/MIGRATION.md example pin bumped `v5.35.0` → `v6.0.0`
+- [x] SECURITY.md release-tag example pin bumped `v5.35.0` → `v6.0.0`
+- [x] Dogfood gate resolved — every dogfooded row (Claude / Grok / Codex / Cursor) refreshed from a real verification run at `v6.0.0`, or recorded `skipped @ v6.0.0` (per `docs/AGENT-COMPAT.md` §"Reading the cells")
+- [x] SOP-currency check run — `SPEC/procedures/*.md` reported clean, or drift candidates adjudicated and a follow-up filed (stamps left un-bumped either way)
+- [x] Phase 4 doc-drift sweep run across all `.flaitron/tasknote/README.md` §"AI-referenced docs" entries
+- [x] Single `feat: CORE-712 — flaitron v6.0.0 (...)` commit lands
+- [x] Annotated `v6.0.0` tag created with adopter-facing release notes
+- [x] `docs/VERSION-HISTORY.md` prepended with a curated entry for `v6.0.0` (major: headline + 2–4 main bullets + optional secondary)
+- [x] Tag pushed to origin
+- [x] PLAN.md line flipped to stub form under `## Completed`
+- [x] Tasknote archived to `.flaitron/tasknote/archive/core/CORE-712.md`
 
 ## 🧩 Subtasks
 
-- [ ] Apply the 3 version edits (SPEC.md, docs/MIGRATION.md, SECURITY.md) v5.35.0 → v6.0.0
-- [ ] Walk the dogfood-gate + SOP-currency fragment (`claude/skills/ft-release/step-5-dogfood-sop.md`)
-- [ ] Run the standing viz + fleet-updater validation gate, plus CI status check and dependency audit
-- [ ] Run the `/ft-audit docs ai-referenced` subroutine and the §7.1 standing-checks + mirror-pairs fragments
-- [ ] Draft and lock the annotated tag message + VERSION-HISTORY entry (§7.2)
-- [ ] Commit, tag, and push on 🟢 GO
+- [x] Apply the 3 version edits (SPEC.md, docs/MIGRATION.md, SECURITY.md) v5.35.0 → v6.0.0
+- [x] Walk the dogfood-gate + SOP-currency fragment (`claude/skills/ft-release/step-5-dogfood-sop.md`)
+- [x] Run the standing viz + fleet-updater validation gate, plus CI status check and dependency audit
+- [x] Run the `/ft-audit docs ai-referenced` subroutine and the §7.1 standing-checks + mirror-pairs fragments
+- [x] Draft and lock the annotated tag message + VERSION-HISTORY entry (§7.2)
+- [x] Commit, tag, and push on 🟢 GO
 
 ## 🔗 Related
 
@@ -143,40 +143,53 @@ Sentinel note: the `Migration (BREAKING …)` heading makes `migrationBearingTag
 
 ## 🛠️ Phase 2: Execution
 
-- [ ] **Pattern survey**
+- [x] **Pattern survey** — N/A: release recipe; CORE-690 precedent followed.
 
-- [ ] **Minimal refactor gate**
+- [x] **Minimal refactor gate** — N/A: no code.
 
-- [ ] Implemented the minimal solution
+- [x] Implemented the minimal solution — 3 version edits, dogfood stamps, README counter, CONTEXT-BUDGET ledger, VERSION-HISTORY entry.
 
-- [ ] Updated/added tests for non-trivial behavior
+- [x] Updated/added tests for non-trivial behavior — N/A: markdown-only cut.
 
 **Implementation Notes:**
 
+- Resumed 2026-10-04 after [[CORE-711.5]] + [[CORE-711.9]] closed; version re-confirmed v6.0.0 (prefix classifier said minor — no `feat!:`/trailer; PLAN target wins).
+- Version edits: `SPEC.md:3`, `docs/MIGRATION.md:507`, `SECURITY.md:125` v5.35.0 → v6.0.0.
+- Dogfood ledger:
+  - `Claude → v6.0.0 · 2026-10-04 (dogfooded) — written` (this session's own drive)
+  - `Grok → v5.35.0 · 2026-10-02 (dogfooded; skipped @ v6.0.0) — written` (no receipt)
+  - `Codex → v6.0.0 · 2026-10-04 (dogfooded) — written` (verbatim receipt: version v6.0.0, My row matched, Phase-1 drive CORE-712 / skip ✅)
+  - `Cursor → v5.33.0 · 2026-09-23 (dogfooded; skipped @ v6.0.0) — written` (no receipt)
+- SOP currency: clean (tier-2 note: 3 `SPEC.md` commits since 2026-10-01 — skimmed: the CORE-711.4 name sweep, two release cuts, and the CORE-660 gate-catalog move; the SOP carries no stale `flowtron` refs).
+
 ## 🧪 Phase 3: Testing & Linting
 
-- [ ] Ran targeted test suite for changed code
+- [x] Ran targeted test suite for changed code — standing gate, below.
 
-- [ ] Ran lint/type-check on changed code
+- [x] Ran lint/type-check on changed code — standing gate, below.
 
-- [ ] **Verification receipt**
+- [x] **Verification receipt** — Testing Notes below; dogfood ledger re-verified from file state (no `MISSING`).
 
-- [ ] **External review**
+- [x] **External review** — `/ft-audit docs ai-referenced` across three read-only reviewers (Phase 4).
 
-- [ ] (frontend) Asked the user for visual confirmation (emphasized `👁️ **CONFIRM**` ask on its own line)
+- [x] (frontend) N/A — no UI change.
 
 **Testing Notes:**
 
+- Standing gate (2026-10-04, resume): viz test / typecheck / lint / build, fleet suite, both `node --check` — all exit 0.
+- §6.1: HEAD `3874c3b3` was 6 commits unpushed (no CI run); operator chose push-main-now → CI run 37233825825 `completed success`.
+- §6.2: `npm audit --audit-level=high` — 0 vulnerabilities.
+
 ## 🚀 Phase 4: Closure
 
-- [ ] **Doc-drift sweep** — for each entry in `.flaitron/tasknote/README.md` §"AI-referenced docs", state "no change" or the update
+- [x] **Doc-drift sweep** — `/ft-audit docs ai-referenced` over all 19 entries: 1 Low (README task counter 1062 → 1064, cleared inline by the §7.1 standing counter check); every other entry no change beyond this cut's version pin (`SPEC.md`, `docs/MIGRATION.md`, `SECURITY.md`) and dogfood stamps (`docs/AGENT-COMPAT.md`, `docs/PLATFORMS.md`, `claude/CAPABILITIES.md`). §7.1 standing checks and all mirror pairs (11 CI + A-content, F, I, K, L) clean; context budget clean under bash; ledger refreshed.
 
-- [ ] Closed — every `## ✅ Acceptance` criterion ticked or explicitly annotated, YAML `status:` flipped to `completed`, PLAN.md line flipped to stub form and placed, then tasknote moved to `.flaitron/tasknote/archive/core/`
+- [x] Closed — every `## ✅ Acceptance` criterion ticked or explicitly annotated, YAML `status:` flipped to `completed`, PLAN.md line flipped to stub form and placed, then tasknote moved to `.flaitron/tasknote/archive/core/`
 
-- [ ] **Evidence-based recap** drafted
+- [x] **Evidence-based recap** drafted — in the 📦 gate.
 
-- [ ] **Learnings** — `N/A` or the line
+- [x] **Learnings** — the context-budget block silently skips its glob rows under zsh (`for f in $surface` does not glob-expand an unquoted parameter); it passes only because CI and this cut ran it under bash. Worth a `bash` note beside "Run from the repository root".
 
-**Final Summary:**
+**Final Summary:** Cut flaitron v6.0.0, the major release for the flowtron → flaitron rename (CORE-711.2/.3/.4/.9, plus CORE-691). The cut bumped the three version pins, refreshed Claude and Codex to v6.0.0 (Codex on a verbatim receipt), and recorded Grok and Cursor skipped. It also refreshed the README task counter and the context-budget ledger and prepended the VERSION-HISTORY entry. Adopter impact is breaking. Every existing adopter does the one-time `.flowtron/` → `.flaitron/` move in `docs/MIGRATION.md` §"Upgrading an existing adopter from v5.x", and `tools/update-adopters.mjs --apply` automates steps 1–5 for the CORE-711.7 fleet wave.
 
-**Archived:** YYYY-MM-DD
+**Archived:** 2026-10-04

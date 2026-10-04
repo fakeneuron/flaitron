@@ -22,6 +22,14 @@ unless correcting a factual error.
 
 ---
 
+## v6.0.0 — flowtron is now flaitron (.flowtron/ → .flaitron/, hard cut)
+
+- The project, repository (github.com/fakeneuron/flaitron), convention directory (.flaitron/), and submodule path (.flaitron/core) are renamed, with no old-name fallback. Archived tasknotes and the ft-* skill prefix are unchanged.
+- The visualizer reads .flaitron/ only. FLAITRON_VIZ_WORKSPACE replaces FLOWTRON_VIZ_WORKSPACE, and saved view preferences reset once.
+- Existing adopters do a one-time move (docs/MIGRATION.md §"Upgrading an existing adopter from v5.x"). tools/update-adopters.mjs --apply automates the mechanical steps.
+
+Also: cross-file cite/path/count sweep; README "Formerly flowtron" note.
+
 ## v5.35.0 — the release cut stops on Medium and Low findings
 
 - /ft-release stops and asks when a docs sweep still has Medium or Low findings. Release anyway files them. Stop holds the cut.

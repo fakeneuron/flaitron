@@ -27,8 +27,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [x] **CORE-711.9** [medium]🧩 | full-repo flaitron sweep — Completed 2026-10-04.
   - [ ] **CORE-711.N** [heavy]🧠 | flaitron-rebrand audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line), plus a zero-stray-`flowtron` grep outside the legacy-tasknote fence, CORE-711.4's historical fence, and `tools/update-adopters*`' deliberate pre-rename reads. Filed now with the reserved terminal `.N` suffix.
 
-- [ ] **CORE-712** [medium]🧩 | release v6.0.0 — Cut v6.0.0 major release tagging the flaitron rebrand (CORE-711.2 + CORE-711.3 + CORE-711.4 + CORE-711.9, hard cut) + CORE-691 since v5.35.0. Blocked by [[CORE-711.5]] + [[CORE-711.9]]; re-dogfood every agent at the cut. Parked 2026-10-04 mid-cut; the tasknote carries the locked tag-message draft.
-
 ## Low
 
 - [ ] **CORE-683** [medium]🧩 | epic-forward-restore — Blocked by decay-window depth: window [[CORE-680]] opened at `a78a8ae5`. After 8 epic tasknotes (`*-EPIC-*` or `*.<sub>`) archive past that SHA, restore `SPEC/epic.md`'s Forward-looking paragraph only if one followed it. Bar is in the archived CORE-680 note.
@@ -41,6 +39,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-712** [medium]🧩 | release v6.0.0 — Completed 2026-10-04.
 - [x] **CORE-691** [light]🔧 | doc-crossfile-cite-sweep — Completed 2026-10-03.
 
 - [x] **CORE-710** [light]🔧 | neutrality-capabilities-loop — `docs/AGENT-NEUTRALITY.md` CAPABILITIES trigger list adds `--starter` and `/code-review`; the `SPEC/loop.md` rows ledger `/ft-task --loop` and `step-5-loop-mode.md`. Surfaced by audit-docs 2026-10-03 (Finding #23, Low), fixed inline.

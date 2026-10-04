@@ -21,8 +21,8 @@ actually review. No scripts, daemons, databases, or schemas to maintain.
 
 ![The flaitron visualizer showing flaitron's own PLAN.md — open tasks by priority, phase-progress dots, and the completed archive](.flaitron/screenshots/viz-board.png)
 
-Flaitron is built with flaitron: **1062 tasks** closed through this exact
-workflow between 2026-04-28 and 2026-10-03 (as of 2026-10-03) — each one with
+Flaitron is built with flaitron: **1064 tasks** closed through this exact
+workflow between 2026-04-28 and 2026-10-04 (as of 2026-10-04) — each one with
 a tasknote preserved in [`.flaitron/tasknote/archive/`](.flaitron/tasknote/archive/).
 Count and date range are recomputed each release by `/ft-release` §7.1's
 "Standing README task-counter check" (one archived tasknote per closed task,

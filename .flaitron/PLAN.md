@@ -25,7 +25,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [x] **CORE-711.7** [heavy]🧠 | fleet wave — Completed 2026-10-04.
   - [x] **CORE-711.8** [light]🔧 | global + external routing — Completed 2026-10-04.
   - [x] **CORE-711.9** [medium]🧩 | full-repo flaitron sweep — Completed 2026-10-04.
-  - [ ] **CORE-711.N** [heavy]🧠 | flaitron-rebrand audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line), plus a zero-stray-`flowtron` grep outside the legacy-tasknote fence, CORE-711.4's historical fence, and `tools/update-adopters*`' deliberate pre-rename reads. Filed now with the reserved terminal `.N` suffix.
+  - [x] **CORE-711.N** [heavy]🧠 | flaitron-rebrand audit — Completed 2026-10-04.
 
 - [ ] **CORE-713** [medium]🧩 [handoff] | global config rebrand — Operator updates the named `~/.claude` and `~/Code` references plus guard hook; scan `~/fakeneuron/` after its access root is added. Routed from [[CORE-711.8]].
 

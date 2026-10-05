@@ -22,6 +22,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 - [ ] **CORE-683** [medium]🧩 | epic-forward-restore — Blocked by decay-window depth: window [[CORE-680]] opened at `a78a8ae5`. After 8 epic tasknotes (`*-EPIC-*` or `*.<sub>`) archive past that SHA, restore `SPEC/epic.md`'s Forward-looking paragraph only if one followed it. Bar is in the archived CORE-680 note.
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
+- [ ] **CORE-715** [medium] [unattended] | ci-spine-align — At 46a94bd1, .github/workflows/ci.yml uses checkout/setup-node v4, limits PRs to main and lacks concurrency. Raise actions to the declared Natabula floor, retain immutable SHA pins, use bare PR triggers and canceling ci-ref concurrency; preserve all existing jobs.
 
 ## Future Opportunities
 

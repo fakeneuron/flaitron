@@ -15,18 +15,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-EPIC-711** [heavy]🧠 | flaitron-rebrand — Rename flowtron → flaitron: app, `.flowtron/` + `.flowtron/core` paths, live references, GitHub repo, every adopter (one wave), and external references (natabula, `~/fakeneuron/`, `~/.claude/`, judedelparte site). Archived tasknotes and the `ft-*` prefix stay. Breaking v6.0.0, hard cut (no old-name fallback). Order (re-sequenced 2026-10-04 — renames and a full-repo sweep land before the tag): in-repo rename (.2–.4) → GitHub/folder renames (.5) → full-repo sweep (.9) → re-dogfood + v6.0.0 (CORE-712) → natabula (.6) → fleet wave (.7) → global/external (.8) → audit.
-  - [x] **CORE-711.1** [heavy]🧠 | flaitron-rebrand discovery — Completed 2026-10-03.
-  - [x] **CORE-711.2** [light]🔧 | viz hard-cut — Completed 2026-10-03.
-  - [x] **CORE-711.3** [heavy]🧠 | update-adopters migrate mode — Completed 2026-10-03.
-  - [x] **CORE-711.4** [heavy]🧠 | text sweep + self-host move — Completed 2026-10-03.
-  - [x] **CORE-711.5** [light]🔧 | github + folder renames — Completed 2026-10-04.
-  - [x] **CORE-711.6** [light]🔧 | natabula handoff — Completed 2026-10-04.
-  - [x] **CORE-711.7** [heavy]🧠 | fleet wave — Completed 2026-10-04.
-  - [x] **CORE-711.8** [light]🔧 | global + external routing — Completed 2026-10-04.
-  - [x] **CORE-711.9** [medium]🧩 | full-repo flaitron sweep — Completed 2026-10-04.
-  - [x] **CORE-711.N** [heavy]🧠 | flaitron-rebrand audit — Completed 2026-10-04.
-
 - [ ] **CORE-713** [medium]🧩 [handoff] | global config rebrand — Operator updates the named `~/.claude` and `~/Code` references plus guard hook; scan `~/fakeneuron/` after its access root is added. Routed from [[CORE-711.8]].
 
 ## Low
@@ -41,6 +29,17 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-EPIC-711** [heavy]🧠 | flaitron-rebrand — Completed 2026-10-04.
+  - [x] **CORE-711.1** [heavy]🧠 | flaitron-rebrand discovery — Completed 2026-10-03.
+  - [x] **CORE-711.2** [light]🔧 | viz hard-cut — Completed 2026-10-03.
+  - [x] **CORE-711.3** [heavy]🧠 | update-adopters migrate mode — Completed 2026-10-03.
+  - [x] **CORE-711.4** [heavy]🧠 | text sweep + self-host move — Completed 2026-10-03.
+  - [x] **CORE-711.5** [light]🔧 | github + folder renames — Completed 2026-10-04.
+  - [x] **CORE-711.6** [light]🔧 | natabula handoff — Completed 2026-10-04.
+  - [x] **CORE-711.7** [heavy]🧠 | fleet wave — Completed 2026-10-04.
+  - [x] **CORE-711.8** [light]🔧 | global + external routing — Completed 2026-10-04.
+  - [x] **CORE-711.9** [medium]🧩 | full-repo flaitron sweep — Completed 2026-10-04.
+  - [x] **CORE-711.N** [heavy]🧠 | flaitron-rebrand audit — Completed 2026-10-04.
 - [x] **CORE-714** [light]🔧 | release-zsh-glob — Completed 2026-10-04.
 - [x] **CORE-712** [medium]🧩 | release v6.0.0 — Completed 2026-10-04.
 - [x] **CORE-691** [light]🔧 | doc-crossfile-cite-sweep — Completed 2026-10-03.

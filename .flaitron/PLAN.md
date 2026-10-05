@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-713** [medium]🧩 [handoff] | global config rebrand — Operator updates the named `~/.claude` and `~/Code` references plus guard hook; scan `~/fakeneuron/` after its access root is added. Routed from [[CORE-711.8]].
+(none)
 
 ## Low
 
@@ -29,6 +29,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-713** [medium]🧩 [handoff] | global config rebrand — Completed 2026-10-05.
 - [x] **CORE-EPIC-711** [heavy]🧠 | flaitron-rebrand — Completed 2026-10-04.
   - [x] **CORE-711.1** [heavy]🧠 | flaitron-rebrand discovery — Completed 2026-10-03.
   - [x] **CORE-711.2** [light]🔧 | viz hard-cut — Completed 2026-10-03.

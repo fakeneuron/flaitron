@@ -22,7 +22,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [x] **CORE-711.4** [heavy]🧠 | text sweep + self-host move — Completed 2026-10-03.
   - [x] **CORE-711.5** [light]🔧 | github + folder renames — Completed 2026-10-04.
   - [x] **CORE-711.6** [light]🔧 | natabula handoff — Completed 2026-10-04.
-  - [ ] **CORE-711.7** [heavy]🧠 | fleet wave — Dry-run then `--apply` the .3 migrate mode across all 22 adopters on one confirm; natabula layer-refresh carries the deposits; rewrite adopter prose `.flowtron/` paths and audit-fork `flowtron-reconciled:` / `flowtron-tracks:` keys outside archives; verify with `natabula-align`. Bare-name prose is left to .6's post-wave review ticket. Commits stay local, no bulk push. caobunga CBN-278 (`.flaitron/` reader layout) lands first. After CORE-712 (the v6.0.0 tag) + .6.
+  - [x] **CORE-711.7** [heavy]🧠 | fleet wave — Completed 2026-10-04.
   - [ ] **CORE-711.8** [light]🔧 | global + external refs — judedelparte site (`content/apps/flowtron.yml`, app icon, tests, sibling app ymls), `~/.claude` CLAUDE.md L44 + settings.json L105 + guard hook, `~/Code/CLAUDE.md`, and `~/fakeneuron/` once the operator adds it as an access root. After .5.
   - [x] **CORE-711.9** [medium]🧩 | full-repo flaitron sweep — Completed 2026-10-04.
   - [ ] **CORE-711.N** [heavy]🧠 | flaitron-rebrand audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line), plus a zero-stray-`flowtron` grep outside the legacy-tasknote fence, CORE-711.4's historical fence, and `tools/update-adopters*`' deliberate pre-rename reads. Filed now with the reserved terminal `.N` suffix.

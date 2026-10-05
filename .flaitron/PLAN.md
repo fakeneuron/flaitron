@@ -35,14 +35,13 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
 
-- [ ] **CORE-714** [light] | release-zsh-glob — `/ft-release` §7.1 context-budget loop `for f in $surface` skips glob rows under zsh (no unquoted-parameter globbing); §"On the globs" wrongly calls them safe. From CORE-712 Learnings.
-
 ## Future Opportunities
 
 (none)
 
 ## Completed
 
+- [x] **CORE-714** [light]🔧 | release-zsh-glob — Completed 2026-10-04.
 - [x] **CORE-712** [medium]🧩 | release v6.0.0 — Completed 2026-10-04.
 - [x] **CORE-691** [light]🔧 | doc-crossfile-cite-sweep — Completed 2026-10-03.
 

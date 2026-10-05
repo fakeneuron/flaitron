@@ -162,7 +162,7 @@ while IFS='|' read -r surface budget; do
       [ "$n" -le "$budget" ] || echo "OVER BUDGET  $surface  $n > $budget"
       ;;
     *'*'*)
-      for f in $surface; do
+      for f in $(eval "ls -d $surface" 2>/dev/null); do
         [ -f "$f" ] || continue
         case " $exact " in *" $f "*) continue ;; esac
         n=$(wc -c < "$f")
@@ -275,10 +275,14 @@ count is *derivable*, not a prose paraphrase, so it cannot cry wolf the way the
 citation guard [[CORE-492]] declined would have.
 
 **On the globs.** `claude/skills/*/SKILL.md`, `SPEC/*.md`, and
-`SPEC/procedures/*.md` are safe here despite §"Glob-free by design" above. That
-note guards *unmatched* globs — zsh aborts a loop with `no matches found` before
-its body runs — and each of these always matches shipped content inside the repo.
-Keeping them as globs is also what makes a newly shipped skill or `SPEC/` module
+`SPEC/procedures/*.md` stay globs despite §"Glob-free by design" above, but
+`for f in $surface` would not expand them: zsh does not glob-expand an unquoted
+parameter (bash does), so the loop body ran once on the literal pattern, hit
+`[ -f "$f" ] || continue`, and silently measured nothing. The loop therefore
+expands through `eval "ls -d $surface"`, which re-parses the pattern as a
+command word in either shell; an unmatched pattern prints nothing instead of
+aborting with `no matches found`, so the Glob-free hazard is covered too. Keeping
+them as globs is also what makes a newly shipped skill or `SPEC/` module
 measured with no edit to this check. Do not "fix" them into `find` loops;
 `wc -c`'s own multi-file output is what makes the result readable at a glance.
 The two whole-directory totals above do use `find`, on literal directory paths —

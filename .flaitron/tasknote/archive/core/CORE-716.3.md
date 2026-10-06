@@ -1,7 +1,6 @@
 ---
 title: updater-test-runtime
-status: blocked
-park-reason: prerequisite — Phase 3 re-time needs an idle host (load at or below the 8-core count); 3-run median receipt for the ≤25s criterion still pending
+status: completed
 tags: []
 created: 2026-10-06
 due:
@@ -12,7 +11,7 @@ touches:
 
 # CORE-716.3 | updater-test-runtime
 
-[← PLAN.md](../PLAN.md) · ⏸ Blocked · 🔗 [[CORE-EPIC-716]]
+[← PLAN.md](../../../PLAN.md) · ✅ Completed · 🔗 [[CORE-EPIC-716]]
 
 ## 🎯 Goal
 
@@ -21,7 +20,7 @@ Cut `tools/update-adopters.test.mjs` wall-clock from ~52s to ≤25s by sharing f
 ## ✅ Acceptance
 
 - [x] Suite passes with no test dropped (65/65) — `node --test tools/update-adopters.test.mjs`
-- [ ] Suite wall-clock ≤25s (median of 3 local runs) — `time node --test tools/update-adopters.test.mjs`
+- [x] Suite wall-clock ≤25s (median of 3 local runs) — `time node --test tools/update-adopters.test.mjs`
 - [x] Syntax checks clean — `node --check tools/update-adopters.test.mjs && node --check tools/update-adopters.mjs`
 - [x] No production code changed; every test keeps its own assertions — `git diff --name-only` shows only the test file (plus workflow files)
 
@@ -95,7 +94,7 @@ Cut `tools/update-adopters.test.mjs` wall-clock from ~52s to ≤25s by sharing f
 
 - [x] Ran lint/type-check on changed code
 
-- [ ] **Verification receipt** — recorded each Acceptance verify command in Testing Notes as `command → exit code`, with the first failure line when non-zero; and, for changed code, confirmed no avoidable duplication, dead code, unexplained complexity, unnecessary public-surface growth, or stale code-facing documentation (otherwise `N/A` with reason)
+- [x] **Verification receipt** — recorded each Acceptance verify command in Testing Notes as `command → exit code`, with the first failure line when non-zero; and, for changed code, confirmed no avoidable duplication, dead code, unexplained complexity, unnecessary public-surface growth, or stale code-facing documentation (otherwise `N/A` with reason)
 
 - [x] **External review** — a context that did not write the diff graded it against `## ✅ Acceptance`, and every finding is recorded below with its disposition (**blocker** → back to Phase 2; **note** → fixed or filed). `N/A` with a one-line reason when the diff is too small to grade
 
@@ -115,6 +114,9 @@ Cut `tools/update-adopters.test.mjs` wall-clock from ~52s to ≤25s by sharing f
   - Interleaved A/B under contention, HEAD → change: 68→43s, 148→107s, 215→55s.
   - Capped (`availableParallelism()`) at load 15–19 on 8 cores: 25.2 / 31.5 / 40.7s.
   - **Parked:** the operator is running many Claude Code sessions, so the host won't idle for a while. On resume, re-time 3 runs at load ≤8 and tick or annotate the ≤25s criterion.
+  - **Resumed 2026-10-06** (no drift: no commit touched `tools/` since the park). Starting load 4.5–5.7 on 8 cores; it rose to ~8.8 during the runs. `node --test --test-reporter=tap tools/update-adopters.test.mjs` ×3 → exit 0, 65/65 each, `duration_ms` 28.6 / 21.2 / 24.0s → **median 24.0s ≤25s, met**. The first run's 28.6s shows the suite is still sensitive to host load; the median criterion absorbs it.
+  - `node --check tools/update-adopters.test.mjs && node --check tools/update-adopters.mjs` → exit 0 (re-run on resume).
+  - **Structural quality:** no duplication or dead code; one constant (`GROUP_CONCURRENCY`) and one comment block explain the concurrency rule; no public-surface growth (test file only); no code-facing doc cites the suite runtime.
 - **External review** (`/code-review medium`, working-tree diff), 6 findings, all notes, none blocking:
   1. Suite at 38s misses the target, with "~16s in the before hook" — the hook's tag scan measured 64ms, and a filtered run including mirror clone and startup measured 2.2s at load 17. The 38s came from host contention; the timing criterion stays open (the park reason).
   2. `--no-hardlinks` copies objects, so the real cost is elsewhere — no change. Serial profiling showed `clone -n` with and without hardlinks at about the same time (0.109 vs 0.086s); the checkout was the dominant cost.
@@ -125,14 +127,20 @@ Cut `tools/update-adopters.test.mjs` wall-clock from ~52s to ≤25s by sharing f
 
 ## 🚀 Phase 4: Closure
 
-- [ ] **Doc-drift sweep** — for each entry in `.flaitron/tasknote/README.md` §"AI-referenced docs", state "no change" or the update
+- [x] **Doc-drift sweep** — for each entry in `.flaitron/tasknote/README.md` §"AI-referenced docs", state "no change" or the update
 
-- [ ] Closed — every `## ✅ Acceptance` criterion ticked or explicitly annotated (`N/A` / not-met with a one-line reason), YAML `status:` flipped to `completed`, PLAN.md line flipped to stub form `Completed YYYY-MM-DD.` and placed (standalone → top of `## Completed`; epic child → kept nested beneath its active parent — see SPEC/plan-filing.md §"`## Completed` archive convention" if unclear), then tasknote moved to `.flaitron/tasknote/archive/<area>/`
+- [x] Closed — every `## ✅ Acceptance` criterion ticked or explicitly annotated (`N/A` / not-met with a one-line reason), YAML `status:` flipped to `completed`, PLAN.md line flipped to stub form `Completed YYYY-MM-DD.` and placed (standalone → top of `## Completed`; epic child → kept nested beneath its active parent — see SPEC/plan-filing.md §"`## Completed` archive convention" if unclear), then tasknote moved to `.flaitron/tasknote/archive/<area>/`
 
-- [ ] **Evidence-based recap** drafted — changed files/LOC where meaningful, verification commands/results, refactors made or deferred with rationale, documentation verdict, the `touches:` scope reconciliation (`git diff --name-only` vs declared; name undeclared paths), and concrete maintainability effect (surfaces at the 📦 ready-to-commit gate, or inline on conditional skip)
+- [x] **Evidence-based recap** drafted — changed files/LOC where meaningful, verification commands/results, refactors made or deferred with rationale, documentation verdict, the `touches:` scope reconciliation (`git diff --name-only` vs declared; name undeclared paths), and concrete maintainability effect (surfaces at the 📦 ready-to-commit gate, or inline on conditional skip)
 
-- [ ] **Learnings** — did this task teach something the always-loaded layer (AGENTS.md / README §AI-referenced docs) should carry? `N/A` or the line
+- [x] **Learnings** — did this task teach something the always-loaded layer (AGENTS.md / README §AI-referenced docs) should carry? `N/A` or the line
 
 **Final Summary:**
 
-**Archived:** YYYY-MM-DD
+- **Doc-drift sweep:** no change to all 18 AI-referenced docs (README, AGENTS, SPEC, MIGRATION, the four agent snippets, CONVENTIONS, CONTRIBUTING, SECURITY, AGENT-NEUTRALITY, PLATFORMS, CAPABILITIES, AGENT-COMPAT, EXTERNAL-AGENTS, WORKTREES, VISION). The change is test-harness-only, and grep found no doc citing the suite runtime.
+- **Recap:** `tools/update-adopters.test.mjs` (+22/−7, landed in park commit `8fd1ee74`): `clone -n` in `makeAdopter`, plus `{ concurrency: GROUP_CONCURRENCY }` (= `availableParallelism()`) on 5 fixture-isolated groups. Process-wide mutators (CORE-585 PATH swap, CORE-424.3 tag) stay serial. Suite went from 51.4s to a 24.0s median, 65/65. No refactor; the review's `Promise.all` idea was declined as not needed.
+- **`touches:` reconciliation:** declared `tools/update-adopters.test.mjs`, and it matches. Workflow files (`.flaitron/PLAN.md`, this note) are the only other paths.
+- **Maintainability:** the gate's release suite now runs in about half the time; the isolation rule is documented at the first concurrent group.
+- **Learnings:** N/A — the concurrency-isolation rule lives in the test file's own comment.
+
+**Archived:** 2026-10-06

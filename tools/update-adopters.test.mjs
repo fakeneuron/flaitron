@@ -4,7 +4,7 @@
 import assert from 'node:assert/strict';
 import { execFile } from 'node:child_process';
 import { lstat, mkdtemp, mkdir, readFile, readlink, rm, stat, symlink, writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
+import { availableParallelism, tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { after, before, describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
@@ -133,9 +133,12 @@ async function makeAdopter(root, name, pinTag) {
   await gitQuiet(repo, 'config', 'advice.addEmbeddedRepo', 'false');
 
   const sub = join(repo, SUBMODULE_PATH);
+  // -n: skip the default-branch checkout the pinTag checkout below replaces
+  // anyway — it is most of a fixture's cost (CORE-716.3).
   await execFileAsync('git', [
     'clone',
     '-q',
+    '-n',
     '--local',
     '--no-hardlinks',
     join(mirrorDir, 'core'),
@@ -334,7 +337,14 @@ describe('latestReleaseTag (real tags)', () => {
   });
 });
 
-describe('checkAdopter classification (fixtures)', () => {
+// `{ concurrency: GROUP_CONCURRENCY }` groups (CORE-716.3): every test builds
+// its own uniquely named fixture and only reads the shared mirror, so tests
+// within the group overlap their git subprocesses — capped at the core count so
+// a small CI runner is not flooded. Groups that mutate process-wide state (the
+// PATH shim in CORE-585, the lightweight tag in FLAITRON_REPO) stay serial.
+const GROUP_CONCURRENCY = availableParallelism();
+
+describe('checkAdopter classification (fixtures)', { concurrency: GROUP_CONCURRENCY }, () => {
   let root;
 
   before(async () => {
@@ -570,7 +580,7 @@ describe('FLAITRON_UPDATE_LATEST seam validation (CORE-432.4)', () => {
   });
 });
 
-describe('dry-run CLI (--root fixture)', () => {
+describe('dry-run CLI (--root fixture)', { concurrency: GROUP_CONCURRENCY }, () => {
   it('reports current / drift / would-bump / skipped in one workspace', async () => {
     const root = await mkdtemp(join(tmpdir(), 'ft-upd-cli-'));
     await makeAdopter(root, 'cli-current', latest);
@@ -628,7 +638,7 @@ describe('dry-run CLI (--root fixture)', () => {
   });
 });
 
-describe('sandboxed --apply', () => {
+describe('sandboxed --apply', { concurrency: GROUP_CONCURRENCY }, () => {
   it('bumps pin + pathspec commit only', async () => {
     const root = await mkdtemp(join(tmpdir(), 'ft-upd-apply-'));
     const adopter = await makeAdopter(root, 'apply-me', previous);
@@ -719,7 +729,7 @@ describe('sandboxed --apply', () => {
   });
 });
 
-describe('applyBump rollback (CORE-419.3)', () => {
+describe('applyBump rollback (CORE-419.3)', { concurrency: GROUP_CONCURRENCY }, () => {
   it('restores the prior submodule SHA when a post-checkout verify fails', async () => {
     const root = await mkdtemp(join(tmpdir(), 'ft-upd-rb-verify-'));
 
@@ -857,7 +867,7 @@ describe('rename migration helpers (CORE-711.3)', () => {
   });
 });
 
-describe('rename migration (CORE-711.3)', () => {
+describe('rename migration (CORE-711.3)', { concurrency: GROUP_CONCURRENCY }, () => {
   let root;
 
   before(async () => {

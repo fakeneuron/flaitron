@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-(none)
+- [ ] **CORE-719** [light]🔧 | dependabot-enable — GitHub Dependabot alerts (`vulnerability-alerts` → 404) and automated security fixes are off on fakeneuron/flaitron, so `.github/dependabot.yml` (CORE-581) never fires. Operator enables both in repo settings; optionally add a `/ft-release` §6 check that `gh api …/vulnerability-alerts` returns 204. Surfaced by CORE-716.N audit.
 
 ## Low
 

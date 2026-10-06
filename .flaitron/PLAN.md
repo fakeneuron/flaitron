@@ -15,11 +15,11 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-(none)
+- [ ] **CORE-721** [heavy]🧠 | audit-overlay-home — The flaitron-self `/audit` overlay lives at `.claude/skills/audit/SKILL.md`, which `.gitignore:21` ignores, so it is unversioned and uncommittable. Decide its home (force-commit, relocate + symlink, or accept unversioned) and reconcile `docs/MIGRATION.md` §1.2.1. Blocks [[CORE-720]] closure. Filed with starter at `.flaitron/tasknote/CORE-721.md`.
 
 ## Low
 
-- [ ] **CORE-720** [light]🔧 | audit-overlay-docs-deltas — Fill the `docs` deltas in `.claude/skills/audit/SKILL.md` (default doc-set glob, rubric files, "no gates" note) so `/audit docs` stops tripping the scaffold bootstrap, and re-reconcile `flaitron-reconciled:` from v5.31.0 to the current tag. Surfaced by audit-docs 2026-10-06 (observation, no finding).
+- [ ] **CORE-720** [light]🔧 | audit-overlay-docs-deltas — Fill the `docs` deltas in `.claude/skills/audit/SKILL.md` (default doc-set glob, rubric files, "no gates" note) so `/audit docs` stops tripping the scaffold bootstrap, and re-reconcile `flaitron-reconciled:` from v5.31.0 to the current tag. Surfaced by audit-docs 2026-10-06 (observation, no finding). Work is done on disk but uncommittable; Blocked by [[CORE-721]].
 
 - [ ] **CORE-683** [medium]🧩 | epic-forward-restore — Blocked by decay-window depth: window [[CORE-680]] opened at `a78a8ae5`. After 8 epic tasknotes (`*-EPIC-*` or `*.<sub>`) archive past that SHA, restore `SPEC/epic.md`'s Forward-looking paragraph only if one followed it. Bar is in the archived CORE-680 note.
 

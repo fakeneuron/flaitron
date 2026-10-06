@@ -304,7 +304,7 @@ every npm/node project in the tree.
 examples; §"Hard rules" → `docs:` extra hard rules). Every slot now resolves to
 a filled `docs:` delta, so dispatcher §1 step 3's scan — placeholders *less what
 the overlay's `## Deltas` supplies* — nets to zero for this domain and no-ops
-silently. `passes/docs.md` §"Severity guide" carries no placeholder, so the
+silently. `claude/skills/ft-audit/passes/docs.md` §"Severity guide" carries no placeholder, so the
 unkeyed `Sacred invariants` value is never consulted on a `docs` run and its
 staying unfilled is not a gap here.
 

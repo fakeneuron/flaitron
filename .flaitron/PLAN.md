@@ -28,6 +28,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [ ] **CORE-716.3** [medium]🧩 | updater-test-runtime — `tools/update-adopters.test.mjs` takes ~52s (rename-migration group 12.8s, sandboxed --apply 8.9s); skip the redundant default-branch checkout in fixture clones and run fixture-isolated groups concurrently so the suite runs ≤25s with 65/65 still passing.
   - [x] **CORE-716.4** [light]🔧 | vitest-jsdom-pool — Completed 2026-10-06.
   - [ ] **CORE-716.N** [medium]🧩 | gate-hygiene audit
+- [ ] **CORE-718** [light]🔧 | epic-disc-git-mv — /ft-epic-discovery Step 9 `git mv`s the never-staged `.1` tasknote, which fails; use plain `mv` or stage first.
 
 ## Future Opportunities
 

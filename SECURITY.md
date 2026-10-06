@@ -138,7 +138,7 @@ invocations will execute.
 `.github/workflows/ci.yml` runs the AGENTS.md §"Validation" roster
 (`validate`) and the cross-file drift checks described in
 [docs/CONVENTIONS.md](docs/CONVENTIONS.md) §"GitHub Actions CI"
-(`drift`) on push and pull request to `main`. That is an execution
+(`drift`) on push to `main` and on every pull request. That is an execution
 surface the rest of this document did not cover: a contributor PR's tree
 is checked out and its tests run on a GitHub-hosted runner. Both jobs
 inherit the workflow-level `permissions: contents: read` and the same
@@ -149,7 +149,10 @@ moving to malicious code, (2) a workflow that grants the job more
 `GITHUB_TOKEN` scope than it needs, and (3) a tampered gitleaks release
 tarball substituted for the real binary. Exposure is low — the workflow
 uses `pull_request`, not `pull_request_target`, so fork runs get a
-read-only token and no repository secrets. This is hardening, not a live
+read-only token and no repository secrets. The `pull_request` trigger
+carries no branch filter (`CORE-715`, the fleet CI spine), so a PR into
+any base branch runs, not only one into `main` — the same read-only
+posture applies to each. This is hardening, not a live
 vulnerability.
 
 **Mitigations in the workflow.**
@@ -158,7 +161,7 @@ vulnerability.
   least privilege it needs instead of inheriting the repository default
   `GITHUB_TOKEN` scope.
 - `actions/checkout` and `actions/setup-node` pinned to full-length
-  commit SHAs (with a version comment), not mutable `@v4` tags. Same
+  commit SHAs (with a version comment), not mutable major tags like `@v5`. Same
   reason this document tells adopters to pin the submodule to annotated
   release tags rather than `main`.
 - The gitleaks release tarball is verified against the release's

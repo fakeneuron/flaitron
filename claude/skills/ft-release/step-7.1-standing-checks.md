@@ -206,7 +206,7 @@ printed:
 
 **Lifted into the CI `drift` job.** The block above also runs, unmodified
 except for a `bad=` accumulator and `exit 1`
-(`docs/CONVENTIONS.md` §"GitHub Actions CI"), on every push and pull request —
+(`docs/CONVENTIONS.md` §"GitHub Actions CI"), on every push to `main` and every pull request —
 it catches a budget regression on the commit that lands it rather than at the
 next cut. CI cannot apply the §"Known over budget" judgment above (it needs
 `.flaitron/PLAN.md` ownership context CI does not have), so an `OVER BUDGET`

@@ -319,7 +319,7 @@ section grew.
 Two layers, both reading this table rather than restating it. A `drift` CI
 step (`.github/workflows/ci.yml`, bound to its source by `/ft-release` §7.1
 **Pair L**) runs a `wc -c`-and-compare script against the Budgets table above
-on every push and pull request, catching a regression on the commit that
+on every push to `main` and every pull request, catching a regression on the commit that
 lands it. The standing check in
 [`claude/skills/ft-release/step-7.1-standing-checks.md`](../claude/skills/ft-release/step-7.1-standing-checks.md)
 runs the identical script by hand at every release cut, then additionally

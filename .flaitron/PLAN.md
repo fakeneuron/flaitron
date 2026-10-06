@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-717** [medium]🧩 | plan-filing-commit — Sweep every skill that writes new PLAN.md rows (ft-audit, ft-audit-repo, ft-epic-discovery, ft-refactor, others) and list which lack a filing commit. Add a PLAN.md-only `chore: file <ID> — <shortname>` commit step to each, matching /ft-file-followup and SPEC/plan-filing.md §"Filing commits".
+(none)
 
 ## Low
 
@@ -36,6 +36,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-717** [medium]🧩 | plan-filing-commit — Completed 2026-10-06.
 - [x] **CORE-713** [medium]🧩 [handoff] | global config rebrand — Completed 2026-10-05.
 - [x] **CORE-EPIC-711** [heavy]🧠 | flaitron-rebrand — Completed 2026-10-04.
   - [x] **CORE-711.1** [heavy]🧠 | flaitron-rebrand discovery — Completed 2026-10-03.

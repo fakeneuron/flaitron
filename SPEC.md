@@ -753,8 +753,8 @@ cohesion check against active PLAN entries, behind a user-confirm gate).
 
 What happens to a PLAN.md row *after* it is filed lives in the sibling
 [`SPEC/plan-filing.md`](SPEC/plan-filing.md): the filing-commit contract (the
-five filing motions — follow-up, park, starter, `/ft-audit`, and `/ft-refactor`
-— auto-commit at hand-off since filing approval *is* commit authorization,
+seven filing motions — follow-up, park, starter, `/ft-audit`, `/ft-audit-repo`,
+`/ft-refactor`, and `/ft-epic-discovery`'s Step 4 — auto-commit at hand-off since filing approval *is* commit authorization,
 and `/ft-seed`'s row edits ride the same contract; execution skills keep
 their commit-go gate), the `## Completed` archive stub-form convention,
 and the `## Completed` rotation bound (the oldest rows spill verbatim to

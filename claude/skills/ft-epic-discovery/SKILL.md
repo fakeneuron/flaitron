@@ -83,6 +83,8 @@ The user may override the numeric suffix (e.g., to align with an externally-trac
 
 ## Step 4 — File the PLAN.md lines
 
+**Filing-commit pre-check.** Immediately before the append, apply `SPEC/plan-filing.md` §"Filing commits": `git diff --cached --quiet` non-zero → `auto-commit = false`; PLAN.md porcelain empty → `auto-commit = true`; otherwise `auto-commit = true` only when that section's accumulated-filings test passes (record those IDs for its body line). Not a gate — the foreign-dirt gate makes `true` the common case, but the Step 2–3 confirmation pauses can stale that reading, so run it here.
+
 Append to `.flaitron/PLAN.md` under the chosen `## <Priority>` heading. Use the canonical task-line grammar (SPEC §"Task-line format"; a dependency on another row is `Blocked by [[<ID>]]`, wikilink-only — `SPEC/plan-parser.md` §"Long-description conventions"). Three lines (or two if N excludes audit), nested with 2-space indent under the parent for the subtask lines:
 
 ```markdown
@@ -100,6 +102,16 @@ Placement:
 Do NOT pre-write `.2..(M+1)` lines here — that is the Discovery's Phase 2 deliverable.
 
 The parent epic's long description is a placeholder that the Discovery `.1` will refine at closure time (the epic's actual scope crystallizes from Discovery, not from filing-time guesswork). Keep it under the 70w hard cap (SPEC/tasknote-selection.md §"PLAN.md filing-discipline thresholds").
+
+**Commit the filing** (when `auto-commit = true`), before Step 5 scaffolds `.1` — the Step 3 confirmation is the commit authorization. Stage by explicit pathspec only; never `git commit -a` / `git add .` / `git add -A`:
+
+```sh
+git add .flaitron/PLAN.md
+git diff --cached   # whole index, no pathspec
+git commit -m "chore: file <AREA>-EPIC-<next-N> — <shortname>"
+```
+
+**Post-stage verification.** Every hunk in that staged diff must be one this filing wrote — the parent and `.1` rows, the `.N` row when filed, and any replaced `(none)` — or an accumulated filing the pre-check recorded (its IDs go in a second `-m` body line per that section). An unrecognized hunk → `git restore --staged .flaitron/PLAN.md`, skip the commit, and say so as for `auto-commit = false`; never unstage the foreign hunk and commit the rest. Commit only — never push. Report `committed <sha>` as plain text, **no 🏁** — the `.1` closure in Step 10 carries it. `auto-commit = false` → skip with one line (`filing left uncommitted — PLAN.md or the index already carried other changes`); the rows then ride the Step 10 closure commit.
 
 ## Step 5 — Scaffold the `.1` Discovery tasknote
 
@@ -234,7 +246,7 @@ The three-step post-closure protocol (commit / suggest next move / offer copy-pa
 - Evaluate the **📦 conditional skip rule** against the closure diff. For pure `/ft-epic-discovery` filings the diff is typically PLAN.md edits + a tasknote scaffold/archive — no privileged-ops surface — so the skip branch is the common case (workflow-only carve-out). Branch:
   - **Skip branch** (signals clear; no bundled in-📦 prompt — `/ft-epic-discovery` carries none) — run that section's **autonomous-commit motion** end to end, naming the cleared signal in its marker (e.g., `PLAN.md edit + tasknote scaffold/archive; no privileged-ops surface`). Do not surface a 📦 banner.
   - **Fire branch** (privileged-ops signal hits) — its **bundled-approval motion**: surface the 📦 gate (`SPEC/post-closure.md` step 1) and wait for commit-go.
-- Proposed commit message (skill-specific): `feat: <AREA>-<next-N>.1 — file <AREA>-EPIC-<next-N> + scope children` (or a user-edited variant). Do not commit unprompted on the fire branch.
+- Proposed commit message (skill-specific): `feat: <AREA>-<next-N>.1 — scope <AREA>-EPIC-<next-N> children`, or `feat: <AREA>-<next-N>.1 — file <AREA>-EPIC-<next-N> + scope children` when Step 4 left the filing uncommitted (or a user-edited variant). Do not commit unprompted on the fire branch.
 - The post-commit response carries a 🏁 state-marker line immediately above the next-move suggestion (per `SPEC/post-closure.md` step 2), **only with a real SHA** whose paths cover PLAN + archive (and any other Discovery deliverables): `` 🏁 **<AREA>-<next-N>.1 — committed `<sha>`** · archived to `<archive-path>` ``. Visually closes the 🛠️ → 📦 → 🏁 lifecycle in the transcript (skip branch collapses 🛠️ and/or 📦 to inline markers but 🏁 still fires).
 - Suggest-next-move: run `SPEC/post-closure.md` step 2 as written — the **fresh PLAN.md re-read**, the unchecked-and-open-section verification, the **PLAN exhausted (terminal)** form when no candidate survives, and the emoji-primary-label print. Read the full task-line shape (including `[model]`) to know the recommended model for each child. The next move is typically `/ft-task <AREA>-<next-N>.2` (first implementation child).
 - Copy-paste helper: run `SPEC/post-closure.md` step 3 as written — the glyph copied from the chosen candidate line, the own-line inline-code invocation with no trailing punctuation, and the 👇 `Run in this session:` exception for context-dependent skills. Here the invocation line is `` `/ft-task <next-ID>` ``.

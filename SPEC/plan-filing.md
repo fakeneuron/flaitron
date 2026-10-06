@@ -1,6 +1,6 @@
 # PLAN.md filing
 
-> Lazy-loaded SPEC module. Loaded at the two moments a PLAN.md row changes hands with git: by the filing motions (`/ft-file-followup` and its `--park` / `--starter` modes, `/ft-audit`, `/ft-refactor`) and `/ft-seed` when they commit their own write, and by every closing runner (`/ft-task`, `/ft-micro-task`, `/ft-epic-discovery`, `/ft-close-epic`, `/ft-release`) at the Phase 4 stub flip — plus the visualizer as a `## Completed` history consumer. See `SPEC.md` for the always-loaded core spec, and the sibling [`SPEC/tasknote-selection.md`](tasknote-selection.md) for the use/skip thresholds, the filing-discipline word budget, and the downstream-impact reconciliation scan that decide *what* to file.
+> Lazy-loaded SPEC module. Loaded at the two moments a PLAN.md row changes hands with git: by the filing motions (`/ft-file-followup` and its `--park` / `--starter` modes, `/ft-audit`, `/ft-audit-repo`, `/ft-refactor`, `/ft-epic-discovery` at Step 4) and `/ft-seed` when they commit their own write, and by every closing runner (`/ft-task`, `/ft-micro-task`, `/ft-epic-discovery`, `/ft-close-epic`, `/ft-release`) at the Phase 4 stub flip — plus the visualizer as a `## Completed` history consumer. See `SPEC.md` for the always-loaded core spec, and the sibling [`SPEC/tasknote-selection.md`](tasknote-selection.md) for the use/skip thresholds, the filing-discipline word budget, and the downstream-impact reconciliation scan that decide *what* to file.
 
 Three contracts, one subject — what happens to a PLAN.md row once it is
 written: §"Filing commits" (how a filing lands in git), §"`## Completed`
@@ -12,13 +12,18 @@ section carries when it has no rows at all.
 ## Filing commits
 
 The filing motions — `/ft-file-followup` (default flow), its `--park`
-and `--starter` modes, `/ft-audit`, and `/ft-refactor` — **commit their own
+and `--starter` modes, `/ft-audit`, `/ft-audit-repo`, `/ft-refactor`, and
+`/ft-epic-discovery` (its Step 4 rows, before `.1` is scaffolded) — **commit their own
 filing** at hand-off, and `/ft-seed`, which edits existing rows rather than
 filing new ones, commits its write under the same contract. Filing approval *is* commit authorization: the operator
 already confirmed at the review gate (follow-up / starter), by passing the park
 flag and answering the priority question (park mode), at `/ft-audit`'s
-write-step confirmation (tickets plus any inline fixes), at `/ft-refactor`'s
-plan-review confirmation, or at `/ft-seed`'s review gate, and a second commit-go ask buys nothing. Left uncommitted, a filing carries into the next session
+write-step confirmation (tickets plus any inline fixes), at `/ft-audit-repo`'s
+plan confirmation, at `/ft-refactor`'s plan-review confirmation, at
+`/ft-epic-discovery`'s ID confirmation, or at `/ft-seed`'s review gate, and a second commit-go ask buys nothing.
+Deliberately exempt: rows a closure files as its own deliverable (an epic
+`.1`'s children) ride that closure commit, and `/ft-release`'s optional
+release row rides the release commit. Left uncommitted, a filing carries into the next session
 as working-tree dirt — which `SPEC.md` §"Paper-complete guard" then converts
 into a hard stop at the next `/ft-task` entry. The pre-check below stops that
 pile-up when the dirt is only earlier task-row filings: the next filing commits
@@ -33,7 +38,9 @@ Message shape, one per filing motion:
 | `/ft-file-followup --park` | `chore: file <ID> park — <shortname>` |
 | `/ft-file-followup --starter` | `chore: file <ID> starter — <shortname>` |
 | `/ft-audit` | `chore: audit file tickets — <domain>` |
+| `/ft-audit-repo` | `chore: audit-repo file epics — <count> milestones` |
 | `/ft-refactor` | `chore: file <AREA>-EPIC-<N> refactor plan — <shortname>` |
+| `/ft-epic-discovery` | `chore: file <AREA>-EPIC-<N> — <shortname>` |
 | `/ft-seed` | `chore: seed [unattended] — <N> rows` |
 
 Rules:
@@ -154,9 +161,9 @@ relaxes, so an unattended filing still runs the scan and still reports what it
 found, but confirms and applies no edit — a run with no operator never performs
 the operator's motion.
 
-**Execution skills keep their commit-go gate.** This section governs the five
+**Execution skills keep their commit-go gate.** This section governs the seven
 filing motions above and `/ft-seed`'s write, and nothing else. `/ft-task`, `/ft-micro-task`,
-`/ft-epic-discovery`, `/ft-close-epic`, `/ft-release`,
+`/ft-epic-discovery` past its Step 4 filing, `/ft-close-epic`, `/ft-release`,
 `/ft-new-project`, and `/ft-update` are unchanged: their commits
 land deliverables or cut releases, and it is the 📦 conditional skip rule
 (`SPEC/gates.md`) — not this section — that decides when they commit

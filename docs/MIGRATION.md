@@ -27,7 +27,7 @@ The skill verifies preconditions (cwd is a git repo with `AGENTS.md` or `CLAUDE.
 | Skill | Audience | Purpose |
 |---|---|---|
 | `/ft-new-project` | Adopters (+ flaitron-self) | Bootstrap a new project with flaitron wiring |
-| `/ft-audit-repo` | Adopters (+ flaitron-self) | First-contact holistic repo audit — Repo Map discovery, one thin capped sweep, 3–5 thematic synthesis, milestone-sequenced plan filed as flaitron epics, plus delegation hints for focused `/ft-audit <domain>` runs; strictly read-only, no fork. Global install lets you run it on a repo before flaitron is wired in (see §1.2.1) |
+| `/ft-audit-repo` | Adopters (+ flaitron-self) | First-contact holistic repo audit — Repo Map discovery, one thin capped sweep, 3–5 thematic synthesis, milestone-sequenced plan filed as flaitron epics, plus delegation hints for focused `/ft-audit <domain>` runs; read-only on source, no fork. Global install lets you run it on a repo before flaitron is wired in (see §1.2.1) |
 
 Install each you want with the same shape (substitute `<skill>`; the `mkdir -p` is needed once — a machine that has never had a user-scope skill has neither directory, and `ln -s` does not create them):
 
@@ -105,7 +105,8 @@ picking a focused domain on a repo you (or your agent) don't know yet, run the
 first-contact holistic audit: it builds a Repo Map before judging, runs one
 thin capped sweep, synthesizes 3–5 themes, files a milestone-sequenced plan
 as native flaitron epics in `.flaitron/PLAN.md`, and recommends which domains
-deserve full runs. It is stack-neutral, strictly read-only, and carries no §0
+deserve full runs. It is stack-neutral, read-only on source (it writes and commits only the
+confirmed PLAN.md filing), and carries no §0
 forker checklist — don't fork it; invoke it by reference from the read-only
 submodule path (`.flaitron/core/claude/skills/ft-audit-repo/SKILL.md`), the
 same by-reference pattern the thin overlay below uses.

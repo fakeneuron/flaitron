@@ -1,6 +1,6 @@
 ---
 name: ft-audit-repo
-description: First-contact holistic repo audit for freshly adopting projects — Repo Map discovery (read-before-judging), thin cross-cutting sweep, thematic synthesis (3–5 themes with won't-fix tradeoffs + done-signals), milestone-sequenced plan filed as flaitron epics in `.flaitron/PLAN.md`, and delegation recommendations for focused `/ft-audit <domain>` runs. Use when the user asks for a first-contact audit of a freshly adopted repo, with no specific domain named. Stack-neutral, strictly read-only, no fork — run by reference from the submodule. See `docs/MIGRATION.md` §1.2.1.
+description: First-contact holistic repo audit for freshly adopting projects — Repo Map discovery (read-before-judging), thin cross-cutting sweep, thematic synthesis (3–5 themes with won't-fix tradeoffs + done-signals), milestone-sequenced plan filed as flaitron epics in `.flaitron/PLAN.md`, and delegation recommendations for focused `/ft-audit <domain>` runs. Use when the user asks for a first-contact audit of a freshly adopted repo, with no specific domain named. Stack-neutral, read-only on source (its one write is the confirmed PLAN.md filing and its commit), no fork — run by reference from the submodule. See `docs/MIGRATION.md` §1.2.1.
 ---
 
 # audit-repo — flaitron first-contact holistic audit skill
@@ -13,7 +13,7 @@ Principal-engineer first look at an unfamiliar repo: map before judging, synthes
 
 1. **Resolve scope** from `$ARGUMENTS`: `all`/empty → the whole repo; a path → that subtree (still map the whole repo briefly in §2 — the milestone plan needs whole-repo context — but sweep and synthesize only the subtree). If ambiguous, **stop and ask** via `AskUserQuestion`.
 2. **Run verification gates** — discover the project's own commands (`package.json` scripts, `Makefile`, `pyproject.toml`, CI config) and run lint / type-check / test. Missing or failing gates are not noise to route around: they are prime Milestone-0 material (§6).
-3. **Read-only, no exceptions.** No source edits, no formatters, no fixes of any size. First contact carries **no trivial-fix carve-out** — a finding small enough to fix inline still lands in the plan, not the working tree.
+3. **Read-only on source, no exceptions.** The one write is the confirmed `.flaitron/PLAN.md` filing and its commit (§6). No source edits, no formatters, no fixes of any size. First contact carries **no trivial-fix carve-out** — a finding small enough to fix inline still lands in the plan, not the working tree.
 4. If anything's unclear, stop and ask. Don't guess intent.
 
 ## 2. Phase 1 — Repo Map (read before judging)
@@ -69,6 +69,8 @@ Present, in order:
 
 **`[unattended]` candidacy** (mirror of `SPEC/unattended-candidacy.md` §"Three postures" — Read that module now, at this write step). Run its §"Candidacy predicate" over each drafted implementation-child line as shown in the item-3 preview — `[model]`, any `[!critical]`, the description, any `Blocked by` clause. The `<AREA>-EPIC-<N>` parent and the `.N` audit placeholder are **never candidates**. Every clause must hold; when one is uncertain the row is not a candidate. A candidate is **proposed, never seeded**: it is shown in the item-3 preview with the token in place, and the "after the user confirms" write step below writes it only on rows the confirmation kept. This skill accepts neither `--fast` nor `--unattended`, so only the attended branch applies — the `unattended-candidates:` emission line never fires from this surface. Flaitron itself never writes `[unattended]` on its own discretion (`SPEC/task-line-segments.md`).
 
+**Filing-commit pre-check.** After the user confirms and immediately before the write, apply `SPEC/plan-filing.md` §"Filing commits": `git diff --cached --quiet` non-zero → `auto-commit = false`; PLAN.md untracked (`??`) → `auto-commit = false`; PLAN.md porcelain empty → `auto-commit = true`; otherwise `auto-commit = true` only when that section's accumulated-filings test passes (record those IDs for its body line). Not a gate. The confirmation pause can stale an earlier reading, so run it here.
+
 **After** the user confirms, write the plan into `.flaitron/PLAN.md` using flaitron's task-line grammar:
 
 - One `- [ ] **<AREA>-EPIC-<N>**` parent per milestone, plus its implementation children and a closing `.N` audit placeholder. **Skip the `.1` Discovery child** — this run supplied the epic-level discovery; note it on the parent line (`Discovery supplied by audit-repo YYYY-MM-DD.`).
@@ -79,14 +81,26 @@ Present, in order:
 - Milestone-0 goes under `## High`; later milestones under `## Medium` / `## Future Opportunities` by urgency. Pick the next free `<N>` per area prefix (valid prefixes in `.flaitron/tasknote/README.md` §"Area prefixes").
 - User pushes back on a milestone or child → drop or reshape it before writing.
 
-A genuinely healthy repo can yield zero milestones — say so explicitly, keep the delegation recommendations, and skip the write.
+**Commit the filing** (when `auto-commit = true`) — the confirmation above is the commit authorization; there is no separate commit-go ask. Stage by explicit pathspec only; never `git commit -a` / `git add .` / `git add -A`:
+
+```sh
+git add .flaitron/PLAN.md
+git diff --cached   # whole index, no pathspec
+git commit -m "chore: audit-repo file epics — <count> milestones"
+```
+
+`<count>` is the number of epic parents written — not an epic number.
+
+**Post-stage verification.** Every hunk in that staged diff must be one this filing wrote — the epic parents, children, and `.N` placeholders, and any replaced `(none)` — or an accumulated filing the pre-check recorded (its IDs go in a second `-m` body line per that section). An unrecognized hunk → `git restore --staged .flaitron/PLAN.md`, skip the commit, and say so as for `auto-commit = false`; never unstage the foreign hunk and commit the rest. Commit only — never push. Report `committed <sha>` as plain text, **no 🏁** (`SPEC.md` §"Paper-complete guard" §3). `auto-commit = false` → skip with one line (`left uncommitted (PLAN.md or the index already carried other changes)`).
+
+A genuinely healthy repo can yield zero milestones — say so explicitly, keep the delegation recommendations, and skip the write and the commit.
 
 ## 7. Hard rules
 
-- **Read-only, period.** No source edits, no formatters, no "fix while I'm in here" — regardless of how trivial. The trivial-fix carve-out the focused family carries does **not** apply at first contact.
+- **Read-only on source, period.** Only the confirmed PLAN.md filing and its commit (§6) touch the tree. No source edits, no formatters, no "fix while I'm in here" — regardless of how trivial. The trivial-fix carve-out the focused family carries does **not** apply at first contact.
 - **Map before judging.** No findings, severities, or recommendations until §2 is complete and presented.
 - **Ten findings is a ceiling, not a target.** A clean sweep gets fewer and moves on.
 - **Breadth here, depth there.** This skill never replaces a focused audit — it decides which ones are worth running.
 - **Don't repeat the gates.** If lint/tests already flagged it, count it once as gate output (and Milestone-0 evidence), not as enumerated findings.
 - **One epic per milestone**, children per work item — not one epic per finding.
-- **No final summary of what you just did.** The report + the `.flaitron/PLAN.md` diff *are* the deliverable.
+- **No final summary of what you just did.** The report + the committed `.flaitron/PLAN.md` diff *are* the deliverable — hand off with `committed <sha>` or the skip note.

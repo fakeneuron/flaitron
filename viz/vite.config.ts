@@ -170,5 +170,8 @@ export default defineConfig({
     // (already maxed out), and measured *faster* wall-clock under load than
     // the default.
     maxWorkers: '50%',
+    // vmThreads builds jsdom once per worker instead of once per file (29×),
+    // cutting environment setup from ~47% to ~20% of the run (CORE-716.4).
+    pool: 'vmThreads',
   },
 });

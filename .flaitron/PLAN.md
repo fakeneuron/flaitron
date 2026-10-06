@@ -26,7 +26,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 - [ ] **CORE-EPIC-716** [medium]🧩 | gate-hygiene — Clear the viz source-map-js advisory and trim validation-gate runtime. Discovery supplied by audit-repo 2026-10-06. Surfaced by audit-repo 2026-10-06 (Theme: Supply-chain alerts have no route in; Gate runtime is growing)
   - [x] **CORE-716.2** [light]🔧 | viz-audit-fix — Completed 2026-10-06.
   - [ ] **CORE-716.3** [medium]🧩 | updater-test-runtime — `tools/update-adopters.test.mjs` takes ~52s (rename-migration group 12.8s, sandboxed --apply 8.9s); share per-group fixtures so the suite runs ≤25s with 65/65 still passing.
-  - [ ] **CORE-716.4** [light]🔧 | vitest-jsdom-pool — Vitest reports jsdom created 29× (47% of run); try `pool: 'vmThreads'` in the viz Vitest config, keep only if 587/587 pass and the run is faster.
+  - [x] **CORE-716.4** [light]🔧 | vitest-jsdom-pool — Completed 2026-10-06.
   - [ ] **CORE-716.N** [medium]🧩 | gate-hygiene audit
 
 ## Future Opportunities

@@ -1,6 +1,6 @@
 # Gate machinery
 
-> Lazy-loaded SPEC module. Loaded by `/ft-task`, `/ft-micro-task`, `/ft-epic-discovery`, `/ft-close-epic`, and `/ft-release` whenever an operator-gate decision is in play (Phase 1→2 exit, ready-to-commit). See `SPEC.md` for the always-loaded core spec and its §"Operator-gate cues" for the three sibling modules: [`SPEC/cue-vocabulary.md`](cue-vocabulary.md) (cue inventory), [`SPEC/gate-discipline.md`](gate-discipline.md) (discipline), and [`SPEC/gate-postures.md`](gate-postures.md) (the `--fast` / `--unattended` postures and the flag×surface matrix, loaded only when a flag or the `[unattended]` row marker is set).
+> Lazy-loaded SPEC module. Loaded by `/ft-task`, `/ft-micro-task`, `/ft-epic-discovery`, `/ft-close-epic`, and `/ft-release` whenever an operator-gate decision is in play (Phase 1→2 exit, ready-to-commit). See `SPEC.md` for the always-loaded core spec and its §"Operator-gate cues" for the two sibling modules: [`SPEC/cue-vocabulary.md`](cue-vocabulary.md) (cue inventory) and [`SPEC/gate-postures.md`](gate-postures.md) (the `--fast` / `--unattended` postures and the flag×surface matrix, loaded only when a flag or the `[unattended]` row marker is set).
 
 This module carries the gate machinery: the two standing phase-gate banners and the cap that fixes them at two, the destructive-action escalation that is the cap's one exception, the Phase 1→2 exit-gate flavors, and the conditional skip rule behind 📦. Each section states its own rule; every flag interaction lives in [`SPEC/gate-postures.md`](gate-postures.md) §"Flag precedence and surface matrix".
 
@@ -195,15 +195,14 @@ where `<…>` names the cleared signal as diff facts (e.g., `4 markdown files; n
 
 ## Gate discipline — read before skipping a gate
 
-The section homes, and the full text of §"Refused carve-outs", live in
-[`SPEC/gate-discipline.md`](gate-discipline.md); the historical excuse table
-(§"Rationalizations") and symptom list (§"Red Flags") live in
+The excuse table (§"Rationalizations"), the symptom list (§"Red Flags"),
+and the full text of §"Refused carve-outs" live in
 [`docs/GATE-DISCIPLINE.md`](../docs/GATE-DISCIPLINE.md). Advisory
 prose, never a checklist or a validator —
 [`docs/VISION.md`](../docs/VISION.md) §"What we won't accept" sets that remedy.
 
 **Standing rule.** Any new escape hatch or gate-surface
 change in this file arrives with matching §"Rationalizations" rows and
-§"Red Flags" lines in `SPEC/gate-discipline.md`. The two files are the only homes for a
-**new** row — alongside the consolidated `/ft-audit` skill's own copy.
-`docs/GATE-DISCIPLINE.md` holds the pre-window record and is not a third home.
+§"Red Flags" lines in `docs/GATE-DISCIPLINE.md` (each section's "since the
+window" home), and in the consolidated `/ft-audit` skill's own copy — update
+both.

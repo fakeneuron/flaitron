@@ -187,7 +187,7 @@ rationalization this conversion exists to remove.
 
 **A passing visual baseline does not convert it either** — not even a
 byte-identical one argued as a recorded human approval *replayed*. Full
-reasoning: [`SPEC/gate-discipline.md`](gate-discipline.md) §"Refused
+reasoning: [`docs/GATE-DISCIPLINE.md`](../docs/GATE-DISCIPLINE.md) §"Refused
 carve-outs".
 
 **The ✋ split is biased conservative — park on doubt.** Same asymmetry as

@@ -45,6 +45,7 @@ Checked on every push by the CI `drift` job and at every release cut by
 | `SPEC/gate-postures.md` | 22,000 | The `--fast` / `--unattended` postures and the flag×surface matrix, split out of `gates.md`. Budgeted although lazy — a split that un-budgets what it moves has gamed the number rather than met it (§Ledger, lazy fragments). Sized to file size plus ~1.5 working units (~1,400 chars per substantial posture edit); on a three-edit sample the next substantial posture edit should trim or extract before this cap raises. |
 | `SPEC/post-closure.md` | 10,000 | The three post-archive steps — commit decision, 🏁 marker plus next-move suggestion, copy-paste line — split out of `SPEC.md`. Budgeted although lazy — it arrives only at a closing runner's final step, once the tasknote is archived — for the same un-budgets-what-it-moves reason as `gate-postures.md`. Sized like its siblings: the file plus ~1.5 working units. |
 | `SPEC/task-line-segments.md` | 10,000 | The per-segment table, the worked examples, and the `[unattended]`-candidacy proposal contract, split out of `SPEC.md` §"Task-line format". Budgeted for the same reason as its siblings. Sized like its siblings: the file plus ~1.5 working units. The split point is read-vs-write, not frequency — a runner *capturing* a row at Step 1 needs only the grammar block and the ordering rule, both of which stay in `SPEC.md`; the per-token write semantics travel here. |
+| `SPEC/tasknote-selection.md` | 12,500 | The use/skip routing, the filing-discipline word budget, and the downstream-impact scan. Lazy by declaration, near-universal in practice: every filing and runner skill cites it, so it is budgeted like its loaded siblings. Sized like them: the file plus ~1.5 working units. |
 | `claude/skills/*/SKILL.md` | 33,000 | One skill body is loaded per task, on top of `SPEC.md`. Sized to give `ft-task` (the largest ordinary skill) ~1.5 working units of headroom (its own substantial edits run +1,187 to +3,390 chars) while `ft-epic-discovery` (29,277) and `ft-close-epic` (28,002) stay meaningfully capped. Extracting a lazy fragment ([[CORE-556.2]]) is the preferred remedy over raising this cap when a body is genuinely overgrown rather than merely near its line. |
 | `claude/skills/ft-release/SKILL.md` | 40,000 | More specific row wins. A release cut is a whole-repo motion whose skill is loaded alone, never alongside a tasknote, and this body is already post-trim ([[CORE-507]] cut it from ~77,000 to 37,274). Budgeted rather than exempted so it still ratchets. |
 | `claude/skills/ft-release/**` | 125,000 | Directory total — every file under the skill, summed, not a per-file cap. The row above caps only the body, and the ledger's own §"Skill bodies" note says why that is not enough: fragments defer load, they do not remove it, and a release cut walks every fragment in this directory on every cut. Sized to the directory's measured total plus ~1.5 working units — a working unit here is a new mirror pair or CI binding, which across the last twenty touching commits ran +4,000 to +5,300. |
@@ -65,7 +66,8 @@ units ([[CORE-671]], settling the heuristic [[CORE-670.N]] measured against).
 
 **Not budgeted, deliberately:** `docs/`, archived tasknotes, `tools/`, `viz/`,
 and the lazy `SPEC/` modules other than `gates.md`, `gate-postures.md`,
-`post-closure.md`, `task-line-segments.md`, and `SPEC/procedures/ft-task.md`. None of them is loaded to
+`post-closure.md`, `task-line-segments.md`, `tasknote-selection.md`, and
+`SPEC/procedures/ft-task.md`. None of them is loaded to
 run an ordinary *Claude* task, so capping them would ration bytes that cost
 nothing there — but that framing is scoped to Claude's own load path:
 `SPEC/procedures/ft-task.md` is the always-loaded runner body on the
@@ -91,6 +93,7 @@ row was budgeted at on first appearing in this table, not a change.
 | `SPEC/gate-postures.md` | split from `gates.md`, budgeted 23,000 [[CORE-604.2]]; re-measured, no change [[CORE-631.3]] → held 23,000 [[CORE-671]] (trimmed 21,592 → 20,409) → 22,000 [[CORE-724.2]] (20,409 → 19,840) |
 | `SPEC/post-closure.md` | split from `SPEC.md`, budgeted 12,000 [[CORE-607]] → 10,000 [[CORE-724.2]] (8,389 → 7,787) |
 | `SPEC/task-line-segments.md` | split from `SPEC.md` §"Task-line format", budgeted 10,000 [[CORE-664]] |
+| `SPEC/tasknote-selection.md` | budgeted 12,500 [[CORE-724.3]] (routing prose compressed, 15,217 → 10,706) |
 | `claude/skills/*/SKILL.md` | 30,000 [[CORE-535.2]] → 33,000 [[CORE-558.5]] |
 | `claude/skills/ft-release/SKILL.md` | budgeted 40,000, post-trim from ~77,000 [[CORE-507]] |
 | `claude/skills/ft-release/**` | measured but unbudgeted through [[CORE-613]] (117,337, exceeding the body row unseen) → budgeted 125,000 [[CORE-622.2]] |
@@ -239,13 +242,13 @@ added six of the modules above by moving narrow-use sections out of `SPEC.md`
 — which is why the `SPEC/` total grew while the always-loaded set shrank.
 [[CORE-535.5]] added two more the same way, out of `gates.md`: neither
 `cue-vocabulary.md` (reference — loaded when composing or interpreting a cue)
-nor `gate-discipline.md` (section homes plus the refused carve-out; the historical catalog is `docs/GATE-DISCIPLINE.md`, and [[CORE-659]] dropped the pre-skip load) is consulted by an
-ordinary run, which is why neither earns a budget row. [[CORE-595]] split
+nor `gate-discipline.md` (folded into `docs/GATE-DISCIPLINE.md` by [[CORE-724.3]]) is consulted by an
+ordinary run, which is why neither earned a budget row. [[CORE-595]] split
 `tasknote-selection.md` (28,952 → 15,236) the same way, moving its three
 PLAN.md-row contracts — filing commits, the `## Completed` stub form, and
 rotation — into `plan-filing.md`; both halves are near-universal (every
-closure loads the stub form) but each is now half the size, so neither is
-close to earning a budget row. [[CORE-604.2]] split `gates.md` (35,910 →
+closure loads the stub form) but each is now half the size; [[CORE-724.3]]
+later budgeted `tasknote-selection.md` anyway, as near-universal. [[CORE-604.2]] split `gates.md` (35,910 →
 20,804) the same way, moving the `--fast` / `--unattended` postures and the
 flag×surface matrix into `gate-postures.md` (19,029) — genuinely lazy, loaded
 only when a flag or the `[unattended]` row marker is set, and budgeted anyway

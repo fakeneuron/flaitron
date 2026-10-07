@@ -106,9 +106,9 @@ serves it; Grok-only projects follow [`grok/AGENTS-snippet.md`](grok/AGENTS-snip
 - [docs/HARNESS-SURVEY.md](docs/HARNESS-SURVEY.md) — dated comparisons of
   flaitron against contemporary harnesses and trackers: differentiators, gaps,
   overkill, and the seed list for the next wider pass
-- [docs/GATE-DISCIPLINE.md](docs/GATE-DISCIPLINE.md) — historical catalog of
-  gate-skip excuses and observer symptoms, moved out of `SPEC/gate-discipline.md`
-  after the CORE-659 decay window recorded no independent recurrence
+- [docs/GATE-DISCIPLINE.md](docs/GATE-DISCIPLINE.md) — gate-skip excuses,
+  observer symptoms, and refused carve-outs: the home for a new row when a
+  gate surface changes
 - [docs/CODEX-VERIFICATION.md](docs/CODEX-VERIFICATION.md) — dated Codex
   installation receipt (CORE-677.2): discovery and repair observations
 - [docs/CONTEXT-BUDGET.md](docs/CONTEXT-BUDGET.md) — per-file byte budgets for
@@ -296,7 +296,7 @@ runtime lives in the runner; the contract lives in flaitron.
 ## Repo layout
 
 - `SPEC.md` — workflow contract (authoritative)
-- `SPEC/` — lazy SPEC modules (epic, starter, blocked, model, versioning, gates, gate-postures, cue-vocabulary, gate-discipline, post-closure, tasknote-selection, plan-filing, loop, layout, plan-parser, task-line-segments, scope-boundaries, tasknote-inserts, purpose-blurb, superseded-claims, unattended-candidacy) plus `procedures/` (pasteable skill procedures) and `fixtures/plan/` (task-line grammar conformance fixtures shared by every PLAN.md parser); loaded on demand by skills
+- `SPEC/` — lazy SPEC modules (epic, starter, blocked, model, versioning, gates, gate-postures, cue-vocabulary, post-closure, tasknote-selection, plan-filing, loop, layout, plan-parser, task-line-segments, scope-boundaries, tasknote-inserts, superseded-claims, unattended-candidacy) plus `procedures/` (pasteable skill procedures) and `fixtures/plan/` (task-line grammar conformance fixtures shared by every PLAN.md parser); loaded on demand by skills
 - `templates/` — canonical tasknote templates (full, micro, starter, sidequest) plus spec, loop-heartbeat, audit-overlay, and subagent-probe templates, and the `PLAN.md` / `tasknote-README.md` seed files
 - `claude/` — Claude Code skills + slash commands (adopter-facing snippet plus the full shipped `ft-*` inventory; adopter projects wire the policy subset, while flaitron-self-only skills like `/ft-release` stay upstream-only)
 - `codex/` — Codex skill wrappers for the full `ft-*` inventory plus Codex-specific wiring notes

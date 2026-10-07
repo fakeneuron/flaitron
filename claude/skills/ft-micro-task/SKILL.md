@@ -67,7 +67,7 @@ The full task-line grammar is `- [ ] **TASK-ID** [!critical] [model] | shortname
 <1-2 sentences of plain-English purpose.>
 ```
 
-Two lines: the ID and the `| shortname`, then 1-2 sentences of purpose drawn from the PLAN.md long description just captured — the only source read yet. This skill has a single scaffold path (no promote / resume branch), so the blurb fires here and nowhere else, and it matters most in a one-shot run: the blurb and the ✅ Recap are the only two plain-English reads the operator gets. Emit it and keep going in the same turn. Bounds — not a cue, not a gate, suppressed by neither flag: `SPEC/purpose-blurb.md`.
+Two lines: the ID and the `| shortname`, then 1-2 sentences of purpose drawn from the PLAN.md long description just captured — the only source read yet. This skill has a single scaffold path (no promote / resume branch), so the blurb fires here and nowhere else, and it matters most in a one-shot run: the blurb and the ✅ Recap are the only two plain-English reads the operator gets. Emit it and keep going in the same turn. Bounds — not a cue, not a gate, suppressed by neither flag: `SPEC/cue-vocabulary.md` §"🎯 Purpose blurb".
 
 **Filing-discipline check (advisory).** Word-count the captured long description. If it exceeds the 70-word hard cap from SPEC/tasknote-selection.md §"PLAN.md filing-discipline thresholds", surface a one-line warning to the user — informational only; proceed.
 

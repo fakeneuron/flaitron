@@ -52,8 +52,7 @@ the fallback.
 **Why the choice, rather than one rule.** Phase 1 *is* complete at this
 boundary, and a completed Discovery — archive skim, drift check, populated
 Acceptance — is exactly the work worth preserving, so a blanket delete
-discards it ([[CORE-660]] is the worked case: four distinct artifacts, none
-of them Phase 2). But a blocker can also surface before Discovery has
+discards it. But a blocker can also surface before Discovery has
 produced anything, and parking *that* leaves a shell whose resume costs more
 than a fresh start. The operator is the one who knows which they are looking
 at, and the 🛠️ banner puts the question where they already are. `status:
@@ -137,14 +136,13 @@ this table, never a free-form value:
 | `model-mismatch` | The Step 1.5 concrete-`[model]` STOP |
 | `input-needed` | A question autonomous execution cannot answer — a queued bundled in-📦 prompt, or `/ft-close-epic`'s Phase 1→2 clarification ask |
 | `visual-confirm` | A Phase 3 👁️ `CONFIRM` visual ask — the check an operator-less run has nobody to hand to |
-| `dependency` | A hard dependency surfaced mid-Phase-2 — the park that predates the posture |
+| `dependency` | A hard dependency surfaced mid-Phase-2 |
 | `interrupted` | The run ended without reaching closure *or* a gate — killed, out of context, session lost |
 
 The first six are the gate conversions in [`SPEC/gate-postures.md`](gate-postures.md)
 §"`--unattended` operator posture" — and `drift` doubles as the attended
 operator's park disposition at the 🛠️ gate (§"Phase 1 entry"), the one code
-written on both paths; `dependency` is the mid-Phase-2 park
-this module has always had. `interrupted` is neither — nothing stopped the
+written on both paths; `dependency` is the mid-Phase-2 park. `interrupted` is neither — nothing stopped the
 run, it simply ended — and it is the one code a *caller* writes rather than a
 runner, to route a stranded note into the resume path (§"Resuming an
 interrupted run" below).

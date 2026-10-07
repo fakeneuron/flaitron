@@ -161,7 +161,7 @@ It fires once, ahead of the promote / scaffold / resume branch, so there is no
 per-path variant to keep in sync. Emit it and continue in the same turn: it
 expects no reply, blocks nothing, and is suppressed by neither `--fast` nor
 `--unattended`. It is **not** an operator cue and adds no gate. Full contract:
-[`SPEC/purpose-blurb.md`](../purpose-blurb.md).
+[`SPEC/cue-vocabulary.md`](../cue-vocabulary.md) §"🎯 Purpose blurb".
 
 **`## Completed`-rotation advisory.** While `PLAN.md` is open, count the
 checked rows under `## Completed` (nested epic children included). Past

@@ -285,7 +285,7 @@ The workflow surfaces **up to two** standing phase-gate banners, both
 conditional: 🛠️ Phase 1→2 (post-Discovery) and 📦 ready-to-commit. A fully
 mechanical task skips both; once Phase 1 closes, Phase 2 → Phase 3 → Phase 4
 closure ops flow continuously without intermediate gates. Everything that
-governs the gate surface is lazy, in four modules:
+governs the gate surface is lazy, in three modules:
 
 - [`SPEC/gates.md`](SPEC/gates.md) — the machinery: banner format, the
   two-banner cap and its one bounded exception (destructive-action
@@ -295,15 +295,13 @@ governs the gate surface is lazy, in four modules:
   or the `[unattended]` row marker is set.
 - [`SPEC/cue-vocabulary.md`](SPEC/cue-vocabulary.md) — every operator cue's
   glyph, UPPERCASE label, and emission shape.
-- [`SPEC/gate-discipline.md`](SPEC/gate-discipline.md) — section homes for a
-  new rationalization or red flag, and §"Refused carve-outs" in full.
 
 ### 🎯 Purpose blurb
 
 An ID-invoked runner states in two plain-English lines what the task is, as
 soon as the `PLAN.md` line is captured — before the model gate, the pre-flight
 checks, and any scaffold write, each of which can end the run. Contract: see
-[`SPEC/purpose-blurb.md`](SPEC/purpose-blurb.md).
+[`SPEC/cue-vocabulary.md`](SPEC/cue-vocabulary.md) §"🎯 Purpose blurb".
 
 ### 📝 Phase 1: Discovery
 

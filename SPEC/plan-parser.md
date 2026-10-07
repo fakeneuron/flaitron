@@ -2,7 +2,7 @@
 
 > Lazy-loaded SPEC module. Read when authoring an unusual `PLAN.md` row, when a row fails to parse, or when changing `viz/src/parser.ts`. The canonical task-line grammar itself stays in `SPEC.md` §"Task-line format", and its per-segment semantics in [`SPEC/task-line-segments.md`](task-line-segments.md); this module carries the tolerances, footguns, exclusions, and reserved long-description conventions around them. See `SPEC.md` for the always-loaded core spec.
 
-**Legacy `## Critical` heading.** Pre-FE-044 PLAN.md files used a `## Critical`
+**Legacy `## Critical` heading.** Older PLAN.md files used a `## Critical`
 priority heading. The parser soft-migrates this: tasks under a `## Critical`
 heading parse with `priority: 'High'` and `critical: true` — equivalent to
 filing each row under `## High` with an explicit `[!critical]` flag. Adopters
@@ -100,7 +100,7 @@ that file's §"Task-line format".
 recognized section that carries no markdown emphasis (`*` / `**`) is a prose
 checklist item, not a failed task — excluded from both the task list and
 `unparsed`. Lines that attempt an ID via emphasis but fail `TASK_LINE`
-(`*FE-064*`, `**fe-065**`) still surface (FE-063.2).
+(`*FE-064*`, `**fe-065**`) still surface.
 
 **HTML comments are ignored.** Checkbox-shaped lines inside `<!-- ... -->`
 comment blocks are non-rendered content: the parser blanks the comment

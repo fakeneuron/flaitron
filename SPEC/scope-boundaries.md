@@ -17,10 +17,9 @@ than fixing flaitron directly from that project's session.
 
 **CORE-483.3 exception.** One tasknote predates this rule: it edited two
 `.gitignore` files in a sibling operator-private repo directly as its whole
-deliverable — deliberate, recorded, flaitron-side commit only. That precedent stands as
-the single documented exception, not a license — like the CLI and
-cross-project-query carve-outs below, it
-does not extend to future tasks.
+deliverable — deliberate, recorded, flaitron-side commit only. It stands as
+the single documented exception, not a license, and does not extend to future
+tasks.
 
 ## What flaitron does NOT provide
 
@@ -31,24 +30,23 @@ To prevent scope creep, flaitron deliberately omits:
   operator-side batch updater that walks the workspace and moves each
   adopter's pinned submodule to the latest non-breaking release (dry-run by
   default, local commits only, never pushes). It maintains the fleet *around*
-  flaitron-adopting projects, not the workflow inside one — like viz under
-  the query-API exclusion, it is the singular exception, not a precedent.
+  flaitron-adopting projects, not the workflow inside one.
 - Schema validation (markdown is the schema; the assistant catches drift)
 - A database backend (markdown files in git are the database)
 - Cross-project query API (each project owns its history; the read-only
   visualizer is a single global instance — a multi-project query API is
-  not; like the CLI carve-out above, it is the singular exception, not a
-  precedent)
+  not)
 - Per-project CI hooks (those belong in the adopting project)
 
-If you find yourself wanting these, write a project-side helper. Do not add
-them to flaitron.
+Both carve-outs above — the updater and the visualizer — are singular
+exceptions, not precedents. If you find yourself wanting these, write a
+project-side helper. Do not add them to flaitron.
 
 ## PR / suggestion archetypes flaitron does not accept
 
 For future-AI mid-task discipline. Outward-facing prose version with full justification lives in [`docs/VISION.md`](../docs/VISION.md) §"What we won't accept".
 
-- **Schema validators.** PR-rejection mirror of "Schema validation" above — markdown is the schema; runtime checkers reintroduce the friction the v0.1.0 cut removed.
+- **Schema validators.** PR-rejection mirror of "Schema validation" above — markdown is the schema; runtime checkers reintroduce the friction flaitron exists to remove.
 - **Abstractions without two-project precedent.** Promote a helper into flaitron only when ≥2 projects need the same shape. Three similar lines is cheaper than premature abstraction. Bounded exception, per `docs/VISION.md` §"What we won't accept": a declared caller surface with one real out-of-repo consumer is admissible when it costs the standalone workflow nothing — no gate, no runner behaviour, no flaitron-performed write.
 - **Cross-project query layers beyond the read-only visualizer.** PR-rejection mirror of "Cross-project query API" above — viz is the singular exception; anything richer is out of scope.
 - **Multi-user / team features.** PR-rejection mirror of "Multi-user / team features" in `docs/VISION.md` §"What we won't accept" — solo system; teams use a different tool.

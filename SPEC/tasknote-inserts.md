@@ -26,19 +26,9 @@ default every implementation child to Sequential and `.N` to Synthesis
 — that matches [`SPEC/epic.md`](epic.md) "run children in order."
 M=1 epics skip the heading (nothing to fan out).
 
-Each named child **echoes** the claim on its own tasknote as omit-when-absent
-YAML `blocked-by:` / `parallel-safe-with:` (and a Related type-hint). A
-worktree copies only the child note, so the `.1` heading alone is not
-visible there. `/ft-task` scaffold for an epic implementation child
-copies any Fan-out claim that names it; omitted YAML still means
-*undeclared*, not "safe with everyone."
-
-**What Fan-out is not.** It is a markdown declaration, not a scheduler.
-It does not lock, refuse, auto-fan-out, or replace the serial default.
-The worktree start procedure may **warn** if the child YAML `blocked-by`
-lists a still-open PLAN line; it must not refuse. Parent epics stay a PLAN
-checkbox — there is no parent planning tasknote. Full lifecycle:
-[`SPEC/epic.md`](epic.md) §"Fan-out". Isolation convention:
+Each named child also gets a Related type-hint. The YAML echo onto each
+child, and the warn-never-lock rule — a declaration, not a scheduler — are
+the lifecycle's: [`SPEC/epic.md`](epic.md) §"Fan-out". Isolation convention:
 [`docs/WORKTREES.md`](../docs/WORKTREES.md).
 
 ## 🔄 Handoff (optional)

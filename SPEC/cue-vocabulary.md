@@ -5,9 +5,8 @@
 This module is **reference**: the single source skills emit from and adopters
 read. The decisions that consult it — when a banner fires, what a flag
 suppresses, when a run parks — are gate machinery and live in
-[`SPEC/gates.md`](gates.md). Split out by [[CORE-535.5]] for exactly that
-reason: a run loads `gates.md` at a decision point and needs the skip rule and
-the flag matrix, not the full glyph inventory.
+[`SPEC/gates.md`](gates.md), because a run loads `gates.md` at a decision
+point and needs the skip rule and the flag matrix, not the full glyph inventory.
 
 One cue is deliberately **not** here. [`SPEC/gates.md`](gates.md)
 §"Destructive-action escalation" stayed
@@ -15,9 +14,6 @@ in [`SPEC/gates.md`](gates.md) because it is machinery, not vocabulary — the
 one bounded exception to the two-banner cap, tied to a concrete command about
 to execute.
 
-
-The canonical set of operator-facing cues — the single source skills emit
-from and adopters read. Codified from CORE-254.2's vocabulary deliverable;
 `SPEC.md` core carries a compact at-a-glance glossary that points here for
 the full contract.
 
@@ -26,8 +22,8 @@ a dedicated glyph paired with a short UPPERCASE word label. The label is
 load-bearing, not decorative: if an agent surface fails to render the emoji
 (or strips it), the UPPERCASE label still names the cue in plain text. The
 glyph is the fast-scan signal; the label is the cross-agent fallback. (The
-fallback *mechanics* and per-agent render/emit verification are
-CORE-254.5's deliverable — see [`docs/AGENT-COMPAT.md`](../docs/AGENT-COMPAT.md).)
+fallback *mechanics* and per-agent render/emit verification: see
+[`docs/AGENT-COMPAT.md`](../docs/AGENT-COMPAT.md).)
 
 **Casing rule.** Labels are UPPERCASE single words (or tight compounds);
 glyphs are single code points (a trailing VS16 for emoji presentation is part
@@ -68,14 +64,13 @@ heading names). Reuse across *unrelated* concepts is not permitted; that would
 be a genuine collision.
 
 The 🎯 row is the one entry with an **empty layer-1 cell**, and that is the
-point. The purpose blurb ([`SPEC/purpose-blurb.md`](purpose-blurb.md)) emits 🎯
+point. The purpose blurb (§"🎯 Purpose blurb" below) emits 🎯
 conversationally — the position an operator cue would occupy — while being no
 cue at all: it bears no obligation, accepts no reply, and gates nothing. It is
 listed here rather than left silent so that the glyph is documented at the
 surface it is emitted from; it is deliberately **not** listed in
 §"Event cues" / §"Inline asks" below, because the cue tables are for cues, and adding
-to it is a vocabulary change of the kind CORE-254.2 / CORE-308 / CORE-353.3
-each deliberated. The reuse is coherent by the same rule as every other row:
+to it is a vocabulary change. The reuse is coherent by the same rule as every other row:
 the blurb *is* the Goal, spoken instead of filed.
 
 **Non-cue glyphs.** A small residual sits outside all three layers — ⚡
@@ -86,8 +81,43 @@ the blurb *is* the Goal, spoken instead of filed.
 collides with a cue, and none carries operator-gate meaning. They are not
 governed by this table and do not need to be. Adding to this residual is a
 local decision for the owning skill; adding to the **cue table** is a
-vocabulary change and needs the deliberation CORE-254.2 / CORE-308 /
-CORE-353.3 each gave it.
+vocabulary change and needs deliberation.
+
+## 🎯 Purpose blurb
+
+An ID-invoked runner emits a two-line plain-English statement of the task at
+the earliest point it can: immediately after the `PLAN.md` task line is
+captured, before the model gate, the pre-flight checks, and any scaffold write.
+Each of those can end the run, and an operator invoking cold after a `/clear`
+would otherwise never learn what the task was.
+
+```text
+🎯 <TASK-ID> — <shortname>
+<1-2 sentences of purpose drawn from the PLAN.md long description.>
+```
+
+The `PLAN.md` line is the only source, because it is the only thing read yet;
+the `🎯 Goal` is derived from that same line at scaffold.
+
+**Which invocations.** The two ID-invoked runners — `/ft-task` (any flag set,
+`--loop` included) and `/ft-micro-task` — once each, at that one point, ahead
+of the fresh-scaffold / starter-promotion / blocked-resume branch, so no path
+carries its own variant. A path holding state the blurb could not know — the
+`park-reason:` a resume clears, a goal loop's `loop-max` budget — states it as
+ordinary prose when it reads it; that is not a second blurb.
+`/ft-epic-discovery` and `/ft-close-epic` are out of scope deliberately: the
+test is whether the invocation could arrive cold with nothing but an ID, and
+both run with the scoping conversation still live.
+
+**Bounds — not a cue and not a gate.** It bears no obligation, accepts no
+reply, and blocks nothing; the runner emits it and continues in the same turn.
+It adds no row to the cue tables below, no checklist box, and no phase, and the
+two-banner cap is untouched. Reading it as license for a third gate inverts its
+purpose — it exists to spend *less* of the operator's attention, not more.
+
+**`--fast` and `--unattended` do not suppress it.** `--fast` suppresses asks,
+and there is nothing here to answer; under `--unattended` it costs two lines of
+transcript and is the cheapest orientation a later reader gets.
 
 ## Event cues (inline operator prompts)
 
@@ -118,9 +148,7 @@ manual operator step, not an assistant-executed command).
 ## Inline asks (existing cues, carrying word labels)
 
 The existing inline asks adopt the same glyph+label convention for cross-agent
-non-render survival (CORE-254.2 §2 retrofit). Glyphs are unchanged; the
-UPPERCASE label is the addition. Wiring these labels into each emission site is
-CORE-254.4 — this contract fixes the canonical label.
+non-render survival; this contract fixes the canonical label.
 
 | Cue | Glyph | Label | Shape | Notes |
 |---|---|---|---|---|
@@ -182,8 +210,7 @@ than forking a third token list.
 Accepted replies are `commit`, `commit it`, `go`, `yes`, `y`, `yep`,
 `yeah`, `ship`, `ship it`, `land`, `land it`, `approved`, and `do it`
 (case-insensitive; surrounding punctuation ignored). This is the named set —
-widened by CORE-536 from `commit` / `go` / `yes` to the explicit commit verbs
-an operator actually types, and still closed. `ok` / `okay` and
+the explicit commit verbs an operator actually types, and still closed. `ok` / `okay` and
 `looks good` / `lgtm` are **not** members: `okay` is too weak to authorize a
 commit, and `looks good` / `lgtm` are already the natural 👁️ `CONFIRM`
 replies — promoting them would let a visual confirmation bind as commit

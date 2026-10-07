@@ -26,9 +26,8 @@ rules. `.N` is **grammar-legal and permanently valid** (parser accepts
 `\.(?:\d+|N)` in the subtask slot), so the audit child never needs renaming
 to a sequential number at epic-close time. When an epic grows, new
 implementation children insert *before* `.N` (`.2`, `.3`, …); `.N` always
-remains the last child. Historical: repos that already renamed an audit
-child to a concrete number are unaffected — both forms parse and are valid
-going forward.
+remains the last child. An audit child already renamed to a concrete number
+stays valid — both forms parse.
 
 **Lifecycle:**
 
@@ -65,13 +64,10 @@ and its complete nested cohort atomically into `## Completed`.
 
 The parent epic stays a PLAN checkbox. There is no parent planning
 tasknote. When Discovery files M>1 implementation children, the `.1`
-note may carry an optional `## 🌳 Fan-out` insert
-([`SPEC/tasknote-inserts.md`](tasknote-inserts.md)) naming Parallel /
-Sequential / Synthesis rows.
-`/ft-epic-discovery` injects an empty placeholder at scaffold when M>1
-and fills it when the child lines are written. M=1 skips the heading.
-When Discovery does not classify, every implementation child defaults
-to Sequential and `.N` to Synthesis.
+note may carry an optional `## 🌳 Fan-out` insert naming Parallel /
+Sequential / Synthesis rows — its shape, placement, and unclassified
+default are [`SPEC/tasknote-inserts.md`](tasknote-inserts.md)
+§"🌳 Fan-out (optional)".
 
 Each child **echoes** the claim on its own tasknote as omit-when-absent
 YAML `blocked-by:` / `parallel-safe-with:` (bare IDs) so a worktree —

@@ -4,6 +4,9 @@
 
 ## When to use a tasknote (and when not to)
 
+Each block below names the motion and its trigger; the skill named owns the
+mechanics.
+
 **Use a tasknote when:**
 
 - The change touches more than one file
@@ -20,98 +23,90 @@
 
 **Draft a spec (`templates/spec-template.md`) when:**
 
-- A design has been worked out in conversation but isn't decomposed into tasks yet — capturing it in a fixed-section spec (Goal · Requirements · Design · Tasks · Risks/Open Q · Validation Approach) before filing prevents context loss
-- The brief spans an epic or multi-task-shaped body of work and you want one reviewable artifact to derive filing decisions from
-- You want operator review of the design before any PLAN.md line or tasknote artifact exists
+- A design worked out in conversation is not yet decomposed into tasks, or spans an epic-shaped body of work
+- You want operator review of the design before any PLAN.md line or tasknote exists
 
-A spec is a planning artifact, not a filing — it never writes a PLAN.md line or scaffolds a tasknote. Copy `templates/spec-template.md` to `.flaitron/specs/<slug>.md` (create the directory on first use), fill its six sections from the conversation, and review the draft before filing anything from its Tasks section. Convert that section to real work via `/ft-epic-discovery`, `/ft-file-followup --starter`, `/ft-task`, or a direct PLAN.md line. No skill drives this — the `/ft-spec` wrapper was retired by CORE-573; the template and this paragraph were the whole of its value.
+A spec is a planning artifact, not a filing: copy the template to
+`.flaitron/specs/<slug>.md` (create the directory on first use), fill its six
+sections, review it, then convert its Tasks section via `/ft-epic-discovery`,
+`/ft-file-followup --starter`, `/ft-task`, or a direct PLAN.md line. No skill
+drives it.
 
 **Skip the spec (go straight to filing) when:**
 
 - A one-liner idea needs neither a spec nor a starter — write the PLAN.md line directly
-- The design is already clear and decomposed — file directly with `/ft-file-followup --starter` or `/ft-epic-discovery`
+- The design is already clear and decomposed — file with `/ft-file-followup --starter` or `/ft-epic-discovery`
 
 **Plan a refactor (`/ft-refactor <target> [--fast]`) when:**
 
-- One named target — a file, module, directory, or subsystem — needs restructuring that is too sequenced for a single tasknote and too specific for an open-scope epic
-- An `/ft-audit structure` finding recommends a depth escalation on one target
-- The change must preserve behavior, so the work needs characterization-test coverage staged before any move
+- One named target (file, module, directory, subsystem) needs restructuring too sequenced for one tasknote and too specific for an open-scope epic — including an `/ft-audit structure` depth escalation
+- Behavior must be preserved, so characterization-test coverage is staged before any move
 
-`/ft-refactor` is read-only on source: it surveys dependencies, seams, and test coverage, surfaces a sequenced plan for review, and on your go files a parent epic + implementation children from `.2` + a `.N` audit, each child a starter carrying behavior-preservation acceptance seeds. Execution happens through normal `/ft-task` cycles on those children. No target means you want the breadth sweep (`/ft-audit structure`), not this; genuinely open scope means `/ft-epic-discovery`.
+`/ft-refactor` is read-only on source and files a parent epic of starter
+children plus a `.N` audit; execution is normal `/ft-task` cycles. No target →
+`/ft-audit structure`; open scope → `/ft-epic-discovery`.
 
 **File a starter (`/ft-file-followup [ID] --starter`) when:**
 
-- The PLAN.md long description would exceed **~50 words (target) or 70 words (hard cap)** — richer context belongs in the starter body, not on the line
-- A task is discovered mid-flow with rich context (rationale, design decisions, file survey, open questions) but isn't ready to start now
-- The captured context would be lost or would bloat the PLAN.md long description if recorded as inline prose
-- The right shape isn't fully obvious; the AI wants to preserve the survey and open questions for resolution at `/ft-task` checkout
-- Rich mid-conversation context (epic brief, design conclusion, multi-step plan) won't be consumed in this session — park it in a starter now to protect against `/clear` loss, rather than surfacing it as a parenthetical "run `/ft-X` next and paste this" suggestion
-
-If the ID is omitted, the skill suggests the next available task ID for review
-before writing the starter.
+- The PLAN.md long description would exceed **~50 words (target) or 70 words (hard cap)**
+- Rich context (rationale, design decisions, file survey, open questions) surfaced mid-flow but the work is not starting now — park it before `/clear` can lose it
 
 **Skip the starter (just add a one-line PLAN.md entry) when:**
 
-- The long description fits inside ~50 words (a scannable one-liner)
-- The task is straightforward enough that the long description suffices
-- No design decisions or file survey work has been done yet
-- The next available `/ft-task <ID>` slot is the natural next move (file, then start; no sitting time)
+- The long description fits inside ~50 words and no design or survey work has been done yet
+- Starting it next is the natural move (file, then start)
 
 **File a follow-up (`/ft-file-followup [ID]`) when:**
 
-- A new task surfaces mid-flow (typically inside an active `/ft-task`) and the long description fits in ≤50 words, but the surrounding conversation context (why this came up, suspected files, recommended priority/model) is worth surfacing once at filing time without persisting it to disk
-- The follow-up is clear enough that it doesn't need a starter body — but you still want a paragraph of rationale visible in chat alongside the new PLAN.md line
-- You want the lightest filing motion in the cohort: one PLAN.md line written, a short paragraph delivered conversationally, zero edits to the active tasknote
-
-A `/ft-file-followup` filing produces **no tasknote file** — the rationale paragraph lives in chat only, and the active tasknote (if any) is not edited.
-If the ID is omitted, the skill suggests the next available task ID for review
-before writing the PLAN.md line.
+- A ≤50-word task surfaces mid-flow and its rationale is worth one paragraph in chat but not on disk — one PLAN.md line, no tasknote file, the active tasknote untouched
 
 **Skip the default follow-up (add `--starter`, or just inline a PLAN.md line) when:**
 
-- The description would breach 50 words — add `--starter`; rich context belongs in the starter body
-- Persistent context (file survey, open questions, design decisions) is worth preserving to disk — same call
-- You're outside any active conversation that produced the rationale — write the PLAN.md line directly
+- The description would breach 50 words, or the context should persist to disk — add `--starter`
+- No live conversation produced the rationale — write the PLAN.md line directly
 
 **Park an idea instead (`/ft-file-followup --park [--low|--med|--fut|--high] [ID] [idea]`) when:**
 
-- An idea or **quick fix** surfaces mid-session (while coding a feature, auditing a file, etc.) and you do not want to lose it, but you are **not** switching context now
-- The note fits in ≤80 words and a ≤30w PLAN one-liner — enough to reopen in the next chat, not enough for a review gate
-- You want the lightest **persistent** filing motion: tiny stub at `.flaitron/sidequest/<ID>.md` + one PLAN line at the right priority, then straight back to the interrupted work
+- An idea or **quick fix** surfaces mid-session, you are **not** switching context, and it fits a ≤80-word stub plus a ≤30w PLAN one-liner
 
-**Priority flags** (skip the question): `--low` → `## Low` (`pickup: next-chat`); `--med` / `--medium` → `## Medium`; `--fut` / `--future` → `## Future Opportunities`; `--high` → `## High`. **No flag** → one short question (`Low · Medium · Future?`) before any disk write; the AI may parenthesize its best read but does not auto-file.
+**Priority flags** (skip the question): `--low` → `## Low` (`pickup:
+next-chat`); `--med` / `--medium` → `## Medium`; `--fut` / `--future` →
+`## Future Opportunities`; `--high` → `## High`. **No flag** → one short
+question (`Low · Medium · Future?`) before any disk write — never auto-file.
 
-Park mode skips the review gate and the downstream-impact reconciliation scan, auto-allocates an ID rather than surfacing one for confirmation, and replies in ≤70 words (park confirmation + priority + resume anchor) before **continuing the main session inline**. Where it conflicts with the default follow-up contract, park mode wins; the cadence lives in the `park-mode.md` lazy fragment the flag loads. Drop the flag when you want the review gate, the reconciliation scan, or a conversational rationale paragraph; escalate to `--starter` (dropping `--park` — the two do not compose) when a file survey, open questions, or design decisions need to persist beyond a stub; and use `/ft-micro-task` or `/ft-task` when you're ready to execute now.
+Park mode skips the review gate and the reconciliation scan, auto-allocates the
+ID, and continues the main session inline; where it conflicts with the default
+follow-up contract, park mode wins. Cadence: the `park-mode.md` fragment. Drop `--park` for the review gate; switch to `--starter` (they do not
+compose) when context must persist beyond a stub.
 
 **File a micro-tasknote (`/ft-micro-task <ID>`) when:**
 
-- The task is above the skip threshold (more than a one-liner; touches code or non-trivial doc state) but small enough that the full 4-phase ceremony is overkill — typically under ~30 minutes of effort
-- The change is single-file or near-single-file, with no design tradeoffs worth recording across multiple subtasks
-- The shape is obvious enough that Acceptance/Subtasks checklists would just restate the goal — but you still want the relevance / drift / archive-skim / pattern-survey contracts before writing code
-- Examples: small audits, focused doc patches, single-file behavior tweaks with clear scope
+- The task is above the skip threshold but under ~30 minutes, single-file or near it, with no design tradeoffs worth multiple subtasks — you still want the relevance / drift / archive-skim / pattern-survey contracts
 
-A micro-tasknote uses a single `## ⚡ Notes` section (bold-prefix prompts for relevance / drift / archive / pattern / implementation) instead of the four phase checklists; closure flips PLAN.md + the tasknote location like a normal tasknote. The `/ft-micro-task` skill is **file + execute (one-shot)** — scaffold, execute inline, close in one conversation.
+A micro-tasknote replaces the four phase checklists with one `## ⚡ Notes`
+section of bold-prefix prompts (relevance / drift / archive / pattern /
+implementation); closure flips PLAN.md and archives like a normal tasknote.
+`/ft-micro-task` scaffolds, executes, and closes in one conversation.
 
 **Skip the micro-tasknote (use `/ft-task` instead) when:**
 
-- The task touches multiple files or has design tradeoffs to record
-- The task is likely to take more than ~30 minutes
-- The 4-phase log would carry useful state for downstream tasknotes or audits
+- The task touches multiple files, has design tradeoffs, or runs past ~30 minutes
+- The 4-phase log would carry useful state downstream
 - You're unsure — default to `/ft-task`. The Discovery phase pays for itself.
 
 **Run a tasknote in debug mode (`/ft-task <ID> --debug`) when:**
 
-- The work is investigating a bug, regression, or other unexpected behavior where the root cause is not yet known
-- Hypothesis-first cadence pays off: capturing expected vs. observed first, ranking hypotheses, and designing a minimal repro before code edits prevents shotgun-debugging
-- The fix lives behind the investigation — Phase 1 produces the hypothesis, Phase 2 targets it, and Phase 3 re-verifies the same minimal repro to confirm the root cause (not just the symptom) is fixed
+- The work investigates a bug or regression whose root cause is not yet known, so hypothesis-first cadence (expected vs. observed → ranked hypotheses → minimal repro → Phase 3 re-verify) beats shotgun-debugging
 
-Debug mode uses the same standard 4-phase template as a plain `/ft-task` run; the debug cadence (expected/observed → ranked hypotheses → minimal repro → re-verify) lives in the `step-4-debug-mode.md` lazy fragment the flag loads, not in the template itself. It adds content, never mechanics — no extra phase, banner, or gate — and composes with `--fast` in either order (the Phase 3 repro re-verify still runs). Debug mode is **explicit opt-in only**: never infer it from a task description that sounds bug-shaped, per the CORE-042.5 rule that the operator picks the entry point at invocation time.
+Debug mode is **explicit opt-in only** — the operator picks the entry point at
+invocation, so never infer it from a bug-shaped description. It uses the
+standard template and adds content, never a phase, banner, or gate; it composes
+with `--fast` in either order, and the Phase 3 repro re-verify still runs. The
+cadence lives in the `step-4-debug-mode.md` fragment the flag loads.
 
 **Skip debug mode (use a plain `/ft-task` run) when:**
 
-- The work is feature-shaped, not bug-shaped — the goal is to *add* behavior, not to explain *unexpected* behavior
-- The root cause is already known at filing time and the work is just landing the fix — `/ft-task`'s standard Phase 1 is enough
-- The bug is trivial (typo, one-liner) — `/ft-task` (or the skip-the-tasknote rule above) is the right shape
+- The work is feature-shaped, the root cause is already known, or the bug is trivial
 
 When in doubt, write the full tasknote. The 4-phase ceremony pays for itself.
 

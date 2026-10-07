@@ -13,7 +13,7 @@ of its ordinary pass, without changing who writes the token.
 ## Recommend, never write
 
 **Flaitron itself never writes `[unattended]` — seeding is an operator act.**
-That sentence is [`SPEC/task-line-segments.md`](task-line-segments.md)'s and CORE-494's,
+That sentence is [`SPEC/task-line-segments.md`](task-line-segments.md)'s,
 and this module preserves it verbatim. Candidacy is a *recommendation*: the
 filer names the rows the predicate below admits, and the token lands on a row
 only when the operator confirms that row **inside the confirm gate the surface
@@ -37,7 +37,7 @@ Three consequences follow, and each is a boundary rather than a feature:
 - **Not a cue, not a gate.** The proposal rides an existing ask and the
   emission line is a report. Neither adds a row to
   [`SPEC/cue-vocabulary.md`](cue-vocabulary.md), a checklist box, a banner,
-  or a phase. The CORE-065 two-banner cap is untouched.
+  or a phase. The two-banner cap is untouched.
 
 ## Candidacy predicate
 

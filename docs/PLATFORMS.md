@@ -410,6 +410,16 @@ that family absent other signal; the equivalences column is the effort axis in
 action — the same token earning a different band when the session runs it at a
 non-default effort setting.
 
+**Observed usage (dated, moved from `SPEC/model.md`).** Families differ in
+cost/quality curves on long context and sustained reasoning. Opus sessions
+have benefited from `[heavy]` on extended explorations where context retention
+across many turns matters; Grok 4.x (2026-05) stayed effective and low-drift
+across `[light]` / `[medium]` for most well-scoped implementation, even when
+the initial description sounded moderately complex. The Sonnet 5 generation
+narrowed the gap to `heavy` substantially on coding and agentic work; its row
+stays `medium` on purpose, per `SPEC/model.md` §"Category-vs-concrete matching".
+Observations, not bands — the rows above govern.
+
 ## Non-Claude capability triggers
 
 _Mirrors the per-trigger shape in [`../claude/CAPABILITIES.md`](../claude/CAPABILITIES.md) —

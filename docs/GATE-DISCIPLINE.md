@@ -1,19 +1,22 @@
-# Gate discipline — historical catalog
+# Gate discipline
 
-Reference, not a loaded contract. [[CORE-659]] dropped the two live
-"read this before skipping a gate" triggers and opened a decay window at
-`f8c44275`. [[CORE-660]] recounted it on 2026-10-02: 34 tasknotes archived
-after that SHA. The string `✅ Closure complete; committing autonomously`
-appears in one of them, `archive/core/CORE-659.md`, inside the instruction
-that tells CORE-660 to count it — not as an emitted closure line. No
-independent emitted marker, and no recurrence of the excuses or symptoms
-below, was recorded, so the catalog moved here.
+Not loaded at task time, and nothing here is ticked, scored, or verified by
+tooling. [`docs/VISION.md`](VISION.md) §"What we won't accept" sets the
+standing remedy for recurring drift: *a sharper SPEC clause, not a validator.*
+Reading a rationalization and recognizing your own draft sentence in it is the
+entire mechanism.
 
-New escape hatches still land in [`SPEC/gate-discipline.md`](../SPEC/gate-discipline.md),
-which keeps the three section homes and the full §"Refused carve-outs" text
-[`SPEC/gate-postures.md`](../SPEC/gate-postures.md) deep-links. The standing
-rule is [`SPEC/gates.md`](../SPEC/gates.md) §"Gate discipline — read before skipping a gate"
-(CORE-386/CORE-388).
+Scope is [`SPEC/gates.md`](../SPEC/gates.md)'s surface — the two banners, the
+skip rule, the flag matrix and precedence ladder, the destructive escalation,
+🏁 emission, and accepted-reply matching. Shortcuts against the Phase 1 /
+Phase 3 checklists belong to [`SPEC.md`](../SPEC.md), not here.
+
+A new escape hatch or gate-surface change arrives with a matching row in
+§"Rationalizations since the window" and a line in
+§"Red Flags since the window" — the standing rule is [`SPEC/gates.md`](../SPEC/gates.md) §"Gate discipline — read before skipping a gate".
+The two main lists are the pre-window record, kept apart from new rows on
+purpose: [[CORE-659]] dropped the live pre-skip triggers at `f8c44275`, and
+[[CORE-660]]'s recount (34 tasknotes) found no recurrence of any of them.
 
 ## Rationalizations
 
@@ -37,10 +40,15 @@ rule is [`SPEC/gates.md`](../SPEC/gates.md) §"Gate discipline — read before s
 | "Nobody is watching, so parking and finishing look the same from here." | Exactly backwards. A park is the **only** honest report of a gate that went unanswered; committing past one manufactures a paper-complete with no operator left to catch it. | [`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"`--unattended` operator posture" → "Park conversions" |
 | "The targeted tests are green, and this change isn't *broad* — the full suite can stay off for the unattended close." | "Broad enough?" is the judgment an attended reviewer can second-guess and an unattended run has nobody to second-guess. Under `--unattended` the full validation set runs, always; a red it cannot make green parks `input-needed`. Green-targeted / red-full closes are the motivating case. | [`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"`--unattended` operator posture" → "What `--unattended` never relaxes" |
 | "`--fast` suppresses 👁️, and `--unattended` is a superset — so 👁️ is suppressed here too." | The superset is over `--fast`'s **autonomy**, not its delegations. 📦 force-skip and 🛠️ no-op *remove a pause*; 👁️ suppression *hands the visual check to the operator who is standing there* — and this posture's entire premise is that nobody is. Inheriting it drops the obligation instead of transferring it. The ask converts to a `visual-confirm` park. | [`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"`--unattended` operator posture" → "What is inherited, and what is not" |
-| "The change is frontend, but the tests are green and it *probably* looks fine unattended." | There is no gating-vs-corroborating split on 👁️ — the trigger is the emission condition. If you judged the change needs a look, park; if it needs no look, the Phase 3 box is `N/A` and no ask exists to convert. "Probably fine" is the third judgment call this conversion deleted on purpose. | [`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"Park conversions"; [`SPEC/gate-discipline.md`](../SPEC/gate-discipline.md) §"Refused carve-outs" |
-| "The visual baseline passes byte-identical — that is a recorded human approval **replayed**, not a guess like the row above." | Sharper, and still refused. Both premises fail here: flaitron defines no baseline and cannot tell a golden a human approved from one `--update-snapshots` minted with nobody looking — and this posture *is* the declaration that nobody is present to attest which it was. Then "does it cover the surface I changed?" is the gating-vs-corroborating split renamed, judged by you about your own diff. Where output provably did not change, the box is already `N/A` and there is no ask to convert; the carve-out bites only where the baseline is not evidence. | [`SPEC/gate-discipline.md`](../SPEC/gate-discipline.md) §"Refused carve-outs"; [`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"Park conversions" |
+| "The change is frontend, but the tests are green and it *probably* looks fine unattended." | There is no gating-vs-corroborating split on 👁️ — the trigger is the emission condition. If you judged the change needs a look, park; if it needs no look, the Phase 3 box is `N/A` and no ask exists to convert. "Probably fine" is the third judgment call this conversion deleted on purpose. | [`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"Park conversions"; §"Refused carve-outs" below |
+| "The visual baseline passes byte-identical — that is a recorded human approval **replayed**, not a guess like the row above." | Sharper, and still refused. Both premises fail here: flaitron defines no baseline and cannot tell a golden a human approved from one `--update-snapshots` minted with nobody looking — and this posture *is* the declaration that nobody is present to attest which it was. Then "does it cover the surface I changed?" is the gating-vs-corroborating split renamed, judged by you about your own diff. Where output provably did not change, the box is already `N/A` and there is no ask to convert; the carve-out bites only where the baseline is not evidence. | §"Refused carve-outs" below; [`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"Park conversions" |
 | "That ✋ was *probably* advisory — keep going." | "Probably" is the doubt the ✋ split is biased against, the same asymmetry as the destructive-action predicate: an over-park costs one resume, an under-park closes a task whose prerequisite was never performed. | [`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"`--unattended` operator posture" → "Park conversions" |
 | "Recap is done, so I can suggest next-move while waiting for commit-go." | Next-move and the copy-paste line are **post-SHA**. The fire-branch turn emits 📦 (or 🟢 GO) and waits; 🏁 / next-move / copy-paste land only after a deliverable-covering SHA. Motivating case: CORE-432.2 (micro closed + next-task cue with uncommitted App/PLAN dirt). | [`SPEC/gates.md`](../SPEC/gates.md) §"Conditional skip rule" → On fire; [`SPEC.md`](../SPEC.md) §"Post-closure protocol" step 2 |
+
+### Rationalizations since the window
+
+| The excuse | Why it's wrong | Refuted by |
+|---|---|---|
 
 ## Red Flags
 
@@ -99,3 +107,39 @@ finding to report or a box to tick.
 - You are citing a green visual-regression suite as the reason a 👁️ park is
   unnecessary, and the load-bearing step is your own judgment that the
   baseline covers what you changed.
+
+### Red Flags since the window
+
+(none yet)
+
+## Refused carve-outs
+
+One argument on this surface has been raised twice and refused twice. It is
+recorded here in full so the next raise finds the answer rather than
+re-litigating it; [`SPEC/gate-postures.md`](../SPEC/gate-postures.md)
+§"Park conversions" points here from the decision point.
+
+**"The visual baseline passes byte-identical, so the `--unattended` 👁️ → park
+conversion should carve out."** The strongest form is not "probably fine": it
+is that a committed baseline passing byte-identical is a recorded human
+approval **replayed**, not an inference, and that an intentional visual change
+fails it and parks anyway. It still does not carve out, for two reasons.
+
+**The premise is unverifiable, and this posture is why.** Nothing distinguishes
+a golden a human approved from one a `--update-snapshots`-style regeneration
+minted with nobody looking, and `--unattended` is the declaration that nobody
+is present to attest which it was.
+
+**And "does this baseline cover the surface I changed?" is the
+gating-vs-corroborating split renamed** — the same judgment, made by the
+assistant about its own diff, arriving one step earlier where no gate watches
+it. Note what the carve-out would actually buy: where output provably did not
+change, the Phase 3 box is *already* `N/A`, no ask is emitted, and nothing
+parks. It bites only where the baseline's relation to the change is a
+judgment — which is precisely where it stops being evidence.
+
+Provenance: the gating-vs-corroborating split was offered as CORE-495 Q1 and
+declined by the operator, on the ground that a second judgment surface would
+mint exactly the "the tests probably cover it" excuse §"Rationalizations"
+exists to close. CORE-503 raised the sharper baseline form and was refused on
+the grounds above.

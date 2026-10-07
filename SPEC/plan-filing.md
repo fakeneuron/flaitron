@@ -61,8 +61,7 @@ Rules:
   1. **Index.** `git diff --cached --quiet` must exit 0. Non-zero → do not
      commit. The commit publishes the *whole* index, so a closure that has
      already staged deliverables but not yet its PLAN flip must not ride out
-     under a `chore: file` subject (an adopter hit this on 2026-09-13;
-     CORE-591). Unstaged files other than `.flaitron/PLAN.md` do not fail
+     under a `chore: file` subject. Unstaged files other than `.flaitron/PLAN.md` do not fail
      this reading and are not staged.
   2. **PLAN.md.** `git status --porcelain -- .flaitron/PLAN.md`.
      - Empty → commit. After the append the only PLAN delta is this filing.
@@ -188,9 +187,6 @@ and other trailing bracket tokens only because the example row never carried
 one — a row that does must keep it: the closure rewrite copies the full
 trailing bracket-token run verbatim from the original line (`SPEC.md`
 §"Task-line format"), it does not reconstruct the line from `[model]` alone.
-Adopting projects pick up the
-convention on their next bump (additive change; legacy paragraph-form
-entries continue to parse).
 
 **Placement rule.** A standalone closed task moves to the top of
 `## Completed`. An epic child uses the same checked stub form but remains
@@ -217,9 +213,7 @@ forever. **Rotation bounds the section without deleting anything.**
 
 **The bound.** `## Completed` holds at most **60** checked rows (nested epic
 children counted). Past that, older rows belong in the rotation file. This is
-also the advisory trigger below (one number, not two) — CORE-604.4 collapsed
-the earlier 100-row bound / 150-row advisory split, which had drifted into
-describing a gap nobody depended on.
+also the advisory trigger below (one number, not two).
 
 **The rotation file.** `.flaitron/PLAN-ARCHIVE.md`, a sibling of `PLAN.md`.
 Rotated rows are grouped under `## Completed <YYYY-MM>` headings, newest month
@@ -293,12 +287,6 @@ under every one of those headings as the canonical shape, and
 placeholder lines`) confirming the parser recognizes `(none)` as inert prose
 and never surfaces it as an unparsed line.
 
-The convention lived only in that template-plus-test pairing, with no SPEC
-module stating it, which is exactly how it silently dropped once: CORE-655
-through CORE-657 filed into `.flaitron/PLAN.md`'s `## High` section and
-deleted its `(none)` placeholder as an incidental side effect, and nothing
-restored it once those rows completed and `## High` emptied back out again.
-CORE-668 fixed the live drift; this section is the contract that lets a
-future occurrence be caught against something written down instead of
-re-derived from the template each time.
+Filing into an empty section replaces its `(none)`; a section that empties
+again — its last row completed or moved — gets `(none)` back in the same edit.
 

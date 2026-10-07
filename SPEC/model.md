@@ -43,8 +43,7 @@ swap.
 
 When suggesting a next task, name the recommended model alongside the task
 ID — the model is part of the PLAN.md grammar, so it's already known without
-asking. Specific model names (`opus`, `sonnet`, `haiku`, `grok`, etc.) remain
-fully valid tokens.
+asking.
 
 ## Category-vs-concrete matching
 
@@ -53,8 +52,7 @@ depending on whether the tag is a **category** label or a **concrete** name.
 
 **Concrete tag** (`fable`, `opus`, `sonnet`, `grok`, `gpt-5`, `haiku`, …) — matched by
 exact identity. The operator filed a specific assignment, so a different concrete
-active model is a hard mismatch (block + offer switch-or-retag). Unchanged from
-the original gate.
+active model is a hard mismatch (block + offer switch-or-retag).
 
 **Category tag** (`[xheavy]` / `[heavy]` / `[medium]` / `[light]`) — matched by
 **tier**, not string. Tiers form an ordered ladder:
@@ -82,27 +80,24 @@ design — that an operator drives by hand. Two properties follow:
   is present by definition) decides how to run it.
 
 Each concrete model has an inherent tier. This remains **guidance for the agent
-to self-assess at gate time** — the gate never requires a lookup. A maintained
-cross-provider reference now backs that self-assessment: see
+to self-assess at gate time** — the gate never requires a lookup. The dated
+per-family roster, effort ladders, and default-effort bands live in
 `docs/PLATFORMS.md` §"Platform×model×effort calibration table", refreshed at
-releases.
-Calibration baseline:
+releases. Calibration baseline:
 
 - **`heavy`** — deep-reasoning, large/long-context models at their default
-  (unadjusted) effort setting: Anthropic's current top tier (`fable`, with
-  `mythos` as its limited-access sibling), `opus`, and peers; a `medium`-tier
+  (unadjusted) effort setting: `fable`, `opus`, and peers; a `medium`-tier
   model dialed up to its highest effort setting can also earn a `heavy`
   verdict — see §"Effort axis" below.
 - **`medium`** — capable mid-tier models that handle multi-step, well-scoped work
   reliably without the deep-reasoning / large-context profile that defines
-  `heavy`: `sonnet`, `grok`, `codex` (OpenAI's coding-focused reasoning line) at
-  its own recommended default effort, and peers. A medium-tier model comfortably
-  covers both `[light]` and `[medium]` task work; it gets the ⚠️ under-tier note
-  only on a `[heavy]` task. `sonnet` sits at the top of this rung — the Sonnet 5
-  generation narrowed the gap to `heavy` substantially on coding and agentic
-  work — but stays `medium` deliberately: the ladder labels the *task's*
-  cognitive load, not the model's benchmark position, so a `[heavy]` task on
-  `sonnet` still earns the advisory and the operator still makes the call.
+  `heavy`: `sonnet`, `grok`, `codex` at its own recommended default effort, and
+  peers. A medium-tier model comfortably covers both `[light]` and `[medium]`
+  task work; it gets the ⚠️ under-tier note only on a `[heavy]` task. `sonnet`
+  sits at the top of this rung but stays `medium` deliberately: the ladder
+  labels the *task's* cognitive load, not the model's benchmark position, so a
+  `[heavy]` task on `sonnet` still earns the advisory and the operator still
+  makes the call.
 - **`light`** — fast, small implementation models for mechanical, clear-diff
   work: `haiku`-class and peers.
 
@@ -117,17 +112,9 @@ The match compares the active model's tier against the tag's tier:
 
 ## Effort axis (orthogonal to model choice)
 
-Vendor APIs now commonly expose a second axis alongside the choice of named
-model: a reasoning-*effort* setting (Claude's `low` / `medium` / `high` /
-`xhigh` / `max` — the full ladder across the current Claude 5 family; default
-`high`, except Opus 5.5 which defaults to `medium`, and `xhigh`/`max` is the
-step-up for the hardest agentic work; Grok's `low` /
-`medium` / `high` / `xhigh` — the `xhigh` rung arrived with Grok 4.6, and
-earlier 4.x silently treat it as `high`; Codex's `low` / `medium` /
-`high` / `xhigh` / `max` on the current Astra and Sol tops, which have no
-`none` — Luna still has `none`, and the CLI's old `minimal` rung maps to
-`low`).
-This is orthogonal to the tier
+Vendor APIs commonly expose a second axis alongside the choice of named
+model: a reasoning-*effort* setting (per-family ladders and defaults: the
+`docs/PLATFORMS.md` calibration table). This is orthogonal to the tier
 ladder above: the *same* named model can be pushed toward `heavy`-band output
 by raising its effort setting, or throttled toward `light`-band output by
 lowering it.
@@ -162,14 +149,6 @@ running model. `[heavy]` stays `[heavy]` even when it runs on opus — the categ
 carries the task's cognitive-load signal (scannable, agent-neutral filing),
 which a silent rewrite to the run's model would destroy.
 
-## Platform×model×effort calibration table
-
-Moved to [`docs/PLATFORMS.md`](../docs/PLATFORMS.md) §"Platform×model×effort
-calibration table" — the dated cross-provider roster (token → current family,
-effort ladder, band at default effort, effort-shifted equivalences), refreshed
-at releases. Read it when mapping a live session to a tier band as a chooser;
-the Step 1.5 gate never requires the lookup.
-
 ## Practical guidance and agent-aware defaults
 
 The labels exist to let the operator (and the agent) match the *cognitive shape*
@@ -197,9 +176,7 @@ headroom — the asymmetry is the argument.
   root cause needs a little tracing. More than a clear-diff mechanical edit, but
   not deep cross-module synthesis or high-ambiguity design.
 - Capable mid-tier models (`sonnet`, `grok`) sit here and cover both `[light]`
-  and `[medium]` task work comfortably. Current Grok 4.x usage (2026-05): the
-  large majority of routine development and well-scoped multi-step flows stay
-  effective and low-drift across this band.
+  and `[medium]` task work comfortably.
 
 **When to choose `[heavy]`** (even on agents that otherwise favor light):
 
@@ -220,17 +197,10 @@ headroom — the asymmetry is the argument.
   operator, never by an automated chooser (which caps at `[heavy]`), and
   never reached by rounding up — round-up stops at `[heavy]`.
 
-**Cross-provider calibration** (real capability differences exist):
-
-- Different agents have different cost/quality curves on long context and
-  sustained reasoning. Some Claude Opus sessions benefit from `[heavy]` on
-  extended explorations where context retention across many turns matters;
-  current Grok stays crisp and reliable across `[light]`/`[medium]` for the
-  majority of well-scoped implementation even when the initial description
-  sounds moderately complex.
-- When in doubt, round up (the standing bias above). Match the label to the
-  *actual cognitive shape* surfaced in Discovery, and resolve any residual
-  uncertainty toward the heavier tag rather than the lighter one.
+**Cross-provider calibration.** Agents differ in cost/quality curves on long
+context and sustained reasoning; dated per-family observations sit
+under the `docs/PLATFORMS.md` calibration table. Match the label to the *actual cognitive shape* surfaced in
+Discovery, and resolve residual uncertainty toward the heavier tag.
 
 The primary labels `[heavy]` / `[medium]` / `[light]` are the recommended
 starting vocabulary for new filers and for keeping PLAN.md scannable. Specific

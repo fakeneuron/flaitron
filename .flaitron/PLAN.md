@@ -23,6 +23,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
+- [ ] **CORE-726** [medium]🧩 | epic-per-child-model — /ft-epic-discovery copies one [model] onto every child; propose a per-child [model] at Phase 2 filing, and document concrete tokens (e.g. [fable]) as the way to pin a named model, since category tags match by tier. Adopter precedent: sciphoenix ROLLOUT §3. Parked at `.flaitron/sidequest/CORE-726.md`.
 - [ ] **CORE-725** [medium]🧩 | unattended-model-gate-order — /ft-task --unattended runs the model gate before the foreign-dirt gate, so a model-mismatch park can scaffold into a dirty tree; run preamble Pre-flight first, repair step citers.
 
 ## Low

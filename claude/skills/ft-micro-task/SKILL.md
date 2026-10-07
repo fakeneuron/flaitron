@@ -26,12 +26,10 @@ Paths this skill uses:
 - SPEC: `<root>SPEC.md` (always loaded core)
 - SPEC_DIR (lazy modules `epic.md` · `model.md` · `gate-postures.md` · `post-closure.md`): `<root>SPEC/`
 - SKILL_DIR: `<root>claude/skills/ft-micro-task/` (no private fragments)
-- MODEL_EDGE (shared Step 1.5 fragment, owned by `/ft-task`): `<root>claude/skills/ft-task/step-1.5-model-edge.md`
+- PREAMBLE (shared Step 1 / 1.5 fragment, owned by `/ft-task`; it resolves the Step 1.5 edge fragment `step-1.5-model-edge.md` beside itself): `<root>claude/skills/ft-task/preamble.md`
 - UNATTENDED (shared `--unattended` fragment, owned by `/ft-task`): `<root>claude/skills/ft-task/unattended-mode.md`
 - Micro template: `<root>templates/tasknote-micro-template.md`
 - PLAN: `.flaitron/PLAN.md`, tasknote dir: `.flaitron/tasknote/` (always)
-
-Step 1.5 Reads `<SPEC_DIR>/model.md` and `<MODEL_EDGE>` in parallel on its edge-case branches (category under-tier / concrete mismatch / legacy); a satisfied tag proceeds without the read. `<MODEL_EDGE>` is shared across the two model-gate skills — substitute `/ft-micro-task` for its `<SKILL>` placeholder when surfacing a branch.
 
 **Parse `args`.** Split on whitespace into `(TASK-ID, rest...)`. `rest` is an **unordered flag set** — recognize each token independently. Initialize `fast-mode = false` and `unattended-mode = false`, then walk the tokens:
 
@@ -45,61 +43,15 @@ Step 1.5 Reads `<SPEC_DIR>/model.md` and `<MODEL_EDGE>` in parallel on its edge-
 
 ## Step 1 — Locate the task in PLAN.md and pre-flight
 
-Read PLAN.md. Find the line containing `**<TASK-ID>**`. If the ID isn't in PLAN.md, stop and ask the user whether to add it or use a different ID. Do not invent an entry. (Filing-on-the-fly is out of scope for `/ft-micro-task`; the PLAN.md entry must already exist.)
+**Read `<PREAMBLE>` now** and run its §"Locate and capture": the PLAN.md lookup, the status gate, the segment capture, the `[unattended]` row marker, the 🎯 purpose blurb, and the two advisory checks. Filing-on-the-fly is out of scope here; the PLAN.md entry must already exist. The row marker's `<suppressions>` clause is `📦 signal trips suppressed at Step 5`. This skill has one scaffold path, so the blurb and the ✅ Recap are the operator's only two plain-English reads of the run.
 
-**Status gate (non-negotiable).** Re-read the PLAN.md line. If it is checked (`- [x]`) or lives under `## Completed`, stop. The task is already closed. Surface the conflict and ask whether the user meant a different ID. Do this check by re-reading the PLAN.md line — never infer status from prior conversation context.
+Then run its §"Pre-flight" (Area, epic-ID dispatch, foreign-dirt gate, archive collision), with this check ahead of its archive-collision bullet; micro-tasknotes for epic subtasks are valid — same lifecycle, lighter ceremony:
 
-**`[unattended]` row marker.** If the line carries `[unattended]` (after `[model]`) and no `--fast` / `--unattended` flag was passed, set `fast-mode = true` and emit `⚡ --fast implied by the [unattended] row marker — 📦 signal trips suppressed at Step 5; the --unattended posture is not implied.` Then **Read `<SPEC_DIR>/gate-postures.md` now** — Step 0's flag walk did not load it. The marker never sets `unattended-mode`. Contract: SPEC/gate-postures.md §"`--fast` operator override" → "Implied by the `[unattended]` row marker".
-
-Otherwise, capture from the line:
-
-- The optional `[model]` segment (`[heavy]` / `[light]` primary recommended; specific names e.g. `opus` / `sonnet` / `grok` remain valid per SPEC §"Model field") — see Step 1.5
-- The optional `| shortname` segment
-- The one-line long description (everything after ` — `; may be empty)
-- The section heading the line lives under (`High` / `Medium` / `Low` / `Future Opportunities`) — this is the task's **Priority**
-
-The full task-line grammar is `- [ ] **TASK-ID** [!critical] [model] | shortname — long description`. See SPEC §"Task-line format" for the canonical grammar.
-
-**Emit the 🎯 purpose blurb now** — before the model gate, the pre-flight checks below, and any scaffold write, each of which can end the run:
-
-```text
-🎯 <TASK-ID> — <shortname>
-<1-2 sentences of plain-English purpose.>
-```
-
-Two lines: the ID and the `| shortname`, then 1-2 sentences of purpose drawn from the PLAN.md long description just captured — the only source read yet. This skill has a single scaffold path (no promote / resume branch), so the blurb fires here and nowhere else, and it matters most in a one-shot run: the blurb and the ✅ Recap are the only two plain-English reads the operator gets. Emit it and keep going in the same turn. Bounds — not a cue, not a gate, suppressed by neither flag: `SPEC/cue-vocabulary.md` §"🎯 Purpose blurb".
-
-**Filing-discipline check (advisory).** Word-count the captured long description. If it exceeds the 70-word hard cap from SPEC/tasknote-selection.md §"PLAN.md filing-discipline thresholds", surface a one-line warning to the user — informational only; proceed.
-
-**Completed-rotation check (advisory).** While PLAN.md is open, count the checked rows under `## Completed` (nested epic children included). If the count exceeds **60**, surface a one-line warning:
-
-```text
-⚠️ PLAN.md `## Completed` holds <N> rows (>60). Consider rotating the
-   oldest rows to `.flaitron/PLAN-ARCHIVE.md`. Proceeding.
-```
-
-Informational only — never block, never rotate. Rotation is an operator motion; the bound, the month-block granularity, and the two never-split rules are canonical in SPEC/plan-filing.md §"`## Completed` rotation".
-
-**Pre-flight checks:**
-
-- Resolve the **Area** by reading the `.flaitron/tasknote/README.md` §"Archive layout" table — every task, every prefix, canonical ones included. `<area>` is **never derived from the task ID**: lowercasing the prefix is the adopter's declaration-time default, not a resolution you may perform, and a project may deliberately declare a folder it would not produce (`OPS-*` → `archive/operations/`). See SPEC §"Task ID convention". If the table has no row for this prefix, stop and ask — do not guess a folder.
-- **Epic-ID dispatch.** If the TASK-ID is `<AREA>-EPIC-<N>` or `<AREA>-<N>.<sub>`, Read `<SPEC_DIR>/epic.md` for the lifecycle contract before continuing. (Micro-tasknotes for epic subtasks are valid — same lifecycle, lighter ceremony.)
-- **Foreign-dirt gate (paper-complete guard).** Before scaffold writes, run `git status --porcelain`. If non-empty: **STOP**, surface the dirt list, ask the operator to commit / stash / discard themselves, then re-invoke. Do not auto-clean. See SPEC §"Paper-complete guard".
 - If `.flaitron/tasknote/<TASK-ID>.md` already exists: stop. The tasknote is in flight or already closed-but-not-archived. Surface the conflict; recommend the user continue conversationally rather than restarting. If the session that started it is gone (killed, out of context, an orchestrator's child that exited), that recommendation is unreachable — name the park-then-resume path in `<SPEC_DIR>/blocked.md` §"Resuming an interrupted run" instead.
-- If `.flaitron/tasknote/archive/<area>/<TASK-ID>.md` already exists: stop. The task is closed and archived. Surface the conflict.
 
 ## Step 1.5 — Model gate (BEFORE scaffolding)
 
-Gate on the `[model]` segment captured in Step 1 before any source reads — heavy thinking shouldn't run on the wrong model. The active model is whatever the assistant is currently running as (ask the user if uncertain). Which tags match which active models — concrete by exact identity, category by tier, and `[xheavy]` always under-tier — is canonical in `<SPEC_DIR>/model.md` §"Category-vs-concrete matching".
-
-**Route on a verified tier, not an impression.** `Satisfied` is the only branch that proceeds *without* reading the module, so a wrong turn into it is the one verdict nothing downstream corrects. When the active model's tier is not certain against a category tag, read §"Category-vs-concrete matching" **before** choosing the branch, not after — a capable model one rung below its tag still routes to **Category under-tier**.
-
-Branch on the verdict:
-
-- **Satisfied** → proceed silently to Step 2.
-- **Category under-tier** → Read `<SPEC_DIR>/model.md` + `<MODEL_EDGE>` in parallel, then follow that fragment's "Category under-tier" branch (⚠️ inline note, then proceed — not a STOP, not an auto-retag).
-- **Concrete mismatch** → STOP. Read the same two in parallel, then follow the "Mismatch" branch.
-- **Absent (legacy line)** → Read the same two in parallel, then follow the "Legacy entry" branch.
+Run `<PREAMBLE>` §"Model gate", substituting `/ft-micro-task` for the edge fragment's `<SKILL>` placeholder. **Satisfied** proceeds to Step 2.
 
 ## Step 2 — Scaffold the micro-tasknote
 
@@ -133,16 +85,16 @@ If a hard dependency surfaces, abandon the micro-tasknote and re-file as `/ft-ta
 The single closure step. Per SPEC §"Paper-complete guard", flip PLAN/archive only when deliverables are ready for the same atomic commit; flip **only this task's** line (no collateral Completed flips). In one motion:
 
 1. **Fill ✅ Recap** — evidence-based final summary: changed paths/LOC where meaningful, verification results, refactors made or deferred with rationale, documentation verdict, and maintainability effect.
-2. **Flip YAML `status:`** — `in-progress` → `completed`; set `Archived:` to today's date (`YYYY-MM-DD`).
+2. **Flip YAML `status:`** — `in-progress` → `completed` — a lifecycle write, not a retroactive edit (SPEC §"Tasknote frontmatter" → "Write-once does not cover lifecycle writes"); set `Archived:` to today's date (`YYYY-MM-DD`).
 3. **Update PLAN.md** — flip the line to the stub form (see SPEC/plan-filing.md §"`## Completed` archive convention" if unclear). For a standalone task, move the row to the top of `## Completed`; for an epic child, preserve its 2-space nesting beneath the active parent until `/ft-close-epic` moves the whole cohort.
 4. **Verify, then move** — before the `mv`, run `grep -q '^status: completed$' .flaitron/tasknote/<TASK-ID>.md`; a failing result means step 2's status flip is still outstanding — fix it and re-run rather than moving (the Acceptance-box half of `/ft-task`'s same check is vacuous here — micro-tasknotes carry no `## ✅ Acceptance` section). Same idiom as `/ft-release` §7.1 Pair P and `/ft-task`'s pre-move gate; applies identically under `--fast`/`--unattended`. Then `mv .flaitron/tasknote/<TASK-ID>.md .flaitron/tasknote/archive/<area>/<TASK-ID>.md`.
 5. **Recap to the user** per SPEC §"🚀 Phase 4: Closure" — brief summary + optional verification request. **Recap is recap-only**; the next-task suggestion belongs in Step 5, not the recap. Wait for confirmation.
 
-Closure flips three things — YAML `status:`, the PLAN.md line, and the tasknote location — matching `/ft-task`'s Phase 4 per SPEC §"🚀 Phase 4: Closure". The `status:` write lands while the tasknote is still active, so SPEC §"Tasknote frontmatter" write-once does not reach it. Do not treat archive/Completed as done until Step 5's commit lands with deliverables.
+Do not treat archive/Completed as done until Step 5's commit lands with deliverables.
 
 ## Step 5 — Post-closure protocol
 
-**Read `<SPEC_DIR>/post-closure.md` now** — the protocol is a lazy module, loaded here and nowhere earlier — then run it under SPEC §"Paper-complete guard", branching on SPEC/gates.md §"Conditional skip rule". `/ft-micro-task` carries no 📦 banner — its commit-go is the emphasized 🟢 GO ask, not a banner block — but the same rule applies. Stage deliverables + PLAN + archive together; 🏁 only after a real deliverable-covering SHA (`git show --name-only`); never invent a SHA. Paper-complete guard is **not** suppressed by `--fast`.
+**Read `<SPEC_DIR>/post-closure.md` now** — the protocol is a lazy module, loaded here and nowhere earlier — then run it under SPEC §"Paper-complete guard", branching on SPEC/gates.md §"Conditional skip rule". `/ft-micro-task` carries no 📦 banner — its commit-go is the emphasized 🟢 GO ask (the module's "ft-micro-task carve-out") — but the same rule applies. Stage deliverables + PLAN + archive together; 🏁 only after a real deliverable-covering SHA (`git show --name-only`); never invent a SHA.
 
 - **Skip branch** (signals clear) — run that section's **autonomous-commit motion** end to end, naming the cleared signal in its marker (e.g., `single-file doc patch; no privileged-ops surface`). Micro-tasknotes hit this branch often by design — their threshold aligns with the rule's clean-diff target.
 - **Fire branch** (privileged-ops signal hits) — its **bundled-approval motion**, with the emphasized 🟢 GO ask in place of the 📦 banner. Surface it and wait:

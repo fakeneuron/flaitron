@@ -272,7 +272,7 @@ Concrete instantiation:
   `ft-epic-discovery.md`, `ft-close-epic.md`, `ft-refactor.md`, the two `ft-audit`-family skills (`ft-audit.md`, `ft-audit-repo.md`),
   plus `ft-new-project.md`, `ft-release.md`, `ft-seed.md`, `ft-update.md`)
 - **`skills/`**: 12 `SKILL.md` skill bodies (one per command), some with
-  lazy-load fragments (`ft-task/step-*.md`, including `step-4-debug-mode.md` and `step-5-loop-mode.md`; `ft-file-followup/step-0-flags.md`, `park-mode.md` and `starter-mode.md`; `ft-audit/scaffold-bootstrap.md`) or sibling libraries (`ft-audit/passes/*.md`)
+  lazy-load fragments (`ft-task/step-*.md`, including `step-4-debug-mode.md` and `step-5-loop-mode.md`; `ft-file-followup/step-0-flags.md`, `park-mode.md` and `starter-mode.md`; `ft-audit/scaffold-bootstrap.md`), the every-run shared `ft-task/preamble.md`, or sibling libraries (`ft-audit/passes/*.md`)
 - **Adopter install**: relative symlinks for the adopter-installed subset from
   `.claude/commands/*` and `.claude/skills/*` into the submodule, per
   `claude/AGENTS-snippet.md` §"One-time symlink wiring". The relative

@@ -16,8 +16,8 @@ matching"). Adopters MAY use any short token they prefer
 (e.g. `fable`, `opus`, `sonnet`, `haiku`, `grok`, `codex`, `gpt-5`, `gemini-pro`, project-specific names).
 The visualizer parser accepts any short lowercase token (`[a-z][\w.-]*`).
 
-`/ft-task` reads the model BEFORE scaffolding (see `claude/skills/ft-task/SKILL.md`
-Step 1.5). The gate matches a **concrete** tag (`opus`/`sonnet`/`grok`/…) by exact
+`/ft-task` reads the model BEFORE scaffolding (see `claude/skills/ft-task/preamble.md`
+§"Model gate", run at its Step 1.5). The gate matches a **concrete** tag (`opus`/`sonnet`/`grok`/…) by exact
 identity and a **category** tag (`[xheavy]`/`[heavy]`/`[medium]`/`[light]`) by *tier* — see
 §"Category-vs-concrete matching" below:
 

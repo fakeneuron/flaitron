@@ -326,28 +326,21 @@ checklist, after the Relevance Assessment, recording answers in Discovery
 Notes. They add no box and no gate; the exit-gate judgment below is unchanged.
 
 **Exit gate (🛠️ Phase 1→2).** Tick every Phase 1 box first. `ft-task` uses
-the `default-skip` flavor: when
-Discovery surfaced only routine clarifications (or none), emit the inline
-marker `✅ Phase 1 Discovery complete; entering Phase 2 Execution.` and start
-Phase 2 immediately — record the judgment inline ("Discovery surfaced no
-significant deviation → skip 🛠️"). When Discovery surfaced a **significant
-scope deviation** (a `Re-scope`/`De-scope` verdict — always; or a
-clarification that changed which file to edit, restructured the subtasks,
-added a cross-cutting concern, or changed the approach), surface the 🛠️
-banner with a mandatory 1-2 sentence plain-English preview and wait for the
-operator's go (conversational assent —
-[`SPEC/cue-vocabulary.md` §"Accepted gate replies"](../cue-vocabulary.md)). Full flavor rules
-and the autonomous-mode drift carve-out (De-scope always fires 🛠️ even under
-autonomous mode; a Re-scope under autonomous mode still rewrites the PLAN.md
-line and tasknote header, then announces it in a one-line ⚠️ notice and
-proceeds instead of firing — on a blocked prerequisite the notice names a
-`drift` park instead and the run halts, per
-[`SPEC/blocked.md`](../blocked.md) §"Under `--fast`, park and say so"):
-[`SPEC/gates.md` §"Phase 1→2 exit gate"](../gates.md). **Under unattended
-mode** neither verdict is weakened, and there is nobody to fire at or to
-read a notice: the verdict parks with `park-reason: drift — …` and stops,
-leaving the verdict's own PLAN.md edit and any tasknote deletion to the
-resuming operator.
+the `default-skip` flavor, whose judgment rule decides skip vs fire:
+[`SPEC/gates.md` §"Phase 1→2 exit gate"](../gates.md). Skip → emit
+`✅ Phase 1 Discovery complete; entering Phase 2 Execution.` and start Phase 2
+immediately. Fire → surface the 🛠️ banner with its mandatory 1-2 sentence
+plain-English preview and wait for the operator's go
+([`SPEC/cue-vocabulary.md` §"Accepted gate replies"](../cue-vocabulary.md)).
+Record the judgment inline either way ("Discovery surfaced no significant
+deviation → skip 🛠️"). The drift carve-out is that section's "Flag interaction": De-scope always
+fires. Under autonomous mode a Re-scope still makes its PLAN.md line and
+tasknote-header rewrite, then emits the one-line ⚠️ notice and proceeds — a
+blocked prerequisite parks `drift` and halts instead
+([`SPEC/gate-postures.md` §"`--fast` operator override"](../gate-postures.md)).
+Under unattended mode the verdict parks `drift` and stops **without** making its
+PLAN.md edit or deleting the tasknote — both wait for the resuming operator
+([`SPEC/blocked.md`](../blocked.md)).
 
 ### 5 — Phases 2-4
 
@@ -424,58 +417,45 @@ time (Step 6).
   re-verify runs **even under autonomous mode**; a still-failing repro returns
   to Phase 2, not closure.
 - **Phase 4: Closure (auto-run)** — [`SPEC.md` §"🚀 Phase 4"](../../SPEC.md)
-  + [`SPEC.md` §"Paper-complete guard"](../../SPEC.md). Run the doc-drift
-  sweep across `.flaitron/tasknote/README.md` §"AI-referenced docs" (per
-  entry: "no change" or the specific update). Tick every `## ✅ Acceptance`
-  criterion the work satisfied and annotate any it did not (`N/A` / not-met
-  with a one-line reason) — never leave a box silently unticked. Do **not**
-  flip the markdown nav chip to `✅ Completed`; that write was retired
-  deliberately and the chip is render-derived from YAML. Flip the tasknote's
-  YAML `status:` to `completed` (a pre-archive lifecycle write — write-once
-  does not reach it). Also set the body's `**Archived:** YYYY-MM-DD` line to
-  today's date. If this task falsified a **factual** claim in an already
-  archived tasknote, append the one-line
-  `> **⚠️ Superseded by [[<TASK-ID>]]** — <what was falsified>` pointer under
-  that note's nav header and stage it in the same commit — append-only, never
-  rewriting the original text (`SPEC/superseded-claims.md` carries the
-  contract and the three cases it excludes). Conditional: most closures write
-  no pointer. Flip **only this task's**
-  PLAN.md line to the stub form
-  `[x] **<TASK-ID>** [model] | shortname — Completed YYYY-MM-DD.`. Preserve
-  every untouched bracket token and model-suggestion glyph, including the
-  trailing marker run, verbatim on this and any other PLAN rewrite. For a
-  standalone task, move the row to the top of `## Completed`; for an epic
-  child, preserve its 2-space nesting beneath the active parent in the current
-  priority section until `/ft-close-epic` moves the whole cohort. **Verify
-  before moving.** Immediately before that move, mechanically confirm rather
-  than recall: `grep -q '^status: completed$'` on the tasknote succeeds, no
-  line under `## ✅ Acceptance` reads a bare `- [ ]` without an `N/A` or
-  `not[ -]met` token, and the body's `**Archived:**` line carries a real
-  date rather than the unfilled `YYYY-MM-DD` placeholder — the first two are
-  the same idiom
-  [`claude/skills/ft-release/step-7.1-mirror-pairs.md`](../../claude/skills/ft-release/step-7.1-mirror-pairs.md)
-  Pair P runs post-hoc across the whole archive, extended here with the
-  stamp check, run once on the single note first. A dirty result means the
-  status flip, the Archived stamp, or an Acceptance annotation is still
-  outstanding — fix it and re-check rather than moving.
-  Applies identically under autonomous and unattended mode; neither relaxes
-  it. Move the tasknote to
-  `.flaitron/tasknote/archive/<area>/<TASK-ID>.md` — but only when deliverable
-  paths are ready to stage in the **same** atomic closure commit (do not flip
-  if you cannot proceed to commit). Ban collateral Completed flips. Draft an
-  evidence-based recap: 1-2 plain-English sentences, then changed paths/LOC
-  where meaningful, verification commands/results, refactors made or deferred
-  with rationale, documentation verdict, the `touches:` scope reconciliation
-  (`git diff --name-only` vs declared; name undeclared paths, excluding this
-  task's own tasknote and PLAN row), and concrete
-  maintainability effect. Answer the **Learnings** item: did this task teach
-  something the always-loaded layer (`AGENTS.md` /
-  `.flaitron/tasknote/README.md` §"AI-referenced docs") should carry? Write
-  `N/A` or the line — most closures write `N/A`.
-  Persist operator handoffs (manual steps and any proposed commit message)
-  in the note before archive. File each deferred real-world step as an open
-  PLAN row with dependencies where needed; recap prose alone is insufficient
-  ([`SPEC.md` §"Deferred hand-off filing"](../../SPEC.md)).
+  + [`SPEC.md` §"Paper-complete guard"](../../SPEC.md), which own the rules
+  and their rationale. Start items 3–8 only when the deliverables can stage in
+  the **same** atomic closure commit this turn — otherwise flip nothing. In
+  order:
+  1. Doc-drift sweep across `.flaitron/tasknote/README.md` §"AI-referenced
+     docs" (per entry: "no change" or the update).
+  2. Acceptance tick-through — tick or annotate (`N/A` / not-met + reason)
+     every `## ✅ Acceptance` box. Do **not** flip the markdown nav chip to
+     `✅ Completed`; it is render-derived from YAML.
+  3. Flip YAML `status:` to `completed` — a lifecycle write while the note is
+     active; write-once does not reach it — and set the body's
+     `**Archived:** YYYY-MM-DD` line to today.
+  4. Conditional superseded-claim pointer on an archived note this task
+     falsified ([`SPEC/superseded-claims.md`](../superseded-claims.md)),
+     staged in the same commit.
+  5. Flip **only this task's** PLAN.md line to the stub form
+     `[x] **<TASK-ID>** [model] | shortname — Completed YYYY-MM-DD.`,
+     keeping every untouched bracket token and glyph — the trailing marker run
+     included — verbatim. Standalone →
+     top of `## Completed`; epic child → stays 2-space nested under its active
+     parent until `/ft-close-epic` moves the whole cohort
+     ([`SPEC/epic.md` §"Child placement invariant"](../epic.md)). No
+     collateral Completed flips.
+  6. Draft the evidence-based recap, including the `touches:` scope
+     reconciliation (excluding this task's own tasknote and PLAN row), and
+     answer **Learnings** (`N/A` or the line). Persist operator handoffs in
+     the note before archive, and file each deferred real-world step as an
+     open PLAN row ([`SPEC.md` §"Deferred hand-off filing"](../../SPEC.md)).
+  7. **Verify before moving.** Mechanically, not by recall:
+     `grep -q '^status: completed$'` on the tasknote succeeds, no line under
+     `## ✅ Acceptance` reads a bare `- [ ]` without an `N/A` or `not[ -]met`
+     token, and the `**Archived:**` line carries a real date, not the
+     `YYYY-MM-DD` placeholder (the idiom
+     [`claude/skills/ft-release/step-7.1-mirror-pairs.md`](../../claude/skills/ft-release/step-7.1-mirror-pairs.md)
+     Pair P runs post-hoc, plus the stamp check). A dirty result → fix and
+     re-check; never move on it. Neither autonomous nor unattended mode
+     relaxes this.
+  8. Move the tasknote to `.flaitron/tasknote/archive/<area>/<TASK-ID>.md`.
+
   **Do not** surface a banner here — the recap bundles into Step 6. Recap is
   recap-only; the next-task suggestion lands after the commit.
 

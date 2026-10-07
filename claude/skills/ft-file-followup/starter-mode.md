@@ -114,15 +114,11 @@ Host Step 4 runs with these substitutions, in the same continuous motion:
    git commit -m "chore: file <TASK-ID> starter — <shortname>"
    ```
 
-   The host's post-stage verification applies to the whole staged diff: every
-   hunk must be one this filing wrote — the appended row, any confirmed
-   reconcile edit, and the whole starter file as a new file. PLAN.md lines the pre-check classified as accumulated filings — added
-   task rows or blanks, and removed blanks or a `(none)` — are part of this
-   commit, not an unrecognized hunk. When that pre-check recorded IDs, add a second `-m`
-   with the body line `SPEC/plan-filing.md` §"Filing commits" names; the subject
-   stays the fence above. An unrecognized hunk →
-   `git restore --staged` **both** paths, skip the commit, and report it at
-   Step S5 exactly as the `auto-commit = false` case. Commit only — never push.
+   **Post-stage verification** as host item 4, over the whole staged diff:
+   recognized hunks are the appended row, any confirmed reconcile edit, the
+   whole starter file as a new file, and the accumulated filings the pre-check
+   recorded. Anything else → `git restore --staged` **both** paths, skip the
+   commit, and report it at Step S5 as the `auto-commit = false` case.
 
 6. **No conversational paragraph.** The starter body is the canonical home
    for rationale, file surveys, and decisions — moving that content to disk is

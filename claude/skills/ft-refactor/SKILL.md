@@ -115,16 +115,13 @@ one `/ft-task` cycle. Sequencing doctrine:
   — Read that module now, at this write step). With the model tags and the
   sequence settled, run its §"Candidacy predicate" over each PLAN line as
   Step 5 will write it — the children `.2..(M+1)` and the `.N` audit; the
-  parent `<AREA>-EPIC-<next-N>` is never proposed (clause 5).
-  Clause 6 on this surface: there is no `.1` (see Notes), so `.2` reads its
-  predecessor as closed; every later child is admitted only when the
-  predecessor its `blocked-by:` will name — or its stem predecessor where
-  `parallel-safe-with:` decoupled it — is proposed in the same pass; `.N`
-  needs clauses 1–4 only. Every clause must hold; when one is uncertain the
-  row is not a candidate. A candidate is **proposed, never seeded** — the
-  token lands only through the Step 4 review, never on a starter note.
-  Flaitron itself never writes `[unattended]` on its own discretion
-  (`SPEC/task-line-segments.md`).
+  parent is never proposed. Clause 6 on this surface: there is no `.1` (see
+  Notes), so `.2` reads its predecessor as closed; every later child is
+  admitted only when the predecessor its `blocked-by:` will name — or its stem
+  predecessor where `parallel-safe-with:` decoupled it — is proposed in the
+  same pass. The token lands only through the Step 4 review, never on a
+  starter note; under `--fast` the Step 6 hand-off carries
+  `unattended-candidates:` instead (Step 4).
 
 ## Step 4 — Review gate
 
@@ -145,16 +142,9 @@ surface the full plan in the hand-off so the operator sees what landed.
 `--fast` never widens what gets written: PLAN lines + starter notes only,
 source files never. The skipped pause is the act that would have confirmed
 a Step 3 candidate, so under `--fast` **no `[unattended]` is written**; the
-candidates are reported instead, on their own line in the Step 6 hand-off:
-
-```text
-unattended-candidates: CORE-581.2, CORE-581.3
-```
-
-Bare IDs, comma-separated, in PLAN order; `unattended-candidates: none`
-when the predicate admitted nothing. The line always emits under `--fast`,
-so a later reader can tell "ran, found none" from "never ran". A report,
-not a gate — no reply expected.
+Step 6 hand-off carries the candidates on their own line instead, always —
+`unattended-candidates: CORE-581.2, CORE-581.3` or `unattended-candidates: none`
+(shape: the module's §"Three postures").
 
 The operator may decline the `.N` audit child for a short, low-risk plan
 (per `SPEC/epic.md`: "apply judgment") — default is to include it.
@@ -163,13 +153,11 @@ The operator may decline the `.N` audit child for a short, low-risk plan
 
 Only after the Step 4 go (or `fast-mode = true`).
 
-**Filing-commit pre-check first.** Immediately before any write, apply
-`SPEC/plan-filing.md` §"Filing commits". `git diff --cached --quiet` non-zero →
-`auto-commit = false`. PLAN.md porcelain empty → `auto-commit = true`. PLAN.md
-non-empty → `git diff --no-ext-diff -- .flaitron/PLAN.md`: every added line a
-task row or blank, and every removed line blank or a `(none)` placeholder →
-`auto-commit = true` and those rows ride in this commit (record their IDs for
-the body line that section names); any other PLAN change → `auto-commit = false`.
+**Filing-commit pre-check first.** Immediately before any write, run the
+pre-check in `SPEC/plan-filing.md` §"Filing commits": `git diff --cached --quiet`
+non-zero, or any PLAN.md change beyond earlier task-row filings →
+`auto-commit = false`; otherwise `auto-commit = true`, recording any
+accumulated-filing IDs.
 
 1. **Resolve the epic ID.** Scan `.flaitron/PLAN.md` AND
    `.flaitron/tasknote/archive/<area>/` for the highest used numeric suffix
@@ -219,7 +207,8 @@ the body line that section names); any other PLAN change → `auto-commit = fals
 ## Step 6 — Commit + hand off
 
 **Commit the filing** (when `auto-commit = true`): stage the PLAN.md edit
-and the starter files **by name** — never `git commit -a` / `git add .`:
+and the starter files **by name**; the Step 4 approval is the commit
+authorization:
 
 ```sh
 git add .flaitron/PLAN.md <starter-file-paths>
@@ -227,22 +216,13 @@ git diff --cached   # whole index, no pathspec
 git commit -m "chore: file <AREA>-EPIC-<next-N> refactor plan — <shortname>"
 ```
 
-**Post-stage verification.** Every hunk in that diff must be one this
-filing wrote — the appended PLAN.md rows, any confirmed reconcile edit, and
-each starter file as a new file. PLAN.md lines the pre-check classified as accumulated filings — added
-task rows or blanks, and removed blanks or a `(none)` — are part of this
-commit, not an unrecognized hunk.
-When that pre-check recorded IDs, add a second `-m` with the body line
-`SPEC/plan-filing.md` §"Filing commits" names; the subject stays the fence
-above. An unrecognized hunk → `git restore --staged` every staged path, skip
-the commit, and report it exactly as the `auto-commit = false` case below.
-Never unstage the foreign hunk and commit the rest. Full contract:
-`SPEC/plan-filing.md` §"Filing commits".
-
-Commit only — never push; the Step 4 approval is the commit authorization.
-`auto-commit = false` → skip and say so. Emit **no 🏁 marker** — that is
-reserved for closure commits covering Acceptance deliverables (SPEC
-§"Paper-complete guard").
+**Post-stage verification.** Recognized hunks: the appended PLAN.md rows, any
+confirmed reconcile edit, each starter file as a new file, and the accumulated
+filings the pre-check recorded (their IDs go in the body line that section
+names). Anything else → `git restore --staged` every staged path, skip the
+commit, and report it as the `auto-commit = false` case. `auto-commit = false` →
+skip and say so. Explicit pathspecs, the whole-index read, commit-never-push,
+and no 🏁: `SPEC/plan-filing.md` §"Filing commits".
 
 Then, in one short message: where the epic and starters landed (IDs +
 paths, or "plan left in conversation" on the stop branch), the commit SHA

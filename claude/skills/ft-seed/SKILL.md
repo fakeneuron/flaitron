@@ -69,19 +69,11 @@ reported as counts, not listed:
 ## Step 2 — Run the predicate over every remaining row
 
 **`[unattended]` candidacy** (mirror of `SPEC/unattended-candidacy.md` §"Three postures" — the module was Read at Step 1, before this walk).
-Run its §"Candidacy predicate" over each remaining open row **as it stands in
-the file** — the row text *is* the drafted line here: `[model]`, any
-`[!critical]`, the description with its keyword screen, any `Blocked by`
-clause, the parent-epic shape, and the epic-child rule. Every clause must
-hold; when one is uncertain the row is not a candidate. A candidate is
-**proposed, never seeded**: it is shown in the Step 3 review with the token
-in place, and the token is written at Step 4 only if the operator's
-confirmation keeps it. This skill accepts neither `--fast` nor
-`--unattended`, so only the attended branch applies — the
-`unattended-candidates:` emission line never fires from this surface. Neither
-the candidacy nor its result adds a cue, banner, or checklist box. Flaitron
-itself never writes `[unattended]` on its own discretion
-(`SPEC/task-line-segments.md`).
+Attended branch only: this skill takes neither `--fast` nor `--unattended`, so
+the `unattended-candidates:` line never fires here. Run §"Candidacy predicate"
+over each remaining open row **as it stands in the file** — the row text *is*
+the drafted line. A candidate is shown in the Step 3 review with the token in
+place, and Step 4 writes it only if the operator's confirmation keeps it.
 
 Clause 6 on an existing plan reads naturally: a `.k` child qualifies when its
 stem predecessor — per the `.1`'s `## 🌳 Fan-out` if that note is on disk
@@ -135,16 +127,13 @@ nothing to seed, and stop. No gate, no commit.
 
 In one continuous motion, after the reply:
 
-1. **Filing-commit pre-check.** Immediately before any write, apply
-   `SPEC/plan-filing.md` §"Filing commits". `git diff --cached --quiet`
-   non-zero → `auto-commit = false`. PLAN.md porcelain empty →
-   `auto-commit = true`. PLAN.md non-empty → `git diff --no-ext-diff -- .flaitron/PLAN.md`:
-   every added line a task row or blank, and every removed
-   line blank or a `(none)` placeholder → `auto-commit = true` and those rows
-   ride in this commit (record their IDs for the body line that section names);
-   any other PLAN change → `auto-commit = false`. Not a gate. Run it here,
-   after the gate — the reply can take a while. The token insertions in item 2
-   are this motion's own write, not part of the dirt this reading classifies.
+1. **Filing-commit pre-check.** Immediately before any write, run the
+   pre-check in `SPEC/plan-filing.md` §"Filing commits": `git diff --cached --quiet`
+   non-zero, or any PLAN.md change beyond earlier task-row filings →
+   `auto-commit = false`; otherwise `auto-commit = true`, recording any
+   accumulated-filing IDs. Not a gate. Run it here, after the gate — the reply
+   can take a while. The token insertions in item 2 are this motion's own
+   write, not part of the dirt this reading classifies.
 
 2. **Insert the token.** On each confirmed row, and **only** those, insert
    ` [unattended]` immediately after the `[model]` segment and any
@@ -155,8 +144,7 @@ In one continuous motion, after the reply:
    operator did not keep are untouched. Edit by exact-string replacement of
    the whole row, one row at a time; never regenerate the file.
 
-3. **Commit the write** (when `auto-commit = true`). Stage by explicit
-   pathspec only — **never** `git commit -a`, `git add .`, or `git add -A`:
+3. **Commit the write** (when `auto-commit = true`):
 
    ```sh
    git add .flaitron/PLAN.md
@@ -164,27 +152,17 @@ In one continuous motion, after the reply:
    git commit -m "chore: seed [unattended] — <N> rows"
    ```
 
-   **Post-stage verification.** Read that staged diff before committing. The
-   pre-check read the working tree and the index; the commit publishes the
-   index, and PLAN.md can gain a foreign write between the two — an editor
-   autosave, a concurrent session — that `git add` then stages unseen. The
-   read takes no pathspec because the commit takes none. Every hunk must be
-   one this skill wrote: a single-line change on a confirmed row, adding
-   exactly ` [unattended]`. PLAN.md lines the pre-check classified as accumulated filings — added
-   task rows or blanks, and removed blanks or a `(none)` — are part of this
-   commit, not an unrecognized hunk.
-   When that pre-check recorded IDs, add a second `-m` with the body line
-   `SPEC/plan-filing.md` §"Filing commits" names; the subject stays the fence
-   above. An unrecognized hunk → `git restore --staged
-   .flaitron/PLAN.md`, skip the commit, and report it exactly as the
-   `auto-commit = false` case. Never unstage the foreign hunk and commit the
-   rest.
+   **Post-stage verification.** Recognized hunks: a single-line change on a
+   confirmed row adding exactly ` [unattended]`, and the accumulated filings
+   the pre-check recorded (their IDs go in the body line that section names).
+   Anything else → `git restore --staged .flaitron/PLAN.md`, skip the commit,
+   and report it as the `auto-commit = false` case.
 
-   `<N>` is the number of rows seeded. Commit only — never push.
-   `auto-commit = false` → skip this item and say so in one line
-   (`left uncommitted (PLAN.md or the index already carried other changes)`).
-   Not a closure commit — report `committed <sha>` as plain text, **no 🏁**
-   (`SPEC.md` §"Paper-complete guard" §3).
+   `<N>` is the number of rows seeded. `auto-commit = false` → skip this item
+   and say so in one line (`left uncommitted (PLAN.md or the index already
+   carried other changes)`). Explicit pathspecs, the whole-index read,
+   commit-never-push, and plain-text `committed <sha>` with no 🏁:
+   `SPEC/plan-filing.md` §"Filing commits".
 
 ## Step 5 — Report
 

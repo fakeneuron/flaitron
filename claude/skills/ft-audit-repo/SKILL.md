@@ -67,9 +67,9 @@ Present, in order:
 4. **Recommended focused audits** — the §5 table.
 5. **Questions for the user** — anything ambiguous that blocks the plan. Use `AskUserQuestion`, not prose.
 
-**`[unattended]` candidacy** (mirror of `SPEC/unattended-candidacy.md` §"Three postures" — Read that module now, at this write step). Run its §"Candidacy predicate" over each drafted implementation-child line as shown in the item-3 preview — `[model]`, any `[!critical]`, the description, any `Blocked by` clause. The `<AREA>-EPIC-<N>` parent and the `.N` audit placeholder are **never candidates**. Every clause must hold; when one is uncertain the row is not a candidate. A candidate is **proposed, never seeded**: it is shown in the item-3 preview with the token in place, and the "after the user confirms" write step below writes it only on rows the confirmation kept. This skill accepts neither `--fast` nor `--unattended`, so only the attended branch applies — the `unattended-candidates:` emission line never fires from this surface. Flaitron itself never writes `[unattended]` on its own discretion (`SPEC/task-line-segments.md`).
+**`[unattended]` candidacy** (mirror of `SPEC/unattended-candidacy.md` §"Three postures" — Read that module now, at this write step). Attended branch only: this skill takes neither `--fast` nor `--unattended`, so the `unattended-candidates:` line never fires here. Run §"Candidacy predicate" over each drafted implementation-child line as shown in the item-3 preview; the epic parents and `.N` placeholders are never candidates. Candidates show in that preview with the token in place, and the write step below writes it only on rows the confirmation kept.
 
-**Filing-commit pre-check.** After the user confirms and immediately before the write, apply `SPEC/plan-filing.md` §"Filing commits": `git diff --cached --quiet` non-zero → `auto-commit = false`; PLAN.md untracked (`??`) → `auto-commit = false`; PLAN.md porcelain empty → `auto-commit = true`; otherwise `auto-commit = true` only when that section's accumulated-filings test passes (record those IDs for its body line). Not a gate. The confirmation pause can stale an earlier reading, so run it here.
+**Filing-commit pre-check.** After the user confirms and immediately before the write, run the pre-check in `SPEC/plan-filing.md` §"Filing commits": `git diff --cached --quiet` non-zero, PLAN.md untracked (`??`), or any PLAN.md change beyond earlier task-row filings → `auto-commit = false`; otherwise `auto-commit = true`, recording any accumulated-filing IDs. Not a gate. The confirmation pause can stale an earlier reading, so run it here.
 
 **After** the user confirms, write the plan into `.flaitron/PLAN.md` using flaitron's task-line grammar:
 
@@ -81,7 +81,7 @@ Present, in order:
 - Milestone-0 goes under `## High`; later milestones under `## Medium` / `## Future Opportunities` by urgency. Pick the next free `<N>` per area prefix (valid prefixes in `.flaitron/tasknote/README.md` §"Area prefixes").
 - User pushes back on a milestone or child → drop or reshape it before writing.
 
-**Commit the filing** (when `auto-commit = true`) — the confirmation above is the commit authorization; there is no separate commit-go ask. Stage by explicit pathspec only; never `git commit -a` / `git add .` / `git add -A`:
+**Commit the filing** (when `auto-commit = true`) — the confirmation above is the commit authorization; there is no separate commit-go ask:
 
 ```sh
 git add .flaitron/PLAN.md
@@ -91,7 +91,7 @@ git commit -m "chore: audit-repo file epics — <count> milestones"
 
 `<count>` is the number of epic parents written — not an epic number.
 
-**Post-stage verification.** Every hunk in that staged diff must be one this filing wrote — the epic parents, children, and `.N` placeholders, and any replaced `(none)` — or an accumulated filing the pre-check recorded (its IDs go in a second `-m` body line per that section). An unrecognized hunk → `git restore --staged .flaitron/PLAN.md`, skip the commit, and say so as for `auto-commit = false`; never unstage the foreign hunk and commit the rest. Commit only — never push. Report `committed <sha>` as plain text, **no 🏁** (`SPEC.md` §"Paper-complete guard" §3). `auto-commit = false` → skip with one line (`left uncommitted (PLAN.md or the index already carried other changes)`).
+**Post-stage verification.** Recognized hunks: the epic parents, children, and `.N` placeholders, any replaced `(none)`, and the accumulated filings the pre-check recorded (their IDs go in the body line that section names). Anything else → `git restore --staged .flaitron/PLAN.md`, skip the commit, and say so as for `auto-commit = false`. `auto-commit = false` → skip with one line (`left uncommitted (PLAN.md or the index already carried other changes)`). Explicit pathspecs, the whole-index read, commit-never-push, and plain-text `committed <sha>` with no 🏁: `SPEC/plan-filing.md` §"Filing commits".
 
 A genuinely healthy repo can yield zero milestones — say so explicitly, keep the delegation recommendations, and skip the write and the commit.
 

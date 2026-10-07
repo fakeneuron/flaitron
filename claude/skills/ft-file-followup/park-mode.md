@@ -88,15 +88,12 @@ Template path (resolved by the host SKILL's Step 0 layout branch):
 
 Then:
 
-1. **Filing-commit pre-check.** Immediately before any write, apply
-   `SPEC/plan-filing.md` §"Filing commits". `git diff --cached --quiet`
-   non-zero → `auto-commit = false`. PLAN.md porcelain empty →
-   `auto-commit = true`. PLAN.md non-empty → `git diff --no-ext-diff -- .flaitron/PLAN.md`:
-   every added line a task row or blank, and every removed
-   line blank or a `(none)` placeholder → `auto-commit = true` and those rows
-   ride in this commit (record their IDs for the body line that section names);
-   any other PLAN change → `auto-commit = false`. Not a gate. Run it here, not
-   at Step P1 — the Step P2 priority question waits for the operator.
+1. **Filing-commit pre-check.** Immediately before any write, run the pre-check in
+   `SPEC/plan-filing.md` §"Filing commits": `git diff --cached --quiet` non-zero,
+   or any PLAN.md change beyond earlier task-row filings → `auto-commit = false`;
+   otherwise `auto-commit = true`, recording any accumulated-filing IDs. Not a
+   gate. Run it here, not at Step P1 — the Step P2 priority question waits for
+   the operator.
 2. `mkdir -p .flaitron/sidequest/`
 3. Copy the template → `.flaitron/sidequest/<TASK-ID>.md`; fill frontmatter, H1,
    nav date, `## Idea`, `## Resume anchor`, `parent:`.
@@ -108,10 +105,9 @@ Then:
 
    Replace the `(none)` placeholder if present; else append to section bottom.
 
-5. **Commit the filing** (when item 1 set `auto-commit = true`).
-   Stage both paths by name — never `git commit -a` / `git add .` / `git add -A`,
-   since a park fires mid-session in a working tree carrying the interrupted
-   work's edits:
+5. **Commit the filing** (when item 1 set `auto-commit = true`). Stage both
+   paths by name — a park fires mid-session in a working tree carrying the
+   interrupted work's edits:
 
    ```sh
    git add .flaitron/PLAN.md .flaitron/sidequest/<TASK-ID>.md
@@ -119,25 +115,14 @@ Then:
    git commit -m "chore: file <TASK-ID> park — <shortname>"
    ```
 
-   **Post-stage verification.** Read that staged diff before committing. Item 1
-   read the working tree and the index; the commit publishes the index, and
-   PLAN.md can gain a foreign write in between that `git add` stages unseen.
-   The read takes no pathspec because the commit takes none. Every hunk must be
-   one this park wrote — the appended row, and the whole sidequest stub as a new
-   file. PLAN.md lines the pre-check classified as accumulated filings — added task
-   rows or blanks, and removed blanks or a `(none)` — are part of this commit,
-   not an unrecognized hunk. When that pre-check recorded
-   IDs, add a second `-m` with the body line `SPEC/plan-filing.md` §"Filing commits"
-   names; the subject stays the fence above. An unrecognized hunk → `git restore --staged` both paths, skip the
-   commit, and say so in the Step P5 reply exactly as the `auto-commit = false`
-   case. Never unstage the foreign hunk and commit the rest. Contract:
-   `SPEC/plan-filing.md` §"Filing commits".
-
-   Commit only — never push. Park mode has no review gate, so the **invocation
-   itself** (flag + priority flag, or the Step P2 priority answer) is the
-   commit authorization; there is no separate commit-go ask. `auto-commit = false`
-   → skip, and say so in the Step P5 reply. Full contract:
-   `SPEC/plan-filing.md` §"Filing commits".
+   **Post-stage verification.** Recognized hunks: the appended row, the whole
+   sidequest stub as a new file, and the accumulated filings the pre-check
+   recorded (their IDs go in the body line that section names). Anything else →
+   `git restore --staged` both paths, skip the commit, and say so in the Step P5
+   reply as the `auto-commit = false` case. Park mode has no review gate, so the
+   **invocation itself** (flag + priority flag, or the Step P2 priority answer)
+   is the commit authorization. `auto-commit = false` → skip, and say so in the
+   Step P5 reply. Full contract: `SPEC/plan-filing.md` §"Filing commits".
 
 Do **not** run the downstream-impact reconciliation scan — park mode is
 explicitly outside it.

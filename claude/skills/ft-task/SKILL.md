@@ -21,7 +21,7 @@ If neither matches, bail.
 Paths this skill uses:
 - SPEC: `<root>SPEC.md` (always loaded core)
 - SPEC_DIR (lazy modules `epic.md` · `starter.md` · `blocked.md` · `model.md` · `loop.md` · `versioning.md` · `gate-postures.md` · `post-closure.md`): `<root>SPEC/`
-- SKILL_DIR (lazy fragments `step-0-flags.md` · `step-1.5-model-edge.md` and `unattended-mode.md` — both shared, also loaded by `/ft-micro-task` — · `step-3a-promote-starter.md` · `step-3c-resume-blocked.md` · `step-4-debug-mode.md` · `step-5-loop-mode.md`): `<root>claude/skills/ft-task/`
+- SKILL_DIR (`preamble.md` — **every-run**, shared with `/ft-micro-task`; lazy fragments `step-0-flags.md` · `step-1.5-model-edge.md` and `unattended-mode.md` — both shared, also loaded by `/ft-micro-task` — · `step-3a-promote-starter.md` · `step-3c-resume-blocked.md` · `step-4-debug-mode.md` · `step-5-loop-mode.md`): `<root>claude/skills/ft-task/`
 - Template: `<root>templates/tasknote-template.md`
 - PLAN: `.flaitron/PLAN.md`, tasknote dir: `.flaitron/tasknote/` (always)
 
@@ -33,72 +33,16 @@ Subsequent steps name what to Read; the SPEC contract + matching SKILL fragment 
 
 ## Step 1 — Locate the task in PLAN.md
 
-Read PLAN.md. Find the line containing `**<TASK-ID>**`. If the ID isn't in PLAN.md, stop and ask the user whether to add it or use a different ID. Do not invent an entry.
-
-**Status gate (non-negotiable).** Before doing anything else, check the located line:
-
-- If the line is checked (`- [x]`), or
-- if it lives under the `## Completed` heading,
-
-the task is already closed. **Stop. Do not scaffold.** Surface the conflict to the user and ask whether they meant a different task ID. Do this check by re-reading the exact PLAN.md line — never infer status from prior conversation context.
-
-Otherwise, capture:
-
-- The optional `[model]` segment (`[heavy]` / `[light]` primary recommended; specific names e.g. `opus` / `sonnet` / `grok` remain valid per SPEC §"Model field") — see Step 1.5
-- The optional `| shortname` segment
-- The one-line long description (everything after ` — `; may be empty)
-- The section heading the line lives under (`High` / `Medium` / `Low` / `Future Opportunities`) — this is the task's **Priority**
-- The optional `[!critical]` segment — sets the urgency flag (orthogonal to priority; floats the row to the top of High). Legacy `## Critical` sections are soft-migrated to `priority: 'High'` with the flag implicit (see `SPEC/task-line-segments.md`).
-- The optional `[unattended]` marker (after `[model]`). **When present and no `--fast` / `--unattended` flag was passed**, set `fast-mode = true` and emit `⚡ --fast implied by the [unattended] row marker — same suppressions as --fast; the --unattended posture is not implied.` Then **Read `<SPEC_DIR>/gate-postures.md` now** — Step 0's flag walk did not run, so this branch loads the posture contract itself. The marker never sets `unattended-mode`; under an explicit `--unattended` it changes nothing. Contract: SPEC/gate-postures.md §"`--fast` operator override" → "Implied by the `[unattended]` row marker".
-
-The full task-line grammar is `- [ ] **TASK-ID** [!critical] [model] [unattended] [handoff] | shortname — long description`; all of `[!critical]`, `[model]`, `[unattended]`, `[handoff]`, and `| shortname` are optional. `[handoff]` changes nothing on an attended run — capture nothing from it. See SPEC §"Task-line format" for the canonical grammar.
-
-**Emit the 🎯 purpose blurb now** — before the model gate, the pre-flight checks, and any scaffold write, each of which can end the run:
-
-```text
-🎯 <TASK-ID> — <shortname>
-<1-2 sentences of plain-English purpose.>
-```
-
-Two lines: the ID and the `| shortname`, then 1-2 sentences of purpose drawn from the PLAN.md long description just captured — the only source read yet. Emit it and keep going in the same turn; it fires once, here, ahead of the 3a / 3b / 3c branch. Bounds — not a cue, not a gate, suppressed by neither flag: `SPEC/cue-vocabulary.md` §"🎯 Purpose blurb".
-
-**Filing-discipline check (advisory).** Word-count the captured long description (after `— `). If it exceeds the 70-word hard cap from SPEC/tasknote-selection.md §"PLAN.md filing-discipline thresholds", surface a one-line warning to the user:
-
-```text
-⚠️ PLAN.md description is <N> words (>70w cap). Should this have been filed
-   as a starter? Proceeding with the existing line.
-```
-
-Informational only — do not block scaffolding; the task is already filed and reworking the filing now is too late. The warning nudges future filings.
-
-**Completed-rotation check (advisory).** While PLAN.md is open, count the checked rows under `## Completed` (nested epic children included). If the count exceeds **60**, surface a one-line warning:
-
-```text
-⚠️ PLAN.md `## Completed` holds <N> rows (>60). Consider rotating the
-   oldest rows to `.flaitron/PLAN-ARCHIVE.md`. Proceeding.
-```
-
-Informational only — never block, never rotate. Rotation is an operator motion; the bound, the month-block granularity, and the two never-split rules are canonical in SPEC/plan-filing.md §"`## Completed` rotation".
+**Read `<SKILL_DIR>/preamble.md` now** — shared with `/ft-micro-task`, read every run — and run its §"Locate and capture": the PLAN.md lookup, the status gate, the segment capture, the `[unattended]` row marker, the 🎯 purpose blurb, and the two advisory checks. Here the row marker's `<suppressions>` clause is `same suppressions as --fast`, and the blurb fires ahead of the 3a / 3b / 3c branch.
 
 ## Step 1.5 — Model gate (BEFORE scaffolding)
 
-Gate on the `[model]` segment captured in Step 1 before any source reads — heavy thinking shouldn't run on the wrong model. The active model is whatever the assistant is currently running as (ask the user if uncertain). Which tags match which active models — concrete by exact identity, category by tier, and `[xheavy]` always under-tier — is canonical in `<SPEC_DIR>/model.md` §"Category-vs-concrete matching".
-
-**Route on a verified tier, not an impression.** `Satisfied` is the only branch that proceeds *without* reading the module, so a wrong turn into it is the one verdict nothing downstream corrects. When the active model's tier is not certain against a category tag, read §"Category-vs-concrete matching" **before** choosing the branch, not after — a capable model one rung below its tag still routes to **Category under-tier**.
-
-Branch on the verdict:
-
-- **Satisfied** → proceed silently to Step 2.
-- **Category under-tier** → Read `<SPEC_DIR>/model.md` + `<SKILL_DIR>/step-1.5-model-edge.md` in parallel, then follow that fragment's "Category under-tier" branch (⚠️ inline note, then proceed — not a STOP, not an auto-retag).
-- **Concrete mismatch** → STOP. Read the same two in parallel, then follow the "Mismatch" branch.
-- **Absent (legacy line)** → Read the same two in parallel, then follow the "Legacy entry" branch.
+Run the preamble's §"Model gate". **Satisfied** proceeds to Step 2.
 
 ## Step 2 — Pre-flight checks & file-state branch
 
-- Resolve the **Area** by reading the `.flaitron/tasknote/README.md` §"Archive layout" table — every task, every prefix, canonical ones included. `<area>` is **never derived from the task ID**: lowercasing the prefix is the adopter's declaration-time default, not a resolution you may perform, and a project may deliberately declare a folder it would not produce (`OPS-*` → `archive/operations/`). See SPEC §"Task ID convention". If the table has no row for this prefix, stop and ask — do not guess a folder.
-- **Epic-ID dispatch.** If the TASK-ID is `<AREA>-EPIC-<N>` (parent epic) or `<AREA>-<N>.<sub>` (epic subtask), Read `<SPEC_DIR>/epic.md` for the lifecycle contract before continuing. Plain `<AREA>-<N>` IDs do not load this module.
-- **Foreign-dirt gate (paper-complete guard).** Before any scaffold / promote / resume writes, run `git status --porcelain`. If non-empty: **STOP**, surface the dirt list, ask the operator to commit / stash / discard themselves, then re-invoke. Do not auto-clean. See SPEC §"Paper-complete guard".
-- If `.flaitron/tasknote/archive/<area>/<TASK-ID>.md` already exists: stop. The task is already closed and archived. Surface the conflict and ask whether the user meant a different task ID — do not scaffold a duplicate.
+Run the preamble's §"Pre-flight" (Area, epic-ID dispatch, foreign-dirt gate, archive collision), then:
+
 - Check `.flaitron/tasknote/<TASK-ID>.md`. **Four-way branch on the file's YAML `status:`:**
   - **`status: starter`** — starter tasknote awaiting promotion. Continue at **Step 3a (Promote a starter)**.
   - **`status: blocked`** — parked tasknote awaiting resume. Continue at **Step 3c (Resume a blocked tasknote)**.

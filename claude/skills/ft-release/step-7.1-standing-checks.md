@@ -223,7 +223,7 @@ it cannot refresh the ledger on its own. Run these four instead — one per
 
 ```sh
 # Always loaded to run one task
-wc -c SPEC.md claude/skills/ft-task/SKILL.md AGENTS.md \
+wc -c SPEC.md claude/skills/ft-task/SKILL.md claude/skills/ft-task/preamble.md AGENTS.md \
       .flaitron/tasknote/README.md templates/tasknote-template.md
 
 # Lazy SPEC/ modules

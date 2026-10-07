@@ -145,7 +145,7 @@ Keep the paragraph under ~80 words. If the conversation has surfaced more contex
 
 **Downstream-impact reconciliation scan** (per SPEC/tasknote-selection.md §"Downstream-impact reconciliation" — authoritative for triggers, scan steps, and vocabulary). After drafting the new line, scan **active** PLAN entries (`High` / `Medium` / `Low` / `Future Opportunities`; `## Completed` is out of scope) for ones that share a surface with the new follow-up — same files, subsystem, contract, or a cited `[[wikilink]]` dependency. For each, classify impact (stale / contradictory / redundant / unaffected) and propose one reconcile action (merge / nest / edit / delete / leave). Routine filings that obviously touch nothing downstream (first task in a fresh area, a self-contained ticket) skip the scan — apply judgment, then note "no downstream impact" in the review surface. **Propose only — never edit an existing line before the user confirms** (the user-confirm gate is the existing review below, not a separate approval).
 
-**`[unattended]` candidacy** (mirror of `SPEC/unattended-candidacy.md` §"Three postures" — Read that module now, at this write step). Run its §"Candidacy predicate" over the drafted line exactly as Step 4 will append it — `[model]`, any `[!critical]`, the description, any `Blocked by` clause; clause 6 applies only when the ID is an epic subtask the user asked for. Every clause must hold; when one is uncertain the row is not a candidate. A candidate is **proposed, never seeded**: it is shown in the review below with the token in place, and the token is written at Step 4 only if the operator's confirmation keeps it. Flaitron itself never writes `[unattended]` on its own discretion (`SPEC/task-line-segments.md`).
+**`[unattended]` candidacy** (mirror of `SPEC/unattended-candidacy.md` §"Three postures" — Read that module now, at this write step). Run §"Candidacy predicate" over the drafted line exactly as Step 4 will append it; clause 6 applies only when the ID is an epic subtask the user asked for. Attended, a candidate shows in the review below with the token in place and Step 4 writes it only if the confirmation keeps it; under `unattended-mode = true` no token is written and the Step 5 report carries the `unattended-candidates:` line instead.
 
 **Surface for review.** Show the user, in one short message:
 
@@ -160,12 +160,10 @@ Edit per their feedback before writing anything. Do not skip the review. The rec
 - **The review gate is suppressed** — there is nobody to surface it to, and a
   gate that fires into an empty session is a hang, not a safeguard.
 - **The candidacy predicate still runs, and its result is reported, never
-  written.** With no operator act there is nothing to confirm a token against,
-  so Step 4 writes every row *without* `[unattended]` and the Step 5 report
-  carries, on its own line, `unattended-candidates: <ID>` — or
-  `unattended-candidates: none` when the predicate declined the row. The line
-  always emits under this posture, so a later reader can tell "ran, found none"
-  from "never ran". A run with no operator never marks its own rows.
+  written.** Step 4 writes every row *without* `[unattended]`; the Step 5
+  report carries `unattended-candidates: <ID>` (or `unattended-candidates:
+  none`) on its own line, always (`SPEC/unattended-candidacy.md` §"Three
+  postures").
 - **The reconciliation scan still runs.** `SPEC/gate-postures.md` §"What `--unattended`
   never relaxes" holds it: it guards plan correctness rather than pacing, so the
   posture may not skip it. On the three runners an unconfirmable direction change
@@ -182,7 +180,7 @@ Edit per their feedback before writing anything. Do not skip the review. The rec
 
 In one continuous motion, after the user has confirmed the Step 3 review (including any reconcile proposals) — or, under `unattended-mode = true`, immediately, since Step 3 surfaced no gate to confirm:
 
-1. **Filing-commit pre-check.** Immediately before the append, apply `SPEC/plan-filing.md` §"Filing commits". `git diff --cached --quiet` non-zero → `auto-commit = false` (item 4 publishes the whole index, so a closure's staged deliverables must not ship under this subject). PLAN.md porcelain empty → `auto-commit = true`. PLAN.md non-empty → `git diff --no-ext-diff -- .flaitron/PLAN.md`: every added line a task row or blank, and every removed line blank or a `(none)` placeholder → `auto-commit = true` and those rows ride in this commit (record their IDs for the body line that section names); any other PLAN change → `auto-commit = false`. Not a gate. Steps 2-3 span operator turns, so a pre-flight reading can be stale.
+1. **Filing-commit pre-check.** Immediately before the append, run the pre-check in `SPEC/plan-filing.md` §"Filing commits": `git diff --cached --quiet` non-zero, or any PLAN.md change beyond earlier task-row filings → `auto-commit = false`; otherwise `auto-commit = true`, recording any accumulated-filing IDs. Not a gate. Steps 2-3 span operator turns, so a pre-flight reading can be stale.
 
 2. **Append the PLAN.md entry.** Append a new entry under the appropriate `## <Priority>` heading using the canonical task-line grammar (SPEC §"Task-line format"; a dependency on another row is `Blocked by [[<ID>]]`, wikilink-only — `SPEC/plan-parser.md` §"Long-description conventions"):
 
@@ -201,7 +199,7 @@ In one continuous motion, after the user has confirmed the Step 3 review (includ
 
 3. **Apply confirmed reconcile edits.** If the Step 3 scan surfaced impacted entries and the user accepted (or amended) any proposed actions, apply those PLAN.md edits in the same motion — merge / nest / edit / delete the affected lines per the confirmed action. Apply nothing the user rejected or didn't see. No impact (or scan skipped) → no-op. **Under `unattended-mode = true` this is always a no-op** — the scan ran but nothing was confirmed, and its findings travel in the Step 5 report instead.
 
-4. **Commit the filing** (when `auto-commit = true` from step 1 above). The filing's **last** write, so confirmed reconcile edits land with it. Stage the one path by name — never `git commit -a` / `git add .` / `git add -A`, since a mid-flow filing sits in a working tree carrying the parent `/ft-task`'s unfinished edits:
+4. **Commit the filing** (when `auto-commit = true` from step 1 above) — the filing's **last** write, so confirmed reconcile edits land with it. Stage the one path by name; a mid-flow filing sits in a working tree carrying the parent `/ft-task`'s unfinished edits:
 
    ```sh
    git add .flaitron/PLAN.md
@@ -209,23 +207,9 @@ In one continuous motion, after the user has confirmed the Step 3 review (includ
    git commit -m "chore: file <TASK-ID> follow-up — <shortname>"
    ```
 
-   **Post-stage verification is not optional.** The item-1 pre-check reads the working tree and the index; the commit publishes the index, and PLAN.md can gain a foreign write in between (an editor autosave, a concurrent session) that `git add` then stages unseen. Read the **whole** staged diff — no pathspec, since the commit takes the whole index — and confirm every hunk is one this filing wrote — the appended row, plus any confirmed reconcile edit from item 3. PLAN.md lines the pre-check classified as accumulated filings — added task rows or blanks, and removed blanks or a `(none)` — are part of this commit, not an unrecognized hunk. When that pre-check recorded IDs, add a second `-m` with the body line `SPEC/plan-filing.md` §"Filing commits" names; the subject stays the fence above. An unrecognized hunk → `git restore --staged .flaitron/PLAN.md`, skip the commit, and report it exactly as the `auto-commit = false` case at Step 5. Never unstage the foreign hunk and commit the rest. Because `git commit -m` publishes the index as it stands, nothing landing after `git add` can reach the commit — so this read closes the window rather than narrowing it. Never narrow the commit with a pathspec (`git commit --only`) instead: that commits the working tree of the named path, bypassing the index this read just verified.
+   **Post-stage verification.** Recognized hunks: the appended row, any confirmed reconcile edit from item 3, and the accumulated filings the pre-check recorded (their IDs go in the body line that section names). Anything else → `git restore --staged .flaitron/PLAN.md`, skip the commit, and report it at Step 5 as the `auto-commit = false` case. `auto-commit = false` → skip this step and note it in Step 5. Explicit pathspecs, the whole-index read, commit-never-push, and no 🏁: `SPEC/plan-filing.md` §"Filing commits".
 
-   Commit only — never push. `auto-commit = false` → skip this step entirely and note it in Step 5. Full contract: SPEC/plan-filing.md §"Filing commits".
-
-   **Under `unattended-mode = true` the commit still runs, and every rule above
-   still binds** — explicit pathspec, the item-1 pre-check and its accumulated-filings test,
-   the post-stage verification and its skip on an unrecognized change,
-   commit-never-push, no 🏁. What changes is only what authorizes it: with no
-   review gate answered, the authorization is the duty in `SPEC.md` §"Deferred
-   hand-off filing" itself, per SPEC/plan-filing.md §"Filing commits" →
-   "Unattended filing authority". Note that the pre-check makes the two orderings
-   converge without special-casing: invoked from a closure that has already staged
-   anything — its PLAN.md flip, or deliverables ahead of the flip (`git rm`s,
-   source edits) — the index reading fails, `auto-commit = false`, and the new
-   row simply rides into that atomic closure commit; invoked with a clean index,
-   it commits standalone, and earlier task-row filings ride along when the pre-check allowed them. Closure follows. Both are already-supported
-   behavior, so `SPEC.md` §"Paper-complete guard" §2 is unaffected either way.
+   **Under `unattended-mode = true` the commit still runs under every rule above**; the authorization is the duty in `SPEC.md` §"Deferred hand-off filing" (§"Filing commits" → "Unattended filing authority"). Invoked from a closure that has already staged anything, the index reading fails and the new row rides that atomic closure commit; with a clean index it commits standalone. Either way `SPEC.md` §"Paper-complete guard" §2 holds.
 
 5. **Deliver the conversational paragraph.** Surface the reviewed paragraph from Step 3 in the same response as the filing confirmation. The paragraph is **chat-only** — never persisted to disk, never written into the active tasknote. Under `unattended-mode = true` it is unreviewed rather than reviewed, and it folds into the Step 5 report — the sole surface an absent operator reads.
 

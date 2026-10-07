@@ -1,6 +1,6 @@
 # `--unattended` — operator-less posture (executable steps)
 
-> Lazy-loaded SKILL fragment — **shared**. Loaded by `/ft-task`, `/ft-micro-task`, and `/ft-close-epic` at their Step 0 when `unattended-mode = true`. The file is owned by `claude/skills/ft-task/`; the other two skills resolve it through their `<UNATTENDED>` path binding, the same way the runners resolve `step-1.5-model-edge.md` through `<MODEL_EDGE>`.
+> Lazy-loaded SKILL fragment — **shared**. Loaded by `/ft-task`, `/ft-micro-task`, and `/ft-close-epic` at their Step 0 when `unattended-mode = true`. The file is owned by `claude/skills/ft-task/`; the other two skills resolve it through their `<UNATTENDED>` path binding, the same way `/ft-micro-task` resolves `preamble.md` through `<PREAMBLE>`.
 >
 > **The contract lives in [`SPEC/gate-postures.md`](../../../SPEC/gate-postures.md) §"`--unattended` operator posture"** — this fragment is its executable interpretation across the two runners, not a second copy. Read the contract when this file is silent or in tension. The `park-reason:` key and its closed-set codes (§"Park reason"), the parked state, and its resume path are canonical in [`SPEC/blocked.md`](../../../SPEC/blocked.md).
 >

@@ -46,10 +46,11 @@ Checked on every push by the CI `drift` job and at every release cut by
 | `SPEC/post-closure.md` | 10,000 | The three post-archive steps — commit decision, 🏁 marker plus next-move suggestion, copy-paste line — split out of `SPEC.md`. Budgeted although lazy — it arrives only at a closing runner's final step, once the tasknote is archived — for the same un-budgets-what-it-moves reason as `gate-postures.md`. Sized like its siblings: the file plus ~1.5 working units. |
 | `SPEC/task-line-segments.md` | 10,000 | The per-segment table, the worked examples, and the `[unattended]`-candidacy proposal contract, split out of `SPEC.md` §"Task-line format". Budgeted for the same reason as its siblings. Sized like its siblings: the file plus ~1.5 working units. The split point is read-vs-write, not frequency — a runner *capturing* a row at Step 1 needs only the grammar block and the ordering rule, both of which stay in `SPEC.md`; the per-token write semantics travel here. |
 | `SPEC/tasknote-selection.md` | 12,500 | The use/skip routing, the filing-discipline word budget, and the downstream-impact scan. Lazy by declaration, near-universal in practice: every filing and runner skill cites it, so it is budgeted like its loaded siblings. Sized like them: the file plus ~1.5 working units. |
-| `claude/skills/*/SKILL.md` | 33,000 | One skill body is loaded per task, on top of `SPEC.md`. Sized to give `ft-task` (the largest ordinary skill) ~1.5 working units of headroom (its own substantial edits run +1,187 to +3,390 chars) while `ft-epic-discovery` (29,277) and `ft-close-epic` (28,002) stay meaningfully capped. Extracting a lazy fragment ([[CORE-556.2]]) is the preferred remedy over raising this cap when a body is genuinely overgrown rather than merely near its line. |
+| `claude/skills/*/SKILL.md` | 33,000 | One skill body is loaded per task, on top of `SPEC.md`. Sized to give the largest ordinary body — `ft-epic-discovery` (29,997; `ft-close-epic` 26,943) since [[CORE-724.4]] — ~1.5 working units of headroom (a substantial skill edit runs +1,187 to +3,390 chars). Not lowered when `ft-task` dropped below it: much of that drop moved into `preamble.md`, which has its own row below, rather than leaving the run. Extracting a lazy fragment ([[CORE-556.2]]) is the preferred remedy over raising this cap when a body is genuinely overgrown rather than merely near its line. |
+| `claude/skills/ft-task/preamble.md` | 9,000 | The one `ft-task` fragment read on **every** run — the Step 1 / 1.5 / 2 preamble shared with `/ft-micro-task` ([[CORE-724.4]]), single-sourced rather than branch-gated. Budgeted because a fragment that loads every run is body by another name, and leaving it uncapped would let the `SKILL.md` row be met by moving bytes. Sized like `post-closure.md`: the file plus ~1.5 working units. |
 | `claude/skills/ft-release/SKILL.md` | 40,000 | More specific row wins. A release cut is a whole-repo motion whose skill is loaded alone, never alongside a tasknote, and this body is already post-trim ([[CORE-507]] cut it from ~77,000 to 37,274). Budgeted rather than exempted so it still ratchets. |
 | `claude/skills/ft-release/**` | 125,000 | Directory total — every file under the skill, summed, not a per-file cap. The row above caps only the body, and the ledger's own §"Skill bodies" note says why that is not enough: fragments defer load, they do not remove it, and a release cut walks every fragment in this directory on every cut. Sized to the directory's measured total plus ~1.5 working units — a working unit here is a new mirror pair or CI binding, which across the last twenty touching commits ran +4,000 to +5,300. |
-| `SPEC/procedures/ft-task.md` | 38,000 | The always-loaded runner body for Codex/Cursor/Grok tasks — this project's non-Claude equivalent of `claude/skills/ft-task/SKILL.md`, read in full on every such task's cold start. Sized like its lazy-but-near-universal siblings: file size plus ~1.5–2.3 working units (a substantial edit runs +524 to +892 chars, a routine one +1 to +420). What would consume the remaining headroom in one task is a new mode at [[CORE-473.4]]'s scale — the case §"Known over budget" exists for. |
+| `SPEC/procedures/ft-task.md` | 34,200 | The always-loaded runner body for Codex/Cursor/Grok tasks — this project's non-Claude equivalent of `claude/skills/ft-task/SKILL.md`, read in full on every such task's cold start. Sized like its lazy-but-near-universal siblings: file size plus ~1.5–2.3 working units (a substantial edit runs +524 to +892 chars, a routine one +1 to +420). What would consume the remaining headroom in one task is a new mode at [[CORE-473.4]]'s scale — the case §"Known over budget" exists for. |
 
 **Precedence:** the most specific matching row wins. `ft-release`'s own row
 governs it; every other `SKILL.md` falls under the glob row. A `/**` row is
@@ -94,10 +95,11 @@ row was budgeted at on first appearing in this table, not a change.
 | `SPEC/post-closure.md` | split from `SPEC.md`, budgeted 12,000 [[CORE-607]] → 10,000 [[CORE-724.2]] (8,389 → 7,787) |
 | `SPEC/task-line-segments.md` | split from `SPEC.md` §"Task-line format", budgeted 10,000 [[CORE-664]] |
 | `SPEC/tasknote-selection.md` | budgeted 12,500 [[CORE-724.3]] (routing prose compressed, 15,217 → 10,706) |
-| `claude/skills/*/SKILL.md` | 30,000 [[CORE-535.2]] → 33,000 [[CORE-558.5]] |
+| `claude/skills/*/SKILL.md` | 30,000 [[CORE-535.2]] → 33,000 [[CORE-558.5]] → held 33,000 [[CORE-724.4]] (re-justified against `ft-epic-discovery`; `ft-task` 29,387 → 23,437, partly moved into `preamble.md`) |
+| `claude/skills/ft-task/preamble.md` | budgeted 9,000 [[CORE-724.4]] (shared ft-task / ft-micro-task preamble, 7,276) |
 | `claude/skills/ft-release/SKILL.md` | budgeted 40,000, post-trim from ~77,000 [[CORE-507]] |
 | `claude/skills/ft-release/**` | measured but unbudgeted through [[CORE-613]] (117,337, exceeding the body row unseen) → budgeted 125,000 [[CORE-622.2]] |
-| `SPEC/procedures/ft-task.md` | budgeted 38,000 [[CORE-608]]; re-measured, no change [[CORE-631.3]] → held 38,000 [[CORE-670.3]] (debug-mode restatement routed to `step-4-debug-mode.md`) → held 38,000 [[CORE-678.2]] (post-closure and cross-repo restatement routed back to their modules; 37,538 → 34,302) |
+| `SPEC/procedures/ft-task.md` | budgeted 38,000 [[CORE-608]]; re-measured, no change [[CORE-631.3]] → held 38,000 [[CORE-670.3]] (debug-mode restatement routed to `step-4-debug-mode.md`) → held 38,000 [[CORE-678.2]] (post-closure and cross-repo restatement routed back to their modules; 37,538 → 34,302) → 34,200 [[CORE-724.4]] (Phase 4 and drift-carve-out restatement routed to SPEC; 34,320 → 32,740) |
 
 Full narrative provenance for any of the above — exact per-commit deltas,
 which task found which headroom figure — lives in `git log -p --
@@ -178,6 +180,7 @@ stamped to this task rather than to v5.32.0.
 |---|---|
 | `SPEC.md` | 47,006 |
 | `claude/skills/ft-task/SKILL.md` | 29,338 |
+| `claude/skills/ft-task/preamble.md` | — (added at [[CORE-724.4]], after this stamp; the next refresh measures it and adds it to the cold-start sum) |
 | `AGENTS.md` (`CLAUDE.md` is a symlink to it) | 7,599 |
 | `.flaitron/tasknote/README.md` | 10,734 |
 | `templates/tasknote-template.md` | 5,635 |
@@ -283,7 +286,8 @@ it. For `ft-release` that is no longer only a ledger observation: its
 the gaming case fails the same check the per-file rows do. `ft-task`'s
 directory stays a ledger figure — its fragments are genuinely branch-gated
 (`--debug`, `--loop`, `--unattended`), where `ft-release`'s all load on every
-cut.
+cut. The one exception is `preamble.md`, read on every `/ft-task` and
+`/ft-micro-task` run, which is why it carries its own §"Budgets" row.
 
 ### Adopter-side always-loaded
 

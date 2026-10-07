@@ -15,6 +15,10 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
+- [ ] **CORE-EPIC-734** [heavy]🧠 | mirror-tax — Shrink the cross-surface sync burden: the release gate stops parsing `ci.yml`, and mirror pairs whose copies can become one source + pointer are retired. Discovery supplied by audit-repo 2026-10-07. Surfaced by audit-repo 2026-10-07 (Theme: Mirror tax)
+  - [ ] **CORE-734.2** [heavy]🧠 | drift-script-extract — Move the `drift` job's step bodies from `.github/workflows/ci.yml` into `tools/drift-checks.sh` (one function per step, named after it); CI and the `/ft-release` §7.1 walk both invoke it instead of grep-extracting `run: |` bodies. Rebind Pair H/L to the script. Done: §7.1 no longer reads ci.yml's YAML shape.
+  - [ ] **CORE-734.3** [heavy]🧠 | mirror-pair-census — Classify every Pair in `claude/skills/ft-release/step-7.1-mirror-pairs.md`, every `KEEP IN SYNC` comment, and the 7× Skill/pin guard as necessary (distinct consumers) or collapsible (one source + pointer); file one follow-up per collapsible group and set a target Pair count.
+  - [ ] **CORE-734.N** [heavy]🧠 | mirror-tax audit
 
 ## Low
 
@@ -26,7 +30,10 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Future Opportunities
 
-(none)
+- [ ] **CORE-EPIC-735** [heavy]🧠 | adopter-footprint — `.flaitron/` self-hosting records are ~14.6 MB of 16.9 MB tracked bytes and ride along in every adopter's `.flaitron/core` submodule. Discovery supplied by audit-repo 2026-10-07. Surfaced by audit-repo 2026-10-07 (Theme: Self-hosting ballast)
+  - [ ] **CORE-735.2** [medium]🧩 | submodule-weight-measure — Measure a fresh flaitron submodule add (full vs `--depth 1` vs `shallow = true`) and the bytes `/ft-update` fetches per bump, including whether shallow clones still resolve release tags; record the table in the tasknote.
+  - [ ] **CORE-735.3** [heavy]🧠 | footprint-decision — From the .2 numbers, choose between documenting shallow submodules (MIGRATION §1, `ft-new-project`, `ft-update`) and relocating archived tasknotes off the default branch, keeping flaitron-self's decay-window evidence reachable.
+  - [ ] **CORE-735.N** [heavy]🧠 | adopter-footprint audit
 
 ## Completed
 

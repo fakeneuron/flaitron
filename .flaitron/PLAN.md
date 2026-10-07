@@ -18,6 +18,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 - [ ] **CORE-726** [medium]🧩 | epic-per-child-model — /ft-epic-discovery copies one [model] onto every child; propose a per-child [model] at Phase 2 filing, and document concrete tokens (e.g. [fable]) as the way to pin a named model, since category tags match by tier. Adopter precedent: sciphoenix ROLLOUT §3. Parked at `.flaitron/sidequest/CORE-726.md`.
 - [ ] **CORE-730** [medium]🧩 | global-skill-conflicts — Waits on natabula NAT-379 (agent-home read roots). Check agent homes for flaitron slugs shadowing repo-scoped wiring ([[CORE-729]]); make /ft-release §7.1's machine-global parity check run.
 - [ ] **CORE-731** [medium]🧩 | unattended-park-existing-note — /ft-task --unattended model-mismatch park can overwrite an existing starter/in-flight note and skips sidequest-stub retirement; port the SOP's create-only-when-absent rule.
+- [ ] **CORE-732** [medium]🧩 | pre-scaffold-note-recovery — Uncommitted notes and mismatch parks read as foreign dirt before the existing-note refusal; mismatch parks resume without Phase 1; attended stub retirement drops the stub body. Parked at `.flaitron/sidequest/CORE-732.md`.
 
 ## Low
 

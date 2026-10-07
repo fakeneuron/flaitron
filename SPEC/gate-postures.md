@@ -221,8 +221,9 @@ PLAN.md edit defers.
 
 ### Pre-scaffold stops
 
-Step 1.5 runs before the tasknote exists, so a "park" there has nothing to
-park. The posture splits by what the stop is *about*:
+The Step 1 pre-flight checks and the Step 1.5 model gate run before the
+tasknote exists, so a "park" there has nothing to park. The posture splits
+by what the stop is *about*:
 
 - **Concrete-model mismatch — scaffold, then park.** A task-level
   assignment problem, and the tree is known clean (the foreign-dirt gate

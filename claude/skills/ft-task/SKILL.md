@@ -31,19 +31,19 @@ Subsequent steps name what to Read; the SPEC contract + matching SKILL fragment 
 
 **Parse `args`.** Split on whitespace into `(TASK-ID, rest...)`. Initialize `fast-mode = false`, `debug-mode = false`, `loop-mode = false`, and `unattended-mode = false`. If `rest` is empty, continue to Step 1 — the default flow, which reads nothing further here. Otherwise **Read `<SKILL_DIR>/step-0-flags.md` now** and follow it: it walks `rest` as an unordered flag set, stops on any unrecognized token, emits one inline marker per active flag, defines the four modes, and dispatches the per-mode fragments (`step-4-debug-mode.md`; `step-5-loop-mode.md` + `<SPEC_DIR>/loop.md`; `unattended-mode.md` + `<SPEC_DIR>/blocked.md`); then continue to Step 1.
 
-**When `unattended-mode = true`, the steps below do not restate the posture.** Every gate that would ask an operator — the Step 1.5 concrete-model STOP, the Step 4 drift carve-out, a destructive-action escalation or prerequisite ✋ `ACTION` in Phase 2, the Phase 3 👁️ ask, a queued in-📦 prompt at Step 6 — parks the tasknote instead, with the `park-reason:` code keyed to this skill's step in `<SKILL_DIR>/unattended-mode.md` §"Conversion map"; the Step 2 pre-flight checks terminate and write nothing (§"Pre-scaffold stops"). The posture sets `fast-mode = true` but does **not** inherit `--fast`'s two delegations — the 👁️ suppression and the Re-scope downgrade both park — and it relaxes neither the paper-complete guard nor the downstream-impact confirm (§"What `--unattended` never relaxes").
+**When `unattended-mode = true`, the steps below do not restate the posture.** Every gate that would ask an operator — the Step 1.5 concrete-model STOP, the Step 4 drift carve-out, a destructive-action escalation or prerequisite ✋ `ACTION` in Phase 2, the Phase 3 👁️ ask, a queued in-📦 prompt at Step 6 — parks the tasknote instead, with the `park-reason:` code keyed to this skill's step in `<SKILL_DIR>/unattended-mode.md` §"Conversion map"; the Step 1 pre-flight checks and the Step 2 in-flight refusal terminate and write nothing (§"Pre-scaffold stops"). The posture sets `fast-mode = true` but does **not** inherit `--fast`'s two delegations — the 👁️ suppression and the Re-scope downgrade both park — and it relaxes neither the paper-complete guard nor the downstream-impact confirm (§"What `--unattended` never relaxes").
 
-## Step 1 — Locate the task in PLAN.md
+## Step 1 — Locate the task in PLAN.md and pre-flight
 
 **Read `<SKILL_DIR>/preamble.md` now** — shared with `/ft-micro-task`, read every run — and run its §"Locate and capture": the PLAN.md lookup, the status gate, the segment capture, the `[unattended]` row marker, the 🎯 purpose blurb, and the two advisory checks. Here the row marker's `<suppressions>` clause is `same suppressions as --fast`, and the blurb fires ahead of the 3a / 3b / 3c branch.
+
+Then run its §"Pre-flight" (Area, epic-ID dispatch, foreign-dirt gate, archive collision).
 
 ## Step 1.5 — Model gate (BEFORE scaffolding)
 
 Run the preamble's §"Model gate". **Satisfied** proceeds to Step 2.
 
-## Step 2 — Pre-flight checks & file-state branch
-
-Run the preamble's §"Pre-flight" (Area, epic-ID dispatch, foreign-dirt gate, archive collision), then:
+## Step 2 — File-state branch
 
 - Check `.flaitron/tasknote/<TASK-ID>.md`. **Four-way branch on the file's YAML `status:`:**
   - **`status: starter`** — starter tasknote awaiting promotion. Continue at **Step 3a (Promote a starter)**.
@@ -133,5 +133,5 @@ Skill-specific:
 
 ## Notes
 
-- **Sub-tasks of an epic** (`<AREA>-<NUMBER>.<SUB>`) follow the same flow. The parent epic line in PLAN.md is not flipped to complete until all children are. For code-sweep / multi-child feature epics, the first subtask (`.1`) is typically a **Discovery** task — its deliverable is the filed child task list in PLAN.md, not code — and the final subtask is an **Audit** task that verifies the completed epic sits well in the codebase. Full lifecycle in `<SPEC_DIR>/epic.md` (loaded at Step 2 for epic IDs).
+- **Sub-tasks of an epic** (`<AREA>-<NUMBER>.<SUB>`) follow the same flow. The parent epic line in PLAN.md is not flipped to complete until all children are. For code-sweep / multi-child feature epics, the first subtask (`.1`) is typically a **Discovery** task — its deliverable is the filed child task list in PLAN.md, not code — and the final subtask is an **Audit** task that verifies the completed epic sits well in the codebase. Full lifecycle in `<SPEC_DIR>/epic.md` (loaded at Step 1 for epic IDs).
 - **Skip-the-tasknote cases** (single-line typo, formatting tweak, ~10-line doc patch, trivial config edit) — see SPEC/tasknote-selection.md §"When to use a tasknote (and when not to)". For these, decline to scaffold and tell the user to make the edit directly.

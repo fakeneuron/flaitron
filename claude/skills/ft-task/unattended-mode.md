@@ -67,7 +67,7 @@ Six gates convert from *ask and wait* to *park and stop*. The seventh row is the
 
 ## Pre-scaffold stops
 
-Step 1.5 and the Step-2 pre-flight checks run before the tasknote exists, so a "park" there may have nothing to park. Split by what the stop is *about*:
+The pre-flight checks, the Step 1.5 model gate, and `/ft-task`'s Step 2 in-flight refusal run before the tasknote exists, so a "park" there may have nothing to park. Split by what the stop is *about*:
 
 - **Concrete-model mismatch — scaffold, then park.** A task-level assignment problem, and the tree is known clean (the foreign-dirt gate already passed). Skip the AskUserQuestion two-path offer; write the tasknote with `status: blocked` and `park-reason: model-mismatch — PLAN.md tags [<tag>], active model is <model>`, then halt. The caller gets the same readable stop surface it gets everywhere else. Do **not** retag the PLAN.md line autonomously.
 - **Foreign-dirt gate — terminate, write nothing.** Writing a new untracked file into a tree the paper-complete guard has just refused to touch makes that file its own foreign dirt on the next invocation — a self-blocking loop. Report the dirt and stop:

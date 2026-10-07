@@ -1,6 +1,6 @@
-# Runner preamble — locate, model gate, pre-flight (executable steps)
+# Runner preamble — locate, pre-flight, model gate (executable steps)
 
-> SKILL fragment — **shared, every-run** (not lazy). Loaded by `/ft-task` and `/ft-micro-task` at their Step 1 on every run. The file is owned by `claude/skills/ft-task/`; `/ft-micro-task` resolves it through its `<PREAMBLE>` path. Each runner calls the three sections below from its own steps, in its own order, and adds its own deltas there. See SPEC.md for every contract cited here.
+> SKILL fragment — **shared, every-run** (not lazy). Loaded by `/ft-task` and `/ft-micro-task` at their Step 1 on every run. The file is owned by `claude/skills/ft-task/`; `/ft-micro-task` resolves it through its `<PREAMBLE>` path. Each runner calls the three sections below from its own steps — §"Locate and capture", then §"Pre-flight", then §"Model gate" — and adds its own deltas there. Pre-flight runs first so every model-gate write (a retag, a legacy tag, an `--unattended` model-mismatch park) lands only in a tree the foreign-dirt gate has passed. See SPEC.md for every contract cited here.
 >
 > **`<SKILL>` below stands for the invoking skill's own slash command, flags included** — `/ft-task` (with whatever of `--debug` / `--loop` / `--fast` / `--unattended` was passed) or `/ft-micro-task`. Never hard-code a bare `/ft-task`; a re-entry without its flags drops the run's shape.
 
@@ -21,7 +21,7 @@ Otherwise, capture:
 
 The full grammar is `- [ ] **TASK-ID** [!critical] [model] [unattended] [handoff] | shortname — long description`, every segment but the ID optional (SPEC §"Task-line format"). `[handoff]` changes nothing on an attended run — capture nothing from it.
 
-**Emit the 🎯 purpose blurb now** — before the model gate, the pre-flight checks, and any scaffold write, each of which can end the run:
+**Emit the 🎯 purpose blurb now** — before the pre-flight checks, the model gate, and any scaffold write, each of which can end the run:
 
 ```text
 🎯 <TASK-ID> — <shortname>
@@ -46,9 +46,18 @@ Two lines: the ID and the `| shortname`, then 1-2 sentences of purpose drawn fro
 
 Both checks are informational only — never block, never refile, never rotate. The bound, the row-count granularity, and the never-split-a-cohort rule are canonical in SPEC/plan-filing.md §"`## Completed` rotation".
 
+## Pre-flight
+
+- Resolve the **Area** by reading the `.flaitron/tasknote/README.md` §"Archive layout" table — every task, every prefix, canonical ones included. `<area>` is **never derived from the task ID**: lowercasing the prefix is the adopter's declaration-time default, not a resolution you may perform, and a project may deliberately declare a folder it would not produce (`OPS-*` → `archive/operations/`). See SPEC §"Task ID convention". If the table has no row for this prefix, stop and ask — do not guess a folder.
+- **Epic-ID dispatch.** If the TASK-ID is `<AREA>-EPIC-<N>` (parent epic) or `<AREA>-<N>.<sub>` (epic subtask), Read `<root>SPEC/epic.md` for the lifecycle contract before continuing. Plain `<AREA>-<N>` IDs do not load it.
+- **Foreign-dirt gate (paper-complete guard).** Before any scaffold / promote / resume write, run `git status --porcelain`. If non-empty: **STOP**, surface the dirt list, ask the operator to commit / stash / discard themselves, then re-invoke. Do not auto-clean. See SPEC §"Paper-complete guard".
+- If `.flaitron/tasknote/archive/<area>/<TASK-ID>.md` already exists: stop. The task is already closed and archived. Surface the conflict and ask whether the user meant a different task ID — do not scaffold a duplicate.
+
+Under `unattended-mode = true` every stop in this section, and the status gate above, terminates and writes nothing (`unattended-mode.md` §"Pre-scaffold stops").
+
 ## Model gate
 
-Gate on the captured `[model]` segment before any source reads — heavy thinking shouldn't run on the wrong model. The active model is whatever the assistant is currently running as (ask the user if uncertain). Which tags match which active models — concrete by exact identity, category by tier, and `[xheavy]` always under-tier — is canonical in `<root>SPEC/model.md` §"Category-vs-concrete matching".
+Gate on the captured `[model]` segment before any source reads beyond §"Pre-flight"'s (its `SPEC/epic.md` dispatch included) — heavy thinking shouldn't run on the wrong model. The active model is whatever the assistant is currently running as (ask the user if uncertain). Which tags match which active models — concrete by exact identity, category by tier, and `[xheavy]` always under-tier — is canonical in `<root>SPEC/model.md` §"Category-vs-concrete matching".
 
 **Route on a verified tier, not an impression.** `Satisfied` is the only branch that proceeds *without* reading the module, so a wrong turn into it is the one verdict nothing downstream corrects. When the active model's tier is not certain against a category tag, read §"Category-vs-concrete matching" **before** choosing the branch, not after — a capable model one rung below its tag still routes to **Category under-tier**.
 
@@ -58,12 +67,3 @@ Branch on the verdict. The edge fragment is `step-1.5-model-edge.md`, beside thi
 - **Category under-tier** → Read `<root>SPEC/model.md` + the edge fragment in parallel, then follow its "Category under-tier" branch (⚠️ inline note, then proceed — not a STOP, not an auto-retag).
 - **Concrete mismatch** → STOP. Read the same two in parallel, then follow the "Mismatch" branch.
 - **Absent (legacy line)** → Read the same two in parallel, then follow the "Legacy entry" branch.
-
-## Pre-flight
-
-- Resolve the **Area** by reading the `.flaitron/tasknote/README.md` §"Archive layout" table — every task, every prefix, canonical ones included. `<area>` is **never derived from the task ID**: lowercasing the prefix is the adopter's declaration-time default, not a resolution you may perform, and a project may deliberately declare a folder it would not produce (`OPS-*` → `archive/operations/`). See SPEC §"Task ID convention". If the table has no row for this prefix, stop and ask — do not guess a folder.
-- **Epic-ID dispatch.** If the TASK-ID is `<AREA>-EPIC-<N>` (parent epic) or `<AREA>-<N>.<sub>` (epic subtask), Read `<root>SPEC/epic.md` for the lifecycle contract before continuing. Plain `<AREA>-<N>` IDs do not load it.
-- **Foreign-dirt gate (paper-complete guard).** Before any scaffold / promote / resume write, run `git status --porcelain`. If non-empty: **STOP**, surface the dirt list, ask the operator to commit / stash / discard themselves, then re-invoke. Do not auto-clean. See SPEC §"Paper-complete guard".
-- If `.flaitron/tasknote/archive/<area>/<TASK-ID>.md` already exists: stop. The task is already closed and archived. Surface the conflict and ask whether the user meant a different task ID — do not scaffold a duplicate.
-
-Under `unattended-mode = true` every stop in this section, and the status gate above, terminates and writes nothing (`unattended-mode.md` §"Pre-scaffold stops").

@@ -18,6 +18,10 @@ caobunga-status.md
 # canonical install (see docs/MIGRATION.md §1.2 / cursor/AGENTS-snippet.md /
 # grok/AGENTS-snippet.md); the agent home carries only the global-only
 # utilities. Never commit per-machine state.
+# One link under `.claude/skills/` points into tracked `.flaitron/` instead of
+# `claude/`: flaitron-self's `/audit` overlay body is versioned at
+# `.flaitron/audit-overlay/`, so it survives this rule rather than excepting it
+# (SPEC/layout.md, docs/MIGRATION.md §1.2.2). The link itself stays ignored.
 .claude/
 .agents/
 .cursor/

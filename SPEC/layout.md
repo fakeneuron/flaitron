@@ -34,6 +34,12 @@ Flaitron does not submodule itself. When working in `~/code/flaitron/`:
 - `SPEC/fixtures/plan/` — cross-parser conformance fixtures for the `PLAN.md` task-line grammar (sample `.md` + expected `.json` pairs; consumer contract in [`SPEC/fixtures/plan/README.md`](fixtures/plan/README.md)). Cited from [`SPEC/plan-parser.md`](plan-parser.md); run by `viz/src/parser.test.ts`.
 - `SPEC/procedures/` — agent-neutral procedure SOPs: the source-of-truth projection of execution procedures (e.g. the `/ft-task` 4-phase workflow) for non-Claude wiring and contract-only agents. Format + loading convention: [`SPEC/procedures/README.md`](procedures/README.md).
 - The flaitron `.flaitron/PLAN.md` tracks flaitron's own development.
+- `.flaitron/audit-overlay/SKILL.md` — flaitron-self's own `/audit` thin overlay
+  over the bundled `ft-audit` scaffold. It lives here, not under `.claude/`,
+  because `.claude/` is wholly gitignored and these deltas are this repo's own
+  audit contract: they exist nowhere else and must be versioned.
+  `.claude/skills/audit` is a directory symlink to it — per-machine wiring the
+  operator re-creates from [`docs/MIGRATION.md`](../docs/MIGRATION.md) §1.2.2.
 - The `templates/` folder holds the canonical tasknote templates (full, micro, starter, sidequest) plus spec, loop-heartbeat, audit-overlay (usage: [`docs/MIGRATION.md`](../docs/MIGRATION.md) §1.2.1), and subagent-probe templates, and the `PLAN.md` / `tasknote-README.md` seed files.
 - `claude/` — Claude Code commands + skills (`/ft-task`, `/ft-release`, `/ft-new-project`, ...); the adopter snippet lives at `claude/AGENTS-snippet.md`.
 - `codex/` — Codex skill wrappers for the full `ft-*` inventory plus Codex-specific wiring notes.

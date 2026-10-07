@@ -15,17 +15,16 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-721** [heavy]🧠 | audit-overlay-home — The flaitron-self `/audit` overlay lives at `.claude/skills/audit/SKILL.md`, which `.gitignore:21` ignores, so it is unversioned and uncommittable. Decide its home (force-commit, relocate + symlink, or accept unversioned) and reconcile `docs/MIGRATION.md` §1.2.1. Blocks [[CORE-720]] closure. Filed with starter at `.flaitron/tasknote/CORE-721.md`.
 
 ## Low
 
-- [ ] **CORE-720** [light]🔧 | audit-overlay-docs-deltas — Fill the `docs` deltas in `.claude/skills/audit/SKILL.md` (default doc-set glob, rubric files, "no gates" note) so `/audit docs` stops tripping the scaffold bootstrap, and re-reconcile `flaitron-reconciled:` from v5.31.0 to the current tag. Surfaced by audit-docs 2026-10-06 (observation, no finding). Work is done on disk but uncommittable; Blocked by [[CORE-721]].
+- [ ] **CORE-720** [light]🔧 | audit-overlay-docs-deltas — Fill the `docs` deltas in `.flaitron/audit-overlay/SKILL.md` (default doc-set glob, rubric files, "no gates" note) so `/audit docs` stops tripping the scaffold bootstrap, and re-reconcile `flaitron-reconciled:` from v5.31.0 to the current tag. Surfaced by audit-docs 2026-10-06 (observation, no finding). The edits themselves are done and, since [[CORE-721]] gave the overlay a tracked home, already committed — what remains is re-pointing the one diff-based Acceptance criterion that went empty with them and closing.
 
 - [ ] **CORE-683** [medium]🧩 | epic-forward-restore — Blocked by decay-window depth: window [[CORE-680]] opened at `a78a8ae5`. After 8 epic tasknotes (`*-EPIC-*` or `*.<sub>`) archive past that SHA, restore `SPEC/epic.md`'s Forward-looking paragraph only if one followed it. Bar is in the archived CORE-680 note.
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
 
-- [ ] **CORE-722** [medium]🧩 | audit-deltas-remaining — Six `/audit` domains still trip the scaffold bootstrap on every run — `backend`/`security`/`performance`/`structure` (10 forker slots each), `frontend` (8), `general` (7). Fill their overlay deltas, or narrow the overlay's §Domains "all eight" claim to the domains flaitron actually audits. Blocked by [[CORE-721]].
+- [ ] **CORE-722** [medium]🧩 | audit-deltas-remaining — Six `/audit` domains still trip the scaffold bootstrap on every run — `backend`/`security`/`performance`/`structure` (10 forker slots each), `frontend` (8), `general` (7). Fill their overlay deltas in `.flaitron/audit-overlay/SKILL.md`, or narrow the overlay's §Domains "all eight" claim to the domains flaitron actually audits. Committable since [[CORE-721]] gave the overlay a tracked home.
 
 ## Future Opportunities
 
@@ -33,6 +32,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-721** [heavy]🧠 | audit-overlay-home — Completed 2026-10-06.
 - [x] **CORE-719** [light]🔧 | dependabot-enable — Completed 2026-10-06.
 - [x] **CORE-EPIC-716** [medium]🧩 | gate-hygiene — Completed 2026-10-06.
   - [x] **CORE-716.2** [light]🔧 | viz-audit-fix — Completed 2026-10-06.

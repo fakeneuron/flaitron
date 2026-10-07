@@ -32,7 +32,7 @@ below.
 
 | File | Section / context | Reference | Why it stays |
 |---|---|---|---|
-| `SPEC/layout.md` | §"Working in the flaitron repo itself" | `` `claude/` — Claude Code commands + skills `` | Wiring-layer directory name; factual. |
+| `SPEC/layout.md` | §"Working in the flaitron repo itself" | `` `claude/` — Claude Code commands + skills ``; `` `.claude/skills/audit` `` symlink to `.flaitron/audit-overlay/` | Wiring-layer directory names; factual. Per [[CORE-721]] for the second: the overlay *body* is agent-neutral content in a tracked, non-Claude path, and only the link that reaches it is Claude Code wiring — a future platform pointing its own skill directory at the same body adds its own link, not another body. |
 | `SPEC/layout.md` | §"Skill namespace" | `` `.claude/` `` adopter directory | Adopter Claude Code wiring location. |
 | `SPEC/layout.md` | §"Skill namespace" — "Wrapper-name invariant (grep-able)" | `` `claude/commands/<name>.md` `` (prose + fenced `sh` check) | Per [[CORE-466]] — the invariant check is scoped to the Claude Code command-wrapper directory by name; a future platform's equivalent wrapper convention gets its own check rather than generalizing this one. |
 | `SPEC/tasknote-selection.md` | §"When to use a tasknote (and when not to)" (`/ft-refactor` bullet block) and the trigger line | `/ft-task`, `/ft-refactor`, `/ft-micro-task`, `/ft-file-followup`, `/ft-epic-discovery`, `/ft-close-epic`, `/ft-release` | Canonical flaitron skill names. |

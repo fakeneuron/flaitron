@@ -158,11 +158,14 @@ cp .flaitron/core/claude/commands/ft-audit.md         .claude/commands/audit.md
 Set `flaitron-reconciled:` to the currently pinned flaitron tag (`git -C
 .flaitron/core describe --tags`).
 
-**Flaitron-self:**
+**Flaitron-self:** the overlay body is **tracked** here, unlike an adopter's,
+and `.claude/` is reached by a symlink — `.claude/` stays wholly ignored, so an
+overlay written into it would be unversionable (`docs/MIGRATION.md` §1.2.2).
 
 ```sh
-mkdir -p .claude/skills/audit
-cp templates/audit-overlay-template.md .claude/skills/audit/SKILL.md
+mkdir -p .flaitron/audit-overlay .claude/skills .claude/commands
+cp templates/audit-overlay-template.md .flaitron/audit-overlay/SKILL.md
+ln -sfn ../../.flaitron/audit-overlay/ .claude/skills/audit
 cp claude/commands/ft-audit.md         .claude/commands/audit.md
 ```
 
@@ -170,14 +173,17 @@ Set `flaitron-reconciled:` to this checkout's own tag (`git describe --tags`),
 and keep the copied `SKILL.md`'s in-tree "Referenced scaffold" line
 (`claude/skills/ft-audit/SKILL.md`) rather than the adopter submodule path —
 there is no `.flaitron/core/` submodule here to reference
-(`docs/MIGRATION.md` §1.2.2).
+(`docs/MIGRATION.md` §1.2.2). Commit the overlay body; the symlink lives under
+ignored `.claude/` and is per-machine wiring the operator re-creates from
+`docs/MIGRATION.md` §1.2.2's block on a fresh clone.
 
 In both cases, fill the overlay's `## Deltas` block with the derived values,
 leave `flaitron-tracks: ft-audit` as shipped, and remove the template's
 trailing forker note. Leave the not-derivable slots as clearly-marked
 placeholders and tell the operator they are outstanding.
 
-**Never overwrite an existing `.claude/skills/audit/`.** If one is already
+**Never overwrite an existing overlay** — `.claude/skills/audit/` in an adopter,
+or `.flaitron/audit-overlay/` in flaitron-self. If one is already
 present, this branch does not apply — that fork simply has unfilled slots, and
 the fix is editing it, not replacing it. Say so and fall back to the other two
 branches.

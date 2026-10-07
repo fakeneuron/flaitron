@@ -28,14 +28,13 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-728** [light]🔧 [unattended] | snippet-bumping-dedupe — `claude/AGENTS-snippet.md` §"Bumping the pinned flaitron version" restates `docs/MIGRATION.md` §"Pinning and bumping" (tag fetch/checkout, re-pin, symlinks track the submodule). Cut the snippet's fallback paragraph to a pointer; keep its `/ft-update` sentence. Deferred by [[CORE-724.5]], never filed.
 
-- [ ] **CORE-733** [light]🔧 | micro-close-epic-note-recovery — `/ft-micro-task` cannot resume its own model-mismatch park, and `/ft-close-epic` still gates dirt before its existing-note check. Parked at `.flaitron/sidequest/CORE-733.md`.
-
 ## Future Opportunities
 
 (none)
 
 ## Completed
 
+- [x] **CORE-733** [light]🔧 | micro-close-epic-note-recovery — Completed 2026-10-07.
 - [x] **CORE-732** [medium]🧩 | pre-scaffold-note-recovery — Completed 2026-10-07.
 - [x] **CORE-731** [medium]🧩 | unattended-park-existing-note — Completed 2026-10-07.
 - [x] **CORE-725** [medium]🧩 | unattended-model-gate-order — Completed 2026-10-07.

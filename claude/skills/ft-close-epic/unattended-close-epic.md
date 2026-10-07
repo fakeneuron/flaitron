@@ -24,7 +24,7 @@ The **foreign-dirt gate is not relaxed** — it terminates and writes nothing, i
 ⏸ --unattended stop — <cause>: <one line>. No tasknote written.
 ```
 
-`<cause>` is one of `foreign-dirt` · `in-flight` · `archived` · `no-parent` · `parent-closed` · `audit-position` · `open-siblings`. List the specifics (dirty paths, the correct audit ID, the open child IDs) so the caller can act without a transcript. Never stash, clean, or commit foreign dirt.
+`<cause>` is one of `foreign-dirt` · `in-flight` (any live audit note, whatever its status) · `archived` · `no-parent` · `parent-closed` · `audit-position` · `open-siblings`. List the specifics (dirty paths, the correct audit ID, the open child IDs) so the caller can act without a transcript. Never stash, clean, or commit foreign dirt.
 
 **Open-siblings ask (Step 2).** Take the default-No bail deterministically — do not ask. An early audit over a partial cohort is a scope judgment, and the ask's own default is already "bail". Stop with `⏸ --unattended stop — open-siblings: …`, naming the open child IDs.
 

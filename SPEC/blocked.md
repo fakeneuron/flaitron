@@ -110,7 +110,9 @@ left off.
 Phase 1 is already complete — do not re-run it. **Exception:** a
 `model-mismatch` park is a bare scaffold the `--unattended` model gate wrote
 before Phase 1 ran, so its resume has nothing to drift-check and continues at
-Phase 1 Discovery instead.
+Phase 1 Discovery instead. A micro-shaped `model-mismatch` park resumes under
+`/ft-micro-task <ID>` (`/ft-task` is not micro-aware); that runner fills its
+missing scaffold values and continues at its Step 3.
 
 ## Park reason
 

@@ -49,13 +49,15 @@ Paths this skill uses:
 
 Then run its §"Pre-flight" (Area, epic-ID dispatch, foreign-dirt gate, archive collision), with this check ahead of its foreign-dirt bullet, so an uncommitted note is refused as in flight rather than stopped as dirt; micro-tasknotes for epic subtasks are valid — same lifecycle, lighter ceremony:
 
-- If `.flaitron/tasknote/<TASK-ID>.md` already exists: stop. The tasknote is in flight or already closed-but-not-archived. Surface the conflict; recommend the user continue conversationally rather than restarting. If the session that started it is gone (killed, out of context, an orchestrator's child that exited), that recommendation is unreachable — name the park-then-resume path in `<SPEC_DIR>/blocked.md` §"Resuming an interrupted run" instead.
+- If `.flaitron/tasknote/<TASK-ID>.md` already exists: stop. The tasknote is in flight or already closed-but-not-archived. Surface the conflict; recommend the user continue conversationally rather than restarting. If the session that started it is gone (killed, out of context, an orchestrator's child that exited), that recommendation is unreachable — name the park-then-resume path in `<SPEC_DIR>/blocked.md` §"Resuming an interrupted run" instead. **Exception — this skill's own `model-mismatch` park.** A note with `status: blocked`, `park-reason: model-mismatch …`, and a `## ⚡ Notes` section is the bare scaffold the `--unattended` model gate wrote (`<UNATTENDED>` §"Pre-scaffold stops"): it passes on through the rest of Pre-flight to Step 1.5, and Step 2 resumes it instead of scaffolding. Any other existing note, a blocked `/ft-task`-shaped one included, stops as above.
 
 ## Step 1.5 — Model gate (BEFORE scaffolding)
 
 Run `<PREAMBLE>` §"Model gate", substituting `/ft-micro-task` for the edge fragment's `<SKILL>` placeholder. **Satisfied** proceeds to Step 2.
 
 ## Step 2 — Scaffold the micro-tasknote
+
+**Resume a `model-mismatch` park.** If Step 1 let an existing note through, resume it in place and skip the template copy and the stub retirement below. It is a bare scaffold with no Notes filled and no work done, so there is nothing to drift-check. Fill any scaffold value below the note lacks (🎯 Goal, `related-tasks:`), flip `status: blocked` → `in-progress`, flip the nav chip `⏸ Blocked` → `🟢 In progress`, and remove `park-reason:` (`<SPEC_DIR>/blocked.md` §"Exit (resume)"), then continue at Step 3.
 
 **Sidequest-stub retirement.** If `.flaitron/sidequest/<TASK-ID>.md` exists, this scaffold is a sidequest promotion — read it now; once the scaffold below is written, carry every section below its nav line (`## Idea`, `## Resume anchor`, and any added by hand), verbatim, into the new note's `## ⚡ Notes`, ahead of the bold-prefix prompts, as a quoted block headed `Carried from the retired sidequest stub:`, section headings turned into bold labels, and only after that write delete the stub (`rm .flaitron/sidequest/<TASK-ID>.md`). Contract: `claude/skills/ft-file-followup/park-mode.md` §Notes → "Promotion" ("Delete `.flaitron/sidequest/<ID>.md` after promotion"); this executes it at the point a promoting run actually writes, instead of relying on the promoter to remember a rule stated only in that fragment and `docs/GLOSSARY.md`.
 

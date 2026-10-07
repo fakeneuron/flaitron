@@ -637,7 +637,9 @@ For `/ft-task` and `/ft-micro-task`, the task's own existing
 is not foreign dirt: the runner's existing-note check runs ahead of this gate
 and routes it. `/ft-task` refuses an in-flight note, promotes a starter, and
 resumes a blocked note (an uncommitted `--unattended` model-mismatch park
-included); `/ft-micro-task` refuses any existing note.
+included); `/ft-micro-task` refuses any existing note but its own
+`model-mismatch` park, which it resumes. `/ft-close-epic` runs the same
+check ahead of the gate and refuses its audit note at any status.
 
 Same-conversation continue after a start-only skill already opened the
 tasknote is out of band (those skills refuse re-entry on in-flight notes).

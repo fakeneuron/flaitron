@@ -34,13 +34,14 @@ When `unattended-mode = true`, Read `<SKILL_DIR>/unattended-close-epic.md`, `<UN
 ## Step 1 — Pre-flight
 
 - `.flaitron/PLAN.md` must exist (cwd is a flaitron-adopting project or flaitron itself).
-- **Foreign-dirt gate (paper-complete guard).** Before scaffold writes, run `git status --porcelain`. If non-empty: **STOP**, surface the dirt list, ask the operator to commit / stash / discard themselves, then re-invoke. Do not auto-clean. See SPEC §"Paper-complete guard". **`--unattended` does not relax this** — it terminates and writes nothing, per the fragment's §"Steps 1-2 — Pre-scaffold stops".
 - Parse `args` as `<AREA>-<NUMBER>.<SUB>` (where `.<SUB>` is a number or the reserved literal `.N` — both parse per SPEC §"Task ID convention"):
   - **Area** resolves by reading the `.flaitron/tasknote/README.md` §"Archive layout" table — every prefix, canonical ones included; `<area>` is **never derived from the ID** (SPEC §"Task ID convention"). No row for this prefix → stop and ask; do not guess a folder.
   - **`.<SUB>` segment is required** — `/ft-close-epic` only runs against epic subtasks, not standalone tasks. If the ID matches `<AREA>-<NUMBER>` (no `.<SUB>` suffix), stop and tell the user "`/ft-close-epic` runs against the audit `.N` subtask of an epic, not a standalone task. Use `/ft-task <ID>` for standalone tasks."
-- Check `<tasknote dir>/<AUDIT-SUBTASK-ID>.md`:
+- Check `<tasknote dir>/<AUDIT-SUBTASK-ID>.md` (this check runs ahead of the foreign-dirt gate, so an uncommitted audit note is refused here rather than stopped as dirt):
   - If the file already exists with `status: in-progress`, stop and tell the user the audit tasknote is already in flight. Recommend continuing conversationally (e.g., "continue CORE-057.6") rather than restarting — this skill is start-only by design.
+  - If it exists with any other status (`blocked`, `starter`, or unrecognized), stop and surface it: this skill never overwrites a live note. A `blocked` note resumes and a `starter` promotes through `/ft-task <AUDIT-SUBTASK-ID>`.
   - If `<tasknote dir>/archive/<area>/<AUDIT-SUBTASK-ID>.md` already exists, the audit is closed and archived; stop and surface the conflict.
+- **Foreign-dirt gate (paper-complete guard).** Before scaffold writes, run `git status --porcelain`. If non-empty: **STOP**, surface the dirt list, ask the operator to commit / stash / discard themselves, then re-invoke. Do not auto-clean. See SPEC §"Paper-complete guard". **`--unattended` does not relax this** — it terminates and writes nothing, per the fragment's §"Steps 1-2 — Pre-scaffold stops".
 - Otherwise (fresh scaffold path), continue.
 
 **Pre-scaffold stops under `--unattended`.** Every bail in Steps 1-2 fires before the audit tasknote exists, so each terminates and **writes nothing** — shape and closed `<cause>` set in the fragment's §"Steps 1-2 — Pre-scaffold stops".

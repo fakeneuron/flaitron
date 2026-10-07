@@ -225,8 +225,9 @@ PLAN.md edit defers.
 The Step 1 pre-flight checks and the Step 1.5 model gate run before this
 run has written a tasknote, so a "park" there may have nothing to park — or
 may find a note it must not touch. Each runner's pre-flight refuses an
-in-flight note (`/ft-micro-task`: any existing note), so only a starter or
-blocked note can reach `/ft-task`'s model gate. The posture splits by what
+in-flight note (`/ft-micro-task`: any existing note but its own
+`model-mismatch` park), so only a starter or blocked note can reach
+`/ft-task`'s model gate, and only its own park `/ft-micro-task`'s. The posture splits by what
 the stop is *about*:
 
 - **Concrete-model mismatch — scaffold, then park.** A task-level

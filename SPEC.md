@@ -624,13 +624,20 @@ checks; this section is authoritative.
 ### 1. Foreign-dirt gate (task entry)
 
 At **skill entry**, before scaffold / promote / execute writes (and before
-blocked-resume continues Phase 2), run `git status --porcelain` (or
+blocked-resume continues), run `git status --porcelain` (or
 equivalent). If the working tree is **non-empty**:
 
 - **STOP.** Do not scaffold, promote, or resume.
 - Surface the dirt list and ask the operator to commit, stash, or discard
   **themselves** — then re-invoke the skill.
 - No assistant-driven stash/clean/commit of foreign dirt.
+
+For `/ft-task` and `/ft-micro-task`, the task's own existing
+`.flaitron/tasknote/<TASK-ID>.md` (any status but a deletion or rename)
+is not foreign dirt: the runner's existing-note check runs ahead of this gate
+and routes it. `/ft-task` refuses an in-flight note, promotes a starter, and
+resumes a blocked note (an uncommitted `--unattended` model-mismatch park
+included); `/ft-micro-task` refuses any existing note.
 
 Same-conversation continue after a start-only skill already opened the
 tasknote is out of band (those skills refuse re-entry on in-flight notes).

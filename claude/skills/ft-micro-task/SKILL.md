@@ -47,7 +47,7 @@ Paths this skill uses:
 
 **Read `<PREAMBLE>` now** and run its §"Locate and capture": the PLAN.md lookup, the status gate, the segment capture, the `[unattended]` row marker, the 🎯 purpose blurb, and the two advisory checks. Filing-on-the-fly is out of scope here; the PLAN.md entry must already exist. The row marker's `<suppressions>` clause is `📦 signal trips suppressed at Step 5`. This skill has one scaffold path, so the blurb and the ✅ Recap are the operator's only two plain-English reads of the run.
 
-Then run its §"Pre-flight" (Area, epic-ID dispatch, foreign-dirt gate, archive collision), with this check ahead of its archive-collision bullet; micro-tasknotes for epic subtasks are valid — same lifecycle, lighter ceremony:
+Then run its §"Pre-flight" (Area, epic-ID dispatch, foreign-dirt gate, archive collision), with this check ahead of its foreign-dirt bullet, so an uncommitted note is refused as in flight rather than stopped as dirt; micro-tasknotes for epic subtasks are valid — same lifecycle, lighter ceremony:
 
 - If `.flaitron/tasknote/<TASK-ID>.md` already exists: stop. The tasknote is in flight or already closed-but-not-archived. Surface the conflict; recommend the user continue conversationally rather than restarting. If the session that started it is gone (killed, out of context, an orchestrator's child that exited), that recommendation is unreachable — name the park-then-resume path in `<SPEC_DIR>/blocked.md` §"Resuming an interrupted run" instead.
 
@@ -57,7 +57,7 @@ Run `<PREAMBLE>` §"Model gate", substituting `/ft-micro-task` for the edge frag
 
 ## Step 2 — Scaffold the micro-tasknote
 
-**Sidequest-stub retirement.** If `.flaitron/sidequest/<TASK-ID>.md` exists, this scaffold is a sidequest promotion — delete it now (`rm .flaitron/sidequest/<TASK-ID>.md`). Contract: `claude/skills/ft-file-followup/park-mode.md` §Notes → "Promotion" ("Delete `.flaitron/sidequest/<ID>.md` after promotion"); this executes it at the point a promoting run actually writes, instead of relying on the promoter to remember a rule stated only in that fragment and `docs/GLOSSARY.md`.
+**Sidequest-stub retirement.** If `.flaitron/sidequest/<TASK-ID>.md` exists, this scaffold is a sidequest promotion — read it now; once the scaffold below is written, carry every section below its nav line (`## Idea`, `## Resume anchor`, and any added by hand), verbatim, into the new note's `## ⚡ Notes`, ahead of the bold-prefix prompts, as a quoted block headed `Carried from the retired sidequest stub:`, section headings turned into bold labels, and only after that write delete the stub (`rm .flaitron/sidequest/<TASK-ID>.md`). Contract: `claude/skills/ft-file-followup/park-mode.md` §Notes → "Promotion" ("Delete `.flaitron/sidequest/<ID>.md` after promotion"); this executes it at the point a promoting run actually writes, instead of relying on the promoter to remember a rule stated only in that fragment and `docs/GLOSSARY.md`.
 
 Copy the micro template (path resolved in Step 0) to `.flaitron/tasknote/<TASK-ID>.md`. Frontmatter and body shape: see SPEC §"Tasknote frontmatter" + §"Tasknote body shape" + `SPEC/tasknote-selection.md` §"When to use a tasknote (and when not to)" micro carve-out for the `## ⚡ Notes` / `## ✅ Recap` skeleton.
 

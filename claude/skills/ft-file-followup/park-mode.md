@@ -173,6 +173,11 @@ SKILL's Step 5 hand-off, which ends its turn.
   filer's must-not-exist pre-flight refuses the ID — a manual edit, PLAN row
   untouched).
   **Delete `.flaitron/sidequest/<ID>.md` after promotion** — CORE-359.3 cleaned
-  up an orphan stub left by a promotion that skipped this step.
+  up an orphan stub left by a promotion that skipped this step. The promoting
+  runner first carries every section below the stub's nav line (`## Idea`,
+  `## Resume anchor`, and any added by hand), verbatim, into the new note —
+  Discovery Notes, or a micro note's `## ⚡ Notes` — as a quoted block headed
+  `Carried from the retired sidequest stub:`, section headings turned into
+  bold labels, so deleting it loses nothing.
 - **Context-dependent:** draws from the current conversation — run in-session,
   not after `/clear`.

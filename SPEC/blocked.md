@@ -107,7 +107,10 @@ remove `park-reason:` (it describes a current stop, and the run is no
 longer stopped), optionally remove the `Blocked by` clause from PLAN.md (or
 leave it as historical context), and continue Phase 2 from where parking
 left off.
-Phase 1 is already complete — do not re-run it.
+Phase 1 is already complete — do not re-run it. **Exception:** a
+`model-mismatch` park is a bare scaffold the `--unattended` model gate wrote
+before Phase 1 ran, so its resume has nothing to drift-check and continues at
+Phase 1 Discovery instead.
 
 ## Park reason
 

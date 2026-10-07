@@ -190,9 +190,9 @@ Translate its asks to this platform's primitives and preserve every invocation
 flag in re-entry instructions. A concrete mismatch stops and offers switch or
 operator-approved retag; a missing tag asks before scaffold; a category
 under-tier only warns and proceeds. Never silently retag a satisfied category.
-Run Step 3's foreign-dirt guard and its archived / in-flight refusals at
-entry, before this model check, so a retag never lands on a note this run
-then refuses. Run them once; Step 3 must not mistake this run's approved
+Run Step 3's in-flight refusal, then its foreign-dirt guard and archived
+refusal, at entry, before this model check, so a retag never lands on a note
+this run then refuses. Run them once; Step 3 must not mistake this run's approved
 writes for foreign dirt.
 
 Check the `[model]` tag against the model you are running as, per
@@ -217,7 +217,10 @@ child is typically an Audit.
 
 **Foreign-dirt gate (paper-complete guard).** Before any scaffold / promote /
 resume writes, run `git status --porcelain` unless already run at entry in
-Step 2. If foreign dirt exists: **STOP**, surface
+Step 2. This ID's own `.flaitron/tasknote/<TASK-ID>.md`, when it exists
+(any status but a deletion or rename), is not foreign dirt —
+the in-flight refusal runs first and the branch below routes it. If foreign
+dirt exists: **STOP**, surface
 the dirt list, and ask the operator to commit / stash / discard themselves,
 then re-invoke. Do not auto-clean. Full contract:
 [`SPEC.md` §"Paper-complete guard"](../../SPEC.md). **Unattended mode does not
@@ -238,14 +241,15 @@ Check `.flaitron/tasknote/<TASK-ID>.md` and branch on its existence / YAML
   [`claude/skills/ft-task/step-3a-promote-starter.md`](../../claude/skills/ft-task/step-3a-promote-starter.md),
   including the seed drift/fidelity check. Translate its ask primitives.
 - **`status: blocked`** → resume from Phase 2; Phase 1 is already done on a
-  parked tasknote. Read [`SPEC/blocked.md`](../blocked.md) and execute
+  parked tasknote — except a `model-mismatch` park, a bare scaffold written
+  before Phase 1 ran, which resumes at Phase 1 (Step 4). Read [`SPEC/blocked.md`](../blocked.md) and execute
   [`claude/skills/ft-task/step-3c-resume-blocked.md`](../../claude/skills/ft-task/step-3c-resume-blocked.md),
   including drift-checking parked work and clearing `park-reason:`. Translate
   its ask primitives. Once the parked note is read, name the `park-reason:`
   you are clearing in
-  one plain prose line before Phase 2 begins — the step-1 blurb could not have
-  known it, and there is no Discovery here to orient the operator. Ordinary
-  prose, not a second 🎯 emission.
+  one plain prose line before the run continues — the step-1 blurb could not
+  have known it, and on the Phase 2 route there is no Discovery to orient the
+  operator. Ordinary prose, not a second 🎯 emission.
 - **`status: in-progress` / `not-started` / `completed`, or unrecognized** →
   the file is in flight or closed; do not restart. Continue it
   conversationally. If the session that started it is gone, that is not
@@ -254,7 +258,9 @@ Check `.flaitron/tasknote/<TASK-ID>.md` and branch on its existence / YAML
   [`SPEC/blocked.md`](../blocked.md) §"Resuming an interrupted run".
 - **Absent** → **First, sidequest-stub retirement**: if
   `.flaitron/sidequest/<TASK-ID>.md` exists, this scaffold is a sidequest
-  promotion — delete it now. Contract:
+  promotion — once the scaffold below is written, carry the stub's body into
+  its Discovery Notes per park-mode.md §Notes → "Promotion", and only after
+  that write delete the stub. Contract:
   [`claude/skills/ft-file-followup/park-mode.md`](../../claude/skills/ft-file-followup/park-mode.md)
   §Notes → "Promotion" ("Delete `.flaitron/sidequest/<ID>.md` after
   promotion"); this executes it at the point a promoting run actually writes,

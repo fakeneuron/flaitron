@@ -37,7 +37,7 @@ Every conversion below performs the same four writes, then stops:
 
 **A park never performs the operator's motion.** The drift park does not make the verdict's PLAN.md edit and does not delete the tasknote; the micro dependency park does not re-file the task. Record what the operator should do on resume in the `park-reason:` prose or the tasknote body — the resuming operator takes it under a real gate.
 
-**Resume is unchanged.** Re-invoking `<SKILL> <TASK-ID>` against the parked tasknote takes `SPEC/blocked.md`'s normal resume path: drift-check the parked work, flip `status:` back to `in-progress`, flip the chip back to `🟢 In progress`, **remove `park-reason:`**, and continue.
+**Resume is unchanged.** Re-invoking `<SKILL> <TASK-ID>` against the parked tasknote takes `SPEC/blocked.md`'s normal resume path: drift-check the parked work, flip `status:` back to `in-progress`, flip the chip back to `🟢 In progress`, **remove `park-reason:`**, and continue — at Phase 2, or at Phase 1 for a `model-mismatch` park, which was written before Phase 1 ran (`step-3c-resume-blocked.md`).
 
 ## Conversion map
 

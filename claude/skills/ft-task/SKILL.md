@@ -37,9 +37,9 @@ Subsequent steps name what to Read; the SPEC contract + matching SKILL fragment 
 
 **Read `<SKILL_DIR>/preamble.md` now** — shared with `/ft-micro-task`, read every run — and run its §"Locate and capture": the PLAN.md lookup, the status gate, the segment capture, the `[unattended]` row marker, the 🎯 purpose blurb, and the two advisory checks. Here the row marker's `<suppressions>` clause is `same suppressions as --fast`, and the blurb fires ahead of the 3a / 3b / 3c branch.
 
-Then run its §"Pre-flight" (Area, epic-ID dispatch, foreign-dirt gate, archive collision), with this check ahead of its archive-collision bullet — run here, before the model gate, so a retag or an `--unattended` park never lands on a note this run then refuses:
+Then run its §"Pre-flight" (Area, epic-ID dispatch, foreign-dirt gate, archive collision), with this check ahead of its foreign-dirt bullet — run here, before the model gate, so a retag or an `--unattended` park never lands on a note this run then refuses, and before the dirt gate, so an uncommitted note is routed rather than stopped as dirt:
 
-- If `.flaitron/tasknote/<TASK-ID>.md` exists with any `status:` other than `starter` / `blocked` (`not-started` / `in-progress` / `completed`, or unrecognized), the file is in flight or already closed. Stop. Tell the user the tasknote exists and recommend they continue conversationally (e.g., "continue CORE-004") rather than restarting. This skill is start-only by design. **When the session that started it is gone** — killed, out of context, an orchestrator's child that exited — "continue conversationally" is unreachable; name the park-then-resume path in `<SPEC_DIR>/blocked.md` §"Resuming an interrupted run" instead of stopping at the recommendation. That path applies to `in-progress` only. A `starter` or `blocked` note passes on to the Step 1.5 model gate.
+- If `.flaitron/tasknote/<TASK-ID>.md` exists with any `status:` other than `starter` / `blocked` (`not-started` / `in-progress` / `completed`, or unrecognized), the file is in flight or already closed. Stop. Tell the user the tasknote exists and recommend they continue conversationally (e.g., "continue CORE-004") rather than restarting. This skill is start-only by design. **When the session that started it is gone** — killed, out of context, an orchestrator's child that exited — "continue conversationally" is unreachable; name the park-then-resume path in `<SPEC_DIR>/blocked.md` §"Resuming an interrupted run" instead of stopping at the recommendation. That path applies to `in-progress` only. A `starter` or `blocked` note passes on through the rest of Pre-flight to the Step 1.5 model gate.
 
 ## Step 1.5 — Model gate (BEFORE scaffolding)
 
@@ -58,7 +58,7 @@ Read `<SPEC_DIR>/starter.md` (lifecycle contract) and `<SKILL_DIR>/step-3a-promo
 
 ## Step 3b — Scaffold a fresh tasknote (no existing file)
 
-**Sidequest-stub retirement.** If `.flaitron/sidequest/<TASK-ID>.md` exists, this scaffold is a sidequest promotion — delete it now (`rm .flaitron/sidequest/<TASK-ID>.md`). Contract: `claude/skills/ft-file-followup/park-mode.md` §Notes → "Promotion" ("Delete `.flaitron/sidequest/<ID>.md` after promotion"); this executes it at the point a promoting run actually writes, instead of relying on the promoter to remember a rule stated only in that fragment and `docs/GLOSSARY.md`.
+**Sidequest-stub retirement.** If `.flaitron/sidequest/<TASK-ID>.md` exists, this scaffold is a sidequest promotion — read it now; once the scaffold below is written, carry every section below its nav line (`## Idea`, `## Resume anchor`, and any added by hand), verbatim, into the new note's **Discovery Notes** as a quoted block headed `Carried from the retired sidequest stub:`, section headings turned into bold labels, and only after that write delete the stub (`rm .flaitron/sidequest/<TASK-ID>.md`). Contract: `claude/skills/ft-file-followup/park-mode.md` §Notes → "Promotion" ("Delete `.flaitron/sidequest/<ID>.md` after promotion"); this executes it at the point a promoting run actually writes, instead of relying on the promoter to remember a rule stated only in that fragment and `docs/GLOSSARY.md`.
 
 Copy the template (path resolved in Step 0) to `.flaitron/tasknote/<TASK-ID>.md`. The frontmatter schema and body layout are canonical in SPEC §"Tasknote frontmatter" and §"Tasknote body shape" — fill them as specified there. The template ships the canonical phase checklists; leave them exactly as they ship.
 
@@ -78,9 +78,9 @@ Then continue at **Step 4 (Phase 1: Discovery)**.
 
 ## Step 3c — Resume a blocked tasknote (existing file with `status: blocked`)
 
-Read `<SPEC_DIR>/blocked.md` (lifecycle contract) and `<SKILL_DIR>/step-3c-resume-blocked.md` (executable steps), then continue at **Step 5** at Phase 2 (the lazy fragment's step 5 directs there; Phase 1 is already complete on a parked tasknote).
+Read `<SPEC_DIR>/blocked.md` (lifecycle contract) and `<SKILL_DIR>/step-3c-resume-blocked.md` (executable steps), then continue at **Step 5** at Phase 2 (the lazy fragment's step 5 directs there; Phase 1 is already complete on a parked tasknote) — except a `model-mismatch` park, written as a bare scaffold before Phase 1 ran, which continues at **Step 4** (Phase 1).
 
-Once the fragment has read the parked note, **name the `park-reason:` being cleared** in one plain prose line before Phase 2 starts. Phase 1 is already complete here, so the operator lands directly in Phase 2 with no Discovery to orient them, and the Step 1 blurb could not have known why the note was parked. Ordinary prose, not a second 🎯 emission.
+Once the fragment has read the parked note, **name the `park-reason:` being cleared** in one plain prose line before the run continues. On the Phase 2 route the operator lands with no Discovery to orient them, and the Step 1 blurb could not have known why the note was parked. Ordinary prose, not a second 🎯 emission.
 
 ## Step 4 — Phase 1: Discovery (drive now)
 

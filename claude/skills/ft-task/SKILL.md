@@ -158,7 +158,7 @@ Skill-specific imperatives on top of the SPEC contract:
 
   Record the judgment inline at the exit ("Discovery surfaced no significant deviation → skip 🛠️." or "Discovery surfaced <one-line reason> → fire 🛠️." or "Discovery landed Re-scope → ⚠️ notice (--fast).") so the operator can spot misjudgments in the transcript.
 
-**`--fast` interaction.** On a `Proceed` verdict with `fast-mode = true`, the clarifying-questions step writes `No clarifications needed (--fast)` and the Skip branch fires; the drift carve-out above is canonical in SPEC/gates.md §"Phase 1→2 exit gate" → Flag interaction.
+**`--fast` interaction.** On a `Proceed` verdict with `fast-mode = true`, the clarifying-questions step writes `No clarifications needed (--fast)` and the Skip branch fires; the drift carve-out above is canonical in SPEC/gate-postures.md §"`--fast` operator override" → "Each delegation is bounded".
 
 ## Step 5 — Phases 2-4 (drive conversationally)
 

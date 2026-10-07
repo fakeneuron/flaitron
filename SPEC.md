@@ -104,12 +104,9 @@ see [`SPEC/plan-parser.md`](SPEC/plan-parser.md).
 **Write-once policy.** Archived tasknotes are historical records — not
 retroactively edited when the spec evolves. Frontmatter and body
 conventions apply to new tasknotes only; legacy archives stay as-is. Tools
-should silently accept and ignore retired fields (the v0.2.0 `model:` field
-since moved to the PLAN.md task line — see §"Task-line format" /
-§"Model field"; and the v0.8.0 `priority:` and `area:` fields, both
-derivable from the PLAN.md section heading and the task ID prefix
-respectively) when parsing legacy archives. §"Tasknote body shape" and
-§"Model field" refer back here rather than restating.
+should silently accept and ignore retired fields (`model:`, `priority:`,
+`area:` — each now read from the PLAN.md row or its section) when parsing
+legacy archives.
 
 **Write-once does not cover lifecycle writes.** The policy scopes *retroactive*
 edits — reaching back into an already-archived note because the spec moved on.
@@ -118,7 +115,7 @@ It does not reach the `status:` transitions the lifecycle itself performs
 `blocked` → `in-progress` at a resume, `in-progress` → `completed` at Phase 4
 closure). Each of those writes happens while the tasknote is **active**, before
 any archive move. Do not cite write-once to justify leaving `status:` stale at
-closure — that reading is what produced the drift this carve-out closes.
+closure.
 
 **Write-once does not cover factual corrections.** A task that proves a
 **factual** claim in an archived tasknote false appends an append-only
@@ -170,16 +167,13 @@ supersedes:
   - CORE-157
 ```
 
-**`touches:` carries a lifecycle duty the other three do not.** It is the
-task's *declared scope*: Phase 1 fills it with the paths the task expects to
-edit — code or markdown, this repo's own contract edits included — and Phase 4
-reconciles it against `git diff --name-only` (§"📝 Phase 1: Discovery",
-§"🚀 Phase 4: Closure"). Only a task with **no file deliverable** is exempt —
-a Discovery or audit child whose whole product is a `PLAN.md` filing — and an
-exempt note writes nothing rather than an empty list. Exempt and undeclared
-therefore read alike in the YAML, which is the price of shipping no validator
-and the right price: the reconciliation reports what it finds and never
-refuses.
+**`touches:` carries a lifecycle duty the other three do not.** Phase 1 fills
+it with the paths the task expects to edit — code or markdown, contract edits
+included — and Phase 4 reconciles it (§"Scope reconciliation"). Only a task with
+**no file deliverable** is exempt — a Discovery or audit child whose whole
+product is a `PLAN.md` filing — and an exempt note writes nothing rather than an
+empty list, so exempt and undeclared read alike in the YAML: the price of
+shipping no validator.
 
 **Park reason.** One additive key, `park-reason: <code> — <prose>`, records
 *why* a tasknote sits at `status: blocked` — omit-when-absent like the planning
@@ -229,8 +223,7 @@ section until promotion.
 
   **The chip is hand-authored at exactly four transitions — scaffold,
   promotion, park, resume — and is deliberately NOT flipped at Phase 4
-  closure** (CORE-042.4, SPEC v0.8.0: three closure status writes cut to
-  two). Visualizers compute the chip from YAML `status:` at render time, so
+  closure.** Visualizers compute the chip from YAML `status:` at render time, so
   an archived tasknote may show chip text that lags the YAML; YAML stays
   canonical for tasknote-bearing rows, the PLAN.md checkbox for the roadmap
   binary.
@@ -239,7 +232,7 @@ section until promotion.
   `⚪ Not started` / `🌱 Starter`. This enumerates what a *renderer* may
   produce, not writes closure performs: `✅ Completed` is rendered from YAML,
   never written by Phase 4. Reading the list as license for a closure-time
-  chip flip is the misreading behind CORE-042.5 and CORE-393.
+  chip flip is a known, recurring misreading.
 - **🎯 Goal** — one-sentence description of what this task accomplishes.
 - **✅ Acceptance** — checklist of concrete, testable criteria for "done."
   Populated during Phase 1 Discovery, each criterion naming the **verify
@@ -282,48 +275,28 @@ Fan-out and Handoff contract: see
 are first-class in markdown-vault tooling (Obsidian, Foam, Logseq) and stay
 cheap to write.
 
-**Backwards compatibility** — see §"Tasknote frontmatter" write-once policy.
-Adopting projects pick up the new shape on their next flaitron version bump.
-
-### Optional inserts — Fan-out and Handoff
-
-Canonical contract for both: see
-[`SPEC/tasknote-inserts.md`](SPEC/tasknote-inserts.md).
-
 ## The 4-phase workflow
 
 Every tasknote follows four phases in strict serial order. Do not skip ahead.
 
 ### Operator-gate cues
 
-The workflow surfaces **up to two** standing phase-gate banners: 🛠️ Phase 1→2
-(post-Discovery) and 📦 ready-to-commit. Both are conditional, so a fully
-mechanical task skips both and runs end-to-end with inline state markers.
-Once Phase 1 closes, Phase 2 → Phase 3 → Phase 4 closure ops flow
-continuously without intermediate gates, and skill-level extensions (epic
-parent-flip, release push-go) bundle into 📦 rather than adding their own
-banners.
+The workflow surfaces **up to two** standing phase-gate banners, both
+conditional: 🛠️ Phase 1→2 (post-Discovery) and 📦 ready-to-commit. A fully
+mechanical task skips both; once Phase 1 closes, Phase 2 → Phase 3 → Phase 4
+closure ops flow continuously without intermediate gates. Everything that
+governs the gate surface is lazy, in four modules:
 
-That is the whole of the gate surface this core spec states. Everything that
-governs it is lazy, in four modules, so a run loads only what its decision
-needs:
-
-- [`SPEC/gates.md`](SPEC/gates.md) — the machinery. Banner format and trigger
-  table, the two-banner cap and its one bounded exception (a destructive
-  🗄️/▶️/📡/💻 command escalating in-execution), the Phase 1→2 exit-gate flavors,
-  and the conditional skip rule.
-- [`SPEC/gate-postures.md`](SPEC/gate-postures.md) — the postures. `--fast`
-  (an operator present but not to be asked) and `--unattended` (no operator —
-  a gate the run cannot answer parks via `status: blocked` rather than firing
-  a banner), with the single flag×surface matrix and precedence ladder
-  settling every `--fast` / `--unattended` / 👁️ interaction. Loaded only when
-  a flag or the `[unattended]` row marker is set.
-- [`SPEC/cue-vocabulary.md`](SPEC/cue-vocabulary.md) — the reference. Every
-  operator cue's glyph, UPPERCASE label, and emission shape.
-- [`SPEC/gate-discipline.md`](SPEC/gate-discipline.md) — the discipline. Section
-  homes for a new rationalization or red flag, and §"Refused carve-outs" in
-  full. The historical catalog lives in
-  [`docs/GATE-DISCIPLINE.md`](docs/GATE-DISCIPLINE.md).
+- [`SPEC/gates.md`](SPEC/gates.md) — the machinery: banner format, the
+  two-banner cap and its one bounded exception (destructive-action
+  escalation), the Phase 1→2 exit-gate flavors, and the conditional skip rule.
+- [`SPEC/gate-postures.md`](SPEC/gate-postures.md) — the `--fast` and
+  `--unattended` postures and the flag×surface matrix. Loaded only when a flag
+  or the `[unattended]` row marker is set.
+- [`SPEC/cue-vocabulary.md`](SPEC/cue-vocabulary.md) — every operator cue's
+  glyph, UPPERCASE label, and emission shape.
+- [`SPEC/gate-discipline.md`](SPEC/gate-discipline.md) — section homes for a
+  new rationalization or red flag, and §"Refused carve-outs" in full.
 
 ### 🎯 Purpose blurb
 
@@ -361,21 +334,18 @@ skipping it is always correct for a narrow read set.
 
 Archive skim + drift check both exist because prior tasknotes record decisions and PLAN.md is a snapshot, not a spec. Surface findings before re-interpreting; never "correct" the plan by executing a different task. `touches:` narrows the path grep; typed Related lines, `supersedes:` IDs, and ⚠️ pointers are extra notes to open — edges to read, not a graph query.
 
-The skim's **probe clause** is the same one, applied where it bites hardest: a
-path grep over a mature archive scales with project age, not task size, and one
-common path can return dozens of notes. The `~3` is a judgment line, not a
-threshold — nothing counts hits, and reading four notes directly is always
-correct; the default on a large hit list is "brief a probe and keep its
-findings" rather than "read them all and keep the search too."
+The skim's **probe clause** is the same one, applied where a path grep scales
+with project age rather than task size. The `~3` is a judgment line, not a
+threshold — reading four notes directly is always correct; on a large hit list
+the default is "brief a probe and keep its findings", not "read them all".
 
 The drift check's **cross-artifact half** catches what its code half cannot: a
 plan that contradicts a contract the SPEC already settled, or that has drifted
 from the `PLAN.md` line it was filed as. This is the last cheap place to catch
 either — Phase 4 collapses that line to a `Completed YYYY-MM-DD.` stub. It is a
 **cross-reference, not a judgment call**: open the `PLAN.md` line and the SPEC
-section and read them. Judgment alone let CORE-393 — a ticket to undo the
-contract CORE-042.4 settled in §"Tasknote body shape" — reach a full tasknote
-before anyone reread the clause.
+section and read them — judgment alone has let a ticket to undo a settled
+contract reach a full tasknote before anyone reread the clause.
 
 The Best Practices Review is a focused pre-change check, not a repository
 audit. Use it to understand the changed path well enough to preserve clear
@@ -384,12 +354,9 @@ carry only an Acceptance-relevant refactor need into Phase 2, and leave
 unrelated cleanup deferred.
 
 **Exit gate.** Once every Phase 1 box is ticked, the 🛠️ Phase 1→2 banner
-fires according to the skill's exit-gate flavor — `/ft-task` uses
-`default-skip` (skip on routine clarifications; fire only on significant
-scope deviation), `/ft-epic-discovery` + `/ft-close-epic` use
-`default-fire-on-clarifications` (fire on any surfaced ask). The two
-flavors' judgment rules, the shared skip-path inline marker, and the
-`--fast` drift carve-out: see [`SPEC/gates.md` §"Phase 1→2 exit gate"](SPEC/gates.md).
+fires per the skill's exit-gate flavor (`/ft-task`: `default-skip`; epic
+skills: `default-fire-on-clarifications`) — judgment rules and skip marker in
+[`SPEC/gates.md` §"Phase 1→2 exit gate"](SPEC/gates.md).
 
 ### 🛠️ Phase 2: Execution
 
@@ -412,10 +379,6 @@ general cleanup; log broader opportunities for later work instead.
 
 If a hard dependency surfaces mid-execution, **park the tasknote** per
 §"Blocked tasks" and resume by re-invoking `/ft-task <ID>`.
-
-Phase 2 flows continuously into Phase 3 (and Phase 4 closure ops) without
-an intermediate gate; the next operator-gate cue is the 📦 ready-to-commit
-banner in [`SPEC/post-closure.md`](SPEC/post-closure.md).
 
 ### 🧪 Phase 3: Testing & Linting
 
@@ -482,15 +445,12 @@ skipped the tasknote altogether
 a one-line reason, as the 👁️ item does on a task with no rendered surface.
 `/ft-micro-task` carries no such item at all: its whole threshold *is* that case.
 
-Neither flag suppresses it, since nothing here asks the operator anything. Under
-`--loop` it runs **once**, after convergence, beside the one-time taste checks
-([`SPEC/loop.md`](SPEC/loop.md)) — never per cycle; under `--unattended`
-unchanged, a blocker the run cannot fix parking `input-needed`
-([`SPEC/gate-postures.md`](SPEC/gate-postures.md) §"What `--unattended` never
-relaxes"). It adds no phase, no banner, and no cue — one checklist item under the
-existing 🧪 heading, the standing gate count unchanged. Flaitron ships the brief
-and the two rungs; which primitive spawns the reviewer is the runner's business,
-as with any probe.
+Neither flag suppresses it, since nothing here asks the operator anything,
+and it adds no phase or banner
+([`SPEC/gates.md`](SPEC/gates.md) §"Operator-gate cues"). Under `--loop` it runs **once**, after convergence ([`SPEC/loop.md`](SPEC/loop.md));
+under `--unattended`, see [`SPEC/gate-postures.md`](SPEC/gate-postures.md)
+§"What `--unattended` never relaxes". Which primitive spawns the reviewer is
+the runner's business, as with any probe.
 
 **Choosing a test strategy (guidance, not a gate).** Default to targeted
 tests on the changed behavior. Where the input space is wide — parsers,
@@ -498,11 +458,9 @@ encoders, round-trips, invariants that must hold across many inputs — a
 property-based test earns its keep; reach for one when example tests would
 leave large gaps. Visual confirmation covers UI surfaces that assertions
 can't. This is engineering judgment folded into Phase 3, never a new
-lifecycle phase or a schema/validator. The one posture that removes the
-judgment is `--unattended`, which runs the repo's full validation set with
-nobody present to make the "broad enough?" call —
-[`SPEC/gate-postures.md`](SPEC/gate-postures.md) §"What `--unattended` never
-relaxes".
+lifecycle phase or a schema/validator. `--unattended` removes the judgment and
+runs the full validation set ([`SPEC/gate-postures.md`](SPEC/gate-postures.md)
+§"What `--unattended` never relaxes").
 
 The visual-confirmation ask uses the **emphasized inline ask** shape — its own
 line, blank-line isolated, with the label bolded:
@@ -512,11 +470,10 @@ line, blank-line isolated, with the label bolded:
 ```
 
 👁️ is the only cue that gates task completion, which is why it carries more
-emphasis than a bare prefix — raised *within* the inline shape, so it is **not
-a banner** and the standing phase-gate count is unaffected. Full contract:
-[`SPEC/cue-vocabulary.md` §"Emphasized inline ask shape"](SPEC/cue-vocabulary.md).
-What `--fast` and `--unattended` do to this ask — suppress it, and convert it
-to a `visual-confirm` park, respectively — is one row of
+emphasis than a bare prefix — raised *within* the inline shape, **not a
+banner**. Full contract:
+[`SPEC/cue-vocabulary.md` §"Emphasized inline ask shape"](SPEC/cue-vocabulary.md);
+its flag row is in
 [`SPEC/gate-postures.md` §"Flag precedence and surface matrix"](SPEC/gate-postures.md).
 
 ### 🚀 Phase 4: Closure
@@ -534,20 +491,13 @@ waiting to be pulled by some future task's archive skim, or never being
 pulled at all. Most closures write `N/A` — the box exists for the rare task
 that actually taught something durable, not as a second recap.
 
-Phase 4 closure ops (Acceptance tick-through, doc-drift sweep, YAML `status:`
-flip, PLAN.md flip/placement, archive move) auto-run without an intermediate
-gate. The
-`status:` flip is the **first** of the three closure writes (`status:`, PLAN.md
-line, archive move) and is what makes the YAML canonical claim in §"Tasknote
-body shape" true — it happens while the tasknote is still active, so it is a
-pre-archive closure write, **not** a retroactive edit of an archived record
-(see §"Tasknote frontmatter"). Where the flipped line lands is the checklist
-item's own citation above. The recap drafts alongside: 1-2 plain-English
+Phase 4 closure ops auto-run without an intermediate gate. The `status:` flip
+is the **first** of the three closure writes (`status:`, PLAN.md line, archive
+move) — a lifecycle write while the note is active, not a retroactive edit
+(§"Tasknote frontmatter"). The recap drafts alongside: 1-2 plain-English
 sentences of *what the task accomplished*, then the evidence the checklist item
-names — `N/A` for irrelevant items, never invented metrics. It bundles into the
-📦 ready-to-commit motion ([`SPEC/post-closure.md`](SPEC/post-closure.md)): behind the banner on the
-fire branch, inline behind an `✅ Closure complete; …` marker followed by an
-autonomous commit on the skip branch.
+names — `N/A` for irrelevant items, never invented metrics — and bundles into
+the 📦 motion ([`SPEC/post-closure.md`](SPEC/post-closure.md)).
 
 **Scope reconciliation.** One line of the recap compares the `touches:` the
 task declared at Phase 1 against `git diff --name-only`, and names what was
@@ -563,10 +513,8 @@ time would bury the paths that do.
 
 A **recorded fact, not a check**: nothing refuses, nothing re-opens a phase,
 and a mismatch is not a finding — a task that legitimately grew says so on the
-same line and closes. Declaring scope narrows a task; the reconciliation only
-makes the narrowing visible at 📦, which is why it lives in the recap and not
-in a gate ([`SPEC/gates.md`](SPEC/gates.md) §"Phase 1→2 exit gate"). A task
-exempt from declaring (§"Tasknote frontmatter") writes
+same line and closes. That is why it lives in the recap and not in a gate. A
+task exempt from declaring (§"Tasknote frontmatter") writes
 `N/A — no file deliverable` and is done.
 
 > **Recap is recap-only.** The next-task suggestion belongs in the
@@ -621,20 +569,14 @@ frontmatter"; this is the trigger, not a second copy of the contract. No new
 checkbox — the pointer rides the existing `Closed —` box.
 
 > **No nav-header chip flip here.** Phase 4 does **not** flip the markdown nav
-> chip to `✅ Completed`. CORE-042.4 retired that write deliberately (three
-> status writes → two), and visualizers derive the chip from YAML `status:` at
-> render time — so an archived tasknote reading `🟢 In progress` in the raw
-> markdown is correct, not stale. See §"Tasknote body shape" → Nav header
-> before proposing to re-add it.
+> chip to `✅ Completed`. That write was retired deliberately, and visualizers
+> derive the chip from YAML `status:` at render time — so an archived tasknote
+> reading `🟢 In progress` in the raw markdown is correct, not stale. See
+> §"Tasknote body shape" → Nav header before proposing to re-add it.
 
-The tasknote is closed when archived. Approval-semantics on each branch
-live in [`SPEC/gates.md` §"Conditional skip rule"](SPEC/gates.md); commit
-itself is not part of the tasknote.
-
-**Paper-complete guard (Phase 4).** PLAN.md flip + archive move are
-working-tree prep for a **single atomic closure commit** that must also
-land the task's deliverables. Do not treat archive/Completed as "done"
-until that commit succeeds. Full rules: §"Paper-complete guard".
+The tasknote is closed when archived; the commit is not part of the tasknote,
+but archive/Completed is only working-tree prep until the atomic closure
+commit lands (§"Paper-complete guard").
 
 ## Blocked tasks
 
@@ -672,13 +614,10 @@ Canonical contract: see [`SPEC/loop.md`](SPEC/loop.md).
 
 ## Post-closure protocol
 
-Canonical contract: see [`SPEC/post-closure.md`](SPEC/post-closure.md).
-Read it at a closing runner's final step, once the tasknote is archived and
-the closure commit is the next motion — nothing before Phase 4 loads it. It
-carries the three post-archive steps: the commit decision (skip or 📦 fire,
-per [`SPEC/gates.md` §"Conditional skip rule"](SPEC/gates.md)), the 🏁
-marker plus next-move suggestion after a deliverable-covering SHA, and the
-copy-paste line.
+Canonical contract: see [`SPEC/post-closure.md`](SPEC/post-closure.md) — the
+commit, the 🏁 marker plus next-move suggestion, and the copy-paste line. Read
+it at a closing runner's final step, once the tasknote is archived; nothing
+before Phase 4 loads it.
 
 ## Paper-complete guard
 
@@ -745,21 +684,17 @@ was premature). Never invent a SHA or claim a prior unrelated commit.
 ## When to use a tasknote (and when not to)
 
 Canonical contract: see [`SPEC/tasknote-selection.md`](SPEC/tasknote-selection.md).
-The module carries the full use/skip thresholds (tasknote · starter ·
-follow-up · micro-tasknote · debug), the PLAN.md filing-discipline word
-budget (≤50w target / 70w hard cap), and the downstream-impact
-reconciliation scan (a new filing or a mid-flow direction change triggers a
-cohesion check against active PLAN entries, behind a user-confirm gate).
+The module carries the use/skip thresholds (tasknote · starter · follow-up ·
+micro-tasknote · debug), the PLAN.md filing-discipline word budget (≤50w
+target / 70w hard cap), and the downstream-impact reconciliation scan (a new
+filing or a mid-flow direction change triggers a cohesion check against active
+PLAN entries, behind a user-confirm gate).
 
-What happens to a PLAN.md row *after* it is filed lives in the sibling
-[`SPEC/plan-filing.md`](SPEC/plan-filing.md): the filing-commit contract (the
-seven filing motions — follow-up, park, starter, `/ft-audit`, `/ft-audit-repo`,
-`/ft-refactor`, and `/ft-epic-discovery`'s Step 4 — auto-commit at hand-off since filing approval *is* commit authorization,
-and `/ft-seed`'s row edits ride the same contract; execution skills keep
-their commit-go gate), the `## Completed` archive stub-form convention,
-and the `## Completed` rotation bound (the oldest rows spill verbatim to
-`.flaitron/PLAN-ARCHIVE.md` on an operator motion; advisory only, nothing
-deleted).
+What happens to a PLAN.md row *after* it is filed lives in
+[`SPEC/plan-filing.md`](SPEC/plan-filing.md): filing motions auto-commit at
+hand-off (filing approval *is* commit authorization; execution skills keep
+their commit-go gate), the `## Completed` stub-form convention, and the
+advisory `## Completed` rotation bound.
 
 ## Priority levels
 

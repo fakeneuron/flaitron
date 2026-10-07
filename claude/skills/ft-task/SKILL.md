@@ -31,13 +31,15 @@ Subsequent steps name what to Read; the SPEC contract + matching SKILL fragment 
 
 **Parse `args`.** Split on whitespace into `(TASK-ID, rest...)`. Initialize `fast-mode = false`, `debug-mode = false`, `loop-mode = false`, and `unattended-mode = false`. If `rest` is empty, continue to Step 1 — the default flow, which reads nothing further here. Otherwise **Read `<SKILL_DIR>/step-0-flags.md` now** and follow it: it walks `rest` as an unordered flag set, stops on any unrecognized token, emits one inline marker per active flag, defines the four modes, and dispatches the per-mode fragments (`step-4-debug-mode.md`; `step-5-loop-mode.md` + `<SPEC_DIR>/loop.md`; `unattended-mode.md` + `<SPEC_DIR>/blocked.md`); then continue to Step 1.
 
-**When `unattended-mode = true`, the steps below do not restate the posture.** Every gate that would ask an operator — the Step 1.5 concrete-model STOP, the Step 4 drift carve-out, a destructive-action escalation or prerequisite ✋ `ACTION` in Phase 2, the Phase 3 👁️ ask, a queued in-📦 prompt at Step 6 — parks the tasknote instead, with the `park-reason:` code keyed to this skill's step in `<SKILL_DIR>/unattended-mode.md` §"Conversion map"; the Step 1 pre-flight checks and the Step 2 in-flight refusal terminate and write nothing (§"Pre-scaffold stops"). The posture sets `fast-mode = true` but does **not** inherit `--fast`'s two delegations — the 👁️ suppression and the Re-scope downgrade both park — and it relaxes neither the paper-complete guard nor the downstream-impact confirm (§"What `--unattended` never relaxes").
+**When `unattended-mode = true`, the steps below do not restate the posture.** Every gate that would ask an operator — the Step 1.5 concrete-model STOP, the Step 4 drift carve-out, a destructive-action escalation or prerequisite ✋ `ACTION` in Phase 2, the Phase 3 👁️ ask, a queued in-📦 prompt at Step 6 — parks the tasknote instead (the concrete-model STOP on an existing starter/blocked note or sidequest stub terminates and writes nothing), with the `park-reason:` code keyed to this skill's step in `<SKILL_DIR>/unattended-mode.md` §"Conversion map"; the Step 1 pre-flight checks, the in-flight refusal included, terminate and write nothing (§"Pre-scaffold stops"). The posture sets `fast-mode = true` but does **not** inherit `--fast`'s two delegations — the 👁️ suppression and the Re-scope downgrade both park — and it relaxes neither the paper-complete guard nor the downstream-impact confirm (§"What `--unattended` never relaxes").
 
 ## Step 1 — Locate the task in PLAN.md and pre-flight
 
 **Read `<SKILL_DIR>/preamble.md` now** — shared with `/ft-micro-task`, read every run — and run its §"Locate and capture": the PLAN.md lookup, the status gate, the segment capture, the `[unattended]` row marker, the 🎯 purpose blurb, and the two advisory checks. Here the row marker's `<suppressions>` clause is `same suppressions as --fast`, and the blurb fires ahead of the 3a / 3b / 3c branch.
 
-Then run its §"Pre-flight" (Area, epic-ID dispatch, foreign-dirt gate, archive collision).
+Then run its §"Pre-flight" (Area, epic-ID dispatch, foreign-dirt gate, archive collision), with this check ahead of its archive-collision bullet — run here, before the model gate, so a retag or an `--unattended` park never lands on a note this run then refuses:
+
+- If `.flaitron/tasknote/<TASK-ID>.md` exists with any `status:` other than `starter` / `blocked` (`not-started` / `in-progress` / `completed`, or unrecognized), the file is in flight or already closed. Stop. Tell the user the tasknote exists and recommend they continue conversationally (e.g., "continue CORE-004") rather than restarting. This skill is start-only by design. **When the session that started it is gone** — killed, out of context, an orchestrator's child that exited — "continue conversationally" is unreachable; name the park-then-resume path in `<SPEC_DIR>/blocked.md` §"Resuming an interrupted run" instead of stopping at the recommendation. That path applies to `in-progress` only. A `starter` or `blocked` note passes on to the Step 1.5 model gate.
 
 ## Step 1.5 — Model gate (BEFORE scaffolding)
 
@@ -45,10 +47,9 @@ Run the preamble's §"Model gate". **Satisfied** proceeds to Step 2.
 
 ## Step 2 — File-state branch
 
-- Check `.flaitron/tasknote/<TASK-ID>.md`. **Four-way branch on the file's YAML `status:`:**
+- Check `.flaitron/tasknote/<TASK-ID>.md`. **Three-way branch on the file's YAML `status:`** (an in-flight or closed note was already refused in Step 1):
   - **`status: starter`** — starter tasknote awaiting promotion. Continue at **Step 3a (Promote a starter)**.
   - **`status: blocked`** — parked tasknote awaiting resume. Continue at **Step 3c (Resume a blocked tasknote)**.
-  - **Any other `status:`** (`not-started` / `in-progress` / `completed`) — file is in flight or already closed. Stop. Tell the user the tasknote exists and recommend they continue conversationally (e.g., "continue CORE-004") rather than restarting. This skill is start-only by design. **When the session that started it is gone** — killed, out of context, an orchestrator's child that exited — "continue conversationally" is unreachable; name the park-then-resume path in `<SPEC_DIR>/blocked.md` §"Resuming an interrupted run" instead of stopping at the recommendation. It applies to `in-progress` only.
   - **File absent** — fresh scaffold path. Continue at **Step 3b (Scaffold a fresh tasknote)**.
 
 ## Step 3a — Promote a starter (existing file with `status: starter`)

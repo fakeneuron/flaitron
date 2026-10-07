@@ -190,19 +190,22 @@ Translate its asks to this platform's primitives and preserve every invocation
 flag in re-entry instructions. A concrete mismatch stops and offers switch or
 operator-approved retag; a missing tag asks before scaffold; a category
 under-tier only warns and proceeds. Never silently retag a satisfied category.
-Run the foreign-dirt guard below before any model edit. Run it once for
-entry; Step 3 must not mistake this run's approved writes for foreign dirt.
+Run Step 3's foreign-dirt guard and its archived / in-flight refusals at
+entry, before this model check, so a retag never lands on a note this run
+then refuses. Run them once; Step 3 must not mistake this run's approved
+writes for foreign dirt.
 
 Check the `[model]` tag against the model you are running as, per
 [`SPEC/model.md`](../model.md). If the task is tagged for a heavier tier or a
 different concrete model than yours, surface that to the operator before doing
 heavy thinking on the wrong model — heavy work should not run on an
 under-tier model silently. **Under unattended mode** there is no operator to
-surface a concrete mismatch to: first pass Step 3 pre-flight, then park with
+surface a concrete mismatch to: first pass those Step 3 checks, then park with
 `status: blocked` and `park-reason: model-mismatch — …`. Create a note only
-when absent; preserve existing starter/blocked content. Halt rather than asking or
-retagging the PLAN line yourself. The soft under-tier advisory is unchanged —
-it never blocked, so there is nothing to convert.
+when neither a tasknote nor a sidequest stub exists; leave an existing
+starter/blocked note or stub untouched (write nothing). Halt rather than
+asking or retagging the PLAN line yourself. The soft under-tier advisory is
+unchanged — it never blocked, so there is nothing to convert.
 
 **Epic IDs.** If the ID is `<AREA>-EPIC-<N>` or `<AREA>-<N>.<sub>`, read
 [`SPEC/epic.md`](../epic.md) for the lifecycle — the parent line is not
@@ -213,8 +216,8 @@ child is typically an Audit.
 ### 3 — Open or scaffold the tasknote
 
 **Foreign-dirt gate (paper-complete guard).** Before any scaffold / promote /
-resume writes, run `git status --porcelain` unless already checked before a
-model edit in Step 2. If foreign dirt exists: **STOP**, surface
+resume writes, run `git status --porcelain` unless already run at entry in
+Step 2. If foreign dirt exists: **STOP**, surface
 the dirt list, and ask the operator to commit / stash / discard themselves,
 then re-invoke. Do not auto-clean. Full contract:
 [`SPEC.md` §"Paper-complete guard"](../../SPEC.md). **Unattended mode does not
@@ -222,7 +225,8 @@ relax this**, and it does not park here either: writing a new tasknote into a
 tree the guard has just refused to touch makes that file its own foreign dirt
 on the next invocation. Report the dirt machine-readably and terminate without
 writing — likewise for the archived / in-flight collisions below, where a
-tasknote for this ID already exists and there is nothing new to park.
+tasknote for this ID already exists and there is nothing new to park. Step 2
+already ran these refusals at entry; they are defined here.
 
 Check `.flaitron/tasknote/<TASK-ID>.md` and branch on its existence / YAML
 `status:`:
@@ -242,10 +246,11 @@ Check `.flaitron/tasknote/<TASK-ID>.md` and branch on its existence / YAML
   one plain prose line before Phase 2 begins — the step-1 blurb could not have
   known it, and there is no Discovery here to orient the operator. Ordinary
   prose, not a second 🎯 emission.
-- **`status: in-progress` / `not-started` / `completed`** → the file is in
-  flight or closed; do not restart. Continue it conversationally. If the
-  session that started it is gone, that is not possible — an `in-progress`
-  note is recovered by park-then-resume, not by restarting. See
+- **`status: in-progress` / `not-started` / `completed`, or unrecognized** →
+  the file is in flight or closed; do not restart. Continue it
+  conversationally. If the session that started it is gone, that is not
+  possible — an `in-progress` note is recovered by park-then-resume, not by
+  restarting. See
   [`SPEC/blocked.md`](../blocked.md) §"Resuming an interrupted run".
 - **Absent** → **First, sidequest-stub retirement**: if
   `.flaitron/sidequest/<TASK-ID>.md` exists, this scaffold is a sidequest

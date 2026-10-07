@@ -62,7 +62,7 @@ closed set in [`SPEC/blocked.md`](blocked.md) §"Park reason".
 | 🗄️/▶️/📡/💻 destructive escalation | Escalates to a banner | **Escalates** | Parks `destructive` |
 | ✋ `ACTION`, prerequisite | Inline cue; does not block the assistant | Inline cue | Parks `prerequisite` |
 | ✋ `ACTION`, advisory | Inline cue | Inline cue | Recorded; the run continues |
-| Step 1.5 concrete-`[model]` mismatch | STOP + structured ask | STOP + ask | Scaffold, then park `model-mismatch` |
+| Step 1.5 concrete-`[model]` mismatch | STOP + structured ask | STOP + ask | Scaffold, then park `model-mismatch`; an existing starter/blocked note or sidequest stub stops, write nothing |
 | Foreign-dirt gate | STOP, write nothing | **STOP** | **STOP**, write nothing — reported machine-readably |
 | Paper-complete guard (all three parts) | Enforced | **Enforced** | **Enforced** |
 | `[unattended]` row marker, no flag passed | Implies `--fast` | — | **Not implied** |
@@ -167,9 +167,10 @@ Six gates cannot be answered by a caller that is not there, so under
 `park-reason:` code apiece: the 🛠️ drift carve-out (`drift`), the
 destructive-action escalation (`destructive`), a prerequisite ✋ `ACTION`
 (`prerequisite`), the Step 1.5 concrete-model mismatch (`model-mismatch`, via
-§"Pre-scaffold stops"), a queued bundled in-📦 prompt (`input-needed`), and the
-Phase 3 👁️ ask (`visual-confirm`); their rows are in §"Surface matrix". What follows is why four of them read the
-way they do.
+§"Pre-scaffold stops", which stops without a park when a note or stub
+exists), a queued bundled in-📦 prompt (`input-needed`), and the Phase 3 👁️
+ask (`visual-confirm`); their rows are in §"Surface matrix". What follows is
+why four of them read the way they do.
 
 The 🛠️ conversion parks at the Phase 1→2 boundary because Phase 1 is complete
 and its Discovery is exactly the work worth preserving. The destructive
@@ -221,15 +222,21 @@ PLAN.md edit defers.
 
 ### Pre-scaffold stops
 
-The Step 1 pre-flight checks and the Step 1.5 model gate run before the
-tasknote exists, so a "park" there has nothing to park. The posture splits
-by what the stop is *about*:
+The Step 1 pre-flight checks and the Step 1.5 model gate run before this
+run has written a tasknote, so a "park" there may have nothing to park — or
+may find a note it must not touch. Each runner's pre-flight refuses an
+in-flight note (`/ft-micro-task`: any existing note), so only a starter or
+blocked note can reach `/ft-task`'s model gate. The posture splits by what
+the stop is *about*:
 
 - **Concrete-model mismatch — scaffold, then park.** A task-level
   assignment problem, and the tree is known clean (the foreign-dirt gate
-  already passed). Write the tasknote with `status: blocked` and the
-  reason, then halt, so the caller gets the same readable stop surface it
-  gets everywhere else.
+  already passed). Create the note only when none exists — neither a
+  tasknote nor a sidequest stub — writing it with `status: blocked` and
+  the reason, then halt, so the caller gets the same readable stop surface
+  it gets everywhere else. An existing starter or blocked note, or a
+  sidequest stub, is left untouched — terminate and write nothing, so its
+  promote or resume routing survives.
 - **Foreign-dirt gate — terminate, write nothing.** Writing a new
   untracked file into a tree the guard has just refused to touch makes
   that file its own foreign dirt on the next invocation. Report the dirt

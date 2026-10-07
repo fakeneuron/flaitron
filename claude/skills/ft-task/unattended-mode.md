@@ -45,7 +45,7 @@ Six gates convert from *ask and wait* to *park and stop*. The seventh row is the
 
 | Gate | `park-reason` code | `/ft-task` | `/ft-task --loop` (where it differs) | `/ft-micro-task` |
 |---|---|---|---|---|
-| Step 1.5 **concrete-model mismatch** STOP | `model-mismatch` | Step 1.5 — scaffold, then park (see below) | same | Step 1.5 — same |
+| Step 1.5 **concrete-model mismatch** STOP | `model-mismatch` | Step 1.5 — scaffold, then park; an existing starter/blocked note or sidequest stub stops, write nothing (see below) | same | Step 1.5 — same |
 | 🛠️ Phase 1→2 **drift carve-out** (`Re-scope` / `De-scope`) | `drift` | Step 4 exit gate | same (one-time, pre-loop) | Step 3 Relevance prompt |
 | **Destructive-action escalation** 🗄️/▶️/📡/💻 | `destructive` | Step 5 Phase 2 | loop body (already parks — add the key) | Step 3 execution |
 | ✋ `ACTION` that is a **prerequisite** for continuing | `prerequisite` | wherever it surfaces | wherever it surfaces | wherever it surfaces |
@@ -67,9 +67,9 @@ Six gates convert from *ask and wait* to *park and stop*. The seventh row is the
 
 ## Pre-scaffold stops
 
-The pre-flight checks, the Step 1.5 model gate, and `/ft-task`'s Step 2 in-flight refusal run before the tasknote exists, so a "park" there may have nothing to park. Split by what the stop is *about*:
+The pre-flight checks and the Step 1.5 model gate run before this run has written a tasknote, so a "park" there may have nothing to park — or may find a note it must not touch. Split by what the stop is *about*:
 
-- **Concrete-model mismatch — scaffold, then park.** A task-level assignment problem, and the tree is known clean (the foreign-dirt gate already passed). Skip the AskUserQuestion two-path offer; write the tasknote with `status: blocked` and `park-reason: model-mismatch — PLAN.md tags [<tag>], active model is <model>`, then halt. The caller gets the same readable stop surface it gets everywhere else. Do **not** retag the PLAN.md line autonomously.
+- **Concrete-model mismatch — scaffold, then park.** A task-level assignment problem, and the tree is known clean (the foreign-dirt gate already passed). Skip the AskUserQuestion two-path offer. **Create the note only when none exists** — neither a tasknote nor a `.flaitron/sidequest/<TASK-ID>.md` stub — then write the tasknote with `status: blocked` and `park-reason: model-mismatch — PLAN.md tags [<tag>], active model is <model>`, and halt. The caller gets the same readable stop surface it gets everywhere else. An existing `starter` or `blocked` note (`/ft-task` only; `/ft-micro-task` refuses any existing note in Pre-flight) or a sidequest stub is **left untouched** — terminate and write nothing, in the `⏸ --unattended stop — model-mismatch: …` shape, naming the existing starter note, blocked note, or sidequest stub, so its promote or resume routing survives and the stub is retired by the attended promotion that reads it. Do **not** retag the PLAN.md line autonomously.
 - **Foreign-dirt gate — terminate, write nothing.** Writing a new untracked file into a tree the paper-complete guard has just refused to touch makes that file its own foreign dirt on the next invocation — a self-blocking loop. Report the dirt and stop:
 
   ```markdown
@@ -78,7 +78,7 @@ The pre-flight checks, the Step 1.5 model gate, and `/ft-task`'s Step 2 in-fligh
 
   List the paths. Never stash, clean, or commit them.
 - **`## Completed` status gate and archive collision — terminate, write nothing.** Both mean a tasknote for this ID already exists; there is nothing new to park, and scaffolding one would duplicate it. Same `⏸ --unattended stop — <cause>: …` shape.
-- **An existing in-flight tasknote** (`status:` `not-started` / `in-progress` / `completed`) — the runners refuse this by design and recommend continuing conversationally. Unchanged; report it in the same stop shape and write nothing.
+- **An existing in-flight tasknote** (`status:` `not-started` / `in-progress` / `completed`, or unrecognized) — the runners refuse this in Pre-flight, ahead of the model gate, and recommend continuing conversationally. Unchanged; report it in the same stop shape and write nothing.
 
 ## What `--unattended` never relaxes
 

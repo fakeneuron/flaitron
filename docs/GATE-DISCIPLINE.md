@@ -11,12 +11,10 @@ skip rule, the flag matrix and precedence ladder, the destructive escalation,
 🏁 emission, and accepted-reply matching. Shortcuts against the Phase 1 /
 Phase 3 checklists belong to [`SPEC.md`](../SPEC.md), not here.
 
-A new escape hatch or gate-surface change arrives with a matching row in
-§"Rationalizations since the window" and a line in
-§"Red Flags since the window" — the standing rule is [`SPEC/gates.md`](../SPEC/gates.md) §"Gate discipline — read before skipping a gate".
-The two main lists are the pre-window record, kept apart from new rows on
-purpose: [[CORE-659]] dropped the live pre-skip triggers at `f8c44275`, and
+[[CORE-659]] dropped the live pre-skip triggers at `f8c44275`, and
 [[CORE-660]]'s recount (34 tasknotes) found no recurrence of any of them.
+[[CORE-724.7]] dropped the rule that every gate-surface change brings a new
+row, at `504f160f`; [[CORE-727]] decides whether it returns.
 
 ## Rationalizations
 
@@ -44,11 +42,6 @@ purpose: [[CORE-659]] dropped the live pre-skip triggers at `f8c44275`, and
 | "The visual baseline passes byte-identical — that is a recorded human approval **replayed**, not a guess like the row above." | Sharper, and still refused. Both premises fail here: flaitron defines no baseline and cannot tell a golden a human approved from one `--update-snapshots` minted with nobody looking — and this posture *is* the declaration that nobody is present to attest which it was. Then "does it cover the surface I changed?" is the gating-vs-corroborating split renamed, judged by you about your own diff. Where output provably did not change, the box is already `N/A` and there is no ask to convert; the carve-out bites only where the baseline is not evidence. | §"Refused carve-outs" below; [`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"Park conversions" |
 | "That ✋ was *probably* advisory — keep going." | "Probably" is the doubt the ✋ split is biased against, the same asymmetry as the destructive-action predicate: an over-park costs one resume, an under-park closes a task whose prerequisite was never performed. | [`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"`--unattended` operator posture" → "Park conversions" |
 | "Recap is done, so I can suggest next-move while waiting for commit-go." | Next-move and the copy-paste line are **post-SHA**. The fire-branch turn emits 📦 (or 🟢 GO) and waits; 🏁 / next-move / copy-paste land only after a deliverable-covering SHA. Motivating case: CORE-432.2 (micro closed + next-task cue with uncommitted App/PLAN dirt). | [`SPEC/gates.md`](../SPEC/gates.md) §"Conditional skip rule" → On fire; [`SPEC.md`](../SPEC.md) §"Post-closure protocol" step 2 |
-
-### Rationalizations since the window
-
-| The excuse | Why it's wrong | Refuted by |
-|---|---|---|
 
 ## Red Flags
 
@@ -107,10 +100,6 @@ finding to report or a box to tick.
 - You are citing a green visual-regression suite as the reason a 👁️ park is
   unnecessary, and the load-bearing step is your own judgment that the
   baseline covers what you changed.
-
-### Red Flags since the window
-
-(none yet)
 
 ## Refused carve-outs
 

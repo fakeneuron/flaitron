@@ -200,9 +200,3 @@ and the full text of §"Refused carve-outs" live in
 [`docs/GATE-DISCIPLINE.md`](../docs/GATE-DISCIPLINE.md). Advisory
 prose, never a checklist or a validator —
 [`docs/VISION.md`](../docs/VISION.md) §"What we won't accept" sets that remedy.
-
-**Standing rule.** Any new escape hatch or gate-surface
-change in this file arrives with matching §"Rationalizations" rows and
-§"Red Flags" lines in `docs/GATE-DISCIPLINE.md` (each section's "since the
-window" home), and in the consolidated `/ft-audit` skill's own copy — update
-both.

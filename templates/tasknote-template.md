@@ -66,7 +66,7 @@ One-sentence goal of what this task accomplishes.
 
 ## 🛠️ Phase 2: Execution
 
-- [ ] **Pattern survey** — extended an existing pattern or justified a new shape; checked DRY / SRP boundaries
+- [ ] **Pattern survey** — extended an existing pattern or justified a new shape
 
 - [ ] **Minimal refactor gate** — refactored only for Acceptance or touched-path coherence; deferred unrelated cleanup
 

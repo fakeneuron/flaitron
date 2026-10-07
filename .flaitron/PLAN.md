@@ -18,7 +18,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [x] **CORE-724.4** [heavy]🧠 | skill-body-dedupe — Completed 2026-10-07.
   - [x] **CORE-724.5** [heavy]🧠 | adopter-surface-trim — Completed 2026-10-07.
   - [x] **CORE-724.6** [medium]🧩 | personal-conventions-out — Completed 2026-10-07.
-  - [ ] **CORE-724.7** [heavy]🧠 | decay-window-batch — One batched decay window: drop triggers of no-provenance rules (ft-audit §7/§8, DRY/SRP imperatives, ~15/30-min heuristics, gate-discipline empty tables) plus any prior declines .2–.5 chose to reopen, record the window-start SHA, and file one restore-check row with a single bar. CORE-680/683 shape.
+  - [x] **CORE-724.7** [heavy]🧠 | decay-window-batch — Completed 2026-10-07.
   - [ ] **CORE-724.N** [heavy]🧠 | context-diet audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
 
 ## Medium
@@ -27,6 +27,8 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 - [ ] **CORE-725** [medium]🧩 | unattended-model-gate-order — /ft-task --unattended runs the model gate before the foreign-dirt gate, so a model-mismatch park can scaffold into a dirty tree; run preamble Pre-flight first, repair step citers.
 
 ## Low
+
+- [ ] **CORE-727** [medium]🧩 | decay-window-restore — Blocked by decay-window depth: window [[CORE-724.7]] opened at `504f160f`. After 10 tasknotes archive past that SHA and at least one `/ft-audit` run commits filings past it, restore each of the four dropped rule groups only if the window shows the failure it guarded. Bar is in the archived CORE-724.7 note.
 
 - [ ] **CORE-683** [medium]🧩 | epic-forward-restore — Blocked by decay-window depth: window [[CORE-680]] opened at `a78a8ae5`. After 8 epic tasknotes (`*-EPIC-*` or `*.<sub>`) archive past that SHA, restore `SPEC/epic.md`'s Forward-looking paragraph only if one followed it. Bar is in the archived CORE-680 note.
 

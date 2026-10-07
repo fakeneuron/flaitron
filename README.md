@@ -109,8 +109,7 @@ serves it; Grok-only projects follow [`grok/AGENTS-snippet.md`](grok/AGENTS-snip
   flaitron against contemporary harnesses and trackers: differentiators, gaps,
   overkill, and the seed list for the next wider pass
 - [docs/GATE-DISCIPLINE.md](docs/GATE-DISCIPLINE.md) — gate-skip excuses,
-  observer symptoms, and refused carve-outs: the home for a new row when a
-  gate surface changes
+  observer symptoms, and refused carve-outs
 - [docs/CODEX-VERIFICATION.md](docs/CODEX-VERIFICATION.md) — dated Codex
   installation receipt (CORE-677.2): discovery and repair observations
 - [docs/CONTEXT-BUDGET.md](docs/CONTEXT-BUDGET.md) — per-file byte budgets for

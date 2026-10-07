@@ -358,7 +358,7 @@ skills: `default-fire-on-clarifications`) — judgment rules and skip marker in
 
 ### 🛠️ Phase 2: Execution
 
-- [ ] **Pattern survey** — looked at how neighboring code (sibling modules, parallel components, adjacent services) solves the same shape of problem; chose to extend an existing pattern or justified a new shape, checked for avoidable duplication and blurred responsibilities, and preferred composition when it reduced coupling
+- [ ] **Pattern survey** — looked at how neighboring code (sibling modules, parallel components, adjacent services) solves the same shape of problem; chose to extend an existing pattern or justified a new shape
 - [ ] **Minimal refactor gate** — refactored only when Acceptance required it or the touched implementation would otherwise introduce avoidable duplication, obscure a responsibility, or violate an established dependency direction; recorded the reason and deferred unrelated cleanup
 - [ ] Implemented the minimal solution
 - [ ] Updated/added tests for non-trivial behavior
@@ -366,10 +366,7 @@ skills: `default-fire-on-clarifications`) — judgment rules and skip marker in
 Keep edits tightly scoped. Resist refactoring adjacent code unless the task
 explicitly calls for it. The pattern survey exists to keep the codebase
 unified — prefer extending what already works over inventing a parallel
-solution. DRY, single-responsibility (SRP), and composition are contextual prompts,
-not absolutes: a small local repetition can be clearer than a premature
-abstraction, and composition earns preference only when it actually reduces
-coupling.
+solution.
 
 The Minimal Refactor Gate permits the smallest structural correction needed
 to satisfy Acceptance or keep the touched path coherent. It does not license

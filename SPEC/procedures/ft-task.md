@@ -350,8 +350,7 @@ time (Step 6).
 
 - **Phase 2: Execution** — [`SPEC.md` §"🛠️ Phase 2"](../../SPEC.md). Survey
   neighboring code for an existing pattern to extend (justify a new shape only
-  if none fits), check DRY and single-responsibility boundaries, and prefer
-  composition when it reduces coupling. Implement the minimal solution; make a
+  if none fits). Implement the minimal solution; make a
   refactor only when Acceptance requires it or the touched path would otherwise
   introduce duplication, obscure responsibility, or violate a dependency
   boundary; record the reason and defer unrelated cleanup. Add targeted tests

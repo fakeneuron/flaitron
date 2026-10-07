@@ -10,7 +10,6 @@ mechanics.
 **Use a tasknote when:**
 
 - The change touches more than one file
-- The work takes more than ~15 minutes
 - The task has a `<AREA>-<NUMBER>` ID in PLAN.md
 - The work involves design tradeoffs the assistant should record
 
@@ -81,7 +80,7 @@ compose) when context must persist beyond a stub.
 
 **File a micro-tasknote (`/ft-micro-task <ID>`) when:**
 
-- The task is above the skip threshold but under ~30 minutes, single-file or near it, with no design tradeoffs worth multiple subtasks — you still want the relevance / drift / archive-skim / pattern-survey contracts
+- The task is above the skip threshold, single-file or near it, with no design tradeoffs worth multiple subtasks — you still want the relevance / drift / archive-skim / pattern-survey contracts
 
 A micro-tasknote replaces the four phase checklists with one `## ⚡ Notes`
 section of bold-prefix prompts (relevance / drift / archive / pattern /
@@ -90,7 +89,7 @@ implementation); closure flips PLAN.md and archives like a normal tasknote.
 
 **Skip the micro-tasknote (use `/ft-task` instead) when:**
 
-- The task touches multiple files, has design tradeoffs, or runs past ~30 minutes
+- The task touches multiple files or has design tradeoffs
 - The 4-phase log would carry useful state downstream
 - You're unsure — default to `/ft-task`. The Discovery phase pays for itself.
 

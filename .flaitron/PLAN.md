@@ -11,15 +11,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-- [ ] **CORE-EPIC-724** [heavy]🧠 | context-diet — Trim instruction and context bloat across flaitron's surfaces (per-task cold start, skill bodies, lazy SPEC/ modules, adopter surface) without losing load-bearing context; move operator-personal conventions out of core, keeping emoji cues and commit conventions. Restatements cut directly (.2–.6); no-provenance rules and reopened declines go through one test window (.7).
-  - [x] **CORE-724.1** [heavy]🧠 | context-diet discovery — Completed 2026-10-07.
-  - [x] **CORE-724.2** [heavy]🧠 | cold-start-trim — Completed 2026-10-07.
-  - [x] **CORE-724.3** [heavy]🧠 | lazy-module-trim — Completed 2026-10-07.
-  - [x] **CORE-724.4** [heavy]🧠 | skill-body-dedupe — Completed 2026-10-07.
-  - [x] **CORE-724.5** [heavy]🧠 | adopter-surface-trim — Completed 2026-10-07.
-  - [x] **CORE-724.6** [medium]🧩 | personal-conventions-out — Completed 2026-10-07.
-  - [x] **CORE-724.7** [heavy]🧠 | decay-window-batch — Completed 2026-10-07.
-  - [ ] **CORE-724.N** [heavy]🧠 | context-diet audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
+(none)
 
 ## Medium
 
@@ -40,6 +32,15 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-EPIC-724** [heavy]🧠 | context-diet — Completed 2026-10-07.
+  - [x] **CORE-724.1** [heavy]🧠 | context-diet discovery — Completed 2026-10-07.
+  - [x] **CORE-724.2** [heavy]🧠 | cold-start-trim — Completed 2026-10-07.
+  - [x] **CORE-724.3** [heavy]🧠 | lazy-module-trim — Completed 2026-10-07.
+  - [x] **CORE-724.4** [heavy]🧠 | skill-body-dedupe — Completed 2026-10-07.
+  - [x] **CORE-724.5** [heavy]🧠 | adopter-surface-trim — Completed 2026-10-07.
+  - [x] **CORE-724.6** [medium]🧩 | personal-conventions-out — Completed 2026-10-07.
+  - [x] **CORE-724.7** [heavy]🧠 | decay-window-batch — Completed 2026-10-07.
+  - [x] **CORE-724.N** [heavy]🧠 | context-diet audit — Completed 2026-10-07.
 - [x] **CORE-722** [medium]🧩 | audit-deltas-remaining — Completed 2026-10-07.
 - [x] **CORE-723** [medium]🧩 | release-dangling-link-scope — Completed 2026-10-07.
 - [x] **CORE-720** [light]🔧 | audit-overlay-docs-deltas — Completed 2026-10-07.

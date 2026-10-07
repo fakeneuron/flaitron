@@ -56,12 +56,11 @@ not to)".
 - `justfile` — `just` recipes (`setup`/`dev`/`test`/`lint`/`typecheck`/`build`) that delegate to the `viz/` npm scripts; §"Validation" below stays the roster of record.
 - `SPEC.md` — canonical workflow contract.
 - `SPEC/` — lazy modules for epics, starter tasks, blocked tasks, model
-  routing, gate machinery, flag postures, the operator-cue vocabulary, gate discipline,
+  routing, gate machinery, flag postures, the operator-cue vocabulary,
   versioning, tasknote selection, PLAN.md filing, loop tasks, the post-closure
   protocol, repo layout,
   PLAN parser tolerances, task-line segment semantics, scope boundaries,
-  optional tasknote inserts, the
-  purpose blurb, superseded claims, `[unattended]` candidacy, and
+  optional tasknote inserts, superseded claims, `[unattended]` candidacy, and
   `SPEC/procedures/` agent-neutral SOPs, and `SPEC/fixtures/plan/` task-line
   grammar conformance fixtures.
 - `.flaitron/` — flaitron's own plan and tasknotes, plus `audit-overlay/SKILL.md`:

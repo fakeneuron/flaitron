@@ -26,6 +26,8 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
 
+- [ ] **CORE-728** [light]🔧 [unattended] | snippet-bumping-dedupe — `claude/AGENTS-snippet.md` §"Bumping the pinned flaitron version" restates `docs/MIGRATION.md` §"Pinning and bumping" (tag fetch/checkout, re-pin, symlinks track the submodule). Cut the snippet's fallback paragraph to a pointer; keep its `/ft-update` sentence. Deferred by [[CORE-724.5]], never filed.
+
 ## Future Opportunities
 
 (none)

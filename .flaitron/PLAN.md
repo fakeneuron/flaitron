@@ -15,6 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
+- [ ] **CORE-723** [medium]🧩 | release-dangling-link-scope — `/ft-release` §7.1's dangling-link scan is `ft-*`-scoped, so a missing `.claude/skills/audit` symlink breaks `/audit` uncaught — newly reachable since [[CORE-721]] moved the overlay body out.
 
 ## Low
 

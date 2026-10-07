@@ -212,14 +212,15 @@ printed:
   this cut, as an explicit decision rather than a silent drift.
 
 **Lifted into the CI `drift` job.** The block above also runs, unmodified
-except for a `bad=` accumulator and `exit 1`
-(`docs/CONVENTIONS.md` §"GitHub Actions CI"), on every push to `main` and every pull request —
+except for a `bad=` accumulator and `exit 1`, as `tools/drift-checks.sh`'s
+`context_budget` check
+(`docs/CONVENTIONS.md` §"GitHub Actions CI") on every push to `main` and every pull request —
 it catches a budget regression on the commit that lands it rather than at the
 next cut. CI cannot apply the §"Known over budget" judgment above (it needs
 `.flaitron/PLAN.md` ownership context CI does not have), so an `OVER BUDGET`
 finding there is expected while a surface is mid-flight under an open owner;
 the release-time interpretation above still governs. `/ft-release` §7.1
-**Pair L** (`step-7.1-mirror-pairs.md`) binds the CI copy to this block.
+**Pair L** (`step-7.1-mirror-pairs.md`) binds the script's copy to this block.
 
 **Refresh the ledger in this cut.** `docs/CONTEXT-BUDGET.md` §"Ledger" carries
 measured numbers and a `Measured YYYY-MM-DD at vX.Y.Z` stamp. The budget command

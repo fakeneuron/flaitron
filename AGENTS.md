@@ -76,7 +76,7 @@ not to)".
   design rationale, and `CONTEXT-BUDGET.md` (per-file byte budgets, enforced
   in CI and at release).
 - `templates/` — canonical markdown templates.
-- `tools/` — operator-side fleet scripts (`update-adopters.mjs` + tests).
+- `tools/` — operator-side fleet scripts (`update-adopters.mjs` + tests) and `drift-checks.sh`, the shell of CI's `drift` job and the `/ft-release` §7.1 pair walk.
 - `viz/` — Vite/React/TypeScript visualizer (module tiers + no-Node-under-`src/ui/` rule: [`viz/README.md`](viz/README.md)).
 
 ## Validation

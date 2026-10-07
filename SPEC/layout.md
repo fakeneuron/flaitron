@@ -45,7 +45,7 @@ Flaitron does not submodule itself. In this repo:
 - `codex/` — Codex skill wrappers for the full `ft-*` inventory plus Codex-specific wiring notes.
 - `cursor/` — Cursor thin wiring (`AGENTS-snippet.md` + `procedures/ft-task.md` pointer; no skill wrappers — adopters wire canonical `claude/skills/` bodies).
 - `grok/` — Grok thin wiring (`AGENTS-snippet.md` + `procedures/ft-task.md` pointer; no skill wrappers — adopters wire canonical `claude/skills/` bodies).
-- `tools/` — operator-side fleet scripts. Currently `update-adopters.mjs`, the singular CLI carve-out documented in [`SPEC/scope-boundaries.md`](scope-boundaries.md), plus its portable `update-adopters.test.mjs` suite (a registered release gate).
+- `tools/` — operator-side fleet scripts. Currently `update-adopters.mjs`, the singular CLI carve-out documented in [`SPEC/scope-boundaries.md`](scope-boundaries.md), plus its portable `update-adopters.test.mjs` suite (a registered release gate); and `drift-checks.sh`, the shell of the CI `drift` job and the `/ft-release` §7.1 pair walk — self-host maintenance, not a carve-out.
 
 Global-only utilities install per [`docs/MIGRATION.md`](../docs/MIGRATION.md) §1.0. `/ft-release` is flaitron-self-only and stays repo-scoped in this checkout ([`docs/PLATFORMS.md`](../docs/PLATFORMS.md) §"Installed-surface policy").
 

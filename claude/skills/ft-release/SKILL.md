@@ -262,7 +262,7 @@ Invoke the flaitron-self `ft-audit` skill in **subroutine mode** with the `docs`
 Skill(ft-audit) with args "docs ai-referenced"
 ```
 
-That pass file keeps its placeholders whatever scope you pass, so the dispatcher's §1 step 3 scaffold bootstrap still stops the run before pass 1. Take its **run once** branch: rubric = the doc-set contract above, gates = the CI `drift` job's doc checks run locally (Pair Q section-citation resolver, final-newline, context budget — there is no markdown linter). Then the `docs` domain walks its 5 passes (Claims vs. code · Cross-doc consistency · Cross-references · Currency · Stale content) over the declared doc set and returns the report inline. Per the dispatcher's Subroutine-safe hard rule it does **not** write tickets to `.flaitron/PLAN.md`; the release skill is the orchestrator. Critical / High findings are fixed inline. Medium / Low findings are not disposed one by one, and filing them does not by itself let the cut continue.
+That pass file keeps its placeholders whatever scope you pass, so the dispatcher's §1 step 3 scaffold bootstrap still stops the run before pass 1. Take its **run once** branch: rubric = the doc-set contract above, gates = the CI `drift` job's doc checks run locally (`bash tools/drift-checks.sh pair_q final_newline context_budget` — Pair Q section-citation resolver, final-newline, context budget; there is no markdown linter). Then the `docs` domain walks its 5 passes (Claims vs. code · Cross-doc consistency · Cross-references · Currency · Stale content) over the declared doc set and returns the report inline. Per the dispatcher's Subroutine-safe hard rule it does **not** write tickets to `.flaitron/PLAN.md`; the release skill is the orchestrator. Critical / High findings are fixed inline. Medium / Low findings are not disposed one by one, and filing them does not by itself let the cut continue.
 
 Classify each returned finding:
 - **Critical / High** — fix inline as part of the release cut (the 3 version edits in Phase 2 normally clear the routine SPEC + MIGRATION + SECURITY version-pin drift; anything else surfaced here gets the same treatment). Cleared means the finding is gone. A finding that only drops to Medium or Low is held for the ask below. If it is still Critical or High after the inline fix, stop the cut and say why. Release anyway is not available for a finding that is still Critical or High.
@@ -287,7 +287,7 @@ If the sweep reports zero findings, or the only findings were Critical / High an
   cut).
 - `claude/skills/ft-release/step-7.1-mirror-pairs.md` — the Pair A–R
   mirror-pair catalogue, opening with the local runner for the eleven pairs
-  whose shell lives in `.github/workflows/ci.yml`.
+  whose shell lives in `tools/drift-checks.sh`.
 
 Walk them in that order, then continue to §7.2. Both fragments are part of this
 step, not optional appendices: skipping the second silently drops every

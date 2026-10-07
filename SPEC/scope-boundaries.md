@@ -42,6 +42,11 @@ Both carve-outs above — the updater and the visualizer — are singular
 exceptions, not precedents. If you find yourself wanting these, write a
 project-side helper. Do not add them to flaitron.
 
+[`tools/drift-checks.sh`](../tools/drift-checks.sh) is neither: it is the
+shell of flaitron's own CI `drift` job, run by that job and by `/ft-release`,
+and no adopter runs it. It is repo maintenance, not a workflow tool, and
+carves out nothing.
+
 ## PR / suggestion archetypes flaitron does not accept
 
 For future-AI mid-task discipline. Outward-facing prose version with full justification lives in [`docs/VISION.md`](../docs/VISION.md) §"What we won't accept".

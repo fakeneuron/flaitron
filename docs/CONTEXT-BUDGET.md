@@ -323,8 +323,8 @@ section grew.
 
 ## How this is enforced
 
-Two layers, both reading this table rather than restating it. A `drift` CI
-step (`.github/workflows/ci.yml`, bound to its source by `/ft-release` §7.1
+Two layers, both reading this table rather than restating it. The `drift` CI
+job's `context_budget` check (`tools/drift-checks.sh`, bound to its source by `/ft-release` §7.1
 **Pair L**) runs a `wc -c`-and-compare script against the Budgets table above
 on every push to `main` and every pull request, catching a regression on the commit that
 lands it. The standing check in

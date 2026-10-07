@@ -1,6 +1,6 @@
 ---
 name: audit
-description: flaitron-self audit — thin overlay over flaitron's bundled `ft-audit` (runs its passes by reference, applies the project deltas below). Forked from flaitron's audit-overlay template; see `docs/MIGRATION.md` §1.2.1 (recipe) and §1.2.2 (this file's flaitron-self home).
+description: flaitron-self audit — thin overlay over flaitron's bundled `ft-audit` (runs its passes by reference, applies the project deltas below). Forked from flaitron's audit-overlay template; see `docs/MIGRATION.md` §1.2.1 (recipe) and `CONTRIBUTING.md` (this file's flaitron-self home).
 flaitron-reconciled: v6.0.0
 flaitron-tracks: ft-audit
 ---
@@ -30,7 +30,7 @@ Seven: `general` · `frontend` · `security` · `performance` · `structure` ·
 file asks something the unkeyed value cannot answer. `context` needs no delta:
 [[CORE-661]] cleared every placeholder from `claude/skills/ft-audit/passes/context.md`. `docs` is
 also invokable as `/audit docs ai-referenced` (extra scope token —
-`docs/MIGRATION.md` §1.2.2).
+`CONTRIBUTING.md` §"Developing flaitron skills & commands").
 
 **Not covered: `backend`.** Its passes (input contracts, persistence, async
 lifecycle) target an API/DB service. Flaitron's only server is the

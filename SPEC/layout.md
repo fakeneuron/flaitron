@@ -39,7 +39,7 @@ Flaitron does not submodule itself. When working in `~/code/flaitron/`:
   because `.claude/` is wholly gitignored and these deltas are this repo's own
   audit contract: they exist nowhere else and must be versioned.
   `.claude/skills/audit` is a directory symlink to it — per-machine wiring the
-  operator re-creates from [`docs/MIGRATION.md`](../docs/MIGRATION.md) §1.2.2.
+  operator re-creates from [`CONTRIBUTING.md`](../CONTRIBUTING.md) §"Developing flaitron skills & commands".
 - The `templates/` folder holds the canonical tasknote templates (full, micro, starter, sidequest) plus spec, loop-heartbeat, audit-overlay (usage: [`docs/MIGRATION.md`](../docs/MIGRATION.md) §1.2.1), and subagent-probe templates, and the `PLAN.md` / `tasknote-README.md` seed files.
 - `claude/` — Claude Code commands + skills (`/ft-task`, `/ft-release`, `/ft-new-project`, ...); the adopter snippet lives at `claude/AGENTS-snippet.md`.
 - `codex/` — Codex skill wrappers for the full `ft-*` inventory plus Codex-specific wiring notes.

@@ -160,7 +160,7 @@ Set `flaitron-reconciled:` to the currently pinned flaitron tag (`git -C
 
 **Flaitron-self:** the overlay body is **tracked** here, unlike an adopter's,
 and `.claude/` is reached by a symlink — `.claude/` stays wholly ignored, so an
-overlay written into it would be unversionable (`docs/MIGRATION.md` §1.2.2).
+overlay written into it would be unversionable (`CONTRIBUTING.md` §"Developing flaitron skills & commands").
 
 ```sh
 mkdir -p .flaitron/audit-overlay .claude/skills .claude/commands
@@ -173,9 +173,9 @@ Set `flaitron-reconciled:` to this checkout's own tag (`git describe --tags`),
 and keep the copied `SKILL.md`'s in-tree "Referenced scaffold" line
 (`claude/skills/ft-audit/SKILL.md`) rather than the adopter submodule path —
 there is no `.flaitron/core/` submodule here to reference
-(`docs/MIGRATION.md` §1.2.2). Commit the overlay body; the symlink lives under
+(`CONTRIBUTING.md` §"Developing flaitron skills & commands"). Commit the overlay body; the symlink lives under
 ignored `.claude/` and is per-machine wiring the operator re-creates from
-`docs/MIGRATION.md` §1.2.2's block on a fresh clone.
+that section's block on a fresh clone.
 
 In both cases, fill the overlay's `## Deltas` block with the derived values,
 leave `flaitron-tracks: ft-audit` as shipped, and remove the template's

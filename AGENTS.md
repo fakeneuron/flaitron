@@ -19,8 +19,8 @@ in `SPEC.md`; read it before starting non-trivial work.
   `/ft-epic-discovery`, `/ft-close-epic`, `/ft-task --debug`,
   `/ft-task --loop`, `/ft-refactor`, `/ft-release`.
   <!-- KEEP IN SYNC — guards the roster above AND the path-convention bullets
-       (Plans / tasknotes / archive locations) further up this section. Mirror:
-       claude/AGENTS-snippet.md:9.
+       (Plans / tasknotes / archive locations) further up this section. Mirror: the KEEP
+       IN SYNC comment above claude/AGENTS-snippet.md's paste-block fence.
        1. The roster is names-only, except `/ft-file-followup`'s park-priority
           flags, which the Pair F release gate requires on both surfaces.
        2. Richer detail (stubs, gates) lives in SPEC/tasknote-selection.md and
@@ -32,7 +32,7 @@ in `SPEC.md`; read it before starting non-trivial work.
           `/ft-release`; the adopter paste-block names `/ft-update`.
        5. The path-convention bullets are described in both files in slightly
           different prose; editing one requires checking the other. -->
-<!-- KEEP IN SYNC (CORE-516): mirrors claude/AGENTS-snippet.md:32 — same `[model]` concept, same SPEC/model.md pointer. Editing one requires checking the other. -->
+<!-- KEEP IN SYNC (CORE-516): mirrors the `[model]` bullet in claude/AGENTS-snippet.md's paste-block (guard: the KEEP IN SYNC comment above that fence) — same `[model]` concept, same SPEC/model.md pointer. Editing one requires checking the other. -->
 - Each PLAN.md task line carries a `[model]` segment naming the model tier or name the task should run on end-to-end; on mismatch, surface it before continuing. Contract: `SPEC/model.md` §"Model field".
 - Four bundled skills are utility-only, not part of the tasknote lifecycle
   above: `/ft-audit`, `/ft-audit-repo`, `/ft-new-project`, `/ft-seed`. Full roster + naming convention:
@@ -51,7 +51,7 @@ not to)".
 
 - `README.md` — top-level project overview and entry point.
 - `SECURITY.md` — security policy and vulnerability reporting.
-- `CONTRIBUTING.md` — contributor guide: maintenance model, filing issues, PR process.
+- `CONTRIBUTING.md` — contributor guide: maintenance model, filing issues, PR process, local skill wiring.
 - `.github/` — GitHub-specific config (CI workflow: `workflows/ci.yml`; Dependabot security-update config: `dependabot.yml`).
 - `justfile` — `just` recipes (`setup`/`dev`/`test`/`lint`/`typecheck`/`build`) that delegate to the `viz/` npm scripts; §"Validation" below stays the roster of record.
 - `SPEC.md` — canonical workflow contract.

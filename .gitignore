@@ -21,7 +21,7 @@ caobunga-status.md
 # One link under `.claude/skills/` points into tracked `.flaitron/` instead of
 # `claude/`: flaitron-self's `/audit` overlay body is versioned at
 # `.flaitron/audit-overlay/`, so it survives this rule rather than excepting it
-# (SPEC/layout.md, docs/MIGRATION.md §1.2.2). The link itself stays ignored.
+# (SPEC/layout.md, CONTRIBUTING.md). The link itself stays ignored.
 .claude/
 .agents/
 .cursor/

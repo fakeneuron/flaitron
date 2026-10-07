@@ -26,15 +26,59 @@ Pull requests are rare and best preceded by an issue. Flaitron is small, opinion
 1. Open an issue first describing the problem and the proposed shape.
 2. Wait for a thumbs-up before investing in the diff.
 3. Match the repo's existing style — [docs/CONVENTIONS.md](docs/CONVENTIONS.md) covers commit format, semver, GFM, and Diátaxis alignment; [SPEC.md](SPEC.md) is the workflow contract.
-4. If your change touches a skill or command, wire `.claude/` locally so you can run it — see [docs/MIGRATION.md](docs/MIGRATION.md) §"1.2.2 Developing flaitron skills & commands" for the one-time symlink setup. `.claude/` is gitignored by design (per-machine wiring, never committed), so a fresh clone has no `/ft-*` commands until you run it.
+4. If your change touches a skill or command, wire `.claude/` locally so you can run it — see §"Developing flaitron skills & commands" below for the one-time symlink setup. `.claude/` is gitignored by design (per-machine wiring, never committed), so a fresh clone has no `/ft-*` commands until you run it.
 
 A PR that lands without prior discussion may be closed without merge even if the change itself is reasonable — the issue-first rule is about scope and direction, not code quality.
+
+## Developing flaitron skills & commands
+
+Maintainer and contributor wiring for this checkout. Adopting projects wire through [docs/MIGRATION.md](docs/MIGRATION.md) §1.2 instead.
+
+The canonical skill and command definitions live in `claude/skills/` and `claude/commands/` at the root of this checkout. The in-repo `.claude/` directory is gitignored (see root `.gitignore`) and must never contain committed per-machine wiring.
+
+For live editing with immediate effect, wire this checkout's own `.claude/`. The repo-scoped install is the canonical one ([`docs/PLATFORMS.md`](docs/PLATFORMS.md) §"One canonical install path per project"), and because its symlinks point into this tree, an edit to `claude/skills/` is live in the next session:
+
+```sh
+# From the flaitron repo root (one-time, or after adding a skill/command)
+mkdir -p .claude/commands .claude/skills
+ln -s ../../claude/commands/*.md .claude/commands/
+ln -s ../../claude/skills/*      .claude/skills/
+
+# flaitron-self's own /audit overlay — tracked body, symlinked into place
+ln -sfn ../../.flaitron/audit-overlay/ .claude/skills/audit
+ln -s ../../claude/commands/ft-audit.md .claude/commands/audit.md
+```
+
+The relative `../../` paths are clone-location independent, and the symlinks land under the ignored `.claude/` directory, so they never enter git history. This gives the complete `/ft-*` surface (`/ft-audit`, `/ft-audit-repo`, release, new-project, etc.) to any agent started inside the tree. It is expected rather than optional: [`docs/PLATFORMS.md`](docs/PLATFORMS.md) §"Installed-surface policy" treats a shipped `ft-*` slug with no `.claude/` symlink as a wiring miss, and `/ft-release` §7.1 checks for one. The glob also wires `/ft-update`, which is intentional — the skill is adopter-only but bails in flaitron-self with a clear message rather than silently misbehaving, so wiring it here is harmless. The `ft-` prefix remains flaitron's reserved namespace.
+
+Codex maintainers wire the same way, from the parallel wrapper inventory:
+
+```sh
+mkdir -p .agents/skills
+ln -s ../../codex/skills/* .agents/skills/
+```
+
+`.agents/` is gitignored alongside `.claude/` (see root `.gitignore`), so this stays per-machine too.
+
+The canonical `claude/skills/ft-audit/` directory (`SKILL.md` + `scaffold-bootstrap.md` + `passes/`) is the **stack-neutral scaffold** of [docs/MIGRATION.md](docs/MIGRATION.md) §1.2.1 — it intentionally retains `SKILL.md`'s §0 forker checklist and placeholder globs/rubrics so adopters (and flaitron's own release tooling) can fork it. It is **not** a pre-filled flaitron-self specialization. Auditing flaitron itself therefore supplies scope at invocation time. `passes/docs.md` leaves its default-scope slot a forker placeholder and reaches `.flaitron/tasknote/README.md` §"AI-referenced docs" through an **extra scope token**, so invoke it as `/ft-audit docs ai-referenced` — the same explicit form `/ft-release` §7.1 uses. Other domains have no baked-in glob — pass a target (e.g. `viz/src/**` for the React app) or the run stops and asks. The bundled pass files keep their placeholders whatever scope you pass, so a run here also trips `claude/skills/ft-audit/SKILL.md` §1 step 3's scaffold bootstrap (MIGRATION §1.2.1) before pass 1; *run once* is the normal answer. Verification gates are per domain: the code domains use the `viz` `npm` scripts (`lint`, `typecheck`, `test`) plus the portable `node --test tools/update-adopters.test.mjs` suite, while `docs` declares markdown-lint and link-check slots — this repo has no markdown linter, but the CI `drift` job's doc checks (Pair Q section-citation resolver, final-newline, context budget) are the link-check half; run them locally as the gate. If you audit this tree often, keep a thin overlay fork (fill in the `viz` glob + those three gates) whose "Referenced scaffold" line points at the in-tree `claude/skills/ft-audit/SKILL.md` rather than the adopter submodule path, since this checkout has no `.flaitron/core/` to reference (`claude/skills/ft-audit/scaffold-bootstrap.md` §2 "Flaitron-self"). **Its body is tracked at `.flaitron/audit-overlay/SKILL.md`, and `.claude/skills/audit` is a directory symlink to it** — unlike every adopter fork, flaitron-self's overlay is versioned. It has to be: the deltas are this repo's own audit contract, they exist nowhere else, and an untracked overlay is absent from `HEAD`, from review, and from CI's Pair Q section-citation sweep (which selects tracked `*.md`). Keeping it under `.claude/` instead would mean carving an exception into the ignore rule for one real file — the exact partially-committed `.claude/` that [[CORE-217]] drove to zero — so the overlay moved out rather than the rule bending. `.claude/` therefore stays **wholly** ignored, and the symlink keeps `.claude/skills/` uniformly symlinks, which is one `find` to check.
+
+**Machine-global installs: utilities only**
+
+Do **not** glob the shipped inventory into an agent home. `~/.claude/skills/` and `~/.agents/skills/` carry only the global-only utilities — the skills you need *before* a project is wired, or *outside* any flaitron checkout — installed one at a time with the MIGRATION §1.0 shape:
+
+```sh
+mkdir -p ~/.claude/skills ~/.claude/commands
+ln -s ~/code/flaitron/claude/skills/<skill>       ~/.claude/skills/<skill>
+ln -s ~/code/flaitron/claude/commands/<skill>.md  ~/.claude/commands/<skill>.md
+```
+
+Globally installing a slug the repo-scoped wiring above already provides can make it enumerate twice in a session's skill roster. Some runtimes collapse identical targets instead; the bounded Codex observation is in [docs/CODEX-VERIFICATION.md](docs/CODEX-VERIFICATION.md#before-and-after). The rule and its second failure mode — cross-agent slug shadowing in `~/.agents/skills/`, which is read by Codex, Claude Code, Cursor, and Grok alike — are canonical in [`docs/PLATFORMS.md`](docs/PLATFORMS.md) §"One canonical install path per project".
 
 ## Where conventions live
 
 - **[SPEC.md](SPEC.md)** — workflow contract; canonical surface for the tasknote lifecycle, the relevance gate, gate cues, the paper-complete guard, and versioning rules.
 - **[docs/CONVENTIONS.md](docs/CONVENTIONS.md)** — external conventions flaitron adheres to (Conventional Commits, SemVer, GFM, Diátaxis, GitHub Actions CI) and declines (CHANGELOG, separate ADRs, release automation, pre-commit hooks, MCP servers, package-manager / marketplace distribution, template override stacking), each with rationale.
-- **[docs/MIGRATION.md](docs/MIGRATION.md)** — adoption and bump procedure for projects pulling flaitron in as a submodule.
+- **[docs/MIGRATION.md](docs/MIGRATION.md)** — adoption and bump procedure for projects pulling flaitron in as a submodule; [docs/UPGRADING.md](docs/UPGRADING.md) holds the one-time directory-rename recipes.
 - **[docs/PHILOSOPHY.md](docs/PHILOSOPHY.md)** — design rationale; the "why" behind the choices.
 
 ## Licensing

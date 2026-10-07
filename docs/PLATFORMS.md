@@ -152,7 +152,7 @@ The structural decision is locked at [[CORE-154.3]]: no parent
 `../../.flaitron/core/claude/...` (`.flowtron/core/` before v6.0.0) —
 the `claude/` segment's stability is a non-negotiable per [[CORE-154.1]]
 Constitution; v6.0.0's one-time prefix rename is migrated by
-`docs/MIGRATION.md` §"Upgrading an existing adopter from v5.x".
+`docs/UPGRADING.md` §"Upgrading an existing adopter from v5.x".
 
 ### Naming conventions
 

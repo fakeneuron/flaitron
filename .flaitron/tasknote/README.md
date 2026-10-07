@@ -63,7 +63,7 @@ CORE-194.1 Q3's correct lazy-loading decision (settled by CORE-491).
 - `cursor/AGENTS-snippet.md` — Cursor thin wiring (`.cursor/skills/` Cursor-only path; primary path reuses Claude `.claude/` wiring)
 - `grok/AGENTS-snippet.md` — Grok thin wiring (`.grok/skills/` Grok-only path; primary path reuses Claude / Codex / Cursor wiring)
 - `docs/CONVENTIONS.md` — conventions flaitron adheres to and declines (commits, versioning, formatting, CHANGELOG, ADRs) with rationale
-- `CONTRIBUTING.md` — solo-maintenance model; how to file issues; when PRs make sense
+- `CONTRIBUTING.md` — solo-maintenance model; how to file issues; when PRs make sense; maintainer wiring for developing skills in this checkout
 - `SECURITY.md` — prompt-injection and supply-chain threat model; informs how skills handle contributor-authored content and submodule bumps
 - `docs/AGENT-NEUTRALITY.md` — ledger of intentional Claude-specific surfaces; audits and Phase 4 sweeps consult this before flagging Claude-Code references in the contract layer
 - `docs/PLATFORMS.md` — two-layer contract/wiring model and symmetric plug-in pattern for shipping new platform wiring
@@ -81,12 +81,14 @@ the reason these are excluded. The two trees run ~6,200 lines against a
 ~4,100-line sweep set, and walking them at every closure would roughly double a
 per-task step Core Principle #3 exists to keep small.
 
-Four `docs/` files are likewise outside the set, each for a reason the sweep
+Five `docs/` files are likewise outside the set, each for a reason the sweep
 would not add to: `docs/PHILOSOPHY.md` is history (nothing live mirrors it —
 unlike `docs/VISION.md`, which three surfaces restate); `docs/DOGFOOD.md` is
 release-gated (`/ft-release` Step 5 exercises it every cut);
 `docs/CONTEXT-BUDGET.md` is CI-enforced and re-measured by `/ft-release` §7.1;
-`docs/VERSION-HISTORY.md` is written *by* releases. `docs/GLOSSARY.md` states
+`docs/VERSION-HISTORY.md` is written *by* releases;
+`docs/UPGRADING.md` holds frozen rename recipes that change only at the next
+rename. `docs/GLOSSARY.md` states
 its own exclusion in its Maintenance line.
 
 **Accepted residual risk.** Skill bodies state facts *about* swept docs, so a

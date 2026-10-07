@@ -78,6 +78,8 @@ serves it; Grok-only projects follow [`grok/AGENTS-snippet.md`](grok/AGENTS-snip
   pointer to SPEC anchors)
 - [docs/MIGRATION.md](docs/MIGRATION.md) — adoption guide for fresh projects
   and migration from a prior workflow system
+- [docs/UPGRADING.md](docs/UPGRADING.md) — one-time recipes for adopters
+  pinned before a directory rename (v5.x `.flowtron/`, v4.x `_project/`)
 - [docs/CONVENTIONS.md](docs/CONVENTIONS.md) — conventions flaitron adheres to
   (Conventional Commits, SemVer, GFM, Diátaxis, GitHub Actions CI) and
   declines (CHANGELOG, ADR registry, release automation, pre-commit hooks, MCP
@@ -302,7 +304,7 @@ runtime lives in the runner; the contract lives in flaitron.
 - `codex/` — Codex skill wrappers for the full `ft-*` inventory plus Codex-specific wiring notes
 - `cursor/` — Cursor thin wiring (`AGENTS-snippet.md` + `procedures/ft-task.md` pointer; no skill wrappers — adopters wire canonical `claude/skills/` bodies)
 - `grok/` — Grok thin wiring (`AGENTS-snippet.md` + `procedures/ft-task.md` pointer; no skill wrappers — adopters wire canonical `claude/skills/` bodies)
-- `docs/` — philosophy, vision, glossary, migration, conventions, version history, agent-neutrality, platforms, agent-compat, dogfood, worktrees, gate-discipline, external-agents, harness-survey, codex-verification, and context-budget docs
+- `docs/` — philosophy, vision, glossary, migration, upgrading, conventions, version history, agent-neutrality, platforms, agent-compat, dogfood, worktrees, gate-discipline, external-agents, harness-survey, codex-verification, and context-budget docs
 - `.flaitron/` — flaitron's own roadmap and tasknotes (self-hosted)
 - `viz/` — Vite/React visualizer (priority-grouped list + optional board mode)
 - `tools/` — operator-side fleet scripts (`update-adopters.mjs`, the singular CLI carve-out — see `SPEC/scope-boundaries.md` §"What flaitron does NOT provide" — plus its portable `update-adopters.test.mjs` suite)
@@ -333,7 +335,7 @@ Until v6.0.0 this project was named flowtron: the repository was
 renamed both to flaitron (`.flaitron/`), with no old-name fallback. Release
 history, archived tasknotes, and dated records written before the rename keep
 the old name. Existing adopters follow
-[docs/MIGRATION.md](docs/MIGRATION.md) §"Upgrading an existing adopter from v5.x".
+[docs/UPGRADING.md](docs/UPGRADING.md) §"Upgrading an existing adopter from v5.x".
 
 ## License
 

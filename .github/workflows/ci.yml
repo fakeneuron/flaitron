@@ -437,7 +437,7 @@ jobs:
           # quoted because bash tilde-expands an unquoted case pattern. A
           # .flaitron/core/ prefix is the adopter view of this repo and is
           # stripped; a pre-rename .flowtron/ path (v5-era history kept as
-          # written — closed PLAN rows, MIGRATION's v4 recipe) resolves at its
+          # written — closed PLAN rows, UPGRADING's v4 recipe) resolves at its
           # v6 location, so it gets the same treatment; the four skill-local path variables (<SPEC_DIR>, <SKILL_DIR>,
           # <FT>, <tasknote dir>) resolve to what every Step 0 sets them to, so a
           # skill→module citation is read, not skipped. A path is tried

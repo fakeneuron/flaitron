@@ -223,48 +223,6 @@ you do next depends on which fork style you used:
 
 Optional section — skip entirely if you don't want structured audit skills.
 
-### 1.2.2 Developing flaitron skills & commands (maintainer & contributors)
-
-The canonical skill and command definitions live in `claude/skills/` and `claude/commands/` at the root of this checkout. The in-repo `.claude/` directory is gitignored (see root `.gitignore`) and must never contain committed per-machine wiring.
-
-For live editing with immediate effect, wire this checkout's own `.claude/`. The repo-scoped install is the canonical one ([`PLATFORMS.md`](PLATFORMS.md) §"One canonical install path per project"), and because its symlinks point into this tree, an edit to `claude/skills/` is live in the next session:
-
-```sh
-# From the flaitron repo root (one-time, or after adding a skill/command)
-mkdir -p .claude/commands .claude/skills
-ln -s ../../claude/commands/*.md .claude/commands/
-ln -s ../../claude/skills/*      .claude/skills/
-
-# flaitron-self's own /audit overlay — tracked body, symlinked into place
-ln -sfn ../../.flaitron/audit-overlay/ .claude/skills/audit
-ln -s ../../claude/commands/ft-audit.md .claude/commands/audit.md
-```
-
-The relative `../../` paths are clone-location independent, and the symlinks land under the ignored `.claude/` directory, so they never enter git history. This gives the complete `/ft-*` surface (`/ft-audit`, `/ft-audit-repo`, release, new-project, etc.) to any agent started inside the tree. It is expected rather than optional: [`PLATFORMS.md`](PLATFORMS.md) §"Installed-surface policy" treats a shipped `ft-*` slug with no `.claude/` symlink as a wiring miss, and `/ft-release` §7.1 checks for one. The glob also wires `/ft-update`, which is intentional — the skill is adopter-only but bails in flaitron-self with a clear message rather than silently misbehaving, so wiring it here is harmless. The `ft-` prefix remains flaitron's reserved namespace.
-
-Codex maintainers wire the same way, from the parallel wrapper inventory:
-
-```sh
-mkdir -p .agents/skills
-ln -s ../../codex/skills/* .agents/skills/
-```
-
-`.agents/` is gitignored alongside `.claude/` (see root `.gitignore`), so this stays per-machine too.
-
-The canonical `claude/skills/ft-audit/` directory (`SKILL.md` + `scaffold-bootstrap.md` + `passes/`) is the **stack-neutral scaffold** of §1.2.1 — it intentionally retains the §0 forker checklist and placeholder globs/rubrics so adopters (and flaitron's own release tooling) can fork it. It is **not** a pre-filled flaitron-self specialization. Auditing flaitron itself therefore supplies scope at invocation time. `passes/docs.md` leaves its default-scope slot a forker placeholder and reaches `.flaitron/tasknote/README.md` §"AI-referenced docs" through an **extra scope token**, so invoke it as `/ft-audit docs ai-referenced` — the same explicit form `/ft-release` §7.1 uses. Other domains have no baked-in glob — pass a target (e.g. `viz/src/**` for the React app) or the run stops and asks. The bundled pass files keep their placeholders whatever scope you pass, so a run here also trips the §1 step 3 scaffold bootstrap (§1.2.1) before pass 1; *run once* is the normal answer. Verification gates are per domain: the code domains use the `viz` `npm` scripts (`lint`, `typecheck`, `test`) plus the portable `node --test tools/update-adopters.test.mjs` suite, while `docs` declares markdown-lint and link-check slots — this repo has no markdown linter, but the CI `drift` job's doc checks (Pair Q section-citation resolver, final-newline, context budget) are the link-check half; run them locally as the gate. If you audit this tree often, keep a thin overlay fork (fill in the `viz` glob + those three gates) whose "Referenced scaffold" line points at the in-tree `claude/skills/ft-audit/SKILL.md` rather than the adopter submodule path, since this checkout has no `.flaitron/core/` to reference (`claude/skills/ft-audit/scaffold-bootstrap.md` §2 "Flaitron-self"). **Its body is tracked at `.flaitron/audit-overlay/SKILL.md`, and `.claude/skills/audit` is a directory symlink to it** — unlike every adopter fork, flaitron-self's overlay is versioned. It has to be: the deltas are this repo's own audit contract, they exist nowhere else, and an untracked overlay is absent from `HEAD`, from review, and from CI's Pair Q section-citation sweep (which selects tracked `*.md`). Keeping it under `.claude/` instead would mean carving an exception into the ignore rule for one real file — the exact partially-committed `.claude/` that [[CORE-217]] drove to zero — so the overlay moved out rather than the rule bending. `.claude/` therefore stays **wholly** ignored, and the symlink keeps `.claude/skills/` uniformly symlinks, which is one `find` to check.
-
-**Machine-global installs: utilities only**
-
-Do **not** glob the shipped inventory into an agent home. `~/.claude/skills/` and `~/.agents/skills/` carry only the global-only utilities — the skills you need *before* a project is wired, or *outside* any flaitron checkout — installed one at a time with the §1.0 shape:
-
-```sh
-mkdir -p ~/.claude/skills ~/.claude/commands
-ln -s ~/code/flaitron/claude/skills/<skill>       ~/.claude/skills/<skill>
-ln -s ~/code/flaitron/claude/commands/<skill>.md  ~/.claude/commands/<skill>.md
-```
-
-Globally installing a slug the repo-scoped wiring above already provides can make it enumerate twice in a session's skill roster. Some runtimes collapse identical targets instead; the bounded Codex observation is in [CODEX-VERIFICATION.md](CODEX-VERIFICATION.md#before-and-after). The rule and its second failure mode — cross-agent slug shadowing in `~/.agents/skills/`, which is read by Codex, Claude Code, Cursor, and Grok alike — are canonical in [`PLATFORMS.md`](PLATFORMS.md) §"One canonical install path per project".
-
 ### 1.3 Paste the workflow block into `AGENTS.md`
 
 Open `.flaitron/core/claude/AGENTS-snippet.md` and copy the markdown block from the "Block to paste into AGENTS.md" section into your project's `AGENTS.md` (create the file if it doesn't exist). `AGENTS.md` is the open-standard memory file read by Claude Code, Codex CLI, Cursor, Sourcegraph Amp, Aider, and Grok Build — pasting here makes the flaitron contract visible to whatever assistant the adopter uses. Project-specific instructions for a single assistant (e.g., `CLAUDE.md` for Claude-only directives) stay where they are; flaitron's block is agent-neutral.
@@ -532,7 +490,7 @@ To bump:
    ```
 3. Commit. The parent repo's submodule pointer (the SHA recorded for `.flaitron/core`) changes; `.gitmodules` itself only changes if the URL or branch field changes.
 
-Existing symlinks in `.claude/` and `.agents/skills/` don't need to be touched — they always track whatever the submodule currently points at. Two exceptions: a release that **retires** a skill (see the note below), and v6.0.0's `.flowtron/` → `.flaitron/` rename, which re-points every symlink (§"Upgrading an existing adopter from v5.x" step 4).
+Existing symlinks in `.claude/` and `.agents/skills/` don't need to be touched — they always track whatever the submodule currently points at. Two exceptions: a release that **retires** a skill (see the note below), and v6.0.0's `.flowtron/` → `.flaitron/` rename, which re-points every symlink ([UPGRADING.md](UPGRADING.md) §"Upgrading an existing adopter from v5.x" step 4).
 
 #### Retired skills leave dangling symlinks
 
@@ -568,74 +526,13 @@ Remove each hit with `rm`. The commands are safe: these are symlinks into the su
 
 A bump is itself a project-side task (e.g., `CORE-XXX: Bump flaitron to vX.Y.Z`), with a tasknote and the usual 4-phase flow. Don't bump in passing.
 
-For sweeping **non-breaking** releases across the whole workspace at once, flaitron's checkout ships `tools/update-adopters.mjs` (dry-run by default; see `SPEC/scope-boundaries.md` §"What flaitron does NOT provide" for the carve-out). It skips any repo whose release range carries real migration steps — or a tag whose notes it can't classify, which it treats as migration-bearing rather than assume safe — and flags ranges that shipped new Claude, Codex, Cursor, or Grok skill symlinks — those still go through the per-project flow above (or `/ft-update`). One breaking release is the exception: a pre-rename adopter (`.flowtron/core`) is classified `migrate` once the latest tag is v6.0.0 or later, and `--apply` performs steps 1–5 of the v6 move below in one rollback-safe local commit (it renames the submodule in place rather than re-adding it); step 6's prose sweep stays per-project.
+For sweeping **non-breaking** releases across the whole workspace at once, flaitron's checkout ships `tools/update-adopters.mjs` (dry-run by default; see `SPEC/scope-boundaries.md` §"What flaitron does NOT provide" for the carve-out). It skips any repo whose release range carries real migration steps — or a tag whose notes it can't classify, which it treats as migration-bearing rather than assume safe — and flags ranges that shipped new Claude, Codex, Cursor, or Grok skill symlinks — those still go through the per-project flow above (or `/ft-update`). One breaking release is the exception: a pre-rename adopter (`.flowtron/core`) is classified `migrate` once the latest tag is v6.0.0 or later, and `--apply` performs steps 1–5 of the v6 move ([UPGRADING.md](UPGRADING.md)) in one rollback-safe local commit (it renames the submodule in place rather than re-adding it); step 6's prose sweep stays per-project.
 
-### Upgrading an existing adopter from v5.x (`.flowtron/` → `.flaitron/`)
-
-flaitron **v6.0.0** renames the project from flowtron, and with it the convention directory `.flowtron/` → `.flaitron/` and the repository URL. It is a hard cut: v6 skills, the visualizer, and the fleet updater read only `.flaitron/`. Fresh adopters following §1 are unaffected. An existing adopter does a one-time move when bumping to v6.0.0 — whether or not `.flowtron/core` already holds v6 (a v5 `/ft-update` can check it out; v6's `/ft-update` then stops and points here). Run from the project root, as one bump task:
-
-1. **Drop the old submodule** (read-only upstream content — nothing project-owned lives in it):
-   ```sh
-   git submodule deinit -f .flowtron/core
-   git rm -f .flowtron/core
-   rm -rf .git/modules/.flowtron
-   ```
-2. **Rename the directory** (moves `PLAN.md`, `PLAN-ARCHIVE.md`, `tasknote/`, `sidequest/`, `specs/`; untracked and ignored files travel with it):
-   ```sh
-   git mv .flowtron .flaitron
-   ```
-3. **Re-add the submodule under the new name and URL, pinned to v6.0.0:**
-   ```sh
-   git submodule add https://github.com/fakeneuron/flaitron.git .flaitron/core
-   git -C .flaitron/core checkout v6.0.0
-   git add .flaitron/core
-   ```
-4. **Re-point the symlinks.** Every `.claude/`, `.agents/skills/`, `.cursor/skills/`, and `.grok/skills/` link into `../../.flowtron/core/...` now dangles; retarget each in place:
-   ```sh
-   for d in .claude .agents/skills .cursor/skills .grok/skills; do
-     [ -d "$d" ] && find "$d" -type l | while IFS= read -r l; do
-       t=$(readlink "$l"); case "$t" in *.flowtron*) ln -sfn "$(printf '%s' "$t" | sed 's/\.flowtron/.flaitron/g')" "$l" ;; esac
-     done
-   done
-   ```
-5. **Rewrite ignore rules** naming `.flowtron/` in any tracked `.gitignore` to `.flaitron/`.
-6. **Update stray references** outside archived tasknotes (which stay as written): `AGENTS.md`, `CLAUDE.md`, active tasknotes, project docs, tool configs (e.g. a `Read(./.flowtron/core/.flowtron/**)` deny rule → `Read(./.flaitron/core/.flaitron/**)`, gitleaks/ignore-file paths, `FLOWTRON_VIZ_WORKSPACE` → `FLAITRON_VIZ_WORKSPACE`), and audit forks (full-copy and thin overlay): their frontmatter keys `flowtron-reconciled:` / `flowtron-tracks:` → `flaitron-reconciled:` / `flaitron-tracks:`, plus a thin overlay's Referenced-scaffold line `.flowtron/core/claude/skills/ft-audit/SKILL.md` → `.flaitron/core/claude/skills/ft-audit/SKILL.md`. Confirm clean: `git grep -n flowtron -- ':!.flaitron/tasknote/archive' ':!.flaitron/PLAN-ARCHIVE.md'`.
-7. **Stage and commit.** Steps 1–3 staged themselves; steps 4–6 only edited the working tree, so stage them too (`git add -A` on whichever of `.claude`, `.agents`, `.cursor`, `.grok` exist, plus `.gitignore` and the files step 6 touched), then commit the move + re-pin + rewiring as a single bump task (4-phase flow per the note above).
-
-### Upgrading an existing adopter from v4.x (`_project/` → `.flowtron/`)
-
-> Historical recipe, kept in v5-era names. After it, continue with the v6 move above.
-
-flowtron **v5.0.0** renames the convention directory `_project/` → `.flowtron/` (the dotfolder convention). Fresh adopters following §1 are unaffected — the steps above already use `.flowtron/`. An existing adopter pinned under the v4.x `_project/` layout does a one-time rename when bumping to v5.0.0:
-
-1. **Rename the directory** (moves `PLAN.md`, `tasknote/`, and the submodule in one step). Git rewrites the submodule's `.gitmodules` path and `.git/config` entry:
-   ```sh
-   git mv _project .flowtron
-   ```
-2. **Rename the submodule directory** to the canonical `core` name (v4.x used `flowtron` as the submodule dirname within `_project`; after the mv above it lands at `.flowtron/flowtron`):
-   ```sh
-   git mv .flowtron/flowtron .flowtron/core
-   ```
-3. **Re-pin the submodule to v5.0.0:**
-   ```sh
-   git -C .flowtron/core fetch --tags
-   git -C .flowtron/core checkout v5.0.0
-   ```
-4. **Re-run the symlink wiring.** The old `.claude/` symlinks point at `_project/flowtron/...` and now dangle — re-create them from `.flowtron/core/claude/AGENTS-snippet.md` §"One-time symlink wiring" (run from the project root).
-5. **Update stray `_project/` references** in `AGENTS.md`, `CLAUDE.md`, and project docs to `.flowtron/`. Confirm clean: `grep -rn _project . --exclude-dir=.git`.
-6. **Commit** the rename + re-pin + rewiring as a single bump task (4-phase flow per the note above).
+**Upgrading an existing adopter from v5.x (`.flowtron/` → `.flaitron/`)** and **from v4.x (`_project/` → `.flowtron/`)** — both one-time directory-rename recipes live in [UPGRADING.md](UPGRADING.md).
 
 ## Visualizer
 
-The flaitron visualizer is a single global instance, not a per-project install. Run it once per machine from flaitron's own checkout:
-
-```sh
-cd ~/code/flaitron/viz
-npm install   # one-time
-npm run dev
-```
-
-It scans `${FLAITRON_VIZ_WORKSPACE:-~/code}/*/.flaitron/PLAN.md` and renders every adopting project; the header-rail project selector swaps the active project. The header subhead shows task counts, in-progress count, and the flaitron version the selected project is using (from its `.flaitron/core/SPEC.md`). Port `5120` is pinned with `strictPort` — a second instance fails fast rather than scanning the same workspace on a different port. Set `FLAITRON_VIZ_WORKSPACE` if your projects live somewhere other than `~/code/`. Adopter-side `.flaitron/core/viz/` still works (read-only submodule, unchanged) but is no longer the recommended path.
+The visualizer is one global instance per machine, run from flaitron's own checkout rather than a per-project install. Runbook (workspace scan, port, `FLAITRON_VIZ_WORKSPACE`): [README.md](../README.md) §"Visualizer".
 
 ## Common gotchas
 

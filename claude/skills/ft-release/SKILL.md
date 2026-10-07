@@ -25,7 +25,7 @@ The skill bails if invoked outside flaitron's own checkout:
 - `.flaitron/PLAN.md` exists (flaitron's own PLAN.md, not an adopter's `.flaitron/core/PLAN.md`).
 - `.flaitron/core/SPEC.md` does NOT exist (its presence means we're inside an adopting project — `/ft-release` must not run there).
 
-If any check fails, stop. Tell the user `/ft-release` only runs from inside the flaitron repo (typical: `~/code/flaitron`). Do not modify any files.
+If any check fails, stop. Tell the user `/ft-release` only runs from inside the flaitron repo. Do not modify any files.
 
 ## Step 1 — Find the pending release task in PLAN.md
 

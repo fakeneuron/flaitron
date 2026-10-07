@@ -261,7 +261,7 @@ green parks `input-needed` rather than closing over it — whether a red the
 diff did not cause may be closed over is exactly a question autonomous
 execution cannot answer, and the ✋ bias above (park on doubt) applies. A
 repo that declares no validation set records `N/A` with that reason. The
-motivating case is caobunga's green-targeted / red-full closes: the targeted
+motivating case is an orchestrator's green-targeted / red-full closes: the targeted
 run was green, the full suite was red, and the judgment that would have run
 it had no one to make it. `--fast` and the `[unattended]` row marker keep the
 attended default — an operator reviews those commits.

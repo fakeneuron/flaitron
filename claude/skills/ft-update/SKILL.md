@@ -26,7 +26,7 @@ path) before anything else:
 pin, or the older `.flowtron/flowtron/`), stop before any write: v6.0.0 renamed
 the whole directory, and this skill does not move it. Point the user at
 flaitron's `docs/UPGRADING.md` §"Upgrading an existing adopter from v5.x
-(`.flowtron/` → `.flaitron/`)" — or, for a whole `~/code` fleet, at
+(`.flowtron/` → `.flaitron/`)" — or, for a whole adopter fleet, at
 `tools/update-adopters.mjs` in flaitron's checkout, which migrates
 automatically.
 

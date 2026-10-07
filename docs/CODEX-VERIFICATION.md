@@ -17,7 +17,7 @@ entries were preserved. No shipped wrapper defect was found.
 
 - CLI: `codex-cli 0.159.2`, macOS, zsh; upstream SPEC v5.33.0.
 - Source and isolated submodule pin: `7b35a177012d2689505ce021855a6c20c874f25b`.
-- Self-host root: `/Users/fakeneuron/Code/flowtron`.
+- Self-host root: `/path/to/flowtron` (the operator's flowtron checkout).
 - Disposable evidence and adopter root: `/private/tmp/core677-install/` and
   its `adopter/` child. Raw catalogs, sessions, inventories, routes, and
   temporary scripts remain there for this run; the deciding results and
@@ -47,7 +47,7 @@ results for that distinction.
 Initially `.agents/skills/` did not exist in the self-host checkout. The user
 skill directory had 18 Flowtron symlinks: ten resolving and eight dangling.
 Every one targeted the exact absolute prefix
-`/Users/fakeneuron/Code/flowtron/codex/skills/` plus its own slug. The first
+`/path/to/flowtron/codex/skills/` plus its own slug. The first
 fresh runtime returned the ten resolving links as user-scoped skills; it
 silently omitted dangling links. `ft-refactor` and `ft-seed` were missing.
 
@@ -172,7 +172,7 @@ The fixture for this receipt was created without network access:
 mkdir -p /private/tmp/core677-install/adopter
 git init -q /private/tmp/core677-install/adopter
 cd /private/tmp/core677-install/adopter
-git -c protocol.file.allow=always submodule add --quiet /Users/fakeneuron/Code/flowtron .flowtron/core
+git -c protocol.file.allow=always submodule add --quiet /path/to/flowtron .flowtron/core
 ```
 
 It cloned the source HEAD above. For later reproduction, explicitly check out

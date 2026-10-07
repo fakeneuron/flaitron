@@ -18,7 +18,7 @@ strip what no longer is).
 
 Scope: five framework families, ~12 products, web sources only, one session.
 Filed as CORE-655 … CORE-662 + FE-124 (`chore: file … harness-survey
-follow-ups`, `b39eb024`) and caobunga CBN-235.
+follow-ups`, `b39eb024`) and one row in the external caller's own plan.
 
 ### Landscape
 
@@ -42,7 +42,7 @@ this.
 2. Paper-complete guard + 🏁 only with a deliverable-covering SHA.
 3. Archive as decision memory + `Superseded by` pointers (compound-by-product).
 4. `[model]` tier routing with a mismatch gate.
-5. `[unattended]` / `[handoff]` deny-by-default headless markers, with a real consumer (caobunga).
+5. `[unattended]` / `[handoff]` deny-by-default headless markers, with a real consumer (an operator-private orchestrator).
 6. Byte budgets enforced in CI.
 7. `touches:` scope reconciliation as a recorded fact, not a gate.
 8. 1,000+ tasks of dogfooding.
@@ -64,16 +64,16 @@ upstream spec ceremony, session handoff (already covered).
 3. `/ft-release` mirror pairs (118KB dir) — root cause is mirror count, not check quality. No row yet.
 4. CONTEXT-BUDGET table cells are ~1KB of history each. → CORE-662.
 5. Multi-runner sync tax — **not overkill**: Grok is used frequently (operator answer 2026-09-21).
-6. `[unattended]` surface — **not overkill**: caobunga reads it and it is critical (same answer).
+6. `[unattended]` surface — **not overkill**: the external caller reads it and it is critical (same answer).
 
 Verdict: lifecycle core well-balanced and arguably best-in-class for the
 solo-markdown niche; meta layer shows accretion because self-hosting has no
 subtractive force. → CORE-661 (decay pass).
 
-### Caobunga exposure (checked against `backend/caobunga/flowtron/*`, `close.py`, `brief.py`)
+### External-caller exposure (checked against the caller's parser source)
 
-Caobunga parses: task-line grammar, `status:` / `park-reason:`, `## <emoji>
-Phase N:` headings + per-phase checkboxes (`phase_progress()`), `## 🎯 Goal`,
+The caller parses: task-line grammar, `status:` / `park-reason:`, `## <emoji>
+Phase N:` headings + per-phase checkboxes, `## 🎯 Goal`,
 `**Final Summary:**` … `**Archived:**`, `**Verdict:** De-scope`, `### Follow-ups?`,
 the two skill capability probes, `just test/lint/typecheck`. It reads no SPEC
 prose and writes nothing into producers. The phase/Goal headings were not in
@@ -192,7 +192,7 @@ products (Devin, Jules, Copilot agent, Cursor, Amp): no public velocity.
 | Overkill 3 — `/ft-release` mirror pairs | **Still open**, no row. |
 | Overkill 4 — CONTEXT-BUDGET cells | **Landed** (CORE-662, 23,244 → 20,224). |
 | Verdict — no subtractive force | **Landed** — `/ft-audit context` pass 6, Contract decay (CORE-661). |
-| Caobunga heading exposure | **Landed** (CORE-655). |
+| External-caller heading exposure | **Landed** (CORE-655). |
 
 ### Gaps (re-ranked)
 

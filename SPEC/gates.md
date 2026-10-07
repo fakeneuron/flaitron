@@ -22,7 +22,7 @@ _<1-2 sentence plain-English preview of what executes on approval>_
 |---|---|---|---|
 | Phase 1→2 (post-Discovery) | 🛠️ | `AWAITING APPROVAL — Phase 2: Execution ready` | **Conditional (per-skill flavor)** — full rule: §"Phase 1→2 exit gate" |
 | Ready-to-commit (closure review + work summary bundled) | 📦 | `AWAITING APPROVAL — Ready to commit` | **Conditional** — fires when the diff trips the §"Conditional skip rule" privileged-ops signal OR a bundled in-📦 prompt is queued (e.g., /ft-close-epic parent-flip); skipped otherwise via autonomous-commit |
-| Destructive action (in-execution) | 🗄️ / ▶️ / 📡 / 💻 | `AWAITING APPROVAL — Destructive DB command` / `… — Destructive command` / `… — Destructive NAS command` / `… — Destructive TERM command` | **Conditional (bounded escalation)** — a 🗄️/▶️/📡/💻 command cue that might run a destructive or irreversible action escalates from its default inline prefix to a banner; biased fire-on-doubt. Full rule: §"Destructive-action escalation" |
+| Destructive action (in-execution) | 🗄️ / ▶️ / 📡 / 💻 | `AWAITING APPROVAL — Destructive DB command` / `… — Destructive command` / `… — Destructive REMOTE command` / `… — Destructive TERM command` | **Conditional (bounded escalation)** — a 🗄️/▶️/📡/💻 command cue that might run a destructive or irreversible action escalates from its default inline prefix to a banner; biased fire-on-doubt. Full rule: §"Destructive-action escalation" |
 
 **The two-banner cap — stated here, cited everywhere else.** The
 standing phase-gate count is fixed at **two**: 🛠️ and 📦. Nothing in this
@@ -54,7 +54,7 @@ The one bounded exception to the two-banner cap (§"Operator-gate cues"): it
 admits exactly one banner type, tied to a concrete command rather than to the
 phase flow.
 
-**Predicate (biased fire-on-doubt).** A 🗄️ DB, ▶️ RUN, 📡 NAS, or 💻 TERM
+**Predicate (biased fire-on-doubt).** A 🗄️ DB, ▶️ RUN, 📡 REMOTE, or 💻 TERM
 command cue escalates
 from its default inline prefix to a **destructive-action banner** when the
 action *might* be destructive or irreversible — for example: an
@@ -77,13 +77,13 @@ _<what runs, and why it is destructive / irreversible>_
 ```
 
 (▶️ uses `AWAITING APPROVAL — Destructive command`; 📡 uses
-`AWAITING APPROVAL — Destructive NAS command`; 💻 uses
+`AWAITING APPROVAL — Destructive REMOTE command`; 💻 uses
 `AWAITING APPROVAL — Destructive TERM command`.) The preview line is
 mandatory, same as the phase-gate banners. On approval the command runs; the
 run then returns to inline cues.
 
 **Bound (keeps cues inline-by-default).** It applies **only** to 🗄️ DB,
-▶️ RUN, 📡 NAS, and 💻 TERM, and **only** for destructive / irreversible
+▶️ RUN, 📡 REMOTE, and 💻 TERM, and **only** for destructive / irreversible
 actions; non-destructive uses stay inline, and every non-command cue (✋ / 🟢 /
 👁️ / 🔍 / 🔧 / 🧩 / 🧠 / 🔭 / 👇) never escalates. It is **not a standing phase
 gate**: it fires only when such a command is about to execute, and leaves 🛠️ /

@@ -327,11 +327,11 @@ describe('App — project switching', () => {
   });
 
   it('fetches /api/projects, renders chips, and marks the stored or first project active', async () => {
-    window.localStorage.setItem('flaitron-viz-active-project', 'fintown');
-    renderApp({ plan, active, projects: ['flaitron', 'fintown', 'invisipaw'] });
+    window.localStorage.setItem('flaitron-viz-active-project', 'acme');
+    renderApp({ plan, active, projects: ['flaitron', 'acme', 'globex'] });
 
     await waitFor(() =>
-      expect(screen.getByRole('button', { name: 'Project: fintown' })).toHaveAttribute(
+      expect(screen.getByRole('button', { name: 'Project: acme' })).toHaveAttribute(
         'aria-pressed',
         'true',
       ),
@@ -340,7 +340,7 @@ describe('App — project switching', () => {
       'aria-pressed',
       'false',
     );
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Flaitron — fintown');
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Flaitron — acme');
   });
 
   it('shows the pinned flaitron version in the header when known', async () => {
@@ -381,22 +381,22 @@ describe('App — project switching', () => {
 
   it('on switch: updates active state, persists to localStorage, and resets filters', async () => {
     const user = userEvent.setup();
-    renderApp({ plan, active, projects: ['flaitron', 'fintown'] });
+    renderApp({ plan, active, projects: ['flaitron', 'acme'] });
 
     await waitFor(() => expect(screen.getByText('CORE-100')).toBeInTheDocument());
 
     await user.type(screen.getByRole('searchbox'), 'one');
     expect(screen.getByRole('searchbox')).toHaveValue('one');
 
-    await user.click(screen.getByRole('button', { name: 'Project: fintown' }));
+    await user.click(screen.getByRole('button', { name: 'Project: acme' }));
 
     await waitFor(() =>
-      expect(screen.getByRole('button', { name: 'Project: fintown' })).toHaveAttribute(
+      expect(screen.getByRole('button', { name: 'Project: acme' })).toHaveAttribute(
         'aria-pressed',
         'true',
       ),
     );
-    expect(window.localStorage.getItem('flaitron-viz-active-project')).toBe('fintown');
+    expect(window.localStorage.getItem('flaitron-viz-active-project')).toBe('acme');
     expect(screen.getByRole('searchbox')).toHaveValue('');
   });
 });
@@ -428,18 +428,18 @@ describe('App — load() partial failure on project switch', () => {
     renderApp({
       plan,
       active,
-      projects: ['flaitron', 'fintown'],
+      projects: ['flaitron', 'acme'],
       perProject: {
-        fintown: { fail: { archive: 500 } },
+        acme: { fail: { archive: 500 } },
       },
     });
 
     await waitFor(() => expect(screen.getByText('CORE-100')).toBeInTheDocument());
 
-    await user.click(screen.getByRole('button', { name: 'Project: fintown' }));
+    await user.click(screen.getByRole('button', { name: 'Project: acme' }));
 
     await waitFor(() =>
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Flaitron — fintown'),
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Flaitron — acme'),
     );
     await waitFor(() =>
       expect(screen.getByText(/Archive list failed: HTTP 500/)).toBeInTheDocument(),
@@ -610,19 +610,19 @@ describe('App — settings modal', () => {
   it('per-project: switching projects reloads prefs from that project key', async () => {
     const user = userEvent.setup();
     window.localStorage.setItem(
-      'flaitron-viz-prefs:fintown',
+      'flaitron-viz-prefs:acme',
       JSON.stringify({
         version: 1,
         rowChips: { tags: true, model: false, related: false, due: false },
         detailSections: { goal: true, acceptance: true, subtasks: true },
       }),
     );
-    renderApp({ plan, active, projects: ['flaitron', 'fintown'] });
+    renderApp({ plan, active, projects: ['flaitron', 'acme'] });
 
     await waitFor(() => expect(screen.getByText('CORE-100')).toBeInTheDocument());
     expect(screen.queryByText('viz')).not.toBeInTheDocument();
 
-    await user.click(screen.getByRole('button', { name: 'Project: fintown' }));
+    await user.click(screen.getByRole('button', { name: 'Project: acme' }));
 
     await waitFor(() => expect(screen.getByText('viz')).toBeInTheDocument());
   });
@@ -784,7 +784,7 @@ describe('App — density modes', () => {
   it('per-project: switching projects reloads density from that project key', async () => {
     const user = userEvent.setup();
     window.localStorage.setItem(
-      'flaitron-viz-prefs:fintown',
+      'flaitron-viz-prefs:acme',
       JSON.stringify({
         version: 1,
         rowChips: { tags: false, model: true, related: false, due: false },
@@ -792,12 +792,12 @@ describe('App — density modes', () => {
         density: 'comfortable',
       }),
     );
-    renderApp({ plan, active, projects: ['flaitron', 'fintown'] });
+    renderApp({ plan, active, projects: ['flaitron', 'acme'] });
 
     await waitFor(() => expect(screen.getByText('CORE-100')).toBeInTheDocument());
     expect(rowPadClasses()).toContain('px-2.5 py-1.5');
 
-    await user.click(screen.getByRole('button', { name: 'Project: fintown' }));
+    await user.click(screen.getByRole('button', { name: 'Project: acme' }));
 
     await waitFor(() => expect(rowPadClasses()).toContain('px-3 py-2'));
   });
@@ -901,7 +901,7 @@ describe('App — palette modes', () => {
   it('per-project: switching projects reloads palette from that project key', async () => {
     const user = userEvent.setup();
     window.localStorage.setItem(
-      'flaitron-viz-prefs:fintown',
+      'flaitron-viz-prefs:acme',
       JSON.stringify({
         version: 2,
         rowChips: { id: true, tags: false, model: true, related: false, due: false },
@@ -911,14 +911,14 @@ describe('App — palette modes', () => {
         palette: 'linear',
       }),
     );
-    renderApp({ plan, active, projects: ['flaitron', 'fintown'] });
+    renderApp({ plan, active, projects: ['flaitron', 'acme'] });
 
     await waitFor(() => expect(screen.getByText('CORE-100')).toBeInTheDocument());
 
-    await user.click(screen.getByRole('button', { name: 'Project: fintown' }));
+    await user.click(screen.getByRole('button', { name: 'Project: acme' }));
 
     await waitFor(() =>
-      expect(screen.getByRole('button', { name: 'Project: fintown' })).toHaveAttribute(
+      expect(screen.getByRole('button', { name: 'Project: acme' })).toHaveAttribute(
         'aria-pressed',
         'true',
       ),

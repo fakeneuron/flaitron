@@ -1,7 +1,7 @@
-# gitleaks baseline — deposited copy (CORE-578) of a fleet baseline
-# (operator-private: ~/Code/natabula/configs/.gitleaks.toml). Extends the
-# upstream default ruleset and allowlists the false-positive classes a
-# fleet-wide measurement actually produced — nothing speculative.
+# gitleaks baseline — deposited copy (CORE-578) of an operator-private fleet
+# baseline. Extends the upstream default ruleset and allowlists the
+# false-positive classes a fleet-wide measurement actually produced —
+# nothing speculative.
 #
 # Consumed here by the CI secret-scan step (.github/workflows/ci.yml, working
 # tree), which passes this file explicitly.

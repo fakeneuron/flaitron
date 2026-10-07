@@ -130,14 +130,14 @@ shape".
 | Cue | Glyph | Label | Fires when | Example |
 |---|---|---|---|---|
 | DB-command | 🗄️ | `DB` | The operator should run a database / migration / schema command | `🗄️ DB: run \`alembic upgrade head\` to apply the migration` |
-| Executable / run | ▶️ | `RUN` | The operator should run a generic or agent-adjacent command (build, test, script, server start) — not a DB command, not NAS-bound, not operator-TTY-bound | `▶️ RUN: \`npm run build\`, then verify the bundle output` |
-| NAS-command | 📡 | `NAS` | The operator should run a command on the NAS (not the agent shell, not the local TTY) | `📡 NAS: \`docker compose pull && docker compose up -d\` on the NAS` |
-| TTY-command | 💻 | `TERM` | The operator should paste a command into their own TTY (not the agent shell, not the NAS) | `💻 TERM: paste \`ssh nas\` into your TTY` |
+| Executable / run | ▶️ | `RUN` | The operator should run a generic or agent-adjacent command (build, test, script, server start) — not a DB command, not remote-host-bound, not operator-TTY-bound | `▶️ RUN: \`npm run build\`, then verify the bundle output` |
+| Remote-host command | 📡 | `REMOTE` | The operator should run a command on a remote host (not the agent shell, not the local TTY) | `📡 REMOTE: \`docker compose pull && docker compose up -d\` on the server` |
+| TTY-command | 💻 | `TERM` | The operator should paste a command into their own TTY (not the agent shell, not a remote host) | `💻 TERM: paste \`ssh server\` into your TTY` |
 | User-action | ✋ | `ACTION` | The operator must perform a manual, non-command action (paste a secret, click a link, approve out-of-band) | `✋ ACTION: paste your API key into \`.env\` before continuing` |
 
 Command destination is the split among ▶️ / 📡 / 💻: ▶️ RUN is the
-generic/workspace default; 📡 NAS and 💻 TERM fire only when the command
-must run on the NAS or be pasted into the operator's TTY. ✋ ACTION stays
+generic/workspace default; 📡 REMOTE and 💻 TERM fire only when the command
+must run on a remote host or be pasted into the operator's TTY. ✋ ACTION stays
 the non-command manual step (a secret, a click, an out-of-band approve) —
 pasting a *command* into the TTY is 💻 TERM, not ✋ ACTION.
 

@@ -1,5 +1,5 @@
 ---
-description: Bootstrap a fresh ~/code/ project with flaitron — adds the submodule, wires /ft-task, drops in PLAN.md + tasknote README, creates/patches AGENTS.md, and stages the commit.
+description: Bootstrap a fresh project with flaitron — adds the submodule, wires /ft-task, drops in PLAN.md + tasknote README, creates/patches AGENTS.md, and stages the commit.
 ---
 
 Invoke the `ft-new-project` skill. The skill verifies preconditions (cwd is a git repo with `AGENTS.md` or `CLAUDE.md`, no existing flaitron wiring), collects the project name and pinned flaitron version, and walks through the bootstrap steps from flaitron's `docs/MIGRATION.md` §1 conversationally. Stages all bootstrap files and surfaces the commit message for user approval — does not commit unprompted.

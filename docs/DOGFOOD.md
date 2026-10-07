@@ -58,7 +58,7 @@ authoritative cross-agent fallback; note any glyph that fails to render.
 **Event cues**
 - 🗄️ DB
 - ▶️ RUN
-- 📡 NAS
+- 📡 REMOTE
 - 💻 TERM
 - ✋ ACTION
 

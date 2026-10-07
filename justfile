@@ -4,9 +4,7 @@
 # the `frontend`/`backend`/`landing`/`worker` subdir set that template detects.
 # Every recipe below delegates to `npm --prefix viz …`, matching the commands
 # CLAUDE.md §"Validation"/§"Dev Server" and viz/README.md already document
-# running from the repo root (CORE-637). Rationale lives in the
-# operator-private ~/Code/natabula/docs/STACK-TENDENCIES.md §"Non-standard
-# repos hand-author bodies".
+# running from the repo root (CORE-637).
 #
 # Prerequisite: `just` (one-time `brew install just`). Run `just` with no
 # args to list recipes.

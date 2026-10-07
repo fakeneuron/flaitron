@@ -45,11 +45,11 @@ describe('visibilityPrefs', () => {
       rowChips: { id: true, tags: false, model: true, related: true, blocked: false, due: false },
     };
     writeVisibilityPrefs('flaitron', a);
-    writeVisibilityPrefs('fintown', b);
+    writeVisibilityPrefs('acme', b);
     expect(readVisibilityPrefs('flaitron').rowChips.tags).toBe(true);
     expect(readVisibilityPrefs('flaitron').rowChips.model).toBe(false);
-    expect(readVisibilityPrefs('fintown').rowChips.tags).toBe(false);
-    expect(readVisibilityPrefs('fintown').rowChips.related).toBe(true);
+    expect(readVisibilityPrefs('acme').rowChips.tags).toBe(false);
+    expect(readVisibilityPrefs('acme').rowChips.related).toBe(true);
   });
 
   it('falls back to DEFAULT_PREFS on malformed JSON', () => {
@@ -191,9 +191,9 @@ describe('visibilityPrefs', () => {
     const a: VisibilityPrefs = { ...DEFAULT_PREFS, density: 'compact' };
     const b: VisibilityPrefs = { ...DEFAULT_PREFS, density: 'comfortable' };
     writeVisibilityPrefs('flaitron', a);
-    writeVisibilityPrefs('fintown', b);
+    writeVisibilityPrefs('acme', b);
     expect(readVisibilityPrefs('flaitron').density).toBe('compact');
-    expect(readVisibilityPrefs('fintown').density).toBe('comfortable');
+    expect(readVisibilityPrefs('acme').density).toBe('comfortable');
   });
 
   it('falls back palette to "default" when the field is missing (v1 pre-palette payload)', () => {
@@ -229,9 +229,9 @@ describe('visibilityPrefs', () => {
     const a: VisibilityPrefs = { ...DEFAULT_PREFS, palette: 'linear' };
     const b: VisibilityPrefs = { ...DEFAULT_PREFS, palette: 'github' };
     writeVisibilityPrefs('flaitron', a);
-    writeVisibilityPrefs('fintown', b);
+    writeVisibilityPrefs('acme', b);
     expect(readVisibilityPrefs('flaitron').palette).toBe('linear');
-    expect(readVisibilityPrefs('fintown').palette).toBe('github');
+    expect(readVisibilityPrefs('acme').palette).toBe('github');
   });
 
   // The guards are derived from these arrays, so a member added to either one

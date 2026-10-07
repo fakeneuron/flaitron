@@ -8,9 +8,6 @@ dist/
 .playwright-mcp/
 SCRATCH*.md
 
-# Cross-repo caobunga orchestrator status write; not a workflow artifact.
-caobunga-status.md
-
 # Personal Claude Code / Codex / Cursor / Grok wiring for this checkout.
 # Repo-scoped `ln -s ../../claude/...`, `ln -s ../../codex/...`,
 # Cursor-only `ln -s ../../claude/...` into `.cursor/skills/`, and

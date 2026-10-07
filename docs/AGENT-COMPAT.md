@@ -158,7 +158,7 @@ A cue can hit three non-render failure modes on a given agent surface:
 - **Tofu** — the glyph renders as a missing-glyph box (□).
 - **Mojibake** — the glyph is mis-decoded into garbage bytes.
 
-In all three, the trailing label (`DB`, `RUN`, `NAS`, `TERM`, `ACTION`, `GO`, `CONFIRM`,
+In all three, the trailing label (`DB`, `RUN`, `REMOTE`, `TERM`, `ACTION`, `GO`, `CONFIRM`,
 `AUDIT`, `LIGHT`, `MEDIUM`, `HEAVY`, `XHEAVY`, `HERE`) is plain ASCII and survives intact, so the cue's meaning is recoverable
 without the glyph. Banner cues carry their label inside the
 `AWAITING APPROVAL — <label>` line, so the same fallback holds for blocking

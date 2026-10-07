@@ -1,6 +1,6 @@
 ---
 name: ft-new-project
-description: Bootstrap a fresh ~/code/ project with flaitron — adds the submodule, wires /ft-task, drops in PLAN.md + tasknote README, creates/patches AGENTS.md, and stages the commit. Use when the user asks to bootstrap or adopt flaitron into a new project. Mirrors docs/MIGRATION.md §1 conversationally; for fresh adoption only.
+description: Bootstrap a fresh project with flaitron — adds the submodule, wires /ft-task, drops in PLAN.md + tasknote README, creates/patches AGENTS.md, and stages the commit. Use when the user asks to bootstrap or adopt flaitron into a new project. Mirrors docs/MIGRATION.md §1 conversationally; for fresh adoption only.
 ---
 
 # new-project — flaitron adoption skill
@@ -36,7 +36,7 @@ If any precondition fails, do not modify any files.
 
 Use AskUserQuestion to gather:
 
-1. **Project name** — default suggestion: cwd basename (e.g., `~/code/flowmagic` → `flowmagic`). Used to substitute the `# Project Name — PLAN.md` placeholder in `templates/PLAN.md`.
+1. **Project name** — default suggestion: cwd basename (e.g., `…/flowmagic` → `flowmagic`). Used to substitute the `# Project Name — PLAN.md` placeholder in `templates/PLAN.md`.
 2. **Pinned flaitron version** — default suggestion: latest semver tag from `git ls-remote --tags --sort=-v:refname https://github.com/fakeneuron/flaitron.git | head -n1 | sed 's|.*/||'`. User can accept, override, or pin to `main` for unstable tracking (warn before doing so — the bump-tasknote / annotated-tag-message contract assumes a tag).
 
 Record both before proceeding. If the user picks `main`, set the variable but skip the `git -C .flaitron/core checkout vX.Y.Z` step in Step 2.

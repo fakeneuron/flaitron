@@ -129,9 +129,9 @@ describe('parsePlan', () => {
   it('strips bold markdown from descriptions', () => {
     const md = `## Low
 
-- [ ] **CORE-EPIC-009** — Migrate **fintown** (epic; child tasks)
+- [ ] **CORE-EPIC-009** — Migrate **acme** (epic; child tasks)
 `;
-    expect(parsePlan(md)[0].description).toBe('Migrate fintown (epic; child tasks)');
+    expect(parsePlan(md)[0].description).toBe('Migrate acme (epic; child tasks)');
   });
 
   it('ignores empty-section placeholder lines', () => {

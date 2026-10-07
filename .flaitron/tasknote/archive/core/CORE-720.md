@@ -1,15 +1,14 @@
 ---
 title: audit-overlay-docs-deltas
-status: blocked
+status: completed
 tags: []
 created: 2026-10-06
-park-reason: input-needed — deliverable path `.claude/skills/audit/SKILL.md` is gitignored, so the flaitron-self audit overlay has no committable home; closure needs an operator decision (force-commit, relocate to a tracked home, or accept unversioned)
 due:
 related-tasks: [CORE-073, CORE-644, CORE-661, CORE-711.4]
 # Optional planning keys — omit when absent (SPEC.md §Tasknote frontmatter).
 # Omitted means undeclared, not "touches nothing" / "safe with everyone".
 touches:
-  - .claude/skills/audit/SKILL.md
+  - .flaitron/audit-overlay/SKILL.md
 # blocked-by:
 #   - TASK-ID
 # parallel-safe-with:
@@ -20,38 +19,38 @@ touches:
 
 # CORE-720 | audit-overlay-docs-deltas
 
-[← PLAN.md](../PLAN.md) · ⏸ Blocked
+[← PLAN.md](../PLAN.md) · ✅ Completed
 
 ## 🎯 Goal
 
-Fill the `docs`-domain deltas in `.claude/skills/audit/SKILL.md` so `/audit docs`
+Fill the `docs`-domain deltas in `.flaitron/audit-overlay/SKILL.md` so `/audit docs`
 runs against a real doc set and rubric instead of tripping the scaffold
 bootstrap, and re-reconcile the overlay's `flaitron-reconciled:` pin from
 v5.31.0 to the current released tag.
 
 ## ✅ Acceptance
 
-- [ ] All five `## Deltas` bullets carry a `docs:`-keyed value — `[ "$(grep -c '^  - `docs:`' .claude/skills/audit/SKILL.md)" = 5 ]`
-- [ ] No `docs:`-keyed delta leaves a placeholder behind — `! grep '^  - `docs:`' .claude/skills/audit/SKILL.md | grep -q '<'`
-- [ ] `/audit docs` no-ops the dispatcher's §1 step-3 scan — `judgment`: the scan is prose-defined over two slot classes (`<…>` spans in §"Scope & rubric hints", `_(forker: …)_` notes anywhere), so no single command decides it; the two criteria above are its machine proxy, cross-checked against an enumeration of all 9 `passes/docs.md` forker slots in Testing Notes
-- [ ] `flaitron-reconciled:` names the current released tag — `grep -q '^flaitron-reconciled: v6.0.0$' .claude/skills/audit/SKILL.md && [ v6.0.0 = "$(git tag --sort=-v:refname | head -1)" ]`
-- [ ] The reconcile is substantive, not a string bump — `judgment`: evidence is the reviewed `git diff v5.31.0..v6.0.0 -- claude/skills/ft-audit/ templates/audit-overlay-template.md`, which must show no delta slot added or removed
-- [ ] §"Domains" no longer claims `docs` inherits the unkeyed values — `! grep -q 'the remaining domains inherit the unkeyed values' .claude/skills/audit/SKILL.md`
-- [ ] The unkeyed deltas and the other seven domains are untouched — no delta bullet appears among the removed lines and all three `<not derivable …>` values survive: `! git diff -U0 -- .claude/skills/audit/SKILL.md | grep '^-' | grep -v '^---' | grep -q -- '- \*\*'` and `[ "$(grep -c '<not derivable' .claude/skills/audit/SKILL.md)" = 3 ]`. **Verify command corrected in Phase 2** — the Phase 1 form counted removed lines against a literal `3`, which only holds if the two prose edits were single lines; both are wrapped paragraphs, so the count was never the right shape. The criterion itself is unchanged.
-- [ ] Every section citation in the edited file resolves — a local bash reproduction of CI's Pair Q extraction loop over `.claude/skills/audit/SKILL.md`, exit 0 (7/7). **Rationale corrected in Phase 3:** the Phase 1 form said "so CI's `drift` Pair Q stays green", which is false — `.claude/` is gitignored, so Pair Q never sees this file. The criterion stands on its own merit instead: a stale citation here would misdirect a live `/audit docs` run regardless of CI.
-- [ ] The overlay stays thin — `[ "$(wc -c < .claude/skills/audit/SKILL.md)" -lt 10000 ]`; no `.claude/` row exists in `docs/CONTEXT-BUDGET.md` §"Budgets", so no byte cap applies
-- [ ] `.editorconfig` floor holds on the edited file — `[ -z "$(tail -c1 .claude/skills/audit/SKILL.md)" ] && ! grep -nq ' $' .claude/skills/audit/SKILL.md`
+- [x] All five `## Deltas` bullets carry a `docs:`-keyed value — `[ "$(grep -c '^  - `docs:`' .flaitron/audit-overlay/SKILL.md)" = 5 ]`
+- [x] No `docs:`-keyed delta leaves a placeholder behind — `! grep '^  - `docs:`' .flaitron/audit-overlay/SKILL.md | grep -q '<'`
+- [x] `/audit docs` no-ops the dispatcher's §1 step-3 scan — `judgment`: the scan is prose-defined over two slot classes (`<…>` spans in §"Scope & rubric hints", `_(forker: …)_` notes anywhere), so no single command decides it; the two criteria above are its machine proxy, cross-checked against an enumeration of all 9 `passes/docs.md` forker slots in Testing Notes
+- [x] `flaitron-reconciled:` names the current released tag — `grep -q '^flaitron-reconciled: v6.0.0$' .flaitron/audit-overlay/SKILL.md && [ v6.0.0 = "$(git tag --sort=-v:refname | head -1)" ]`
+- [x] The reconcile is substantive, not a string bump — `judgment`: evidence is the reviewed `git diff v5.31.0..v6.0.0 -- claude/skills/ft-audit/ templates/audit-overlay-template.md`, which must show no delta slot added or removed
+- [x] §"Domains" no longer claims `docs` inherits the unkeyed values — `! grep -q 'the remaining domains inherit the unkeyed values' .flaitron/audit-overlay/SKILL.md`
+- [x] The unkeyed deltas and the other seven domains are untouched — all six unkeyed delta bullets survive and all three `<not derivable …>` values survive: `[ "$(grep -c '^- \*\*' .flaitron/audit-overlay/SKILL.md)" = 6 ]` and `[ "$(grep -c '<not derivable' .flaitron/audit-overlay/SKILL.md)" = 3 ]`. **Re-pointed at closure:** the earlier form diffed the working tree against `HEAD` for removed delta bullets, but [[CORE-721]] committed the overlay (with these edits) as a new file at `.flaitron/audit-overlay/SKILL.md`, so no pre-edit baseline exists in git and that diff is empty by construction; the bullet-count form decides the same property on the committed file.
+- [x] Every section citation in the edited file resolves — a local bash reproduction of CI's Pair Q extraction loop over `.flaitron/audit-overlay/SKILL.md`, exit 0 (7/7). **Rationale corrected in Phase 3:** the Phase 1 form said "so CI's `drift` Pair Q stays green", which is false — `.claude/` is gitignored, so Pair Q never sees this file. The criterion stands on its own merit instead: a stale citation here would misdirect a live `/audit docs` run regardless of CI.
+- [x] The overlay stays thin — `[ "$(wc -c < .flaitron/audit-overlay/SKILL.md)" -lt 10000 ]`; no `.claude/` row exists in `docs/CONTEXT-BUDGET.md` §"Budgets", so no byte cap applies
+- [x] `.editorconfig` floor holds on the edited file — `[ -z "$(tail -c1 .flaitron/audit-overlay/SKILL.md)" ] && ! grep -nq ' $' .flaitron/audit-overlay/SKILL.md`
 
 ## 🧩 Subtasks
 
-- [ ] Add a `docs:`-keyed sub-bullet under **Scope glob** — the Pair Q live-doc selection (`git ls-files '*.md'` minus the two write-once archives), cited to `.github/workflows/ci.yml`
-- [ ] Add a `docs:`-keyed sub-bullet under **Rubric files** — the declared doc-set contract, the workflow contract, the public overview, the conventions ledger, and the agent-neutrality ledger
-- [ ] Add a `docs:`-keyed sub-bullet under **Verification gates** — the "no gates" note: no markdown linter or link checker is configured, so skip per `passes/docs.md`; name CI's `drift` job as the nearest coverage and why it is not a local gate
-- [ ] Add a `docs:`-keyed sub-bullet under **Per-pass examples** — concrete flaitron drift shapes for docs passes 1-4
-- [ ] Add a `docs:`-keyed sub-bullet under **Extra hard rules** — write-once surfaces, the agent-neutrality ledger check, and the don't-re-report-CI rule
-- [ ] Update the §"Domains" sentence so it no longer says `docs` inherits the unkeyed values, and the `## Deltas` keying sentence so it describes the sub-bullet shape
-- [ ] Bump `flaitron-reconciled:` to `v6.0.0` (the reconcile diff is already reviewed — Discovery Notes)
-- [ ] Run the Acceptance verify commands, including the local Pair Q loop over the edited file
+- [x] Add a `docs:`-keyed sub-bullet under **Scope glob** — the Pair Q live-doc selection (`git ls-files '*.md'` minus the two write-once archives), cited to `.github/workflows/ci.yml`
+- [x] Add a `docs:`-keyed sub-bullet under **Rubric files** — the declared doc-set contract, the workflow contract, the public overview, the conventions ledger, and the agent-neutrality ledger
+- [x] Add a `docs:`-keyed sub-bullet under **Verification gates** — the "no gates" note: no markdown linter or link checker is configured, so skip per `passes/docs.md`; name CI's `drift` job as the nearest coverage and why it is not a local gate
+- [x] Add a `docs:`-keyed sub-bullet under **Per-pass examples** — concrete flaitron drift shapes for docs passes 1-4
+- [x] Add a `docs:`-keyed sub-bullet under **Extra hard rules** — write-once surfaces, the agent-neutrality ledger check, and the don't-re-report-CI rule
+- [x] Update the §"Domains" sentence so it no longer says `docs` inherits the unkeyed values, and the `## Deltas` keying sentence so it describes the sub-bullet shape
+- [x] Bump `flaitron-reconciled:` to `v6.0.0` (the reconcile diff is already reviewed — Discovery Notes)
+- [x] Run the Acceptance verify commands, including the local Pair Q loop over the edited file
 
 ## 🔗 Related
 
@@ -180,7 +179,27 @@ What survives the correction is the work itself, which was worth doing on its
 own merits: a stale `§"Section"` citation in the overlay would misdirect a live
 `/audit docs` run whether or not CI polices it. Pair Q is a prefix match against
 `# <sec>` or `**<sec>`, heading-level-blind and emoji-literal (its own comment
-warns `§"Phase 4: Closure"` does *not* resolve against `## 🚀 Phase 4: Closure`).
+warns `§"Phase 4: Closure"` does *not* resolve against `
+
+**Resumed after [[CORE-721]] (2026-10-07).** The 🚫 Blocker above is cleared:
+[[CORE-721]] gave the overlay a tracked home at `.flaitron/audit-overlay/SKILL.md`
+(`.claude/skills/audit` is now a symlink to it), already committed with this
+task's edits. The Acceptance paths were re-pointed there. The diff-based
+criterion went empty with the commit (no pre-edit baseline exists in git), so
+it was re-pointed at the six-unkeyed-bullets + three-placeholders count.
+Because the file is now tracked, CI's Pair Q does see it — the earlier
+"CI never sees this file" caveat no longer holds.
+
+**Verification receipt (re-run 2026-10-07, all against `.flaitron/audit-overlay/SKILL.md`):**
+- five `docs:` bullets → exit 0 · no `<` in `docs:` values → exit 0
+- `flaitron-reconciled: v6.0.0` == latest tag → exit 0
+- "remaining domains inherit" claim gone → exit 0
+- six unkeyed `- **` bullets → exit 0 · three `<not derivable` → exit 0
+- Pair Q loop (bash, 7 citations checked) → exit 0
+- size 7,643 < 10,000 → exit 0 · `.editorconfig` floor → exit 0
+- `git ls-files --error-unmatch` → tracked
+
+## 🚀 Phase 4: Closure`).
 All eight candidate citations were pre-verified before being written, and the
 seven that survived into the file were re-verified by a local Pair Q
 reproduction in Phase 3.
@@ -268,7 +287,7 @@ assert on it at all).
 
 - [x] **Verification receipt** — recorded each Acceptance verify command in Testing Notes as `command → exit code`, with the first failure line when non-zero; and, for changed code, confirmed no avoidable duplication, dead code, unexplained complexity, unnecessary public-surface growth, or stale code-facing documentation (otherwise `N/A` with reason)
 
-- [ ] **External review** — a context that did not write the diff graded it against `## ✅ Acceptance`, and every finding is recorded below with its disposition (**blocker** → back to Phase 2; **note** → fixed or filed). `N/A` with a one-line reason when the diff is too small to grade
+- [x] **External review** *(N/A — this run's diff is tasknote + PLAN bookkeeping; the overlay edits landed in [[CORE-721]]'s commit `9b9ff3aa`, which ran its own review)* — a context that did not write the diff graded it against `## ✅ Acceptance`, and every finding is recorded below with its disposition (**blocker** → back to Phase 2; **note** → fixed or filed). `N/A` with a one-line reason when the diff is too small to grade
 
 - [x] (frontend) Asked the user for visual confirmation (emphasized `👁️ **CONFIRM**` ask on its own line)
 
@@ -359,14 +378,20 @@ mine. Surfaced inline rather than parked, since the operator is attended.
 
 ## 🚀 Phase 4: Closure
 
-- [ ] **Doc-drift sweep** — for each entry in `.flaitron/tasknote/README.md` §"AI-referenced docs", state "no change" or the update
+- [x] **Doc-drift sweep** — for each entry in `.flaitron/tasknote/README.md` §"AI-referenced docs", state "no change" or the update
 
-- [ ] Closed — every `## ✅ Acceptance` criterion ticked or explicitly annotated (`N/A` / not-met with a one-line reason), YAML `status:` flipped to `completed`, PLAN.md line flipped to stub form `Completed YYYY-MM-DD.` and placed (standalone → top of `## Completed`; epic child → kept nested beneath its active parent — see SPEC/plan-filing.md §"`## Completed` archive convention" if unclear), then tasknote moved to `.flaitron/tasknote/archive/<area>/`
+- [x] Closed — every `## ✅ Acceptance` criterion ticked or explicitly annotated (`N/A` / not-met with a one-line reason), YAML `status:` flipped to `completed`, PLAN.md line flipped to stub form `Completed YYYY-MM-DD.` and placed (standalone → top of `## Completed`; epic child → kept nested beneath its active parent — see SPEC/plan-filing.md §"`## Completed` archive convention" if unclear), then tasknote moved to `.flaitron/tasknote/archive/<area>/`
 
-- [ ] **Evidence-based recap** drafted — changed files/LOC where meaningful, verification commands/results, refactors made or deferred with rationale, documentation verdict, the `touches:` scope reconciliation (`git diff --name-only` vs declared; name undeclared paths), and concrete maintainability effect (surfaces at the 📦 ready-to-commit gate, or inline on conditional skip)
+- [x] **Evidence-based recap** drafted — changed files/LOC where meaningful, verification commands/results, refactors made or deferred with rationale, documentation verdict, the `touches:` scope reconciliation (`git diff --name-only` vs declared; name undeclared paths), and concrete maintainability effect (surfaces at the 📦 ready-to-commit gate, or inline on conditional skip)
 
-- [ ] **Learnings** — did this task teach something the always-loaded layer (AGENTS.md / README §AI-referenced docs) should carry? `N/A` or the line
+- [x] **Learnings** — did this task teach something the always-loaded layer (AGENTS.md / README §AI-referenced docs) should carry? `N/A` or the line
+
+**Doc-drift sweep:** no change — the deliverable is the audit overlay, which no entry in `.flaitron/tasknote/README.md` §"AI-referenced docs" mirrors.
+
+**Learnings:** N/A — the gitignored-deliverable lesson was already absorbed by [[CORE-721]].
 
 **Final Summary:**
 
-**Archived:** YYYY-MM-DD
+Filled the five `docs:`-keyed deltas in the flaitron-self audit overlay and re-reconciled `flaitron-reconciled:` to v6.0.0 (both landed in [[CORE-721]]'s commit). This run re-pointed the Acceptance paths to the tracked home, replaced the emptied diff criterion with a count check, re-ran every verify command green (incl. Pair Q, 7/7), and closed. `touches:` reconciled: only the tasknote and PLAN changed here.
+
+**Archived:** 2026-10-07

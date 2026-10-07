@@ -11,7 +11,9 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-(none)
+- [ ] **CORE-EPIC-724** [heavy]🧠 | context-diet — Trim instruction and context bloat across flaitron's surfaces (per-task cold start, skill bodies, lazy SPEC/ modules, adopter surface) without losing load-bearing context; move operator-personal conventions out of core, keeping emoji cues and commit conventions. Filed via /ft-epic-discovery; refined at .1 closure.
+  - [ ] **CORE-724.1** [heavy]🧠 | context-diet discovery — Scope shared design and file children .2..6 per SPEC/epic.md.
+  - [ ] **CORE-724.N** [heavy]🧠 | context-diet audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
 
 ## Medium
 

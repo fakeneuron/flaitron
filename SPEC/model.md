@@ -181,9 +181,9 @@ headroom — the asymmetry is the argument.
 **When to choose `[heavy]`** (even on agents that otherwise favor light):
 
 - Design decisions, high ambiguity, exploratory research that may re-scope
-  mid-Discovery, new skills or epic children, anything requiring synthesis
-  across distant modules or contract surfaces, multi-file coordination
-  without an obvious precedent.
+  mid-Discovery, new skills or design-bearing epic children, anything
+  requiring synthesis across distant modules or contract surfaces,
+  multi-file coordination without an obvious precedent.
 - Rule of thumb: if Phase 1 Discovery surfaces "this is more than a clear-diff
   implementation or has hidden cross-cutting concerns," escalate the tag on
   the PLAN line and re-invoke rather than pushing a light model past its
@@ -206,6 +206,14 @@ The primary labels `[heavy]` / `[medium]` / `[light]` are the recommended
 starting vocabulary for new filers and for keeping PLAN.md scannable. Specific
 names are the precision escape hatch when you have a strong observed preference
 for a particular agent on a particular class of task.
+
+**Pinning a named model.** A category tag only advises: `[heavy]` is satisfied
+by any session at or above heavy tier, so it cannot route a task to one
+specific model. When a task — an epic child included — must run on one named
+model, file the concrete token (e.g. `[fable]`); the exact-identity gate then stops every
+other session at its switch-or-retag block, so running elsewhere takes a
+deliberate retag rather than a silent tier match. A concrete token fails
+`[unattended]` candidacy clause 1, so a pinned row stays attended.
 
 ## Tier ladder vs. the next-move suggestion glyph
 

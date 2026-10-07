@@ -15,7 +15,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-726** [medium]🧩 | epic-per-child-model — /ft-epic-discovery copies one [model] onto every child; propose a per-child [model] at Phase 2 filing, and document concrete tokens (e.g. [fable]) as the way to pin a named model, since category tags match by tier. Adopter precedent: sciphoenix ROLLOUT §3. Parked at `.flaitron/sidequest/CORE-726.md`.
 - [ ] **CORE-730** [medium]🧩 | global-skill-conflicts — Waits on natabula NAT-379 (agent-home read roots). Check agent homes for flaitron slugs shadowing repo-scoped wiring ([[CORE-729]]); make /ft-release §7.1's machine-global parity check run.
 
 ## Low
@@ -32,6 +31,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-726** [medium]🧩 | epic-per-child-model — Completed 2026-10-07.
 - [x] **CORE-728** [light]🔧 | snippet-bumping-dedupe — Completed 2026-10-07.
 - [x] **CORE-733** [light]🔧 | micro-close-epic-note-recovery — Completed 2026-10-07.
 - [x] **CORE-732** [medium]🧩 | pre-scaffold-note-recovery — Completed 2026-10-07.

@@ -23,7 +23,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-(none)
+- [ ] **CORE-725** [medium]🧩 | unattended-model-gate-order — /ft-task --unattended runs the model gate before the foreign-dirt gate, so a model-mismatch park can scaffold into a dirty tree; run preamble Pre-flight first, repair step citers.
 
 ## Low
 

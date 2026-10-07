@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-723** [medium]🧩 | release-dangling-link-scope — `/ft-release` §7.1's dangling-link scan is `ft-*`-scoped, so a missing `.claude/skills/audit` symlink breaks `/audit` uncaught — newly reachable since [[CORE-721]] moved the overlay body out.
+(none)
 
 ## Low
 
@@ -31,6 +31,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-723** [medium]🧩 | release-dangling-link-scope — Completed 2026-10-07.
 - [x] **CORE-720** [light]🔧 | audit-overlay-docs-deltas — Completed 2026-10-07.
 - [x] **CORE-721** [heavy]🧠 | audit-overlay-home — Completed 2026-10-06.
 - [x] **CORE-719** [light]🔧 | dependabot-enable — Completed 2026-10-06.

@@ -223,7 +223,8 @@ PLAN.md edit defers.
 ### Pre-scaffold stops
 
 The Step 1 pre-flight checks and the Step 1.5 model gate run before this
-run has written a tasknote, so a "park" there may have nothing to park — or
+run has written a tasknote (the skill/pin guard, last below, can also fire
+later), so a "park" there may have nothing to park — or
 may find a note it must not touch. Each runner's pre-flight refuses an
 in-flight note (`/ft-micro-task`: any existing note but its own
 `model-mismatch` park), so only a starter or blocked note can reach
@@ -245,6 +246,13 @@ the stop is *about*:
 - **`## Completed` status gate and archive collision — terminate, write
   nothing.** Both mean a tasknote for this ID already exists; there is
   nothing new to park, and scaffolding one would duplicate it.
+- **Skill/pin guard — stop, never park.** Body and pin disagree, so a
+  park is a further write the guard forbids, and a resume through the same
+  body would stop again. The guard paragraph in each body owns the line:
+  `⏸ --unattended stop — skill-pin-mismatch: <base directory or missing
+  path>; wrote <paths, or nothing>.` After a write (a lazily read missing
+  file), it reverts and commits nothing, and names what it wrote, marking
+  any path already committed.
 
 ### What `--unattended` never relaxes
 

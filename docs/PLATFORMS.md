@@ -95,7 +95,8 @@ miss, not a policy choice; that is the exact gap that left `/ft-spec`
 unrunnable in flaitron's own checkout for a month after it shipped. Machine-global `~/.claude/` installs stay discretionary per
 [`MIGRATION.md`](MIGRATION.md) §1.0 — but *discretionary* governs **which**
 utilities you install, not how many copies of a slug exist; see the rule below.
-Only *broken* links there are drift. `/ft-release` §7.1 verifies both surfaces.
+Broken links, mis-cased links, and slugs beyond the global-only utilities are drift
+there. `/ft-release` §7.1 verifies both surfaces.
 
 ### One canonical install path per project
 
@@ -146,7 +147,10 @@ release's `**Version:**` line. Where the runtime names no base directory, only a
 missing file trips the guard: a pinned file that exists but has changed meaning
 passes. Agent-home copies made before the guard carry no guard at all.
 `/ft-update` Step 4.7 reports agent-home copies of adopter-subset slugs (it asks
-first), and removing them is the operator's act.
+first), and `/ft-release` §7.1 reports any `ft-*` slug beyond the global-only
+utilities in the three homes it scans on the maintainer's machine, at each cut where the operator approves
+the read ([[CORE-730]]). Removing them
+is the operator's act.
 
 The rule binds new platform wiring too: a platform's `AGENTS-snippet.md` adds a
 repo-scoped install path, not another global one.

@@ -1,13 +1,13 @@
 ---
 name: ft-release
-description: Cut a flaitron release — version bump, doc-currency shifts, doc-drift sweep, single `feat:` commit, annotated tag, VERSION-HISTORY prepend, push. Use when the user asks to cut or ship a flaitron release. Flaitron-self only (global symlink); never installed in adopter projects. Encodes the CORE-048 / CORE-046 / CORE-043 release recipe.
+description: Cut a flaitron release — version bump, doc-currency shifts, doc-drift sweep, single `feat:` commit, annotated tag, VERSION-HISTORY prepend, push. Use when the user asks to cut or ship a flaitron release. Flaitron-self only (repo-scoped in flaitron's own checkout); never installed in adopter projects or agent homes. Encodes the CORE-048 / CORE-046 / CORE-043 release recipe.
 ---
 
 # release — flaitron self-host release skill
 
 You are cutting a flaitron release. The recipe is canonical (CORE-048 / CORE-046 / CORE-043 precedents): SPEC.md version bump · docs/MIGRATION.md pin bump · doc-drift sweep · single `feat:` commit · annotated tag · curated `docs/VERSION-HISTORY.md` prepend · push. This skill scaffolds and drives a release tasknote through the full 4-phase flow.
 
-This skill is **flaitron-self only**. It is symlinked under `~/.claude/skills/ft-release` and `~/.claude/commands/ft-release.md` for global invocation, but it never runs in adopter projects. Step 0 enforces this.
+This skill is **flaitron-self only**. It is wired repo-scoped in flaitron's own `.claude/` and never installed globally (`docs/PLATFORMS.md` §"One canonical install path per project"); it never runs in adopter projects. Step 0 enforces this.
 
 The release task is normally filed in `.flaitron/PLAN.md` as a one-line entry before `/ft-release` runs — for example:
 
@@ -340,7 +340,7 @@ Surface the bundled 📦 ready-to-commit gate per SPEC/gates.md §"Operator-gate
 
 - **SOP-currency verdict (advisory)** — carry the §5 flag-don't-bump result into the closure review as one line, e.g. `SOP currency: clean` or `SOP currency: ft-task behind source (2 candidates) → filed CORE-NNN`. Unlike the dogfood gate this **does not block commit-go**, and the `last-verified:` stamps are not among the files this cut edits.
 
-- **Global self-wiring verdict (advisory)** — carry the §7.1 machine-global half into the closure review as one line, e.g. `Global wiring: clean` or `Global wiring: 9 dangling links, 2 path casings — fix out of band`. Like the SOP-currency verdict this **does not block commit-go**: `~/.claude/` is machine state and no file in this cut can carry the fix. The §7.1 *local* half is not reported here — it blocks upstream and is already resolved by the time this gate is reached.
+- **Global self-wiring verdict (advisory)** — carry the §7.1 machine-global half into the closure review as one line, e.g. `Global wiring: clean`, `Global wiring: 9 dangling links, 2 path casings, 1 over-install — fix out of band`, or `Global wiring: not run — read refused; run natabula's scripts/grant-global-skill-read.sh`. Like the SOP-currency verdict this **does not block commit-go**: agent homes are machine state and no file in this cut can carry the fix. The §7.1 *local* half is not reported here — it blocks upstream and is already resolved by the time this gate is reached.
 
 - **Completed-rotation verdict (advisory)** — carry the §7.1 completed-rotation count into the closure review as one line, e.g. `Completed rotation: 36 rows (bound 60)` or `Completed rotation: 88 rows (>60) — rotate out of band`. Like the two verdicts above this **does not block commit-go**: rotation is an operator motion (`SPEC/plan-filing.md` §"`## Completed` rotation") and a release cut never applies it.
 

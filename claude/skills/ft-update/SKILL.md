@@ -205,7 +205,7 @@ Any hits:
 Remove them yourself, keeping only the global-only utilities (ft-new-project, ft-audit-repo). /ft-update never deletes outside the project.
 ```
 
-No hits → "No agent-home shadows found." Declined, or a refused read (a path-access guard) → "Agent-home shadow check not run — <declined | read refused>." Report-only; the bump proceeds regardless.
+No hits → "No agent-home shadows found." Declined, or a refused read (a path-access guard) → "Agent-home shadow check not run — <declined | read refused>." A refused read names the remedy: the refusing guard needs a `read` root for each refused home, and arming it is the operator's act. Report-only; the bump proceeds regardless.
 
 ## Step 5 — Smoke check, stage, hand off
 

@@ -15,7 +15,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-730** [medium]🧩 | global-skill-conflicts — Waits on natabula NAT-379 (agent-home read roots). Check agent homes for flaitron slugs shadowing repo-scoped wiring ([[CORE-729]]); make /ft-release §7.1's machine-global parity check run.
 
 ## Low
 
@@ -31,6 +30,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-730** [medium]🧩 | global-skill-conflicts — Completed 2026-10-07.
 - [x] **CORE-726** [medium]🧩 | epic-per-child-model — Completed 2026-10-07.
 - [x] **CORE-728** [light]🔧 | snippet-bumping-dedupe — Completed 2026-10-07.
 - [x] **CORE-733** [light]🔧 | micro-close-epic-note-recovery — Completed 2026-10-07.

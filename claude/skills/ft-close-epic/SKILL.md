@@ -18,7 +18,7 @@ Two layouts. Pick by which file exists:
 
 If neither matches, bail.
 
-**Skill/pin guard.** On the adopter layout, if the runtime names this skill's base directory and it lies outside this project (an agent-home install such as `~/.claude/skills/<slug>`), stop: this body is not the copy pinned at `.flaitron/core/`, and it can cite files the pin lacks. On either layout, a skill fragment, SPEC module, or template this skill says to Read that is absent also stops the run — never improvise its contents. Both stops make no further write, name anything this run already wrote, and print `⛔ skill/pin mismatch — <base directory or missing path>`, pointing at flaitron's `docs/PLATFORMS.md` §"One canonical install path per project" (under `.flaitron/core/` in an adopter): remove the agent-home copy so the repo-scoped wiring runs.
+**Skill/pin guard.** On the adopter layout, if the runtime names this skill's base directory and it lies outside this project (an agent-home install such as `~/.claude/skills/<slug>`), stop: this body is not the copy pinned at `.flaitron/core/`, and it can cite files the pin lacks. On either layout, a skill fragment, SPEC module, or template this skill says to Read that is absent also stops the run — never improvise its contents. Both stops make no further write, name anything this run already wrote, and print `⛔ skill/pin mismatch — <base directory or missing path>` (invoked with `--unattended`: `⏸ --unattended stop — skill-pin-mismatch: <same>; wrote <paths, or nothing>.`), pointing at flaitron's `docs/PLATFORMS.md` §"One canonical install path per project" (under `.flaitron/core/` in an adopter): remove the agent-home copy so the repo-scoped wiring runs.
 
 Paths: SPEC=`<root>SPEC.md`, SPEC_DIR=`<root>SPEC/`, template=`<root>templates/tasknote-template.md`, PLAN=`.flaitron/PLAN.md`, tasknote dir=`.flaitron/tasknote/`.
 
@@ -44,7 +44,7 @@ When `unattended-mode = true`, Read `<SKILL_DIR>/unattended-close-epic.md`, `<UN
 - **Foreign-dirt gate (paper-complete guard).** Before scaffold writes, run `git status --porcelain`. If non-empty: **STOP**, surface the dirt list, ask the operator to commit / stash / discard themselves, then re-invoke. Do not auto-clean. See SPEC §"Paper-complete guard". **`--unattended` does not relax this** — it terminates and writes nothing, per the fragment's §"Steps 1-2 — Pre-scaffold stops".
 - Otherwise (fresh scaffold path), continue.
 
-**Pre-scaffold stops under `--unattended`.** Every bail in Steps 1-2 fires before the audit tasknote exists, so each terminates and **writes nothing** — shape and closed `<cause>` set in the fragment's §"Steps 1-2 — Pre-scaffold stops".
+**Pre-scaffold stops under `--unattended`.** Every bail in Steps 1-2 fires before the audit tasknote exists, so each terminates and **writes nothing** — shape and closed `<cause>` set in the fragment's §"Steps 1-2 — Pre-scaffold stops". The skill/pin guard's own `⏸` form is the exception: it can fire after a write and names what was written.
 
 ## Step 2 — Validate audit position and check sibling state
 

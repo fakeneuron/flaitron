@@ -130,6 +130,24 @@ Two agent behaviours make this a correctness rule rather than tidiness:
   that runtime. Install Codex wrappers in an agent home
   only on a machine where Codex is the driver, and only the utility set.
 
+**The skill/pin guard** ([[CORE-729]]). The shadowing is also a version
+hazard. Whether or not the roster lists the slug twice, invoking it ran the
+user-scope body: a flaitron-self session wired both ways loaded
+`~/.claude/skills/ft-task` (one observation, Claude Code, 2026-10-07).
+So an agent-home body runs in an adopter while its Step 0 still resolves
+`<root>` to the pinned `.flaitron/core/`, and one flaitron version reads
+another's fragments: since [[CORE-724.4]] `/ft-task` reads `preamble.md`, which
+v6.0.0 lacks. Each adopter-subset Claude body that resolves `<root>` therefore
+stops with `⛔ skill/pin mismatch` when the runtime names its base directory
+outside the adopter project, or when a fragment, SPEC module, or template it
+names is absent. The base-directory check also catches unreleased drift. A
+version-number guard would miss it, because a working tree keeps its last
+release's `**Version:**` line. Where the runtime names no base directory, only a
+missing file trips the guard: a pinned file that exists but has changed meaning
+passes. Agent-home copies made before the guard carry no guard at all.
+`/ft-update` Step 4.7 reports agent-home copies of adopter-subset slugs (it asks
+first), and removing them is the operator's act.
+
 The rule binds new platform wiring too: a platform's `AGENTS-snippet.md` adds a
 repo-scoped install path, not another global one.
 

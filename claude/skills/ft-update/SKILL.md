@@ -186,6 +186,27 @@ Likely a retired/folded skill (see docs/MIGRATION.md §"Retired skills leave dan
 
 If all present-surface commands print nothing, report "No dangling symlinks found." This check is informational only — the bump proceeds regardless, and `/ft-update` never runs `rm` on the adopter's behalf.
 
+## Step 4.7 — Agent-home shadow check
+
+An agent-home copy of an adopter-subset slug shadows this project's repo-scoped wiring, so its body runs instead of the pin just recorded. A copy carrying the skill/pin guard stops the run wherever the runtime names its base directory, and an older or unnamed copy runs silently (`<FT>/docs/PLATFORMS.md` §"One canonical install path per project"). Agent homes lie outside the project, so **ask before probing**: one AskUserQuestion (default Skip) naming `~/.claude/skills`, `~/.claude/commands`, `~/.agents/skills`, `~/.codex/skills`, `~/.cursor/skills` and `~/.grok/skills`. On approval, probe only the slugs in Step 4's Claude list. Never list an agent home, since its other entries are the user's:
+
+```sh
+for d in ~/.claude/skills ~/.agents/skills ~/.codex/skills ~/.cursor/skills ~/.grok/skills; do
+  for s in <slugs from Step 4's Claude list>; do [ -e "$d/$s" ] && echo "$d/$s"; done
+done
+for s in <slugs from Step 4's Claude list>; do [ -e ~/.claude/commands/$s.md ] && echo ~/.claude/commands/$s.md; done
+```
+
+Any hits:
+
+```text
+⚠️  Agent-home copies shadow this project's pinned skills (their bodies run, not <FT>'s):
+    <path>
+Remove them yourself, keeping only the global-only utilities (ft-new-project, ft-audit-repo). /ft-update never deletes outside the project.
+```
+
+No hits → "No agent-home shadows found." Declined, or a refused read (a path-access guard) → "Agent-home shadow check not run — <declined | read refused>." Report-only; the bump proceeds regardless.
+
 ## Step 5 — Smoke check, stage, hand off
 
 - **Symlink resolve check:** for each wiring surface present, verify one canonical link resolves into `<FT>`:
@@ -207,7 +228,7 @@ git add .cursor/skills/  # if present
 git add .grok/skills/    # if present
 ```
 
-Surface a recap (current→target, tag headline, any new symlinks wired, any Migration action items) and a proposed commit message:
+Surface a recap (current→target, tag headline, any new symlinks wired, any Step 4.7 shadow hits, any Migration action items) and a proposed commit message:
 
 ```text
 chore: bump flaitron <current> → <target>
@@ -217,7 +238,7 @@ Do **not** commit unprompted. Commit on the user's go, then stop — `/ft-update
 
 ## Notes
 
-- **Adopter-only — inverse of `/ft-release`.** `/ft-release` runs only in flaitron's own checkout; `/ft-update` runs only in adopter projects. Both are global-symlink + layout-guarded.
+- **Adopter-only — inverse of `/ft-release`.** `/ft-release` runs only in flaitron's own checkout; `/ft-update` runs only in adopter projects. Both are layout-guarded; `/ft-update` is wired repo-scoped (Step 4.7 reports an agent-home copy).
 - **Submodule path is resolved, not assumed.** Step 0 reads the real path from `.gitmodules`; a pre-rename `.flowtron/` layout stops with a pointer to the v6 move rather than bumping in place.
 - **Thin procedural skill.** No tasknote, no 4-phase flow. If you want the bump tracked in PLAN.md, file a line first (e.g. `**<AREA>-NNN** [light] | bump flaitron <target>`) or wrap it in `/ft-micro-task`; `/ft-update` itself just performs the mechanical bump.
 - **Why not `git submodule update`.** Plain `git submodule update` checks out the commit recorded in the superproject index — it restores the *current* pin, not a new one. Bumping requires checking out the new tag inside the submodule and re-recording the gitlink with `git add <FT>` (Step 3).

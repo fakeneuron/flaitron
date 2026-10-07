@@ -35,6 +35,8 @@ Two layouts. Pick by which file exists:
 If neither matches, bail. `PLAN` is `.flaitron/PLAN.md` on both layouts; if it
 is absent, bail — there is nothing to seed.
 
+**Skill/pin guard.** On the adopter layout, if the runtime names this skill's base directory and it lies outside this project (an agent-home install such as `~/.claude/skills/<slug>`), stop: this body is not the copy pinned at `.flaitron/core/`, and it can cite files the pin lacks. On either layout, a skill fragment, SPEC module, or template this skill says to Read that is absent also stops the run — never improvise its contents. Both stops make no further write, name anything this run already wrote, and print `⛔ skill/pin mismatch — <base directory or missing path>`, pointing at flaitron's `docs/PLATFORMS.md` §"One canonical install path per project" (under `.flaitron/core/` in an adopter): remove the agent-home copy so the repo-scoped wiring runs.
+
 If `args` is non-empty, stop and say so: this skill accepts no task ID and no
 flag. There is deliberately no `--fast` and no `--unattended` — a posture with
 no operator act writes nothing (module §"Three postures"), so an operator-less

@@ -39,7 +39,7 @@ ln -s <path-to-flaitron-checkout>/claude/commands/<skill>.md  ~/.claude/commands
 
 The symlinks point at flaitron's working tree, so they pick up flaitron edits immediately rather than tracking a versioned submodule. To pin a specific version of a skill, copy the files instead of symlinking and re-copy on bump.
 
-Install these **one at a time, from the table above**. An agent home carries only these global-only utilities; anything a project already wires repo-scoped through `.flaitron/core/` must not also be installed globally, or it can duplicate or shadow repo-scoped skills — see [`PLATFORMS.md`](PLATFORMS.md) §"One canonical install path per project".
+Install these **one at a time, from the table above**. An agent home carries only these global-only utilities; anything a project already wires repo-scoped through `.flaitron/core/` must not also be installed globally, or it can duplicate or shadow repo-scoped skills, and a shadowed body runs against the pin, stopping with `⛔ skill/pin mismatch` only where its guard can see the mismatch — see [`PLATFORMS.md`](PLATFORMS.md) §"One canonical install path per project".
 
 If you don't have the skill installed, follow §1.1–1.7 manually below — the skill is a convenience wrapper, not a requirement.
 

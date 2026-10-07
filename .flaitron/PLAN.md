@@ -11,7 +11,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-(none)
+- [ ] **CORE-729** [heavy]🧠 | skill-pin-mismatch — Global skill bodies (tracking flaitron's working tree) run against adopters' pinned submodule fragments; since 90ca1719 (CORE-724.4, unreleased) /ft-task reads preamble.md absent at v6.0.0. Decide pinning vs. version guard; fail missing fragments with an explicit skill/pin-mismatch message; extend /ft-update's checks.
 
 ## Medium
 

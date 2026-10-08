@@ -168,6 +168,10 @@ sidequest_orphan() {
 #   empty read — a reshaped row — would pass every stub. A missing PLAN file
 #   is a finding of its own: with only one file read the floor still passes,
 #   and the other file's closed rows would go unchecked.
+# - A stub whose ID already has a tasknote, active or archived, is the same
+#   leftover caught at promotion time (CORE-742.3) instead of when the row
+#   flips. The archive folder is the README's per-prefix `<area>`, so the
+#   glob takes any folder. A closed row reports as ORPHANED, not both.
 bad=
 for p in .flaitron/PLAN.md .flaitron/PLAN-ARCHIVE.md; do
   [ -f "$p" ] || { echo "MISSING FILE  $p"; exit 1; }
@@ -176,9 +180,16 @@ closed=$(sed -nE 's/^[[:space:]]*- \[[xX]\] \*\*([^*]+)\*\*.*/\1/p' .flaitron/PL
 [ -n "$closed" ] || { echo "VACUOUS sidequest_orphan  no checked PLAN row read"; exit 1; }
 for f in .flaitron/sidequest/*.md; do
   [ -f "$f" ] || continue
-  if printf '%s\n' "$closed" | grep -qxF -- "$(basename "$f" .md)"; then
+  id=$(basename "$f" .md)
+  if printf '%s\n' "$closed" | grep -qxF -- "$id"; then
     echo "ORPHANED STUB  $f"; bad=1
+    continue
   fi
+  for t in ".flaitron/tasknote/$id.md" .flaitron/tasknote/archive/*/"$id".md; do
+    [ -f "$t" ] || continue
+    echo "PROMOTED STUB  $f  (tasknote $t)"; bad=1
+    break
+  done
 done
 [ -z "$bad" ] || exit 1
 }

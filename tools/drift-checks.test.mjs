@@ -60,13 +60,25 @@ const CASES = {
   },
   sidequest_orphan: {
     // One closed row per PLAN file: a rotated row, and a nested epic child.
+    // Then one stub beside an active tasknote and one beside an archived one,
+    // neither with a closed row.
     seed: () => {
       edit('.flaitron/PLAN-ARCHIVE.md', (s) => `${s}- [x] **ZZ-1** | zz-drift — Completed 2026-01-01.\n`);
       edit('.flaitron/PLAN.md', (s) => `${s}  - [x] **ZZ-2.1** | zz-drift — Completed 2026-01-01.\n`);
       write('.flaitron/sidequest/ZZ-1.md', '# ZZ-1 | zz-drift\n');
       write('.flaitron/sidequest/ZZ-2.1.md', '# ZZ-2.1 | zz-drift\n');
+      write('.flaitron/sidequest/ZZ-3.md', '# ZZ-3 | zz-drift\n');
+      write('.flaitron/tasknote/ZZ-3.md', 'status: in-progress\n');
+      write('.flaitron/sidequest/ZZ-4.md', '# ZZ-4 | zz-drift\n');
+      write('.flaitron/tasknote/archive/core/ZZ-4.md', 'status: completed\n');
     },
-    finding: /^ORPHANED STUB {2}\.flaitron\/sidequest\/ZZ-1\.md\nORPHANED STUB {2}\.flaitron\/sidequest\/ZZ-2\.1\.md$/m,
+    finding: new RegExp(
+      '^ORPHANED STUB {2}\\.flaitron/sidequest/ZZ-1\\.md\\n' +
+        'ORPHANED STUB {2}\\.flaitron/sidequest/ZZ-2\\.1\\.md\\n' +
+        'PROMOTED STUB {2}\\.flaitron/sidequest/ZZ-3\\.md {2}\\(tasknote \\.flaitron/tasknote/ZZ-3\\.md\\)\\n' +
+        'PROMOTED STUB {2}\\.flaitron/sidequest/ZZ-4\\.md {2}\\(tasknote \\.flaitron/tasknote/archive/core/ZZ-4\\.md\\)$',
+      'm',
+    ),
   },
   pair_b: {
     seed: () => edit('codex/skills/ft-task/SKILL.md', (s) => s.replace(/^(description:.*)$/m, '$1 --zz-drift')),

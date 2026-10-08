@@ -17,7 +17,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-EPIC-742** [medium]🧩 | contract-guard-gaps — Discovery supplied by audit-repo 2026-10-08. Surfaced by audit-repo 2026-10-08 (Theme: Prose rules without mechanical guards)
   - [x] **CORE-742.2** [medium]🧩 [unattended] | sidequest-orphan-guard — Completed 2026-10-08.
-  - [ ] **CORE-742.3** [light]🔧 | sidequest-promoted-guard — Extend `tools/drift-checks.sh` `sidequest_orphan` to also fail on a `.flaitron/sidequest/<ID>.md` stub whose ID already has a tasknote (active or archived): park-mode.md deletes at promotion, so today a stub beside a live note goes unreported until the row flips. Add a seeded case.
+  - [x] **CORE-742.3** [light]🔧 | sidequest-promoted-guard — Completed 2026-10-08.
   - [ ] **CORE-742.N** [medium]🧩 | contract-guard-gaps audit
 
 ## Low

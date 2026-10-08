@@ -20,7 +20,9 @@ Claude Code *syntax* that realizes them.
 > Non-Claude agents reuse this exact shape for their own trigger references,
 > filed in [`../docs/PLATFORMS.md` §"Non-Claude capability triggers"](../docs/PLATFORMS.md#non-claude-capability-triggers)
 > rather than here. The shape is portable by design — nothing about it is
-> Claude-coupled except the cell contents.
+> Claude-coupled except the cell contents. The operator-flag rows are the
+> exception: this file is their one roster, and each non-Claude table points
+> back here with a single routing row instead of restating them.
 
 ## The triggers
 

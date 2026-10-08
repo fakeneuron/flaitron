@@ -20,7 +20,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [x] **CORE-734.3** [heavy]🧠 | mirror-pair-census — Completed 2026-10-07.
   - [x] **CORE-734.4** [heavy]🧠 | pair-l-retire — Completed 2026-10-07.
   - [x] **CORE-734.5** [medium]🧩 | pair-f-retire — Completed 2026-10-07.
-  - [ ] **CORE-734.6** [medium]🧩 | pair-i-retire — In each non-Claude section of `docs/PLATFORMS.md` §"Non-Claude capability triggers", replace the per-flag rows with one skill-body-flags row that points at `claude/CAPABILITIES.md` and states that platform's routing (Codex keeps its SOP-first vs direct-wrapper split); retire Pair I, updating `docs/CONVENTIONS.md`.
+  - [x] **CORE-734.6** [medium]🧩 | pair-i-retire — Completed 2026-10-07.
   - [ ] **CORE-734.7** [medium]🧩 | pair-h-a-narrow — Point `docs/CONVENTIONS.md`, `.flaitron/tasknote/README.md` quick commands and the `/ft-release` Step 6 fence at `AGENTS.md` §"Validation", narrowing `pair_h` to its `ci.yml` verbatim half; point `README.md`'s templates clause at `SPEC/layout.md`, drop `pair_a`, and update every "eleven pairs" count.
   - [ ] **CORE-734.N** [heavy]🧠 | mirror-tax audit — Verify the [[CORE-734.3]] target: 12 live §7.1 Pairs (from 15; F, I, L retired; pointer D and retired G not counted) and 10 `pair_*` drift checks (from 11).
 

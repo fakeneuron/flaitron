@@ -11,10 +11,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-- [ ] **CORE-EPIC-739** [medium]🧩 | drift-check-integrity — Make tools/drift-checks.sh fail loudly instead of passing on nothing. Discovery supplied by audit-repo 2026-10-08. Surfaced by audit-repo 2026-10-08 (Theme: drift checks are the test suite, but nothing tests them)
-  - [x] **CORE-739.2** [medium]🧩 | drift-vacuous-floor — Completed 2026-10-08.
-  - [x] **CORE-739.3** [medium]🧩 | drift-self-test — Completed 2026-10-08.
-  - [ ] **CORE-739.N** [medium]🧩 | drift-check-integrity-audit — Audit the CORE-EPIC-739 children.
+(none)
 
 ## Medium
 
@@ -34,6 +31,10 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-EPIC-739** [medium]🧩 | drift-check-integrity — Completed 2026-10-08.
+  - [x] **CORE-739.2** [medium]🧩 | drift-vacuous-floor — Completed 2026-10-08.
+  - [x] **CORE-739.3** [medium]🧩 | drift-self-test — Completed 2026-10-08.
+  - [x] **CORE-739.N** [medium]🧩 | drift-check-integrity audit — Completed 2026-10-08.
 - [x] **CORE-737** [light]🔧 | symlink-sparse-guard — Completed 2026-10-08.
 - [x] **CORE-738** [medium]🧩 [unattended] | audit-sibling-runtime-guard — Completed 2026-10-08.
 - [x] **CORE-736** [medium]🧩 | audit-row-sibling-gate — Completed 2026-10-08.

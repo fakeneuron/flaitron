@@ -144,7 +144,7 @@ procedure or a pass body on a later version bump, your copy doesn't pick it up
 (re-copy manually to catch up). When your only divergence from the bundled
 scaffold *is* the §0 checklist surface — glob, rubric, gates, sacred
 invariants, per-pass examples, extra hard rules — prefer the lighter **thin
-overlay** instead: a ~25-line SKILL.md that points at the bundled scaffold,
+overlay** instead: a short SKILL.md (~70-line template) that points at the bundled scaffold,
 runs its passes *by reference*, and carries only a `## Deltas` block.
 
 ```sh

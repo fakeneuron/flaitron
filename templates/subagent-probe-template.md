@@ -5,9 +5,10 @@ session holding the tasknote. It owns no tasknote, never runs Phase 1, never
 trips a gate, and never closes or archives anything — it reads, searches,
 returns a distilled summary, and ends. The point is that the *noise* stays in
 the probe: the parent's Discovery Notes get the findings, not fifty tool calls.
-Contract: `SPEC.md` §"📝 Phase 1: Discovery" (read step) and `README.md`
-§"Sessions, loops, and sub-agents". A delegated context that *does* own a
-tasknote is a **delegate**, not a probe — different rules, see the README.
+Contract: `.flaitron/core/SPEC.md` §"📝 Phase 1: Discovery" (read step) and
+`.flaitron/core/README.md` §"Sessions, loops, and sub-agents" (`SPEC.md` /
+`README.md` in the flaitron repo). A delegated context that *does* own a
+tasknote is a **delegate**, not a probe — different rules, see that README.
 
 This is a copy-paste artifact, not a lifecycle file. Nothing is written to
 `.flaitron/`; the probe's return is pasted (or summarized) into the parent

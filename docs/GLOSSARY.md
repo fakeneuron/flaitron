@@ -64,8 +64,6 @@ Alphabetized. ~73 entries. Maintained via epic children and audits.
 
 **follow-up** — A lightweight mid-flow task filed via `/ft-file-followup`; produces a one-line PLAN.md entry plus a short context paragraph delivered conversationally. Below the normal tasknote threshold.
 
-**sidequest** — The lightest persistent mid-flow park, filed via `/ft-file-followup --park`; writes a tiny stub at `.flaitron/sidequest/<ID>.md` plus one PLAN line. Priority via a flag or one short question when omitted (flags: [`SPEC/tasknote-selection.md`](../SPEC/tasknote-selection.md) §"When to use a tasknote (and when not to)"). Skips the review gate and the reconciliation scan; replies with priority + resume anchor, then continues the main session inline. Promote via `/ft-micro-task` or `/ft-task` (or expand the stub by hand into a starter), deleting the stub on promotion. (Filed via the retired `/ft-sidequest` skill before v5.15.0 — the artifact is unchanged, only the invocation moved.)
-
 **`/ft-refactor`** — The refactor **depth planner that files**: takes one named target, runs a read-only survey (dependencies, seams, test coverage, blast radius), surfaces a sequenced behavior-preserving plan for operator review, then files a parent epic + implementation children from `.2` + a `.N` audit, each child a starter seeded with characterization-test and behavior-preservation acceptance. Never edits source — children execute via `/ft-task`. Its epics carry no `.1` Discovery (the run *is* the discovery). Depth counterpart to `/ft-audit structure`'s **breadth sweep**; contrast a hand-drafted spec (`templates/spec-template.md`; plans, never files) and `/ft-epic-discovery` (files, then drives a generic Discovery).
 
 **`/ft-seed`** — The attended **bulk-seeding utility** for `[unattended]`: walks every open row of an existing `.flaitron/PLAN.md` with the `SPEC/unattended-candidacy.md` predicate, shows the candidates with the token in place inside one prose review gate, writes the token only on the rows the operator keeps, and commits the write under §"Filing commits". No flags — remove the gate and it is a report the filers already emit. Skips rows already marked and `[handoff]` rows; seeds, never repairs. The bulk counterpart to the per-row candidacy each filer proposes at its write step. See SPEC/unattended-candidacy.md §"Seeding an existing plan".
@@ -126,6 +124,8 @@ Alphabetized. ~73 entries. Maintained via epic children and audits.
 
 **shortname** — The optional `| shortname` segment in a task-line (≤~30 chars); becomes the visualizer row title. Falls back to tasknote `title:` or the long description. See SPEC/task-line-segments.md.
 
+**sidequest** — The lightest persistent mid-flow park, filed via `/ft-file-followup --park`; writes a tiny stub at `.flaitron/sidequest/<ID>.md` plus one PLAN line. Priority via a flag or one short question when omitted (flags: [`SPEC/tasknote-selection.md`](../SPEC/tasknote-selection.md) §"When to use a tasknote (and when not to)"). Skips the review gate and the reconciliation scan; replies with priority + resume anchor, then continues the main session inline. Promote via `/ft-micro-task` or `/ft-task` (or expand the stub by hand into a starter), deleting the stub on promotion. (Filed via the retired `/ft-sidequest` skill before v5.15.0 — the artifact is unchanged, only the invocation moved.)
+
 **starter tasknote** — A tasknote whose YAML `status: starter`; a lightweight holding pen for work that is real but not yet ready for a full `/ft-task` invocation. Promoted through a special path (see SPEC/starter.md).
 
 **starter promotion** — The Step 3a path in `/ft-task` that converts a `status: starter` tasknote into a normal in-progress one and continues at Phase 1.
@@ -156,6 +156,6 @@ Alphabetized. ~73 entries. Maintained via epic children and audits.
 
 ---
 
-**Maintenance.** This file is the survivor slice of the GSD-Pi `CONTEXT.md` pattern (see CORE-194.1). It is deliberately lazy-loaded and must never be added to the AI-referenced docs list. New terms are introduced only by epic children or audit follow-ups that also update the authoritative SPEC anchors. Last significant update: CORE-590 (2026-09-12) — added the `[unattended]` entry and extended `grammar elements` to list it.
+**Maintenance.** This file is the survivor slice of the GSD-Pi `CONTEXT.md` pattern (see CORE-194.1). It is deliberately lazy-loaded and must never be added to the AI-referenced docs list. New terms are introduced only by epic children or audit follow-ups that also update the authoritative SPEC anchors. Last significant update: CORE-741.2 (2026-10-08) — added the `[frontier]` rung to the `[model]` and `copy-paste line` entries.
 
 See [SPEC.md](../SPEC.md) for the contract and [.flaitron/PLAN.md](../.flaitron/PLAN.md) for the current epic context.

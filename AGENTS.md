@@ -114,13 +114,15 @@ check fails on it:
 node --test tools/drift-checks.test.mjs
 ```
 
-CI's `drift` job additionally runs Pair R, grepping every checked
-`.flaitron/PLAN.md` / `.flaitron/PLAN-ARCHIVE.md` stub row for the
-`| shortname` `SPEC/plan-filing.md` §"`## Completed` archive convention"
-requires — additive to the eight commands above, not part of the
-`validate`-job "passing" roster `/ft-release` §7.1 Pair H binds byte-for-byte
-(same relationship as the gitleaks scan in `docs/CONVENTIONS.md` §"GitHub
-Actions CI").
+CI's `drift` job runs every check in `bash tools/drift-checks.sh` — Pair Q
+section citations, final newlines, context budgets, and Pair R's grep of
+checked PLAN stub rows for the `| shortname` that
+`SPEC/plan-filing.md` §"`## Completed` archive convention" requires, among
+others. Run it locally after markdown edits; naming a check
+(`bash tools/drift-checks.sh pair_q`) runs only that one. It is additive to
+the eight commands above, not part of the `validate`-job "passing" roster
+`/ft-release` §7.1 Pair H binds byte-for-byte (same relationship as the
+gitleaks scan in `docs/CONVENTIONS.md` §"GitHub Actions CI").
 
 ## Dev Server
 

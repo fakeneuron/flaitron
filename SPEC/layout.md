@@ -11,6 +11,7 @@ After adopting flaitron, a project looks like:
 ├── AGENTS.md                       # references .flaitron/core/SPEC.md
 ├── .flaitron/
 │   ├── PLAN.md                     # project-owned roadmap (this format)
+│   ├── PLAN-ARCHIVE.md             # optional; rotated ## Completed rows (closed only)
 │   ├── tasknote/
 │   │   ├── README.md               # one-line pointer + project-specific notes
 │   │   ├── BE-014.md               # active tasknotes

@@ -17,8 +17,8 @@ agent's session on the flaitron repo.
    here.
 2. **The target agent** — the session must run under the agent whose
    `docs/AGENT-COMPAT.md` row you intend to refresh.
-3. **Current version** — note `**Version:** vX.Y.Z` from `SPEC.md`
-   line 1 before starting. The resulting stamp records this version.
+3. **Current version** — note `**Version:** vX.Y.Z` from `SPEC.md`'s
+   `**Version:**` line before starting. The resulting stamp records this version.
 
 ## The procedure
 
@@ -33,7 +33,7 @@ result per §"Reporting the result".
 Read each file below in full before continuing:
 
 1. `SPEC.md` — the canonical workflow contract; note the version
-   string on line 1.
+   string on its `**Version:**` line.
 2. `AGENTS.md` — the context entry-point defining your surface.
 3. `docs/AGENT-COMPAT.md` — the agent-compatibility matrix; find
    your row and note the current `Last verified` stamp.

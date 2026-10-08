@@ -77,18 +77,21 @@ CORE-194.1 Q3's correct lazy-loading decision (settled by CORE-491).
 sweep set, excluded on both counts, so the distinction above does not arise for
 them. **Their exclusion is a volume decision, not a laziness one** — the
 paragraph above severs lazy-loading from sweep membership, so it cannot also be
-the reason these are excluded. The two trees run ~6,200 lines against a
-~4,100-line sweep set, and walking them at every closure would roughly double a
+the reason these are excluded. The two trees run ~5,500 lines against a
+~4,200-line sweep set, and walking them at every closure would roughly double a
 per-task step Core Principle #3 exists to keep small.
 
-Five `docs/` files are likewise outside the set, each for a reason the sweep
+Eight `docs/` files are likewise outside the set, each for a reason the sweep
 would not add to: `docs/PHILOSOPHY.md` is history (nothing live mirrors it —
 unlike `docs/VISION.md`, which three surfaces restate); `docs/DOGFOOD.md` is
 release-gated (`/ft-release` Step 5 exercises it every cut);
 `docs/CONTEXT-BUDGET.md` is CI-enforced and re-measured by `/ft-release` §7.1;
 `docs/VERSION-HISTORY.md` is written *by* releases;
 `docs/UPGRADING.md` holds frozen rename recipes that change only at the next
-rename. `docs/GLOSSARY.md` states
+rename; `docs/CODEX-VERIFICATION.md` and `docs/HARNESS-SURVEY.md` are dated,
+append-only records whose entries describe the day they were taken;
+`docs/GATE-DISCIPLINE.md` is a never-loaded teaching doc whose rules are owned
+by `SPEC/gates.md` and `SPEC/gate-postures.md`. `docs/GLOSSARY.md` states
 its own exclusion in its Maintenance line.
 
 **Accepted residual risk.** Skill bodies state facts *about* swept docs, so a

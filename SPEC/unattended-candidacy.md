@@ -197,7 +197,7 @@ mirror of `SPEC/unattended-candidacy.md` §"Three postures"
 The quoted section must be a real `## ` heading in this file.
 `/ft-release` §7.1 **Pair N** — lifted into the CI `drift` job — checks that
 every file under `claude/skills/` naming this module carries both the literal
-and a resolving label. A filer that Reads the module without mirroring it
+and a labeled mirror; Pair Q resolves the label. A filer that Reads the module without mirroring it
 fails that check.
 
 | Surface | Write step | Existing gate the proposal rides | Owner |

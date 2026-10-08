@@ -6,9 +6,11 @@ standing remedy for recurring drift: *a sharper SPEC clause, not a validator.*
 Reading a rationalization and recognizing your own draft sentence in it is the
 entire mechanism.
 
-Scope is [`SPEC/gates.md`](../SPEC/gates.md)'s surface — the two banners, the
-skip rule, the flag matrix and precedence ladder, the destructive escalation,
-🏁 emission, and accepted-reply matching. Shortcuts against the Phase 1 /
+Scope is the gate surface — [`SPEC/gates.md`](../SPEC/gates.md) (the two
+banners, the skip rule, the destructive escalation, 🏁 emission),
+[`SPEC/gate-postures.md`](../SPEC/gate-postures.md) (the flag matrix and
+precedence ladder), and [`SPEC/cue-vocabulary.md`](../SPEC/cue-vocabulary.md)
+(accepted-reply matching). Shortcuts against the Phase 1 /
 Phase 3 checklists belong to [`SPEC.md`](../SPEC.md), not here.
 
 [[CORE-659]] dropped the live pre-skip triggers at `f8c44275`, and

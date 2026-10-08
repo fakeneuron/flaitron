@@ -14,8 +14,8 @@ in [`SPEC/gates.md`](gates.md) because it is machinery, not vocabulary — the
 one bounded exception to the two-banner cap, tied to a concrete command about
 to execute.
 
-`SPEC.md` core carries a compact at-a-glance glossary that points here for
-the full contract.
+`SPEC.md` §"Operator-gate cues" points here for the full contract; one-line
+definitions live in `docs/GLOSSARY.md`.
 
 **Labeling convention.** Every operator cue is `<glyph> <UPPERCASE-LABEL>` —
 a dedicated glyph paired with a short UPPERCASE word label. The label is

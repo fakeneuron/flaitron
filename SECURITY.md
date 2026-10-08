@@ -314,7 +314,7 @@ a static export); the dev server is not the right shape for that.
 
 ## Adopter scanner false-positive allowlists
 
-Adopters running prompt-injection scanners (e.g., Semgrep rules) or secret-detection scanners (Gitleaks, TruffleHog, Snyk, etc.) will encounter false positives when scanning a repo that vendors flaitron as a submodule. The source is prose in `SPEC.md`, skill files, and this document that quotes the privileged-ops keyword triggers from SPEC/gates.md §"Conditional skip rule".
+Adopters running prompt-injection scanners (e.g., Semgrep rules) or secret-detection scanners (Gitleaks, TruffleHog, Snyk, etc.) will encounter false positives when scanning a repo that vendors flaitron as a submodule. The source is prose in `SPEC/gates.md`, `docs/GATE-DISCIPLINE.md`, `docs/GLOSSARY.md`, and this document that quotes the privileged-ops keyword triggers from SPEC/gates.md §"Conditional skip rule" — plus flaitron's own archived tasknotes under `.flaitron/core/.flaitron/`, unless the `docs/MIGRATION.md` sparse-checkout step dropped that directory.
 
 **The `filepath:regex` allowlist convention**
 
@@ -327,9 +327,10 @@ filepath:regex
 Examples (one per line):
 
 ```
-.flaitron/core/SPEC.md:(API_KEY|SECRET|TOKEN|PASSWORD)
-.flaitron/core/claude/skills/**/*.md:(API_KEY|SECRET|TOKEN|PASSWORD)
+.flaitron/core/SPEC/gates.md:(API_KEY|SECRET|TOKEN|PASSWORD)
+.flaitron/core/docs/**/*.md:(API_KEY|SECRET|TOKEN|PASSWORD)
 .flaitron/core/SECURITY.md:(API_KEY|SECRET|TOKEN|PASSWORD)
+.flaitron/core/.flaitron/**/*.md:(API_KEY|SECRET|TOKEN|PASSWORD)
 ```
 
 These suppress only the documented prose examples. Real credential material in your code or env files remains flagged.

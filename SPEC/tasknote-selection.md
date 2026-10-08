@@ -1,6 +1,6 @@
 # Tasknote selection
 
-> Lazy-loaded SPEC module. Loaded by the filing/runner skills (`/ft-task`, `/ft-micro-task`, `/ft-file-followup`, `/ft-epic-discovery`, `/ft-close-epic`, `/ft-release`) when they need the use/skip thresholds, the filing-discipline word budget, or the downstream-impact reconciliation scan. See `SPEC.md` for the always-loaded core spec. What happens to a PLAN.md row *after* it is filed — the filing-commit contract, the `## Completed` stub-form convention, and `## Completed` rotation — lives in the sibling [`SPEC/plan-filing.md`](plan-filing.md).
+> Lazy-loaded SPEC module. Loaded by the filing/runner skills (`/ft-task`, `/ft-micro-task`, `/ft-file-followup`, `/ft-epic-discovery`, `/ft-refactor`) when they need the use/skip thresholds, the filing-discipline word budget, or the downstream-impact reconciliation scan. See `SPEC.md` for the always-loaded core spec. What happens to a PLAN.md row *after* it is filed — the filing-commit contract, the `## Completed` stub-form convention, and `## Completed` rotation — lives in the sibling [`SPEC/plan-filing.md`](plan-filing.md).
 
 ## When to use a tasknote (and when not to)
 

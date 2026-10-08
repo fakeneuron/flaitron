@@ -11,13 +11,25 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-(none)
+- [ ] **CORE-743** [light]🔧 [unattended] | maintainer-wiring-glob — The glob `ln -s ../../…/*` recipes in `CONTRIBUTING.md` and `codex/AGENTS-snippet.md`'s maintainer block expand from the repo root, so they match nothing (zsh aborts; bash links a literal `*`). Rewrite as `(cd <dir> && ln -s ../../<src>/* .)` and verify in a scratch clone. Surfaced by audit-docs 2026-10-08 (Finding #1, High).
+
+- [ ] **CORE-744** [medium]🧩 [unattended] | skill-frontmatter-yaml — Five frontmatter blocks fail YAML parse — unquoted `: ` in `claude/skills/{ft-audit,ft-close-epic}/SKILL.md` and `claude/commands/{ft-audit,ft-release}.md` descriptions, a bare `[` in `ft-file-followup.md`'s `argument-hint:` — though `cursor/AGENTS-snippet.md` calls the defect repaired. Quote them; add a seeded `tools/drift-checks.sh` guard. Surfaced by audit-docs 2026-10-08 (Finding #2, High).
 
 ## Medium
 
-(none)
+- [ ] **CORE-745** [medium]🧩 [unattended] | docs-audit-single-source — The docs-audit config is stated three ways: `CONTRIBUTING.md`'s pre-overlay run-once advice, `/ft-release` §7.1's bundled-`ft-audit` run-once rubric, and the tracked `audit` overlay. Repoint §7.1 at the overlay, rewrite the CONTRIBUTING paragraph around `/audit <domain>`, extend §7.1's wiring check to `.claude/skills/audit`. Surfaced by audit-docs 2026-10-08 (Finding #6, Medium).
+
+- [ ] **CORE-746** [light]🔧 [unattended] | frontier-sweep-gaps — CORE-741's `[frontier]💎` sweep missed four sites: `SPEC/task-line-segments.md` (`[model]` row lacks `[frontier]`/`[xheavy]`, keeps the retired `other`-bucket clause, wrong citer list), `SPEC/model.md`'s loader header, `/ft-file-followup` Step 2 item 3 (no never-`[xheavy]` clause), `ft-task/preamble.md:15`. Surfaced by audit-docs 2026-10-08 (Finding #7, Medium).
+
+- [ ] **CORE-747** [medium]🧩 | codex-audit-overlay-path — `codex/skills/ft-audit/SKILL.md` and `claude/commands/ft-audit.md` describe only the full-copy fork, never the recommended thin overlay (the stub also misquotes the §1.2.1 heading); `/ft-update` Step 4.5 scans only `.claude/skills/*`, so a Codex fork gets no reconcile warning. Lead with the overlay; decide Step 4.5's `.agents/skills/` coverage. Surfaced by audit-docs 2026-10-08 (Finding #9, Medium).
+
+- [ ] **CORE-748** [light]🔧 [unattended] | audit-scaffold-self-refs — The `ft-audit` scaffold mis-cites itself: four "§5 step 2" area-prefix pointers (`SKILL.md` ×2, `passes/backend.md`, `passes/frontend.md`) mean step 3 since the filing-commit pre-check landed, and `scaffold-bootstrap.md` §5's fill step never sets the installed overlay's `name:`, heading, invocation line or `## Domains`. Surfaced by audit-docs 2026-10-08 (Finding #5, Medium; Finding #11, Low).
 
 ## Low
+
+- [ ] **CORE-749** [light]🔧 [unattended] | pair-q-wrapped-citations — Pair Q reads line by line, so a path-bearing section citation whose quoted title wraps onto the next line is never checked (39 sites in 28 files, all resolving today). Join wrapped citations in `pair_q`, add a seeded case to `tools/drift-checks.test.mjs`, note the shape in the Pair Q catalogue entry. Surfaced by audit-docs 2026-10-08 (Finding #12, Low).
+
+- [ ] **CORE-750** [light]🔧 | release-budget-ratchet — `docs/CONTEXT-BUDGET.md` sizes the `claude/skills/ft-release/**` cap (125,000) as "measured total plus ~1.5 working units", but CORE-734's pair retirements cut the directory to 106,074 (~4 units of slack), so it no longer ratchets. Lower the cap to ~113,000 or restate the rationale; log it in cap history. Surfaced by audit-docs 2026-10-08 (Finding #18, Low).
 
 - [ ] **CORE-727** [medium]🧩 | decay-window-restore — Blocked by decay-window depth: window [[CORE-724.7]] opened at `504f160f`. After 10 tasknotes archive past that SHA and at least one `/ft-audit` run commits filings past it, restore each of the four dropped rule groups only if the window shows the failure it guarded. Bar is in the archived CORE-724.7 note.
 
@@ -30,6 +42,36 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 (none)
 
 ## Completed
+
+- [x] **CORE-765** [light]🔧 | dogfood-version-line — `docs/DOGFOOD.md` reads the version from `SPEC.md`'s `**Version:**` line, not "line 1". Surfaced by audit-docs 2026-10-08 (Finding #24, Low), fixed inline.
+
+- [x] **CORE-764** [light]🔧 | layout-plan-archive — `SPEC/layout.md` adopter tree lists the optional `PLAN-ARCHIVE.md`. Surfaced by audit-docs 2026-10-08 (Finding #23, Low), fixed inline.
+
+- [x] **CORE-763** [light]🔧 | candidacy-pair-n-owner — `SPEC/unattended-candidacy.md` says Pair N checks the literal and a labeled mirror and Pair Q resolves the label. Surfaced by audit-docs 2026-10-08 (Finding #22, Low), fixed inline.
+
+- [x] **CORE-762** [light]🔧 | gate-discipline-scope — `docs/GATE-DISCIPLINE.md` scope sentence names all three homes — `SPEC/gates.md`, `SPEC/gate-postures.md`, `SPEC/cue-vocabulary.md`. Surfaced by audit-docs 2026-10-08 (Finding #21, Low), fixed inline.
+
+- [x] **CORE-761** [light]🔧 | migration-overlay-size — `docs/MIGRATION.md` §1.2.1 calls the thin overlay a short SKILL.md (~70-line template), not ~25 lines. Surfaced by audit-docs 2026-10-08 (Finding #20, Low), fixed inline.
+
+- [x] **CORE-760** [light]🔧 | glossary-stamp-order — `docs/GLOSSARY.md` Maintenance stamp reads CORE-741.2 (2026-10-08) and the `sidequest` entry moves to its alphabetical slot after `shortname`. Surfaced by audit-docs 2026-10-08 (Finding #19, Low), fixed inline.
+
+- [x] **CORE-759** [light]🔧 | agents-drift-command — `AGENTS.md` §"Validation" names `bash tools/drift-checks.sh` as the drift job's full run and the local check after markdown edits, in place of "additionally runs Pair R". Surfaced by audit-docs 2026-10-08 (Finding #17, Medium), fixed inline.
+
+- [x] **CORE-758** [light]🔧 | budget-headroom-741 — `docs/CONTEXT-BUDGET.md` glob row reads `ft-epic-discovery` 32,663 / ~340 headroom, cap history gains CORE-741.4 entries for the glob and `SPEC/procedures/ft-task.md` (33,842), and §"Ledger" is "above". Surfaced by audit-docs 2026-10-08 (Finding #16, Medium), fixed inline.
+
+- [x] **CORE-757** [light]🔧 | selection-loader-list — `SPEC/tasknote-selection.md` loader header lists `/ft-refactor` and drops `/ft-close-epic` / `/ft-release`, which never cite it. Surfaced by audit-docs 2026-10-08 (Finding #15, Low), fixed inline.
+
+- [x] **CORE-756** [light]🔧 | cue-vocab-glossary-ptr — `SPEC/cue-vocabulary.md` points at `SPEC.md` §"Operator-gate cues" and `docs/GLOSSARY.md` instead of the removed at-a-glance glossary. Surfaced by audit-docs 2026-10-08 (Finding #14, Low), fixed inline.
+
+- [x] **CORE-755** [light]🔧 | probe-template-paths — `templates/subagent-probe-template.md` cites its contract as `.flaitron/core/SPEC.md` / `.flaitron/core/README.md`, so an adopter no longer reads its own README. Surfaced by audit-docs 2026-10-08 (Finding #13, Low), fixed inline.
+
+- [x] **CORE-754** [light]🔧 | ai-ref-exclusions — `.flaitron/tasknote/README.md` §"AI-referenced docs" exclusions grow to eight `docs/` files (`CODEX-VERIFICATION.md`, `HARNESS-SURVEY.md` as dated records; `GATE-DISCIPLINE.md` as a teaching doc owned by `SPEC/gates.md` + `SPEC/gate-postures.md`) and the volume counts read ~5,500 vs ~4,200 lines. Surfaced by audit-docs 2026-10-08 (Finding #10, Medium), fixed inline.
+
+- [x] **CORE-753** [light]🔧 | postclosure-audit-fork — `SPEC/post-closure.md` limits the unprefixed-local-fork rule to a forked `/ft-audit`; `/ft-audit-repo` keeps its name. Surfaced by audit-docs 2026-10-08 (Finding #8, Medium), fixed inline.
+
+- [x] **CORE-752** [light]🔧 | security-allowlist-sources — `SECURITY.md` §"Adopter scanner false-positive allowlists" names the files that actually carry the keywords (`SPEC/gates.md`, `docs/GATE-DISCIPLINE.md`, `docs/GLOSSARY.md`, `SECURITY.md`, the un-sparsed `.flaitron/` archive) and its example lines match. Surfaced by audit-docs 2026-10-08 (Finding #4, Medium), fixed inline.
+
+- [x] **CORE-751** [light]🔧 | overlay-drift-gates — `.flaitron/audit-overlay/SKILL.md`: unkeyed scope adds `tools/drift-checks.sh`, unkeyed gates add `node --test tools/drift-checks.test.mjs` (citation now `ci.yml:33-41`), and the `docs:` gate is `bash tools/drift-checks.sh pair_q final_newline context_budget` in place of the stale "not a locally invokable command" none. Surfaced by audit-docs 2026-10-08 (Finding #3, Medium), fixed inline.
 
 - [x] **CORE-EPIC-742** [medium]🧩 | contract-guard-gaps — Completed 2026-10-08.
   - [x] **CORE-742.2** [medium]🧩 [unattended] | sidequest-orphan-guard — Completed 2026-10-08.

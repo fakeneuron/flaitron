@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-(none)
+- [ ] **CORE-736** [medium]🧩 | audit-row-sibling-gate — `SPEC/unattended-candidacy.md` clause 6 admits a `.N` audit row on clauses 1–4 alone, so `/ft-seed` can mark an audit while its implementation siblings are open and unmarked. judedelparte `cb01d6b` marked JD-041.N with JD-041.2/.3 open; caobunga dispatched it 2026-10-08, the worker parked on drift and left an untracked tasknote that dirtied the tree for the next row. Gate `.N` like other `.k` rows: every open sibling is already `- [x]` or proposed in the same pass with the same candidacy. Mirror in `/ft-seed`.
 
 ## Low
 

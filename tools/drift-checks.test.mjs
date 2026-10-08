@@ -118,8 +118,20 @@ const CASES = {
     finding: /^STATUS NOT COMPLETED {2}\.flaitron\/tasknote\/archive\/core\/ZZ-1\.md$/m,
   },
   pair_q: {
-    seed: () => edit('README.md', (s) => `${s}\nSee \`SPEC.md\` §"Zz Drift Nowhere".\n`),
-    finding: /^STALE SECTION {2}README\.md — SPEC\.md §"Zz Drift Nowhere"$/m,
+    // One single-line stale citation, and one whose quoted title wraps onto an
+    // indented, blockquoted continuation line that carries a second stale
+    // citation of its own (CORE-749): both halves of the fold must report.
+    seed: () =>
+      edit(
+        'README.md',
+        (s) =>
+          `${s}\nSee \`SPEC.md\` §"Zz Drift Nowhere".\n\n> See \`SPEC.md\` §"Zz Wrapped\n>   Nowhere" and \`SPEC.md\` §"Zz Tail Nowhere".\n`,
+      ),
+    finding: [
+      /^STALE SECTION {2}README\.md — SPEC\.md §"Zz Drift Nowhere"$/m,
+      /^STALE SECTION {2}README\.md — SPEC\.md §"Zz Wrapped Nowhere"$/m,
+      /^STALE SECTION {2}README\.md — SPEC\.md §"Zz Tail Nowhere"$/m,
+    ],
   },
   pair_r: {
     seed: () => edit('.flaitron/PLAN-ARCHIVE.md', (s) => `${s}- [x] **ZZ-1** Completed 2026-01-01.\n`),
@@ -185,7 +197,7 @@ describe('drift-checks.sh self-test', () => {
       );
       assert.equal(r.code, 1, `${check} exited ${r.code}:\n${r.stdout}`);
       assert.match(r.stdout, new RegExp(`^${check} FAILED$`, 'm'));
-      assert.match(r.stdout, finding, `${check} failed without its finding:\n${r.stdout}`);
+      for (const f of [finding].flat()) assert.match(r.stdout, f, `${check} failed without its finding:\n${r.stdout}`);
       assert.doesNotMatch(r.stdout, /^VACUOUS /m);
     });
   }

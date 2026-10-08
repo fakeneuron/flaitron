@@ -23,8 +23,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Low
 
-- [ ] **CORE-749** [light]🔧 [unattended] | pair-q-wrapped-citations — Pair Q reads line by line, so a path-bearing section citation whose quoted title wraps onto the next line is never checked (39 sites in 28 files, all resolving today). Join wrapped citations in `pair_q`, add a seeded case to `tools/drift-checks.test.mjs`, note the shape in the Pair Q catalogue entry. Surfaced by audit-docs 2026-10-08 (Finding #12, Low).
-
 - [ ] **CORE-750** [light]🔧 | release-budget-ratchet — `docs/CONTEXT-BUDGET.md` sizes the `claude/skills/ft-release/**` cap (125,000) as "measured total plus ~1.5 working units", but CORE-734's pair retirements cut the directory to 106,074 (~4 units of slack), so it no longer ratchets. Lower the cap to ~113,000 or restate the rationale; log it in cap history. Surfaced by audit-docs 2026-10-08 (Finding #18, Low).
 
 - [ ] **CORE-727** [medium]🧩 | decay-window-restore — Blocked by decay-window depth: window [[CORE-724.7]] opened at `504f160f`. After 10 tasknotes archive past that SHA and at least one `/ft-audit` run commits filings past it, restore each of the four dropped rule groups only if the window shows the failure it guarded. Bar is in the archived CORE-724.7 note.
@@ -39,6 +37,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-749** [light]🔧 [unattended] | pair-q-wrapped-citations — Completed 2026-10-08.
 - [x] **CORE-748** [light]🔧 [unattended] | audit-scaffold-self-refs — Completed 2026-10-08.
 - [x] **CORE-743** [light]🔧 [unattended] | maintainer-wiring-glob — Completed 2026-10-08.
 - [x] **CORE-744** [medium]🧩 [unattended] | skill-frontmatter-yaml — Completed 2026-10-08.

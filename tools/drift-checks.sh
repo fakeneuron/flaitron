@@ -539,9 +539,39 @@ pair_q() {
 # - | is the field separator because no title carries one. The live set
 #   has none; a title that ever does needs a different separator here,
 #   not a quoting fix.
+# - Wrapped titles are joined first (CORE-749). Extraction is line-local, so
+#   a `§"Title` whose closing quote sits on the next line matched no shape
+#   and was never checked. The awk pass takes a line ending in an unclosed
+#   `§"` and appends the next line, or the one after it, up to its first
+#   `"` — leading whitespace and `>` blockquote markers stripped, one space
+#   between. What follows that quote stays a line of its own, so a citation
+#   after it is still read, once. No quote within two lines → the line
+#   stands as written. The first `"` closes the fold whatever it belongs to,
+#   so a stray `§"` at line end can pair with an unrelated quote and report
+#   a false STALE SECTION — loud, and cured by the placeholder shape. Only
+#   the title wraps: a path split from its `§` across lines is unchecked.
 bad=
 n=0
 while IFS= read -r f; do
+  joined=$(awk '{ L[NR] = $0 }
+    END {
+      for (i = 1; i <= NR; i++) {
+        s = L[i]
+        if (s ~ /§"[^"]*$/) {
+          t = s
+          for (m = 1; m <= 2 && i + m <= NR; m++) {
+            nx = L[i + m]; sub(/^[ \t>]+/, "", nx)
+            q = index(nx, "\"")
+            if (q) {
+              s = t " " substr(nx, 1, q); L[i + m] = substr(nx, q + 1)
+              i += m - 1; break
+            }
+            t = t " " nx
+          }
+        }
+        print s
+      }
+    }' "$f")
   while IFS='|' read -r path sec; do
     case "$path$sec" in ''|*'<'*|*'…'*|*'\'*|/*|'~/'*) continue ;; esac
     n=$((n+1))
@@ -553,9 +583,9 @@ while IFS= read -r f; do
     esac
     [ -f "$t" ] || { printf 'MISSING FILE  %s — %s §"%s"\n' "$f" "$path" "$sec"; bad=1; continue; }
     grep -qF -e "# $sec" -e "**$sec" "$t" || { printf 'STALE SECTION  %s — %s §"%s"\n' "$f" "$path" "$sec"; bad=1; }
-  done < <({ grep -oE '`[^`]+\.md` §"[^"]+"' "$f" | sed -E 's/^`([^`]+)` §"(.*)"$/\1|\2/' || true
-             grep -oE '\]\([^)]+\.md\) §"[^"]+"' "$f" | sed -E 's/^\]\(([^)]+)\) §"(.*)"$/\1|\2/' || true
-             grep -oE '(^|[^`(/A-Za-z0-9_.<>-])[A-Za-z0-9_./-]+\.md §"[^"]+"' "$f" | sed -E 's/^[^A-Za-z0-9_.]*([^ ]+) §"(.*)"$/\1|\2/' || true
+  done < <({ printf '%s\n' "$joined" | grep -oE '`[^`]+\.md` §"[^"]+"' | sed -E 's/^`([^`]+)` §"(.*)"$/\1|\2/' || true
+             printf '%s\n' "$joined" | grep -oE '\]\([^)]+\.md\) §"[^"]+"' | sed -E 's/^\]\(([^)]+)\) §"(.*)"$/\1|\2/' || true
+             printf '%s\n' "$joined" | grep -oE '(^|[^`(/A-Za-z0-9_.<>-])[A-Za-z0-9_./-]+\.md §"[^"]+"' | sed -E 's/^[^A-Za-z0-9_.]*([^ ]+) §"(.*)"$/\1|\2/' || true
            } | sed -E 's#^<SPEC_DIR>/#SPEC/#; s#^<SKILL_DIR>/#./#; s#^<FT>/##; s#^<tasknote dir>/#.flaitron/tasknote/#')
 done < <(git ls-files '*.md' | grep -v -e '^\.flaitron/tasknote/archive/' -e '^\.flaitron/PLAN-ARCHIVE\.md$')
 # Outside a git checkout `git ls-files` lists nothing.

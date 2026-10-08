@@ -11,8 +11,12 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-- [ ] **CORE-EPIC-741** [heavy]🧠 | effort-tiers — Make model attribution more granular: map task tiers to per-platform model + effort settings (Claude, Codex, Grok), bias toward reliability over token savings, surface top-tier models (Fable, Astra) when warranted, and extend the glyph split (filed via /ft-epic-discovery; refined at .1 closure).
-  - [ ] **CORE-741.1** [heavy]🧠 | effort-tiers discovery — Scope shared design and file children .2..5 per SPEC/epic.md.
+- [ ] **CORE-EPIC-741** [heavy]🧠 | effort-tiers — Granular model routing: a chooser-assignable `[frontier]`💎 rung (Fable / Astra) between `[heavy]` and manual-only `[xheavy]`🔭, a dated tier × platform model @ effort map in `docs/PLATFORMS.md` (Claude / Codex / Grok; medium/high/xhigh only), a reliability-over-tokens bias, and next-move suggestions naming the concrete model @ effort.
+  - [x] **CORE-741.1** [heavy]🧠 | effort-tiers discovery — Completed 2026-10-08.
+  - [ ] **CORE-741.2** [heavy]🧠 | frontier-rung-contract — `SPEC/model.md`: add chooser-assignable `[frontier]`💎 between `[heavy]` and manual-only `[xheavy]`🔭; frontier triggers (contract/architecture design, high blast radius, heavy-epic Discovery, deep research); reliability-over-tokens bias; effort vocabulary medium/high/xhigh only; map rule pointing at `docs/PLATFORMS.md`. Glyph + `FRONTIER` fallback in cue-vocabulary, SPEC.md, GLOSSARY, AGENT-COMPAT.
+  - [ ] **CORE-741.3** [medium]🧩 | platform-effort-map — Rebase `docs/PLATFORMS.md` §"Platform×model×effort calibration table" into a tier × platform map (Claude / Codex / Grok) naming model @ effort per tier, medium/high/xhigh only, per the map approved in CORE-741.1; add frontier bands (Fable, Astra @ xhigh) and the Grok no-frontier ⚠️ note. Verify Codex/Grok cells against vendor docs.
+  - [ ] **CORE-741.4** [heavy]🧠 | routing-skill-sweep — Teach every chooser the frontier rung and map: post-closure next-move prints `model @ effort` for the active platform; ft-task Step 1.5 gate + model-edge fragment; ft-epic-discovery child cap `[heavy]`→`[frontier]`; ft-audit, ft-audit-repo, ft-refactor, `claude/CAPABILITIES.md`, `SPEC/procedures/ft-task.md`, Codex wrappers.
+  - [ ] **CORE-741.5** [medium]🧩 | viz-frontier-tier — Viz parser accepts `frontier` in the tier ladder and buckets `fable` to it; ModelChip renders 💎; extend the `SPEC/fixtures/plan/` markers and tolerances fixtures; parser + ModelChip tests. Leave `[xheavy]`🔭 handling unchanged.
   - [ ] **CORE-741.N** [heavy]🧠 | effort-tiers audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
 
 ## Medium

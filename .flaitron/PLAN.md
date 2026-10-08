@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-738** [medium]🧩 [unattended] | audit-sibling-runtime-guard — `/ft-close-epic --unattended` refuses, writing no tasknote, while any sibling of its audit row is open. CORE-736's admission-time gate misses a sibling filed after `.N` was marked, a marked sibling dispatched after `.N`, and an `/ft-epic-discovery` Step 7→9 interruption. Also: mirror cascade-report placement; `unattended-candidates:` hides `.N` dependencies.
+(none)
 
 ## Low
 
@@ -33,6 +33,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-738** [medium]🧩 [unattended] | audit-sibling-runtime-guard — Completed 2026-10-08.
 - [x] **CORE-736** [medium]🧩 | audit-row-sibling-gate — Completed 2026-10-08.
 - [x] **CORE-EPIC-735** [heavy]🧠 | adopter-footprint — Completed 2026-10-08.
   - [x] **CORE-735.2** [medium]🧩 | submodule-weight-measure — Completed 2026-10-08.

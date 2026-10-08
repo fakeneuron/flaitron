@@ -52,6 +52,7 @@ Both checks are informational only — never block, never refile, never rotate. 
 - **Epic-ID dispatch.** If the TASK-ID is `<AREA>-EPIC-<N>` (parent epic) or `<AREA>-<N>.<sub>` (epic subtask), Read `<root>SPEC/epic.md` for the lifecycle contract before continuing. Plain `<AREA>-<N>` IDs do not load it.
 - **Foreign-dirt gate (paper-complete guard).** Before any scaffold / promote / resume write, run `git status --porcelain`. If non-empty: **STOP**, surface the dirt list, ask the operator to commit / stash / discard themselves, then re-invoke. Do not auto-clean. This ID's own `.flaitron/tasknote/<TASK-ID>.md`, when it exists (any status but a deletion or rename — untracked, staged, or modified), is not foreign dirt — the runner's existing-note check, run ahead of this gate, routes it — so leave it out of the list (an uncommitted `/ft-task --unattended` model-mismatch park stays resumable by `/ft-task`). See SPEC §"Paper-complete guard".
 - If `.flaitron/tasknote/archive/<area>/<TASK-ID>.md` already exists: stop. The task is already closed and archived. Surface the conflict and ask whether the user meant a different task ID — do not scaffold a duplicate.
+- **Open-siblings audit (`--unattended` only).** A `.N` TASK-ID runs `unattended-mode.md` §"Pre-scaffold stops" → "Open-siblings audit" after the archive-collision check below.
 
 Under `unattended-mode = true` every stop in this section, and the status gate above, terminates and writes nothing (`unattended-mode.md` §"Pre-scaffold stops").
 

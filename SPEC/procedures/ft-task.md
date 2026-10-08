@@ -191,7 +191,8 @@ flag in re-entry instructions. A concrete mismatch stops and offers switch or
 operator-approved retag; a missing tag asks before scaffold; a category
 under-tier only warns and proceeds. Never silently retag a satisfied category.
 Run Step 3's in-flight refusal, then its foreign-dirt guard and archived
-refusal, at entry, before this model check, so a retag never lands on a note
+refusal, then (unattended mode, a literal `.N` ID only) its open-siblings
+stop, at entry, before this model check, so a retag never lands on a note
 this run then refuses. Run them once; Step 3 must not mistake this run's approved
 writes for foreign dirt.
 
@@ -228,7 +229,12 @@ relax this**, and it does not park here either: writing a new tasknote into a
 tree the guard has just refused to touch makes that file its own foreign dirt
 on the next invocation. Report the dirt machine-readably and terminate without
 writing — likewise for the archived / in-flight collisions below, where a
-tasknote for this ID already exists and there is nothing new to park. Step 2
+tasknote for this ID already exists and there is nothing new to park. In
+unattended mode only, a literal `.N` audit ID also terminates without writing
+when its parent `<AREA>-EPIC-<N>` is missing or closed (`no-parent` /
+`parent-closed`) or any other `<AREA>-<N>.<sub>` row is still `- [ ]`
+(`open-siblings`; legacy numeric audits are not detected,
+[`SPEC/gate-postures.md`](../gate-postures.md) §"Pre-scaffold stops"). Step 2
 already ran these refusals at entry; they are defined here.
 
 Check `.flaitron/tasknote/<TASK-ID>.md` and branch on its existence / YAML

@@ -246,6 +246,12 @@ the stop is *about*:
 - **`## Completed` status gate and archive collision — terminate, write
   nothing.** Both mean a tasknote for this ID already exists; there is
   nothing new to park, and scaffolding one would duplicate it.
+- **Open-siblings audit — terminate, write nothing.** A `.N` audit ID
+  whose epic still has an open child would park on drift, and that note
+  would dirty the tree for the next dispatch. The runners walk the
+  parent's children at run time and stop with cause `open-siblings`
+  (`no-parent` / `parent-closed` when the parent is missing or closed),
+  as `/ft-close-epic` Step 2 already does.
 - **Skill/pin guard — stop, never park.** Body and pin disagree, so a
   park is a further write the guard forbids, and a resume through the same
   body would stop again. The guard paragraph in each body owns the line:

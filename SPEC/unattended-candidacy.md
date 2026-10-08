@@ -119,7 +119,10 @@ unattended-candidates: CORE-581, CORE-582.3
 Bare IDs, comma-separated, in PLAN order; `unattended-candidates: none` when
 the predicate admitted nothing. The line always emits under this posture, so
 a later reader can tell "ran, found none" from "never ran." It is a report —
-no reply, no gate.
+no reply, no gate. The line carries no dependency edges: a `.k` or `.N` on it
+admitted on a same-pass sibling (clause 6) is a candidate only together with
+that sibling. Marking a subset re-runs clause 6,
+which is what `/ft-seed` does.
 
 **`--unattended`.** Identical to `--fast`: the same line, zero tokens written.
 On top of it, the line persists (§"Persistence") because an operator-less run

@@ -27,13 +27,15 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Future Opportunities
 
-- [ ] **CORE-EPIC-735** [heavy]🧠 | adopter-footprint — `.flaitron/` self-hosting records are ~14.6 MB of 16.9 MB tracked bytes and ride along in every adopter's `.flaitron/core` submodule. Discovery supplied by audit-repo 2026-10-07. Surfaced by audit-repo 2026-10-07 (Theme: Self-hosting ballast)
+(none)
+
+## Completed
+
+- [x] **CORE-EPIC-735** [heavy]🧠 | adopter-footprint — Completed 2026-10-08.
   - [x] **CORE-735.2** [medium]🧩 | submodule-weight-measure — Completed 2026-10-08.
   - [x] **CORE-735.3** [heavy]🧠 | footprint-decision — Completed 2026-10-08.
   - [x] **CORE-735.4** [medium]🧩 | sparse-checkout-docs — Completed 2026-10-08.
-  - [ ] **CORE-735.N** [heavy]🧠 | adopter-footprint audit
-
-## Completed
+  - [x] **CORE-735.N** [heavy]🧠 | adopter-footprint audit — Completed 2026-10-08.
 
 - [x] **CORE-EPIC-734** [heavy]🧠 | mirror-tax — Completed 2026-10-08.
   - [x] **CORE-734.2** [heavy]🧠 | drift-script-extract — Completed 2026-10-07.

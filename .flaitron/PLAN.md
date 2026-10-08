@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-(none)
+- [ ] **CORE-740** [light]🔧 [unattended] | drift-floor-coverage — Extend the coverage test in tools/drift-checks.test.mjs to fail when a drift-checks.sh check lacks a `VACUOUS <name>` floor and is not one of the header's two exempt checks (skill_pin_guard_parity, pair_h). Open half of [[CORE-739.2]] review note 9.
 
 ## Low
 

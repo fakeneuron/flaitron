@@ -402,28 +402,60 @@ First-use verification 2026-06-01 (CORE-257 cue dogfood under Grok 4.3 interacti
 ## Platform×model×effort calibration table
 
 The tier bands in [`SPEC/model.md`](../SPEC/model.md) §"Category-vs-concrete
-matching" are calibrated against real vendor rosters. This table is the
+matching" are calibrated against real vendor rosters. This section is the
 **maintained cross-provider reference** — refreshed at releases (the release
 cut's `/ft-audit docs` subroutine surfaces a stale table via the dated as-of
-stamp below) and stamped with its as-of date. It exists so any chooser — the
-operator, or an automated orchestrator picking a model for a tagged task — can
-map "what is this session actually running, at what effort" to a tier band
-without guessing. It *calibrates* the Step 1.5 self-assessment; it never
-replaces it, and the gate still requires no lookup. Rows stay family-level
-tokens per `SPEC/model.md` §"Effort axis" — the `@effort` notation below is
-prose shorthand for "this family at that effort setting", never a PLAN.md
-token shape. It lives here rather than in the contract because its rows are
-dated vendor facts, not workflow rules.
+stamps below) and stamped with its as-of dates. It holds two tables. The
+**tier × platform map** answers "which `model @ effort` should run a task of
+this tier here" — the cells a next-move suggestion or an orchestrator prints,
+per `SPEC/model.md` §"Effort recommendations". The **family roster** answers
+"what is this session actually running, at what effort" as a tier band — it
+*calibrates* the Step 1.5 self-assessment; it never replaces it, and the gate
+still requires no lookup. Roster rows stay family-level tokens per
+`SPEC/model.md` §"Effort axis"; map cells name the model to run. The `@ effort`
+/ `@effort` notation below is prose shorthand for "this model at that effort
+setting", never a PLAN.md token shape. It lives here
+rather than in the contract because its cells are dated vendor facts, not
+workflow rules.
 
-**As of 2026-10-02** (full table):
+### Tier × platform map
+
+**As of 2026-10-08:**
+
+| Tier | Claude Code | Codex | Grok Build |
+|---|---|---|---|
+| `[light]`🔧 | Sonnet @ medium–high | Sol @ medium–high (alt Luna @ high) | Grok @ medium–high |
+| `[medium]`🧩 | Opus @ medium (alt Sonnet @ high) | Sol @ high (alt Astra @ medium) | Grok @ high |
+| `[heavy]`🧠 | Opus @ high | Astra @ high | Grok @ xhigh |
+| `[frontier]`💎 | Fable @ high–xhigh | Astra @ xhigh | ⚠️ Grok @ xhigh — no frontier model |
+| `[xheavy]`🔭 | manual-only | manual-only | manual-only |
+
+Cells name only `medium`, `high`, or `xhigh`, and each reaches its model's
+vendor default or start setting; on a range, take the upper end when in doubt
+(`SPEC/model.md` §"Effort recommendations"). **⚠️ Grok has no frontier-band
+model:** Grok 4.7 is xAI's top model, so `[frontier]` work on Grok Build runs
+at the heavy-band cell and lands the gate's under-tier advisory — suggest
+switching to Claude Code (Fable) or Codex (Astra @ xhigh). Advice, never a
+block. Codex/Grok cells verified 2026-10-08 against `learn.chatgpt.com/docs/models`
+(Astra starts at Light, Luna at High, Sol at the client default) and
+`docs.x.ai/docs/guides/reasoning` + `docs.x.ai/docs/models` (grok-4.7 default
+`high`; no model above it); Claude Code cells carry the family roster's
+2026-10-02 verification. `[xheavy]` names no cell: the rung is
+operator-filed and never chooser-assigned (`SPEC/model.md`
+§"Category-vs-concrete matching", "The `xheavy` rung is manual-only") —
+operators typically run it on Fable @ xhigh.
+
+### Family roster
+
+**As of 2026-10-02** (full table; 2026-10-08 per [[CORE-741.3]]: `fable` re-banded frontier per [[CORE-741.2]], the `gpt-5` / `codex` Astra equivalences, and the Codex Ultra fact):
 
 | Platform | Token | Current roster (top of family) | Effort ladder | Band at default effort | Effort-shifted equivalences |
 |---|---|---|---|---|---|
-| Anthropic | `fable` | Fable 5.1 (`mythos` 5.1 limited-access sibling; Fable 5 prior) | `low`/`medium`/`high`/`xhigh`/`max` (default `high`; `xhigh`/`max` is the step-up for the hardest agentic work) | heavy | heavy at the default; `fable@xhigh`–`@max` stays heavy-band |
+| Anthropic | `fable` | Fable 5.1 (`mythos` 5.1 limited-access sibling; Fable 5 prior) | `low`/`medium`/`high`/`xhigh`/`max` (default `high`; `xhigh`/`max` is the step-up for the hardest agentic work) | frontier | frontier at the default; `fable@xhigh` is the step-up for the hardest frontier work |
 | Anthropic | `opus` | Opus 5.5 (Opus 5 prior; 4.8 / 4.7 supported) | `low`/`medium`/`high`/`xhigh`/`max` (default `medium`; Opus 5 and earlier default `high`) | heavy | `opus@low` ≈ medium-band throughput work |
 | Anthropic | `sonnet` | Sonnet 5.5 (Sonnet 5 prior) | `low`/`medium`/`high`/`xhigh`/`max` (default `high`) | medium | `sonnet@xhigh`–`@max` ≈ heavy-band |
-| OpenAI | `gpt-5` | GPT-6 Astra flagship · GPT-6.1 Sol workhorse (+ Luna) | `low`/`medium`/`high`/`xhigh`/`max` (Sol default `medium`; Astra and Sol have no `none`) | heavy (Astra) · medium (Sol) · light (Luna) | `sol@xhigh`–`@max` ≈ heavy-band |
-| OpenAI | `codex` | GPT-6 Astra in Codex (GPT-5.3 Codex prior) | `low`/`medium`/`high`/`xhigh`/`max` (app Light = `low`; no `minimal`) | medium at Astra's recommended Light or Sol's `medium` default | `codex@xhigh`–`@max` ≈ heavy-band |
+| OpenAI | `gpt-5` | GPT-6 Astra flagship · GPT-6.1 Sol workhorse (+ Luna) | `low`/`medium`/`high`/`xhigh`/`max` (Sol default `medium`; Astra and Sol have no `none`) | heavy (Astra) · medium (Sol) · light (Luna) | `astra@xhigh` ≈ frontier-band (no model above it); `sol@xhigh`–`@max` ≈ heavy-band |
+| OpenAI | `codex` | GPT-6 Astra in Codex (GPT-5.3 Codex prior) | `low`/`medium`/`high`/`xhigh`/`max` (app Light = `low`; no `minimal`; the app also offers Ultra, which fans out to subagents) | medium at Astra's recommended Light or Sol's `medium` default | Astra `@high` ≈ heavy-band; Astra `@xhigh` ≈ frontier-band (no model above it); Sol `@xhigh`–`@max` ≈ heavy-band |
 | xAI | `grok` | Grok 4.7 (default; `grok-4.7-build-fast` fast sibling) | `low`/`medium`/`high`/`xhigh` (default `high`; `xhigh` since 4.6, earlier 4.x treat it as `high`) | medium | `grok@xhigh` ≈ heavy-band |
 | Google | `gemini-pro` | Gemini 3.1 Pro preview (Deep Think mode above it) | `thinking_level` `low`/`medium`/`high` (default `high`) | heavy | `gemini-pro@low` ≈ medium-band |
 | Google | `gemini-flash` | Gemini 3.8 Flash (3.7 prior; Flash-Lite below) | `thinking_level` `low`/`medium`/`high` (default `medium`) | medium (Flash) · light (Flash-Lite) | `gemini-flash@high` ≈ upper medium-band |

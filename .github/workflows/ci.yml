@@ -38,6 +38,7 @@ jobs:
       - run: node --test tools/update-adopters.test.mjs
       - run: node --check tools/update-adopters.test.mjs
       - run: node --check tools/update-adopters.mjs
+      - run: node --test tools/drift-checks.test.mjs
 
       # Stack-agnostic (docs-only repos included), so it sits on `validate`
       # rather than a stack-specific lane. The baseline `.gitleaks.toml` is

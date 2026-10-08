@@ -13,7 +13,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-EPIC-739** [medium]🧩 | drift-check-integrity — Make tools/drift-checks.sh fail loudly instead of passing on nothing. Discovery supplied by audit-repo 2026-10-08. Surfaced by audit-repo 2026-10-08 (Theme: drift checks are the test suite, but nothing tests them)
   - [x] **CORE-739.2** [medium]🧩 | drift-vacuous-floor — Completed 2026-10-08.
-  - [ ] **CORE-739.3** [medium]🧩 | drift-self-test — Add a self-test that runs each check against a temp copy seeded with one known drift and asserts non-zero exit; wire it into CI `validate` and AGENTS.md §"Validation" in lockstep (Pair H binds the two byte-for-byte).
+  - [x] **CORE-739.3** [medium]🧩 | drift-self-test — Completed 2026-10-08.
   - [ ] **CORE-739.N** [medium]🧩 | drift-check-integrity-audit — Audit the CORE-EPIC-739 children.
 
 ## Medium

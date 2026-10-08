@@ -40,6 +40,8 @@
 #   skill_pin_guard_parity and pair_h need no counter: an empty read already
 #   fails their own guards.
 # - bash 3.2 compatible: the §7.1 walk runs on the operator's machine.
+# - Each check needs one seeded-drift case in tools/drift-checks.test.mjs
+#   (CORE-739.3); its coverage test fails on a check without one.
 
 # Wrapper-name invariant (SPEC/layout.md §"Skill namespace")
 wrapper_name_invariant() {

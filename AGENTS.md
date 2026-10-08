@@ -75,7 +75,7 @@ not to)".
   design rationale, and `CONTEXT-BUDGET.md` (per-file byte budgets, enforced
   in CI and at release).
 - `templates/` — canonical markdown templates.
-- `tools/` — operator-side fleet scripts (`update-adopters.mjs` + tests) and `drift-checks.sh`, the shell of CI's `drift` job and the `/ft-release` §7.1 pair walk.
+- `tools/` — operator-side fleet scripts (`update-adopters.mjs` + tests) and `drift-checks.sh` (+ its `drift-checks.test.mjs` self-test), the shell of CI's `drift` job and the `/ft-release` §7.1 pair walk.
 - `viz/` — Vite/React/TypeScript visualizer (module tiers + no-Node-under-`src/ui/` rule: [`viz/README.md`](viz/README.md)).
 
 ## Validation
@@ -106,10 +106,18 @@ node --check tools/update-adopters.mjs
 The suite is a release gate; do not substitute a live adopter-fleet dry run or
 an `--apply` operation for it.
 
+For the drift checks, run their self-test from the repository root. It seeds one
+known drift per `tools/drift-checks.sh` check into a temp copy and asserts the
+check fails on it:
+
+```sh
+node --test tools/drift-checks.test.mjs
+```
+
 CI's `drift` job additionally runs Pair R, grepping every checked
 `.flaitron/PLAN.md` / `.flaitron/PLAN-ARCHIVE.md` stub row for the
 `| shortname` `SPEC/plan-filing.md` §"`## Completed` archive convention"
-requires — additive to the seven commands above, not part of the
+requires — additive to the eight commands above, not part of the
 `validate`-job "passing" roster `/ft-release` §7.1 Pair H binds byte-for-byte
 (same relationship as the gitleaks scan in `docs/CONVENTIONS.md` §"GitHub
 Actions CI").

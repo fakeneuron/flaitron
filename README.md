@@ -306,7 +306,7 @@ runtime lives in the runner; the contract lives in flaitron.
 - `docs/` — philosophy, vision, glossary, migration, upgrading, conventions, version history, agent-neutrality, platforms, agent-compat, dogfood, worktrees, gate-discipline, external-agents, harness-survey, codex-verification, and context-budget docs
 - `.flaitron/` — flaitron's own roadmap and tasknotes (self-hosted)
 - `viz/` — Vite/React visualizer (priority-grouped list + optional board mode)
-- `tools/` — operator-side fleet scripts (`update-adopters.mjs`, the singular CLI carve-out — see `SPEC/scope-boundaries.md` §"What flaitron does NOT provide" — plus its portable `update-adopters.test.mjs` suite), and `drift-checks.sh`, the shell of the CI `drift` job and the `/ft-release` §7.1 pair walk
+- `tools/` — operator-side fleet scripts (`update-adopters.mjs`, the singular CLI carve-out — see `SPEC/scope-boundaries.md` §"What flaitron does NOT provide" — plus its portable `update-adopters.test.mjs` suite), and `drift-checks.sh`, the shell of the CI `drift` job and the `/ft-release` §7.1 pair walk, plus its `drift-checks.test.mjs` self-test
 - `CONTRIBUTING.md` — solo-maintenance model; issue and PR guidance
 - `SECURITY.md` — threat model and vulnerability reporting
 - `LICENSE` — MIT

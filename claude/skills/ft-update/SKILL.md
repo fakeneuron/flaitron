@@ -42,12 +42,13 @@ Use `<FT>` in place of the submodule path for every command below.
 
 ## Step 1 — Resolve current pin and latest available tag
 
+- **Re-apply the sparse trim** (`docs/MIGRATION.md` §1.1): if `git --version` is 2.35 or newer, run `git -C <FT> sparse-checkout set --no-cone '/*' '!/.flaitron/'`. This keeps flaitron's dogfood archive (`<FT>/.flaitron/`) out of the working tree. The command is idempotent and changes no gitlink. A superproject re-clone drops the per-clone sparse config, and this step restores it on every run that gets past Step 0. It runs first, before the network fetch and before any confirm, so neither an offline fetch nor a declined bump skips it. Every exit and the Step 5 recap say which happened: re-applied (files removed), already sparse, or skipped on older git, where the adopter's deny/`.ignore` fence still covers the path.
 - **Current version:** read `<FT>/SPEC.md:3` (`**Version:** vX.Y.Z`).
 - **Current pinned commit:** `git -C <FT> rev-parse --short HEAD`.
 - **Fetch tags:** `git -C <FT> fetch --tags --quiet origin`.
 - **Latest tag:** `git -C <FT> tag --sort=-v:refname | head -1`.
 
-If the latest tag's version equals the current `SPEC.md` version, report "already on the latest release (`vX.Y.Z`)" and stop — nothing to bump. Otherwise capture `<current>` and `<target>` for the rest of the run.
+If the latest tag's version equals the current `SPEC.md` version, report "already on the latest release (`vX.Y.Z`)" with the sparse outcome, and stop — nothing to bump. Otherwise capture `<current>` and `<target>` for the rest of the run.
 
 ## Step 2 — Surface the bump + tag changelog, confirm
 
@@ -81,7 +82,7 @@ git -C <FT> checkout <target>
 git add <FT>
 ```
 
-`git add <FT>` records the new gitlink in the superproject. Verify: `git -C <FT> describe --tags` reads `<target>`, and `git diff --cached <FT>` shows the gitlink moving `<current>` → `<target>`.
+When Step 1 applied the sparse config, the checkout respects it and never writes the dogfood archive back; on the older-git skip it does. `git add <FT>` records the new gitlink in the superproject. Verify: `git -C <FT> describe --tags` reads `<target>`, and `git diff --cached <FT>` shows the gitlink moving `<current>` → `<target>`.
 
 ## Step 4 — Re-wire per-project symlinks for newly shipped skills
 
@@ -228,7 +229,7 @@ git add .cursor/skills/  # if present
 git add .grok/skills/    # if present
 ```
 
-Surface a recap (current→target, tag headline, any new symlinks wired, any Step 4.7 shadow hits, any Migration action items) and a proposed commit message:
+Surface a recap (current→target, tag headline, any new symlinks wired, any Step 4.7 shadow hits, the Step 1 sparse outcome, any Migration action items) and a proposed commit message:
 
 ```text
 chore: bump flaitron <current> → <target>

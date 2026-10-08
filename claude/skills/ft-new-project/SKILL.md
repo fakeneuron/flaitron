@@ -49,9 +49,10 @@ From cwd:
 mkdir -p .flaitron
 git submodule add https://github.com/fakeneuron/flaitron.git .flaitron/core
 git -C .flaitron/core checkout vX.Y.Z   # use the pinned version from Step 1
+git -C .flaitron/core sparse-checkout set --no-cone '/*' '!/.flaitron/'
 ```
 
-The `checkout` step is what pins the project to a specific flaitron commit. Skip it only if the user explicitly chose `main` in Step 1.
+The `checkout` step is what pins the project to a specific flaitron commit. Skip it only if the user explicitly chose `main` in Step 1. Run the `sparse-checkout` line either way. It drops flaitron's dogfood archive (`.flaitron/core/.flaitron/`) from the working tree, ~18.5 → ~2.9 MB, and keeps every file an adopter runs. It needs git ≥ 2.35, so check `git --version` first. On older git, skip it and tell the user; Step 3b's fence then covers the path.
 
 Reference: `docs/MIGRATION.md` §1.1.
 
@@ -67,7 +68,7 @@ Reference: `claude/AGENTS-snippet.md` §"One-time symlink wiring" (canonical) ·
 
 ## Step 3b — Fence the submodule's dogfood archive
 
-`.flaitron/core/.flaitron/` is flaitron's own plan and tasknote archive (~14 MB, ~1,000 files) — flaitron's history, not this project's context. Keep it out of search and context tooling now, before the first session greps into it:
+`.flaitron/core/.flaitron/` is flaitron's own plan and tasknote archive (~16 MB, ~1,000 files) — flaitron's history, not this project's context. Step 2's sparse-checkout already removed it from this clone. The fence below is the fallback for a fresh clone of the project, which comes back full until `/ft-update` runs again, and for older git that skipped the sparse step. Write it now:
 
 1. `.claude/settings.json` — add `Read(./.flaitron/core/.flaitron/**)` to `permissions.deny`. Create the file with just that key if it is absent; if it exists, merge the rule into the existing `deny` array and change nothing else. Claude Code applies the rule to its file tools, Grep/Glob, and `@file` mentions.
 2. `.ignore` at the project root — append the line `.flaitron/core/.flaitron/` (create if absent). Covers ripgrep-based greps; `.gitignore` is the wrong file, the path is tracked content.
@@ -163,6 +164,7 @@ the symlink to re-create from the snippet — fix before reporting success.
 Then surface to the user, in one short message:
 
 - Bootstrap is complete; flaitron is pinned to `vX.Y.Z` (or `main` if unpinned).
+- The submodule is sparse-checked-out without `.flaitron/core/.flaitron/` (or say Step 2 skipped it). The config is per-clone: a fresh clone of the project comes back full until `/ft-update` runs, which re-applies it on git ≥ 2.35, even with no newer tag.
 - **Next steps for them** (the skill leaves these as placeholders):
   - Edit `.flaitron/PLAN.md` — fill in the vision paragraph and initial task list.
   - Edit `.flaitron/tasknote/README.md` — declare any project-specific area prefixes; replace the "Project quick commands" section with real commands; extend `## AI-referenced docs` (seeded with `README.md` / `AGENTS.md` / `CLAUDE.md` / `.flaitron/PLAN.md`) as the architecture matures (architecture notes, API specs, DB schema docs, ADRs, inventories).

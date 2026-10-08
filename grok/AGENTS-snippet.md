@@ -63,9 +63,10 @@ survive `git clone` and pin to whichever flaitron commit the submodule is
 checked out at. Commit the symlinks (`git add .grok/`).
 
 The submodule also brings flaitron's own tasknote archive at
-`.flaitron/core/.flaitron/` (~14 MB, ~1,000 files) — flaitron's history, not
-this project's context. Keep it out of search tooling with that line in a root
-`.ignore`; the per-tool list is in `../docs/MIGRATION.md` §1.1.
+`.flaitron/core/.flaitron/` (~16 MB, ~1,000 files) — flaitron's history, not
+this project's context. Sparse-checkout drops it from the working tree; as the
+fallback, keep it out of search tooling with that line in a root `.ignore`. The
+sparse line and the per-tool list are in `../docs/MIGRATION.md` §1.1.
 
 A Grok skill auto-exposes as `/<skill-name>`, so `/ft-task <TASK-ID>` works
 after wiring with no command stubs to install. Flaitron's `claude/commands/`

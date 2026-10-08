@@ -20,6 +20,7 @@ flaitron **v6.0.0** renames the project from flowtron, and with it the conventio
    ```sh
    git submodule add https://github.com/fakeneuron/flaitron.git .flaitron/core
    git -C .flaitron/core checkout v6.0.0
+   git -C .flaitron/core sparse-checkout set --no-cone '/*' '!/.flaitron/'   # optional, git ≥ 2.35: MIGRATION.md §1.1
    git add .flaitron/core
    ```
 4. **Re-point the symlinks.** Every `.claude/`, `.agents/skills/`, `.cursor/skills/`, and `.grok/skills/` link into `../../.flowtron/core/...` now dangles; retarget each in place:

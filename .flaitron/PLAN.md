@@ -30,7 +30,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 - [ ] **CORE-EPIC-735** [heavy]🧠 | adopter-footprint — `.flaitron/` self-hosting records are ~14.6 MB of 16.9 MB tracked bytes and ride along in every adopter's `.flaitron/core` submodule. Discovery supplied by audit-repo 2026-10-07. Surfaced by audit-repo 2026-10-07 (Theme: Self-hosting ballast)
   - [x] **CORE-735.2** [medium]🧩 | submodule-weight-measure — Completed 2026-10-08.
   - [x] **CORE-735.3** [heavy]🧠 | footprint-decision — Completed 2026-10-08.
-  - [ ] **CORE-735.4** [medium]🧩 | sparse-checkout-docs — Per [[CORE-735.3]], adopters sparse-checkout the submodule without its dogfood archive (`git -C .flaitron/core sparse-checkout set --no-cone '/*' '!/.flaitron/'`; working tree 18.5→2.9 MB). Add it to MIGRATION §1.1 and `ft-new-project` Step 2; `ft-update` re-applies it after checkout, since a superproject re-clone drops it. Keep the deny/`.ignore` fence as fallback; check the four AGENTS-snippets and `update-adopters.mjs`.
+  - [x] **CORE-735.4** [medium]🧩 | sparse-checkout-docs — Completed 2026-10-08.
   - [ ] **CORE-735.N** [heavy]🧠 | adopter-footprint audit
 
 ## Completed

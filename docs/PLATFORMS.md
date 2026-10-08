@@ -252,9 +252,10 @@ Sectioned like `claude/AGENTS-snippet.md`:
    `cp` / `install` / a platform-specific registration command.
    Alongside them, one line telling the adopter to keep the
    submodule's dogfood archive (`.flaitron/core/.flaitron/`) out of
-   the platform's search and context tooling, naming that platform's
-   ignore mechanism and pointing at `docs/MIGRATION.md` §1.1 for the
-   per-tool list (per [[CORE-632.3]]).
+   the platform's search and context tooling: sparse-checkout first,
+   then, as the fallback, that platform's ignore mechanism, pointing at
+   `docs/MIGRATION.md` §1.1 for both (per [[CORE-632.3]],
+   [[CORE-735.4]]).
 3. **Pinning notes** — how the platform's wiring tracks the
    submodule's pinned flaitron commit. Symlinks track automatically;
    copies need re-copying on bump; other mechanisms documented inline.

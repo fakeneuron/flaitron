@@ -51,11 +51,17 @@ From the project root:
 mkdir -p .flaitron
 git submodule add https://github.com/fakeneuron/flaitron.git .flaitron/core
 git -C .flaitron/core checkout vX.Y.Z   # replace with the version you want to pin (see git tags)
+git -C .flaitron/core sparse-checkout set --no-cone '/*' '!/.flaitron/'   # drop flaitron's dogfood archive
 ```
 
 The `checkout` step is what pins the project to a specific flaitron version. Without it, the submodule tracks `main` and updates would be undeliberate.
 
-**Keep the submodule's dogfood archive out of search and context tooling.** The submodule brings flaitron's own plan and tasknote archive at `.flaitron/core/.flaitron/` — roughly 14 MB across ~1,000 files, most of the checkout by bytes, growing with every flaitron release. It is flaitron's proof of use, not your project's context: a grep, an `@`-file pick, or an index that walks it returns flaitron's history where you wanted yours. Exclude it once, per tool:
+**The `sparse-checkout` step leaves the submodule's dogfood archive out of your working tree.** The submodule brings flaitron's own plan and tasknote archive at `.flaitron/core/.flaitron/`. That is roughly 16 MB across ~1,000 files, most of the checkout by bytes, and it grows with every flaitron release. It is flaitron's proof of use, not your project's context: a grep, an `@`-file pick, or an index that walks it returns flaitron's history where you wanted yours. Sparse-checkout cuts the working tree from ~18.5 MB to ~2.9 MB. Every file an adopter runs (`SPEC.md`, `SPEC/`, `claude/`, `codex/`, `templates/`, …) stays. It needs git 2.35 or newer, the first release whose `sparse-checkout` docs list `set --no-cone`. On older git, skip it; the fallback below covers the path. Git's docs mark non-cone mode deprecated but state no current plan to remove it, and cone mode cannot say "everything except one directory." The command is idempotent, survives later tag checkouts, and leaves `git status` clean. Two limits:
+
+- The sparse config lives in the submodule's git dir, not in anything you commit. A fresh `git clone --recurse-submodules` of your project comes back with the full tree. `/ft-update` re-applies it on every run, before its version check (§"Pinning and bumping"). The fleet updater does not. You can also re-run the line above by hand.
+- Objects are unchanged: the submodule's history still sits in `.git/modules/.flaitron/core`. Sparse-checkout trims the files tools walk, not the clone size.
+
+**Fallback: fence the path per tool.** For the window after a re-clone, or if you skip the sparse step, exclude the path once, per tool:
 
 - **Claude Code** — there is no `.claudeignore`; the control is a `Read` deny rule in `.claude/settings.json`, which Claude Code applies to its file tools, to Grep/Glob, and to `@file` mentions. Merge the rule into an existing file rather than overwriting it:
 
@@ -482,10 +488,11 @@ The submodule SHA in `.flaitron/core` is what pins the project to a specific fla
 
 To bump:
 
-1. For a major version bump, read the annotated tag message (`git -C .flaitron/core show vX.Y.Z`) and the per-release tasknote in `.flaitron/core/.flaitron/tasknote/archive/core/` — both list migration steps. Follow them before changing anything in the project. If §1.1's `Read` deny rule fences the tasknote, the tag message alone is enough.
-2. Update the submodule:
+1. For a major version bump, read the annotated tag message (`git -C .flaitron/core show vX.Y.Z`) and the per-release tasknote in `.flaitron/core/.flaitron/tasknote/archive/core/` — both list migration steps. Follow them before changing anything in the project. If §1.1's sparse-checkout or `Read` deny rule hides the tasknote, read it from the object store after `git -C .flaitron/core fetch --tags`: list the names with `git -C .flaitron/core ls-tree --name-only vX.Y.Z .flaitron/tasknote/archive/core/`, then `git -C .flaitron/core show vX.Y.Z:.flaitron/tasknote/archive/core/<TASK-ID>.md`.
+2. Re-apply §1.1's sparse-checkout, then update the submodule. Sparse is idempotent and restores the trimmed tree after a superproject re-clone. Running it first means the checkout never writes the archive back:
    ```sh
    git -C .flaitron/core fetch --tags
+   git -C .flaitron/core sparse-checkout set --no-cone '/*' '!/.flaitron/'
    git -C .flaitron/core checkout vX.Y.Z
    ```
 3. Commit. The parent repo's submodule pointer (the SHA recorded for `.flaitron/core`) changes; `.gitmodules` itself only changes if the URL or branch field changes.
@@ -526,7 +533,7 @@ Remove each hit with `rm`. The commands are safe: these are symlinks into the su
 
 A bump is itself a project-side task (e.g., `CORE-XXX: Bump flaitron to vX.Y.Z`), with a tasknote and the usual 4-phase flow. Don't bump in passing.
 
-For sweeping **non-breaking** releases across the whole workspace at once, flaitron's checkout ships `tools/update-adopters.mjs` (dry-run by default; see `SPEC/scope-boundaries.md` §"What flaitron does NOT provide" for the carve-out). It skips any repo whose release range carries real migration steps — or a tag whose notes it can't classify, which it treats as migration-bearing rather than assume safe — and flags ranges that shipped new Claude, Codex, Cursor, or Grok skill symlinks — those still go through the per-project flow above (or `/ft-update`). One breaking release is the exception: a pre-rename adopter (`.flowtron/core`) is classified `migrate` once the latest tag is v6.0.0 or later, and `--apply` performs steps 1–5 of the v6 move ([UPGRADING.md](UPGRADING.md)) in one rollback-safe local commit (it renames the submodule in place rather than re-adding it); step 6's prose sweep stays per-project.
+For sweeping **non-breaking** releases across the whole workspace at once, flaitron's checkout ships `tools/update-adopters.mjs` (dry-run by default; see `SPEC/scope-boundaries.md` §"What flaitron does NOT provide" for the carve-out). It skips any repo whose release range carries real migration steps — or a tag whose notes it can't classify, which it treats as migration-bearing rather than assume safe — and flags ranges that shipped new Claude, Codex, Cursor, or Grok skill symlinks — those still go through the per-project flow above (or `/ft-update`). One breaking release is the exception: a pre-rename adopter (`.flowtron/core`) is classified `migrate` once the latest tag is v6.0.0 or later, and `--apply` performs steps 1–5 of the v6 move ([UPGRADING.md](UPGRADING.md)) in one rollback-safe local commit (it renames the submodule in place rather than re-adding it); step 6's prose sweep stays per-project. Its checkout keeps an existing §1.1 sparse-checkout but does not apply one, so a re-cloned adopter it bumps stays full until the next `/ft-update` or a hand re-run; the §1.1 fence covers that window.
 
 **Upgrading an existing adopter from v5.x (`.flowtron/` → `.flaitron/`)** and **from v4.x (`_project/` → `.flowtron/`)** — both one-time directory-rename recipes live in [UPGRADING.md](UPGRADING.md).
 

@@ -31,21 +31,37 @@
 #   "simplify" that to `out=$(for … done)`: bash's `$( )` parser reads a `case`
 #   pattern's closing `)` as the end of the substitution, and the flag checks
 #   below die with `syntax error near unexpected token ';;'`.
+# - Each check counts what it actually compared in `n` and fails
+#   `VACUOUS <check>` on zero (CORE-739.2): a renamed heading, a moved
+#   directory or a copy without `.git` empties the loop, and an empty loop
+#   finds nothing. The floor is per check, not per row, so one stub with no
+#   flags or one glob row with no file stays legal. Count with n=$((n+1)),
+#   never ((n++)), which returns 1 from zero and ends a `bash -e` check.
+#   skill_pin_guard_parity and pair_h need no counter: an empty read already
+#   fails their own guards.
 # - bash 3.2 compatible: the §7.1 walk runs on the operator's machine.
 
 # Wrapper-name invariant (SPEC/layout.md §"Skill namespace")
 wrapper_name_invariant() {
 bad=
+n=0
 for f in claude/commands/ft-*.md; do
+  [ -f "$f" ] || continue
+  n=$((n+1))
   grep -q "\`$(basename "$f" .md)\`" "$f" || { echo "NO SELF-NAME  $f"; bad=1; }
 done
+[ "$n" -gt 0 ] || { echo "VACUOUS wrapper_name_invariant  no command stub examined"; exit 1; }
 [ -z "$bad" ] || exit 1
 }
 
 # Shipped-skill parity (claude/skills ↔ codex/skills)
 shipped_skill_parity() {
-diff -u <(find claude/skills -mindepth 1 -maxdepth 1 -type d -exec test -f "{}/SKILL.md" \; -print | sed 's#^claude/skills/##' | sort) \
-        <(find codex/skills  -mindepth 1 -maxdepth 1 -type d -exec test -f "{}/SKILL.md" \; -print | sed 's#^codex/skills/##' | sort)
+# Two empty inventories diff clean, so both empty is the vacuous case; one
+# empty side is already a diff.
+cl=$(find claude/skills -mindepth 1 -maxdepth 1 -type d -exec test -f "{}/SKILL.md" \; -print | sed 's#^claude/skills/##' | sort)
+cx=$(find codex/skills  -mindepth 1 -maxdepth 1 -type d -exec test -f "{}/SKILL.md" \; -print | sed 's#^codex/skills/##' | sort)
+[ -n "$cl$cx" ] || { echo "VACUOUS shipped_skill_parity  no skill inventory read"; exit 1; }
+diff -u <([ -z "$cl" ] || printf '%s\n' "$cl") <([ -z "$cx" ] || printf '%s\n' "$cx")
 }
 
 # Skill/pin guard parity (docs/PLATFORMS.md §"One canonical install path per project")
@@ -69,6 +85,7 @@ bad=
 # specific row never exempts its file from the glob row (CORE-690:
 # ft-release at 34641 failed the 33000 glob while staying under its own
 # 40000 row).
+n=0
 exact=$(awk '/^## Budgets$/,/^## Known over budget/' docs/CONTEXT-BUDGET.md \
         | grep -E '^\| `[^`]+` \| [0-9,]+ \|' \
         | sed -E 's/^\| `([^`]+)` \|.*/\1/' \
@@ -85,8 +102,10 @@ while IFS='|' read -r surface budget; do
     # same find … -exec cat | wc -c idiom as the §7.1 ledger refresh, so
     # the two agree. This arm sits first because *'*'* would otherwise catch it.
     *'**')
-      n=$(find "${surface%/\*\*}" -type f -exec cat {} + | wc -c)
-      [ "$n" -le "$budget" ] || { echo "OVER BUDGET  $surface  $n > $budget"; bad=1; }
+      [ -d "${surface%/\*\*}" ] || { echo "MISSING DIR  $surface"; bad=1; continue; }
+      sz=$(find "${surface%/\*\*}" -type f -exec cat {} + | wc -c)
+      n=$((n+1))
+      [ "$sz" -le "$budget" ] || { echo "OVER BUDGET  $surface  $sz > $budget"; bad=1; }
       ;;
     # Globs stay globs, an allowed exception to step-7.1-standing-checks.md
     # §"Glob-free by design": a newly shipped skill or SPEC/ module is
@@ -97,18 +116,22 @@ while IFS='|' read -r surface budget; do
       for f in $surface; do
         [ -f "$f" ] || continue
         case " $exact " in *" $f "*) continue ;; esac
-        n=$(wc -c < "$f")
-        [ "$n" -le "$budget" ] || { echo "OVER BUDGET  $f  $n > $budget"; bad=1; }
+        sz=$(wc -c < "$f")
+        n=$((n+1))
+        [ "$sz" -le "$budget" ] || { echo "OVER BUDGET  $f  $sz > $budget"; bad=1; }
       done
       ;;
     *)
-      n=$(wc -c < "$surface")
-      [ "$n" -le "$budget" ] || { echo "OVER BUDGET  $surface  $n > $budget"; bad=1; }
+      sz=$(wc -c < "$surface")
+      n=$((n+1))
+      [ "$sz" -le "$budget" ] || { echo "OVER BUDGET  $surface  $sz > $budget"; bad=1; }
       ;;
   esac
 done < <(awk '/^## Budgets$/,/^## Known over budget/' docs/CONTEXT-BUDGET.md \
          | grep -E '^\| `[^`]+` \| [0-9,]+ \|' \
          | sed -E 's/^\| `([^`]+)` \| ([0-9,]+) \|.*/\1|\2/')
+# A renamed `## Budgets` heading or reshaped row leaves the read empty.
+[ "$n" -gt 0 ] || { echo "VACUOUS context_budget  no Budgets-table surface measured"; exit 1; }
 [ -z "$bad" ] || exit 1
 }
 
@@ -117,11 +140,15 @@ final_newline() {
 # `.flaitron/tasknote/archive/` is excluded like pair_p/pair_q below: it's
 # write-once history predating this check, not a live surface to ratchet.
 bad=
+n=0
 while IFS= read -r f; do
   case "$f" in .flaitron/tasknote/archive/*) continue ;; esac
   [ -s "$f" ] || continue
+  n=$((n+1))
   [ -z "$(tail -c1 "$f")" ] || { echo "NO FINAL NEWLINE  $f"; bad=1; }
 done < <(git grep -Il '' -- .)
+# Outside a git checkout `git grep` lists nothing.
+[ "$n" -gt 0 ] || { echo "VACUOUS final_newline  no tracked text file examined"; exit 1; }
 [ -z "$bad" ] || exit 1
 }
 
@@ -134,18 +161,26 @@ pair_b() {
 # from three real findings to six, half of them noise (CORE-420.5
 # measured both). Pairs J and M reuse this pipeline verbatim; a change to
 # what counts as a documented flag belongs in B, J and M together.
+# Two empty flag sets compare equal, so only a pair with a flag on either
+# side counts toward the floor.
 bad=
+n=0
 for d in claude/skills/ft-*/SKILL.md; do
   s=$(basename "$(dirname "$d")"); c="codex/skills/$s/SKILL.md"; [ -f "$c" ] || continue
   cf=$(grep -m1 '^description:' "$d" | sed -E 's/"[^"]*"//g' | grep -oE '\-\-[a-z][a-z-]+' | sort -u | tr '\n' ' ')
   xf=$(grep -m1 '^description:' "$c" | sed -E 's/"[^"]*"//g' | grep -oE '\-\-[a-z][a-z-]+' | sort -u | tr '\n' ' ')
+  [ -z "$cf$xf" ] || n=$((n+1))
   [ "$cf" = "$xf" ] || { echo "MISMATCH $s | claude:[$cf] codex:[$xf]"; bad=1; }
 done
+[ "$n" -gt 0 ] || { echo "VACUOUS pair_b  no Codex-paired flag set compared"; exit 1; }
 [ -z "$bad" ] || exit 1
 }
 
 # Pair C — template back-link depth
 pair_c() {
+# grep on a missing templates/ exits 2, which `if` reads as clean.
+n=$(find templates -type f | wc -l)
+[ "$n" -gt 0 ] || { echo "VACUOUS pair_c  no template file examined"; exit 1; }
 if grep -rn '](\.\./\.\./PLAN\.md)' templates/; then
   echo "template back-link is one level too deep; skills write templates one level under .flaitron/"
   exit 1
@@ -204,8 +239,10 @@ pair_j() {
 #   little coverage — ft-close-epic names --unattended only inside a
 #   negation clause, derives an empty set and passes vacuously — which is
 #   the `continue` idiom: a stub documenting no flag is skipped, not
-#   failed.
+#   failed. The floor counts flags checked across every stub, so the
+#   skip stays legal while all stubs skipping does not.
 bad=
+n=0
 for f in claude/commands/ft-*.md; do
   s=$(basename "$f" .md)
   own=$( { grep -m1 '^description:' "$f" | sed -E 's/"[^"]*"//g'
@@ -213,11 +250,13 @@ for f in claude/commands/ft-*.md; do
          | grep -oE -e '--[a-z][a-z-]+' | sort -u | tr '\n' ' ')
   [ -z "$own" ] && continue
   hint=$(grep -m1 '^argument-hint:' "$f") \
-    || { echo "MISSING HINT $s :: $own"; bad=1; continue; }
+    || { echo "MISSING HINT $s :: $own"; bad=1; n=$((n+1)); continue; }
   for fl in $(printf '%s' "$own"); do
+    n=$((n+1))
     case "$hint" in *"$fl"*) ;; *) echo "MISSING HINT FLAG $s $fl"; bad=1 ;; esac
   done
 done
+[ "$n" -gt 0 ] || { echo "VACUOUS pair_j  no documented flag checked"; exit 1; }
 [ -z "$bad" ] || exit 1
 }
 
@@ -254,16 +293,19 @@ pair_m() {
 #   should mint a new pair rather than make M bidirectional, which would
 #   report every deliberate asymmetry above as drift.
 bad=
+n=0
 for d in claude/skills/ft-*/SKILL.md; do
   s=$(basename "$(dirname "$d")"); c="claude/commands/$s.md"
-  [ -f "$c" ] || { echo "MISSING STUB  $s"; bad=1; continue; }
+  [ -f "$c" ] || { echo "MISSING STUB  $s"; bad=1; n=$((n+1)); continue; }
   df=" $(grep -m1 '^description:' "$d" | sed -E 's/"[^"]*"//g' \
          | grep -oE '\-\-[a-z][a-z-]+' | sort -u | tr '\n' ' ')"
   for fl in $(grep -m1 '^argument-hint:' "$c" | grep -oE '\-\-[a-z][a-z-]+' | sort -u); do
     case "$fl" in --low|--med|--fut|--high) continue ;; esac
+    n=$((n+1))
     case "$df" in *" $fl "*) ;; *) echo "UNDOCUMENTED FLAG $s $fl"; bad=1 ;; esac
   done
 done
+[ "$n" -gt 0 ] || { echo "VACUOUS pair_m  no argument-hint flag checked"; exit 1; }
 [ -z "$bad" ] || exit 1
 }
 
@@ -275,17 +317,21 @@ pair_n() {
 # entry lives there; it is not a filer.
 # Vacuous at birth, on purpose: at the module's own landing (CORE-577.2)
 # no filer named it yet, so the loop iterated nothing and the step passed
-# empty.
+# empty. Filers have named it since, and the CORE-739.2 floor now fails
+# that state: no filer left means the trigger grep went dry.
 # Whether the label still resolves is Pair Q's half: N checked its own
 # labels against a heading in the module until CORE-622.3 generalised
 # that resolution to every path-bearing citation. N keeps the two
 # presence halves Q cannot know about — that a filer emits the literal,
 # and that its citation is *labeled* as a mirror.
 bad=
+n=0
 for f in $(grep -rl 'SPEC/unattended-candidacy\.md' claude/skills --include='*.md' | grep -v '^claude/skills/ft-release/'); do
+  n=$((n+1))
   grep -q 'unattended-candidates:' "$f" || { echo "NO CANDIDATES LITERAL  $f"; bad=1; }
   grep -qE 'mirror of `SPEC/unattended-candidacy\.md` §"[^"]+"' "$f" || { echo "NO LABELED MIRROR  $f"; bad=1; }
 done
+[ "$n" -gt 0 ] || { echo "VACUOUS pair_n  no filer naming SPEC/unattended-candidacy.md"; exit 1; }
 [ -z "$bad" ] || exit 1
 }
 
@@ -312,10 +358,13 @@ pair_o() {
 #   open each named module and anchor `^## Filing commits`; Q resolves the
 #   same citation against a heading-or-bold-lead prefix instead.
 bad=
+n=0
 for f in $(grep -rl 'auto-commit = ' claude/skills --include='*.md' | grep -v '^claude/skills/ft-release/'); do
+  n=$((n+1))
   grep -e 'git diff --cached' "$f" | grep -qv -e '--quiet' || { echo "NO POST-STAGE DIFF  $f"; bad=1; }
   grep -qE 'SPEC/[A-Za-z0-9_.-]+\.md[`)]? §"Filing commits"' "$f" || { echo "NO RESOLVING CITATION  $f"; bad=1; }
 done
+[ "$n" -gt 0 ] || { echo "VACUOUS pair_o  no runner setting auto-commit"; exit 1; }
 [ -z "$bad" ] || exit 1
 }
 
@@ -354,15 +403,18 @@ pair_p() {
 #   (SPEC.md §"Acceptance tick-through"); the awk window closes at the
 #   next ## heading, so Subtasks boxes never enter the grep.
 bad=
+n=0
 floor=2026-09-20
 for f in .flaitron/tasknote/archive/*/*.md; do
   d=$(grep -m1 -oE '^\*\*Archived:\*\* +[0-9]{4}-[0-9]{2}-[0-9]{2}' "$f" | sed -E 's/.* //' || true)
   [ -n "$d" ] || continue
   [[ "$d" < "$floor" ]] && continue
+  n=$((n+1))
   grep -q '^status: completed$' "$f" || { echo "STATUS NOT COMPLETED  $f"; bad=1; }
   bare=$(awk '/^## ✅ Acceptance/{a=1;next} a&&/^## /{a=0} a' "$f" | grep -E '^ *- \[ \]' | grep -viE 'N/A|not[ -]met' || true)
   [ -z "$bare" ] || { printf '%s\n' "$bare" | sed "s|^|UNANNOTATED BOX  $f  |"; bad=1; }
 done
+[ "$n" -gt 0 ] || { echo "VACUOUS pair_p  no post-floor archived note examined"; exit 1; }
 [ -z "$bad" ] || exit 1
 }
 
@@ -399,9 +451,11 @@ pair_q() {
 #   has none; a title that ever does needs a different separator here,
 #   not a quoting fix.
 bad=
+n=0
 while IFS= read -r f; do
   while IFS='|' read -r path sec; do
     case "$path$sec" in ''|*'<'*|*'…'*|*'\'*|/*|'~/'*) continue ;; esac
+    n=$((n+1))
     path=${path#.flowtron/core/}; path=${path#.flaitron/core/}
     case "$path" in .flowtron/*) path=.flaitron/${path#.flowtron/} ;; esac
     case "$path" in
@@ -415,6 +469,8 @@ while IFS= read -r f; do
              grep -oE '(^|[^`(/A-Za-z0-9_.<>-])[A-Za-z0-9_./-]+\.md §"[^"]+"' "$f" | sed -E 's/^[^A-Za-z0-9_.]*([^ ]+) §"(.*)"$/\1|\2/' || true
            } | sed -E 's#^<SPEC_DIR>/#SPEC/#; s#^<SKILL_DIR>/#./#; s#^<FT>/##; s#^<tasknote dir>/#.flaitron/tasknote/#')
 done < <(git ls-files '*.md' | grep -v -e '^\.flaitron/tasknote/archive/' -e '^\.flaitron/PLAN-ARCHIVE\.md$')
+# Outside a git checkout `git ls-files` lists nothing.
+[ "$n" -gt 0 ] || { echo "VACUOUS pair_q  no section citation examined"; exit 1; }
 [ -z "$bad" ] || exit 1
 }
 
@@ -435,14 +491,17 @@ pair_r() {
 # (§"Exception — inline audit fixes") ends in "fixed inline."
 # instead, so it never matches the tail and needs no carve-out.
 bad=
+n=0
 for f in .flaitron/PLAN.md .flaitron/PLAN-ARCHIVE.md; do
   [ -f "$f" ] || continue
   while IFS= read -r line; do
+    n=$((n+1))
     case "$line" in *' | '*) continue ;; esac
     echo "NO SHORTNAME  $f :: $line"
     bad=1
   done < <(grep -E '^[[:space:]]*- \[[xX]\] \*\*[^*]+\*\*.*Completed [0-9]{4}-[0-9]{2}-[0-9]{2}\.$' "$f")
 done
+[ "$n" -gt 0 ] || { echo "VACUOUS pair_r  no checked stub row examined"; exit 1; }
 [ -z "$bad" ] || exit 1
 }
 

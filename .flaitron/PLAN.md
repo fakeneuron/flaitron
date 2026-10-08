@@ -12,7 +12,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## High
 
 - [ ] **CORE-EPIC-739** [medium]🧩 | drift-check-integrity — Make tools/drift-checks.sh fail loudly instead of passing on nothing. Discovery supplied by audit-repo 2026-10-08. Surfaced by audit-repo 2026-10-08 (Theme: drift checks are the test suite, but nothing tests them)
-  - [ ] **CORE-739.2** [medium]🧩 | drift-vacuous-floor — Give every check in tools/drift-checks.sh an examined-count floor: count rows/files actually compared and fail with `VACUOUS <check>` on zero (context_budget's Budgets-table read and pair_b/J/M's `|| continue` skips are the known cases). Keep bash 3.2 + the file's shape rules.
+  - [x] **CORE-739.2** [medium]🧩 | drift-vacuous-floor — Completed 2026-10-08.
   - [ ] **CORE-739.3** [medium]🧩 | drift-self-test — Add a self-test that runs each check against a temp copy seeded with one known drift and asserts non-zero exit; wire it into CI `validate` and AGENTS.md §"Validation" in lockstep (Pair H binds the two byte-for-byte).
   - [ ] **CORE-739.N** [medium]🧩 | drift-check-integrity-audit — Audit the CORE-EPIC-739 children.
 

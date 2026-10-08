@@ -12,7 +12,7 @@
 bash tools/drift-checks.sh 'pair_*' wrapper_name_invariant
 ```
 
-Eleven `ok` lines (the ten `pair_<letter>` and `wrapper_name_invariant`) and exit 0. A `FAILED` line is preceded by the check's own findings; read the pair's entry below, or `SPEC/layout.md` for the invariant, for what they mean. The script runs each check as its own `bash -e` process (no `pipefail`) — its header says why — so a check that passes here passes in CI.
+Eleven `ok` lines (the ten `pair_<letter>` and `wrapper_name_invariant`) and exit 0. A `FAILED` line is preceded by the check's own findings; read the pair's entry below, or `SPEC/layout.md` for the invariant, for what they mean. One finding shared by every check but `pair_h`, whose `NO VALIDATION ROSTER` / `NO VALIDATE RUN STEPS` say the same thing: `VACUOUS <check>` means it compared nothing — its read went dry (a renamed heading, a moved directory, a copy without `.git`), so fix the read or restore the input; the floor is in the script header ([[CORE-739.2]]). The script runs each check as its own `bash -e` process (no `pipefail`) — its header says why — so a check that passes here passes in CI.
 
 **Pair A — templates roster ↔ `templates/` directory.** `SPEC/layout.md` §"Working in the flaitron repo itself" names what `templates/` holds; `README.md`'s repo-layout bullet points at it rather than restating it ([[CORE-734.7]], which also dropped `pair_a`, the CI check that the clause was present in both files). Adding or removing a file in `templates/` without editing the clause strands it.
 

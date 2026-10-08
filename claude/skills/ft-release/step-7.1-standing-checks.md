@@ -21,7 +21,7 @@ This check **replaces** the standing symlink-wiring *count* check that shipped a
 bash tools/drift-checks.sh shipped_skill_parity
 ```
 
-The two shipped inventories must match exactly by slug: `shipped_skill_parity ok`, or a `diff -u` of the `claude/skills` slugs against the `codex/skills` ones. This is parity of exported Flaitron skill names and routing coverage, not byte-identical skill bodies; Codex wrappers may route to `SPEC/procedures/` or to the canonical Claude skill body to avoid duplicated maintenance. A mismatch means a Flaitron skill shipped on one platform surface without the other — fix inline as Critical/High before cutting the release.
+The two shipped inventories must match exactly by slug: `shipped_skill_parity ok`, or a `diff -u` of the `claude/skills` slugs against the `codex/skills` ones, or `VACUOUS shipped_skill_parity` when neither inventory read a skill (the read, not the inventories, is broken). This is parity of exported Flaitron skill names and routing coverage, not byte-identical skill bodies; Codex wrappers may route to `SPEC/procedures/` or to the canonical Claude skill body to avoid duplicated maintenance. A mismatch means a Flaitron skill shipped on one platform surface without the other — fix inline as Critical/High before cutting the release.
 
 **Standing installed-surface policy check.** Independently of the subroutine findings, verify the repo-scoped adopter snippets install exactly the policy subset from `docs/PLATFORMS.md` §"Installed-surface policy", not the full shipped inventories.
 
@@ -158,7 +158,7 @@ are read from the table, never retyped. Run the function CI runs:
 bash tools/drift-checks.sh context_budget
 ```
 
-`context_budget ok` means nothing to do. Otherwise each `OVER BUDGET` line names a surface (or a `/**` directory total) and its measured size against its budget; the function's comments explain how rows match. For each one printed:
+`context_budget ok` means nothing to do. Otherwise each `OVER BUDGET` line names a surface (or a `/**` directory total) and its measured size against its budget; the function's comments explain how rows match. `VACUOUS context_budget` means no Budgets-table row was read — the heading or row shape moved, not a size; fix the read before trusting a later `ok`. For each one printed:
 
 - **Listed in §"Known over budget" with an open owner** — its owning task line
   is still `- [ ]` in `.flaitron/PLAN.md`. Informational: note it in the §7.4

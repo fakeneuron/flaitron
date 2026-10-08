@@ -15,10 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-EPIC-742** [medium]🧩 | contract-guard-gaps — Discovery supplied by audit-repo 2026-10-08. Surfaced by audit-repo 2026-10-08 (Theme: Prose rules without mechanical guards)
-  - [x] **CORE-742.2** [medium]🧩 [unattended] | sidequest-orphan-guard — Completed 2026-10-08.
-  - [x] **CORE-742.3** [light]🔧 | sidequest-promoted-guard — Completed 2026-10-08.
-  - [ ] **CORE-742.N** [medium]🧩 | contract-guard-gaps audit
+(none)
 
 ## Low
 
@@ -34,6 +31,10 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-EPIC-742** [medium]🧩 | contract-guard-gaps — Completed 2026-10-08.
+  - [x] **CORE-742.2** [medium]🧩 [unattended] | sidequest-orphan-guard — Completed 2026-10-08.
+  - [x] **CORE-742.3** [light]🔧 | sidequest-promoted-guard — Completed 2026-10-08.
+  - [x] **CORE-742.N** [medium]🧩 | contract-guard-gaps audit — Completed 2026-10-08.
 - [x] **CORE-EPIC-741** [heavy]🧠 | effort-tiers — Completed 2026-10-08.
   - [x] **CORE-741.1** [heavy]🧠 | effort-tiers discovery — Completed 2026-10-08.
   - [x] **CORE-741.2** [heavy]🧠 | frontier-rung-contract — Completed 2026-10-08.

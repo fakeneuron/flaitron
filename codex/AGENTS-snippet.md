@@ -85,7 +85,7 @@ checkout, wire the wrapper inventory **repo-scoped**, from the checkout root:
 
 ```sh
 mkdir -p .agents/skills
-ln -s ../../codex/skills/* .agents/skills/
+(cd .agents/skills && ln -s ../../codex/skills/* .)
 ```
 
 Do **not** glob the inventory into `~/.agents/skills/`. That directory is read by

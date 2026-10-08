@@ -41,8 +41,8 @@ For live editing with immediate effect, wire this checkout's own `.claude/`. The
 ```sh
 # From the flaitron repo root (one-time, or after adding a skill/command)
 mkdir -p .claude/commands .claude/skills
-ln -s ../../claude/commands/*.md .claude/commands/
-ln -s ../../claude/skills/*      .claude/skills/
+(cd .claude/commands && ln -s ../../claude/commands/*.md .)
+(cd .claude/skills   && ln -s ../../claude/skills/*      .)
 
 # flaitron-self's own /audit overlay — tracked body, symlinked into place
 ln -sfn ../../.flaitron/audit-overlay/ .claude/skills/audit
@@ -55,7 +55,7 @@ Codex maintainers wire the same way, from the parallel wrapper inventory:
 
 ```sh
 mkdir -p .agents/skills
-ln -s ../../codex/skills/* .agents/skills/
+(cd .agents/skills && ln -s ../../codex/skills/* .)
 ```
 
 `.agents/` is gitignored alongside `.claude/` (see root `.gitignore`), so this stays per-machine too.

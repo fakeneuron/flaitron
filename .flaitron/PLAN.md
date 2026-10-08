@@ -11,7 +11,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-- [ ] **CORE-743** [light]🔧 [unattended] | maintainer-wiring-glob — The glob `ln -s ../../…/*` recipes in `CONTRIBUTING.md` and `codex/AGENTS-snippet.md`'s maintainer block expand from the repo root, so they match nothing (zsh aborts; bash links a literal `*`). Rewrite as `(cd <dir> && ln -s ../../<src>/* .)` and verify in a scratch clone. Surfaced by audit-docs 2026-10-08 (Finding #1, High).
 
 
 ## Medium
@@ -42,6 +41,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-743** [light]🔧 [unattended] | maintainer-wiring-glob — Completed 2026-10-08.
 - [x] **CORE-744** [medium]🧩 [unattended] | skill-frontmatter-yaml — Completed 2026-10-08.
 - [x] **CORE-765** [light]🔧 | dogfood-version-line — `docs/DOGFOOD.md` reads the version from `SPEC.md`'s `**Version:**` line, not "line 1". Surfaced by audit-docs 2026-10-08 (Finding #24, Low), fixed inline.
 

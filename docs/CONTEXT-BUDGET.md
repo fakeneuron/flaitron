@@ -323,13 +323,13 @@ section grew.
 
 ## How this is enforced
 
-Two layers, both reading this table rather than restating it. The `drift` CI
-job's `context_budget` check (`tools/drift-checks.sh`, bound to its source by `/ft-release` §7.1
-**Pair L**) runs a `wc -c`-and-compare script against the Budgets table above
-on every push to `main` and every pull request, catching a regression on the commit that
-lands it. The standing check in
+Two layers, both reading this table rather than restating it, and one
+shell: the `context_budget` function in `tools/drift-checks.sh`, a
+`wc -c`-and-compare against the Budgets table above. The `drift` CI job runs
+it on every push to `main` and every pull request, catching a regression on
+the commit that lands it. The standing check in
 [`claude/skills/ft-release/step-7.1-standing-checks.md`](../claude/skills/ft-release/step-7.1-standing-checks.md)
-runs the identical script by hand at every release cut, then additionally
+runs the same function at every release cut, then additionally
 applies the §"Known over budget" judgment above (which needs
 `.flaitron/PLAN.md` ownership context CI does not have) and refreshes the
 §"Ledger" below — both stay release-only.

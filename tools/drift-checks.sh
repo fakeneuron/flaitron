@@ -1,25 +1,25 @@
 #!/usr/bin/env bash
 # Cross-file drift checks — the shell of the CI `drift` job and of the
-# `/ft-release` §7.1 local pair walk (CORE-734.2). Both invoke this file, so
+# `/ft-release` §7.1 release walk (CORE-734.2). Both invoke this file, so
 # neither parses the other's shape:
 #
 #   bash tools/drift-checks.sh            # every check (CI)
-#   bash tools/drift-checks.sh 'pair_*'   # glob patterns pick checks (§7.1)
+#   bash tools/drift-checks.sh 'pair_*' wrapper_name_invariant
+#                                         # names or globs pick checks (§7.1)
 #
 # Self-host repo maintenance, not a workflow tool: adopters never run it, and
 # it is not a second CLI carve-out (SPEC/scope-boundaries.md).
 #
-# Two kinds of check. The first three copy a check whose shell lives elsewhere
-# (SPEC/layout.md, step-7.1-standing-checks.md) — repair the copy here to match
-# its source. The `pair_*` functions ARE the shell for their pair: the §7.1
-# catalogue entry in step-7.1-mirror-pairs.md names the function and lists
-# what it reads. §7.1 Pair L binds both kinds — the path set each function
-# body reads against its source fence or its catalogue `Reads:` line. Design
-# notes sit as `#` comments inside the body, next to the line they explain;
-# Pair L's extraction drops comment lines. skill_pin_guard_parity (CORE-729)
-# and final_newline (CORE-621) have neither a source nor a catalogue entry.
+# Every function IS the shell for its check (CORE-734.4); nothing else
+# carries a copy. SPEC/layout.md and step-7.1-standing-checks.md state the
+# rule for wrapper_name_invariant, shipped_skill_parity and context_budget
+# and point here. Each `pair_*` function has a §7.1 catalogue entry in
+# step-7.1-mirror-pairs.md that names it and says what a finding means.
+# Design notes sit as `#` comments inside the body, next to the line they
+# explain. skill_pin_guard_parity (CORE-729) and final_newline (CORE-621)
+# have neither a source rule nor a catalogue entry.
 #
-# Shape rules — the dispatcher below and Pair L both read them:
+# Shape rules — the dispatcher below reads them:
 # - One check per top-level function, `name() {` and its closing `}` each at
 #   column 0, preceded by a `#` line carrying the check's title. Checks run in
 #   file order. A function here that is not a check would run as one.
@@ -61,11 +61,15 @@ diff -u <(printf 'claude/skills/%s/SKILL.md\n' ft-close-epic ft-epic-discovery f
 
 # Context budget (docs/CONTEXT-BUDGET.md §"Budgets")
 context_budget() {
+# Reads the Budgets table and restates no number. The release-time reading
+# of a finding (§"Known over budget") is in step-7.1-standing-checks.md.
 bad=
-# Collapse newlines. $(...) keeps them, and the case pattern below
-# matches a space-delimited path. Without tr, a specific row never
-# exempts its file from the glob row (CORE-690: ft-release at 34641
-# failed the 33000 glob while staying under its own 40000 row).
+# $exact is the set of non-glob rows, excluded from a glob row's expansion
+# so the most specific row wins. Collapse newlines: $(...) keeps them, and
+# the case pattern below matches a space-delimited path. Without tr, a
+# specific row never exempts its file from the glob row (CORE-690:
+# ft-release at 34641 failed the 33000 glob while staying under its own
+# 40000 row).
 exact=$(awk '/^## Budgets$/,/^## Known over budget/' docs/CONTEXT-BUDGET.md \
         | grep -E '^\| `[^`]+` \| [0-9,]+ \|' \
         | sed -E 's/^\| `([^`]+)` \|.*/\1/' \
@@ -74,10 +78,22 @@ exact=$(awk '/^## Budgets$/,/^## Known over budget/' docs/CONTEXT-BUDGET.md \
 while IFS='|' read -r surface budget; do
   budget=${budget//,/}
   case "$surface" in
+    # A row ending in /** is a directory total: sum every file under it and
+    # compare the sum. It is not a glob to expand, and it neither exempts
+    # nor is exempted by the per-file rows, so a fragment counts once toward
+    # its parent's directory row and again toward any per-file row it
+    # matches. `find` on a literal directory, no glob to go unmatched; the
+    # same find … -exec cat | wc -c idiom as the §7.1 ledger refresh, so
+    # the two agree. This arm sits first because *'*'* would otherwise catch it.
     *'**')
       n=$(find "${surface%/\*\*}" -type f -exec cat {} + | wc -c)
       [ "$n" -le "$budget" ] || { echo "OVER BUDGET  $surface  $n > $budget"; bad=1; }
       ;;
+    # Globs stay globs, an allowed exception to step-7.1-standing-checks.md
+    # §"Glob-free by design": a newly shipped skill or SPEC/ module is
+    # measured with no edit here. Do not turn them into find loops. Unquoted
+    # $surface expands under bash; an unmatched pattern stays literal and
+    # the -f test skips it.
     *'*'*)
       for f in $surface; do
         [ -f "$f" ] || continue
@@ -304,9 +320,7 @@ pair_n() {
 # entry lives there; it is not a filer.
 # Vacuous at birth, on purpose: at the module's own landing (CORE-577.2)
 # no filer named it yet, so the loop iterated nothing and the step passed
-# empty. Pair L's "every step still yields at least one path" property
-# holds regardless — claude/skills and SPEC/unattended-candidacy.md
-# survive the echo strip.
+# empty.
 # Whether the label still resolves is Pair Q's half: N checked its own
 # labels against a heading in the module until CORE-622.3 generalised
 # that resolution to every path-bearing citation. N keeps the two

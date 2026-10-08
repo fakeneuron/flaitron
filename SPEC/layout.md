@@ -82,11 +82,7 @@ resolution.
 **Wrapper-name invariant (grep-able).** Every command wrapper
 `claude/commands/<name>.md` names its own basename in its invoke sentence
 (`` Invoke the `<name>` skill ``) — skill resolution must never depend on
-the model inferring a prefixed name from an unprefixed one. Check (prints
-nothing when clean):
-
-```sh
-for f in claude/commands/ft-*.md; do
-  grep -q "\`$(basename "$f" .md)\`" "$f" || echo "$f"
-done
-```
+the model inferring a prefixed name from an unprefixed one. Check, from the
+flaitron repo root: `bash tools/drift-checks.sh wrapper_name_invariant`, which prints
+`wrapper_name_invariant ok` when clean and names each wrapper that lacks
+its own name.

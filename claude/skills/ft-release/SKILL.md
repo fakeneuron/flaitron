@@ -287,7 +287,8 @@ If the sweep reports zero findings, or the only findings were Critical / High an
   cut).
 - `claude/skills/ft-release/step-7.1-mirror-pairs.md` — the Pair A–R
   mirror-pair catalogue, opening with the local runner for the eleven pairs
-  whose shell lives in `tools/drift-checks.sh`.
+  whose shell lives in `tools/drift-checks.sh` (plus the wrapper-name
+  invariant).
 
 Walk them in that order, then continue to §7.2. Both fragments are part of this
 step, not optional appendices: skipping the second silently drops every

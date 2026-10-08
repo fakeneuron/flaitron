@@ -15,14 +15,13 @@ Both must produce no output and exit 1. A hit means someone re-introduced a hand
 
 This check **replaces** the standing symlink-wiring *count* check that shipped at CORE-329.2 and was retired at CORE-465 as vacuous: with the consumers deriving, the counts cannot disagree.
 
-**Standing shipped-skill parity check.** Independently of the subroutine findings, compare the exported skill inventories:
+**Standing shipped-skill parity check.** Independently of the subroutine findings, compare the exported skill inventories with the function CI runs:
 
 ```sh
-find claude/skills -mindepth 1 -maxdepth 1 -type d -exec test -f "{}/SKILL.md" \; -print | sed 's#^claude/skills/##' | sort
-find codex/skills -mindepth 1 -maxdepth 1 -type d -exec test -f "{}/SKILL.md" \; -print | sed 's#^codex/skills/##' | sort
+bash tools/drift-checks.sh shipped_skill_parity
 ```
 
-The two shipped inventories must match exactly by slug. This is parity of exported Flaitron skill names and routing coverage, not byte-identical skill bodies; Codex wrappers may route to `SPEC/procedures/` or to the canonical Claude skill body to avoid duplicated maintenance. A mismatch means a Flaitron skill shipped on one platform surface without the other — fix inline as Critical/High before cutting the release.
+The two shipped inventories must match exactly by slug: `shipped_skill_parity ok`, or a `diff -u` of the `claude/skills` slugs against the `codex/skills` ones. This is parity of exported Flaitron skill names and routing coverage, not byte-identical skill bodies; Codex wrappers may route to `SPEC/procedures/` or to the canonical Claude skill body to avoid duplicated maintenance. A mismatch means a Flaitron skill shipped on one platform surface without the other — fix inline as Critical/High before cutting the release.
 
 **Standing installed-surface policy check.** Independently of the subroutine findings, verify the repo-scoped adopter snippets install exactly the policy subset from `docs/PLATFORMS.md` §"Installed-surface policy", not the full shipped inventories.
 
@@ -152,54 +151,14 @@ if (rows.length) {
 **Standing context-budget check.** Flaitron ships per-file byte budgets for the
 surfaces an agent loads to run one task. They live in
 [`docs/CONTEXT-BUDGET.md`](../../../docs/CONTEXT-BUDGET.md) §"Budgets" and are
-restated nowhere — this check measures, that doc decides, and the numbers below
-are read from the table, never retyped. Run from the repository root:
+restated nowhere — this check measures, that doc decides, and the numbers
+are read from the table, never retyped. Run the function CI runs:
 
 ```sh
-exact=$(awk '/^## Budgets$/,/^## Known over budget/' docs/CONTEXT-BUDGET.md \
-        | grep -E '^\| `[^`]+` \| [0-9,]+ \|' \
-        | sed -E 's/^\| `([^`]+)` \|.*/\1/' \
-        | grep -v '\*' \
-        | tr '\n' ' ')
-while IFS='|' read -r surface budget; do
-  budget=${budget//,/}
-  case "$surface" in
-    *'**')
-      n=$(find "${surface%/\*\*}" -type f -exec cat {} + | wc -c)
-      [ "$n" -le "$budget" ] || echo "OVER BUDGET  $surface  $n > $budget"
-      ;;
-    *'*'*)
-      for f in $(eval "ls -d $surface" 2>/dev/null); do
-        [ -f "$f" ] || continue
-        case " $exact " in *" $f "*) continue ;; esac
-        n=$(wc -c < "$f")
-        [ "$n" -le "$budget" ] || echo "OVER BUDGET  $f  $n > $budget"
-      done
-      ;;
-    *)
-      n=$(wc -c < "$surface")
-      [ "$n" -le "$budget" ] || echo "OVER BUDGET  $surface  $n > $budget"
-      ;;
-  esac
-done < <(awk '/^## Budgets$/,/^## Known over budget/' docs/CONTEXT-BUDGET.md \
-         | grep -E '^\| `[^`]+` \| [0-9,]+ \|' \
-         | sed -E 's/^\| `([^`]+)` \| ([0-9,]+) \|.*/\1|\2/')
+bash tools/drift-checks.sh context_budget
 ```
 
-`$exact` is the set of non-glob rows, excluded from the glob row's expansion so
-the most specific row wins (`ft-release`'s own row exempts it from the glob
-row's cap). The `tr '\n' ' '` is load-bearing: command substitution keeps the
-awk rows as newlines, and `case " $exact "` only matches a space-delimited
-path. Without it the exemption never fires, and a file between the glob cap
-and its own row (ft-release at 34,641 against 33,000 / 40,000, CORE-690) fails
-the glob. A row ending in `/**` is a **directory total**: the `**` arm sums
-every file under that directory with the same `find … -exec cat | wc -c`
-idiom the ledger refresh below uses, and compares the sum — it is not a glob to
-expand, and it neither exempts nor is exempted by the per-file rows, so a
-fragment counts once toward its parent's directory row and again toward any
-per-file row it matches. The arm sits first in the `case` because `*'*'*`
-would otherwise catch it. No `OVER BUDGET` line — nothing to do. For each one
-printed:
+`context_budget ok` means nothing to do. Otherwise each `OVER BUDGET` line names a surface (or a `/**` directory total) and its measured size against its budget; the function's comments explain how rows match. For each one printed:
 
 - **Listed in §"Known over budget" with an open owner** — its owning task line
   is still `- [ ]` in `.flaitron/PLAN.md`. Informational: note it in the §7.4
@@ -211,16 +170,7 @@ printed:
   defensible — raise the budget in `docs/CONTEXT-BUDGET.md` with the reason, in
   this cut, as an explicit decision rather than a silent drift.
 
-**Lifted into the CI `drift` job.** The block above also runs, unmodified
-except for a `bad=` accumulator and `exit 1`, as `tools/drift-checks.sh`'s
-`context_budget` check
-(`docs/CONVENTIONS.md` §"GitHub Actions CI") on every push to `main` and every pull request —
-it catches a budget regression on the commit that lands it rather than at the
-next cut. CI cannot apply the §"Known over budget" judgment above (it needs
-`.flaitron/PLAN.md` ownership context CI does not have), so an `OVER BUDGET`
-finding there is expected while a surface is mid-flight under an open owner;
-the release-time interpretation above still governs. `/ft-release` §7.1
-**Pair L** (`step-7.1-mirror-pairs.md`) binds the script's copy to this block.
+**Also run per push by the CI `drift` job.** The same function runs in CI (`docs/CONVENTIONS.md` §"GitHub Actions CI") on every push to `main` and every pull request. It catches a budget regression on the commit that lands it rather than at the next cut. CI cannot apply the §"Known over budget" judgment above, because that needs `.flaitron/PLAN.md` ownership context CI does not have. So an `OVER BUDGET` finding there is expected while a surface is mid-flight under an open owner, and the release-time interpretation above still governs.
 
 **Refresh the ledger in this cut.** `docs/CONTEXT-BUDGET.md` §"Ledger" carries
 measured numbers and a `Measured YYYY-MM-DD at vX.Y.Z` stamp. The budget command
@@ -281,17 +231,3 @@ contract. Three months later `SPEC.md` had passed 77,000 — the split had no ra
 is that ratchet. It clears the [[CORE-487]] bar for a new standing check: a byte
 count is *derivable*, not a prose paraphrase, so it cannot cry wolf the way the
 citation guard [[CORE-492]] declined would have.
-
-**On the globs.** `claude/skills/*/SKILL.md`, `SPEC/*.md`, and
-`SPEC/procedures/*.md` stay globs despite §"Glob-free by design" above, but
-`for f in $surface` would not expand them: zsh does not glob-expand an unquoted
-parameter (bash does), so the loop body ran once on the literal pattern, hit
-`[ -f "$f" ] || continue`, and silently measured nothing. The loop therefore
-expands through `eval "ls -d $surface"`, which re-parses the pattern as a
-command word in either shell; an unmatched pattern prints nothing instead of
-aborting with `no matches found`, so the Glob-free hazard is covered too. Keeping
-them as globs is also what makes a newly shipped skill or `SPEC/` module
-measured with no edit to this check. Do not "fix" them into `find` loops;
-`wc -c`'s own multi-file output is what makes the result readable at a glance.
-The two whole-directory totals above do use `find`, on literal directory paths —
-no glob to go unmatched, and no loop.

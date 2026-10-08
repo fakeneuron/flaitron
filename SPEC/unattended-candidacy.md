@@ -71,7 +71,7 @@ row is **not** a candidate.
 5. **Not a parent `<AREA>-EPIC-<N>` row.** The parent is a checkbox with no
    tasknote and no runner; only children are driven.
 6. **Epic-child rule.** A `.1` Discovery row is never a candidate — it is a
-   scoping conversation, and `[heavy]` by convention. Every other child waits
+   scoping conversation, and `[heavy]`-or-above by convention. Every other child waits
    on siblings, and each must be **settled**: already `- [x]`, or being
    proposed in the **same pass with the same candidacy**. A `.k` row waits on
    the sibling it follows — its stem predecessor per the `.1`'s

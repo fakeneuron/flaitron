@@ -717,21 +717,24 @@ incomplete `<AREA>-<NUMBER>` within that priority.
 ## Model field
 
 Canonical contract: see [`SPEC/model.md`](SPEC/model.md). The `[model]`
-token names the task's cognitive load on a four-rung ladder, matched by
+token names the task's cognitive load on a five-rung ladder, matched by
 tier against the active model at the runners' Step 1.5 gate:
 
 ```text
-light  <  medium  <  heavy  <  xheavy
+light  <  medium  <  heavy  <  frontier  <  xheavy
 ```
 
 - **`light`** — provably mechanical, clear diff in mind.
 - **`medium`** — multi-step, well-scoped; the round-up default for a new filing.
 - **`heavy`** — design, multi-file, high ambiguity, or cross-module synthesis.
-- **`xheavy`** — manual-only exploratory work; automated choosers cap at `heavy`.
+- **`frontier`** — trigger-reached high-stakes work (contract/architecture
+  design, high blast radius, heavy-epic Discovery, deep research); round-up
+  stops below it.
+- **`xheavy`** — manual-only exploratory work; automated choosers cap at `frontier`.
 
 A concrete name (`opus`, `sonnet`, `grok`, …) matches by exact identity
-instead. Tier calibration, the gate-action table, and the effort axis are the
-module's.
+instead. Tier calibration, the gate-action table, the effort axis, and the
+`model @ effort` recommendation rule are the module's.
 
 ## Versioning
 

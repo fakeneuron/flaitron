@@ -39,7 +39,7 @@ to the **first** one:
    enforced here.
 2. **Tasknote structure** — body-section headings and nav-header status chips
    ([`SPEC.md`](../SPEC.md) §"Tasknote body shape").
-3. **Model tier** — 🔧 / 🧩 / 🧠 / 🔭 ([`SPEC/model.md`](model.md)).
+3. **Model tier** — 🔧 / 🧩 / 🧠 / 💎 / 🔭 ([`SPEC/model.md`](model.md)).
 
 **Cross-layer reuse is permitted when the two meanings are semantically
 coherent, and is not a collision.** A heading is not a cue and a chip is not a
@@ -56,7 +56,7 @@ deliberate:
 | 🟢 | `GO` commit-ask | `🟢 In progress` chip |
 | 🌱 | — | `## 🌱 Starter context` heading · `🌱 Starter` chip |
 | 🎯 | — (**not a cue**; the purpose blurb) | `## 🎯 Goal` heading |
-| 🔧 / 🧠 / 🔭 | `LIGHT` / `HEAVY` / `XHEAVY` next-task | `[light]` / `[heavy]` / `[xheavy]` tier |
+| 🔧 / 🧠 / 💎 / 🔭 | `LIGHT` / `HEAVY` / `FRONTIER` / `XHEAVY` next-task | `[light]` / `[heavy]` / `[frontier]` / `[xheavy]` tier |
 
 Every row above is *coherent* reuse — the cue and the structure name the same
 underlying concept (the 🛠️ banner approves entry into the phase the 🛠️
@@ -251,22 +251,23 @@ glyphs and label text.
 | Light next-task | 🔧 | `LIGHT` (mechanical) | Next-move suggestion + copy-paste line |
 | Medium next-task | 🧩 | `MEDIUM` (moderate) | Next-move suggestion + copy-paste line |
 | Heavy next-task | 🧠 | `HEAVY` (design) | Next-move suggestion + copy-paste line |
+| Frontier next-task | 💎 | `FRONTIER` (high-stakes — trigger-reached) | Next-move suggestion + copy-paste line |
 | Xheavy next-task | 🔭 | `XHEAVY` (exploratory — manual-only) | Next-move suggestion + copy-paste line |
 | In-session next-task | 👇 | `HERE` (run here — do not clear) | Copy-paste label line, context-dependent skills only |
 
-The bare 🔧/🧩/🧠/🔭 glyphs are the emitted form in next-move suggestions; the
-optional `LIGHT`/`MEDIUM`/`HEAVY`/`XHEAVY` labels are the non-render fallback.
-The four **mirror the model tier ladder 1:1** (`[light]`→🔧, `[medium]`→🧩,
-`[heavy]`→🧠, `[xheavy]`→🔭; concrete tokens bucket to their inherent tier — see
+The bare 🔧/🧩/🧠/💎/🔭 glyphs are the emitted form in next-move suggestions; the
+optional `LIGHT`/`MEDIUM`/`HEAVY`/`FRONTIER`/`XHEAVY` labels are the non-render fallback.
+The five **mirror the model tier ladder 1:1** (`[light]`→🔧, `[medium]`→🧩,
+`[heavy]`→🧠, `[frontier]`→💎, `[xheavy]`→🔭; concrete tokens bucket to their inherent tier — see
 [`SPEC/model.md` §"Tier ladder vs. the next-move suggestion glyph"](model.md)).
 A 🔭 candidate is rare by design — `[xheavy]` is an operator-only filing, never
 a chooser default ([`SPEC/model.md`](model.md) §"Category-vs-concrete
-matching"). All four also serve as tier glyphs, and 🧩 additionally heads the
+matching"). All five also serve as tier glyphs, and 🧩 additionally heads the
 `## 🧩 Subtasks` section — coherent cross-layer reuse, not a table collision
 (§"Glyph layers and reuse").
 
 👇 (`HERE`) replaces the model glyph on the copy-paste **label line** when the
 next-skill is context-dependent (`/ft-file-followup` in any mode /
 `/ft-epic-discovery` — clearing the session destroys the context they draw on).
-It signals *where* to run, not task weight: the 🔧/🧩/🧠/🔭 model signal stays on
+It signals *where* to run, not task weight: the 🔧/🧩/🧠/💎/🔭 model signal stays on
 the candidate line just printed above.

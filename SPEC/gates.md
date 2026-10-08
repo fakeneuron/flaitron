@@ -85,7 +85,7 @@ run then returns to inline cues.
 **Bound (keeps cues inline-by-default).** It applies **only** to 🗄️ DB,
 ▶️ RUN, 📡 REMOTE, and 💻 TERM, and **only** for destructive / irreversible
 actions; non-destructive uses stay inline, and every non-command cue (✋ / 🟢 /
-👁️ / 🔍 / 🔧 / 🧩 / 🧠 / 🔭 / 👇) never escalates. It is **not a standing phase
+👁️ / 🔍 / 🔧 / 🧩 / 🧠 / 💎 / 🔭 / 👇) never escalates. It is **not a standing phase
 gate**: it fires only when such a command is about to execute, and leaves 🛠️ /
 📦 unaffected.
 

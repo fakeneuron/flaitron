@@ -32,7 +32,7 @@ Alphabetized. ~73 entries. Maintained via epic children and audits.
 
 **Conditional skip rule** — The deterministic privileged-ops path/keyword test plus bundled-prompt override that decides whether the 📦 ready-to-commit gate fires or the closure auto-commits. Frontend diffs and perf-narrative reasoning do not trip the gate. See SPEC/gates.md §"Conditional skip rule".
 
-**copy-paste line** — The post-closure "suggest next" helper: emoji primary label (`[heavy]🧠` / `[medium]🧩` / `[light]🔧` / `[xheavy]🔭`) + "design / moderate / mechanical / exploratory" prose + shortname, followed by a tight "Clear your session, then run: /ft-task <next-ID>" cue whose label-line glyph matches the chosen candidate's 🔧/🧩/🧠/🔭 (never a default 🔧). Never emits literal `/model` or `/clear` commands.
+**copy-paste line** — The post-closure "suggest next" helper: emoji primary label (`[heavy]🧠` / `[medium]🧩` / `[light]🔧` / `[frontier]💎` / `[xheavy]🔭`) + "design / moderate / mechanical / high-stakes / exploratory" prose + shortname, followed by a tight "Clear your session, then run: /ft-task <next-ID>" cue whose label-line glyph matches the chosen candidate's 🔧/🧩/🧠/💎/🔭 (never a default 🔧). Never emits literal `/model` or `/clear` commands.
 
 **CORE-** — The canonical area prefix for cross-cutting, orchestration, and meta tasks (used by flaitron self and every adopter).
 
@@ -86,7 +86,7 @@ Alphabetized. ~73 entries. Maintained via epic children and audits.
 
 **lazy-loaded** — Contract for `SPEC/*.md` modules and `claude/skills/*/SKILL.md` implementations: loaded on demand by the calling stub rather than read at every cold start. The glossary itself follows this pattern to protect one-task-per-window.
 
-**[model]** — Optional short token in a task-line declaring the recommended cognitive-load tier for the work. Four rungs, matched by position rather than count: `[light]` < `[medium]` < `[heavy]` < `[xheavy]`. The primary trio is `[light]` / `[medium]` / `[heavy]`; `[xheavy]` (glyph 🔭) is a **manual-only** exploratory rung the operator files deliberately — an automated chooser must never assign it nor pick up an `[xheavy]`-tagged task, and it always lands the Step 1.5 ⚠️ under-tier advisory because no roster model bands at `xheavy` by default. Specific names `fable`, `opus`, `grok`, etc. remain valid. Read by `/ft-task` Step 1.5 before scaffolding. See SPEC §"Model field" and SPEC/model.md.
+**[model]** — Optional short token in a task-line declaring the recommended cognitive-load tier for the work. Five rungs, matched by position rather than count: `[light]` < `[medium]` < `[heavy]` < `[frontier]` < `[xheavy]`. The primary trio is `[light]` / `[medium]` / `[heavy]`; `[frontier]` (glyph 💎) is chooser-assignable but trigger-reached only (contract/architecture design, high blast radius, heavy-epic Discovery, deep research) — round-up stops at `[heavy]`; `[xheavy]` (glyph 🔭) is a **manual-only** exploratory rung the operator files deliberately — an automated chooser (capped at `[frontier]`) must never assign it nor pick up an `[xheavy]`-tagged task, and it always lands the Step 1.5 ⚠️ under-tier advisory because no roster model bands at `xheavy` by default. Specific names `fable`, `opus`, `grok`, etc. remain valid. Read by `/ft-task` Step 1.5 before scaffolding. See SPEC §"Model field" and SPEC/model.md.
 
 **micro-tasknote** — A single-section tasknote (do-the-work + recap only) used for work that exceeds the skip-the-tasknote threshold but is too small for the full 4-phase ceremony. Uses `templates/tasknote-micro-template.md`.
 

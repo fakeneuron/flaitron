@@ -17,6 +17,8 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-736** [medium]🧩 | audit-row-sibling-gate — `SPEC/unattended-candidacy.md` clause 6 admits a `.N` audit row on clauses 1–4 alone, so `/ft-seed` can mark an audit while its implementation siblings are open and unmarked. judedelparte `cb01d6b` marked JD-041.N with JD-041.2/.3 open; caobunga dispatched it 2026-10-08, the worker parked on drift and left an untracked tasknote that dirtied the tree for the next row. Gate `.N` like other `.k` rows: every open sibling is already `- [x]` or proposed in the same pass with the same candidacy. Mirror in `/ft-seed`.
 
+- [ ] **CORE-738** [medium]🧩 [unattended] | audit-sibling-runtime-guard — `/ft-close-epic --unattended` refuses, writing no tasknote, while any sibling of its audit row is open. CORE-736's admission-time gate misses a sibling filed after `.N` was marked, a marked sibling dispatched after `.N`, and an `/ft-epic-discovery` Step 7→9 interruption. Also: mirror cascade-report placement; `unattended-candidates:` hides `.N` dependencies.
+
 ## Low
 
 - [ ] **CORE-727** [medium]🧩 | decay-window-restore — Blocked by decay-window depth: window [[CORE-724.7]] opened at `504f160f`. After 10 tasknotes archive past that SHA and at least one `/ft-audit` run commits filings past it, restore each of the four dropped rule groups only if the window shows the failure it guarded. Bar is in the archived CORE-724.7 note.

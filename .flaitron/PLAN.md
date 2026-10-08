@@ -15,6 +15,10 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
+- [ ] **CORE-EPIC-742** [medium]🧩 | contract-guard-gaps — Discovery supplied by audit-repo 2026-10-08. Surfaced by audit-repo 2026-10-08 (Theme: Prose rules without mechanical guards)
+  - [ ] **CORE-742.2** [medium]🧩 [unattended] | sidequest-orphan-guard — Add a `tools/drift-checks.sh` check (+ seeded case in `drift-checks.test.mjs`) failing when `.flaitron/sidequest/<ID>.md` names an ID whose PLAN row is `- [x]`; retire the orphaned `CORE-714.md` stub (closed 2026-10-04 without the CORE-606 retirement).
+  - [ ] **CORE-742.N** [medium]🧩 | contract-guard-gaps audit
+
 ## Low
 
 - [ ] **CORE-727** [medium]🧩 | decay-window-restore — Blocked by decay-window depth: window [[CORE-724.7]] opened at `504f160f`. After 10 tasknotes archive past that SHA and at least one `/ft-audit` run commits filings past it, restore each of the four dropped rule groups only if the window shows the failure it guarded. Bar is in the archived CORE-724.7 note.

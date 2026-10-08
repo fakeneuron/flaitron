@@ -52,7 +52,7 @@ git -C .flaitron/core checkout vX.Y.Z   # use the pinned version from Step 1
 git -C .flaitron/core sparse-checkout set --no-cone '/*' '!/.flaitron/'
 ```
 
-The `checkout` step is what pins the project to a specific flaitron commit. Skip it only if the user explicitly chose `main` in Step 1. Run the `sparse-checkout` line either way. It drops flaitron's dogfood archive (`.flaitron/core/.flaitron/`) from the working tree, ~18.5 → ~2.9 MB, and keeps every file an adopter runs. It needs git ≥ 2.35, so check `git --version` first. On older git, skip it and tell the user; Step 3b's fence then covers the path.
+The `checkout` step is what pins the project to a specific flaitron commit. Skip it only if the user explicitly chose `main` in Step 1. Run the `sparse-checkout` line either way. It drops flaitron's dogfood archive (`.flaitron/core/.flaitron/`) from the working tree, ~18.5 → ~2.9 MB, and keeps every file an adopter runs. It needs git ≥ 2.35, so check `git --version` first. On older git, skip it and tell the user; Step 3b's fence then covers the path. Skip it too, and say so, if `.flaitron/core` is a symlink to a local flaitron checkout (`test -L .flaitron/core`): the line would trim that checkout's own `.flaitron/`.
 
 Reference: `docs/MIGRATION.md` §1.1.
 

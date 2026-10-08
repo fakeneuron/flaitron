@@ -11,7 +11,9 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-(none)
+- [ ] **CORE-EPIC-741** [heavy]🧠 | effort-tiers — Make model attribution more granular: map task tiers to per-platform model + effort settings (Claude, Codex, Grok), bias toward reliability over token savings, surface top-tier models (Fable, Astra) when warranted, and extend the glyph split (filed via /ft-epic-discovery; refined at .1 closure).
+  - [ ] **CORE-741.1** [heavy]🧠 | effort-tiers discovery — Scope shared design and file children .2..5 per SPEC/epic.md.
+  - [ ] **CORE-741.N** [heavy]🧠 | effort-tiers audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
 
 ## Medium
 

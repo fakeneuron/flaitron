@@ -135,6 +135,20 @@ describe('drift-checks.sh self-test', () => {
     assert.deepEqual([...checks].sort(), Object.keys(CASES).sort());
   });
 
+  it('floors every check but the two the header exempts', () => {
+    // The header's rule: each check fails `VACUOUS <name>` on zero examined.
+    const EXEMPT = ['skill_pin_guard_parity', 'pair_h'];
+    const src = readFileSync(join(REPO, SCRIPT), 'utf8');
+    const bodies = [...src.matchAll(/^([a-z][a-z0-9_]*)\(\) \{$\n([\s\S]*?)^\}$/gm)];
+    const checks = [...src.matchAll(/^([a-z][a-z0-9_]*)\(\) \{$/gm)].map((m) => m[1]);
+    assert.deepEqual(bodies.map((m) => m[1]), checks, 'a body regex truncated or swallowed a check');
+    const unfloored = bodies
+      .filter(([, name, body]) => !EXEMPT.includes(name) && !new RegExp(`^[^#\\n]*VACUOUS ${name}\\b.*exit 1`, 'm').test(body))
+      .map(([, name]) => name);
+    assert.deepEqual(unfloored, [], 'checks without a `VACUOUS <name>` floor');
+    for (const name of EXEMPT) assert.ok(bodies.some((m) => m[1] === name), `exempt check ${name} no longer exists`);
+  });
+
   for (const [check, { seed, finding }] of Object.entries(CASES)) {
     it(`${check} fails on its seeded drift`, async () => {
       seed();

@@ -15,8 +15,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-740** [light]🔧 [unattended] | drift-floor-coverage — Extend the coverage test in tools/drift-checks.test.mjs to fail when a drift-checks.sh check lacks a `VACUOUS <name>` floor and is not one of the header's two exempt checks (skill_pin_guard_parity, pair_h). Open half of [[CORE-739.2]] review note 9.
-
 ## Low
 
 - [ ] **CORE-727** [medium]🧩 | decay-window-restore — Blocked by decay-window depth: window [[CORE-724.7]] opened at `504f160f`. After 10 tasknotes archive past that SHA and at least one `/ft-audit` run commits filings past it, restore each of the four dropped rule groups only if the window shows the failure it guarded. Bar is in the archived CORE-724.7 note.
@@ -31,6 +29,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-740** [light]🔧 [unattended] | drift-floor-coverage — Completed 2026-10-08.
 - [x] **CORE-EPIC-739** [medium]🧩 | drift-check-integrity — Completed 2026-10-08.
   - [x] **CORE-739.2** [medium]🧩 | drift-vacuous-floor — Completed 2026-10-08.
   - [x] **CORE-739.3** [medium]🧩 | drift-self-test — Completed 2026-10-08.

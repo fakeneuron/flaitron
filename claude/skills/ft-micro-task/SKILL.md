@@ -113,8 +113,8 @@ Do not treat archive/Completed as done until Step 5's commit lands with delivera
 
 Skill-specific:
 - **Commit message:** `feat: <TASK-ID> — <title>` (or `fix:` / `docs:` / `chore:`). Scaffold + closure typically bundle into one commit alongside the code/doc change.
-- **Suggest next move:** run `SPEC/post-closure.md` step 2 as written — the **fresh PLAN.md re-read** (never the Step 1 cached parse), the unchecked-and-open-section verification that drops failing candidates, the **PLAN exhausted (terminal)** form when none survives, the emoji-primary-label print, and the 🔍 prefix on `/ft-audit*` candidates. On the terminal form, skip the copy-paste line below.
-- **Copy-paste helper:** run `SPEC/post-closure.md` step 3 as written — the glyph copied from the chosen candidate line, the own-line inline-code invocation with no trailing punctuation, and the 👇 `Run in this session:` exception for context-dependent skills. Here the invocation line is `` `/<next-skill> <ID>` ``.
+- **Suggest next move:** run `SPEC/post-closure.md` step 2 as written — the **fresh PLAN.md re-read** (never the Step 1 cached parse), the unchecked-and-open-section verification that drops failing candidates, the **PLAN exhausted (terminal)** form when none survives, the emoji-primary-label + `model @ effort` pick print, and the 🔍 prefix on `/ft-audit*` candidates. On the terminal form, skip the copy-paste line below.
+- **Copy-paste helper:** run `SPEC/post-closure.md` step 3 as written — the glyph and pick copied from the chosen candidate line, the own-line inline-code invocation with no trailing punctuation, and the 👇 `Run in this session:` exception for context-dependent skills. Here the invocation line is `` `/<next-skill> <ID>` ``.
 
 ## Notes
 

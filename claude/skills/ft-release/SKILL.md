@@ -102,7 +102,7 @@ Before scaffolding the tasknote (Step 3), self-assess whether the **remaining co
   - **Defer to a fresh chat** — nothing is scaffolded. The pending `release v*` PLAN line found in Step 1 is the *only* prerequisite and already exists, so there is nothing new to file — the deferral hands the whole skill to a clean context. Tell the user to `/clear` and re-run `/ft-release` in a fresh session: it re-scans PLAN, picks up the same pending line, and self-assesses again with a full budget. Emit the re-entry as the canonical copy-paste cue (🧠 label line, then the invocation alone on its own line as inline-code with no trailing punctuation; `/ft-release` takes no args):
 
     ```markdown
-    🧠 Clear your session, then run:
+    🧠 Clear your session, then run on <model @ effort>:
     `/ft-release`
     ```
 

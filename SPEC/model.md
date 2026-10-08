@@ -181,6 +181,15 @@ map owns the dated cells (vendor rosters move; the rule does not).
   picks the tier; this bias picks the effort within it.
 - **No frontier model on the platform.** The map flags the gap with ⚠️ and
   names the nearest cell plus a platform switch — advice, never a block.
+- **Printing a cell.** A suggestion prints one pick from the active
+  platform's cell: the primary model at the top of any effort range — a
+  one-line pick cannot weigh doubt, so it always takes the upper end — with
+  any `(alt …)` dropped (`Fable @ high–xhigh` → `Fable @ xhigh`). A ⚠️ cell
+  prints as `⚠️ <model @ effort>` (`⚠️ Grok @ xhigh`), its trailing note
+  dropped; the platform switch the map names under the table goes in prose
+  where a switch is offered, never inside the pick. No cell, no pick:
+  `[xheavy]` (manual-only), a concrete token (it already names its model),
+  or a platform the map has no column for.
 
 `model @ effort` is prose notation in suggestions and the map, never a
 PLAN.md token (§"Effort axis").

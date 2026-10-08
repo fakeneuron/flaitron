@@ -90,7 +90,7 @@ file work that belongs in another repo there, and do not edit it from this
 cycle. The single documented exception (CORE-483.3) is not a precedent.
 Canonical contract: [`SPEC/scope-boundaries.md` §"Cross-repo edit remit"](../scope-boundaries.md).
 
-The **operator-cue vocabulary** (🛠️ 📦 🟢 👁️ 🏁 ✅ 🔧 🧩 🧠 🔭 👇 🗄️ ▶️ 📡 💻 ✋ 🔍 and
+The **operator-cue vocabulary** (🛠️ 📦 🟢 👁️ 🏁 ✅ 🔧 🧩 🧠 💎 🔭 👇 🗄️ ▶️ 📡 💻 ✋ 🔍 and
 their UPPERCASE labels) is contract-layer, not Claude-specific — emit it
 **verbatim**. The glyph is the fast-scan signal; the UPPERCASE label is the
 fallback if your surface strips emoji. Full vocabulary:
@@ -482,7 +482,8 @@ Run the three-step protocol in
 nowhere earlier — and follow it. That module owns the skip/fire shapes, the
 `✅ Closure complete; committing autonomously (<concrete-signal-summary>).`
 marker, the fresh PLAN.md re-read, the exhausted-PLAN terminal form, the
-emoji primary labels, and the copy-paste line (glyph copied from the
+emoji primary labels with `model @ effort` picks, and the copy-paste line
+(glyph and pick copied from the
 candidate just printed; no trailing punctuation; 👇 for
 `/ft-file-followup` and `/ft-epic-discovery`). Branch on
 [`SPEC/gates.md` §"Conditional skip rule"](../gates.md), including its

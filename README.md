@@ -237,8 +237,9 @@ layer as a side effect of doing the work.
 "One task per context window" ([SPEC.md](SPEC.md) Core Principle #3) has
 an operator-side half: the reset *between* tasks. The assistant cannot
 clear its own context — the post-closure cue ("Clear your session, then
-run: …") hands that step to the operator. An agent that chains tasks
-autonomously in one session skips the reset and accretes context; an
+run on <model @ effort>: …") hands that step to the operator. An agent
+that chains tasks autonomously in one session skips the reset and
+accretes context; an
 *unbounded* sub-agent — one turned loose without a stated scope or a
 defined thing to return — starts a fresh context outside the workflow's
 gates and archive trail. Neither breaks flaitron — but both quietly drop

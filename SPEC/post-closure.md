@@ -23,11 +23,11 @@ After a tasknote is archived, run the three-step protocol (commit / mark landed 
    <1-2 sentence plain-English description of what was accomplished in this commit>
    ```
 
-   Then surface candidates with the emoji primary label inline per option — `[heavy]🧠`, `[medium]🧩`, `[light]🔧`, or (rare — manual-only filings) `[xheavy]🔭`, never the bare `[model]` token — followed by "design / moderate / mechanical / exploratory" prose and shortname. Concrete tokens bucket to their inherent tier ([`SPEC/model.md` §"Tier ladder vs. the next-move suggestion glyph"](model.md)):
+   Then surface candidates with the emoji primary label inline per option — `[heavy]🧠`, `[medium]🧩`, `[light]🔧`, `[frontier]💎`, or (rare — manual-only filings) `[xheavy]🔭`, never the bare `[model]` token — followed by "design / moderate / mechanical / high-stakes / exploratory" prose and shortname. Concrete tokens bucket to their inherent tier ([`SPEC/model.md` §"Tier ladder vs. the next-move suggestion glyph"](model.md)). End each candidate with `· <model @ effort>` — the active platform's pick for its tier, per [`SPEC/model.md` §"Effort recommendations"](model.md) → "Printing a cell"; omit it where that rule prints no pick:
 
    ```markdown
-   - **<TASK-ID>** [heavy]🧠 | shortname — one-sentence "why now" (design)
-   - **<TASK-ID>** [medium]🧩 | shortname — one-sentence "why now" (moderate)
+   - **<TASK-ID>** [heavy]🧠 | shortname — one-sentence "why now" (design) · Opus @ high
+   - **<TASK-ID>** [medium]🧩 | shortname — one-sentence "why now" (moderate) · Opus @ medium
    ```
 
    **Re-read PLAN.md now** (fresh Read tool call — do not rely on the Step 1 cached parse; the Completed section grows long and stale-context suggestions are a known error mode). For each candidate you intend to name, verify its task line is `- [ ]` (unchecked) and lives in an open section (`## High`, `## Medium`, `## Low`, or `## Future Opportunities`), **not** under `## Completed`. Drop any candidate that fails this check before surfacing it.
@@ -39,13 +39,13 @@ After a tasknote is archived, run the three-step protocol (commit / mark landed 
 
    **Audit-family flag.** When a next-move candidate is an `/ft-audit*` slash command, prefix the candidate line (this step) and the copy-paste line (step 3) with 🔍. Audit-family skills are forked per project per `docs/MIGRATION.md` §1.2.1 — in adopter context the local fork is unprefixed (e.g., `/audit`), not `/ft-audit`. The 🔍 marker doubles as a self-check for any AI about to emit `/ft-audit*` as next move.
 
-3. **Offer the copy-paste line.** The label-line glyph is **copied from the chosen candidate line just printed in step 2** — never default to 🔧. Emit the session-reset **label line**, then put the skill invocation **on its own line as inline-code with no trailing punctuation** — a trailing `.` after the ID collides with the `.N` epic-subtask grammar (`FE-132.3.`) and breaks copy/paste. Shape, where `<glyph>` is the candidate's 🔧/🧩/🧠/🔭:
+3. **Offer the copy-paste line.** The label-line glyph is **copied from the chosen candidate line just printed in step 2** — never default to 🔧. Emit the session-reset **label line**, then put the skill invocation **on its own line as inline-code with no trailing punctuation** — a trailing `.` after the ID collides with the `.N` epic-subtask grammar (`FE-132.3.`) and breaks copy/paste. Shape, where `<glyph>` is the candidate's 🔧/🧩/🧠/💎/🔭 and `<model @ effort>` its printed pick (with no pick, the label line ends `then run:`):
 
    ```markdown
-   <glyph> Clear your session, then run:
+   <glyph> Clear your session, then run on <model @ effort>:
    `/<next-skill> <args>`
    ```
 
-   Never emit literal `/clear` or `/model` commands — the emoji on the label line carries the model signal; the cue carries the session-reset intent. The skill segment matches the appropriate flaitron skill for the next task — most commonly `/ft-task` (normal tasks), `/ft-micro-task` (micros), or `/ft-audit*` (audit follow-ups — adopters use the unprefixed local fork per [`SPEC/layout.md`](layout.md) §"Skill namespace"). `<args>` is the next task ID for tasknote-runner skills, or the skill's own argument shape otherwise.
+   Never emit literal `/clear` or `/model` commands — the emoji and pick on the label line carry the model signal; the cue carries the session-reset intent. The skill segment matches the appropriate flaitron skill for the next task — most commonly `/ft-task` (normal tasks), `/ft-micro-task` (micros), or `/ft-audit*` (audit follow-ups — adopters use the unprefixed local fork per [`SPEC/layout.md`](layout.md) §"Skill namespace"). `<args>` is the next task ID for tasknote-runner skills, or the skill's own argument shape otherwise.
 
-   **Context-dependent skills flag.** When the next-skill is `/ft-file-followup` (in any mode — the default flow, `--park`, or `--starter`) or `/ft-epic-discovery`, replace the label line with `👇 Run in this session:` — 👇 (`HERE`) replaces the model glyph and signals run-here-don't-clear; the 🔧/🧩/🧠/🔭 model signal stays on the candidate line just printed. These skills draw from current-conversation context to draft their output, so clearing the session destroys what they need. Keep the skill invocation line unchanged.
+   **Context-dependent skills flag.** When the next-skill is `/ft-file-followup` (in any mode — the default flow, `--park`, or `--starter`) or `/ft-epic-discovery`, replace the label line with `👇 Run in this session:` — 👇 (`HERE`) replaces the model glyph and signals run-here-don't-clear; the 🔧/🧩/🧠/💎/🔭 model signal and pick stay on the candidate line just printed. These skills draw from current-conversation context to draft their output, so clearing the session destroys what they need. Keep the skill invocation line unchanged.

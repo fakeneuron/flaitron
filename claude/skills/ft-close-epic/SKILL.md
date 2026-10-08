@@ -224,12 +224,12 @@ Capture the flip decision in the audit tasknote's Final Summary block (still edi
 On commit (either branch): if parent-flip Yes, apply the flip + atomic move per Step 8 before staging, so the commit captures the flip atomically. Stage audit deliverables + PLAN/archive (and parent flip when Yes) together; emit 🏁 only after a real deliverable-covering SHA (SPEC §"Paper-complete guard") — never invent a SHA. Parent-flip under 📦 is the only multi-line Completed move; it is not a collateral flip.
 
 Skill-specific next-move shape:
-- Candidates: run `SPEC/post-closure.md` step 2 as written — the fresh PLAN.md re-read, the open-section verification, and the emoji-primary-label print (read the full task line, `[model]` included, to pick the label). This skill's branches:
+- Candidates: run `SPEC/post-closure.md` step 2 as written — the fresh PLAN.md re-read, the open-section verification, and the emoji-primary-label + `model @ effort` pick print (read the full task line, `[model]` included, to pick the label). This skill's branches:
   - Misses logged → `/ft-file-followup <NEW-ID>` per miss (one at a time; user paces).
   - No misses + parent flipped + next task queued in PLAN.md → suggest that task (next epic or standalone).
   - No misses + parent flipped + PLAN.md empty of queued tasks → step 2's **PLAN exhausted (terminal)** form: stop, don't invent a next move; offer to file a new epic in this session before clearing.
   - No misses + parent declined → manual flip when ready (edit PLAN.md: flip parent line to stub form, move parent + nested children to top of `## Completed`). Re-running `/ft-close-epic` would hit Step 1's already-archived bail.
-- Copy-paste helper: run `SPEC/post-closure.md` step 3 as written — the glyph copied from the chosen candidate line, the own-line inline-code invocation with no trailing punctuation, and the 👇 `Run in this session:` exception, which covers the `/ft-file-followup` miss branch. The terminal branch emits no copy-paste line. The invocation line is `` `/<next-skill> <ID>` ``.
+- Copy-paste helper: run `SPEC/post-closure.md` step 3 as written — the glyph and pick copied from the chosen candidate line, the own-line inline-code invocation with no trailing punctuation, and the 👇 `Run in this session:` exception, which covers the `/ft-file-followup` miss branch. The terminal branch emits no copy-paste line. The invocation line is `` `/<next-skill> <ID>` ``.
 
 ## Notes
 

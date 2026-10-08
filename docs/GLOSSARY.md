@@ -32,7 +32,7 @@ Alphabetized. ~73 entries. Maintained via epic children and audits.
 
 **Conditional skip rule** — The deterministic privileged-ops path/keyword test plus bundled-prompt override that decides whether the 📦 ready-to-commit gate fires or the closure auto-commits. Frontend diffs and perf-narrative reasoning do not trip the gate. See SPEC/gates.md §"Conditional skip rule".
 
-**copy-paste line** — The post-closure "suggest next" helper: emoji primary label (`[heavy]🧠` / `[medium]🧩` / `[light]🔧` / `[frontier]💎` / `[xheavy]🔭`) + "design / moderate / mechanical / high-stakes / exploratory" prose + shortname, followed by a tight "Clear your session, then run: /ft-task <next-ID>" cue whose label-line glyph matches the chosen candidate's 🔧/🧩/🧠/💎/🔭 (never a default 🔧). Never emits literal `/model` or `/clear` commands.
+**copy-paste line** — The post-closure "suggest next" helper: emoji primary label (`[heavy]🧠` / `[medium]🧩` / `[light]🔧` / `[frontier]💎` / `[xheavy]🔭`) + "design / moderate / mechanical / high-stakes / exploratory" prose + shortname, followed by a tight "Clear your session, then run on <model @ effort>: /ft-task <next-ID>" cue whose label-line glyph and `model @ effort` pick match the chosen candidate's (glyph 🔧/🧩/🧠/💎/🔭, never a default 🔧; with no pick — `[xheavy]`, a concrete token, an unmapped platform — the cue reads "then run:"). Never emits literal `/model` or `/clear` commands.
 
 **CORE-** — The canonical area prefix for cross-cutting, orchestration, and meta tasks (used by flaitron self and every adopter).
 

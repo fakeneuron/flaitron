@@ -109,7 +109,8 @@ one `/ft-task` cycle. Sequencing doctrine:
 - **M is the step count.** Children file as `.2..(M+1)`; the reserved `.N`
   audit closes the epic (verifies the completed refactor sits well in the
   codebase and the suite pins held). Propose per-child model tags
-  (`[heavy]🧠` / `[medium]🧩` / `[light]🔧` per `SPEC/model.md`; never
+  (`[heavy]🧠` / `[medium]🧩` / `[light]🔧` per `SPEC/model.md`;
+  `[frontier]💎` only on a §"When to choose `[frontier]`" trigger; never
   `[xheavy]` — manual-only, an automated proposer never self-assigns it), an
   area prefix, a parent shortname, and a priority — the AI proposes, the
   operator confirms in Step 4.
@@ -232,9 +233,10 @@ paths, or "plan left in conversation" on the stop branch), the commit SHA
 as plain text (or why the commit was skipped), the `unattended-candidates:`
 line when `fast-mode = true` (Step 4; own line, always), and the next move —
 the first implementation child, with the copy-paste cue per SPEC §"Post-closure
-protocol" step 3 (label line `<glyph> Clear your session, then run:`, then
+protocol" step 3 (label line
+`<glyph> Clear your session, then run on <model @ effort>:`, then
 `` /ft-task <AREA>-<next-N>.2 `` alone as inline-code, no trailing period;
-`<glyph>` matches the child's model tag).
+`<glyph>` and the pick match the child's model tag).
 
 ## Notes
 

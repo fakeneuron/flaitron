@@ -129,8 +129,8 @@ cue is the 📦 ready-to-commit banner in Step 6.
 **`--fast` override.** Canonical in SPEC/gates.md §"Conditional skip rule" → Flag overrides and SPEC/gate-postures.md §"`--fast` operator override": `--fast` forces Skip regardless of signal trips (naming the suppressed signals in the marker). Two things it does not reach: the Step 4 drift carve-out upstream, and the paper-complete guard here — 🏁 still requires a real deliverable-covering SHA.
 
 Skill-specific:
-- Suggest-next-move: run `SPEC/post-closure.md` step 2 as written — the **fresh PLAN.md re-read** (never the Step 1 cached parse), the unchecked-and-open-section verification that drops failing candidates, the **PLAN exhausted (terminal)** form when none survives, the emoji-primary-label print, and the 🔍 prefix on `/ft-audit*` candidates. On the terminal form, skip the copy-paste line below: there is nothing to run after a clear.
-- Copy-paste helper: run `SPEC/post-closure.md` step 3 as written — the glyph copied from the chosen candidate line, the own-line inline-code invocation with no trailing punctuation, and the 👇 `Run in this session:` exception for context-dependent skills. Here `<args>` is the next task ID and the invocation line is `` `/ft-task <next-ID>` ``.
+- Suggest-next-move: run `SPEC/post-closure.md` step 2 as written — the **fresh PLAN.md re-read** (never the Step 1 cached parse), the unchecked-and-open-section verification that drops failing candidates, the **PLAN exhausted (terminal)** form when none survives, the emoji-primary-label + `model @ effort` pick print, and the 🔍 prefix on `/ft-audit*` candidates. On the terminal form, skip the copy-paste line below: there is nothing to run after a clear.
+- Copy-paste helper: run `SPEC/post-closure.md` step 3 as written — the glyph and pick copied from the chosen candidate line, the own-line inline-code invocation with no trailing punctuation, and the 👇 `Run in this session:` exception for context-dependent skills. Here `<args>` is the next task ID and the invocation line is `` `/ft-task <next-ID>` ``.
 
 ## Notes
 

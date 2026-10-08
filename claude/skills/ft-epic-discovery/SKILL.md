@@ -58,7 +58,7 @@ Use AskUserQuestion to gather all inputs in one motion. Pre-populate from conver
 1. **Area** — per SPEC §"Task ID convention"; any project-specific prefixes declared in `.flaitron/tasknote/README.md`. AI proposes from conversation context.
 2. **Shortname** — concise label up to ~30 chars (e.g., `expand-shipped-skills`, `viz-keyboard-overhaul`). Used as the parent epic's `| shortname` segment.
 3. **Priority** — `High | Medium | Low | Future Opportunities`. AI proposes its best read. For urgent epics, propose `High` with a `[!critical]` flag on the parent (see `SPEC/task-line-segments.md`).
-4. **Model** — see `SPEC/model.md` §"Model field" (and its "Practical guidance and agent-aware defaults" subsection) for examples and realistic defaults (mid-tier models like Grok/Sonnet often `[medium]`, or `[light]` for mechanical work); AI proposes a token (primary labels or specific name); this is the epic's token — it goes on the parent, `.1`, and `.N` lines, and each implementation child's Step 7 proposal starts from it.
+4. **Model** — see `SPEC/model.md` §"Model field" (and its "Practical guidance and agent-aware defaults" subsection) for examples and realistic defaults (mid-tier models like Grok/Sonnet often `[medium]`, or `[light]` for mechanical work); AI proposes a token (primary labels or specific name); this is the epic's token — it goes on the parent line, `.1` and `.N` take it as `<.1-model>` / `<.N-model>` (a `[heavy]` or `[frontier]` epic files `.1` as `[frontier]` and caps `.N` at `[heavy]`; a concrete or `[xheavy]` token stays as filed — `SPEC/model.md` §"When to choose `[frontier]`"), and each implementation child's Step 7 proposal starts from it.
 5. **Implementation-child count M** — number of implementation children, *excluding* Discovery (`.1`) and the audit (`.N`). E.g., M=3 → the epic has `.1` Discovery + `.2..4` implementation + `.N` audit. The audit is always the reserved terminal `.N` suffix (per SPEC/epic.md), decoupled from the count — it never renumbers as children are added. The Discovery's deliverable is filing `.2..(M+1)` (the implementation children).
 
 The user may decline the audit subtask if the epic is a simple multi-child implementation that doesn't warrant the audit bracket (per `SPEC/epic.md` line 11: "Simpler implementations don't need it — apply judgment"). In that case, the epic has `.1` Discovery + `.2..(M+1)` implementation and no `.N` audit; skip the audit-line filing in Step 4.
@@ -91,8 +91,8 @@ Append to `.flaitron/PLAN.md` under the chosen `## <Priority>` heading. Use the 
 
 ```markdown
 - [ ] **<AREA>-EPIC-<next-N>** [<model>] | <shortname> — One-paragraph epic description (filed via /ft-epic-discovery; refined at .1 closure).
-  - [ ] **<AREA>-<next-N>.1** [<model>] | <shortname> discovery — Scope shared design and file children .2..(M+1) per SPEC/epic.md.
-  - [ ] **<AREA>-<next-N>.N** [<model>] | <shortname> audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
+  - [ ] **<AREA>-<next-N>.1** [<.1-model>] | <shortname> discovery — Scope shared design and file children .2..(M+1) per SPEC/epic.md.
+  - [ ] **<AREA>-<next-N>.N** [<.N-model>] | <shortname> audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
 ```
 
 Placement:
@@ -201,7 +201,7 @@ The Phase 2 deliverable is the filed child lines. Walk the Phase 2 checklist:
 - **Implemented the minimal solution** — write the drafted `.2..(M+1)` child lines — each carrying its per-child `[model]` (below), drafted before the write — into `.flaitron/PLAN.md` directly under the existing `.1` Discovery line, before the `.N` audit line (or at the bottom if the epic excluded audit). Preserve the 2-space child indent. Word-count each line; rewrite if any breach the 70w cap.
 - **Updated/added tests** — N/A (pure PLAN.md filing; no executable code surface).
 
-**Per-child `[model]`.** Draft each `.2..(M+1)` token from the shape Discovery settled for that child — seed it from the epic's token (an `[xheavy]` epic seeds `[heavy]`), then raise or lower to the tier whose `SPEC/model.md` §"Practical guidance and agent-aware defaults" work shape the child matches (a concrete seed stays as-is unless lowered, which yields a category token). Propose category tokens only, capped at `[heavy]`; a concrete token (e.g. `[fable]`) only when the epic token is concrete or the operator named that model — a category tag matches by tier, so pinning a named model needs the concrete token (`SPEC/model.md` §"Pinning a named model").
+**Per-child `[model]`.** Draft each `.2..(M+1)` token from the shape Discovery settled for that child — seed it from the epic's token (a `[frontier]` or `[xheavy]` epic seeds `[heavy]`), then raise or lower to the tier whose `SPEC/model.md` §"Practical guidance and agent-aware defaults" work shape the child matches (a concrete seed stays as-is unless lowered, which yields a category token). Propose category tokens only, capped at `[frontier]` — reached only by a `SPEC/model.md` trigger, never by seed or round-up; a concrete token (e.g. `[fable]`) only when the epic token is concrete or the operator named that model — a category tag matches by tier, so pinning a named model needs the concrete token (`SPEC/model.md` §"Pinning a named model").
 
 **Downstream-impact reconciliation scan.** SPEC/tasknote-selection.md §"Downstream-impact reconciliation" is authoritative for the triggers, the three scan steps, the impact classes, and the reconcile actions. The child cohort is a **new-task filing** trigger, so run the scan after writing the `.2..(M+1)` lines — scoping it to the **rest of** the active PLAN, since the just-filed children are themselves out of scope. A fresh-area epic whose children obviously touch nothing already filed skips it (judgment) — note "no downstream impact" and move on. Its user-confirm is an **AskUserQuestion-style review prompt, not a new banner** — the two-banner cap (🛠️ Phase 1→2 + 📦 ready-to-commit) is preserved, consistent with Step 5.5's per-stage gates.
 
@@ -221,7 +221,7 @@ Markdown-prose edits only — no test surface. Markdown mental-pass on the edite
 
 - 2-space child indent preserved on every new line.
 - `**<AREA>-<next-N>.<M>**` bold ID intact.
-- `[<model>]` tag present on every new line; a child's is a category token no heavier than `[heavy]`, or the concrete token Step 7 allows.
+- `[<model>]` tag present on every new line; a child's is a category token no heavier than `[frontier]`, or the concrete token Step 7 allows.
 - `[unattended]`, where the Step 7 review kept it, sits after `[<model>]` and any glyph, before `| <shortname>`; no token on the parent or `.1` line, none on a row the review declined.
 - `| <shortname>` segment present and ≤30 chars.
 - Em-dash separator (` — `) consistent.
@@ -238,7 +238,7 @@ Walk the closure steps in order under SPEC §"Paper-complete guard". **No banner
 
 - **Doc-drift sweep** — for each entry in `<tasknote dir>/README.md` §"AI-referenced docs", state per-entry verdict ("no change" or the specific update). Pure Discovery filing typically lands "no change" across the board — contract edits live inside the implementation children.
 - **Tick through `## ✅ Acceptance`** — tick every criterion the Discovery satisfied; annotate any it did not (`N/A` / not-met with a one-line reason). Never leave a box silently unticked. Do **not** flip the markdown nav chip to `✅ Completed` — that write was retired by CORE-042.4 and the chip is render-derived from YAML (SPEC §"🚀 Phase 4: Closure").
-- **Flip the `.1` PLAN.md line to stub form** — `- [x] **<AREA>-<next-N>.1** [<model>] | <shortname> discovery — Completed YYYY-MM-DD.` per SPEC/plan-filing.md §"`## Completed` archive convention". Keep nested under `<AREA>-EPIC-<next-N>` in its current `## <Priority>` section (SPEC/epic.md §"Child placement invariant").
+- **Flip the `.1` PLAN.md line to stub form** — `- [x] **<AREA>-<next-N>.1** [<.1-model>] | <shortname> discovery — Completed YYYY-MM-DD.` per SPEC/plan-filing.md §"`## Completed` archive convention". Keep nested under `<AREA>-EPIC-<next-N>` in its current `## <Priority>` section (SPEC/epic.md §"Child placement invariant").
 - **Flip the `.1` tasknote's YAML `status:`** — `in-progress` → `completed`, before the move — a lifecycle write, not a retroactive edit (SPEC §"Tasknote frontmatter" → "Write-once does not cover lifecycle writes").
 - **Move the `.1` tasknote** — set `**Archived:** YYYY-MM-DD` in the tasknote's Phase 4 block, then `mv <tasknote dir>/<AREA>-<next-N>.1.md <tasknote dir>/archive/<area>/<AREA>-<next-N>.1.md`. Plain `mv`, not `git mv`: Step 5 scaffolded the note untracked and nothing stages it before Step 10, so `git mv` fails "not under version control".
 - **Draft the recap** — leads with a 1-2 sentence plain-English summary (epic filed, Discovery closed, children scoped), then technical detail (cohort surface inventoried, child line word-counts, any change to M). Hold it for Step 10's 📦 bundle; do not surface a banner now.
@@ -252,8 +252,8 @@ Walk the closure steps in order under SPEC §"Paper-complete guard". **No banner
   - **Fire branch** (privileged-ops signal hits) — its **bundled-approval motion**: surface the 📦 gate (`SPEC/post-closure.md` step 1) and wait for commit-go.
 - Proposed commit message (skill-specific): `feat: <AREA>-<next-N>.1 — scope <AREA>-EPIC-<next-N> children`, or `feat: <AREA>-<next-N>.1 — file <AREA>-EPIC-<next-N> + scope children` when Step 4 left the filing uncommitted (or a user-edited variant). Do not commit unprompted on the fire branch.
 - 🏁 per `SPEC/post-closure.md` step 2, **only with a real SHA** whose paths cover PLAN + archive (and any other Discovery deliverables) — the skip branch collapses 🛠️ / 📦 to inline markers, but 🏁 still fires.
-- Suggest-next-move: run `SPEC/post-closure.md` step 2 as written — the **fresh PLAN.md re-read**, the unchecked-and-open-section verification, the **PLAN exhausted (terminal)** form when no candidate survives, and the emoji-primary-label print. Read the full task-line shape (including `[model]`) to know the recommended model for each child. The next move is typically `/ft-task <AREA>-<next-N>.2` (first implementation child).
-- Copy-paste helper: run `SPEC/post-closure.md` step 3 as written — the glyph copied from the chosen candidate line, the own-line inline-code invocation with no trailing punctuation, and the 👇 `Run in this session:` exception for context-dependent skills. Here the invocation line is `` `/ft-task <next-ID>` ``.
+- Suggest-next-move: run `SPEC/post-closure.md` step 2 as written — the **fresh PLAN.md re-read**, the unchecked-and-open-section verification, the **PLAN exhausted (terminal)** form when no candidate survives, and the emoji-primary-label + `model @ effort` pick print. Read the full task-line shape (including `[model]`) to know the recommended model for each child. The next move is typically `/ft-task <AREA>-<next-N>.2` (first implementation child).
+- Copy-paste helper: run `SPEC/post-closure.md` step 3 as written — the glyph and pick copied from the chosen candidate line, the own-line inline-code invocation with no trailing punctuation, and the 👇 `Run in this session:` exception for context-dependent skills. Here the invocation line is `` `/ft-task <next-ID>` ``.
 
 ## Notes
 

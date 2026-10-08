@@ -246,12 +246,13 @@ pair_j() {
 # - It is one-directional (prose → hint), on purpose. A hint may
 #   legitimately name more than the prose documents: short aliases
 #   (-f / -d / -p), which the --[a-z] extraction never sees, and
-#   ft-file-followup's --low/--med/--fut/--high roster, which is Pair F's
-#   job. Checking the reverse would report every one of those as drift.
-#   The same asymmetry costs a little coverage — ft-close-epic names
-#   --unattended only inside a negation clause, derives an empty set and
-#   passes vacuously — which is Pair F's `continue` idiom: a stub
-#   documenting no flag is skipped, not failed.
+#   ft-file-followup's --low/--med/--fut/--high, which are --park's
+#   arguments (park-mode.md §"Step P2" owns them). Checking the reverse
+#   would report every one of those as drift. The same asymmetry costs a
+#   little coverage — ft-close-epic names --unattended only inside a
+#   negation clause, derives an empty set and passes vacuously — which is
+#   the `continue` idiom: a stub documenting no flag is skipped, not
+#   failed.
 bad=
 for f in claude/commands/ft-*.md; do
   s=$(basename "$f" .md)
@@ -283,12 +284,14 @@ pair_m() {
 #   from the stub's Usage bullet all the way to the dispatch surface, and
 #   Pair B then carries it across to Codex — which is why M covers only
 #   the Claude half and needs no Codex twin.
-# - The park-priority exemption names Pair F's owned set, and is not a
-#   blocklist. ft-file-followup's hint carries --low/--med/--fut/--high;
+# - The park-priority exemption names --park's four arguments, and is not
+#   a blocklist. ft-file-followup's hint carries --low/--med/--fut/--high;
 #   its description: documents the --park mode they modify and would bloat
-#   past readability listing all four. Those four already have a pair — F
-#   — so M defers rather than duplicating. The case names exactly that
-#   set; do not grow it into a general skip list for whatever fires next.
+#   past readability listing all four. They are arguments, not skill
+#   modes: park-mode.md §"Step P2" owns the mapping and
+#   SPEC/tasknote-selection.md states it (CORE-734.5 retired Pair F, which
+#   mirrored them elsewhere). The case names exactly that set; do not grow
+#   it into a general skip list for whatever fires next.
 # - Short aliases are invisible by construction. The --[a-z] extraction
 #   never sees -f / -d / -p, so a hint's [--fast | -f] contributes only
 #   --fast, exactly as in B and J. No description is ever asked to spell

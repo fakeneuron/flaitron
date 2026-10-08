@@ -15,14 +15,13 @@ in `SPEC.md`; read it before starting non-trivial work.
   calls for them.
 - Start a task with `/ft-task <TASK-ID>`; peer skills:
   `/ft-micro-task`,
-  `/ft-file-followup` (`--park [--low|--med|--fut|--high]`, `--starter`),
+  `/ft-file-followup` (`--park`, `--starter`; flags: `SPEC/tasknote-selection.md`),
   `/ft-epic-discovery`, `/ft-close-epic`, `/ft-task --debug`,
   `/ft-task --loop`, `/ft-refactor`, `/ft-release`.
   <!-- KEEP IN SYNC — guards the roster above AND the path-convention bullets
        (Plans / tasknotes / archive locations) further up this section. Mirror: the KEEP
        IN SYNC comment above claude/AGENTS-snippet.md's paste-block fence.
-       1. The roster is names-only, except `/ft-file-followup`'s park-priority
-          flags, which the Pair F release gate requires on both surfaces.
+       1. The roster is names-only.
        2. Richer detail (stubs, gates) lives in SPEC/tasknote-selection.md and
           SPEC/gates.md — not in claude/AGENTS-snippet.md's paste-block, which
           since CORE-510 names the skills and points there.

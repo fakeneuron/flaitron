@@ -11,13 +11,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-- [ ] **CORE-EPIC-741** [heavy]🧠 | effort-tiers — Granular model routing: a chooser-assignable `[frontier]`💎 rung (Fable / Astra) between `[heavy]` and manual-only `[xheavy]`🔭, a dated tier × platform model @ effort map in `docs/PLATFORMS.md` (Claude / Codex / Grok; medium/high/xhigh only), a reliability-over-tokens bias, and next-move suggestions naming the concrete model @ effort.
-  - [x] **CORE-741.1** [heavy]🧠 | effort-tiers discovery — Completed 2026-10-08.
-  - [x] **CORE-741.2** [heavy]🧠 | frontier-rung-contract — Completed 2026-10-08.
-  - [x] **CORE-741.3** [medium]🧩 | platform-effort-map — Completed 2026-10-08.
-  - [x] **CORE-741.4** [heavy]🧠 | routing-skill-sweep — Completed 2026-10-08.
-  - [x] **CORE-741.5** [medium]🧩 | viz-frontier-tier — Completed 2026-10-08.
-  - [ ] **CORE-741.N** [heavy]🧠 | effort-tiers audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
+(none)
 
 ## Medium
 
@@ -35,6 +29,13 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-EPIC-741** [heavy]🧠 | effort-tiers — Completed 2026-10-08.
+  - [x] **CORE-741.1** [heavy]🧠 | effort-tiers discovery — Completed 2026-10-08.
+  - [x] **CORE-741.2** [heavy]🧠 | frontier-rung-contract — Completed 2026-10-08.
+  - [x] **CORE-741.3** [medium]🧩 | platform-effort-map — Completed 2026-10-08.
+  - [x] **CORE-741.4** [heavy]🧠 | routing-skill-sweep — Completed 2026-10-08.
+  - [x] **CORE-741.5** [medium]🧩 | viz-frontier-tier — Completed 2026-10-08.
+  - [x] **CORE-741.N** [heavy]🧠 | effort-tiers audit — Completed 2026-10-08.
 - [x] **CORE-740** [light]🔧 [unattended] | drift-floor-coverage — Completed 2026-10-08.
 - [x] **CORE-EPIC-739** [medium]🧩 | drift-check-integrity — Completed 2026-10-08.
   - [x] **CORE-739.2** [medium]🧩 | drift-vacuous-floor — Completed 2026-10-08.

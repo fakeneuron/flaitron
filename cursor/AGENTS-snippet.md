@@ -100,8 +100,14 @@ description is what an agent reads to decide to reach for it.
 
 This is worth knowing if you fork a flaitron skill under an unprefixed name per
 `../docs/MIGRATION.md` §1.2.1: keep `": "` out of the description,
-or quote the scalar. Four upstream skill bodies carried this defect until it was
-measured in live Cursor sessions and repaired.
+or quote the scalar — single quotes, with an apostrophe written twice. The
+same goes for anything else YAML reads as syntax: a ` #` (truncates the value as
+a comment), a trailing `:`, or a leading indicator such as `[` (an
+`argument-hint:` like `[TASK-ID]`), `{`, `*`, `- ` or a backtick. When unsure,
+quote.
+Upstream, the `skill_frontmatter_yaml` check in
+`../tools/drift-checks.sh` holds the shipped skill and command frontmatter to
+this rule.
 
 ## Pinning notes
 

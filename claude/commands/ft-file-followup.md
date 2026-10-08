@@ -1,6 +1,6 @@
 ---
 description: File a mid-flow follow-up task — one PLAN.md line + a short conversational context paragraph (no tasknote artifact). Add --park to park an idea or quick fix instead (tiny stub, no review gate, resume inline), --starter to file a starter tasknote with rich AI-captured context, or --unattended to file with no operator present.
-argument-hint: [TASK-ID] [--park [--low|--med|--fut|--high]] [--starter] [--unattended]
+argument-hint: '[TASK-ID] [--park [--low|--med|--fut|--high]] [--starter] [--unattended]'
 ---
 
 Invoke the `ft-file-followup` skill with `args="$ARGUMENTS"`. The skill validates the task ID against PLAN.md when provided, or suggests the next available task ID for review when omitted. It collects task ID / priority / model / title / long-description via AskUserQuestion, enforces the SPEC/tasknote-selection.md §"PLAN.md filing-discipline thresholds" cap (>70w → re-invoke with `--starter`), drafts a short conversational context paragraph, surfaces both for review, then appends the PLAN.md entry, auto-commits it (`chore: file <ID> follow-up — <shortname>`, staged path-explicitly; skipped when the index is non-empty or PLAN.md carries a non-filing edit, per `SPEC/plan-filing.md` §"Filing commits"), and delivers the paragraph in chat. Produces zero artifacts on disk beyond the one new PLAN.md line.

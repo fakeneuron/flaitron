@@ -13,7 +13,8 @@
 # Every function IS the shell for its check (CORE-734.4); nothing else
 # carries a copy. SPEC/layout.md and step-7.1-standing-checks.md state the
 # rule for wrapper_name_invariant, shipped_skill_parity and context_budget
-# and point here. Each `pair_*` function has a §7.1 catalogue entry in
+# and point here; cursor/AGENTS-snippet.md does the same for
+# skill_frontmatter_yaml (CORE-744). Each `pair_*` function has a §7.1 catalogue entry in
 # step-7.1-mirror-pairs.md that names it and says what a finding means.
 # Design notes sit as `#` comments inside the body, next to the line they
 # explain. skill_pin_guard_parity (CORE-729), final_newline (CORE-621) and
@@ -191,6 +192,52 @@ for f in .flaitron/sidequest/*.md; do
     break
   done
 done
+[ -z "$bad" ] || exit 1
+}
+
+# Skill frontmatter YAML (cursor/AGENTS-snippet.md §"Forking skills — the description must be valid YAML")
+skill_frontmatter_yaml() {
+# Cursor drops a skill's description when its frontmatter fails to parse,
+# and Claude Code does not, so nothing local shows it; five blocks shipped
+# broken while the snippet called the defect repaired, and ft-epic-discovery's
+# `argument-hint: [--deep]` parsed but loaded as a list (CORE-744). A line
+# check, not a parser — this file is zero-dependency — and sound only
+# because every line of a checked block must be one `key: value`; any other
+# shape (block scalar, continuation, flow collection) is a finding.
+# - A plain value may not hold `: ` (opens a nested mapping), ` #` (starts a
+#   comment, silently truncating) — either with a tab for the space — or a
+#   trailing `:`, or open on an indicator (`- ` and `? ` included).
+#   `[` is the one that shipped: `argument-hint: [TASK-ID] [--park …]` reads
+#   as a flow sequence and dies at the text after its `]`.
+# - Quote with single quotes, not double: Pairs B, J and M strip `"…"`
+#   before extracting flags, so a double-quoted description reads as none.
+#   Inside single quotes an apostrophe is written twice (`domain''s`). A
+#   double-quoted value is held to no inner `"` and no `\` at all, stricter
+#   than YAML's escapes, so the line check stays sound.
+bad=
+n=0
+re='^([a-z][a-z0-9_-]*): (.+)$'
+for f in claude/skills/*/SKILL.md claude/commands/*.md codex/skills/*/SKILL.md .flaitron/audit-overlay/SKILL.md; do
+  [ -f "$f" ] || continue
+  while IFS= read -r line; do
+    n=$((n+1))
+    if ! [[ "$line" =~ $re ]]; then echo "BAD FRONTMATTER  $f :: $line"; bad=1; continue; fi
+    v=${BASH_REMATCH[2]}
+    case "$v" in
+      \'*)
+        t=${v#\'}; t=${t%\'}; t=${t//\'\'/}
+        case "$v" in ?*\') ;; *) t=\' ;; esac
+        case "$t" in *\'*) echo "BAD FRONTMATTER  $f :: $line"; bad=1 ;; esac ;;
+      \"*)
+        t=${v#\"}; t=${t%\"}
+        case "$v" in ?*\") ;; *) t=\" ;; esac
+        case "$t" in *\"*|*\\*) echo "BAD FRONTMATTER  $f :: $line"; bad=1 ;; esac ;;
+      [][{}\&*!\|\>%@\`#]*|'- '*|'? '*|-|\?|*': '*|*$':\t'*|*' #'*|*$'\t#'*|*:)
+        echo "BAD FRONTMATTER  $f :: $line"; bad=1 ;;
+    esac
+  done < <(awk 'NR==1 { if ($0 != "---") exit; next } /^---$/ { exit } { print }' "$f")
+done
+[ "$n" -gt 0 ] || { echo "VACUOUS skill_frontmatter_yaml  no frontmatter line examined"; exit 1; }
 [ -z "$bad" ] || exit 1
 }
 

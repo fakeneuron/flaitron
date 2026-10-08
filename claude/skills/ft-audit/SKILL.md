@@ -1,6 +1,6 @@
 ---
 name: ft-audit
-description: Parameterized principal-engineer audit; `/ft-audit <domain> [scope]` runs domain-specific passes and writes prioritized tickets to `.flaitron/PLAN.md`. Domains: general (default) · backend · frontend · security · performance · docs · structure · context. Stack-neutral scaffold; adopters fork it to customize rubric and verification gates.
+description: 'Parameterized principal-engineer audit; `/ft-audit <domain> [scope]` runs domain-specific passes and writes prioritized tickets to `.flaitron/PLAN.md`. Domains: general (default) · backend · frontend · security · performance · docs · structure · context. Stack-neutral scaffold; adopters fork it to customize rubric and verification gates.'
 ---
 
 # audit — flaitron parameterized audit skill

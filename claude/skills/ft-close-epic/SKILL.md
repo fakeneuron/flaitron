@@ -1,6 +1,6 @@
 ---
 name: ft-close-epic
-description: Close a flaitron epic by scaffolding and driving its audit `.N` tasknote in one motion. With `--unattended`, runs with no operator present: the audit still closes and commits, and the parent-flip is deferred to the operator.
+description: 'Close a flaitron epic by scaffolding and driving its audit `.N` tasknote in one motion. With `--unattended`, runs with no operator present: the audit still closes and commits, and the parent-flip is deferred to the operator.'
 ---
 
 # close-epic — flaitron epic audit + close driver

@@ -80,6 +80,11 @@ const CASES = {
       'm',
     ),
   },
+  skill_frontmatter_yaml: {
+    // Undo CORE-744's quoting: the shipped `: ` shape returns.
+    seed: () => edit('claude/skills/ft-close-epic/SKILL.md', (s) => s.replace(/^description: '(.*)'$/m, 'description: $1')),
+    finding: /^BAD FRONTMATTER {2}claude\/skills\/ft-close-epic\/SKILL\.md :: description: Close /m,
+  },
   pair_b: {
     seed: () => edit('codex/skills/ft-task/SKILL.md', (s) => s.replace(/^(description:.*)$/m, '$1 --zz-drift')),
     finding: /^MISMATCH ft-task \| .*codex:\[[^\]]*--zz-drift/m,

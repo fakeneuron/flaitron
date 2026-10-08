@@ -25,6 +25,8 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
 
+- [ ] **CORE-737** [light]🔧 | symlink-sparse-guard — The sparse line run through a symlinked `.flaitron/core` (SECURITY.md's local-dev link) trims the linked flaitron checkout's own `.flaitron/`. Skip sparse when `<FT>` is a symlink in `ft-update` Step 1, `ft-new-project` Step 2, and MIGRATION §1.1. Surfaced by [[CORE-735.N]].
+
 ## Future Opportunities
 
 (none)

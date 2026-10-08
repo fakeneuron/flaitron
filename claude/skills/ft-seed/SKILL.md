@@ -54,7 +54,7 @@ the four active headings `## High` / `## Medium` / `## Low` /
 `## Future Opportunities`. `## Completed` is out of scope, and so is
 `.flaitron/PLAN-ARCHIVE.md`; a closed row has nothing to dispatch. Also
 collect, for clause 6, the checkbox state of every row (open or closed) so an
-epic child's stem predecessor can be resolved without a second read.
+epic child's siblings can be resolved without a second read.
 
 Two classes of open row are **skipped before the predicate runs**, and are
 reported as counts, not listed:
@@ -80,10 +80,12 @@ place, and Step 4 writes it only if the operator's confirmation keeps it.
 Clause 6 on an existing plan reads naturally: a `.k` child qualifies when its
 stem predecessor — per the `.1`'s `## 🌳 Fan-out` if that note is on disk
 (active or archived), else `.k-1` — is already `- [x]` in the rows collected
-at Step 1, **or is itself a candidate in this walk**. Resolve predecessors
-first, then dependents, so a chain whose head is declined declines the whole
-chain. A `.1` Discovery row is never a candidate; a parent `<AREA>-EPIC-<N>`
-row is never one either.
+at Step 1, **or is itself a candidate in this walk**; an open row already
+carrying the token does not count. Resolve
+predecessors first, then dependents, so a chain whose head is declined
+declines the whole chain. A `.N` audit row (or legacy numeric audit child)
+waits on every sibling, so resolve it last. A `.1` Discovery row is never a candidate; a parent
+`<AREA>-EPIC-<N>` row is never one either.
 
 Record, per row, either `candidate (+ clause-6 predecessor when one applies)`
 or the **first clause that failed** — the failing clause is what the operator
@@ -100,7 +102,8 @@ Surface the walk in one message, then stop and wait. The shape:
    **exactly as Step 4 will write it**, with `[unattended]` in place after
    `[model]` and any model-suggestion glyph (`[light]🔧 [unattended]`; SPEC
    §"Task-line format", position footgun in `SPEC/plan-parser.md`), and one
-   trailing clause naming the clause-6 predecessor when one applies:
+   trailing clause naming the clause-6 predecessor when one applies — for a
+   `.N`, every open sibling it waits on:
 
    ```text
    1. - [ ] **CORE-581** [light]🔧 [unattended] | shortname — …
@@ -111,10 +114,13 @@ Surface the walk in one message, then stop and wait. The shape:
    token, no argument; the predicate is conservative by design and a declined
    row is the status quo, not a finding.
 4. **The ask**, in one line: *Reply `all` to seed every candidate, `none` to
-   seed nothing, a list of IDs to seed only those, or `all but <IDs>`.*
+   seed nothing, a list of IDs to seed only those, or `all but <IDs>` —
+   dropping a row also drops every candidate leaning on it.*
 
 The reply is the act. Conversational assent (`SPEC/cue-vocabulary.md`
-§"Accepted gate replies") counts as `all`; an edit that drops a row drops it;
+§"Accepted gate replies") counts as `all`; a reply that drops a row drops it,
+and every kept row leaning on it (module §"Three postures") — name those in
+the Step 5 report;
 `none`, or a reply naming no candidate, ends the run at Step 5 with zero
 writes. **Do not write anything before the reply.** Do not re-ask, do not
 batch into a second gate for large plans — the list is as long as it is, and

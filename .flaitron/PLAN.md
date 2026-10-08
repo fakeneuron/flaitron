@@ -15,8 +15,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-736** [medium]🧩 | audit-row-sibling-gate — `SPEC/unattended-candidacy.md` clause 6 admits a `.N` audit row on clauses 1–4 alone, so `/ft-seed` can mark an audit while its implementation siblings are open and unmarked. judedelparte `cb01d6b` marked JD-041.N with JD-041.2/.3 open; caobunga dispatched it 2026-10-08, the worker parked on drift and left an untracked tasknote that dirtied the tree for the next row. Gate `.N` like other `.k` rows: every open sibling is already `- [x]` or proposed in the same pass with the same candidacy. Mirror in `/ft-seed`.
-
 - [ ] **CORE-738** [medium]🧩 [unattended] | audit-sibling-runtime-guard — `/ft-close-epic --unattended` refuses, writing no tasknote, while any sibling of its audit row is open. CORE-736's admission-time gate misses a sibling filed after `.N` was marked, a marked sibling dispatched after `.N`, and an `/ft-epic-discovery` Step 7→9 interruption. Also: mirror cascade-report placement; `unattended-candidates:` hides `.N` dependencies.
 
 ## Low
@@ -35,6 +33,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-736** [medium]🧩 | audit-row-sibling-gate — Completed 2026-10-08.
 - [x] **CORE-EPIC-735** [heavy]🧠 | adopter-footprint — Completed 2026-10-08.
   - [x] **CORE-735.2** [medium]🧩 | submodule-weight-measure — Completed 2026-10-08.
   - [x] **CORE-735.3** [heavy]🧠 | footprint-decision — Completed 2026-10-08.

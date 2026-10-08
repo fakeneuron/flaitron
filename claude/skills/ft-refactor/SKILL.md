@@ -136,8 +136,9 @@ after `[<model>]`, naming the clause-6 predecessor where one applies.
 Ask via AskUserQuestion whether to file as proposed, edit first (apply
 edits and re-surface), or stop (plan stays in the conversation only). Wait
 for the operator's go. The go keeps a token; an edit that drops it drops
-it; a declined row shows no token and says nothing. No cue, banner, or
-checklist box is added for the candidacy.
+it and every kept row leaning on it (module §"Three postures"); a declined
+row shows no token and says nothing. No cue, banner, or checklist box is
+added for the candidacy.
 
 **`fast-mode = true`:** skip the pause and file as drafted — but still
 surface the full plan in the hand-off so the operator sees what landed.

@@ -42,8 +42,8 @@ Three consequences follow, and each is a boundary rather than a feature:
 ## Candidacy predicate
 
 Evaluated over the **drafted row text** — the exact `- [ ]` line the filer is
-about to write — plus, for epic children, the closure state of the sibling
-row it follows. Every clause must hold; the first miss disqualifies the row.
+about to write — plus, for epic children, the closure state of the siblings
+clause 6 names. Every clause must hold; the first miss disqualifies the row.
 The predicate is deliberately conservative: a false negative leaves a row
 undecided, which is the status quo, while a false positive is exactly what
 the operator's confirm exists to catch — so when a clause is uncertain, the
@@ -71,14 +71,16 @@ row is **not** a candidate.
 5. **Not a parent `<AREA>-EPIC-<N>` row.** The parent is a checkbox with no
    tasknote and no runner; only children are driven.
 6. **Epic-child rule.** A `.1` Discovery row is never a candidate — it is a
-   scoping conversation, and `[heavy]` by convention. A `.N` audit row
-   qualifies only when clauses 1–4 admit it (`/ft-close-epic` accepts
-   `--unattended`, so an audit tagged `[light]` or `[medium]` is coherent). Any
-   other `.k` row qualifies only when the sibling it follows — its stem
-   predecessor per the `.1`'s `## 🌳 Fan-out`, or `.k-1` when undeclared — is
-   either already `- [x]` or is being proposed in the **same pass with the
-   same candidacy**. A candidate cannot be the first open row in a sequential
-   chain whose head is not one.
+   scoping conversation, and `[heavy]` by convention. Every other child waits
+   on siblings, and each must be **settled**: already `- [x]`, or being
+   proposed in the **same pass with the same candidacy**. A `.k` row waits on
+   the sibling it follows — its stem predecessor per the `.1`'s
+   `## 🌳 Fan-out`, or `.k-1` when undeclared — so a candidate cannot be the
+   first open row in a sequential chain whose head is not one. A `.N` audit
+   row (or a legacy numeric audit child) waits on every other child of its
+   parent, `.1` included — an audit runs after every child, so an unsettled
+   sibling would park it on drift (`/ft-close-epic` accepts `--unattended`, so
+   an audit tagged `[light]` or `[medium]` is otherwise coherent).
 
 Three filers carry their own carve-outs on top: `/ft-audit`'s trivial-fix rows
 (written and closed in one motion — nothing to dispatch), `/ft-epic-discovery`
@@ -94,13 +96,17 @@ invocation, never by the number of candidates.
 **Attended (default).** The candidates are shown **inside the surface's
 existing confirm gate**, alongside the rows themselves — each candidate row
 displayed with the proposed token in place (`[light]🔧 [unattended]`) and the
-clause-6 predecessor named where it applies. The operator's confirmation of
-the write is the act: the token is written only on rows the operator
-confirmed, and lands after `[model]` and any model-suggestion glyph, per
+clause-6 predecessor named where it applies (for an audit row, every open
+sibling). The operator's confirmation of the write is the act: the token is
+written only on rows the operator confirmed, and lands after `[model]` and any model-suggestion glyph, per
 [`SPEC.md`](../SPEC.md) §"Task-line format" and the position footgun in
 [`SPEC/plan-parser.md`](plan-parser.md). A surface whose gate is a prose
 review (not a structured ask) does the same in prose: it shows the line
 with the token and writes it only if the operator's edit or assent keeps it.
+On either gate shape, clause 6 is then re-read against what the operator
+kept: a reply that drops a candidate — by edit, ID list, or exclusion — drops
+every kept candidate that leaned on it, transitively, and the surface says
+which.
 
 **`--fast`.** The review pause that would have carried the proposal is
 skipped, so there is no act. The filer writes every row **without** the
@@ -144,9 +150,11 @@ nobody confirmed and never emits that line. It seeds and never repairs: a row
 already carrying the token is skipped wherever the token sits, a `[handoff]`
 row is skipped under clause 3, and a mis-positioned marker is named in the
 report for a hand edit, not rewritten. Clause 6 reads the plan itself: a
-`.k` child qualifies when its stem predecessor is already `- [x]` or is a
-candidate in the same walk, so a declined chain head declines the chain. A
-second run is idempotent — it offers only what the first run did not seed.
+`.k` child's stem predecessor, and each sibling an audit row waits on, must be
+`- [x]` or a candidate in the same walk — so a declined chain head declines
+the chain, and an audit resolves last. A second run never re-offers what the
+first seeded; an open sibling the first run marked does not settle a
+dependent, which stays declined until that sibling closes.
 
 ## Persistence
 

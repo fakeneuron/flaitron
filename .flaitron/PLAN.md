@@ -15,14 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-EPIC-734** [heavy]🧠 | mirror-tax — Shrink the cross-surface sync burden: the release gate stops parsing `ci.yml`, and mirror pairs whose copies can become one source + pointer are retired. Discovery supplied by audit-repo 2026-10-07. Surfaced by audit-repo 2026-10-07 (Theme: Mirror tax)
-  - [x] **CORE-734.2** [heavy]🧠 | drift-script-extract — Completed 2026-10-07.
-  - [x] **CORE-734.3** [heavy]🧠 | mirror-pair-census — Completed 2026-10-07.
-  - [x] **CORE-734.4** [heavy]🧠 | pair-l-retire — Completed 2026-10-07.
-  - [x] **CORE-734.5** [medium]🧩 | pair-f-retire — Completed 2026-10-07.
-  - [x] **CORE-734.6** [medium]🧩 | pair-i-retire — Completed 2026-10-07.
-  - [x] **CORE-734.7** [medium]🧩 | pair-h-a-narrow — Completed 2026-10-07.
-  - [ ] **CORE-734.N** [heavy]🧠 | mirror-tax audit — Verify the [[CORE-734.3]] target: 12 live §7.1 Pairs (from 15; F, I, L retired; pointer D and retired G not counted) and 10 `pair_*` drift checks (from 11).
+(none)
 
 ## Low
 
@@ -41,6 +34,14 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-EPIC-734** [heavy]🧠 | mirror-tax — Completed 2026-10-08.
+  - [x] **CORE-734.2** [heavy]🧠 | drift-script-extract — Completed 2026-10-07.
+  - [x] **CORE-734.3** [heavy]🧠 | mirror-pair-census — Completed 2026-10-07.
+  - [x] **CORE-734.4** [heavy]🧠 | pair-l-retire — Completed 2026-10-07.
+  - [x] **CORE-734.5** [medium]🧩 | pair-f-retire — Completed 2026-10-07.
+  - [x] **CORE-734.6** [medium]🧩 | pair-i-retire — Completed 2026-10-07.
+  - [x] **CORE-734.7** [medium]🧩 | pair-h-a-narrow — Completed 2026-10-07.
+  - [x] **CORE-734.N** [heavy]🧠 | mirror-tax audit — Completed 2026-10-08.
 - [x] **CORE-730** [medium]🧩 | global-skill-conflicts — Completed 2026-10-07.
 - [x] **CORE-726** [medium]🧩 | epic-per-child-model — Completed 2026-10-07.
 - [x] **CORE-728** [light]🔧 | snippet-bumping-dedupe — Completed 2026-10-07.

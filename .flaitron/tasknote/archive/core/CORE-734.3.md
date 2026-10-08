@@ -21,6 +21,8 @@ related-tasks: [CORE-EPIC-734, CORE-734.2, CORE-734.N, CORE-729, CORE-631.2]
 
 [← PLAN.md](../PLAN.md) · 🟢 In progress · 🔗 [[CORE-EPIC-734]] · [[CORE-734.2]] · [[CORE-734.N]] · [[CORE-729]] · [[CORE-631.2]]
 
+> **⚠️ Superseded by [[CORE-734.N]]** — "Letter E never existed in the file" is false: Pair E (`ft-flowtron` roster ↔ shipped skills) was a live entry until [[CORE-603.2]] deleted it without a stub.
+
 ## 🎯 Goal
 
 Classify every §7.1 mirror Pair, every live `KEEP IN SYNC` comment, and the 7× Skill/pin guard as necessary (distinct consumers) or collapsible (one source + pointer), file one CORE-EPIC-734 child per collapsible group, and set the target Pair count the `.N` audit verifies.

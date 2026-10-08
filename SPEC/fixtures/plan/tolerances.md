@@ -29,6 +29,8 @@ lettered / nested-decimal ID near-misses, and the legacy `## Critical` heading.
   - [ ] **FX-150.3a** [light] | lettered suffix — Parses; nests under the epic.
   - [ ] **FX-150.2.1** [light] | nested decimals — Parses; nests under the epic.
   - [ ] **FX-150.2.1a** [light] | nested and lettered
+- [ ] **FX-125** [frontier]💎 | frontier glyph
+- [ ] **FX-126** [frontier] 💎 | frontier glyph spaced — Suggestion glyph after a space.
 
 ## Completed
 

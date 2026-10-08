@@ -430,6 +430,38 @@ describe('parsePlan', () => {
     expect(t.description).toBe('long desc');
   });
 
+  it('parses a [frontier] suggestion glyph (💎) with and without a space', () => {
+    const tight = `## High\n\n- [ ] **CORE-741** [frontier]💎 | frontier glyph — long desc\n`;
+    const spaced = `## High\n\n- [ ] **CORE-741** [frontier] 💎 | frontier spaced — long desc\n`;
+    expect(parsePlan(tight)[0]).toMatchObject({
+      id: 'CORE-741',
+      model: 'frontier',
+      shortname: 'frontier glyph',
+    });
+    expect(parsePlan(tight)[0].description).toBe('long desc');
+    expect(parsePlan(spaced)[0]).toMatchObject({
+      model: 'frontier',
+      shortname: 'frontier spaced',
+    });
+  });
+
+  it('captures [unattended] on either side of a frontier glyph', () => {
+    const glyphFirst = `## High\n\n- [ ] **CORE-741** [frontier]💎 [unattended] | glyph first — desc\n`;
+    const glyphLast = `## High\n\n- [ ] **CORE-741** [frontier] [unattended]💎 | glyph last — desc\n`;
+    expect(parsePlan(glyphFirst)[0]).toMatchObject({
+      model: 'frontier',
+      unattended: true,
+      shortname: 'glyph first',
+    });
+    expect(parsePlan(glyphLast)[0]).toMatchObject({
+      model: 'frontier',
+      unattended: true,
+      shortname: 'glyph last',
+    });
+    expect(parsePlanWithDiagnostics(glyphFirst).unparsed).toEqual([]);
+    expect(parsePlanWithDiagnostics(glyphLast).unparsed).toEqual([]);
+  });
+
   it('does not flag glyph-decorated rows as unparsed diagnostics', () => {
     const md = [
       '## High',

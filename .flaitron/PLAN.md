@@ -16,7 +16,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [x] **CORE-741.2** [heavy]🧠 | frontier-rung-contract — Completed 2026-10-08.
   - [x] **CORE-741.3** [medium]🧩 | platform-effort-map — Completed 2026-10-08.
   - [x] **CORE-741.4** [heavy]🧠 | routing-skill-sweep — Completed 2026-10-08.
-  - [ ] **CORE-741.5** [medium]🧩 | viz-frontier-tier — Viz parser accepts `frontier` in the tier ladder and buckets `fable` to it; ModelChip renders 💎; extend the `SPEC/fixtures/plan/` markers and tolerances fixtures; parser + ModelChip tests. Leave `[xheavy]`🔭 handling unchanged.
+  - [x] **CORE-741.5** [medium]🧩 | viz-frontier-tier — Completed 2026-10-08.
   - [ ] **CORE-741.N** [heavy]🧠 | effort-tiers audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
 
 ## Medium

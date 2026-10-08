@@ -13,7 +13,7 @@ sides of the trailing-token run, and the two mis-authoring footguns
 - [ ] **FX-204** [xheavy]🔭 [unattended] | glyph then marker — Glyph between the model and the marker.
 - [ ] **FX-205** [xheavy] [unattended]🔭 | marker then glyph — Glyph after the trailing run.
 - [ ] **FX-206** [light] 🔧 [unattended] | spaced glyph then marker
-- [ ] **FX-207** [fable] [light] [unattended] 🧠 | stacked, marker, glyph — Marker anywhere in the run counts.
+- [ ] **FX-207** [fable] [light] [unattended] 💎 | stacked, marker, glyph — Marker anywhere in the run counts.
 - [ ] **FX-208** [light] [unattended] [!critical] | marker then critical
 - [ ] **FX-209** [!critical] [light] [handoff] | critical then marker
 - [ ] **FX-210** [light] | no marker — Neither boolean set.
@@ -23,6 +23,8 @@ sides of the trailing-token run, and the two mis-authoring footguns
 - [ ] **FX-223** [unattended] | bare marker — Captured as the model; marker not set.
 - [ ] **FX-224** [handoff] [light] | handoff before model
 - [ ] **FX-225** [handoff] | bare handoff
+- [ ] **FX-226** [frontier]💎 [unattended] | frontier glyph then marker — Glyph between the model and the marker.
+- [ ] **FX-227** [frontier] [unattended]💎 | frontier marker then glyph — Glyph after the trailing run.
 
 ## Completed
 

@@ -7,12 +7,11 @@ export type Priority =
   | 'Future Opportunities'
   | 'Completed';
 
-// Recommended set: 'heavy' | 'medium' | 'light' (flaitron's primary category
-// labels — see SPEC §"Task-line format"). Concrete model names (e.g. 'fable',
-// 'opus', 'sonnet', 'haiku', 'grok', 'gpt-5', 'gemini-pro') are valid
-// precision tokens; the TASK_LINE regex accepts any short lowercase token
-// matching [a-z][\w.-]*.
-// See SPEC §"Task-line format" + SPEC/model.md.
+// Category labels: 'light' | 'medium' | 'heavy', plus chooser-assignable
+// 'frontier' and manual-only 'xheavy' (SPEC §"Task-line format" +
+// SPEC/model.md). Concrete model names (e.g. 'fable', 'opus', 'sonnet',
+// 'haiku', 'grok', 'gpt-5', 'gemini-pro') are valid precision tokens; the
+// TASK_LINE regex accepts any short lowercase token matching [a-z][\w.-]*.
 export type TaskModel = string;
 
 export interface Task {
@@ -79,8 +78,9 @@ const COMPLETED_MONTH_HEADING = /^Completed\s+\d{4}-\d{2}$/;
 //   1. STATUS_GLYPH — leading status glyph between the checkbox and the ID
 //      (`- [ ] ⏸ **ID**`) — the nav-header chip set 🟢/⏸/✅/⚪/🌱.
 //   2. SUGGESTION_GLYPH — a model-suggestion glyph after `[model]`
-//      (`[medium]🧠` / `[medium] 🔧` / `[medium]🧩` / `[medium]🔭`,
-//      space-optional) — decorative, redundant with the model tier, dropped.
+//      (`[medium]🧠` / `[medium] 🔧` / `[medium]🧩` / `[frontier]💎` /
+//      `[medium]🔭`, space-optional) — decorative, redundant with the model
+//      tier, dropped.
 //      Emitted in TWO slots, straddling TRAILING_TOKENS, so the glyph is
 //      accepted on either side of the trailing-token run:
 //      `[xheavy]🔭 [unattended]` and `[xheavy] [unattended]🔭` both parse.
@@ -118,7 +118,7 @@ const TASK_ID_BODY = String.raw`[A-Z]+(?:-EPIC)?-\d+(?:\.(?:\d+[a-z]?|N))*`;
 const TASK_ID = String.raw`\*\*(${TASK_ID_BODY})\*\*`;
 const CRITICAL_FLAG = String.raw`(?:\s+\[(!critical)\])?`;
 const MODEL_TOKEN = String.raw`(?:\s+\[([a-z][\w.-]*)\])?`;
-const SUGGESTION_GLYPH = String.raw`(?:\s*(?:🧠|🔧|🧩|🔭)\uFE0F?)?`;
+const SUGGESTION_GLYPH = String.raw`(?:\s*(?:🧠|🔧|🧩|💎|🔭)\uFE0F?)?`;
 const TRAILING_TOKENS = String.raw`((?:\s+\[[a-z][\w.-]*\])*)`;
 const SUGGESTION_GLYPH_AFTER = SUGGESTION_GLYPH;
 const CRITICAL_FLAG_AFTER = CRITICAL_FLAG;

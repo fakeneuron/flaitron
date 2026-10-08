@@ -454,12 +454,13 @@ describe('App — model chip row gate', () => {
     window.localStorage.clear();
   });
 
-  it('renders the 🧠 chip for a fable task in its row (model prefs default-on)', async () => {
+  it('renders the 💎 chip for a fable task in its row (model prefs default-on)', async () => {
     const plan = `## High\n\n- [ ] **CORE-100** [fable] | one — Task one\n`;
     renderApp({ plan });
 
     await waitFor(() => expect(screen.getByText('CORE-100')).toBeInTheDocument());
-    expect(screen.getByText('🧠')).toBeInTheDocument();
+    expect(screen.getByText('💎')).toBeInTheDocument();
+    expect(screen.queryByText('🧠')).not.toBeInTheDocument();
   });
 
   it('renders no chip for a non-heavy (sonnet) task', async () => {

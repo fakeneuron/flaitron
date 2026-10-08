@@ -23,8 +23,8 @@ collide with a real task in any adopter.
 | Case | Covers |
 |---|---|
 | `canonical` | Every optional-segment combination from `SPEC/task-line-segments.md`; all five priority headings; epic parent/child nesting; `[x]`/`[X]` marks and `Completed YYYY-MM-DD.` stamps; a task-shaped line above the first heading (ignored). |
-| `tolerances` | Status glyph, suggestion glyph (all four, either side of the trailing run), stacked `[model]`, `[!critical]` after `[model]`; lettered / nested-decimal IDs; the legacy `## Critical` heading. |
-| `markers` | `[unattended]` / `[handoff]` in either order and around glyphs; the `[!marker]` footgun (whole line unparsed); the before-`[model]` footgun (captured as the model). |
+| `tolerances` | Status glyph, suggestion glyph (all five; frontier tight and spaced), stacked `[model]`, `[!critical]` after `[model]`; lettered / nested-decimal IDs; the legacy `## Critical` heading. |
+| `markers` | `[unattended]` / `[handoff]` in either order and around glyphs, including 💎 on either side of the trailing run; the `[!marker]` footgun (whole line unparsed); the before-`[model]` footgun (captured as the model). |
 | `descriptions` | `[[TASK-ID]]` → `relatedTasks`; literal `Blocked by [[ID]]` → `blockedBy` (blocker wins); non-parsing near-misses (`Blocked by: ID`, `Blocked on`, lowercase); code-span masking; the reference `description` cleaning. |
 | `exclusions` | Silently excluded lines (bare checkbox bullets, HTML comments, fenced code, completed legacy label lines, rows under unrecognized headings) vs. `unparsed` diagnostics (malformed IDs / tokens, pending legacy-shaped rows); the `nearMissHeadings` diagnostic. |
 | `rotated-history` | `PLAN-ARCHIVE.md` grammar: `## Completed YYYY-MM` month headings map onto `Completed`; a malformed month heading is unrecognized. **Optional** — a consumer that never reads the archive may skip this file by name. |

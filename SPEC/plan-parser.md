@@ -27,7 +27,7 @@ additionally accepts three real-board decorations without parsing them into
 `Task` fields — they are dropped, not stored:
 
 - **Model-suggestion glyph after `[model]`** — a `🧠` (heavy) / `🔧` (light) /
-  `🧩` (medium) / `🔭` (xheavy) glyph appended to the model token
+  `🧩` (medium) / `💎` (frontier) / `🔭` (xheavy) glyph appended to the model token
   (`[medium]🧩`, space-optional), mirroring the next-move suggestion label.
   Redundant with the model tier; ignored. It is accepted on **either side** of
   the trailing bracket-token run below, so a row carrying both a glyph and

@@ -13,16 +13,6 @@ describe('ModelChip — 🧠 heavy-model glyph', () => {
     expect(screen.getByText('🧠')).toBeInTheDocument();
   });
 
-  it('renders 🧠 for fable', () => {
-    render(<ModelChip model="fable" />);
-    expect(screen.getByText('🧠')).toBeInTheDocument();
-  });
-
-  it('renders 🧠 for mythos', () => {
-    render(<ModelChip model="mythos" />);
-    expect(screen.getByText('🧠')).toBeInTheDocument();
-  });
-
   it('renders 🧠 for the heavy category token', () => {
     render(<ModelChip model="heavy" />);
     expect(screen.getByText('🧠')).toBeInTheDocument();
@@ -33,8 +23,28 @@ describe('ModelChip — 🧠 heavy-model glyph', () => {
     (model) => {
       render(<ModelChip model={model} />);
       expect(screen.queryByText('🧠')).toBeNull();
+      expect(screen.queryByText('💎')).toBeNull();
+      expect(screen.queryByText('🔭')).toBeNull();
     }
   );
+});
+
+describe('ModelChip — 💎 frontier-model glyph', () => {
+  it.each(['frontier', 'fable', 'mythos'])('renders 💎 for %s', (model) => {
+    render(<ModelChip model={model} />);
+    expect(screen.getByText('💎')).toBeInTheDocument();
+    expect(screen.queryByText('🧠')).toBeNull();
+    expect(screen.queryByText('🔭')).toBeNull();
+  });
+
+  it('does not render 💎 for the heavy or xheavy category tokens', () => {
+    render(<ModelChip model="heavy" />);
+    expect(screen.queryByText('💎')).toBeNull();
+    cleanup();
+    render(<ModelChip model="xheavy" />);
+    expect(screen.queryByText('💎')).toBeNull();
+    expect(screen.getByText('🔭')).toBeInTheDocument();
+  });
 });
 
 describe('ModelChip — 🔭 xheavy-model glyph', () => {

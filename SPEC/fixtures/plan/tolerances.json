@@ -1,5 +1,5 @@
 {
-  "describes": "Decorative tolerances from SPEC/plan-parser.md — status glyph, suggestion glyph (all four), stacked `[model]`, `[!critical]` after `[model]` — plus lettered / nested-decimal IDs and the legacy `## Critical` heading.",
+  "describes": "Decorative tolerances from SPEC/plan-parser.md — status glyph, suggestion glyph (all five), stacked `[model]`, `[!critical]` after `[model]` — plus lettered / nested-decimal IDs and the legacy `## Critical` heading.",
   "tasks": [
     {
       "line": 9,
@@ -324,7 +324,39 @@
       "blockedBy": []
     },
     {
-      "line": 35,
+      "line": 32,
+      "id": "FX-125",
+      "completed": false,
+      "priority": "High",
+      "critical": false,
+      "unattended": false,
+      "handoff": false,
+      "model": "frontier",
+      "shortname": "frontier glyph",
+      "descriptionRaw": null,
+      "description": "",
+      "completedDate": null,
+      "relatedTasks": [],
+      "blockedBy": []
+    },
+    {
+      "line": 33,
+      "id": "FX-126",
+      "completed": false,
+      "priority": "High",
+      "critical": false,
+      "unattended": false,
+      "handoff": false,
+      "model": "frontier",
+      "shortname": "frontier glyph spaced",
+      "descriptionRaw": "Suggestion glyph after a space.",
+      "description": "Suggestion glyph after a space",
+      "completedDate": null,
+      "relatedTasks": [],
+      "blockedBy": []
+    },
+    {
+      "line": 37,
       "id": "FX-160",
       "completed": true,
       "priority": "Completed",
@@ -340,7 +372,7 @@
       "blockedBy": []
     },
     {
-      "line": 36,
+      "line": 38,
       "id": "FX-161",
       "completed": true,
       "priority": "Completed",

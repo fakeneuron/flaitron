@@ -298,7 +298,7 @@ runtime lives in the runner; the contract lives in flaitron.
 
 - `SPEC.md` — workflow contract (authoritative)
 - `SPEC/` — lazy SPEC modules (epic, starter, blocked, model, versioning, gates, gate-postures, cue-vocabulary, post-closure, tasknote-selection, plan-filing, loop, layout, plan-parser, task-line-segments, scope-boundaries, tasknote-inserts, superseded-claims, unattended-candidacy) plus `procedures/` (pasteable skill procedures) and `fixtures/plan/` (task-line grammar conformance fixtures shared by every PLAN.md parser); loaded on demand by skills
-- `templates/` — canonical tasknote templates (full, micro, starter, sidequest) plus spec, loop-heartbeat, audit-overlay, and subagent-probe templates, and the `PLAN.md` / `tasknote-README.md` seed files
+- `templates/` — canonical markdown templates and seed files (roster: `SPEC/layout.md` §"Working in the flaitron repo itself")
 - `claude/` — Claude Code skills + slash commands (adopter-facing snippet plus the full shipped `ft-*` inventory; adopter projects wire the policy subset, while flaitron-self-only skills like `/ft-release` stay upstream-only)
 - `codex/` — Codex skill wrappers for the full `ft-*` inventory plus Codex-specific wiring notes
 - `cursor/` — Cursor thin wiring (`AGENTS-snippet.md` + `procedures/ft-task.md` pointer; no skill wrappers — adopters wire canonical `claude/skills/` bodies)

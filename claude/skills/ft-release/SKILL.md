@@ -182,23 +182,13 @@ The 3 version edits are markdown prose — run a markdown lint mental-pass on SP
 - Edits are single-token version-string substitutions; surrounding prose unchanged.
 - No frontmatter touched; no fenced blocks broken.
 
-Independently of the version edits, run the standing viz + fleet-updater validation gate (`AGENTS.md` §"Validation") — every cut runs this regardless of which files it touches:
-
-```sh
-npm --prefix viz test
-npm --prefix viz run typecheck
-npm --prefix viz run lint
-npm --prefix viz run build
-node --test tools/update-adopters.test.mjs
-node --check tools/update-adopters.test.mjs
-node --check tools/update-adopters.mjs
-```
+Independently of the version edits, run the standing viz + fleet-updater validation gate — the commands in `AGENTS.md` §"Validation", from the repo root. Every cut runs it regardless of which files it touches.
 
 If a viz/code feature ships in this release, surface that the feature's own tasknote already ran its test pass — `/ft-release` does not re-run feature tests beyond these standing validation gates.
 
 ### 6.1 — CI status on the commit being built on (blocking)
 
-The commands above prove the tree passes **on this machine**, and say nothing
+The Step 6 gate proves the tree passes **on this machine**, and say nothing
 about GitHub Actions. The `drift` job is not in the local roster, so a
 CI-only failure is invisible to Step 6 — at [[CORE-546]] it had been failing on
 every push since [[CORE-535.3]], and v5.25.0 was tagged on a commit whose own run
@@ -286,7 +276,7 @@ If the sweep reports zero findings, or the only findings were Critical / High an
   budget (`docs/CONTEXT-BUDGET.md`; also refreshes that doc's ledger in this
   cut).
 - `claude/skills/ft-release/step-7.1-mirror-pairs.md` — the Pair A–R
-  mirror-pair catalogue, opening with the local runner for the eleven pairs
+  mirror-pair catalogue, opening with the local runner for the ten pairs
   whose shell lives in `tools/drift-checks.sh` (plus the wrapper-name
   invariant).
 

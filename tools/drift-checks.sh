@@ -23,7 +23,6 @@
 # - One check per top-level function, `name() {` and its closing `}` each at
 #   column 0, preceded by a `#` line carrying the check's title. Checks run in
 #   file order. A function here that is not a check would run as one.
-# - Bodies are not indented: Pair H's heredoc terminator must sit at column 0.
 # - Each check runs as its own `bash -e` process, no `pipefail` — the shell
 #   GitHub ran each `run:` step in before the move. A subshell would not do:
 #   `set -e` is ignored inside `( … ) || …`. Pair B/J/M fail on an empty
@@ -126,24 +125,6 @@ done < <(git grep -Il '' -- .)
 [ -z "$bad" ] || exit 1
 }
 
-# Pair A — templates roster clause present in both surfaces
-pair_a() {
-# Presence only. The content half — every file in templates/ named by
-# every clause — needs a filename-to-token derivation that exists
-# nowhere in the repo, and stays a §7.1 judgment call.
-# The pattern is `tasknote templates (full`, not the narrower `canonical
-# tasknote templates` this pair originally used: the since-retired
-# ft-flowtron info screen carried a compressed variant that dropped the
-# word "canonical" and was outside the file list besides, so the pair
-# missed that site from the day it shipped (CORE-422) until CORE-603.2
-# retired the screen and its third surface with it.
-bad=
-for f in README.md SPEC/layout.md; do
-  grep -q 'tasknote templates (full' "$f" || { echo "NO ROSTER CLAUSE  $f"; bad=1; }
-done
-[ -z "$bad" ] || exit 1
-}
-
 # Pair B — Claude skill flags ↔ Codex wrapper descriptions
 pair_b() {
 # The sed that strips double-quoted segments is load-bearing, not
@@ -171,52 +152,23 @@ if grep -rn '](\.\./\.\./PLAN\.md)' templates/; then
 fi
 }
 
-# Pair H — validation roster ↔ its restatement sites (AGENTS.md §"Validation")
+# Pair H — validation roster ↔ ci.yml (AGENTS.md §"Validation")
 pair_h() {
-# Presence half: each of the five sites names all seven roster commands.
-# Formats differ (YAML run:, prose, bullets, fenced lines), so this is
-# presence, not byte identity. grep -F is load-bearing: the strings
-# contain spaces and must not be regex. `npm --prefix viz test` is *not*
-# a substring of `npm --prefix viz run test` — the AGENTS form is the
-# required one; `node --check tools/update-adopters.mjs` is not a
-# substring of the .test.mjs form, so the two --checks do not collide.
-# Carve-outs, not roster members: `npm --prefix viz ci` (CI install) and
-# `npm --prefix viz run dev` (README quick command).
-# The /ft-release site is scoped to Step 6 by awk. That scoping was
-# originally self-defence — the command list once lived inside SKILL.md
-# itself, so a whole-file grep could never fail — and since CORE-507
-# moved the pair into a fragment it is no longer needed for that reason.
-# Keep it anyway: scoped to the Step 6 fence the check asserts the
-# commands sit in the validation gate, where the "verbatim" claim
-# applies, rather than passing on an incidental mention elsewhere.
-# The ci.yml site is satisfied by the `validate` job's `- run:` lines, not
-# by this heredoc, which left ci.yml with the rest of the drift shell
-# (CORE-734.2); the CI-verbatim half below is the binding check for that
-# surface and is stricter, so nothing is lost.
-bad=
-while IFS= read -r cmd; do
-  [ -z "$cmd" ] && continue
-  for f in AGENTS.md .github/workflows/ci.yml docs/CONVENTIONS.md \
-           .flaitron/tasknote/README.md; do
-    grep -q -F "$cmd" "$f" || { echo "MISSING VALIDATION CMD $f :: $cmd"; bad=1; }
-  done
-  awk '/^## Step 6 /, /^## Step 7 /' claude/skills/ft-release/SKILL.md \
-    | grep -q -F "$cmd" || { echo "MISSING VALIDATION CMD ft-release Step 6 :: $cmd"; bad=1; }
-done <<'EOF'
-npm --prefix viz test
-npm --prefix viz run typecheck
-npm --prefix viz run lint
-npm --prefix viz run build
-node --test tools/update-adopters.test.mjs
-node --check tools/update-adopters.test.mjs
-node --check tools/update-adopters.mjs
-EOF
-# CI-verbatim half: AGENTS §Validation fences vs the validate job's
-# `- run:` steps, minus the install step, byte-for-byte and in order.
-ssot=$(awk '/^## Validation$/,/^## Dev Server$/' AGENTS.md | grep -E '^(npm --prefix viz |node --)')
-ci=$(grep -E '^      - run: ' .github/workflows/ci.yml | sed 's/^      - run: //' | grep -vx 'npm --prefix viz ci')
-diff -u <(printf '%s\n' "$ssot") <(printf '%s\n' "$ci") || bad=1
-[ -z "$bad" ] || exit 1
+# AGENTS §Validation fences vs the validate job's `- run:` steps, minus
+# the install step, byte-for-byte and in order. The presence half that
+# grepped the prose sites (CONVENTIONS, the tasknote README, /ft-release
+# Step 6) went when CORE-734.7 made them point at AGENTS.md instead of
+# restating the roster; ci.yml is the one copy a reader cannot replace
+# with a pointer, because a runner executes it.
+ssot=$(awk '/^## Validation$/,/^## Dev Server$/' AGENTS.md | grep -E '^(npm --prefix viz |node --)' || true)
+ci=$(grep -E '^      - run: ' .github/workflows/ci.yml | sed 's/^      - run: //' | grep -vx 'npm --prefix viz ci' || true)
+# Two empty extractions diff clean, so a renamed heading or reshaped
+# fence would pass with nothing bound; an empty side is a finding. The
+# `|| true`s keep `bash -e` from exiting on the empty grep before the
+# finding can say which side it is.
+[ -n "$ssot" ] || { echo "NO VALIDATION ROSTER  AGENTS.md"; exit 1; }
+[ -n "$ci" ] || { echo "NO VALIDATE RUN STEPS  .github/workflows/ci.yml"; exit 1; }
+diff -u <(printf '%s\n' "$ssot") <(printf '%s\n' "$ci") || exit 1
 }
 
 # Pair J — command-stub argument-hint ↔ documented flags

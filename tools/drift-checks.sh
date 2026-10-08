@@ -16,8 +16,9 @@
 # and point here. Each `pair_*` function has a §7.1 catalogue entry in
 # step-7.1-mirror-pairs.md that names it and says what a finding means.
 # Design notes sit as `#` comments inside the body, next to the line they
-# explain. skill_pin_guard_parity (CORE-729) and final_newline (CORE-621)
-# have neither a source rule nor a catalogue entry.
+# explain. skill_pin_guard_parity (CORE-729), final_newline (CORE-621) and
+# sidequest_orphan (CORE-742.2) have neither a source rule nor a catalogue
+# entry.
 #
 # Shape rules — the dispatcher below reads them:
 # - One check per top-level function, `name() {` and its closing `}` each at
@@ -38,7 +39,8 @@
 #   flags or one glob row with no file stays legal. Count with n=$((n+1)),
 #   never ((n++)), which returns 1 from zero and ends a `bash -e` check.
 #   skill_pin_guard_parity and pair_h need no counter: an empty read already
-#   fails their own guards.
+#   fails their own guards. shipped_skill_parity and sidequest_orphan floor
+#   on their read set instead of a counter.
 # - bash 3.2 compatible: the §7.1 walk runs on the operator's machine.
 # - Each check needs one seeded-drift case in tools/drift-checks.test.mjs
 #   (CORE-739.3); its coverage test fails on a check without one.
@@ -151,6 +153,33 @@ while IFS= read -r f; do
 done < <(git grep -Il '' -- .)
 # Outside a git checkout `git grep` lists nothing.
 [ "$n" -gt 0 ] || { echo "VACUOUS final_newline  no tracked text file examined"; exit 1; }
+[ -z "$bad" ] || exit 1
+}
+
+# Sidequest orphans (claude/skills/ft-file-followup/park-mode.md §Notes "Promotion")
+sidequest_orphan() {
+# A promoted stub is deleted by the runner that promotes it (CORE-606), but
+# three closures skipped that step anyway (CORE-348, CORE-587/588, CORE-714),
+# so a stub whose ID has a checked row is the leftover. The ID is the file
+# name, per park-mode.md's `.flaitron/sidequest/<ID>.md`. PLAN-ARCHIVE.md is
+# read too: a rotated row is still closed.
+# - The floor is the closed-ID read, not the stubs, so there is no `n`
+#   counter. No stub is a legal state (every parked idea promoted), while an
+#   empty read — a reshaped row — would pass every stub. A missing PLAN file
+#   is a finding of its own: with only one file read the floor still passes,
+#   and the other file's closed rows would go unchecked.
+bad=
+for p in .flaitron/PLAN.md .flaitron/PLAN-ARCHIVE.md; do
+  [ -f "$p" ] || { echo "MISSING FILE  $p"; exit 1; }
+done
+closed=$(sed -nE 's/^[[:space:]]*- \[[xX]\] \*\*([^*]+)\*\*.*/\1/p' .flaitron/PLAN.md .flaitron/PLAN-ARCHIVE.md | sort -u)
+[ -n "$closed" ] || { echo "VACUOUS sidequest_orphan  no checked PLAN row read"; exit 1; }
+for f in .flaitron/sidequest/*.md; do
+  [ -f "$f" ] || continue
+  if printf '%s\n' "$closed" | grep -qxF -- "$(basename "$f" .md)"; then
+    echo "ORPHANED STUB  $f"; bad=1
+  fi
+done
 [ -z "$bad" ] || exit 1
 }
 

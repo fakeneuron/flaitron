@@ -58,6 +58,16 @@ const CASES = {
     seed: () => edit('README.md', (s) => s.replace(/\n+$/, '')),
     finding: /^NO FINAL NEWLINE {2}README\.md$/m,
   },
+  sidequest_orphan: {
+    // One closed row per PLAN file: a rotated row, and a nested epic child.
+    seed: () => {
+      edit('.flaitron/PLAN-ARCHIVE.md', (s) => `${s}- [x] **ZZ-1** | zz-drift — Completed 2026-01-01.\n`);
+      edit('.flaitron/PLAN.md', (s) => `${s}  - [x] **ZZ-2.1** | zz-drift — Completed 2026-01-01.\n`);
+      write('.flaitron/sidequest/ZZ-1.md', '# ZZ-1 | zz-drift\n');
+      write('.flaitron/sidequest/ZZ-2.1.md', '# ZZ-2.1 | zz-drift\n');
+    },
+    finding: /^ORPHANED STUB {2}\.flaitron\/sidequest\/ZZ-1\.md\nORPHANED STUB {2}\.flaitron\/sidequest\/ZZ-2\.1\.md$/m,
+  },
   pair_b: {
     seed: () => edit('codex/skills/ft-task/SKILL.md', (s) => s.replace(/^(description:.*)$/m, '$1 --zz-drift')),
     finding: /^MISMATCH ft-task \| .*codex:\[[^\]]*--zz-drift/m,

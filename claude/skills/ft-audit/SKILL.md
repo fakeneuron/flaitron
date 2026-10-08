@@ -15,14 +15,14 @@ Stack-neutral scaffold — **fork**, don't symlink (per-stack rubrics/commands d
 
 ## 0. Forker checklist (fill in before first run)
 
-Walk this list once per fork. Every fillable placeholder lives in the `passes/<domain>.md` files you keep; this file carries one confirm-only item (§5 step 2).
+Walk this list once per fork. Every fillable placeholder lives in the `passes/<domain>.md` files you keep; this file carries one confirm-only item (§5 step 3).
 
 - [ ] `name:` and `description:` frontmatter — set to your fork's slash-command name and a project-specific blurb.
 - [ ] Each kept `passes/<domain>.md` §"Scope & rubric hints" — set the default scope glob, your project's actual rubric paths (root `CLAUDE.md`, ADRs, contract docs, config files where invariants live), and your actual gate commands (lint / type-check / test, or scanner / profiler / doc tooling per domain).
 - [ ] Each kept `passes/<domain>.md` §"The 5 passes" — replace generic-placeholder bullets with your stack's concrete examples (library invariants, idioms, specific anti-patterns).
 - [ ] Each kept `passes/<domain>.md` §"Severity guide" — name your project's sacred invariants under **Critical** (e.g. paper-mode bypass for trading, schema-corruption risk for migrations, auth-bypass for public services).
 - [ ] Each kept `passes/<domain>.md` §"Specialist additions" — append project-specific hard rules (e.g. "paper-mode is sacred", "data integrity > convenience").
-- [ ] §5 step 2 — confirm the area-prefix list valid for your `.flaitron/tasknote/README.md` §"Area prefixes".
+- [ ] §5 step 3 — confirm the area-prefix list valid for your `.flaitron/tasknote/README.md` §"Area prefixes".
 - [ ] Optional: delete pass files for surfaces your project doesn't have (no frontend → remove `passes/frontend.md`). A domain token whose pass file is missing → stop and ask rather than improvise.
 
 The `scaffold-bootstrap.md` fragment (loaded by §1 step 3) automates the mechanical half of this list — it derives glob, rubric files, and gate commands from your repo's manifests and CI config, and can write a prefilled thin-overlay fork for you. What it cannot derive, and what this checklist still exists for, is the judgment half: your sacred invariants under **Critical**, your stack's concrete pass examples, and any extra hard rules.

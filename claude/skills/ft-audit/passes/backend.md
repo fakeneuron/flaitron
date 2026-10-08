@@ -39,7 +39,7 @@
 
 ## Specialist additions
 
-- **Typical area prefixes** (dispatcher §5 step 2): `BE-`, `DB-`, `TEST-`.
+- **Typical area prefixes** (dispatcher §5 step 3): `BE-`, `DB-`, `TEST-`.
 - **Hard rules:**
   - **Verify N+1 before reporting.** Don't flag a `for x in xs: x.related` pattern as N+1 if `xs` was loaded with eager-load already. Read the loader.
   - _(forker: append project-specific hard rules — e.g. "Every external API call has a timeout. No exceptions. Findings here are High minimum.")_

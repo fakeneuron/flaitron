@@ -177,9 +177,13 @@ there is no `.flaitron/core/` submodule here to reference
 ignored `.claude/` and is per-machine wiring the operator re-creates from
 that section's block on a fresh clone.
 
-In both cases, fill the overlay's `## Deltas` block with the derived values,
-leave `flaitron-tracks: ft-audit` as shipped, and remove the template's
-trailing forker note. Leave the not-derivable slots as clearly-marked
+In both cases, drop the template's `-<stack>` suffix everywhere it appears —
+this install is named `audit`, matching the `audit.md` wrapper: `name: audit`,
+the `# audit` heading, and the `/audit <domain> [scope]` invocation line. In
+the `description:` blurb, replace `<stack>` with the project's name. Replace
+the `## Domains` placeholder with the domains this project audits. Then fill the overlay's `## Deltas` block with the
+derived values, leave `flaitron-tracks: ft-audit` as shipped, and remove the
+template's trailing forker note. Leave the not-derivable slots as clearly-marked
 placeholders and tell the operator they are outstanding.
 
 **Never overwrite an existing overlay** — `.claude/skills/audit/` in an adopter,

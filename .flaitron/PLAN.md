@@ -21,8 +21,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-747** [medium]🧩 | codex-audit-overlay-path — `codex/skills/ft-audit/SKILL.md` and `claude/commands/ft-audit.md` describe only the full-copy fork, never the recommended thin overlay (the stub also misquotes the §1.2.1 heading); `/ft-update` Step 4.5 scans only `.claude/skills/*`, so a Codex fork gets no reconcile warning. Lead with the overlay; decide Step 4.5's `.agents/skills/` coverage. Surfaced by audit-docs 2026-10-08 (Finding #9, Medium).
 
-- [ ] **CORE-748** [light]🔧 [unattended] | audit-scaffold-self-refs — The `ft-audit` scaffold mis-cites itself: four "§5 step 2" area-prefix pointers (`SKILL.md` ×2, `passes/backend.md`, `passes/frontend.md`) mean step 3 since the filing-commit pre-check landed, and `scaffold-bootstrap.md` §5's fill step never sets the installed overlay's `name:`, heading, invocation line or `## Domains`. Surfaced by audit-docs 2026-10-08 (Finding #5, Medium; Finding #11, Low).
-
 ## Low
 
 - [ ] **CORE-749** [light]🔧 [unattended] | pair-q-wrapped-citations — Pair Q reads line by line, so a path-bearing section citation whose quoted title wraps onto the next line is never checked (39 sites in 28 files, all resolving today). Join wrapped citations in `pair_q`, add a seeded case to `tools/drift-checks.test.mjs`, note the shape in the Pair Q catalogue entry. Surfaced by audit-docs 2026-10-08 (Finding #12, Low).
@@ -41,6 +39,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-748** [light]🔧 [unattended] | audit-scaffold-self-refs — Completed 2026-10-08.
 - [x] **CORE-743** [light]🔧 [unattended] | maintainer-wiring-glob — Completed 2026-10-08.
 - [x] **CORE-744** [medium]🧩 [unattended] | skill-frontmatter-yaml — Completed 2026-10-08.
 - [x] **CORE-765** [light]🔧 | dogfood-version-line — `docs/DOGFOOD.md` reads the version from `SPEC.md`'s `**Version:**` line, not "line 1". Surfaced by audit-docs 2026-10-08 (Finding #24, Low), fixed inline.

@@ -40,7 +40,7 @@
 
 ## Specialist additions
 
-- **Typical area prefixes** (dispatcher §5 step 2): `FE-`.
+- **Typical area prefixes** (dispatcher §5 step 3): `FE-`.
 - **Hard rules:**
   - **Measure before recommending memoization.** Suggesting `useMemo` / `memo` without a measurable re-render cost is hygiene churn. If you can't point to a render that observably re-runs unnecessarily, downgrade to Low or drop.
   - _(forker: append project-specific hard rules — e.g. "Design tokens are sacred. Any hardcoded color outside the token scale is Medium minimum.")_

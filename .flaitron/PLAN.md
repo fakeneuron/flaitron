@@ -28,7 +28,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Future Opportunities
 
 - [ ] **CORE-EPIC-735** [heavy]🧠 | adopter-footprint — `.flaitron/` self-hosting records are ~14.6 MB of 16.9 MB tracked bytes and ride along in every adopter's `.flaitron/core` submodule. Discovery supplied by audit-repo 2026-10-07. Surfaced by audit-repo 2026-10-07 (Theme: Self-hosting ballast)
-  - [ ] **CORE-735.2** [medium]🧩 | submodule-weight-measure — Measure a fresh flaitron submodule add (full vs `--depth 1` vs `shallow = true`) and the bytes `/ft-update` fetches per bump, including whether shallow clones still resolve release tags; record the table in the tasknote.
+  - [x] **CORE-735.2** [medium]🧩 | submodule-weight-measure — Completed 2026-10-08.
   - [ ] **CORE-735.3** [heavy]🧠 | footprint-decision — From the .2 numbers, choose between documenting shallow submodules (MIGRATION §1, `ft-new-project`, `ft-update`) and relocating archived tasknotes off the default branch, keeping flaitron-self's decay-window evidence reachable.
   - [ ] **CORE-735.N** [heavy]🧠 | adopter-footprint audit
 

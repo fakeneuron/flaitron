@@ -16,7 +16,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Medium
 
 
-- [ ] **CORE-747** [medium]🧩 | codex-audit-overlay-path — `codex/skills/ft-audit/SKILL.md` and `claude/commands/ft-audit.md` describe only the full-copy fork, never the recommended thin overlay (the stub also misquotes the §1.2.1 heading); `/ft-update` Step 4.5 scans only `.claude/skills/*`, so a Codex fork gets no reconcile warning. Lead with the overlay; decide Step 4.5's `.agents/skills/` coverage. Surfaced by audit-docs 2026-10-08 (Finding #9, Medium).
 
 ## Low
 
@@ -33,6 +32,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-747** [medium]🧩 | codex-audit-overlay-path — Completed 2026-10-08.
 - [x] **CORE-745** [medium]🧩 [unattended] | docs-audit-single-source — Completed 2026-10-08.
 - [x] **CORE-750** [light]🔧 | release-budget-ratchet — Completed 2026-10-08.
 - [x] **CORE-766** [light]🔧 | epic-discovery-model-clause — Completed 2026-10-08.

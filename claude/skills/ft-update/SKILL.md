@@ -99,11 +99,11 @@ Report the added symlinks per platform (or "no new skills to wire"). Note: globa
 
 ## Step 4.5 — Audit-fork drift scan & pass-file refresh
 
-Scan the adopter's `.claude/skills/` for local audit forks that carry fork-provenance markers — these signal which bundled scaffold a fork was last reconciled against so that silent upstream drift becomes visible.
+Scan the adopter's skill roots for local audit forks that carry fork-provenance markers — these signal which bundled scaffold a fork was last reconciled against so that silent upstream drift becomes visible. The roots are `.claude/skills` and, if present, `.agents/skills` (where the Codex wrapper installs a fork); `<root>` below is whichever one the fork lives in.
 
-For each file matching `.claude/skills/*/SKILL.md` whose skill **directory** is not a symlink and whose `SKILL.md` is a regular file (`test ! -L "$(dirname <path>)" && test ! -L <path>`) and that contains a `flaitron-reconciled:` frontmatter field:
+For each file matching `.claude/skills/*/SKILL.md` or `.agents/skills/*/SKILL.md` whose skill **directory** is not a symlink and whose `SKILL.md` is a regular file (`test ! -L "$(dirname <path>)" && test ! -L <path>`) and that contains a `flaitron-reconciled:` frontmatter field:
 
-The directory test is the one that matters: every adopter-wired skill directory is a symlink into the submodule, and the `SKILL.md` reached *through* that link is itself a regular file, so testing the file alone passes for all of them and classifies submodule-owned skills as local forks.
+The directory test is the one that matters: every adopter-wired skill directory, Claude or Codex, is a symlink into the submodule, and the `SKILL.md` reached *through* that link is itself a regular file, so testing the file alone passes for all of them and classifies submodule-owned skills as local forks.
 
 1. Parse the file's YAML frontmatter to read:
    - `flaitron-reconciled:` — the version tag the fork was last reconciled against (e.g. `v5.2.0`).
@@ -124,7 +124,7 @@ The directory test is the one that matters: every adopter-wired skill directory 
 4. If the log is non-empty, emit a **non-blocking warning** for that fork:
 
    ```text
-   ⚠️  Audit fork drift: .claude/skills/<dir>/SKILL.md
+   ⚠️  Audit fork drift: <root>/<dir>/SKILL.md
        Reconciled at: <reconciled>  →  bumping to: <target>
        Scaffold `claude/skills/<flaitron-tracks>/` changed in N commit(s) since <reconciled>.
        Review the upstream diff, re-reconcile your fork, then update `flaitron-reconciled:` to <target>:
@@ -137,7 +137,7 @@ The directory test is the one that matters: every adopter-wired skill directory 
    For a full-copy fork whose `flaitron-tracks:` is `ft-audit`, compare its `passes/` against the bundled set — at the target *and* at the reconcile point:
 
    ```sh
-   ls .claude/skills/<dir>/passes/                                                    # the fork has
+   ls <root>/<dir>/passes/                                                            # the fork has
    git -C <FT> ls-tree --name-only <target>     -- claude/skills/ft-audit/passes/     # bundled now
    git -C <FT> ls-tree --name-only <reconciled> -- claude/skills/ft-audit/passes/     # bundled then
    ```
@@ -147,7 +147,7 @@ The directory test is the one that matters: every adopter-wired skill directory 
    - **Newly shipped** — *absent* from the `<reconciled>` listing. Upstream added the domain after this fork was last reconciled, so the forker has never had the chance to decide against it. **Offer to copy it in**, one confirm per file:
 
      ```sh
-     cp <FT>/claude/skills/ft-audit/passes/<domain>.md .claude/skills/<dir>/passes/<domain>.md
+     cp <FT>/claude/skills/ft-audit/passes/<domain>.md <root>/<dir>/passes/<domain>.md
      ```
 
      A copied file lands as an **unfilled scaffold** — say so, and point at the fork's §0 forker checklist for the slots it needs. `/ft-audit`'s own scaffold bootstrap will also catch them on the first run of that domain, so a deferred fill degrades to a prompt rather than to silence.
@@ -158,7 +158,7 @@ The directory test is the one that matters: every adopter-wired skill directory 
 
    Copies are the only write this step makes, and only on an explicit per-file `AskUserQuestion` confirm. Declining is a valid answer and changes nothing.
 
-6. If no `.claude/skills/*/SKILL.md` file carries `flaitron-reconciled:`, emit:
+6. If no `.claude/skills/*/SKILL.md` or `.agents/skills/*/SKILL.md` file carries `flaitron-reconciled:`, emit:
    `No provenance-marked audit forks found; skipping drift scan.`
 
 Drift warnings are **informational only** — the bump proceeds regardless. After the adopter reviews and re-reconciles, they manually update `flaitron-reconciled:` to `<target>`. The item-5 pass-file copies are the one exception to report-only, and they are gated behind a per-file confirm; declining leaves the fork untouched. Report all warnings, copies, and skips (if any) before continuing to Step 5.

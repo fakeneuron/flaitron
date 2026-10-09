@@ -55,6 +55,18 @@
 // gate is lifted for RENAME_TAG only — its Migration block is exactly the move
 // this performs; any other bearing release in the range still skips.
 //
+// Skill-rename migration (v7.0.0, CORE-769.7): a range crossing SKILL_RENAME.tag
+// is lifted past that one migration-bearing tag, for either layout, and the
+// apply re-wires tracked skill links in the same commit, inside the same
+// rollback window: a link to a renamed slug (`ft-seed` → `ft-seed-unattended`,
+// per SKILL_RENAME.map) is swapped to the new name, and a link into the retired
+// claude/commands/ is removed, as is a per-project link to a slug renamed into a
+// global-only skill. Links the adopter edited without committing stay put.
+// The report counts the swapped and pruned links, the tracked files that still
+// name an old slug (the AGENTS.md paste-block, the adopter's own skills and
+// docs), and any real file left in .claude/commands/ (an audit fork's copied
+// stub). Those stay per-project, as v6's step-6 prose sweep did.
+//
 // Gitlink-drift detection: even when the checked-out .flaitron/core/SPEC.md reads
 // the latest release, the superproject's committed submodule pin can still record
 // an older commit (the tag was checked out inside .flaitron/core but the pin was
@@ -101,7 +113,7 @@
 // symlink wiring for newly shipped skills, and audit-fork drift scans. When a
 // bumped range ships a new *per-project-wired* skill (one named in a platform
 // AGENTS-snippet ln -s block), the report flags the repo and names the affected
-// wiring surface.
+// wiring surface. A renamed skill counts as new unless SKILL_RENAME's swap wires it.
 
 import { execFile } from 'node:child_process';
 import {
@@ -141,15 +153,32 @@ const PRE_RENAME_SUBMODULE_PATH = join(PRE_RENAME_DIR, 'core');
 // The release that ships the rename. Its own Migration block is the move
 // applyMigrate performs, so only this tag is lifted from the migration gate.
 const RENAME_TAG = 'v6.0.0';
+// The release that hard-cut four skill slugs (CORE-EPIC-769) and retired the
+// claude/commands/ stubs (CORE-769.2). Its link work is what skillLinkPlan
+// plans, so only this tag is lifted. docs/MIGRATION.md's retired-skills table
+// is the human SSOT for the map; a test holds the two in step.
+const SKILL_RENAME = {
+  tag: 'v7.0.0',
+  map: {
+    'ft-file-followup': 'ft-file-task',
+    'ft-epic-discovery': 'ft-open-epic',
+    'ft-new-project': 'ft-adopt',
+    'ft-seed': 'ft-seed-unattended',
+  },
+  // Global-only by contract (MIGRATION's ft-new-project row): a per-project
+  // link to the old name is pruned, never swapped to a per-project new one.
+  globalOnly: ['ft-adopt'],
+};
 // Claude, Cursor and Grok all symlink the canonical claude/skills/ bodies
 // into their own <platform>/skills/ path — Cursor and Grok ship no skills
 // directory of their own, and Claude's claude/commands/ stubs retired at
 // CORE-769.2 — so their surface config is identical bar `label` and
 // `snippetPath`.
-function claudeSkillsSurface(label, snippetPath) {
+function claudeSkillsSurface(label, snippetPath, linkDir) {
   return {
     label,
     snippetPath,
+    linkDir,
     diffPaths: ['claude/skills/'],
     snippetKeyPattern: /\.flaitron\/core\/(claude\/skills\/\S+)/,
     addedKeyForFile(path) {
@@ -160,10 +189,11 @@ function claudeSkillsSurface(label, snippetPath) {
 }
 
 const WIRING_SURFACES = [
-  claudeSkillsSurface('Claude .claude/', 'claude/AGENTS-snippet.md'),
+  claudeSkillsSurface('Claude .claude/', 'claude/AGENTS-snippet.md', '.claude/skills'),
   {
     label: 'Codex .agents/skills',
     snippetPath: 'codex/AGENTS-snippet.md',
+    linkDir: '.agents/skills',
     diffPaths: ['codex/skills/'],
     snippetKeyPattern: /\.flaitron\/core\/(codex\/skills\/\S+)/,
     addedKeyForFile(path) {
@@ -171,8 +201,8 @@ const WIRING_SURFACES = [
       return skill ? skill[1] : null;
     },
   },
-  claudeSkillsSurface('Cursor .cursor/skills', 'cursor/AGENTS-snippet.md'),
-  claudeSkillsSurface('Grok .grok/skills', 'grok/AGENTS-snippet.md'),
+  claudeSkillsSurface('Cursor .cursor/skills', 'cursor/AGENTS-snippet.md', '.cursor/skills'),
+  claudeSkillsSurface('Grok .grok/skills', 'grok/AGENTS-snippet.md', '.grok/skills'),
 ];
 
 // FLAITRON_FETCH_TIMEOUT_MS override read at call time (not cached at module
@@ -484,11 +514,14 @@ async function wiredSkillKeys(toTag, surface) {
   return keys;
 }
 
+// --no-renames: a `git mv`'d skill otherwise diffs as R, which --diff-filter=A
+// drops — a renamed slug needs a fresh link exactly like a new one (CORE-769.7).
 async function addedFilesForSurface(fromTag, toTag, surface) {
   const stdout = await git(
     FLAITRON_REPO,
     'diff',
     '--name-only',
+    '--no-renames',
     '--diff-filter=A',
     `${fromTag}..${toTag}`,
     '--',
@@ -497,7 +530,10 @@ async function addedFilesForSurface(fromTag, toTag, surface) {
   return stdout.split('\n').filter((l) => l.trim().length > 0);
 }
 
-async function newSkillWiringSurfaces(fromTag, toTag) {
+// `excludeLinks`: adopter link paths the skill-rename plan creates or finds
+// already in place (checkAdopter passes its `newPath`s and `kept`s), so a rename
+// wired for this adopter is not flagged; anything else still is.
+export async function newSkillWiringSurfaces(fromTag, toTag, excludeLinks = []) {
   const affected = [];
   for (const surface of WIRING_SURFACES) {
     const added = await addedFilesForSurface(fromTag, toTag, surface);
@@ -513,7 +549,9 @@ async function newSkillWiringSurfaces(fromTag, toTag) {
 
     const needsWiring = added.some((path) => {
       const key = surface.addedKeyForFile(path);
-      return key !== null && wired.has(key);
+      return (
+        key !== null && wired.has(key) && !excludeLinks.includes(join(surface.linkDir, key.split('/').pop()))
+      );
     });
     if (needsWiring) affected.push(surface.label);
   }
@@ -575,10 +613,10 @@ export function cachedMigrationBearingTags(fromTag, toTag) {
 }
 
 const skillWiringCache = new Map();
-export function cachedNewSkillWiringSurfaces(fromTag, toTag) {
-  const key = `${fromTag}::${toTag}`;
+export function cachedNewSkillWiringSurfaces(fromTag, toTag, excludeLinks = []) {
+  const key = `${fromTag}::${toTag}::${excludeLinks.join(',')}`;
   if (!skillWiringCache.has(key)) {
-    skillWiringCache.set(key, newSkillWiringSurfaces(fromTag, toTag));
+    skillWiringCache.set(key, newSkillWiringSurfaces(fromTag, toTag, excludeLinks));
   }
   return skillWiringCache.get(key);
 }
@@ -608,7 +646,13 @@ export function cachedCanonicalTagSha(tag) {
 // gates on its .flowtron/core path — see the header's "Rename migration" note
 // for the two gates it adds, the drift guards it skips, and the scoped lift.
 // `renameTag` is a test seam: no real RENAME_TAG exists until it ships.
-export async function checkAdopter(adopter, latest, { renameTag = RENAME_TAG } = {}) {
+// `skillRename` is the same kind of seam for SKILL_RENAME (header's
+// "Skill-rename migration" note); it rides on the result into the apply.
+export async function checkAdopter(
+  adopter,
+  latest,
+  { renameTag = RENAME_TAG, skillRename = SKILL_RENAME } = {},
+) {
   const { repo, preRename = false } = adopter;
   const subPath = preRename ? PRE_RENAME_SUBMODULE_PATH : SUBMODULE_PATH;
   const sub = join(repo, subPath);
@@ -711,7 +755,11 @@ export async function checkAdopter(adopter, latest, { renameTag = RENAME_TAG } =
   const bearing = await cachedMigrationBearingTags(current, latest);
   // Scoped lift: the rename release's Migration block is the move applyMigrate
   // performs, so a pre-rename adopter clears that one tag — and only that one.
-  const blocking = preRename ? bearing.filter((tag) => tag !== renameTag) : bearing;
+  // The skill-rename tag is lifted the same way, for every adopter: its link
+  // work rides whichever apply runs.
+  const blocking = bearing.filter(
+    (tag) => !(preRename && tag === renameTag) && tag !== skillRename.tag,
+  );
   if (blocking.length > 0) {
     return {
       status: 'skip',
@@ -734,8 +782,138 @@ export async function checkAdopter(adopter, latest, { renameTag = RENAME_TAG } =
     return { status: 'skip', current, reason: `dirty ${subPath} worktree` };
   }
 
-  const skillsNote = formatSkillsNote(await cachedNewSkillWiringSurfaces(current, latest));
-  return { status: preRename ? 'migrate' : 'bump', current, skillsNote };
+  const renameVersion = parseSemverTag(skillRename.tag);
+  const crossesSkillRename =
+    currentVersion &&
+    latestVersion &&
+    compareSemver(currentVersion, renameVersion) < 0 &&
+    compareSemver(renameVersion, latestVersion) <= 0;
+  const status = preRename ? 'migrate' : 'bump';
+  if (!crossesSkillRename) {
+    return { status, current, skillsNote: formatSkillsNote(await cachedNewSkillWiringSurfaces(current, latest)) };
+  }
+  // Planned here for the report and the note; each apply re-plans from the
+  // links it finds (applyMigrate must, after re-pointing them).
+  const plan = await skillLinkPlan(repo, skillRename);
+  const wired = plan.map((entry) => entry.newPath ?? entry.kept).filter(Boolean);
+  const skillsNote = formatSkillsNote(await cachedNewSkillWiringSurfaces(current, latest, wired));
+  const mentions = await renamedSlugMentions(repo, skillRename.map);
+  const commandFiles = (await git(repo, 'ls-files', '-s', '--', '.claude/commands'))
+    .split('\n')
+    .filter((entry) => entry && !entry.startsWith('120000 '));
+  return {
+    status,
+    current,
+    skillsNote,
+    skillRename,
+    linksNote: formatLinksNote(plan, mentions, commandFiles.length),
+  };
+}
+
+// The skill-rename plan: one entry per tracked symlink the v7 link work
+// touches. A link `<dir>/<old>` into `core/<claude|codex>/skills/<old>` swaps
+// to `<dir>/<new>` (a `newPath` + `newTarget`); a link into the retired
+// `core/claude/commands/` is pruned (no `newPath`), and so is an old link whose
+// new name is already taken — the existing entry (`kept`) is the adopter's — or
+// is global-only. Matching either convention dir lets applyMigrate plan after
+// re-pointing `.flowtron` links, or checkAdopter before. Tracked links only, and
+// none the adopter has changed without committing (the pathspec commit would
+// sweep that edit in), like the v6 re-point: /ft-update Step 4.6 names the rest.
+export async function skillLinkPlan(repo, { map, globalOnly = [] }) {
+  const changed = new Set((await git(repo, 'diff', '--name-only')).split('\n').filter(Boolean));
+  const plan = [];
+  for (const path of await trackedSymlinks(repo)) {
+    if (changed.has(path)) continue;
+    const target = await readlink(join(repo, path)).catch(() => null);
+    if (target === null) continue;
+    // Empty segments dropped: a hand-made `…/ft-seed/` or `…//…` target still matches.
+    const segs = target.split('/').filter(Boolean);
+    if (segs.length < 5) continue;
+    const [dir, core, platform, kind, leaf] = segs.slice(-5);
+    if ((dir !== FLAITRON_DIR && dir !== PRE_RENAME_DIR) || core !== 'core') continue;
+    if (platform === 'claude' && kind === 'commands' && leaf.endsWith('.md')) {
+      plan.push({ path, target });
+    } else if (
+      (platform === 'claude' || platform === 'codex') &&
+      kind === 'skills' &&
+      Object.hasOwn(map, leaf) &&
+      path.split('/').pop() === leaf
+    ) {
+      const newPath = join(dirname(path), map[leaf]);
+      if (globalOnly.includes(map[leaf])) {
+        plan.push({ path, target });
+      } else if (await pathExists(join(repo, newPath))) {
+        plan.push({ path, target, kept: newPath });
+      } else {
+        plan.push({ path, target, newPath, newTarget: target.replace(/[^/]+\/*$/, map[leaf]) });
+      }
+    }
+  }
+  return plan;
+}
+
+// Carry out `plan` in the worktree, pushing an undo per mutation (applyMigrate's
+// undo-entry shape). A swapped link must resolve at the new pin, else this
+// throws into the caller's rollback. Returns the paths to stage.
+async function applySkillLinkPlan(repo, plan, undo) {
+  const paths = [];
+  for (const { path, target, newPath, newTarget } of plan) {
+    const link = join(repo, path);
+    await unlink(link);
+    undo.push([
+      `symlink ${path} left removed`,
+      async () => {
+        await unlink(link).catch(() => {});
+        await symlink(target, link);
+      },
+    ]);
+    paths.push(path);
+    if (newPath === undefined) continue;
+    const next = join(repo, newPath);
+    await symlink(newTarget, next);
+    undo.push([`symlink ${newPath} left in place`, () => unlink(next)]);
+    if (!(await isDir(next))) throw new Error(`renamed skill link ${newPath} does not resolve at the new pin`);
+    paths.push(newPath);
+  }
+  return paths;
+}
+
+// Tracked files still naming an old slug — prose the link swap cannot rewrite
+// (the AGENTS.md paste-block, the adopter's own skills and docs). Archived
+// tasknotes stay as written. The plan's own links never count: worktree
+// `git grep` skips symlinks. Report-only.
+async function renamedSlugMentions(repo, map) {
+  const slugs = Object.keys(map).join('|');
+  let out;
+  try {
+    out = await git(
+      repo,
+      'grep',
+      '-l',
+      '-E',
+      `(^|[^-a-z])(${slugs})([^-a-z]|$)`,
+      '--',
+      '.',
+      ...[FLAITRON_DIR, PRE_RENAME_DIR].flatMap((dir) => [`:!${dir}/tasknote/archive`, `:!${dir}/PLAN-ARCHIVE.md`]),
+    );
+  } catch (e) {
+    if (e.code !== 1) throw e; // exit 1: no match
+    return [];
+  }
+  return out.split('\n').filter(Boolean);
+}
+
+export function formatLinksNote(plan, mentions, commandFiles = 0) {
+  if (plan.length === 0 && mentions.length === 0 && commandFiles === 0) return '';
+  const swapped = plan.filter((entry) => entry.newPath !== undefined).length;
+  const parts = [`skill links: ${swapped} renamed, ${plan.length - swapped} pruned`];
+  if (mentions.length > 0) {
+    parts.push(`${mentions.length} tracked file(s) still name a renamed skill — sweep per project`);
+  }
+  if (commandFiles > 0) {
+    parts.push(`${commandFiles} real .claude/commands file(s) left — remove per project`);
+  }
+  return ` [${parts.join('; ')}]`;
 }
 
 // Belt-and-suspenders for applyBump: SPEC.md's Version line can't distinguish
@@ -794,8 +972,10 @@ async function checkoutVerified(sub, latest) {
   verifyPinnedSha(checkedOutSha, canonicalSha, latest);
 }
 
+// `adopter.skillRename` (set by checkAdopter when the range crosses the
+// skill-rename tag) adds the link swap to the same commit and rollback window.
 export async function applyBump(adopter, latest) {
-  const { repo } = adopter;
+  const { repo, skillRename = null } = adopter;
   const sub = join(repo, SUBMODULE_PATH);
   // Fetch adds refs only — no worktree or index mutation, so it sits outside the
   // rollback window and the prior SHA is captured immediately before the checkout.
@@ -804,26 +984,39 @@ export async function applyBump(adopter, latest) {
   await git(sub, 'fetch', '--tags', '--quiet', 'origin', { timeout: fetchTimeoutMs() });
   const priorSha = (await git(sub, 'rev-parse', 'HEAD')).trim();
   let staged = false;
+  const linkUndo = [];
   try {
     await checkoutVerified(sub, latest);
-    await git(repo, 'add', SUBMODULE_PATH);
+    const linkPaths = skillRename
+      ? await applySkillLinkPlan(repo, await skillLinkPlan(repo, skillRename), linkUndo)
+      : [];
+    await git(repo, 'add', '--', SUBMODULE_PATH, ...linkPaths);
     staged = true;
-    // Pathspec commit: only the submodule gitlink lands, never unrelated work.
-    // --no-verify: see the "Mid-bump rollback" note above for why pre-commit/
-    // commit-msg hooks are skipped here (prepare-commit-msg/post-commit still run).
+    if (linkPaths.length > 0) {
+      linkUndo.push(['skill links left staged', () => git(repo, 'reset', '--quiet', '--', ...linkPaths)]);
+    }
+    // Pathspec commit: only the submodule gitlink (and the swapped links) lands,
+    // never unrelated work. --no-verify: see the "Mid-bump rollback" note above
+    // for why pre-commit/commit-msg hooks are skipped here (prepare-commit-msg/
+    // post-commit still run).
     const current = adopter.current;
+    const rewire = linkPaths.length > 0 ? `, rewire skill links for ${skillRename.tag}` : '';
     await git(
       repo,
       'commit',
       '--quiet',
       '--no-verify',
       '-m',
-      `chore: bump flaitron ${current} → ${latest}`,
+      `chore: bump flaitron ${current} → ${latest}${rewire}`,
       '--',
       SUBMODULE_PATH,
+      ...linkPaths,
     );
   } catch (e) {
-    const residue = await rollbackBump(repo, sub, priorSha, staged);
+    // The link undos run first: they landed after the checkout rollbackBump reverts.
+    const residue = [await unwind(linkUndo), await rollbackBump(repo, sub, priorSha, staged)]
+      .filter(Boolean)
+      .join('; ');
     // Rethrow the original failure — reportResult renders it as the ✗ line — with
     // the un-undone residue appended when the repo could not be fully restored.
     if (residue) e.message = `${e.message} (rollback incomplete: ${residue})`;
@@ -1029,7 +1222,23 @@ export async function applyMigrate(adopter, latest) {
       if (clean) toStage.push(path);
     }
 
-    // 6. Stage what steps 2–5 left unstaged and commit the whole migration. No
+    // 6. A range that also crosses the skill-rename tag swaps those links now,
+    //    planned off the targets step 4 just re-pointed — staged first, so the
+    //    plan's skip of uncommitted link edits sees only the adopter's own
+    //    (step 1's undo resets the whole index).
+    let rewire = '';
+    if (adopter.skillRename) {
+      if (toStage.length > 0) await git(repo, 'add', '--', ...toStage);
+      const linkPaths = await applySkillLinkPlan(
+        repo,
+        await skillLinkPlan(repo, adopter.skillRename),
+        undo,
+      );
+      toStage.push(...linkPaths);
+      if (linkPaths.length > 0) rewire = `, rewire skill links for ${adopter.skillRename.tag}`;
+    }
+
+    // 7. Stage what steps 2–6 left unstaged and commit the whole migration. No
     //    pathspec: the index was clean, so it holds only this migration's work.
     //    --no-verify: same reasoning as the bump commit (header note).
     await git(repo, 'add', '--', '.gitmodules', SUBMODULE_PATH, ...toStage);
@@ -1039,7 +1248,7 @@ export async function applyMigrate(adopter, latest) {
       '--quiet',
       '--no-verify',
       '-m',
-      `chore: migrate ${PRE_RENAME_DIR} → ${FLAITRON_DIR}, bump flaitron ${adopter.current} → ${latest}`,
+      `chore: migrate ${PRE_RENAME_DIR} → ${FLAITRON_DIR}, bump flaitron ${adopter.current} → ${latest}${rewire}`,
     );
   } catch (e) {
     const residue = await unwind(undo);
@@ -1067,10 +1276,13 @@ async function reportResult(adopter, result, latest, apply, counts) {
     const migrate = result.status === 'migrate';
     const move = migrate ? `migrated ${PRE_RENAME_DIR}/ → ${FLAITRON_DIR}/ and ` : '';
     try {
-      await (migrate ? applyMigrate : applyBump)({ ...adopter, current: result.current }, latest);
+      await (migrate ? applyMigrate : applyBump)(
+        { ...adopter, current: result.current, skillRename: result.skillRename },
+        latest,
+      );
       counts.bumped += 1;
       console.log(
-        `  ⬆ ${adopter.name}: ${move}bumped ${result.current} → ${latest}, committed${result.skillsNote}`,
+        `  ⬆ ${adopter.name}: ${move}bumped ${result.current} → ${latest}, committed${result.skillsNote}${result.linksNote ?? ''}`,
       );
     } catch (e) {
       counts.failed += 1;
@@ -1079,7 +1291,9 @@ async function reportResult(adopter, result, latest, apply, counts) {
   } else {
     counts.planned += 1;
     const move = result.status === 'migrate' ? `migrate ${PRE_RENAME_DIR}/ → ${FLAITRON_DIR}/ and ` : '';
-    console.log(`  ⬆ ${adopter.name}: would ${move}bump ${result.current} → ${latest}${result.skillsNote}`);
+    console.log(
+      `  ⬆ ${adopter.name}: would ${move}bump ${result.current} → ${latest}${result.skillsNote}${result.linksNote ?? ''}`,
+    );
   }
 }
 
@@ -1174,4 +1388,4 @@ if (isMain) {
   });
 }
 
-export { FLAITRON_REPO, PRE_RENAME_SUBMODULE_PATH, RENAME_TAG, SUBMODULE_PATH, realOrResolve };
+export { FLAITRON_REPO, PRE_RENAME_SUBMODULE_PATH, RENAME_TAG, SKILL_RENAME, SUBMODULE_PATH, realOrResolve };

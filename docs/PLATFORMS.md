@@ -608,8 +608,8 @@ This doc does **not**:
   platform's wiring author decides which skills to translate and how.
 - Provide migration tooling for existing adopters — none needed by
   design ([[CORE-154.1]] Constitution non-negotiable on adopter-symlink
-  stability) beyond the v6.0.0 rename move (`tools/update-adopters.mjs`
-  migrate mode).
+  stability) beyond the v6.0.0 rename move and the v7.0.0 skill-rename
+  link swap (`tools/update-adopters.mjs` migrate mode).
 - Adopt any specific platform's conventions (Codex CLI's command
   shape, grok-cli's skill format, Cursor's MCP semantics, …) — those
   are external; this doc is the *pattern*, not the per-platform

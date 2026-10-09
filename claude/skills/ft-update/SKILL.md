@@ -176,13 +176,13 @@ find .cursor/skills -type l ! -exec test -e {} \; -print   # if .cursor/skills/ 
 find .grok/skills -type l ! -exec test -e {} \; -print      # if .grok/skills/ is present
 ```
 
-If any of those commands print hits, surface them:
+If any of those commands print hits, name each one's replacement. Take the link's slug (its basename, minus any `.md`) and find its row in the **Retired** column of the table in `<FT>/docs/MIGRATION.md` §"Retired skills leave dangling symlinks"; a `.claude/commands/*.md` hit matches the `claude/commands/ft-*.md` row, and a brace group in a cell (`ft-audit-{backend,…}`) stands for each slug it expands to. The **Replacement** cell's leading command, or `none`, is the `→` value; a slug with no row reads `→ not in the retired table`. Surface them:
 
 ```text
 ⚠️  Dangling symlink(s) found — target no longer resolves in the bumped submodule:
-    <path>
-    <path>
-Likely a retired/folded skill (see docs/MIGRATION.md §"Retired skills leave dangling symlinks" for what replaced it). Safe to `rm` — these are symlinks into the submodule, never real files. Not pruned automatically; remove them yourself.
+    <path>  → <replacement, e.g. /ft-file-task (renamed in v7.0.0)>
+    <path>  → <replacement>
+Each replacement comes from <FT>/docs/MIGRATION.md §"Retired skills leave dangling symlinks". For a renamed skill in the snippet list, Step 4 has already wired the new name. Safe to `rm` — these are symlinks into the submodule, never real files. Not pruned automatically; remove them yourself.
 ```
 
 If all present-surface commands print nothing, report "No dangling symlinks found." This check is informational only — the bump proceeds regardless, and `/ft-update` never runs `rm` on the adopter's behalf.

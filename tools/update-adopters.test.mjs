@@ -14,6 +14,7 @@ import {
   FLAITRON_REPO,
   PRE_RENAME_SUBMODULE_PATH,
   RENAME_TAG,
+  SKILL_RENAME,
   SUBMODULE_PATH,
   applyBump,
   applyMigrate,
@@ -29,12 +30,14 @@ import {
   gitlinkDrift,
   latestReleaseTag,
   migrationBearingTags,
+  newSkillWiringSurfaces,
   parseArgs,
   parseSemverTag,
   pinnedVersion,
   realOrResolve,
   renamedDirSegments,
   renamedRemoteUrl,
+  skillLinkPlan,
   tagsInRange,
   verifyPinnedSha,
 } from './update-adopters.mjs';
@@ -1088,6 +1091,271 @@ describe('rename migration (CORE-711.3)', { concurrency: GROUP_CONCURRENCY }, ()
     } finally {
       await rmTree(ws);
     }
+  });
+});
+
+/**
+ * Tracked links shaped like the v7 fleet: one untouched skill link, a renamed
+ * slug on both the Claude and Codex surfaces, a renamed slug whose new name is
+ * already linked, one renamed into a global-only skill, a retired command
+ * link, a look-alike command link into another toolkit's core/, and an
+ * AGENTS.md naming an old slug. The map points at skills every fixture tag
+ * ships, so a swap resolves.
+ */
+const FIXTURE_RENAME_MAP = { 'ft-old': 'ft-update', 'ft-taken': 'ft-task', 'ft-glob': 'ft-audit-repo' };
+const FIXTURE_GLOBAL_ONLY = ['ft-audit-repo'];
+
+async function addRenameLinks(repo, dir = '.flaitron') {
+  const into = (path) => `../../${dir}/core/${path}`;
+  await mkdir(join(repo, '.claude', 'skills'), { recursive: true });
+  await mkdir(join(repo, '.claude', 'commands'), { recursive: true });
+  await mkdir(join(repo, '.agents', 'skills'), { recursive: true });
+  // makePreRenameAdopter already links ft-task.
+  if (!(await exists(join(repo, '.claude', 'skills', 'ft-task')))) {
+    await symlink(into('claude/skills/ft-task'), join(repo, '.claude', 'skills', 'ft-task'));
+  }
+  await symlink(into('claude/skills/ft-old'), join(repo, '.claude', 'skills', 'ft-old'));
+  await symlink(into('claude/skills/ft-taken'), join(repo, '.claude', 'skills', 'ft-taken'));
+  await symlink(into('claude/skills/ft-glob'), join(repo, '.claude', 'skills', 'ft-glob'));
+  await symlink('../../vendor/core/claude/commands/other.md', join(repo, '.claude', 'commands', 'other.md'));
+  await symlink(into('codex/skills/ft-old'), join(repo, '.agents', 'skills', 'ft-old'));
+  await symlink(into('claude/commands/ft-task.md'), join(repo, '.claude', 'commands', 'ft-task.md'));
+  await writeFile(join(repo, 'AGENTS.md'), 'Run /ft-old to file; ft-older is unrelated.\n');
+  await gitQuiet(repo, 'add', '-A');
+  await gitQuiet(repo, 'commit', '-q', '-m', 'wire skills');
+}
+
+const RENAMED_LINKS = [
+  '.agents/skills/ft-old',
+  '.agents/skills/ft-update',
+  '.claude/commands/ft-task.md',
+  '.claude/skills/ft-glob',
+  '.claude/skills/ft-old',
+  '.claude/skills/ft-taken',
+  '.claude/skills/ft-update',
+];
+
+describe('skill-rename migration (CORE-769.7)', { concurrency: GROUP_CONCURRENCY }, () => {
+  let root;
+  let skillRename;
+
+  before(async () => {
+    root = await mkdtemp(join(tmpdir(), 'ft-upd-skill-'));
+    skillRename = { tag: latest, map: FIXTURE_RENAME_MAP, globalOnly: FIXTURE_GLOBAL_ONLY };
+  });
+
+  after(async () => {
+    await rmTree(root);
+  });
+
+  it('every SKILL_RENAME entry has its MIGRATION retired-skills row', async () => {
+    const migration = await readFile(join(FLAITRON_REPO, 'docs', 'MIGRATION.md'), 'utf8');
+    for (const [from, to] of Object.entries(SKILL_RENAME.map)) {
+      const row = new RegExp(
+        `^\\| \`${from}\` \\| ${SKILL_RENAME.tag.replace(/\./g, '\\.')} \\| \`/${to}\``,
+        'm',
+      );
+      assert.match(migration, row, `${from} → ${to}`);
+    }
+  });
+
+  it('the new-skills note sees a git-mv\'d skill unless the swap wires it', async () => {
+    // The CORE-769.3 commit is a real `git mv` of ft-file-followup → ft-file-task.
+    const sha = (
+      await git(FLAITRON_REPO, 'log', '-1', '--format=%H', '--', 'claude/skills/ft-file-followup/SKILL.md')
+    ).trim();
+    const seen = await newSkillWiringSurfaces(`${sha}~1`, sha);
+    assert.ok(seen.includes('Claude .claude/'), `got ${JSON.stringify(seen)}`);
+    assert.ok(seen.includes('Codex .agents/skills'), `got ${JSON.stringify(seen)}`);
+    // Excluded only where the swap wires it: the Codex link alone leaves Claude flagged.
+    assert.deepEqual(await newSkillWiringSurfaces(`${sha}~1`, sha, ['.agents/skills/ft-file-task']), [
+      'Claude .claude/',
+      'Cursor .cursor/skills',
+      'Grok .grok/skills',
+    ]);
+    const everyLink = ['.claude', '.agents', '.cursor', '.grok'].map((d) => `${d}/skills/ft-file-task`);
+    assert.deepEqual(await newSkillWiringSurfaces(`${sha}~1`, sha, everyLink), []);
+  });
+
+  it('plan: swaps renamed links, prunes command links, taken and global-only names, ignores the rest', async () => {
+    const adopter = await makeAdopter(root, 'plan', previous);
+    await addRenameLinks(adopter.repo);
+    const plan = await skillLinkPlan(adopter.repo, skillRename);
+    const byPath = Object.fromEntries(plan.map((entry) => [entry.path, entry]));
+    assert.deepEqual(Object.keys(byPath).sort(), [
+      '.agents/skills/ft-old',
+      '.claude/commands/ft-task.md',
+      '.claude/skills/ft-glob',
+      '.claude/skills/ft-old',
+      '.claude/skills/ft-taken',
+    ]);
+    assert.equal(byPath['.claude/skills/ft-glob'].newPath, undefined);
+    assert.equal(byPath['.claude/skills/ft-glob'].kept, undefined);
+    assert.equal(byPath['.claude/skills/ft-taken'].kept, '.claude/skills/ft-task');
+    assert.equal(byPath['.claude/skills/ft-old'].newPath, '.claude/skills/ft-update');
+    assert.equal(byPath['.claude/skills/ft-old'].newTarget, '../../.flaitron/core/claude/skills/ft-update');
+    assert.equal(byPath['.agents/skills/ft-old'].newTarget, '../../.flaitron/core/codex/skills/ft-update');
+    assert.equal(byPath['.claude/skills/ft-taken'].newPath, undefined);
+    assert.equal(byPath['.claude/commands/ft-task.md'].newPath, undefined);
+
+    // A hand-made trailing-slash target still matches, and swaps without the slash.
+    await symlink('../../.flaitron/core/claude/skills/ft-slash/', join(adopter.repo, '.claude', 'skills', 'ft-slash'));
+    await gitQuiet(adopter.repo, 'add', '-A');
+    await gitQuiet(adopter.repo, 'commit', '-q', '-m', 'slash link');
+    const slashed = (await skillLinkPlan(adopter.repo, { map: { 'ft-slash': 'ft-update' } })).find(
+      (entry) => entry.path === '.claude/skills/ft-slash',
+    );
+    assert.equal(slashed?.newTarget, '../../.flaitron/core/claude/skills/ft-update');
+
+    // A tracked link the adopter re-pointed without committing stays theirs.
+    await rm(join(adopter.repo, '.claude', 'skills', 'ft-old'));
+    await symlink('../../elsewhere/ft-old', join(adopter.repo, '.claude', 'skills', 'ft-old'));
+    const dirty = await skillLinkPlan(adopter.repo, skillRename);
+    assert.equal(dirty.some((entry) => entry.path === '.claude/skills/ft-old'), false);
+  });
+
+  it('classify: a crossing range carries the rename and counts links + mentions', async () => {
+    const adopter = await makeAdopter(root, 'classify', previous);
+    await addRenameLinks(adopter.repo);
+    const result = await checkAdopter(adopter, latest, { skillRename });
+    assert.equal(result.status, 'bump');
+    assert.equal(result.skillRename, skillRename);
+    assert.equal(
+      result.linksNote,
+      ' [skill links: 2 renamed, 3 pruned; 1 tracked file(s) still name a renamed skill — sweep per project]',
+    );
+
+    // An audit fork's copied stub is a real file the link work never touches.
+    await writeFile(join(adopter.repo, '.claude', 'commands', 'audit.md'), 'Invoke the ft-audit skill.\n');
+    await gitQuiet(adopter.repo, 'add', '-A');
+    await gitQuiet(adopter.repo, 'commit', '-q', '-m', 'fork stub');
+    assert.match(
+      (await checkAdopter(adopter, latest, { skillRename })).linksNote,
+      /; 1 real \.claude\/commands file\(s\) left — remove per project\]$/,
+    );
+
+    // Crossing with nothing to rewire or sweep adds no note.
+    const bare = await makeAdopter(root, 'classify-bare', previous);
+    assert.equal((await checkAdopter(bare, latest, { skillRename })).linksNote, '');
+
+    // A range that stops short of the tag carries nothing.
+    const short = await checkAdopter(adopter, latest, { skillRename: { ...skillRename, tag: nextMajor(latest) } });
+    assert.equal(short.status, 'bump');
+    assert.equal(short.skillRename, undefined);
+    assert.equal(short.linksNote, undefined);
+  });
+
+  // v5.0.0 is a real BREAKING release, so it stands in for the skill-rename
+  // tag: v4.5.0..v5.0.0 is exactly [v5.0.0].
+  it('lift is scoped to the skill-rename tag', async () => {
+    const adopter = await makeAdopter(root, 'lift', 'v4.5.0');
+    const lifted = await checkAdopter(adopter, 'v5.0.0', {
+      skillRename: { tag: 'v5.0.0', map: FIXTURE_RENAME_MAP },
+    });
+    assert.equal(lifted.status, 'bump');
+
+    const blocked = await checkAdopter(adopter, 'v5.0.0');
+    assert.equal(blocked.status, 'skip');
+    assert.match(blocked.reason, /migration-bearing release\(s\) in range: v5\.0\.0/);
+  });
+
+  it('apply: one pathspec commit carries the gitlink and the rewired links', async () => {
+    const adopter = await makeAdopter(root, 'apply', previous);
+    const { repo } = adopter;
+    await addRenameLinks(repo);
+    await writeFile(join(repo, 'unrelated.txt'), 'keep out\n');
+    const headBefore = (await git(repo, 'rev-parse', 'HEAD')).trim();
+
+    const result = await checkAdopter(adopter, latest, { skillRename });
+    await applyBump({ ...adopter, current: result.current, skillRename: result.skillRename }, latest);
+
+    assert.equal((await git(repo, 'rev-parse', 'HEAD~1')).trim(), headBefore);
+    assert.equal(
+      (await git(repo, 'log', '-1', '--format=%s')).trim(),
+      `chore: bump flaitron ${previous} → ${latest}, rewire skill links for ${latest}`,
+    );
+    const files = (await git(repo, 'show', '--name-only', '--pretty=format:', 'HEAD'))
+      .trim()
+      .split('\n')
+      .sort();
+    assert.deepEqual(files, [...RENAMED_LINKS, SUBMODULE_PATH].sort());
+
+    for (const link of ['.claude/skills/ft-update', '.agents/skills/ft-update', '.claude/skills/ft-task']) {
+      assert.ok((await stat(join(repo, link))).isDirectory(), link);
+    }
+    for (const gone of ['.claude/skills/ft-old', '.claude/skills/ft-taken', '.claude/skills/ft-glob', '.agents/skills/ft-old', '.claude/commands/ft-task.md']) {
+      assert.equal(await exists(join(repo, gone)), false, gone);
+    }
+    assert.equal(await exists(join(repo, '.claude', 'skills', 'ft-audit-repo')), false);
+    assert.equal(await readlink(join(repo, '.claude', 'commands', 'other.md')), '../../vendor/core/claude/commands/other.md');
+    assert.equal((await git(repo, 'status', '--porcelain')).trim(), '?? unrelated.txt');
+    assert.equal((await checkAdopter({ name: adopter.name, repo }, latest, { skillRename })).status, 'current');
+  });
+
+  it('rollback: a rejected commit restores links, index, and pin exactly', async () => {
+    const adopter = await makeAdopter(root, 'rollback', previous);
+    const { repo, sub } = adopter;
+    await addRenameLinks(repo);
+    const hooks = join(repo, '.git', 'hooks');
+    await mkdir(hooks, { recursive: true });
+    await writeFile(join(hooks, 'prepare-commit-msg'), '#!/bin/sh\nexit 1\n', { mode: 0o755 });
+    await gitQuiet(repo, 'config', 'core.hooksPath', hooks);
+
+    const snapshot = async () => ({
+      head: (await git(repo, 'rev-parse', 'HEAD')).trim(),
+      subHead: (await git(sub, 'rev-parse', 'HEAD')).trim(),
+      status: await git(repo, 'status', '--porcelain'),
+      links: await Promise.all(
+        ['.claude/skills/ft-old', '.claude/skills/ft-taken', '.claude/skills/ft-glob', '.agents/skills/ft-old', '.claude/commands/ft-task.md'].map(
+          (link) => readlink(join(repo, link)),
+        ),
+      ),
+    });
+    const before = await snapshot();
+
+    await assert.rejects(
+      () => applyBump({ ...adopter, current: previous, skillRename }, latest),
+      (e) => {
+        assert.doesNotMatch(e.message, /rollback incomplete/);
+        return true;
+      },
+    );
+
+    assert.deepEqual(await snapshot(), before);
+    assert.equal(await exists(join(repo, '.claude', 'skills', 'ft-update')), false);
+    assert.equal(await exists(join(repo, '.agents', 'skills', 'ft-update')), false);
+  });
+
+  it('apply: a swap that does not resolve at the new pin rolls back', async () => {
+    const adopter = await makeAdopter(root, 'unresolved', previous);
+    await addRenameLinks(adopter.repo);
+    const headBefore = (await git(adopter.repo, 'rev-parse', 'HEAD')).trim();
+    await assert.rejects(
+      () =>
+        applyBump(
+          { ...adopter, current: previous, skillRename: { tag: latest, map: { 'ft-old': 'ft-nowhere' } } },
+          latest,
+        ),
+      /ft-nowhere does not resolve/,
+    );
+    assert.equal((await git(adopter.repo, 'rev-parse', 'HEAD')).trim(), headBefore);
+    assert.equal((await git(adopter.repo, 'status', '--porcelain')).trim(), '');
+  });
+
+  it('migrate: a pre-rename adopter crossing both tags rewires after the move', async () => {
+    const adopter = await makePreRenameAdopter(root, 'migrate-rewire', previous);
+    await addRenameLinks(adopter.repo, '.flowtron');
+    const result = await checkAdopter(adopter, latest, { renameTag: latest, skillRename });
+    assert.equal(result.status, 'migrate');
+    await applyMigrate({ ...adopter, current: result.current, skillRename: result.skillRename }, latest);
+
+    const { repo } = adopter;
+    assert.match((await git(repo, 'log', '-1', '--format=%s')).trim(), /, rewire skill links for /);
+    assert.equal(await readlink(join(repo, '.claude', 'skills', 'ft-update')), '../../.flaitron/core/claude/skills/ft-update');
+    assert.ok((await stat(join(repo, '.claude', 'skills', 'ft-update'))).isDirectory());
+    assert.equal(await exists(join(repo, '.claude', 'skills', 'ft-old')), false);
+    assert.equal(await exists(join(repo, '.claude', 'commands', 'ft-task.md')), false);
+    assert.equal((await git(repo, 'status', '--porcelain')).trim(), '');
   });
 });
 

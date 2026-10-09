@@ -499,7 +499,7 @@ Existing symlinks in `.claude/` and `.agents/skills/` don't need to be touched �
 
 #### Retired skills leave dangling symlinks
 
-When a release removes a skill from the adopter subset, the symlinks you created for it still exist in your project and now point at a path that no longer exists in the submodule. Nothing breaks elsewhere — the dead symlink just surfaces a slash command that fails when invoked. `/ft-update` wires symlinks for *newly shipped* skills and, as of its Step 4.6, also reports any dangling ones left by a retired skill — but it never prunes them, so removal is still manual.
+When a release removes a skill from the adopter subset, the symlinks you created for it still exist in your project and now point at a path that no longer exists in the submodule. Nothing breaks elsewhere — the dead symlink just surfaces a slash command that fails when invoked. `/ft-update` wires symlinks for *newly shipped* skills and, as of its Step 4.6, also reports any dangling ones left by a retired skill, naming each one's replacement from the table below — but it never prunes them, so removal is still manual.
 
 Running `/ft-update` surfaces dangling hits automatically; to check outside of a bump (or on a project that ran an older `/ft-update`), run the same command it uses:
 
@@ -534,9 +534,29 @@ Remove each hit with `rm`. The commands are safe: these are symlinks into the su
 | `ft-quality` | v5.15.0 | None; ask your agent to run lint/typecheck/tests directly, or use the project's own commands |
 | `ft-audit-{backend,frontend,security,performance,docs}` | v5.15.0 | `/ft-audit <domain>` — see §1.2.1 "Migrating a pre-consolidation audit fork" |
 
+#### Upgrading to v7.0.0 (skill renames)
+
+v7.0.0 hard-cuts four slugs and retires the command stubs (the five v7.0.0 rows above), so a bump leaves links to the old names dangling. The fleet updater below re-wires tracked links for you. By hand, after checking out v7.0.0 in `.flaitron/core`, run from the project root:
+
+```sh
+for d in .claude/skills .agents/skills .cursor/skills .grok/skills; do
+  for pair in ft-file-followup:ft-file-task ft-epic-discovery:ft-open-epic ft-seed:ft-seed-unattended; do
+    old=${pair%%:*} new=${pair#*:}
+    case "$(readlink "$d/$old" 2>/dev/null)" in */.flaitron/core/*/skills/"$old"*) ;; *) continue ;; esac
+    [ -e "$d/$new" ] || [ -L "$d/$new" ] || ln -s "$(dirname "$(readlink "$d/$old")")/$new" "$d/$new"
+    rm "$d/$old"
+  done
+  # ft-adopt stays global-only: drop a per-project ft-new-project link, add none
+  case "$(readlink "$d/ft-new-project" 2>/dev/null)" in */.flaitron/core/*) rm "$d/ft-new-project" ;; esac
+done
+[ -d .claude/commands ] && find .claude/commands -type l -lname '*/.flaitron/core/claude/commands/*.md' -exec rm {} +
+```
+
+Then stage the link dirs that exist (`git add -A .claude .agents ...`). Re-paste the `AGENTS.md` block from the bumped snippet, and sweep the remaining prose the links don't cover. To list it: `git grep -nE '(^|[^-a-z])(ft-file-followup|ft-epic-discovery|ft-new-project|ft-seed)([^-a-z]|$)' -- ':!.flaitron/tasknote/archive' ':!.flaitron/PLAN-ARCHIVE.md'`. Agent-home links (a global `ft-new-project`) and an audit fork's copied command file are covered by their rows above.
+
 A bump is itself a project-side task (e.g., `CORE-XXX: Bump flaitron to vX.Y.Z`), with a tasknote and the usual 4-phase flow. Don't bump in passing.
 
-For sweeping **non-breaking** releases across the whole workspace at once, flaitron's checkout ships `tools/update-adopters.mjs` (dry-run by default; see `SPEC/scope-boundaries.md` §"What flaitron does NOT provide" for the carve-out). It skips any repo whose release range carries real migration steps — or a tag whose notes it can't classify, which it treats as migration-bearing rather than assume safe — and flags ranges that shipped new Claude, Codex, Cursor, or Grok skill symlinks — those still go through the per-project flow above (or `/ft-update`). One breaking release is the exception: a pre-rename adopter (`.flowtron/core`) is classified `migrate` once the latest tag is v6.0.0 or later, and `--apply` performs steps 1–5 of the v6 move ([UPGRADING.md](UPGRADING.md)) in one rollback-safe local commit (it renames the submodule in place rather than re-adding it); step 6's prose sweep stays per-project. Its checkout keeps an existing §1.1 sparse-checkout but does not apply one, so a re-cloned adopter it bumps stays full until the next `/ft-update` or a hand re-run; the §1.1 fence covers that window.
+For sweeping **non-breaking** releases across the whole workspace at once, flaitron's checkout ships `tools/update-adopters.mjs` (dry-run by default; see `SPEC/scope-boundaries.md` §"What flaitron does NOT provide" for the carve-out). It skips any repo whose release range carries real migration steps — or a tag whose notes it can't classify, which it treats as migration-bearing rather than assume safe — and flags ranges that shipped new Claude, Codex, Cursor, or Grok skill symlinks — those still go through the per-project flow above (or `/ft-update`). Two breaking releases are exceptions. A pre-rename adopter (`.flowtron/core`) is classified `migrate` once the latest tag is v6.0.0 or later, and `--apply` performs steps 1–5 of the v6 move ([UPGRADING.md](UPGRADING.md)) in one rollback-safe local commit (it renames the submodule in place rather than re-adding it); step 6's prose sweep stays per-project. v7.0.0 is the second, lifted for either layout: in the same commit, `--apply` swaps each tracked link to a renamed skill and removes tracked `.claude/commands/` links (§"Upgrading to v7.0.0 (skill renames)"). The report counts both, plus the tracked files still naming an old slug, whose sweep stays per-project. The updater's checkout keeps an existing §1.1 sparse-checkout but does not apply one, so a re-cloned adopter it bumps stays full until the next `/ft-update` or a hand re-run; the §1.1 fence covers that window.
 
 **Upgrading an existing adopter from v5.x (`.flowtron/` → `.flaitron/`)** and **from v4.x (`_project/` → `.flowtron/`)** — both one-time directory-rename recipes live in [UPGRADING.md](UPGRADING.md).
 

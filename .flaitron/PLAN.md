@@ -15,7 +15,9 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-(none)
+- [ ] **CORE-EPIC-769** [heavy]🧠 | skill-surface — Rethink how flaitron skills are named, bundled, and installed before the next release: default wiring vs fork/global-only policy, renames, roster add/retire, and packaging channel. .1 may split this into two epics.
+  - [ ] **CORE-769.1** [heavy]🧠 | skill-surface discovery — Discovery: survey skill naming, bundling, and install policy — why ft-audit is fork-only and ft-audit-repo/ft-new-project global-only, ft-file-followup → ft-file-task and peer renames, roster additions/retirements, plugin vs submodule-symlink packaging; file children, or two epics if warranted. Filed with starter at `.flaitron/tasknote/CORE-769.1.md`.
+  - [ ] **CORE-769.N** [heavy]🧠 | skill-surface audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed with the reserved terminal `.N` suffix.
 
 ## Low
 

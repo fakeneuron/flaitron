@@ -265,7 +265,7 @@ cp .flaitron/core/templates/PLAN.md .flaitron/PLAN.md
 
 Then fill in the project name, vision paragraph, and current task list. Tasks use the area-prefix convention from SPEC.md §"Task ID convention" (`CORE-`, `BE-`, `FE-`, etc.). Project-specific prefixes are allowed; declare them in the next file.
 
-**`.flaitron/PLAN-ARCHIVE.md` appears later — do not create it now.** `## Completed` grows one row per closure and is bounded: once it passes 60 rows, a runner skill that reads PLAN.md surfaces a one-line advisory suggesting you rotate the oldest rows into a sibling `.flaitron/PLAN-ARCHIVE.md`. Rotation is an operator motion you run when you choose — nothing auto-applies, and no row is ever deleted. See [`SPEC/plan-filing.md`](../SPEC/plan-filing.md) §"`## Completed` rotation" for the bound, the row-count granularity, and the never-split-a-cohort rule.
+**`.flaitron/PLAN-ARCHIVE.md` appears later — do not create it now.** `## Completed` grows one row per closure and is bounded: once it passes 60 rows, the closure that crosses the bound moves the oldest rows into a sibling `.flaitron/PLAN-ARCHIVE.md` until 40 or fewer remain, in its own `chore:` commit right after the closure commit. The agent runs this itself with no prompt, and no row is ever deleted. See [`SPEC/plan-filing.md`](../SPEC/plan-filing.md) §"`## Completed` rotation" for the bound, the row-count granularity, and the never-split-a-cohort rule.
 
 ### 1.5 Create `.flaitron/tasknote/README.md`
 

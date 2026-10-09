@@ -272,7 +272,7 @@ If the sweep reports zero findings, or the only findings were Critical / High an
 - `claude/skills/ft-release/step-7.1-standing-checks.md` — wiring-consumer
   derivation · shipped-skill parity · installed-surface policy · self-wiring
   parity (local blocking + machine-global advisory) · README task-counter ·
-  completed-rotation (advisory) · viz-majors-outdated (advisory) · context
+  completed-rotation (advisory backstop) · viz-majors-outdated (advisory) · context
   budget (`docs/CONTEXT-BUDGET.md`; also refreshes that doc's ledger in this
   cut).
 - `claude/skills/ft-release/step-7.1-mirror-pairs.md` — the Pair A–R
@@ -333,7 +333,7 @@ Surface the bundled 📦 ready-to-commit gate per SPEC/gates.md §"Operator-gate
 
 - **Global self-wiring verdict (advisory)** — carry the §7.1 machine-global half into the closure review as one line, e.g. `Global wiring: clean`, `Global wiring: 9 dangling links, 2 path casings, 1 over-install — fix out of band`, or `Global wiring: not run — read refused; run natabula's scripts/grant-global-skill-read.sh`. Like the SOP-currency verdict this **does not block commit-go**: agent homes are machine state and no file in this cut can carry the fix. The §7.1 *local* half is not reported here — it blocks upstream and is already resolved by the time this gate is reached.
 
-- **Completed-rotation verdict (advisory)** — carry the §7.1 completed-rotation count into the closure review as one line, e.g. `Completed rotation: 36 rows (bound 60)` or `Completed rotation: 88 rows (>60) — rotate out of band`. Like the two verdicts above this **does not block commit-go**: rotation is an operator motion (`SPEC/plan-filing.md` §"`## Completed` rotation") and a release cut never applies it.
+- **Completed-rotation verdict (advisory backstop)** — carry the §7.1 completed-rotation count into the closure review as one line, e.g. `Completed rotation: 36 rows (bound 60)` or `Completed rotation: 88 rows (>60) — missed rotation; Step 8 rotates it`. Like the two verdicts above this **does not block commit-go**: every closure rotates on its own (`SPEC/plan-filing.md` §"`## Completed` rotation"), so the count should read under the bound, and a miss is repaired by this release's own post-closure rotation (Step 8), in a local `chore:` commit after the release commit that rides the next push.
 
 - **Viz-majors-outdated verdict (advisory)** — carry the §7.1 majors list into the closure review as one line, e.g. `Viz majors: none pending` or `Viz majors: typescript 5.9.3→7.0.2, js-yaml 4.3.2→5.4.2 — bump or re-park out of band`. Like the three verdicts above this **does not block commit-go**: `npm outdated` is registry-time state (`docs/CONVENTIONS.md` §"Dependency audit cadence") and a release cut never bumps majors inline.
 
@@ -374,6 +374,8 @@ The post-closure protocol is canonical in `SPEC/post-closure.md` — **Read it n
   ```
 
   On push-go No, drop "published release" from the marker and append a one-line manual follow-up reminder under it (e.g., `Manual push pending: ▶️ RUN: \`git push origin <branch>\` then \`git push origin vA.B.C\`, then \`gh release create vA.B.C --latest --title "<title>" --notes "<notes>"\`.`).
+
+- **Rotation** — post-closure step 2's `## Completed` rotation runs here as for any closer, after §7.5's operations land and before the 🏁 marker; when it runs, append `· rotated <N> rows in <sha>` to the marker. Its `chore:` commit is not part of the pushed release — it stays local and rides the next push.
 
 - **Suggest-next-move + copy-paste line** — follow in the same response as the 🏁 marker. Candidates carry `[model]` inline per option (`**<TASK-ID>** [model] | shortname — one-sentence "why now"`). The next move is typically the next pending child in the cohort that filed this release, or `/ft-file-followup` for any drift surfaced during the cut.
 

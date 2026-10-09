@@ -18,7 +18,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 - [ ] **CORE-EPIC-768** [heavy]🧠 | plan-auto-rotate — Make `## Completed` rotation into `PLAN-ARCHIVE.md` an automatic in-workflow agent procedure (no script — SPEC core principle #2) with hysteresis (>60 → ~40), replacing the operator-motion advisory; also auto-flip an epic parent once all its children close (filed via /ft-epic-discovery; refined at .1 closure).
   - [x] **CORE-768.1** [frontier]💎 | plan-auto-rotate discovery — Completed 2026-10-09.
   - [x] **CORE-768.2** [heavy]🧠 | auto-rotate-contract — Completed 2026-10-09.
-  - [ ] **CORE-768.3** [medium]🧩 | rotation-advisory-retire — Drop the >60 advisory from ft-task preamble.md, SPEC/procedures/ft-task.md, and /ft-close-epic Step 2; reword /ft-release §7.1's standing check as a backstop that should always read under-bound; update prose mirrors (templates/PLAN.md, GLOSSARY, MIGRATION, EXTERNAL-AGENTS, SPEC.md, README, AGENTS-snippet).
+  - [x] **CORE-768.3** [medium]🧩 | rotation-advisory-retire — Completed 2026-10-09.
   - [ ] **CORE-768.4** [heavy]🧠 | epic-parent-auto-flip — When any closure leaves every child of an epic `[x]`, flip the parent to stub form and move the cohort to the top of `## Completed`, ahead of the rotation check in SPEC/post-closure.md. Retire /ft-close-epic's Yes/No prompt and its --unattended deferral; update gate-postures.md, gates.md's override example, epic.md's placement invariant, and plan-filing.md.
   - [ ] **CORE-768.N** [heavy]🧠 | plan-auto-rotate audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
 

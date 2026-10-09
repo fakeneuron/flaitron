@@ -45,7 +45,7 @@ Paths this skill uses:
 
 ## Step 1 — Locate the task in PLAN.md and pre-flight
 
-**Read `<PREAMBLE>` now** and run its §"Locate and capture": the PLAN.md lookup, the status gate, the segment capture, the `[unattended]` row marker, the 🎯 purpose blurb, and the two advisory checks. Filing-on-the-fly is out of scope here; the PLAN.md entry must already exist. The row marker's `<suppressions>` clause is `📦 signal trips suppressed at Step 5`. This skill has one scaffold path, so the blurb and the ✅ Recap are the operator's only two plain-English reads of the run.
+**Read `<PREAMBLE>` now** and run its §"Locate and capture": the PLAN.md lookup, the status gate, the segment capture, the `[unattended]` row marker, the 🎯 purpose blurb, and the filing-discipline check. Filing-on-the-fly is out of scope here; the PLAN.md entry must already exist. The row marker's `<suppressions>` clause is `📦 signal trips suppressed at Step 5`. This skill has one scaffold path, so the blurb and the ✅ Recap are the operator's only two plain-English reads of the run.
 
 Then run its §"Pre-flight" (Area, epic-ID dispatch, foreign-dirt gate, archive collision, `--unattended` open-siblings audit), with this check ahead of its foreign-dirt bullet, so an uncommitted note is refused as in flight rather than stopped as dirt; micro-tasknotes for epic subtasks are valid — same lifecycle, lighter ceremony:
 

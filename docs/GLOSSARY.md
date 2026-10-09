@@ -28,7 +28,7 @@ Alphabetized. ~73 entries. Maintained via epic children and audits.
 
 **Closure (Phase 4)** — The final auto-run phase: mandatory doc-drift sweep, PLAN.md line flip to stub form + archive move, recap draft. Flows directly into the post-closure protocol. See SPEC §"🚀 Phase 4: Closure".
 
-**`## Completed` rotation** — The bound on PLAN.md's `## Completed` section: at most 60 checked rows; past that, a runner skill that reads PLAN.md surfaces a one-line advisory and the operator rotates the oldest rows (current month included; never splitting an epic cohort from its children) into a sibling `.flaitron/PLAN-ARCHIVE.md`. Rows move verbatim, append-only. Viz reads both files. See SPEC/plan-filing.md §"`## Completed` rotation".
+**`## Completed` rotation** — The bound on PLAN.md's `## Completed` section: at most 60 checked rows; past that, every closing runner's post-closure step moves the oldest rows (current month included; never splitting an epic cohort from its children) into a sibling `.flaitron/PLAN-ARCHIVE.md` until 40 or fewer remain, in its own `chore:` commit with no prompt. Rows move verbatim, append-only. Viz reads both files. See SPEC/plan-filing.md §"`## Completed` rotation".
 
 **Conditional skip rule** — The deterministic privileged-ops path/keyword test plus bundled-prompt override that decides whether the 📦 ready-to-commit gate fires or the closure auto-commits. Frontend diffs and perf-narrative reasoning do not trip the gate. See SPEC/gates.md §"Conditional skip rule".
 

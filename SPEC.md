@@ -698,7 +698,7 @@ What happens to a PLAN.md row *after* it is filed lives in
 [`SPEC/plan-filing.md`](SPEC/plan-filing.md): filing motions auto-commit at
 hand-off (filing approval *is* commit authorization; execution skills keep
 their commit-go gate), the `## Completed` stub-form convention, and the
-advisory `## Completed` rotation bound.
+automatic `## Completed` rotation.
 
 ## Priority levels
 

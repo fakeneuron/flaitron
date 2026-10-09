@@ -43,10 +43,10 @@ Illustrative entries (replace TASK-ID with a real <AREA>-<N> id when filing):
   - [x] **TASK-ID** [light] | shortname — Completed YYYY-MM-DD.
 
 `## Completed` is bounded (see .flaitron/core/SPEC/plan-filing.md
-§"`## Completed` rotation"): past ~60 rows, rotate the oldest rows into a
-sibling `.flaitron/PLAN-ARCHIVE.md`. That file does not exist until your
-first rotation, and rotation is an operator motion — nothing here
-auto-applies, and no closed row is ever deleted.
+§"`## Completed` rotation"): past 60 rows, the closure that crosses the bound
+moves the oldest rows into a sibling `.flaitron/PLAN-ARCHIVE.md` until 40 or
+fewer remain, in its own `chore:` commit. That file does not exist until the
+first rotation, and no closed row is ever deleted.
 
 These examples live ABOVE the first `##` heading on purpose: the parser only
 processes checkbox lines *inside* ## High / Medium / Low / Future Opportunities

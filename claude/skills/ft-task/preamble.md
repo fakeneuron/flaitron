@@ -37,14 +37,7 @@ Two lines: the ID and the `| shortname`, then 1-2 sentences of purpose drawn fro
    as a starter? Proceeding with the existing line.
 ```
 
-**Completed-rotation check (advisory).** While PLAN.md is open, count the checked rows under `## Completed` (nested epic children included). Over **60** → surface one line and proceed:
-
-```text
-⚠️ PLAN.md `## Completed` holds <N> rows (>60). Consider rotating the
-   oldest rows to `.flaitron/PLAN-ARCHIVE.md`. Proceeding.
-```
-
-Both checks are informational only — never block, never refile, never rotate. The bound, the row-count granularity, and the never-split-a-cohort rule are canonical in SPEC/plan-filing.md §"`## Completed` rotation".
+The check is informational only — never block, never refile.
 
 ## Pre-flight
 

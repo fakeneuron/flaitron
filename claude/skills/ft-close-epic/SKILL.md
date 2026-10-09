@@ -53,15 +53,6 @@ Read `.flaitron/PLAN.md`. Locate the parent epic ID by stripping the `.<SUB>` su
 - If no parent epic line is found in PLAN.md (active OR `## Completed`), stop and tell the user no parent epic `<AREA>-EPIC-<NUMBER>` exists for the given audit ID. The audit subtask must be filed under a parent epic via `/ft-epic-discovery`.
 - If the parent epic line lives under `## Completed`, stop and surface the conflict — the parent has already been closed.
 
-**Completed-rotation check (advisory).** While PLAN.md is open, count the checked rows under `## Completed` (nested epic children included). If the count exceeds **60**, surface a one-line warning:
-
-```text
-⚠️ PLAN.md `## Completed` holds <N> rows (>60). Consider rotating the
-   oldest rows to `.flaitron/PLAN-ARCHIVE.md`. Proceeding.
-```
-
-Informational only — never block, never rotate. Rotation is an operator motion; the bound, the row-count granularity, and the never-split-a-cohort rule are canonical in SPEC/plan-filing.md §"`## Completed` rotation".
-
 Walk the parent's nested children block (lines indented 2 spaces under the parent line, matching `  - [ ] **<AREA>-<NUMBER>.<SUB>**` or `  - [x] **<AREA>-<NUMBER>.<SUB>**`, where `.<SUB>` is a number or the reserved literal `.N`). Determine:
 
 - Whether a **`.N` audit child** (the reserved terminal suffix) is filed.

@@ -35,7 +35,7 @@ Subsequent steps name what to Read; the SPEC contract + matching SKILL fragment 
 
 ## Step 1 — Locate the task in PLAN.md and pre-flight
 
-**Read `<SKILL_DIR>/preamble.md` now** — shared with `/ft-micro-task`, read every run — and run its §"Locate and capture": the PLAN.md lookup, the status gate, the segment capture, the `[unattended]` row marker, the 🎯 purpose blurb, and the two advisory checks. Here the row marker's `<suppressions>` clause is `same suppressions as --fast`, and the blurb fires ahead of the 3a / 3b / 3c branch.
+**Read `<SKILL_DIR>/preamble.md` now** — shared with `/ft-micro-task`, read every run — and run its §"Locate and capture": the PLAN.md lookup, the status gate, the segment capture, the `[unattended]` row marker, the 🎯 purpose blurb, and the filing-discipline check. Here the row marker's `<suppressions>` clause is `same suppressions as --fast`, and the blurb fires ahead of the 3a / 3b / 3c branch.
 
 Then run its §"Pre-flight" (Area, epic-ID dispatch, foreign-dirt gate, archive collision, `--unattended` open-siblings audit), with this check ahead of its foreign-dirt bullet — run here, before the model gate, so a retag or an `--unattended` park never lands on a note this run then refuses, and before the dirt gate, so an uncommitted note is routed rather than stopped as dirt:
 

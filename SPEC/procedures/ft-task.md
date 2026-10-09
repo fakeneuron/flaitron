@@ -163,14 +163,6 @@ expects no reply, blocks nothing, and is suppressed by neither `--fast` nor
 `--unattended`. It is **not** an operator cue and adds no gate. Full contract:
 [`SPEC/cue-vocabulary.md`](../cue-vocabulary.md) §"🎯 Purpose blurb".
 
-**`## Completed`-rotation advisory.** While `PLAN.md` is open, count the
-checked rows under `## Completed` (nested epic children included). Past
-**60**, surface a one-line `⚠️` advisory naming the count and suggesting the
-operator rotate the oldest rows to `.flaitron/PLAN-ARCHIVE.md` — then
-continue. Informational only; never block, never rotate on your own. Full
-contract (the 60-row bound, row-count granularity, the never-split-a-cohort
-rule): [`SPEC/plan-filing.md` §"`## Completed` rotation"](../plan-filing.md).
-
 **Filing-length advisory.** If the captured long description exceeds 70 words,
 emit an informational warning and continue; do not block or refile it.
 

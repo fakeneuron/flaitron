@@ -110,7 +110,7 @@ report where the absent operator will see them.
    rerun Step 1a against the final ID before Step 3.
 1. **Title (shortname)** — concise; up to ~30 chars. Used as the `| shortname` segment on the PLAN.md line.
 2. **Priority** — `High | Medium | Low | Future Opportunities`. AI proposes its best read. For urgent rows, propose `High` with a `[!critical]` flag (see `SPEC/task-line-segments.md`).
-3. **Model** — see `SPEC/model.md` §"Model field" (and its "Practical guidance and agent-aware defaults" subsection) for examples and realistic defaults (mid-tier models like Grok/Sonnet often `[medium]`, or `[light]` for mechanical work); AI proposes a token (primary labels or specific name); goes on the PLAN.md task line.
+3. **Model** — see `SPEC/model.md` §"Model field" (and its "Practical guidance and agent-aware defaults" subsection) for examples and realistic defaults (mid-tier models like Grok/Sonnet often `[medium]`, or `[light]` for mechanical work); AI proposes a token (primary labels or specific name; `[frontier]` only on a `SPEC/model.md` §"When to choose `[frontier]`" trigger, and never `[xheavy]` — the operator's manual-only rung); goes on the PLAN.md task line.
 4. **Long description** — the one-line PLAN.md long description (everything after `— ` on the task line). AI drafts from conversation context.
 
 **Filing-discipline gate** (per SPEC/tasknote-selection.md §"PLAN.md filing-discipline thresholds"). Word-count the drafted long description:

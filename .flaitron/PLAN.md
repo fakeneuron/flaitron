@@ -15,6 +15,9 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
+- [ ] **CORE-EPIC-768** [heavy]🧠 | plan-auto-rotate — Make `## Completed` rotation into `PLAN-ARCHIVE.md` an automatic in-workflow agent procedure (no script — SPEC core principle #2) with hysteresis (>60 → ~40), replacing the operator-motion advisory; also auto-flip an epic parent once all its children close (filed via /ft-epic-discovery; refined at .1 closure).
+  - [ ] **CORE-768.1** [frontier]💎 | plan-auto-rotate discovery — Scope shared design and file children .2..4 per SPEC/epic.md.
+  - [ ] **CORE-768.N** [heavy]🧠 | plan-auto-rotate audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
 
 
 ## Low

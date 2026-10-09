@@ -21,7 +21,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Low
 
-- [ ] **CORE-750** [light]🔧 | release-budget-ratchet — `docs/CONTEXT-BUDGET.md` sizes the `claude/skills/ft-release/**` cap (125,000) as "measured total plus ~1.5 working units", but CORE-734's pair retirements cut the directory to 106,074 (~4 units of slack), so it no longer ratchets. Lower the cap to ~113,000 or restate the rationale; log it in cap history. Surfaced by audit-docs 2026-10-08 (Finding #18, Low).
 
 - [ ] **CORE-727** [medium]🧩 | decay-window-restore — Blocked by decay-window depth: window [[CORE-724.7]] opened at `504f160f`. After 10 tasknotes archive past that SHA and at least one `/ft-audit` run commits filings past it, restore each of the four dropped rule groups only if the window shows the failure it guarded. Bar is in the archived CORE-724.7 note.
 
@@ -35,6 +34,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-750** [light]🔧 | release-budget-ratchet — Completed 2026-10-08.
 - [x] **CORE-766** [light]🔧 | epic-discovery-model-clause — Completed 2026-10-08.
 - [x] **CORE-746** [light]🔧 [unattended] | frontier-sweep-gaps — Completed 2026-10-08.
 - [x] **CORE-749** [light]🔧 [unattended] | pair-q-wrapped-citations — Completed 2026-10-08.

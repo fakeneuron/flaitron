@@ -152,7 +152,7 @@ Alphabetized. ~73 entries. Maintained via epic children and audits.
 
 **wikilink [[TASK-ID]]** — The only parsed cross-reference syntax in PLAN long-descriptions and tasknote Related sections; populates `relatedTasks` / `blockedBy` metadata. Bare IDs and angle-bracket placeholders are literal text only. See SPEC §"Task-line format".
 
-**worktree** — Isolated git checkout for one independent epic child (`<project>-worktrees/wt-<ID>/` alongside the project checkout, branch `wt-<ID>`, copy of the child tasknote). Operator-opt-in parallelism; the start procedure may warn on an open YAML `blocked-by` but must not lock. No skill — the four-command procedure lives in docs/WORKTREES.md.
+**worktree** — Isolated git checkout for one independent epic child (`<project>-worktrees/wt-<ID>/` alongside the project checkout, branch `wt-<ID>`, copy of the child tasknote). Operator-opt-in parallelism; the start procedure may warn on an open YAML `blocked-by` but must not lock. No skill — the hand-run procedure lives in docs/WORKTREES.md.
 
 ---
 

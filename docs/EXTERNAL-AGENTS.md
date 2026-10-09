@@ -46,7 +46,7 @@ When an external agent runs a tasknote to completion, its output is exactly what
 
 - **Closed** — tasknote archived, `PLAN.md` line stubbed `[x]`, one atomic commit covering deliverables + PLAN flip + archive move.
 - **Parked** — tasknote still at `.flaitron/tasknote/<TASK-ID>.md` with `status: blocked` and a `park-reason:` code, `PLAN.md` line still `[ ]`, no commit. Phase 1 and any partial Phase 2 are preserved verbatim.
-- **Refused** — nothing written at all. A pre-scaffold stop (a dirty tree, an already-closed ID, an existing archive, an audit with an open sibling, a model mismatch on an existing note or sidequest stub) is reported and the run terminates rather than leaving a half-scaffolded note behind.
+- **Refused** — nothing written at all. A pre-scaffold stop (a dirty tree, an already-closed ID, an existing archive, an audit with an open sibling, a model mismatch on an existing note or sidequest stub, a skill body that disagrees with the pinned `.flaitron/core/`) is reported and the run terminates rather than leaving a half-scaffolded note behind.
 
 **The control point moves; it does not disappear.** With an operator at the 📦 gate, the diff review is the control. With none, two things hold that line in its place: the park conversions, which stop the run at any question an absent operator would have answered, and the **paper-complete guard** (SPEC.md §"Paper-complete guard"), which the posture leaves untouched — the foreign-dirt gate still refuses a dirty tree, closure is still one atomic commit, and 🏁 still requires a real deliverable-covering SHA. Review is deferred to the accumulated commits, not removed from the loop.
 

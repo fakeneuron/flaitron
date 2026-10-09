@@ -22,6 +22,15 @@ unless correcting a factual error.
 
 ---
 
+## v6.1.0 — [frontier] model tier, context diet, slimmer submodule
+
+- A [frontier]💎 tier sits between [heavy] and [xheavy]. Next-move cues name a `model @ effort` pick from a tier × platform map in docs/PLATFORMS.md.
+- A context diet cuts the default /ft-task cold-start path to 113,578 chars. The AGENTS.md paste-block shrinks to 3,697 chars, and two lazy SPEC modules are retired.
+- Adopters can sparse-checkout .flaitron/core without flaitron's own archive (~18.5 → ~2.9 MB). /ft-update re-applies it.
+- /ft-audit-repo and /ft-epic-discovery commit their own filings. Adopter skills stop with ⛔ skill/pin mismatch when loaded from an agent-home install.
+
+Also: --unattended park ordering and note recovery; the worktree procedure initializes the submodule; v5.x rename recipes move to docs/UPGRADING.md.
+
 ## v6.0.0 — flowtron is now flaitron (.flowtron/ → .flaitron/, hard cut)
 
 - The project, repository (github.com/fakeneuron/flaitron), convention directory (.flaitron/), and submodule path (.flaitron/core) are renamed, with no old-name fallback. Archived tasknotes and the ft-* skill prefix are unchanged.

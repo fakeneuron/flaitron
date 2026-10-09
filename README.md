@@ -21,8 +21,8 @@ actually review. No scripts, daemons, databases, or schemas to maintain.
 
 ![The flaitron visualizer showing flaitron's own PLAN.md — open tasks by priority, phase-progress dots, and the completed archive](.flaitron/screenshots/viz-board.png)
 
-Flaitron is built with flaitron: **1064 tasks** closed through this exact
-workflow between 2026-04-28 and 2026-10-04 (as of 2026-10-04) — each one with
+Flaitron is built with flaitron: **1135 tasks** closed through this exact
+workflow between 2026-04-28 and 2026-10-08 (as of 2026-10-09) — each one with
 a tasknote preserved in [`.flaitron/tasknote/archive/`](.flaitron/tasknote/archive/).
 Count and date range are recomputed each release by `/ft-release` §7.1's
 "Standing README task-counter check" (one archived tasknote per closed task,
@@ -104,7 +104,7 @@ serves it; Grok-only projects follow [`grok/AGENTS-snippet.md`](grok/AGENTS-snip
   `docs/AGENT-COMPAT.md` `last-verified` row
 - [docs/WORKTREES.md](docs/WORKTREES.md) — worktree convention for parallel
   epic children: the five locked decisions (location, branch naming,
-  skill naming, tasknote handling, cleanup) and the four-command start / end procedure
+  skill naming, tasknote handling, cleanup) and the hand-run start / end procedure
 - [docs/HARNESS-SURVEY.md](docs/HARNESS-SURVEY.md) — dated comparisons of
   flaitron against contemporary harnesses and trackers: differentiators, gaps,
   overkill, and the seed list for the next wider pass
@@ -122,7 +122,7 @@ serves it; Grok-only projects follow [`grok/AGENTS-snippet.md`](grok/AGENTS-snip
   with nobody watching reports to — convention and contract only, no
   orchestration runtime
 - [CONTRIBUTING.md](CONTRIBUTING.md) — solo-maintenance model, how to file
-  issues, when PRs make sense
+  issues, when PRs make sense, and maintainer skill wiring for this checkout
 - [SECURITY.md](SECURITY.md) — threat model (prompt injection via
   user-authored markdown, submodule supply-chain trust, viz dev-server
   scope) and how to report a vulnerability
@@ -308,7 +308,7 @@ runtime lives in the runner; the contract lives in flaitron.
 - `.flaitron/` — flaitron's own roadmap and tasknotes (self-hosted)
 - `viz/` — Vite/React visualizer (priority-grouped list + optional board mode)
 - `tools/` — operator-side fleet scripts (`update-adopters.mjs`, the singular CLI carve-out — see `SPEC/scope-boundaries.md` §"What flaitron does NOT provide" — plus its portable `update-adopters.test.mjs` suite), and `drift-checks.sh`, the shell of the CI `drift` job and the `/ft-release` §7.1 pair walk, plus its `drift-checks.test.mjs` self-test
-- `CONTRIBUTING.md` — solo-maintenance model; issue and PR guidance
+- `CONTRIBUTING.md` — solo-maintenance model; issue and PR guidance; maintainer skill wiring
 - `SECURITY.md` — threat model and vulnerability reporting
 - `LICENSE` — MIT
 - pre-v0.1.0 source preserved in git tag `legacy-pre-v0.1.0`

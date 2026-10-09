@@ -118,7 +118,7 @@ its cap.
 
 ## Ledger
 
-Measured 2026-10-04 at v6.0.0, refreshed by [[CORE-712]] — the release cut,
+Measured 2026-10-09 at v6.1.0, refreshed by [[CORE-767]] — the release cut,
 which re-measured the four command-covered subsections. The large-reference
 figures stay the 2026-09-22 readings named in that subsection. Refreshed by
 `/ft-release` §7.1 in the same cut that reads it — if these numbers are stale,
@@ -127,10 +127,10 @@ the cut that made them stale skipped its own standing check.
 **Default-path cold start.** A ledger row, not a budget — nothing here is
 CI-enforced; it sums the surfaces a flagless `/ft-task <ID>.<sub>` reads before
 any Phase 1 write: `claude/commands/ft-task.md` (2,520) + `claude/skills/ft-task/SKILL.md`
-(29,338) + `SPEC.md` (47,006) + `.flaitron/tasknote/README.md` (10,734) +
-`templates/tasknote-template.md` (5,635) + `SPEC/gates.md` (20,454) +
-`SPEC/epic.md` (5,959) = **121,646 chars**
-(≈30k tokens; `.flaitron/PLAN.md`'s own band, below, is excluded since it isn't
+(25,352) + `claude/skills/ft-task/preamble.md` (8,215) + `SPEC.md` (43,217) +
+`.flaitron/tasknote/README.md` (10,731) + `templates/tasknote-template.md`
+(3,993) + `SPEC/gates.md` (13,812) + `SPEC/epic.md` (5,738) = **113,578 chars**
+(≈28k tokens; `.flaitron/PLAN.md`'s own band, below, is excluded since it isn't
 a flaitron-shipped surface). Re-measured at [[CORE-674]] — the −231 since [[CORE-664]]'s 121,840 is `gates.md` losing
 464 (unrelated trims) against `ft-task/SKILL.md` +218 (CORE-656's review-probe
 box) and `SPEC.md` +15, net of the rest holding flat. Tracks
@@ -156,6 +156,12 @@ Re-measured at [[CORE-690]]: the seven cold-start inputs held (`SPEC.md`'s
 version token stayed the same length). Sum **121,637**.
 Re-measured at [[CORE-712]]: `gates.md` 20,454 (+10, [[CORE-691]]), `SPEC.md`
 47,006 (−1, the `v6.0.0` token); the other five rows held. Sum **121,646** (+9).
+Re-measured at [[CORE-767]], with `ft-task/preamble.md` (8,215, every-run since
+[[CORE-724.4]]) added to the sum: [[CORE-EPIC-724]]'s context diet took
+`SPEC.md` 47,006 → 43,217, `ft-task/SKILL.md` 29,338 → 25,352, `gates.md`
+20,454 → 13,812, the template 5,635 → 3,993, and `epic.md` 5,959 → 5,738; the
+tasknote README moved −3 and the command stub held. Sum **113,578** (−8,068,
+net of the preamble's first count).
 
 [[CORE-664]] re-measured every row rather than differencing one against the
 v5.32.0 snapshot, and found the snapshot had gone stale on three of them —
@@ -178,12 +184,12 @@ stamped to this task rather than to v5.32.0.
 
 | Surface | Chars |
 |---|---|
-| `SPEC.md` | 47,006 |
-| `claude/skills/ft-task/SKILL.md` | 29,338 |
-| `claude/skills/ft-task/preamble.md` | — (added at [[CORE-724.4]], after this stamp; the next refresh measures it and adds it to the cold-start sum) |
-| `AGENTS.md` (`CLAUDE.md` is a symlink to it) | 7,599 |
-| `.flaitron/tasknote/README.md` | 10,734 |
-| `templates/tasknote-template.md` | 5,635 |
+| `SPEC.md` | 43,217 |
+| `claude/skills/ft-task/SKILL.md` | 25,352 |
+| `claude/skills/ft-task/preamble.md` | 8,215 |
+| `AGENTS.md` (`CLAUDE.md` is a symlink to it) | 8,400 |
+| `.flaitron/tasknote/README.md` | 10,731 |
+| `templates/tasknote-template.md` | 3,993 |
 | `.flaitron/PLAN.md` | ~2–3k (band — see below) |
 
 **Why `.flaitron/PLAN.md` carries a band and not a number.** Every other surface
@@ -206,18 +212,16 @@ not ship.
 
 ### Lazy `SPEC/` modules
 
-`procedures/ft-task.md` 34,295 · `gates.md` 20,454 ·
-`gate-postures.md` 20,409 · `gate-discipline.md` 4,686 ·
-`plan-filing.md` 18,660 · `tasknote-selection.md` 15,217 ·
-`cue-vocabulary.md` 15,213 · `model.md` 14,765 ·
-`blocked.md` 14,655 · `unattended-candidacy.md` 12,304 ·
-`plan-parser.md` 9,364 · `loop.md` 8,428 · `post-closure.md` 8,389 ·
-`task-line-segments.md` 5,691 · `epic.md` 5,959 ·
-`procedures/README.md` 5,970 ·
-`layout.md` 5,396 · `scope-boundaries.md` 5,472 ·
-`tasknote-inserts.md` 4,615 · `purpose-blurb.md` 4,027 ·
-`superseded-claims.md` 2,947 · `starter.md` 2,520 ·
-`versioning.md` 1,349.
+`procedures/ft-task.md` 33,842 · `gate-postures.md` 21,482 ·
+`plan-filing.md` 18,525 · `model.md` 17,816 ·
+`cue-vocabulary.md` 16,838 · `blocked.md` 14,888 ·
+`gates.md` 13,812 · `unattended-candidacy.md` 13,130 ·
+`tasknote-selection.md` 10,604 · `plan-parser.md` 9,368 ·
+`loop.md` 8,428 · `post-closure.md` 8,307 · `layout.md` 6,225 ·
+`task-line-segments.md` 5,976 · `epic.md` 5,738 ·
+`scope-boundaries.md` 5,583 · `procedures/README.md` 5,119 ·
+`tasknote-inserts.md` 4,031 · `superseded-claims.md` 2,947 ·
+`starter.md` 2,520 · `versioning.md` 1,349.
 Re-measured 2026-10-02 at v5.34.0 ([[CORE-684]]). Deltas since the v5.33.0
 stamp: `gates.md` 20,332 → 20,444 and `SPEC.md` 46,923 → 47,007 ([[CORE-660]],
 both still under cap), `plan-filing.md` 17,176 → 18,622, `epic.md` 6,127 →
@@ -233,6 +237,14 @@ from the rename sweep ([[CORE-711.4]]) and the cite sweep ([[CORE-691]]):
 `blocked.md` 14,627 → 14,655, `plan-parser.md` 9,331 → 9,364, `loop.md`
 8,476 → 8,428, `scope-boundaries.md` 5,371 → 5,472, `starter.md` 2,494 →
 2,520, `versioning.md` 1,219 → 1,349. The other lazy rows held.
+Re-measured 2026-10-09 at v6.1.0 ([[CORE-767]]). [[CORE-724.3]] retired
+`gate-discipline.md` (into `docs/GATE-DISCIPLINE.md`) and `purpose-blurb.md`
+(into `SPEC/cue-vocabulary.md` §"🎯 Purpose blurb"), so both rows are gone. Largest
+deltas since that stamp: `gates.md` 20,454 → 13,812 and `tasknote-selection.md`
+15,217 → 10,604 ([[CORE-724.2]] / [[CORE-724.3]]), `model.md` 14,765 → 17,816
+(the `[frontier]` rung and §"Effort recommendations", [[CORE-EPIC-741]]),
+`cue-vocabulary.md` 15,213 → 16,838 (the folded purpose blurb),
+`gate-postures.md` 20,409 → 21,482. The rest moved under ±900.
 
 `gates.md` and `tasknote-selection.md` are lazy by declaration and
 near-universal in practice; `plan-filing.md` was too until [[CORE-605]]
@@ -264,10 +276,10 @@ moved bytes widen the core's headroom.
 
 ### Skill bodies (`SKILL.md` only)
 
-ft-release 34,641 · ft-task 29,338 · ft-epic-discovery 29,277 · ft-close-epic
-28,002 · ft-audit 27,733 · ft-file-followup 26,390 · ft-micro-task 21,321 ·
-ft-update 16,749 · ft-refactor 16,524 · ft-new-project 12,969 · ft-seed 12,699 ·
-ft-audit-repo 10,099.
+ft-release 35,146 · ft-epic-discovery 32,749 · ft-close-epic 28,323 · ft-task
+25,352 · ft-file-followup 24,971 · ft-update 19,794 · ft-audit 18,392 ·
+ft-micro-task 18,195 · ft-refactor 16,486 · ft-new-project 13,935 · ft-seed
+12,433 · ft-audit-repo 11,577.
 
 `ft-goal-task`, `ft-spec`, `ft-starter-task`, `ft-worktree-start`, and
 `ft-worktree-end` were retired at v5.27.0 (CORE-570/571/572/573), folded into
@@ -278,7 +290,7 @@ across the two cuts, not eight fewer surfaces flaitron covers.
 
 Lazy fragments are not counted against a skill's row — they arrive later, and
 only on the branch that needs them. Whole-directory totals for the two largest:
-`ft-release` 116,152, `ft-task` 76,823. Splitting a body into fragments defers
+`ft-release` 107,012, `ft-task` 85,291. Splitting a body into fragments defers
 load; it does not remove it ([[CORE-507]] §2.5), so a skill that fragments its
 way under the cap without shedding content has gamed the number rather than met
 it. For `ft-release` that is no longer only a ledger observation: its
@@ -291,7 +303,7 @@ cut. The one exception is `preamble.md`, read on every `/ft-task` and
 
 ### Adopter-side always-loaded
 
-`claude/AGENTS-snippet.md` 16,139 (pasted into the adopter's `AGENTS.md`) ·
+`claude/AGENTS-snippet.md` 12,890 (pasted into the adopter's `AGENTS.md`) ·
 `templates/tasknote-README.md` 4,839 · `templates/PLAN.md` 3,048.
 
 ### Large reference docs

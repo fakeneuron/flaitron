@@ -1,6 +1,6 @@
 # Flaitron — Workflow Specification
 
-**Version:** v6.0.0
+**Version:** v6.1.0
 **Status:** Stable
 
 ## What is Flaitron

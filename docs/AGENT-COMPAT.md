@@ -33,10 +33,10 @@ for its Grok Build notes. The agent-neutral workflow contract itself
 
 | Agent | Consume mode | Context entry-point | Skill / command primitive | Last verified |
 |---|---|---|---|---|
-| **Claude Code** | Wiring + contract | `AGENTS.md` (+ optional `CLAUDE.md`) | `.claude/skills/` + `.claude/commands/` slash commands — full `ft-*` bundle shipped; adopter repos wire the policy subset | `v6.0.0 · 2026-10-04 (dogfooded)` |
-| **Grok Build** | Wiring + contract (thin, Cursor-shaped) | `AGENTS.md` | Thin `grok/` bundle — `AGENTS-snippet.md` + `procedures/ft-task.md`; no skill wrappers. Discovers `.claude/skills/` and `.agents/skills/` (and `.cursor/skills/`) as compat surfaces plus native `.grok/skills/`; auto-wired as `/<name>`. Adopters reuse canonical `claude/skills/` bodies (stop if Claude/Codex/Cursor already wired; Grok-only follows `grok/AGENTS-snippet.md`). Those bodies' operator flags come with them ([`PLATFORMS.md` §"Non-Claude capability triggers"](PLATFORMS.md#non-claude-capability-triggers)) | `v5.35.0 · 2026-10-02 (dogfooded; skipped @ v6.0.0)` |
-| **Codex CLI** | Wiring + contract | `AGENTS.md` | `.agents/skills/` repo-scoped skills — full `ft-*` bundle shipped under `codex/skills/`, adopter repos wire the policy subset; `codex/procedures/ft-task.md` pointer wrapper retained. `ft-task` enters `SPEC/procedures/ft-task.md` with canonical-body fallback; other wrappers enter the canonical `claude/skills/` bodies. Their operator flags come with them ([`PLATFORMS.md` §"Non-Claude capability triggers"](PLATFORMS.md#non-claude-capability-triggers)) | `v6.0.0 · 2026-10-04 (dogfooded)` |
-| **Cursor** | Wiring + contract (thin) | `AGENTS.md` | Thin `cursor/` bundle — `AGENTS-snippet.md` + `procedures/ft-task.md`; no skill wrappers. Adopters wire canonical `claude/skills/` bodies (reuse `.claude/` when already present, or `.cursor/skills/` for Cursor-only). Those bodies' operator flags come with them ([`PLATFORMS.md` §"Non-Claude capability triggers"](PLATFORMS.md#non-claude-capability-triggers)) | `v5.33.0 · 2026-09-23 (dogfooded; skipped @ v6.0.0)` |
+| **Claude Code** | Wiring + contract | `AGENTS.md` (+ optional `CLAUDE.md`) | `.claude/skills/` + `.claude/commands/` slash commands — full `ft-*` bundle shipped; adopter repos wire the policy subset | `v6.1.0 · 2026-10-08 (dogfooded)` |
+| **Grok Build** | Wiring + contract (thin, Cursor-shaped) | `AGENTS.md` | Thin `grok/` bundle — `AGENTS-snippet.md` + `procedures/ft-task.md`; no skill wrappers. Discovers `.claude/skills/` and `.agents/skills/` (and `.cursor/skills/`) as compat surfaces plus native `.grok/skills/`; auto-wired as `/<name>`. Adopters reuse canonical `claude/skills/` bodies (stop if Claude/Codex/Cursor already wired; Grok-only follows `grok/AGENTS-snippet.md`). Those bodies' operator flags come with them ([`PLATFORMS.md` §"Non-Claude capability triggers"](PLATFORMS.md#non-claude-capability-triggers)) | `v6.1.0 · 2026-10-08 (dogfooded)` |
+| **Codex CLI** | Wiring + contract | `AGENTS.md` | `.agents/skills/` repo-scoped skills — full `ft-*` bundle shipped under `codex/skills/`, adopter repos wire the policy subset; `codex/procedures/ft-task.md` pointer wrapper retained. `ft-task` enters `SPEC/procedures/ft-task.md` with canonical-body fallback; other wrappers enter the canonical `claude/skills/` bodies. Their operator flags come with them ([`PLATFORMS.md` §"Non-Claude capability triggers"](PLATFORMS.md#non-claude-capability-triggers)) | `v6.1.0 · 2026-10-08 (dogfooded)` |
+| **Cursor** | Wiring + contract (thin) | `AGENTS.md` | Thin `cursor/` bundle — `AGENTS-snippet.md` + `procedures/ft-task.md`; no skill wrappers. Adopters wire canonical `claude/skills/` bodies (reuse `.claude/` when already present, or `.cursor/skills/` for Cursor-only). Those bodies' operator flags come with them ([`PLATFORMS.md` §"Non-Claude capability triggers"](PLATFORMS.md#non-claude-capability-triggers)) | `v5.33.0 · 2026-09-23 (dogfooded; skipped @ v6.1.0)` |
 | **Gemini CLI** | Contract only | `AGENTS.md` | Native primitive exists; no flaitron bundle | unverified |
 | **Aider** | Contract only | `AGENTS.md` | Native primitive exists; no flaitron bundle | unverified |
 | **Sourcegraph Amp** | Contract only | `AGENTS.md` | Native primitive exists; no flaitron bundle | unverified |
@@ -138,10 +138,11 @@ dogfooded history but are refreshed or explicitly skipped per release.
 Contract-only rows start from vendor documentation and launch coverage until a
 live flaitron session is run under that agent. Grok Build, Codex CLI, and Cursor
 have all been dogfooded; Gemini CLI, Aider, and Sourcegraph Amp remain
-pre-adoption expectations. Flaitron ships full Claude/Codex inventories, a
-thin Cursor sibling, and Cursor-shaped Grok compat (`.claude/skills/` /
-`.agents/skills/`); the remaining contract-only agents have no full wiring
-bundle. Update a row on first-use observation if anything diverges. This mirrors
+pre-adoption expectations. Flaitron ships full Claude/Codex inventories and
+thin Cursor and Grok siblings (snippet + procedure pointer; Grok also loads
+`.claude/skills/` / `.agents/skills/` / `.cursor/skills/` as compat surfaces);
+the remaining contract-only agents have no wiring bundle. Update a row on
+first-use observation if anything diverges. This mirrors
 the per-agent footers in [`PLATFORMS.md`](PLATFORMS.md) §"Non-Claude capability
 triggers".
 

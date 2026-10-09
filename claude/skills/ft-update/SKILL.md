@@ -106,7 +106,7 @@ For each file matching `.claude/skills/*/SKILL.md` or `.agents/skills/*/SKILL.md
 The directory test is the one that matters: every adopter-wired skill directory, Claude or Codex, is a symlink into the submodule, and the `SKILL.md` reached *through* that link is itself a regular file, so testing the file alone passes for all of them and classifies submodule-owned skills as local forks.
 
 1. Parse the file's YAML frontmatter to read:
-   - `flaitron-reconciled:` — the version tag the fork was last reconciled against (e.g. `v5.2.0`).
+   - `flaitron-reconciled:` — the version tag the fork was last reconciled against (e.g. `vX.Y.Z`).
    - `flaitron-tracks:` — the bundled scaffold name (e.g. `ft-audit`).
 
 2. If either field is missing or empty, skip this file and note it was skipped.

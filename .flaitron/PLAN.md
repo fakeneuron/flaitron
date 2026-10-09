@@ -32,6 +32,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-767** [medium]🧩 | release v6.1.0 — Completed 2026-10-09.
 - [x] **CORE-747** [medium]🧩 | codex-audit-overlay-path — Completed 2026-10-08.
 - [x] **CORE-745** [medium]🧩 [unattended] | docs-audit-single-source — Completed 2026-10-08.
 - [x] **CORE-750** [light]🔧 | release-budget-ratchet — Completed 2026-10-08.

@@ -295,7 +295,7 @@ Concrete instantiation:
   `ft-epic-discovery.md`, `ft-close-epic.md`, `ft-refactor.md`, the two `ft-audit`-family skills (`ft-audit.md`, `ft-audit-repo.md`),
   plus `ft-new-project.md`, `ft-release.md`, `ft-seed.md`, `ft-update.md`)
 - **`skills/`**: 12 `SKILL.md` skill bodies (one per command), some with
-  lazy-load fragments (`ft-task/step-*.md`, including `step-4-debug-mode.md` and `step-5-loop-mode.md`; `ft-file-followup/step-0-flags.md`, `park-mode.md` and `starter-mode.md`; `ft-audit/scaffold-bootstrap.md`), the every-run shared `ft-task/preamble.md`, or sibling libraries (`ft-audit/passes/*.md`)
+  lazy-load fragments (`ft-task/step-*.md`, including `step-4-debug-mode.md` and `step-5-loop-mode.md`; `ft-file-followup/step-0-flags.md`, `park-mode.md` and `starter-mode.md`; `ft-audit/scaffold-bootstrap.md`; `ft-task/unattended-mode.md`; `ft-close-epic/unattended-close-epic.md`; `ft-epic-discovery/step-5.5-deep-prepass.md`; `ft-release/step-*.md`), the every-run shared `ft-task/preamble.md`, or sibling libraries (`ft-audit/passes/*.md`)
 - **Adopter install**: relative symlinks for the adopter-installed subset from
   `.claude/commands/*` and `.claude/skills/*` into the submodule, per
   `claude/AGENTS-snippet.md` §"One-time symlink wiring". The relative
@@ -483,7 +483,6 @@ non-Claude agents in the matrix. Flaitron has not run a session under several
 of these agents. Grok Build, Codex CLI, and Cursor now carry
 first-use observations; remaining stub rows reflect vendor documentation and
 launch coverage. Update a row on first-use observation if anything diverges.
-This mirrors the pre-adoption framing in §"Grok Build adoption notes" above.
 Operator flags are the exception to the shape: each table carries one
 skill-body-flags row that points at `claude/CAPABILITIES.md` and states only
 that platform's routing. Do not add per-flag rows back (CORE-734.6)._
@@ -503,7 +502,7 @@ that platform's routing. Do not add per-flag rows back (CORE-734.6)._
 
 First-use verification 2026-06-01 (CORE-257). /ft-task skill invocation, model gate (with retag), AskUserQuestion render, and cue emissions (✅ marker + post-closure expectations) exercised under Grok. Structured ask support observed (see trigger table note). Matrix currency lives in docs/AGENT-COMPAT.md.
 
-**Last verified:** `v5.35.0 · 2026-10-02 (dogfooded; skipped @ v6.0.0)`
+**Last verified:** `v6.1.0 · 2026-10-08 (dogfooded)`
 
 ### Codex CLI
 
@@ -537,7 +536,7 @@ shipped `codex/skills/` wrappers — desk research under Claude Code, not a
 standalone Codex verification session. CORE-734.6 later folded the flag rows,
 by then seven, into the one skill-body-flags row above.
 
-**Last verified:** `v6.0.0 · 2026-10-04 (dogfooded)`
+**Last verified:** `v6.1.0 · 2026-10-08 (dogfooded)`
 
 ### Cursor
 
@@ -560,7 +559,7 @@ Cursor-only projects (see §"Worked example: Cursor" and
 
 First-use verification 2026-08-12 ([[CORE-438.5]]): `/ft-task` under Cursor (Grok 4.5) ran DOGFOOD.md's three steps (contract comprehension at `v5.16.0`, full cue-render vocabulary, Phase-1 drive on CORE-438.N with clean Step-3 write boundary). Skill dispatch via `.claude/skills/` compat, Task subagent tool, modes, and `/model`+`/clear` cues confirmed; structured ask confirmed earlier under Cursor in [[CORE-438.1]]. Matrix currency lives in docs/AGENT-COMPAT.md.
 
-**Last verified:** `v5.33.0 · 2026-09-23 (dogfooded; skipped @ v6.0.0)`
+**Last verified:** `v5.33.0 · 2026-09-23 (dogfooded; skipped @ v6.1.0)`
 
 ### Gemini CLI (stub)
 

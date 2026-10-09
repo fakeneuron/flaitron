@@ -183,7 +183,7 @@ Splitting into per-area forks (e.g., `audit-payments` + `audit-ingest`, each pin
 **Fork-provenance markers.** Both full-copy and overlay forks support two optional frontmatter fields that let `/ft-update` detect when the upstream scaffold has changed since your fork was last reconciled:
 
 ```yaml
-flaitron-reconciled: v5.2.0   # version tag you installed or last reconciled from
+flaitron-reconciled: vX.Y.Z   # version tag you installed or last reconciled from
 flaitron-tracks: ft-audit     # bundled scaffold this fork mirrors
 ```
 
@@ -197,7 +197,7 @@ Add these fields to your fork's `SKILL.md` frontmatter at install time (the over
 
 #### Migrating a pre-consolidation audit fork
 
-Release v5.x consolidated six separate audit scaffolds
+Release v5.15.0 consolidated six separate audit scaffolds
 (`ft-audit{,-docs,-security,-frontend,-backend,-performance}`) into the single
 parameterized scaffold above. If you forked one of those before the bump, what
 you do next depends on which fork style you used:
@@ -473,7 +473,7 @@ After §3.2–§3.7 land and `/ft-task` shows in the slash menu, sweep for resid
 
   Confirm every slug it prints appears in your agent's roster (v1.0+ additions; symlinks added in §1.2; `/ft-refactor` added in CORE-463.5; `/ft-seed` added in CORE-619; the worktree pair retired in CORE-572 and `/ft-spec` in CORE-573 — see the retired-skills table below).
 - **Context-surface audit.** Run `/ft-audit context` now (your fork's name, e.g. `/audit context`; unforked, ask your agent to run `.flaitron/core/claude/skills/ft-audit/SKILL.md` with `context` as the domain) — migrations frequently carry over context bloat from the legacy era (stale `CLAUDE.md` workflow tutorials, project-local skills that now shadow `ft-*` namespace, AGENTS.md content redundant with the freshly-pasted block). Findings land as PLAN tickets on the write-step confirmation.
-- **Final pin verification.** `git -C .flaitron/core describe --tags` shows the pinned version recorded at the start (e.g., `v6.0.0`). A mismatch means the submodule drifted off the pin during migration.
+- **Final pin verification.** `git -C .flaitron/core describe --tags` shows the pinned version recorded at the start (e.g., `v6.1.0`). A mismatch means the submodule drifted off the pin during migration.
 - **Cleanup commit.** Bundle the decisions above into a single follow-up commit (`chore: <ID> post-migration cleanup`) OR fold into the §3.9 closure commit if scope is small.
 
 ### 3.9 Commit the migration

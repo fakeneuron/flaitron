@@ -78,7 +78,7 @@ A wrapper may add a rule of its own — `ft-task` names one for its lazy fragmen
 These relative symlinks point through the project's pinned
 `.flaitron/core` submodule, so the wired skill bodies move only when the
 project deliberately bumps flaitron. Existing symlinks do not need rewiring on
-a normal version bump; newly shipped adopter-subset skills may need new symlinks.
+a normal version bump; newly shipped adopter-subset skills may need new symlinks, which `/ft-update` adds.
 
 For flaitron maintainers who want hot-reload behavior while editing this
 checkout, wire the wrapper inventory **repo-scoped**, from the checkout root:

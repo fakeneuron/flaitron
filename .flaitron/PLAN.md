@@ -11,12 +11,11 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-
+(none)
 
 ## Medium
 
 (none)
-
 
 ## Low
 

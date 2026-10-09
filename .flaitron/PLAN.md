@@ -21,8 +21,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 
 
-- [ ] **CORE-683** [medium]🧩 | epic-forward-restore — Blocked by decay-window depth: window [[CORE-680]] opened at `a78a8ae5`. After 8 epic tasknotes (`*-EPIC-*` or `*.<sub>`) archive past that SHA, restore `SPEC/epic.md`'s Forward-looking paragraph only if one followed it. Bar is in the archived CORE-680 note.
-
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
 
 ## Future Opportunities
@@ -31,6 +29,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-683** [medium]🧩 | epic-forward-restore — Completed 2026-10-09.
 - [x] **CORE-727** [medium]🧩 | decay-window-restore — Completed 2026-10-09.
 - [x] **CORE-767** [medium]🧩 | release v6.1.0 — Completed 2026-10-09.
 - [x] **CORE-747** [medium]🧩 | codex-audit-overlay-path — Completed 2026-10-08.

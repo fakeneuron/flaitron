@@ -13,7 +13,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-EPIC-770** [heavy]🧠 | global-layer-alignment — Align the operator's global layer (`~/.claude/CLAUDE.md`, `~/Code/AGENTS.md`, flaitron-project memory, natabula's skills and Path Access hook) with flaitron v7. Discovery found no flaitron-side conflict, so fixes land per owner: memory, a layer-1/2 diff, natabula rows. Does not block the v7.0.0 release.
   - [x] **CORE-770.1** [frontier]💎 | global-layer-alignment discovery — Completed 2026-10-09.
-  - [ ] **CORE-770.2** [light]🔧 | memory-refresh — Refresh the flaitron-project memory files and MEMORY.md index against v7: flowtron→flaitron names, retired or renamed slugs, `/ft-audit context`, `.flaitron/PLAN.md`; rewrite the next-move copy-paste shape to match `SPEC/post-closure.md` step 3 (no literal `/clear`/`/model`, the 👇 exception).
+  - [x] **CORE-770.2** [light]🔧 | memory-refresh — Completed 2026-10-09.
   - [ ] **CORE-770.3** [medium]🧩 | global-standards-diff — Draft edits, applied by the operator or with per-path approval: `~/.claude/CLAUDE.md` gains an ask-first carve-out when a flaitron skill's gates govern, the full model ladder, and an `/ft-adopt` + `/natabula-adopt` new-repo pointer; `~/Code/AGENTS.md` says skill invocation authorizes its closure commit, push stays an explicit ask. Inventory stale `~/.claude/skills/` links.
   - [x] **CORE-770.4** [light]🔧 | natabula-v7-handoff — Completed 2026-10-09.
   - [ ] **CORE-770.N** [heavy]🧠 | global-layer-alignment audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).

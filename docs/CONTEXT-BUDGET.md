@@ -281,7 +281,7 @@ moved bytes widen the core's headroom.
 
 ft-release 35,146 · ft-open-epic 32,749 · ft-close-epic 28,323 · ft-task
 25,352 · ft-file-task 24,971 · ft-update 19,794 · ft-audit 18,392 ·
-ft-micro-task 18,195 · ft-refactor 16,486 · ft-new-project 13,935 · ft-seed
+ft-micro-task 18,195 · ft-refactor 16,486 · ft-adopt 13,935 · ft-seed
 12,433 · ft-audit-repo 11,577.
 
 `ft-goal-task`, `ft-spec`, `ft-starter-task`, `ft-worktree-start`, and
@@ -317,7 +317,7 @@ cut. The one exception is `preamble.md`, read on every `/ft-task` and
 
 [[CORE-670.4]] **exempted** both rather than budgeting them. A budget here
 caps what a runner loads, and no runner loads either file whole. Each reader
-goes to one section: `ft-new-project` follows MIGRATION §1.1–§1.7, §2, §3, and
+goes to one section: `ft-adopt` follows MIGRATION §1.1–§1.7, §2, §3, and
 §"Pinning and bumping"; `ft-release` greps the `describe --tags` pin, `awk`s
 §1.6, and checks PLATFORMS §"Installed-surface policy"; `SPEC/model.md` points
 at PLATFORMS §"Platform×model×effort calibration table"; `SPEC/procedures/ft-task.md`
@@ -331,7 +331,7 @@ A doc earns a §"Budgets" row when a runner starts reading it in full, meaning
 a skill or procedure step that names `docs/X.md` without a section. Until then,
 watch the sections instead. The largest ones readers cite today are PLATFORMS
 §"Non-Claude capability triggers" at 34,235 and MIGRATION §1.2.1 at 11,992
-(ft-new-project cites §1 by subsection). When a cited section outgrows its
+(ft-adopt cites §1 by subsection). When a cited section outgrows its
 reader, split the section rather than cap the file. These figures are refreshed
 with the rest of the ledger, and a jump between cuts means checking which
 section grew.

@@ -1,9 +1,9 @@
 ---
-name: ft-new-project
+name: ft-adopt
 description: Bootstrap a fresh project with flaitron — adds the submodule, wires /ft-task, drops in PLAN.md + tasknote README, creates/patches AGENTS.md, and stages the commit. Use when the user asks to bootstrap or adopt flaitron into a new project. Mirrors docs/MIGRATION.md §1 conversationally; for fresh adoption only.
 ---
 
-# new-project — flaitron adoption skill
+# adopt — flaitron adoption skill
 
 You are bootstrapping flaitron into a fresh project. The full procedural reference lives in flaitron's `docs/MIGRATION.md` §1 — this skill is the executable interpretation, not a replacement. Treat MIGRATION.md as authoritative when this file is silent or in tension.
 

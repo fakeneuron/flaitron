@@ -71,7 +71,7 @@ Five surfaces are *derived* from it and must never be edited independently:
 | [`cursor/AGENTS-snippet.md`](../cursor/AGENTS-snippet.md) §"One-time symlink wiring" | dest `.claude/skills/` → `.cursor/skills/`; source unchanged |
 | [`grok/AGENTS-snippet.md`](../grok/AGENTS-snippet.md) §"One-time symlink wiring" | dest `.claude/skills/` → `.grok/skills/`; source unchanged |
 | [`docs/MIGRATION.md`](../docs/MIGRATION.md) §1.6 | stages the destination paths this block creates |
-| [`claude/skills/ft-new-project/SKILL.md`](skills/ft-new-project/SKILL.md) Steps 7–8 | stages and verifies the destination paths this block creates |
+| [`claude/skills/ft-adopt/SKILL.md`](skills/ft-adopt/SKILL.md) Steps 7–8 | stages and verifies the destination paths this block creates |
 
 The last two derive their commands from this block at run time and restate no
 path list. The three platform blocks stay literal `ln -s` lines — they are

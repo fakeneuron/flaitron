@@ -35,14 +35,14 @@ standalone or epic child) — see `claude/skills/ft-release/step-7.1-standing-ch
 ```sh
 git clone https://github.com/fakeneuron/flaitron.git ~/code/flaitron
 mkdir -p ~/.claude/skills
-ln -s ~/code/flaitron/claude/skills/ft-new-project ~/.claude/skills/ft-new-project
+ln -s ~/code/flaitron/claude/skills/ft-adopt ~/.claude/skills/ft-adopt
 ```
 
 **Once per project** — from the project root (a git repo with an `AGENTS.md`
 or `CLAUDE.md`):
 
 ```sh
-/ft-new-project
+/ft-adopt
 ```
 
 That adds the flaitron submodule, wires the adopter skill subset — the tasknote

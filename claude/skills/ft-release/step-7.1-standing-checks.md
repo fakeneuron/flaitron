@@ -4,11 +4,11 @@
 > alongside its sibling `step-7.1-mirror-pairs.md`. Walk these checks after the
 > audit-overlay `docs` subroutine returns; they run independently of its findings.
 
-**Standing wiring-consumer derivation check.** `claude/AGENTS-snippet.md` §"One-time symlink wiring" is the declared SSOT for the adopter-wiring roster (CORE-465). Its two doc consumers — `docs/MIGRATION.md` §1.6 and `claude/skills/ft-new-project/SKILL.md` Steps 7–8 — *derive* their staging and verify commands from that block instead of restating its paths, so there is no count to keep aligned. This check guards that property rather than the old count:
+**Standing wiring-consumer derivation check.** `claude/AGENTS-snippet.md` §"One-time symlink wiring" is the declared SSOT for the adopter-wiring roster (CORE-465). Its two doc consumers — `docs/MIGRATION.md` §1.6 and `claude/skills/ft-adopt/SKILL.md` Steps 7–8 — *derive* their staging and verify commands from that block instead of restating its paths, so there is no count to keep aligned. This check guards that property rather than the old count:
 
 ```sh
 awk '/^### 1\.6 Commit$/,/^### 1\.7 /' docs/MIGRATION.md | grep -n '\.claude/skills/ft-'
-awk '/^## Step 7 /,/^## Step 9 /' claude/skills/ft-new-project/SKILL.md | grep -n '\.claude/skills/ft-'
+awk '/^## Step 7 /,/^## Step 9 /' claude/skills/ft-adopt/SKILL.md | grep -n '\.claude/skills/ft-'
 ```
 
 Both must produce no output and exit 1. A hit means someone re-introduced a hand-maintained roster copy into a surface that is supposed to derive one — the CORE-329.2 drift class, which stayed alive for a year because the fix was "keep four counts equal" rather than "stop counting". Fix by restoring the derivation (`grep '^ln -s' … | awk '{print $NF}'`), not by re-syncing the list — fix inline as Critical/High before cutting the release.
@@ -28,9 +28,9 @@ The two shipped inventories must match exactly by slug: `shipped_skill_parity ok
 Nothing here is a hand-maintained roster. The expected set is **derived** — the shipped Claude skill inventory minus the declared non-adopter categories — and the three platform snippets are **derived surfaces** of `claude/AGENTS-snippet.md` §"One-time symlink wiring", each stating its own substitution in its own file. So a newly shipped adopter skill needs no edit here at all; only a change to *policy* (a new global-only utility or flaitron-self-only skill) touches the exclusion list below. That list is the machine form of `docs/PLATFORMS.md`'s "Global-only utilities" and "Flaitron-self-only" columns:
 
 ```text
+ft-adopt           (global-only)
 ft-audit           (forked/overlaid locally under an unprefixed name, never symlinked)
 ft-audit-repo      (global-only)
-ft-new-project     (global-only)
 ft-release         (flaitron-self-only)
 ```
 
@@ -42,7 +42,7 @@ ssot=$(grep '^ln -s ../../.flaitron/core/claude/skills/' claude/AGENTS-snippet.m
 
 # Expected = shipped inventory minus the non-adopter categories above.
 diff -u <(ls claude/skills | grep '^ft-' \
-          | grep -Ev '^(ft-audit|ft-audit-repo|ft-new-project|ft-release)$' \
+          | grep -Ev '^(ft-adopt|ft-audit|ft-audit-repo|ft-release)$' \
           | sort) \
         <(printf '%s\n' "$ssot")
 

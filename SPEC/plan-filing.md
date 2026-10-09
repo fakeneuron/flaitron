@@ -163,7 +163,7 @@ the operator's motion.
 **Execution skills keep their commit-go gate.** This section governs the seven
 filing motions above and `/ft-seed`'s write, and nothing else. `/ft-task`, `/ft-micro-task`,
 `/ft-open-epic` past its Step 4 filing, `/ft-close-epic`, `/ft-release`,
-`/ft-new-project`, and `/ft-update` are unchanged: their commits
+`/ft-adopt`, and `/ft-update` are unchanged: their commits
 land deliverables or cut releases, and it is the 📦 conditional skip rule
 (`SPEC/gates.md`) — not this section — that decides when they commit
 autonomously.

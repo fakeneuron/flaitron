@@ -50,7 +50,7 @@ ln -sfn ../../.flaitron/audit-overlay/ .claude/skills/audit
 find .claude/commands -type l ! -exec test -e {} \; -delete 2>/dev/null
 ```
 
-The relative `../../` paths are clone-location independent, and the symlinks land under the ignored `.claude/` directory, so they never enter git history. This gives the complete `/ft-*` surface (`/ft-audit`, `/ft-audit-repo`, release, new-project, etc.) to any agent started inside the tree. It is expected rather than optional: [`docs/PLATFORMS.md`](docs/PLATFORMS.md) §"Installed-surface policy" treats a shipped `ft-*` slug with no `.claude/` symlink as a wiring miss, and `/ft-release` §7.1 checks for one. The glob also wires `/ft-update`, which is intentional — the skill is adopter-only but bails in flaitron-self with a clear message rather than silently misbehaving, so wiring it here is harmless. The `ft-` prefix remains flaitron's reserved namespace.
+The relative `../../` paths are clone-location independent, and the symlinks land under the ignored `.claude/` directory, so they never enter git history. This gives the complete `/ft-*` surface (`/ft-audit`, `/ft-audit-repo`, release, adopt, etc.) to any agent started inside the tree. It is expected rather than optional: [`docs/PLATFORMS.md`](docs/PLATFORMS.md) §"Installed-surface policy" treats a shipped `ft-*` slug with no `.claude/` symlink as a wiring miss, and `/ft-release` §7.1 checks for one. The glob also wires `/ft-update`, which is intentional — the skill is adopter-only but bails in flaitron-self with a clear message rather than silently misbehaving, so wiring it here is harmless. The `ft-` prefix remains flaitron's reserved namespace.
 
 Codex maintainers wire the same way, from the parallel wrapper inventory:
 

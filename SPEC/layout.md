@@ -42,7 +42,7 @@ Flaitron does not submodule itself. In this repo:
   `.claude/skills/audit` is a directory symlink to it — per-machine wiring the
   operator re-creates from [`CONTRIBUTING.md`](../CONTRIBUTING.md) §"Developing flaitron skills".
 - The `templates/` folder holds the canonical tasknote templates (full, micro, starter, sidequest) plus spec, loop-heartbeat, audit-overlay (usage: [`docs/MIGRATION.md`](../docs/MIGRATION.md) §1.2.1), and subagent-probe templates, and the `PLAN.md` / `tasknote-README.md` seed files.
-- `claude/` — Claude Code skills (`/ft-task`, `/ft-release`, `/ft-new-project`, ...); the adopter snippet lives at `claude/AGENTS-snippet.md`.
+- `claude/` — Claude Code skills (`/ft-task`, `/ft-release`, `/ft-adopt`, ...); the adopter snippet lives at `claude/AGENTS-snippet.md`.
 - `codex/` — Codex skill wrappers for the full `ft-*` inventory plus Codex-specific wiring notes.
 - `cursor/` — Cursor thin wiring (`AGENTS-snippet.md` + `procedures/ft-task.md` pointer; no skill wrappers — adopters wire canonical `claude/skills/` bodies).
 - `grok/` — Grok thin wiring (`AGENTS-snippet.md` + `procedures/ft-task.md` pointer; no skill wrappers — adopters wire canonical `claude/skills/` bodies).
@@ -64,7 +64,7 @@ wrappers (`<platform>/procedures/<procedure>.md`) rather than by the
 ## Skill namespace
 
 Bundled flaitron skills carry the `ft-` prefix in their slug (`/ft-task`,
-`/ft-release`, `/ft-new-project`,
+`/ft-release`, `/ft-adopt`,
 `/ft-micro-task`, `/ft-file-task`, `/ft-open-epic`,
 `/ft-close-epic`, `/ft-refactor`,
 `/ft-seed`, `/ft-update`, and the audit family

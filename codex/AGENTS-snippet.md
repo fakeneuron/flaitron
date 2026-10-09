@@ -45,7 +45,7 @@ sparse line and the per-tool list are in `../docs/MIGRATION.md` §1.1.
 
 Use `/skills` in Codex or type `$ft-task` / `$ft-update` / another wired
 skill name to invoke a Flaitron skill. Global utility skills such as
-`ft-new-project` and `ft-audit-repo` may be installed in the user skill directory when desired;
+`ft-adopt` and `ft-audit-repo` may be installed in the user skill directory when desired;
 `ft-release` remains flaitron-self-only and is not part of the adopter snippet.
 The canonical category table lives in
 `../docs/PLATFORMS.md` §"Installed-surface policy".

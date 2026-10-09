@@ -1,11 +1,11 @@
 ---
-name: ft-new-project
+name: ft-adopt
 description: "Bootstrap a fresh project with Flaitron from Codex: submodule, PLAN, tasknote README, AGENTS.md block, and wiring."
 ---
 
-# ft-new-project - Codex wrapper
+# ft-adopt - Codex wrapper
 
-Read and follow `../../../claude/skills/ft-new-project/SKILL.md`, applying the Codex translation rules in `../../AGENTS-snippet.md` §"Translation rules".
+Read and follow `../../../claude/skills/ft-adopt/SKILL.md`, applying the Codex translation rules in `../../AGENTS-snippet.md` §"Translation rules".
 
 For Codex bootstrap, use `../../../codex/AGENTS-snippet.md` §"One-time skill
 wiring" instead of the source's Claude wiring block at Step 3. Derive the

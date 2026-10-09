@@ -74,7 +74,7 @@ them separate avoids a slug collision between the canonical bodies and Codex's
 
 This snippet wires the adopter-installed subset: the tasknote family,
 `/ft-seed`, and `/ft-update`. Global utility skills such as
-`ft-new-project` and `ft-audit-repo` may be installed in the user skill directory when desired;
+`ft-adopt` and `ft-audit-repo` may be installed in the user skill directory when desired;
 `ft-release` remains flaitron-self-only and is not part of the adopter snippet.
 The canonical category table lives in
 `../docs/PLATFORMS.md` §"Installed-surface policy", and the

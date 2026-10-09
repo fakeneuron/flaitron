@@ -272,5 +272,5 @@ protocol" step 3 (label line
   per `docs/PHILOSOPHY.md` / `docs/VISION.md`. Starters, epics, `blocked-by:`
   echoes, and filing commits all reuse existing SPEC contracts.
 - **Install tier: symlinked** (stack-neutral driver, like `/ft-task`) —
-  wired into adopters via `/ft-new-project` +
+  wired into adopters via `/ft-adopt` +
   `docs/MIGRATION.md` §1.2.

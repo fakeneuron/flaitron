@@ -95,7 +95,7 @@ Handle each platform wiring surface independently:
 - **Cursor:** authoritative list is the Cursor-only `ln -s … .cursor/skills/<name>` block in the freshly-bumped `<FT>/cursor/AGENTS-snippet.md` §"One-time symlink wiring" (targets are canonical `claude/skills/` bodies). If `.cursor/skills/` exists, create any missing symlinks with the same relative form the snippet uses (substituting the resolved `<FT>`). If `.cursor/skills/` is absent, do not create a new Cursor wiring surface during an update; report "Cursor wiring not present; skipped `.cursor/skills/` symlink check." (Projects that only have `.claude/` and rely on Cursor's compat load need no Cursor-specific re-wire — the Claude surface above covers them.)
 - **Grok:** authoritative list is the Grok-only `ln -s … .grok/skills/<name>` block in the freshly-bumped `<FT>/grok/AGENTS-snippet.md` §"One-time symlink wiring" (targets are canonical `claude/skills/` bodies). If `.grok/skills/` exists, create any missing symlinks with the same relative form the snippet uses (substituting the resolved `<FT>`). If `.grok/skills/` is absent, do not create a new Grok wiring surface during an update; report "Grok wiring not present; skipped `.grok/skills/` symlink check." (Projects that only have `.claude/`, `.agents/skills/`, or `.cursor/skills/` and rely on Grok's compat load need no Grok-specific re-wire — those surfaces above cover them.)
 
-Report the added symlinks per platform (or "no new skills to wire"). Note: global/by-reference skills (`/ft-new-project`, `/ft-audit-repo`) are picked up by the user's agent-home wiring when desired, not per-project — do not add extra repo-scoped symlinks beyond each platform's snippet list. `/ft-update` is intentionally in the adopter subset; `/ft-release` is flaitron-self-only.
+Report the added symlinks per platform (or "no new skills to wire"). Note: global/by-reference skills (`/ft-adopt`, `/ft-audit-repo`) are picked up by the user's agent-home wiring when desired, not per-project — do not add extra repo-scoped symlinks beyond each platform's snippet list. `/ft-update` is intentionally in the adopter subset; `/ft-release` is flaitron-self-only.
 
 ## Step 4.5 — Audit-fork drift scan & pass-file refresh
 
@@ -203,7 +203,7 @@ Any hits:
 ```text
 ⚠️  Agent-home copies shadow this project's pinned skills (their bodies run, not <FT>'s):
     <path>
-Remove them yourself, keeping only the global-only utilities (ft-new-project, ft-audit-repo). /ft-update never deletes outside the project.
+Remove them yourself, keeping only the global-only utilities (ft-adopt, ft-audit-repo). /ft-update never deletes outside the project.
 ```
 
 No hits → "No agent-home shadows found." Declined, or a refused read (a path-access guard) → "Agent-home shadow check not run — <declined | read refused>." A refused read names the remedy: the refusing guard needs a `read` root for each refused home, and arming it is the operator's act. Report-only; the bump proceeds regardless.

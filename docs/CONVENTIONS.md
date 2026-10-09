@@ -47,7 +47,7 @@ The `docs/` and root-level documentation roughly follow [Diátaxis](https://diat
 | Explanation  | [docs/PHILOSOPHY.md](PHILOSOPHY.md) — the "why" |
 | Tutorial     | _(not provided)_                                |
 
-The tutorial quadrant is intentionally absent. The `/ft-new-project` skill bootstraps a working flaitron-adopting repo in one pass; the tutorial substitute is "run the skill, then read MIGRATION.md if anything surprises you." A standalone tutorial would duplicate the skill's existing wiring and drift away from it.
+The tutorial quadrant is intentionally absent. The `/ft-adopt` skill bootstraps a working flaitron-adopting repo in one pass; the tutorial substitute is "run the skill, then read MIGRATION.md if anything surprises you." A standalone tutorial would duplicate the skill's existing wiring and drift away from it.
 
 ### GitHub Actions CI
 
@@ -161,7 +161,7 @@ The submodule is not incidental packaging — it *is* the mechanism behind [SPEC
 
 The skills also assume it. Every skill resolves its contract root to `.flaitron/core/` (see [`claude/skills/ft-task/SKILL.md`](../claude/skills/ft-task/SKILL.md) §"Step 0 — Resolve paths"). A marketplace install would deliver the skills without the contract they read, producing an inert install — or force a second bundled copy of SPEC.md, splitting the single source of truth the submodule exists to guarantee.
 
-The cost is acknowledged: adoption is a `git submodule add` plus symlink wiring rather than one install command, which is real friction for a first-time adopter. `/ft-new-project` absorbs it in one pass. The friction buys the pin.
+The cost is acknowledged: adoption is a `git submodule add` plus symlink wiring rather than one install command, which is real friction for a first-time adopter. `/ft-adopt` absorbs it in one pass. The friction buys the pin.
 
 This is distinct from the CLI carve-out in [SPEC/scope-boundaries.md](../SPEC/scope-boundaries.md) §"What flaitron does NOT provide" — that entry rules out flaitron *being* a CLI; this one rules out flaitron being *delivered* by one. A package-manager-distributed flaitron would still be pure markdown, and is still declined.
 

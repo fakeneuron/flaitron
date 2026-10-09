@@ -101,7 +101,7 @@ Phase 4 closures can miss.
 **Skills.** The filing-and-Discovery side of the lifecycle (steps 1-2
 above) is codified in `claude/skills/ft-open-epic/`; the audit-and-close
 side (steps 4-5) is codified in `claude/skills/ft-close-epic/`. Both are
-auto-wired into adopter projects via `claude/skills/ft-new-project/SKILL.md`
+auto-wired into adopter projects via `claude/skills/ft-adopt/SKILL.md`
 Step 3 + `docs/MIGRATION.md` §1.2.
 
 **Optional deep pre-pass.** For high-uncertainty epics — those where the

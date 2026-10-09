@@ -17,7 +17,7 @@ After adopting flaitron, a project looks like:
 │   │   ├── BE-014.md               # active tasknotes
 │   │   └── archive/<area>/         # completed tasknotes by area
 │   ├── specs/                      # optional; hand-copied spec-template.md drafts
-│   ├── sidequest/                  # optional; /ft-file-followup --park stubs
+│   ├── sidequest/                  # optional; /ft-file-task --park stubs
 │   └── core/                       # git submodule pinned to a flaitron version
 └── ...
 ```
@@ -65,7 +65,7 @@ wrappers (`<platform>/procedures/<procedure>.md`) rather than by the
 
 Bundled flaitron skills carry the `ft-` prefix in their slug (`/ft-task`,
 `/ft-release`, `/ft-new-project`,
-`/ft-micro-task`, `/ft-file-followup`, `/ft-epic-discovery`,
+`/ft-micro-task`, `/ft-file-task`, `/ft-epic-discovery`,
 `/ft-close-epic`, `/ft-refactor`,
 `/ft-seed`, `/ft-update`, and the audit family
 `/ft-audit{,-repo}`). The prefix

@@ -280,13 +280,13 @@ moved bytes widen the core's headroom.
 ### Skill bodies (`SKILL.md` only)
 
 ft-release 35,146 · ft-epic-discovery 32,749 · ft-close-epic 28,323 · ft-task
-25,352 · ft-file-followup 24,971 · ft-update 19,794 · ft-audit 18,392 ·
+25,352 · ft-file-task 24,971 · ft-update 19,794 · ft-audit 18,392 ·
 ft-micro-task 18,195 · ft-refactor 16,486 · ft-new-project 13,935 · ft-seed
 12,433 · ft-audit-repo 11,577.
 
 `ft-goal-task`, `ft-spec`, `ft-starter-task`, `ft-worktree-start`, and
 `ft-worktree-end` were retired at v5.27.0 (CORE-570/571/572/573), folded into
-`ft-task`, `ft-file-followup --starter`, and demoted content; `ft-flowtron`,
+`ft-task`, `ft-file-followup --starter` (renamed `ft-file-task` at v7.0.0), and demoted content; `ft-flowtron`,
 `ft-stats`, and `ft-audit-context` followed at v5.29.0 (CORE-603.2/603.3), the
 last folded into `ft-audit` as its `context` domain — eight fewer rows here
 across the two cuts, not eight fewer surfaces flaitron covers.

@@ -534,7 +534,7 @@ Completed — a closed row with the hand-off only in prose hides the pending
 step from every future reader; an open PLAN row keeps it visible. The duty
 binds an operator-less closure too — the posture *raises* the count of
 deferred steps, since whatever the run could not do falls to the absent
-operator — and `/ft-file-followup --unattended` is its discharge path there
+operator — and `/ft-file-task --unattended` is its discharge path there
 (`SPEC/plan-filing.md` §"Filing commits").
 
 **Acceptance tick-through.** Closure asserts the task against its own stated

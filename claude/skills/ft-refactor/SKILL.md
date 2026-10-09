@@ -86,7 +86,7 @@ feed the plan preview (Step 4) and the child starters' context (Step 5).
 **De-scope valve.** If the survey concludes the restructuring fits one
 `/ft-task`-sized change, do **not** file an epic — say so, sketch the single
 change in a sentence or two, and recommend a single filing instead
-(`/ft-file-followup --starter` for rich context, or a plain PLAN.md line). The
+(`/ft-file-task --starter` for rich context, or a plain PLAN.md line). The
 operator converts; this skill files epics only.
 
 ## Step 3 — Draft the sequenced plan

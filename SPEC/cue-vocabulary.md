@@ -267,7 +267,7 @@ matching"). All five also serve as tier glyphs, and 🧩 additionally heads the
 (§"Glyph layers and reuse").
 
 👇 (`HERE`) replaces the model glyph on the copy-paste **label line** when the
-next-skill is context-dependent (`/ft-file-followup` in any mode /
+next-skill is context-dependent (`/ft-file-task` in any mode /
 `/ft-epic-discovery` — clearing the session destroys the context they draw on).
 It signals *where* to run, not task weight: the 🔧/🧩/🧠/💎/🔭 model signal stays on
 the candidate line just printed above.

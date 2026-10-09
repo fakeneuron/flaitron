@@ -81,7 +81,7 @@ skill_pin_guard_parity() {
 # adopter-subset bodies that resolve <root>; edit all seven together.
 got=$(grep -h '^\*\*Skill/pin guard\.\*\*' claude/skills/*/SKILL.md | sort | uniq -c | awk '{print $1}' | tr '\n' ' ')
 [ "$got" = "7 " ] || { echo "GUARD DRIFT  copies-per-variant: $got (want one variant x7)"; exit 1; }
-diff -u <(printf 'claude/skills/%s/SKILL.md\n' ft-close-epic ft-epic-discovery ft-file-followup ft-micro-task ft-refactor ft-seed ft-task) \
+diff -u <(printf 'claude/skills/%s/SKILL.md\n' ft-close-epic ft-epic-discovery ft-file-task ft-micro-task ft-refactor ft-seed ft-task) \
         <(grep -l '^\*\*Skill/pin guard\.\*\*' claude/skills/*/SKILL.md)
 }
 
@@ -163,7 +163,7 @@ done < <(git grep -Il '' -- .)
 [ -z "$bad" ] || exit 1
 }
 
-# Sidequest orphans (claude/skills/ft-file-followup/park-mode.md §Notes "Promotion")
+# Sidequest orphans (claude/skills/ft-file-task/park-mode.md §Notes "Promotion")
 sidequest_orphan() {
 # A promoted stub is deleted by the runner that promotes it (CORE-606), but
 # three closures skipped that step anyway (CORE-348, CORE-587/588, CORE-714),
@@ -330,7 +330,7 @@ pair_j() {
 # - It is one-directional (prose → hint), on purpose. A hint may
 #   legitimately name more than the prose documents: short aliases
 #   (-f / -d / -p), which the --[a-z] extraction never sees, and
-#   ft-file-followup's --low/--med/--fut/--high, which are --park's
+#   ft-file-task's --low/--med/--fut/--high, which are --park's
 #   arguments (park-mode.md §"Step P2" owns them). Checking the reverse
 #   would report every one of those as drift. The same asymmetry costs a
 #   little coverage — ft-close-epic names --unattended only inside a
@@ -374,7 +374,7 @@ pair_m() {
 #   Pair B then carries it across to Codex — which is why M covers only
 #   the Claude half and needs no Codex twin.
 # - The park-priority exemption names --park's four arguments, and is not
-#   a blocklist. ft-file-followup's hint carries --low/--med/--fut/--high;
+#   a blocklist. ft-file-task's hint carries --low/--med/--fut/--high;
 #   its description: documents the --park mode they modify and would bloat
 #   past readability listing all four. They are arguments, not skill
 #   modes: park-mode.md §"Step P2" owns the mapping and

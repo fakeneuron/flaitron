@@ -1,6 +1,6 @@
 # `[unattended]` candidacy
 
-> Lazy-loaded SPEC module. Read by a filing surface at its write step — the moment it is about to write a `- [ ]` row into `PLAN.md` — by `/ft-seed` before it walks an existing plan, and by a runner whose closure discharged a deferred step through `/ft-file-followup --unattended`. Not needed to run a task. See `SPEC.md` for the always-loaded core spec.
+> Lazy-loaded SPEC module. Read by a filing surface at its write step — the moment it is about to write a `- [ ]` row into `PLAN.md` — by `/ft-seed` before it walks an existing plan, and by a runner whose closure discharged a deferred step through `/ft-file-task --unattended`. Not needed to run a task. See `SPEC.md` for the always-loaded core spec.
 
 The `[unattended]` marker ([`SPEC/task-line-segments.md`](task-line-segments.md)) is
 scarce for an accidental reason: nothing in the filing flow ever asks whether
@@ -20,7 +20,7 @@ only when the operator confirms that row **inside the confirm gate the surface
 already has** — the structured-ask write-step review, the prose "show the
 line, edit per feedback" gate, the reconcile review prompt. The confirmation
 is the act. No surface gains a new gate to host the proposal; a surface with
-no gate (`/ft-file-followup --park`) has no candidacy at all.
+no gate (`/ft-file-task --park`) has no candidacy at all.
 
 Three consequences follow, and each is a boundary rather than a feature:
 
@@ -167,12 +167,12 @@ Closure" → "Handoff persistence"), so under `--unattended` the
 already persists:
 
 - **A runner closure that discharged deferred steps through
-  `/ft-file-followup --unattended`** (`SPEC.md` §"Deferred hand-off filing";
+  `/ft-file-task --unattended`** (`SPEC.md` §"Deferred hand-off filing";
   `SPEC/plan-filing.md` §"Unattended filing authority") copies the line
   from the filing report into its own tasknote's **Final Summary** before the
   archive move — a pre-archive closure write, not a retroactive edit. The
   resuming operator finds it where they find the deferred rows.
-- **A standalone `/ft-file-followup --unattended`** has no tasknote; its
+- **A standalone `/ft-file-task --unattended`** has no tasknote; its
   Step 5 report is the only record, as it already is for the rows themselves.
 - **Attended** filings persist nothing extra: the token is on the row or it is
   not, and the operator was there.
@@ -203,9 +203,9 @@ fails that check.
 | Surface | Write step | Existing gate the proposal rides | Owner |
 |---|---|---|---|
 | `/ft-epic-discovery` | Step 7 (`.2..M+1`, `.N`) | reconcile review prompt | [[CORE-577.3]] |
-| `/ft-file-followup` default, `--starter` | Step 4 / S4 | Step 3 / S3 prose review | [[CORE-577.4]] |
-| `/ft-file-followup --unattended` | Step 4 | none — emits, persists via the discharging runner | [[CORE-577.4]] |
-| `/ft-file-followup --park` | — | **no candidacy** (one-motion by design; decided when the stub is promoted) | — |
+| `/ft-file-task` default, `--starter` | Step 4 / S4 | Step 3 / S3 prose review | [[CORE-577.4]] |
+| `/ft-file-task --unattended` | Step 4 | none — emits, persists via the discharging runner | [[CORE-577.4]] |
+| `/ft-file-task --park` | — | **no candidacy** (one-motion by design; decided when the stub is promoted) | — |
 | `/ft-audit` §5 | ticket write | structured-ask write-step confirm | [[CORE-577.5]] |
 | `/ft-refactor` | Step 5 | Step 4 structured-ask review; own `--fast` → emit only | [[CORE-577.5]] |
 | `/ft-audit-repo` §6 | milestone write | write-confirm structured ask | [[CORE-577.6]] |

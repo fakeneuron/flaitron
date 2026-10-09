@@ -10,7 +10,7 @@ You are starting **and completing** a micro-tasknote for the task ID provided in
 
 A **micro-tasknote** is a single-section lightweight tasknote for tasks above the skip-tasknote threshold (more than a one-line typo, more than ~10 doc lines) but small enough that the full 4-phase ceremony is overkill — typically small audits, focused doc patches, single-file behavior tweaks with no design tradeoffs to record. The non-negotiable contracts (relevance, drift, archive skim, best-practices review, and pattern survey) survive as **bold-prefix prompts** in a single `## ⚡ Notes` section rather than checklist boxes. Closure is one step (recap + flip PLAN + archive).
 
-This skill is **file + execute (one-shot)**: it scaffolds the lightweight tasknote, drives execution inline, and closes — all in a single conversation. Compare with `/ft-task` (full 4-phase flow for normal-size tasks) and `/ft-file-followup --starter` (filing-only for tasks discovered with rich context but not ready to start).
+This skill is **file + execute (one-shot)**: it scaffolds the lightweight tasknote, drives execution inline, and closes — all in a single conversation. Compare with `/ft-task` (full 4-phase flow for normal-size tasks) and `/ft-file-task --starter` (filing-only for tasks discovered with rich context but not ready to start).
 
 If `args` is missing or its first token doesn't match `<AREA>-<NUMBER>` (or `<AREA>-<NUMBER>.<SUB>` for epic subtasks), stop and ask the user for a valid task ID. Do not guess. Trailing `--fast` / `-f` and `--unattended` flags are the only other accepted tokens — see Step 0.
 
@@ -60,7 +60,7 @@ Run `<PREAMBLE>` §"Model gate", substituting `/ft-micro-task` for the edge frag
 
 **Resume a `model-mismatch` park.** If Step 1 let an existing note through, resume it in place and skip the template copy and the stub retirement below. It is a bare scaffold with no Notes filled and no work done, so there is nothing to drift-check. Fill any scaffold value below the note lacks (🎯 Goal, `related-tasks:`), flip `status: blocked` → `in-progress`, flip the nav chip `⏸ Blocked` → `🟢 In progress`, and remove `park-reason:` (`<SPEC_DIR>/blocked.md` §"Exit (resume)"), then continue at Step 3.
 
-**Sidequest-stub retirement.** If `.flaitron/sidequest/<TASK-ID>.md` exists, this scaffold is a sidequest promotion — read it now; once the scaffold below is written, carry every section below its nav line (`## Idea`, `## Resume anchor`, and any added by hand), verbatim, into the new note's `## ⚡ Notes`, ahead of the bold-prefix prompts, as a quoted block headed `Carried from the retired sidequest stub:`, section headings turned into bold labels, and only after that write delete the stub (`rm .flaitron/sidequest/<TASK-ID>.md`). Contract: `claude/skills/ft-file-followup/park-mode.md` §Notes → "Promotion" ("Delete `.flaitron/sidequest/<ID>.md` after promotion"); this executes it at the point a promoting run actually writes, instead of relying on the promoter to remember a rule stated only in that fragment and `docs/GLOSSARY.md`.
+**Sidequest-stub retirement.** If `.flaitron/sidequest/<TASK-ID>.md` exists, this scaffold is a sidequest promotion — read it now; once the scaffold below is written, carry every section below its nav line (`## Idea`, `## Resume anchor`, and any added by hand), verbatim, into the new note's `## ⚡ Notes`, ahead of the bold-prefix prompts, as a quoted block headed `Carried from the retired sidequest stub:`, section headings turned into bold labels, and only after that write delete the stub (`rm .flaitron/sidequest/<TASK-ID>.md`). Contract: `claude/skills/ft-file-task/park-mode.md` §Notes → "Promotion" ("Delete `.flaitron/sidequest/<ID>.md` after promotion"); this executes it at the point a promoting run actually writes, instead of relying on the promoter to remember a rule stated only in that fragment and `docs/GLOSSARY.md`.
 
 Copy the micro template (path resolved in Step 0) to `.flaitron/tasknote/<TASK-ID>.md`. Frontmatter and body shape: see SPEC §"Tasknote frontmatter" + §"Tasknote body shape" + `SPEC/tasknote-selection.md` §"When to use a tasknote (and when not to)" micro carve-out for the `## ⚡ Notes` / `## ✅ Recap` skeleton.
 
@@ -83,7 +83,7 @@ Skill-specific imperatives on top of the SPEC contracts:
 
 Then **do the work**: extend an established pattern or justify a new one; refactor only when Acceptance requires it or the touched path would otherwise introduce duplication, obscure responsibility, or violate a dependency boundary. Record that reason and defer unrelated cleanup. Run targeted tests + lint/type-check on changed files, then record the **Verification receipt** inline — each command as `command → exit code` with the first failure line when non-zero — and confirm alongside it the canonical structural quality assertions for changed code (otherwise `N/A` with reason). Micro-tasknotes have no Testing Notes section; the receipt goes in the **Implementation** bold-prefix. Update **Implementation** bold-prefix as you go (what changed, key decisions). At closure-readiness fill **Docs touched:** per `.flaitron/tasknote/README.md` §"AI-referenced docs" (the micro-tasknote equivalent of `/ft-task`'s Phase 4 doc-drift sweep): "no change" or the specific update.
 
-If a hard dependency surfaces, abandon the micro-tasknote and re-file as `/ft-task` (or a `/ft-file-followup --starter` starter) — micro-tasks are not designed to park. Surface and ask.
+If a hard dependency surfaces, abandon the micro-tasknote and re-file as `/ft-task` (or a `/ft-file-task --starter` starter) — micro-tasks are not designed to park. Surface and ask.
 
 ## Step 4 — Recap and close
 
@@ -119,5 +119,5 @@ Skill-specific:
 
 ## Notes
 
-- **Routing:** see SPEC/tasknote-selection.md §"When to use a tasknote (and when not to)" micro carve-out. `/ft-micro-task`'s niche: above the skip threshold, single-file, no design tradeoffs. Multi-file / design tradeoffs → `/ft-task` (the 4-phase ceremony pays for itself). Filing-only mid-flow → `/ft-file-followup` (`--starter` for rich context). If unsure, default to `/ft-task`.
+- **Routing:** see SPEC/tasknote-selection.md §"When to use a tasknote (and when not to)" micro carve-out. `/ft-micro-task`'s niche: above the skip threshold, single-file, no design tradeoffs. Multi-file / design tradeoffs → `/ft-task` (the 4-phase ceremony pays for itself). Filing-only mid-flow → `/ft-file-task` (`--starter` for rich context). If unsure, default to `/ft-task`.
 - **Sub-tasks of an epic** (`<AREA>-<NUMBER>.<SUB>`) follow the same flow. The parent epic line is not flipped to complete until all children are. Full lifecycle in `<SPEC_DIR>/epic.md`.

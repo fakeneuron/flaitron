@@ -1,6 +1,6 @@
 # PLAN.md filing
 
-> Lazy-loaded SPEC module. Loaded at the two moments a PLAN.md row changes hands with git: by the filing motions (`/ft-file-followup` and its `--park` / `--starter` modes, `/ft-audit`, `/ft-audit-repo`, `/ft-refactor`, `/ft-epic-discovery` at Step 4) and `/ft-seed` when they commit their own write, and by every closing runner (`/ft-task`, `/ft-micro-task`, `/ft-epic-discovery`, `/ft-close-epic`, `/ft-release`) at the Phase 4 stub flip — plus the visualizer as a `## Completed` history consumer. See `SPEC.md` for the always-loaded core spec, and the sibling [`SPEC/tasknote-selection.md`](tasknote-selection.md) for the use/skip thresholds, the filing-discipline word budget, and the downstream-impact reconciliation scan that decide *what* to file.
+> Lazy-loaded SPEC module. Loaded at the two moments a PLAN.md row changes hands with git: by the filing motions (`/ft-file-task` and its `--park` / `--starter` modes, `/ft-audit`, `/ft-audit-repo`, `/ft-refactor`, `/ft-epic-discovery` at Step 4) and `/ft-seed` when they commit their own write, and by every closing runner (`/ft-task`, `/ft-micro-task`, `/ft-epic-discovery`, `/ft-close-epic`, `/ft-release`) at the Phase 4 stub flip — plus the visualizer as a `## Completed` history consumer. See `SPEC.md` for the always-loaded core spec, and the sibling [`SPEC/tasknote-selection.md`](tasknote-selection.md) for the use/skip thresholds, the filing-discipline word budget, and the downstream-impact reconciliation scan that decide *what* to file.
 
 Three contracts, one subject — what happens to a PLAN.md row once it is
 written: §"Filing commits" (how a filing lands in git), §"`## Completed`
@@ -11,7 +11,7 @@ section carries when it has no rows at all.
 
 ## Filing commits
 
-The filing motions — `/ft-file-followup` (default flow), its `--park`
+The filing motions — `/ft-file-task` (default flow), its `--park`
 and `--starter` modes, `/ft-audit`, `/ft-audit-repo`, `/ft-refactor`, and
 `/ft-epic-discovery` (its Step 4 rows, before `.1` is scaffolded) — **commit their own
 filing** at hand-off, and `/ft-seed`, which edits existing rows rather than
@@ -34,9 +34,9 @@ Message shape, one per filing motion:
 
 | Motion | Commit message |
 |---|---|
-| `/ft-file-followup` (default) | `chore: file <ID> follow-up — <shortname>` |
-| `/ft-file-followup --park` | `chore: file <ID> park — <shortname>` |
-| `/ft-file-followup --starter` | `chore: file <ID> starter — <shortname>` |
+| `/ft-file-task` (default) | `chore: file <ID> follow-up — <shortname>` |
+| `/ft-file-task --park` | `chore: file <ID> park — <shortname>` |
+| `/ft-file-task --starter` | `chore: file <ID> starter — <shortname>` |
 | `/ft-audit` | `chore: audit file tickets — <domain>` |
 | `/ft-audit-repo` | `chore: audit-repo file epics — <count> milestones` |
 | `/ft-refactor` | `chore: file <AREA>-EPIC-<N> refactor plan — <shortname>` |
@@ -133,7 +133,7 @@ Rules:
   cues" is unaffected.
 
 **Unattended filing authority.** The grounding above assumes an operator act
-exists to point at. `/ft-file-followup --unattended` has none — no review gate
+exists to point at. `/ft-file-task --unattended` has none — no review gate
 was answered, no priority question, no write-step confirmation — yet
 `SPEC.md` §"Deferred hand-off filing" still obliges an operator-less closure to
 file the deferred step as its own unchecked PLAN.md row. The authorization is

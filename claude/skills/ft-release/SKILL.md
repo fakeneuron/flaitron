@@ -236,7 +236,7 @@ npm --prefix viz audit --audit-level=high
 
 - **Clean (exit 0)** — proceed to Step 7.
 - **Findings reported** — fix inline when in scope for this release, or file
-  a follow-up PLAN.md task via `/ft-file-followup` before closing the cut.
+  a follow-up PLAN.md task via `/ft-file-task` before closing the cut.
   Never let a release close with unaddressed high/critical findings
   unrecorded.
 
@@ -261,7 +261,7 @@ Classify each returned finding:
 If any Medium or Low finding is still open, stop and ask with AskUserQuestion before §7.2. Show every held finding as a one-line summary. Two options, and neither is the default:
 
 - **Stop** — do not file, do not enter §7.2, and do not tag. Record the findings in the release tasknote. The cut stays in this working tree until they are fixed here and §7.1 is re-run. A re-run that still reports Medium or Low findings asks again. A re-run that reports none continues into the standing checks below.
-- **Release anyway** — file each held finding via `/ft-file-followup`, record the new task IDs in the release tasknote, then continue the cut. This is the only path that ships with those findings still open.
+- **Release anyway** — file each held finding via `/ft-file-task`, record the new task IDs in the release tasknote, then continue the cut. This is the only path that ships with those findings still open.
 
 An empty, unclear, or uncertain reply is **Stop**. This ask is a skill-recipe wait, like the §7.2 tag-message review. It is not bundled into 📦: Stop has to land before §7.2, and folding the choice into commit-go would tag before the operator made it.
 
@@ -377,7 +377,7 @@ The post-closure protocol is canonical in `SPEC/post-closure.md` — **Read it n
 
 - **Rotation** — post-closure step 2's `## Completed` rotation runs here as for any closer, after §7.5's operations land and before the 🏁 marker; when it runs, append `· rotated <N> rows in <sha>` to the marker. Its `chore:` commit is not part of the pushed release — it stays local and rides the next push.
 
-- **Suggest-next-move + copy-paste line** — follow in the same response as the 🏁 marker. Candidates carry `[model]` inline per option (`**<TASK-ID>** [model] | shortname — one-sentence "why now"`). The next move is typically the next pending child in the cohort that filed this release, or `/ft-file-followup` for any drift surfaced during the cut.
+- **Suggest-next-move + copy-paste line** — follow in the same response as the 🏁 marker. Candidates carry `[model]` inline per option (`**<TASK-ID>** [model] | shortname — one-sentence "why now"`). The next move is typically the next pending child in the cohort that filed this release, or `/ft-file-task` for any drift surfaced during the cut.
 
 ## Notes
 

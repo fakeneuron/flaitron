@@ -1,6 +1,6 @@
 # Model field
 
-> Lazy-loaded SPEC module. Loaded by the Step 1.5 model gate of `/ft-task` and `/ft-micro-task`, only on the gate's edge cases (a category tag the active model is under-tier for, a concrete tag that mismatches the active model, or a PLAN line lacking a `[model]` segment). Consulted, not force-Read, by the filing and choosing skills (`/ft-file-followup`, `/ft-epic-discovery`, `/ft-audit`, `/ft-audit-repo`, `/ft-refactor`) when they pick a `[model]` token. See `SPEC.md` for the always-loaded core spec.
+> Lazy-loaded SPEC module. Loaded by the Step 1.5 model gate of `/ft-task` and `/ft-micro-task`, only on the gate's edge cases (a category tag the active model is under-tier for, a concrete tag that mismatches the active model, or a PLAN line lacking a `[model]` segment). Consulted, not force-Read, by the filing and choosing skills (`/ft-file-task`, `/ft-epic-discovery`, `/ft-audit`, `/ft-audit-repo`, `/ft-refactor`) when they pick a `[model]` token. See `SPEC.md` for the always-loaded core spec.
 
 The model assignment lives on the PLAN.md task line — the `[model]` segment
 of §"Task-line format". PLAN.md is the source of truth. The token is a short

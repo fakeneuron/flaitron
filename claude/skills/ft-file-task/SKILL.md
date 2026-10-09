@@ -1,10 +1,10 @@
 ---
-name: ft-file-followup
+name: ft-file-task
 description: File a mid-flow follow-up task from inside an active tasknote. With `--park`, parks an idea or quick fix without losing it (tiny stub, resume inline). With `--starter`, files a starter tasknote with rich AI-captured context for work not ready to start. With `--unattended`, files with no operator present, auto-allocating the ID and suppressing review gates.
 argument-hint: '[TASK-ID] [--park [--low|--med|--fut|--high]] [--starter] [--unattended]'
 ---
 
-# file-followup — flaitron lightweight follow-up filer
+# file-task — flaitron lightweight follow-up filer
 
 You are filing a **follow-up task** for the task ID provided in `args`, or for
 the suggested ID confirmed during input collection when `args` is omitted. The
@@ -13,7 +13,7 @@ tasknote (and when not to)" — this skill is the executable interpretation, not
 a replacement. Treat SPEC.md as authoritative when this file is silent or in
 tension.
 
-A default `/ft-file-followup` filing produces **zero artifacts on disk beyond a single PLAN.md task line**. The "short context paragraph" — rationale + suspected scope + recommended priority/model — is delivered conversationally only, in the same response as the filing confirmation. There is no tasknote file. Active tasknotes (if `/ft-file-followup` runs mid-flow inside `/ft-task`) are **not** edited — no breadcrumb, no log entry. The active tasknote stays a record of what it was for, not a coordination ledger.
+A default `/ft-file-task` filing produces **zero artifacts on disk beyond a single PLAN.md task line**. The "short context paragraph" — rationale + suspected scope + recommended priority/model — is delivered conversationally only, in the same response as the filing confirmation. There is no tasknote file. Active tasknotes (if `/ft-file-task` runs mid-flow inside `/ft-task`) are **not** edited — no breadcrumb, no log entry. The active tasknote stays a record of what it was for, not a coordination ledger.
 
 This skill is **filing-only**, and its default flow is the lightest of its three weights: use it as-is when the description fits in ≤50 words and no rich context (file survey / open questions / design decisions) needs to persist. If the description would breach 70 words or rich context warrants preserving, re-invoke with `--starter` — the SKILL surfaces this gate at Step 2.
 
@@ -28,8 +28,8 @@ the user for a valid task ID.
 
 Two layouts. Pick by which file exists:
 
-- **Adopter project:** `.flaitron/core/SPEC.md` exists → SPEC=`.flaitron/core/SPEC.md`, SPEC_DIR=`.flaitron/core/SPEC/`, SKILL_DIR=`.flaitron/core/claude/skills/ft-file-followup/`, templates=`.flaitron/core/templates/` (`sidequest-template.md` for park mode, `tasknote-starter-template.md` for starter mode).
-- **Flaitron self-host:** repo-root `SPEC.md` with heading `# Flaitron — Workflow Specification` → SPEC=`SPEC.md`, SPEC_DIR=`SPEC/`, SKILL_DIR=`claude/skills/ft-file-followup/`, templates=`templates/`.
+- **Adopter project:** `.flaitron/core/SPEC.md` exists → SPEC=`.flaitron/core/SPEC.md`, SPEC_DIR=`.flaitron/core/SPEC/`, SKILL_DIR=`.flaitron/core/claude/skills/ft-file-task/`, templates=`.flaitron/core/templates/` (`sidequest-template.md` for park mode, `tasknote-starter-template.md` for starter mode).
+- **Flaitron self-host:** repo-root `SPEC.md` with heading `# Flaitron — Workflow Specification` → SPEC=`SPEC.md`, SPEC_DIR=`SPEC/`, SKILL_DIR=`claude/skills/ft-file-task/`, templates=`templates/`.
 
 If neither matches, bail. PLAN=`.flaitron/PLAN.md`, tasknote dir=`.flaitron/tasknote/`, sidequest dir=`.flaitron/sidequest/` either way.
 
@@ -84,7 +84,7 @@ question cannot be asked either; stop:
 ## Step 1a — Pre-flight checks
 
 - Resolve the **Area** by reading the `.flaitron/tasknote/README.md` §"Archive layout" table — every task, every prefix, canonical ones included. `<area>` is **never derived from the task ID**: lowercasing the prefix is the adopter's declaration-time default, not a resolution you may perform, and a project may deliberately declare a folder it would not produce (`OPS-*` → `archive/operations/`). See SPEC §"Task ID convention". If the table has no row for this prefix, stop and ask — do not guess a folder.
-- The task ID must NOT already exist in PLAN.md. If it does, stop and ask whether the user meant a different ID — `/ft-file-followup` files NEW tasks; reusing an existing entry is out of scope.
+- The task ID must NOT already exist in PLAN.md. If it does, stop and ask whether the user meant a different ID — `/ft-file-task` files NEW tasks; reusing an existing entry is out of scope.
 - `.flaitron/tasknote/<TASK-ID>.md` must NOT already exist. If it does, stop. Surface the conflict (could be in-flight, blocked, completed, starter, or already a follow-up that was promoted). In starter mode this is the path being written, so the check is load-bearing rather than defensive.
 - `.flaitron/tasknote/archive/<area>/<TASK-ID>.md` must NOT already exist. If it does, stop — the ID has been used and archived; pick a fresh ID.
 - **Park mode only:** `.flaitron/sidequest/<TASK-ID>.md` must NOT already exist either. On conflict, stop and ask for a different ID.
@@ -118,7 +118,7 @@ report where the absent operator will see them.
 
 - **≤50 words:** proceed.
 - **51-70 words:** trim if practical; otherwise proceed with a yellow-flag note in the review surface (Step 3).
-- **>70 words:** STOP. The description breaches the hard cap — the default flow is the wrong weight. Surface to the user: "The drafted description is `<N>` words (>70w cap). This belongs in a starter body, not a one-line PLAN.md entry. Recommend re-invoking as `/ft-file-followup <ID> --starter`." Do not proceed unless the user trims the description below the cap. **When `starter-mode = true`** the cap is not a stop — `starter-mode.md` Step S2 owns the override.
+- **>70 words:** STOP. The description breaches the hard cap — the default flow is the wrong weight. Surface to the user: "The drafted description is `<N>` words (>70w cap). This belongs in a starter body, not a one-line PLAN.md entry. Recommend re-invoking as `/ft-file-task <ID> --starter`." Do not proceed unless the user trims the description below the cap. **When `starter-mode = true`** the cap is not a stop — `starter-mode.md` Step S2 owns the override.
 
 The 70w cap exists so PLAN.md stays scannable; rich context belongs in starter bodies (`--starter`) or full tasknotes (`/ft-task`). The default flow's niche is the ≤50w + ephemeral-context band only.
 
@@ -254,4 +254,4 @@ The filing is committed by Step 4.4 — the Step 3 review approval **is** the co
 - **Filing-only — no design decisions in the skill flow itself.** All context (rationale, suspected files, recommended priority/model) comes from the prior conversation; the skill just records the line and surfaces the paragraph.
 - **Routing across the filing cohort:** see SPEC/tasknote-selection.md §"When to use a tasknote (and when not to)" for the full decision tree. One filer, three weights: the default flow's niche is ≤50w + ephemeral context only. Tangential idea + resume inline + no review gate → add `--park` (lighter; see `park-mode.md`). Above 50w, or a file survey / open questions / design decisions worth persisting → add `--starter` (heavier; see `starter-mode.md`). Filing+executing in one shot → `/ft-micro-task`. Starting an existing PLAN.md entry → `/ft-task`.
 - **`--unattended` is the operator-less posture, not a speed flag.** Its one legitimate caller is a closure with no operator present discharging `SPEC.md` §"Deferred hand-off filing". It buys no autonomy an attended run lacks: the filing-discipline cap, the reconciliation scan, the pre-check, and the pathspec discipline all still bind, and every question it cannot answer terminates readably rather than being answered on the operator's behalf. Posture contract: `SPEC/gate-postures.md` §"`--unattended` operator posture".
-- **No active-tasknote breadcrumb.** When invoked from inside `/ft-task`, `/ft-file-followup` does not write into the active tasknote — keeps the active tasknote a record of what it was for, not a coordination ledger. This is the strict reading of "only one PLAN.md line on disk."
+- **No active-tasknote breadcrumb.** When invoked from inside `/ft-task`, `/ft-file-task` does not write into the active tasknote — keeps the active tasknote a record of what it was for, not a coordination ledger. This is the strict reading of "only one PLAN.md line on disk."

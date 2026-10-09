@@ -1,6 +1,6 @@
 # Starter mode (`--starter`)
 
-> Lazy-loaded SKILL fragment. Loaded by `claude/skills/ft-file-followup/SKILL.md`
+> Lazy-loaded SKILL fragment. Loaded by `claude/skills/ft-file-task/SKILL.md`
 > Step 0 when `starter-mode = true`. Unlike `park-mode.md`, this fragment does
 > **not** replace the host flow — it overlays Steps 2–5. Where a step below is
 > silent, the host SKILL's step applies unchanged; where it speaks, it wins.

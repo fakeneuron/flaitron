@@ -1,6 +1,6 @@
 # Park mode (`--park`)
 
-> Lazy-loaded SKILL fragment. Loaded by `claude/skills/ft-file-followup/SKILL.md`
+> Lazy-loaded SKILL fragment. Loaded by `claude/skills/ft-file-task/SKILL.md`
 > Step 0 when `park-mode = true`. Carries the whole park flow; the host SKILL's
 > Steps 2–5 (AskUserQuestion collection, review gate, reconcile scan,
 > conversational paragraph, hand-off) are **bypassed** in this mode.
@@ -9,7 +9,7 @@ Park an **idea or quick fix** without breaking the current session. The lightest
 persistent filing motion: one tiny stub at `.flaitron/sidequest/<TASK-ID>.md`,
 one PLAN line under the right priority section, then straight back to work.
 
-**Lighter than a default `/ft-file-followup` filing:** no review gate, no
+**Lighter than a default `/ft-file-task` filing:** no review gate, no
 downstream-impact reconciliation scan, no conversational paragraph.
 **Heavier than chat-only:** the idea, priority intent, and a resume anchor
 persist to disk.
@@ -42,9 +42,9 @@ Parse `args` for a priority flag (any position; strip before drafting):
 | `--fut`, `--future` | Future Opportunities | `later` |
 | `--high` | High | `soon` |
 
-Examples: `/ft-file-followup --park --low fix null guard in parser`,
-`/ft-file-followup --park --med CORE-342`,
-`/ft-file-followup --park explore redis --fut`.
+Examples: `/ft-file-task --park --low fix null guard in parser`,
+`/ft-file-task --park --med CORE-342`,
+`/ft-file-task --park explore redis --fut`.
 
 **No flag → one short question, then stop.** Before writing anything, ask
 exactly one line (no AskUserQuestion widget, no multi-field form):
@@ -156,7 +156,7 @@ SKILL's Step 5 hand-off, which ends its turn.
 
 - **Routing:** see `SPEC/tasknote-selection.md`. `--park` = park idea or quick
   fix, ≤80w, resume inline. Need a review gate or reconcile scan → drop the flag
-  and run the default `/ft-file-followup` flow. Rich context → `--starter`
+  and run the default `/ft-file-task` flow. Rich context → `--starter`
   instead (the two flags do not compose). Execute now → `/ft-micro-task` or
   `/ft-task`.
 - **PLAN row shape:** standard task-line grammar only — no park suffix, badge

@@ -15,9 +15,9 @@ Tasknotes are scaffolded automatically by the slash commands from
 canonical shapes. Five variants:
 
 - **Standard 4-phase tasknote** — `/ft-task <ID>` scaffolds from `tasknote-template.md`; full schema at `.flaitron/core/SPEC.md` §"Tasknote frontmatter" + §"Tasknote body shape" (model assignment lives on the PLAN.md task line — see §"Task-line format").
-- **Starter tasknote** — `/ft-file-followup [ID] --starter` scaffolds from `tasknote-starter-template.md` for mid-flow context capture and suggests an ID when omitted; lifecycle at `.flaitron/core/SPEC/starter.md`.
+- **Starter tasknote** — `/ft-file-task [ID] --starter` scaffolds from `tasknote-starter-template.md` for mid-flow context capture and suggests an ID when omitted; lifecycle at `.flaitron/core/SPEC/starter.md`.
 - **Micro-tasknote** — `/ft-micro-task <ID>` scaffolds from `tasknote-micro-template.md` for tasks above the skip-tasknote threshold but below full 4-phase ceremony; threshold at `.flaitron/core/SPEC/tasknote-selection.md` §"When to use a tasknote (and when not to)".
-- **Sidequest stub** — `/ft-file-followup --park [ID]` scaffolds from `sidequest-template.md` to park a mid-session idea or quick fix without losing it; writes `.flaitron/sidequest/<ID>.md` alongside a PLAN.md line. Filing-motion guidance at `.flaitron/core/SPEC/tasknote-selection.md` §"When to use a tasknote (and when not to)".
+- **Sidequest stub** — `/ft-file-task --park [ID]` scaffolds from `sidequest-template.md` to park a mid-session idea or quick fix without losing it; writes `.flaitron/sidequest/<ID>.md` alongside a PLAN.md line. Filing-motion guidance at `.flaitron/core/SPEC/tasknote-selection.md` §"When to use a tasknote (and when not to)".
 - **Epic lifecycle** — for code-sweep or major multi-child feature epics, bracket the implementation children with a **Discovery** subtask (`<AREA>-<N>.1`, plans the children) and an **Audit** subtask (final `.N`, verifies the completed work). See `.flaitron/core/SPEC/epic.md`. Simple implementations don't need it.
 
 ## Area prefixes

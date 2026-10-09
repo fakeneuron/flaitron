@@ -1,6 +1,6 @@
 # Tasknote selection
 
-> Lazy-loaded SPEC module. Loaded by the filing/runner skills (`/ft-task`, `/ft-micro-task`, `/ft-file-followup`, `/ft-epic-discovery`, `/ft-refactor`) when they need the use/skip thresholds, the filing-discipline word budget, or the downstream-impact reconciliation scan. See `SPEC.md` for the always-loaded core spec. What happens to a PLAN.md row *after* it is filed — the filing-commit contract, the `## Completed` stub-form convention, and `## Completed` rotation — lives in the sibling [`SPEC/plan-filing.md`](plan-filing.md).
+> Lazy-loaded SPEC module. Loaded by the filing/runner skills (`/ft-task`, `/ft-micro-task`, `/ft-file-task`, `/ft-epic-discovery`, `/ft-refactor`) when they need the use/skip thresholds, the filing-discipline word budget, or the downstream-impact reconciliation scan. See `SPEC.md` for the always-loaded core spec. What happens to a PLAN.md row *after* it is filed — the filing-commit contract, the `## Completed` stub-form convention, and `## Completed` rotation — lives in the sibling [`SPEC/plan-filing.md`](plan-filing.md).
 
 ## When to use a tasknote (and when not to)
 
@@ -28,13 +28,13 @@ mechanics.
 A spec is a planning artifact, not a filing: copy the template to
 `.flaitron/specs/<slug>.md` (create the directory on first use), fill its six
 sections, review it, then convert its Tasks section via `/ft-epic-discovery`,
-`/ft-file-followup --starter`, `/ft-task`, or a direct PLAN.md line. No skill
+`/ft-file-task --starter`, `/ft-task`, or a direct PLAN.md line. No skill
 drives it.
 
 **Skip the spec (go straight to filing) when:**
 
 - A one-liner idea needs neither a spec nor a starter — write the PLAN.md line directly
-- The design is already clear and decomposed — file with `/ft-file-followup --starter` or `/ft-epic-discovery`
+- The design is already clear and decomposed — file with `/ft-file-task --starter` or `/ft-epic-discovery`
 
 **Plan a refactor (`/ft-refactor <target> [--fast]`) when:**
 
@@ -45,7 +45,7 @@ drives it.
 children plus a `.N` audit; execution is normal `/ft-task` cycles. No target →
 `/ft-audit structure`; open scope → `/ft-epic-discovery`.
 
-**File a starter (`/ft-file-followup [ID] --starter`) when:**
+**File a starter (`/ft-file-task [ID] --starter`) when:**
 
 - The PLAN.md long description would exceed **~50 words (target) or 70 words (hard cap)**
 - Rich context (rationale, design decisions, file survey, open questions) surfaced mid-flow but the work is not starting now — park it before `/clear` can lose it
@@ -55,7 +55,7 @@ children plus a `.N` audit; execution is normal `/ft-task` cycles. No target →
 - The long description fits inside ~50 words and no design or survey work has been done yet
 - Starting it next is the natural move (file, then start)
 
-**File a follow-up (`/ft-file-followup [ID]`) when:**
+**File a follow-up (`/ft-file-task [ID]`) when:**
 
 - A ≤50-word task surfaces mid-flow and its rationale is worth one paragraph in chat but not on disk — one PLAN.md line, no tasknote file, the active tasknote untouched
 
@@ -64,7 +64,7 @@ children plus a `.N` audit; execution is normal `/ft-task` cycles. No target →
 - The description would breach 50 words, or the context should persist to disk — add `--starter`
 - No live conversation produced the rationale — write the PLAN.md line directly
 
-**Park an idea instead (`/ft-file-followup --park [--low|--med|--fut|--high] [ID] [idea]`) when:**
+**Park an idea instead (`/ft-file-task --park [--low|--med|--fut|--high] [ID] [idea]`) when:**
 
 - An idea or **quick fix** surfaces mid-session, you are **not** switching context, and it fits a ≤80-word stub plus a ≤30w PLAN one-liner
 
@@ -119,16 +119,16 @@ line stays scannable, and rich context routes into starter bodies:
 |---|---|---|
 | ≤50 words | Target — comfortably scannable | Keep the one-liner |
 | 51-70 words | Yellow flag | Trim if practical; otherwise consider promoting to a starter |
-| >70 words | Hard cap — exceeded | Move the rich context into a starter body via `/ft-file-followup [ID] --starter`; PLAN.md line keeps a ≤50w summary |
+| >70 words | Hard cap — exceeded | Move the rich context into a starter body via `/ft-file-task [ID] --starter`; PLAN.md line keeps a ≤50w summary |
 
 The thresholds apply to **active** task lines (`High` / `Medium` /
 `Low` / `Future Opportunities`). Lines under `## Completed`
 are governed by [`SPEC/plan-filing.md`](plan-filing.md)
 §"`## Completed` archive convention".
 
-`/ft-file-followup` and `/ft-task` flag filings that breach the cap at
+`/ft-file-task` and `/ft-task` flag filings that breach the cap at
 filing/scaffold time — see the respective skill files for the mechanism.
-`/ft-file-followup`'s default flow declines at >70w and routes to its own
+`/ft-file-task`'s default flow declines at >70w and routes to its own
 `--starter` mode, where the cap is a recorded override rather than a stop.
 
 ## Downstream-impact reconciliation
@@ -146,7 +146,7 @@ the old shape, and nobody notices until that task is picked up. The
 **Triggers.** Run the scan at two moments:
 
 - **New-task filing** — whenever a filing skill writes a new PLAN.md line
-  (`/ft-file-followup` in its default or `--starter` mode, the `/ft-epic-discovery` child
+  (`/ft-file-task` in its default or `--starter` mode, the `/ft-epic-discovery` child
   cohort, or a direct inline addition).
 - **Mid-flow direction-changing decision** — whenever a decision inside an
   active task (typically `/ft-task` Phase 2) changes the approach, contract,

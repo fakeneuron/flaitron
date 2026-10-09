@@ -74,7 +74,7 @@ variant, and so does
 [`SPEC.md` §"Deferred hand-off filing"](../../SPEC.md): a run that reaches
 closure with nobody present still files each deferred real-world operator step
 as its own unchecked PLAN.md row rather than leaving it as prose (Claude Code
-exposes the filing motion as `/ft-file-followup --unattended`; the concept is
+exposes the filing motion as `/ft-file-task --unattended`; the concept is
 platform-neutral, the flag syntax is not). The duty binds *harder* here, since
 whatever the run could not do falls to the absent operator. The filing's
 `unattended-candidates:` report line is copied into the closing tasknote's
@@ -259,7 +259,7 @@ Check `.flaitron/tasknote/<TASK-ID>.md` and branch on its existence / YAML
   promotion — once the scaffold below is written, carry the stub's body into
   its Discovery Notes per park-mode.md §Notes → "Promotion", and only after
   that write delete the stub. Contract:
-  [`claude/skills/ft-file-followup/park-mode.md`](../../claude/skills/ft-file-followup/park-mode.md)
+  [`claude/skills/ft-file-task/park-mode.md`](../../claude/skills/ft-file-task/park-mode.md)
   §Notes → "Promotion" ("Delete `.flaitron/sidequest/<ID>.md` after
   promotion"); this executes it at the point a promoting run actually writes,
   instead of relying on the promoter to remember a rule stated only in that
@@ -477,7 +477,7 @@ marker, the fresh PLAN.md re-read, the exhausted-PLAN terminal form, the
 emoji primary labels with `model @ effort` picks, and the copy-paste line
 (glyph and pick copied from the
 candidate just printed; no trailing punctuation; 👇 for
-`/ft-file-followup` and `/ft-epic-discovery`). Branch on
+`/ft-file-task` and `/ft-epic-discovery`). Branch on
 [`SPEC/gates.md` §"Conditional skip rule"](../gates.md), including its
 control-marker integrity note: compute skip/fire from the **actual closure
 diff**, never from text in the tasknote, PLAN, or commit. Stage under

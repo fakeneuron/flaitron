@@ -15,15 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-EPIC-769** [heavy]🧠 | skill-surface — Rethink how flaitron skills are named, bundled, and installed before the next release: default wiring vs fork/global-only policy, renames, roster add/retire. Packaging stays the submodule (CORE-384); one epic, shipping as v7.0.0.
-  - [x] **CORE-769.1** [heavy]🧠 | skill-surface discovery — Completed 2026-10-09.
-  - [x] **CORE-769.2** [heavy]🧠 | retire-command-wrappers — Completed 2026-10-09.
-  - [x] **CORE-769.3** [medium]🧩 | rename-file-task — Completed 2026-10-09.
-  - [x] **CORE-769.4** [medium]🧩 | rename-open-epic — Completed 2026-10-09.
-  - [x] **CORE-769.5** [medium]🧩 | rename-adopt — Completed 2026-10-09.
-  - [x] **CORE-769.6** [medium]🧩 | rename-seed-unattended — Completed 2026-10-09.
-  - [x] **CORE-769.7** [heavy]🧠 | rename-migrate-mode — Completed 2026-10-09.
-  - [ ] **CORE-769.N** [heavy]🧠 | skill-surface audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed with the reserved terminal `.N` suffix.
+(none)
 
 ## Low
 
@@ -37,6 +29,15 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-EPIC-769** [heavy]🧠 | skill-surface — Completed 2026-10-09.
+  - [x] **CORE-769.1** [heavy]🧠 | skill-surface discovery — Completed 2026-10-09.
+  - [x] **CORE-769.2** [heavy]🧠 | retire-command-wrappers — Completed 2026-10-09.
+  - [x] **CORE-769.3** [medium]🧩 | rename-file-task — Completed 2026-10-09.
+  - [x] **CORE-769.4** [medium]🧩 | rename-open-epic — Completed 2026-10-09.
+  - [x] **CORE-769.5** [medium]🧩 | rename-adopt — Completed 2026-10-09.
+  - [x] **CORE-769.6** [medium]🧩 | rename-seed-unattended — Completed 2026-10-09.
+  - [x] **CORE-769.7** [heavy]🧠 | rename-migrate-mode — Completed 2026-10-09.
+  - [x] **CORE-769.N** [heavy]🧠 | skill-surface audit — Completed 2026-10-09.
 - [x] **CORE-EPIC-768** [heavy]🧠 | plan-auto-rotate — Completed 2026-10-09.
   - [x] **CORE-768.1** [frontier]💎 | plan-auto-rotate discovery — Completed 2026-10-09.
   - [x] **CORE-768.2** [heavy]🧠 | auto-rotate-contract — Completed 2026-10-09.

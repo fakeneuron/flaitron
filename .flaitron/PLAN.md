@@ -20,7 +20,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Low
 
 
-- [ ] **CORE-727** [medium]🧩 | decay-window-restore — Blocked by decay-window depth: window [[CORE-724.7]] opened at `504f160f`. After 10 tasknotes archive past that SHA and at least one `/ft-audit` run commits filings past it, restore each of the four dropped rule groups only if the window shows the failure it guarded. Bar is in the archived CORE-724.7 note.
 
 - [ ] **CORE-683** [medium]🧩 | epic-forward-restore — Blocked by decay-window depth: window [[CORE-680]] opened at `a78a8ae5`. After 8 epic tasknotes (`*-EPIC-*` or `*.<sub>`) archive past that SHA, restore `SPEC/epic.md`'s Forward-looking paragraph only if one followed it. Bar is in the archived CORE-680 note.
 
@@ -32,6 +31,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-727** [medium]🧩 | decay-window-restore — Completed 2026-10-09.
 - [x] **CORE-767** [medium]🧩 | release v6.1.0 — Completed 2026-10-09.
 - [x] **CORE-747** [medium]🧩 | codex-audit-overlay-path — Completed 2026-10-08.
 - [x] **CORE-745** [medium]🧩 [unattended] | docs-audit-single-source — Completed 2026-10-08.

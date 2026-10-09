@@ -16,7 +16,8 @@ Phase 3 checklists belong to [`SPEC.md`](../SPEC.md), not here.
 [[CORE-659]] dropped the live pre-skip triggers at `f8c44275`, and
 [[CORE-660]]'s recount (34 tasknotes) found no recurrence of any of them.
 [[CORE-724.7]] dropped the rule that every gate-surface change brings a new
-row, at `504f160f`; [[CORE-727]] decides whether it returns.
+row, at `504f160f`; [[CORE-727]]'s read (46 tasknotes) found no later skip
+of a gate changed in the window, so it stays dropped.
 
 ## Rationalizations
 

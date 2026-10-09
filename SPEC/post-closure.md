@@ -4,15 +4,17 @@
 
 After a tasknote is archived, run the three-step protocol (commit / mark landed / offer copy-paste line). Whether step 1 fires or skips is [`SPEC/gates.md` §"Conditional skip rule"](gates.md), which also carries the skip branch's autonomous-commit motion; what `--fast` and `--unattended` do to it is one row of [`SPEC/gate-postures.md` §"Flag precedence and surface matrix"](gate-postures.md). Steps 2–3 run **only after** a deliverable-covering SHA — never in the same turn as a fire-branch 📦 / 🟢 ask.
 
+**Epic parent flip first.** Before step 1 stages anything, on either branch: if this closure left every child of its epic `- [x]`, run [`SPEC/plan-filing.md`](plan-filing.md) §"Epic parent flip". It has no prompt and runs under every posture. The flip and cohort move land in the closure commit, and step 1's closure review names them. When it runs, append `· flipped <AREA>-EPIC-<N>` to the 🏁 line, ahead of any rotation suffix.
+
 **Push is a separate gated step.** Ordinary commit-go, the autonomous-commit marker, and a `--fast` or `--unattended` skip authorize a local commit only. They do not authorize `git push`, and ordinary task closure never pushes. The one closure that does push is `/ft-release`: push-go is its own prompt inside the 📦 bundle ([`SPEC/gates.md` §"Operator-gate cues"](gates.md)), and only a Yes there lets the following commit-go include the push. A decline leaves the commit and tag local. Any other push is an operator-gated command, not a step of this protocol.
 
 1. **Commit (bundled gate, fire branch).** Surface the 📦 banner ([`SPEC/gates.md` §"Operator-gate cues"](gates.md) — preview line mandatory) and wait for commit-go. The bundle has three parts:
 
-   - **Closure review** — per-entry doc-drift verdicts, new PLAN.md stub-form line, archive path.
+   - **Closure review** — per-entry doc-drift verdicts, new PLAN.md stub-form line (plus the parent flip and cohort move when the pre-step ran), archive path.
    - **Recap (work summary)** — 1-2 sentence plain-English lede, then technical detail (file paths / LOC / key decisions + optional verification ask) per [`SPEC.md` §"🚀 Phase 4: Closure"](../SPEC.md).
    - **Proposed commit message** — `feat: <TASK-ID> — <title>` (or `fix:` / `docs:` / `chore:`). Multiple recently-closed tasknotes may bundle into one commit.
 
-   The commit-go prompt carries a `🟢` prefix (e.g., `🟢 Reply commit / go to land.`). Accepted replies are the closed set in [`SPEC/cue-vocabulary.md` §"Accepted gate replies"](cue-vocabulary.md) (`commit` / `go` / `yes` and the explicit commit verbs named there); `okay` / `looks good` are not members. Skill-level extensions (e.g., parent-flip Yes/No) ride inside this bundle; the commit-go is the single approval authorizing recap + closure + bundled prompts + commit.
+   The commit-go prompt carries a `🟢` prefix (e.g., `🟢 Reply commit / go to land.`). Accepted replies are the closed set in [`SPEC/cue-vocabulary.md` §"Accepted gate replies"](cue-vocabulary.md) (`commit` / `go` / `yes` and the explicit commit verbs named there); `okay` / `looks good` are not members. Skill-level extensions (e.g., `/ft-release` push-go) ride inside this bundle; the commit-go is the single approval authorizing recap + closure + bundled prompts + commit.
 
    **ft-micro-task carve-out.** `/ft-micro-task` carries no 📦 banner block on the fire branch — its commit-go is the emphasized 🟢 GO ask (own line, blank-line isolated, bold label) in place of the banner. The 📦 cue does not apply; the 🟢 prefix does. The same conditional skip rule governs both forms. See `/ft-micro-task` SKILL.md Step 5.
 

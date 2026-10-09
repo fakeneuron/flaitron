@@ -445,8 +445,8 @@ time (Step 6).
      keeping every untouched bracket token and glyph — the trailing marker run
      included — verbatim. Standalone →
      top of `## Completed`; epic child → stays 2-space nested under its active
-     parent until `/ft-close-epic` moves the whole cohort
-     ([`SPEC/epic.md` §"Child placement invariant"](../epic.md)). No
+     parent until the closure that leaves every child `[x]` moves the whole
+     cohort ([`SPEC/epic.md` §"Child placement invariant"](../epic.md)). No
      collateral Completed flips.
   6. Draft the evidence-based recap, including the `touches:` scope
      reconciliation (excluding this task's own tasknote and PLAN row), and

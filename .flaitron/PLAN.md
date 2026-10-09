@@ -19,7 +19,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [x] **CORE-768.1** [frontier]💎 | plan-auto-rotate discovery — Completed 2026-10-09.
   - [x] **CORE-768.2** [heavy]🧠 | auto-rotate-contract — Completed 2026-10-09.
   - [x] **CORE-768.3** [medium]🧩 | rotation-advisory-retire — Completed 2026-10-09.
-  - [ ] **CORE-768.4** [heavy]🧠 | epic-parent-auto-flip — When any closure leaves every child of an epic `[x]`, flip the parent to stub form and move the cohort to the top of `## Completed`, ahead of the rotation check in SPEC/post-closure.md. Retire /ft-close-epic's Yes/No prompt and its --unattended deferral; update gate-postures.md, gates.md's override example, epic.md's placement invariant, and plan-filing.md.
+  - [x] **CORE-768.4** [heavy]🧠 | epic-parent-auto-flip — Completed 2026-10-09.
   - [ ] **CORE-768.N** [heavy]🧠 | plan-auto-rotate audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
 
 

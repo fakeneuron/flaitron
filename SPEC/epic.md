@@ -46,19 +46,25 @@ stays valid — both forms parse.
 4. **Run Audit** via `/ft-close-epic <ID>.N` (or `/ft-task <ID>.N`; legacy
    epics with a numeric audit child pass that number instead) once all
    implementation children are closed. Final summary records findings even
-   when nothing is wrong.
+   when nothing is wrong. The closure that leaves every child `[x]` flips the
+   parent too (§"Child placement invariant" below).
 5. **Audit follow-ups.** Misses surfaced by the audit get filed as new
    numeric children (the next `.<k>` after the highest existing numeric
-   child; they slot before the terminal `.N`). For a few small follow-ups,
-   close the audit and execute them as normal children. For many, also file
-   a fresh Audit subtask to cover the second wave.
+   child; they slot before the terminal `.N`) **by the audit itself, in its
+   closure commit**. An open child keeps the parent open, so the parent flip
+   waits for the last follow-up's closure. Filing after the audit closes is
+   too late: by then its closure has already flipped the parent. For a few
+   small follow-ups, close the audit and execute them as normal children.
+   For many, also file a fresh Audit subtask to cover the second wave.
 
 **Child placement invariant.** While the parent epic remains active, Phase 4
 closure checks each child and rewrites it to the standard stub form but keeps
 the row 2-space nested beneath the parent in its current priority section.
 Never move an individual numeric or `.N` child to top-level `## Completed`.
-Only `/ft-close-epic`, after the parent-flip approval, moves the checked parent
-and its complete nested cohort atomically into `## Completed`.
+The closure that leaves every child `[x]`, whichever runner made it, flips the
+parent and moves it with its complete nested cohort atomically into
+`## Completed`, with no prompt
+([`SPEC/plan-filing.md`](plan-filing.md) §"Epic parent flip").
 
 ## Fan-out (optional)
 

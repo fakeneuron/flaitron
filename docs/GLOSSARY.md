@@ -50,7 +50,7 @@ Alphabetized. ~73 entries. Maintained via epic children and audits.
 
 **Drift check** — Phase 1 step with two halves, both run before any re-interpretation: a *code* cross-reference (file paths, line numbers, function names, and root-cause hypotheses cited in the original PLAN description still match current HEAD) and a *cross-artifact* one (the plan the tasknote is forming neither contradicts a SPEC contract nor diverges from its PLAN.md line). Cross-reference, not judgment — the Relevance Assessment already covers judgment.
 
-**epic** — A parent planning artifact (`CORE-EPIC-N`) whose children are numbered subtasks (`.1` Discovery, implementation children, `.N` Audit). Parent stays open until the audit child closes. Full lifecycle in SPEC/epic.md.
+**epic** — A parent planning artifact (`CORE-EPIC-N`) whose children are numbered subtasks (`.1` Discovery, implementation children, `.N` Audit). Parent flips to Completed automatically with the closure that leaves every child `[x]` (normally the audit). Full lifecycle in SPEC/epic.md.
 
 **epic Audit (.N)** — The closing subtask of an epic; verifies the completed work sits well in the codebase, runs the cumulative doc-drift sweep across AI-referenced docs, records findings even when clean. Executed via `/ft-close-epic`.
 
@@ -96,7 +96,7 @@ Alphabetized. ~73 entries. Maintained via epic children and audits.
 
 **parallel-safe-with** — Optional omit-when-absent tasknote frontmatter array of bare task IDs declaring which siblings may share worktrees with this child. Omitted means *undeclared*, not "safe with everyone." See SPEC §"Tasknote frontmatter" and docs/WORKTREES.md.
 
-**parent epic** — The `CORE-EPIC-N` row in PLAN.md that owns a group of subtasks; remains unchecked until its `.N` audit child completes. See SPEC/epic.md.
+**parent epic** — The `CORE-EPIC-N` row in PLAN.md that owns a group of subtasks; remains unchecked until the closure of its last open child (normally the `.N` audit) flips it. See SPEC/plan-filing.md §"Epic parent flip".
 
 **Pattern survey** — The mandatory first sub-step of Phase 2 Execution: examine sibling modules / parallel components / adjacent docs for an existing shape to extend before inventing a new one. See SPEC §"🛠️ Phase 2: Execution".
 

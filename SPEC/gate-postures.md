@@ -22,8 +22,7 @@ overturns a higher one.
 1. **Bundled in-📦 prompt.** A queued user-input question is never skipped by
    any flag. Attended it forces the 📦 banner; under `--unattended` it parks
    (`input-needed`) — because neither an autonomous commit nor a banner into
-   an empty session can answer it. (`/ft-close-epic` is the one caller that
-   *unbundles* rather than parks — see §"`/ft-close-epic` under the posture".)
+   an empty session can answer it.
 2. **`--unattended` conversion.** It first *inherits* everything rung 3 skips —
    those gates are gone, not parked. What it does not inherit is `--fast`'s two
    **delegations** (the 👁️ ask and the Re-scope notice), because a transfer
@@ -57,7 +56,7 @@ closed set in [`SPEC/blocked.md`](blocked.md) §"Park reason".
 | 🛠️ Phase 1→2, De-scope | Fires | **Fires** — drift carve-out | Parks `drift` |
 | 📦 clear signal | Skips (autonomous commit) | Skips | Skips |
 | 📦 privileged-ops signal trip | Fires | Skips; the suppressed signal is named in the marker | Inherited — skips |
-| 📦 bundled in-📦 prompt | Fires | **Fires** | Parks `input-needed` (`/ft-close-epic`: unbundles, defers the flip) |
+| 📦 bundled in-📦 prompt | Fires | **Fires** | Parks `input-needed` |
 | 👁️ `CONFIRM` (Phase 3) | Emphasized inline ask | Suppressed — the present operator owns the check | Parks `visual-confirm` |
 | 🗄️/▶️/📡/💻 destructive escalation | Escalates to a banner | **Escalates** | Parks `destructive` |
 | ✋ `ACTION`, prerequisite | Inline cue; does not block the assistant | Inline cue | Parks `prerequisite` |
@@ -304,37 +303,20 @@ this converts no gate and adds no row to a runner's park map — see
 ### `/ft-close-epic` under the posture
 
 The two runners above are not the whole surface. `/ft-close-epic` drives an
-epic's `.N` audit through closure and then asks whether to flip the parent and
-move the cohort — and that ask is a **bundled in-📦 prompt**, which the
-override in [`SPEC/gates.md`](gates.md) §"Conditional skip rule" makes force-fire. An operator-less caller
-therefore could not close an epic at all: not the audit, not the parent.
+epic's `.N` audit through closure under the posture too, and the audit commits
+exactly as an attended run with clear signals would. Its parent flip is not a
+question, so the posture leaves it alone: the closure that leaves every child
+`[x]` flips the parent and moves the cohort
+([`plan-filing.md`](plan-filing.md) §"Epic parent flip").
 
-The flag reaches it, with two semantics that differ from the runners':
-
-- **It is not a `--fast` superset.** The epic skills never accepted `--fast`,
-  so there is nothing to be a superset of. `--unattended` carries the posture
-  directly — suppress what has no operator, park or terminate what cannot be
-  answered.
-- **The parent-flip is unbundled, not parked.** The audit runs to full
-  closure and commits atomically, exactly as an attended run with clear
-  signals would. The parent-flip prompt is simply **not queued into the 📦
-  bundle**: the parent line stays `[ ]`, the cohort stays nested, and the run
-  reports the deferral machine-readably.
-
-Unbundling preserves the override's *intent* — the question stays unanswered
-by an autonomous run — while removing the coupling that made the audit
-unreachable. Parking instead would strand a verification pass that had no
-unanswered question of its own, and there would be nothing to park: the audit
-note is `completed` and archived by then, and a parked note is *paused, not
-closed* ([`SPEC/blocked.md`](blocked.md) §"Parked state").
-
-The deferred flip needs no `park-reason:` because PLAN.md already states it
-structurally — a parent `- [ ]` above a cohort of `- [x]` children means the
-flip is pending and nothing else. The one conversion that *does* park is the
-Phase 1→2 exit gate, where the audit tasknote exists and the standard recipe
-applies; `/ft-close-epic` runs the `default-fire-on-clarifications` flavor, so
-a clarification it cannot answer parks as `input-needed` — the same "question
-autonomous execution cannot answer" that code already names.
+One semantic differs from the runners': **it is not a `--fast` superset.** The
+epic skills never accepted `--fast`, so there is nothing to be a superset of.
+`--unattended` carries the posture directly: suppress what has no operator,
+park or terminate what cannot be answered. The one conversion that parks is
+the Phase 1→2 exit gate, where the audit tasknote exists and the standard
+recipe applies. `/ft-close-epic` runs the `default-fire-on-clarifications`
+flavor, so a clarification it cannot answer parks as `input-needed`, the same
+"question autonomous execution cannot answer" that code already names.
 
 Everything §"What `--unattended` never relaxes" lists holds here in full: the
 audit commit is a **real** commit, so the foreign-dirt gate still terminates

@@ -6,7 +6,7 @@
 >
 > **`<SKILL>` below stands for the invoking skill's own slash command, flags included** — `/ft-task` (with `--debug` / `--loop` as passed), `/ft-micro-task`, or `/ft-close-epic`. Substitute it wherever it appears; never hard-code a bare `/ft-task`.
 >
-> **Most of this file is written for the two runners.** `/ft-close-epic` shares the park recipe, the pre-scaffold stop shape, and the never-relaxed list, but it is **not** a `--fast` superset there and its parent-flip is *deferred* rather than parked — see §"`/ft-close-epic`" at the end, and `SPEC/gate-postures.md` §"`/ft-close-epic` under the posture" for the contract.
+> **Most of this file is written for the two runners.** `/ft-close-epic` shares the park recipe, the pre-scaffold stop shape, and the never-relaxed list, but it is **not** a `--fast` superset there — see §"`/ft-close-epic`" at the end, and `SPEC/gate-postures.md` §"`/ft-close-epic` under the posture" for the contract.
 
 ## What the posture adds
 
@@ -112,15 +112,8 @@ The epic-close skill accepts the flag on its own terms (`SPEC/gate-postures.md`
   "bail", so it is taken deterministically rather than asked).
 - **The never-relaxed list, in full.** The audit commit is a real commit.
 
-What differs:
-
-- **Not a `--fast` superset.** Nothing to inherit.
-- **The parent-flip is deferred, not parked.** The audit closes and commits;
-  the parent line stays `- [ ]`, the cohort stays nested, and the run emits
-  `⏸ --unattended stop — parent-flip: …`. There is nothing to park by then —
-  the audit note is `completed` and archived, and a parked note is *paused,
-  not closed*. The deferral is recorded in the archived note's Final Summary,
-  and PLAN.md states it structurally: a parent `- [ ]` above a cohort of
-  `- [x]` children means the flip is pending.
+What differs: it is **not a `--fast` superset** — nothing to inherit. Its
+parent flip is not a question and runs as attended
+(`SPEC/plan-filing.md` §"Epic parent flip").
 
 `/ft-epic-discovery` does not accept the flag at all.

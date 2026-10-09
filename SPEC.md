@@ -666,9 +666,10 @@ Rules:
   tasks may land PLAN + archive (and any PLAN child-line edits) alone when
   Acceptance has no other deliverable surfaces.
 - **Ban collateral Completed flips.** Closure may flip only the current
-  task's PLAN line (plus epic-cohort moves under an explicit 📦 parent-flip
-  approval for `/ft-close-epic`). Do not mark other open tasks Completed as
-  a side effect.
+  task's PLAN line (plus its own epic's parent flip and cohort move when it
+  leaves every child `[x]` — [`SPEC/plan-filing.md`](SPEC/plan-filing.md)
+  §"Epic parent flip"). Do not mark other open tasks Completed as a side
+  effect.
 
 ### 3. 🏁 only with a deliverable-covering SHA
 

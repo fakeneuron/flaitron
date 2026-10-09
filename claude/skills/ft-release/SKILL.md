@@ -337,7 +337,7 @@ Surface the bundled 📦 ready-to-commit gate per SPEC/gates.md §"Operator-gate
 
 - **Viz-majors-outdated verdict (advisory)** — carry the §7.1 majors list into the closure review as one line, e.g. `Viz majors: none pending` or `Viz majors: typescript 5.9.3→7.0.2, js-yaml 4.3.2→5.4.2 — bump or re-park out of band`. Like the three verdicts above this **does not block commit-go**: `npm outdated` is registry-time state (`docs/CONVENTIONS.md` §"Dependency audit cadence") and a release cut never bumps majors inline.
 
-- **Push-go prompt** — AskUserQuestion with default Yes, a bundled in-📦 prompt parallel to /ft-close-epic's parent-flip (per SPEC/gates.md §"Conditional skip rule" bundled-prompt override):
+- **Push-go prompt** — AskUserQuestion with default Yes, a bundled in-📦 prompt (per SPEC/gates.md §"Conditional skip rule" bundled-prompt override):
 
   ```
   Push branch + tag vA.B.C to origin on commit-go?
@@ -359,7 +359,7 @@ On 🟢 GO commit-go (push-go answer already captured in the §7.4 bundle), run 
 3. **If push-go was Yes** — ▶️ RUN: `git push origin <current-branch>` then `git push origin vA.B.C`, then ▶️ RUN: `gh release create vA.B.C --latest --title "<title>" --notes "<notes>"` — title is the §7.2 locked tag message's first line (`flaitron vA.B.C — <headline>`), notes is everything after it, `--latest` marks it the repo's latest release (flaitron cuts releases linearly off `main`, so this is always correct — no need to ask). A release can't be created for a tag that isn't on origin yet, so this always runs after the tag push, never before or in place of it.
    **If push-go was No** — stop after the tag; §8's 🏁 marker names the manual push + `gh release create` commands as a follow-up step.
 
-Verify each operation before the next (`git log -1 --stat`, `git tag --list vA.B.C`, and on push-go Yes also `git ls-remote --tags origin vA.B.C` and `gh release view vA.B.C`). The separate prose "ask explicitly before pushing" pause from earlier revisions is collapsed — push approval is captured upstream as the bundled push-go prompt at §7.4, per SPEC §"Operator-gate cues" ("skill-level extensions (epic parent-flip, release push-go) bundle into 📦").
+Verify each operation before the next (`git log -1 --stat`, `git tag --list vA.B.C`, and on push-go Yes also `git ls-remote --tags origin vA.B.C` and `gh release view vA.B.C`). The separate prose "ask explicitly before pushing" pause from earlier revisions is collapsed — push approval is captured upstream as the bundled push-go prompt at §7.4, per SPEC §"Operator-gate cues" ("skill-level extensions (e.g., release push-go) bundle into 📦").
 
 ## Step 8 — Post-closure protocol (🏁 marker + suggest-next-move + copy-paste)
 

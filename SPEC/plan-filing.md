@@ -190,10 +190,10 @@ trailing bracket-token run verbatim from the original line (`SPEC.md`
 
 **Placement rule.** A standalone closed task moves to the top of
 `## Completed`. An epic child uses the same checked stub form but remains
-2-space nested beneath its active parent in the parent's priority section;
-`/ft-close-epic` moves the parent and complete cohort to `## Completed`
-atomically after parent-flip approval. Never strand an individual child as a
-top-level Completed row.
+2-space nested beneath its active parent in the parent's priority section
+until the closure of its last open sibling moves the parent and complete
+cohort to `## Completed` atomically (§"Epic parent flip"). Never strand an
+individual child as a top-level Completed row.
 
 **Exception — inline audit fixes.** A trivial fix applied inline by an
 audit skill (the `/ft-audit*` §5 trivial-fix carve-out: skip-the-tasknote-sized
@@ -202,6 +202,34 @@ tasknote and no archive file, so its `## Completed` line **retains** a
 short self-contained description plus `Surfaced by <audit-label>
 YYYY-MM-DD (Finding #N, <severity>), fixed inline` — here the line itself
 is the canonical record.
+
+## Epic parent flip
+
+An epic closes with the closure that leaves its last child `- [x]`. PLAN.md
+already says the epic is done, so the flip is mechanical: an agent procedure
+with no prompt, run under every posture by whichever runner closed that child.
+Every closing runner runs it from [`SPEC/post-closure.md`](post-closure.md)
+before step 1 stages anything, so the flip lands in the closure commit and
+rotation's count in step 2 includes it:
+
+1. **Check the closing task's own parent only.** It applies when the task's
+   ID is `<AREA>-<N>.<sub>` and its row is 2-space nested beneath
+   `<AREA>-EPIC-<N>`. Every nested child row must be checked (`- [x]`, either
+   case), the one just closed included. One `- [ ]` child, a standalone
+   task, or a parent already under `## Completed` means there is nothing to
+   do. Other epics are never touched. An epic left fully `[x]` with no flip (an older run, or siblings
+   closed in parallel worktrees, each seeing the other open) is flipped by
+   hand.
+2. **Flip** the parent line to stub form (§"`## Completed` archive
+   convention"), dated today, keeping its trailing bracket-token run verbatim.
+3. **Move** the parent and its nested children as one block, unchanged apart
+   from the parent's flip, to the top of `## Completed`. A source section left
+   empty gets its `(none)` back, and a `(none)` under `## Completed` is
+   replaced (§"Empty-section placeholder").
+
+Unlike rotation, the flip also runs in a linked worktree. It edits the same
+places any closure does (its own rows and the top of `## Completed`), not
+dozens of older rows.
 
 ## `## Completed` rotation
 

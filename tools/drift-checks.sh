@@ -81,7 +81,7 @@ skill_pin_guard_parity() {
 # adopter-subset bodies that resolve <root>; edit all seven together.
 got=$(grep -h '^\*\*Skill/pin guard\.\*\*' claude/skills/*/SKILL.md | sort | uniq -c | awk '{print $1}' | tr '\n' ' ')
 [ "$got" = "7 " ] || { echo "GUARD DRIFT  copies-per-variant: $got (want one variant x7)"; exit 1; }
-diff -u <(printf 'claude/skills/%s/SKILL.md\n' ft-close-epic ft-file-task ft-micro-task ft-open-epic ft-refactor ft-seed ft-task) \
+diff -u <(printf 'claude/skills/%s/SKILL.md\n' ft-close-epic ft-file-task ft-micro-task ft-open-epic ft-refactor ft-seed-unattended ft-task) \
         <(grep -l '^\*\*Skill/pin guard\.\*\*' claude/skills/*/SKILL.md)
 }
 

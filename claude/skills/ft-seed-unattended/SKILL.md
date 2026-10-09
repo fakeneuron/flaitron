@@ -1,9 +1,9 @@
 ---
-name: ft-seed
+name: ft-seed-unattended
 description: Seed `[unattended]` onto an existing `.flaitron/PLAN.md` in one attended pass — walk every open row with the `SPEC/unattended-candidacy.md` predicate, show the candidates with the token in place inside one prose review gate, write the token only on the rows the operator keeps, and commit the write. Use when the user asks to seed, bulk-mark, or sweep a plan for `[unattended]` rows. Attended-only, no flags; thin procedural skill, no tasknote.
 ---
 
-# seed — bulk `[unattended]` seeding of an existing plan
+# seed-unattended — bulk `[unattended]` seeding of an existing plan
 
 You are seeding the `[unattended]` marker onto rows of a project's existing
 `.flaitron/PLAN.md`. Every filing skill already *proposes* the marker for the

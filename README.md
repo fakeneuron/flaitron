@@ -46,7 +46,7 @@ or `CLAUDE.md`):
 ```
 
 That adds the flaitron submodule, wires the adopter skill subset — the tasknote
-family, `/ft-seed`, and `/ft-update`, whose exact roster is the
+family, `/ft-seed-unattended`, and `/ft-update`, whose exact roster is the
 `ln -s` block in [`claude/AGENTS-snippet.md`](claude/AGENTS-snippet.md)
 §"One-time symlink wiring" — and drops in the `.flaitron/` skeleton in one
 pass. Then file a task in `.flaitron/PLAN.md` and run it:

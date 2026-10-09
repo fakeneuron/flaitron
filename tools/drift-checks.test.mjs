@@ -43,7 +43,7 @@ const CASES = {
     finding: /^\+zz-drift$/m,
   },
   skill_pin_guard_parity: {
-    seed: () => edit('claude/skills/ft-seed/SKILL.md', (s) => s.replace('**Skill/pin guard.** ', '**Skill/pin guard.** zz ')),
+    seed: () => edit('claude/skills/ft-seed-unattended/SKILL.md', (s) => s.replace('**Skill/pin guard.** ', '**Skill/pin guard.** zz ')),
     finding: /^GUARD DRIFT {2}copies-per-variant: (1 6|6 1) /m, // one copy seeded off the other six
   },
   context_budget: {

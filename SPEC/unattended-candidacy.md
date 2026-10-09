@@ -1,6 +1,6 @@
 # `[unattended]` candidacy
 
-> Lazy-loaded SPEC module. Read by a filing surface at its write step — the moment it is about to write a `- [ ]` row into `PLAN.md` — by `/ft-seed` before it walks an existing plan, and by a runner whose closure discharged a deferred step through `/ft-file-task --unattended`. Not needed to run a task. See `SPEC.md` for the always-loaded core spec.
+> Lazy-loaded SPEC module. Read by a filing surface at its write step — the moment it is about to write a `- [ ]` row into `PLAN.md` — by `/ft-seed-unattended` before it walks an existing plan, and by a runner whose closure discharged a deferred step through `/ft-file-task --unattended`. Not needed to run a task. See `SPEC.md` for the always-loaded core spec.
 
 The `[unattended]` marker ([`SPEC/task-line-segments.md`](task-line-segments.md)) is
 scarce for an accidental reason: nothing in the filing flow ever asks whether
@@ -122,7 +122,7 @@ a later reader can tell "ran, found none" from "never ran." It is a report —
 no reply, no gate. The line carries no dependency edges: a `.k` or `.N` on it
 admitted on a same-pass sibling (clause 6) is a candidate only together with
 that sibling. Marking a subset re-runs clause 6,
-which is what `/ft-seed` does.
+which is what `/ft-seed-unattended` does.
 
 **`--unattended`.** Identical to `--fast`: the same line, zero tokens written.
 On top of it, the line persists (§"Persistence") because an operator-less run
@@ -137,7 +137,7 @@ branch.
 
 Candidacy fires at the write step, so a row filed before this module existed,
 or by hand, was never proposed and stays unmarked until someone edits the
-line. `/ft-seed` is the bulk path for those rows: an **attended, flagless**
+line. `/ft-seed-unattended` is the bulk path for those rows: an **attended, flagless**
 walk of every open row in the four active `PLAN.md` sections that applies the
 predicate above to each row *as it stands in the file* — the existing line is
 the drafted line — and shows every candidate, token in place, inside **one**
@@ -210,7 +210,7 @@ fails that check.
 | `/ft-refactor` | Step 5 | Step 4 structured-ask review; own `--fast` → emit only | [[CORE-577.5]] |
 | `/ft-audit-repo` §6 | milestone write | write-confirm structured ask | [[CORE-577.6]] |
 | `/ft-task` · `/ft-micro-task` · `/ft-close-epic` | — | not filers; carry the §"Persistence" hook only | [[CORE-577.4]] |
-| `/ft-seed` | Step 4 (existing rows, bulk) | Step 3 prose review — the skill's only gate; no flags, attended only (§"Seeding an existing plan") | [[CORE-619]] |
+| `/ft-seed-unattended` | Step 4 (existing rows, bulk) | Step 3 prose review — the skill's only gate; no flags, attended only (§"Seeding an existing plan") | [[CORE-619]] |
 
 Adopter forks of `ft-audit` (`.claude/skills/audit/`) pick the mirror up only
 through `/ft-update`'s fork refresh; until then a fork files as before —

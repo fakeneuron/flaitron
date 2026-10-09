@@ -21,7 +21,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [x] **CORE-769.3** [medium]🧩 | rename-file-task — Completed 2026-10-09.
   - [x] **CORE-769.4** [medium]🧩 | rename-open-epic — Completed 2026-10-09.
   - [x] **CORE-769.5** [medium]🧩 | rename-adopt — Completed 2026-10-09.
-  - [ ] **CORE-769.6** [medium]🧩 | rename-seed-unattended — Hard-cut rename `ft-seed` → `ft-seed-unattended`; same sweep shape as [[CORE-769.3]]. `feat!:`.
+  - [x] **CORE-769.6** [medium]🧩 | rename-seed-unattended — Completed 2026-10-09.
   - [ ] **CORE-769.7** [heavy]🧠 | rename-migrate-mode — Rename-aware fleet migration for v7.0.0: `update-adopters.mjs` migrate mode swapping old→new symlinks from a rename map (fixing the `--diff-filter=A` rename blind spot), `/ft-update` naming a dangling slug's replacement, a MIGRATION manual recipe, and a natabula PLAN row for its 21 caller references.
   - [ ] **CORE-769.N** [heavy]🧠 | skill-surface audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed with the reserved terminal `.N` suffix.
 

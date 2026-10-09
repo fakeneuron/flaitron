@@ -1,6 +1,6 @@
 # Task-line segments — per-segment semantics and examples
 
-> Lazy-loaded SPEC module, **consulted, not force-Read** — no skill step directs a Read of it, the same wiring [`SPEC/plan-parser.md`](plan-parser.md) has. Read it when you need what a segment *means*: authoring or reviewing a `PLAN.md` row, or implementing the grammar as an integrator ([`docs/EXTERNAL-AGENTS.md`](../docs/EXTERNAL-AGENTS.md)). The filing skills that cite it for per-segment facts (`/ft-file-task`, `/ft-open-epic`, `/ft-seed`) each carry the row shape they write inline, so none of them needs it loaded; the runners' shared `preamble.md` cites it for one fact (the legacy `## Critical` soft-migration) and likewise needs no load. A runner that only *reads* a row never needs it at all: capturing segments at Step 1 needs the grammar block and the ordering rule, both of which stay in [`SPEC.md`](../SPEC.md) §"Task-line format". See that section for the always-loaded grammar, and [`SPEC/plan-parser.md`](plan-parser.md) for tolerances, footguns, exclusions, and the reserved long-description conventions.
+> Lazy-loaded SPEC module, **consulted, not force-Read** — no skill step directs a Read of it, the same wiring [`SPEC/plan-parser.md`](plan-parser.md) has. Read it when you need what a segment *means*: authoring or reviewing a `PLAN.md` row, or implementing the grammar as an integrator ([`docs/EXTERNAL-AGENTS.md`](../docs/EXTERNAL-AGENTS.md)). The filing skills that cite it for per-segment facts (`/ft-file-task`, `/ft-open-epic`, `/ft-seed-unattended`) each carry the row shape they write inline, so none of them needs it loaded; the runners' shared `preamble.md` cites it for one fact (the legacy `## Critical` soft-migration) and likewise needs no load. A runner that only *reads* a row never needs it at all: capturing segments at Step 1 needs the grammar block and the ordering rule, both of which stay in [`SPEC.md`](../SPEC.md) §"Task-line format". See that section for the always-loaded grammar, and [`SPEC/plan-parser.md`](plan-parser.md) for tolerances, footguns, exclusions, and the reserved long-description conventions.
 
 ## Segment table
 
@@ -37,6 +37,6 @@ confirm gate it already has — the operator's confirmation is the act, and the
 token is written only on confirmed rows. Under `--fast` / `--unattended` there
 is no act, so the filer emits an `unattended-candidates:` line and writes no
 token. Rows filed before or without that proposal are seeded in bulk through
-`/ft-seed` — one attended walk, one gate, the same predicate. Predicate,
+`/ft-seed-unattended` — one attended walk, one gate, the same predicate. Predicate,
 postures, persistence, bulk seeding, and the per-surface mirror table:
 [`SPEC/unattended-candidacy.md`](unattended-candidacy.md).

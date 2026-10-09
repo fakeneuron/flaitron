@@ -281,7 +281,7 @@ moved bytes widen the core's headroom.
 
 ft-release 35,146 · ft-open-epic 32,749 · ft-close-epic 28,323 · ft-task
 25,352 · ft-file-task 24,971 · ft-update 19,794 · ft-audit 18,392 ·
-ft-micro-task 18,195 · ft-refactor 16,486 · ft-adopt 13,935 · ft-seed
+ft-micro-task 18,195 · ft-refactor 16,486 · ft-adopt 13,935 · ft-seed-unattended
 12,433 · ft-audit-repo 11,577.
 
 `ft-goal-task`, `ft-spec`, `ft-starter-task`, `ft-worktree-start`, and

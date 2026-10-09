@@ -51,7 +51,7 @@ ln -s ../../.flaitron/core/claude/skills/ft-file-task .grok/skills/ft-file-task
 ln -s ../../.flaitron/core/claude/skills/ft-micro-task .grok/skills/ft-micro-task
 ln -s ../../.flaitron/core/claude/skills/ft-open-epic .grok/skills/ft-open-epic
 ln -s ../../.flaitron/core/claude/skills/ft-refactor .grok/skills/ft-refactor
-ln -s ../../.flaitron/core/claude/skills/ft-seed .grok/skills/ft-seed
+ln -s ../../.flaitron/core/claude/skills/ft-seed-unattended .grok/skills/ft-seed-unattended
 ln -s ../../.flaitron/core/claude/skills/ft-task .grok/skills/ft-task
 ln -s ../../.flaitron/core/claude/skills/ft-update .grok/skills/ft-update
 ```
@@ -77,7 +77,7 @@ canonical bodies and Codex's `codex/skills/` wrappers if the project later
 wires Codex too.
 
 This snippet wires the adopter-installed subset: the tasknote family,
-`/ft-seed`, and `/ft-update`. Global utility skills such as
+`/ft-seed-unattended`, and `/ft-update`. Global utility skills such as
 `ft-adopt` and `ft-audit-repo` may be installed in the user skill directory when desired;
 `ft-release` remains flaitron-self-only and is not part of the adopter snippet.
 The canonical category table lives in

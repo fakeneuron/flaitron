@@ -34,7 +34,7 @@ in `SPEC.md`; read it before starting non-trivial work.
 <!-- KEEP IN SYNC (CORE-516): mirrors the `[model]` bullet in claude/AGENTS-snippet.md's paste-block (guard: the KEEP IN SYNC comment above that fence) — same `[model]` concept, same SPEC/model.md pointer. Editing one requires checking the other. -->
 - Each PLAN.md task line carries a `[model]` segment naming the model tier or name the task should run on end-to-end; on mismatch, surface it before continuing. Contract: `SPEC/model.md` §"Model field".
 - Four bundled skills are utility-only, not part of the tasknote lifecycle
-  above: `/ft-adopt`, `/ft-audit`, `/ft-audit-repo`, `/ft-seed`. Full roster + naming convention:
+  above: `/ft-adopt`, `/ft-audit`, `/ft-audit-repo`, `/ft-seed-unattended`. Full roster + naming convention:
   `SPEC/layout.md` §"Skill namespace".
 
 Flaitron self-hosts its own roadmap. For non-trivial edits, follow the

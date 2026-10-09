@@ -11,7 +11,9 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-(none)
+- [ ] **CORE-EPIC-770** [heavy]🧠 | global-layer-alignment — Before v7.0.0, review the operator's global layer (`~/.claude/CLAUDE.md`, `~/Code/CLAUDE.md`, memory, global skills incl. natabula's) against flaitron's current contract; resolve conflicts and stale references per owner (filed via /ft-open-epic; refined at .1 closure).
+  - [ ] **CORE-770.1** [frontier]💎 | global-layer-alignment discovery — Scope shared design and file children .2..4 per SPEC/epic.md.
+  - [ ] **CORE-770.N** [heavy]🧠 | global-layer-alignment audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
 
 ## Medium
 

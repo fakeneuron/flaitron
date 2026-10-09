@@ -340,7 +340,7 @@ closed rows.
 **Consumers.** Readers that need full history — the visualizer's parser —
 read both files and concatenate. Readers that only care about
 open work (every runner skill's Step 1) read `PLAN.md` alone and are the
-motion's beneficiary. The file is absent until a project's first rotation;
+rotation's beneficiary. The file is absent until a project's first rotation;
 consumers treat absence as an empty archive, never an error.
 
 ## Empty-section placeholder

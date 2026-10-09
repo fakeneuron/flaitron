@@ -15,7 +15,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-745** [medium]🧩 [unattended] | docs-audit-single-source — The docs-audit config is stated three ways: `CONTRIBUTING.md`'s pre-overlay run-once advice, `/ft-release` §7.1's bundled-`ft-audit` run-once rubric, and the tracked `audit` overlay. Repoint §7.1 at the overlay, rewrite the CONTRIBUTING paragraph around `/audit <domain>`, extend §7.1's wiring check to `.claude/skills/audit`. Surfaced by audit-docs 2026-10-08 (Finding #6, Medium).
 
 - [ ] **CORE-747** [medium]🧩 | codex-audit-overlay-path — `codex/skills/ft-audit/SKILL.md` and `claude/commands/ft-audit.md` describe only the full-copy fork, never the recommended thin overlay (the stub also misquotes the §1.2.1 heading); `/ft-update` Step 4.5 scans only `.claude/skills/*`, so a Codex fork gets no reconcile warning. Lead with the overlay; decide Step 4.5's `.agents/skills/` coverage. Surfaced by audit-docs 2026-10-08 (Finding #9, Medium).
 
@@ -34,6 +33,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-745** [medium]🧩 [unattended] | docs-audit-single-source — Completed 2026-10-08.
 - [x] **CORE-750** [light]🔧 | release-budget-ratchet — Completed 2026-10-08.
 - [x] **CORE-766** [light]🔧 | epic-discovery-model-clause — Completed 2026-10-08.
 - [x] **CORE-746** [light]🔧 [unattended] | frontier-sweep-gaps — Completed 2026-10-08.

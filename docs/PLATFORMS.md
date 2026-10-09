@@ -404,7 +404,7 @@ First-use verification 2026-06-01 (CORE-257 cue dogfood under Grok 4.3 interacti
 The tier bands in [`SPEC/model.md`](../SPEC/model.md) §"Category-vs-concrete
 matching" are calibrated against real vendor rosters. This section is the
 **maintained cross-provider reference** — refreshed at releases (the release
-cut's `/ft-audit docs` subroutine surfaces a stale table via the dated as-of
+cut's audit-overlay `docs` subroutine surfaces a stale table via the dated as-of
 stamps below) and stamped with its as-of dates. It holds two tables. The
 **tier × platform map** answers "which `model @ effort` should run a task of
 this tier here" — the cells a next-move suggestion or an orchestrator prints,

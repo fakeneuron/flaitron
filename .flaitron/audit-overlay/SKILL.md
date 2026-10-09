@@ -30,7 +30,7 @@ Seven: `general` · `frontend` · `security` · `performance` · `structure` ·
 file asks something the unkeyed value cannot answer. `context` needs no delta:
 [[CORE-661]] cleared every placeholder from `claude/skills/ft-audit/passes/context.md`. `docs` is
 also invokable as `/audit docs ai-referenced` (extra scope token —
-`CONTRIBUTING.md` §"Developing flaitron skills & commands").
+`claude/skills/ft-audit/passes/docs.md` §"Scope & rubric hints (→ dispatcher §1)").
 
 **Not covered: `backend`.** Its passes (input contracts, persistence, async
 lifecycle) target an API/DB service. Flaitron's only server is the
@@ -69,7 +69,7 @@ every domain this overlay covers that does not override it.
   - `performance:` none declared — no perf budget, SLO, or benchmark baseline exists. Per the pass file, surface that first; the build's chunk-size table (gate below) is the only recorded number.
   - `structure:` `AGENTS.md` §"Repo Layout" (where each concern lives), `viz/README.md` §"Architecture — three tiers" (layer order), `SPEC/layout.md` (skill namespace and module layout).
 - **Verification gates** (run before passes): `npm --prefix viz run lint` · `npm --prefix viz run typecheck` · `npm --prefix viz test` · `node --test tools/update-adopters.test.mjs` · `node --test tools/drift-checks.test.mjs` (sources: `.github/workflows/ci.yml:33-41`, `viz/package.json` scripts, `justfile`)
-  - `docs:` `bash tools/drift-checks.sh pair_q final_newline context_budget` — the CI `drift` job's doc checks run locally (Pair Q section-citation resolver, final-newline, context budget), the same gate `/ft-release` §7.1 runs. No markdown linter and no link checker is configured: there is no root `package.json`, `viz/package.json` declares no markdown script (`remark-gfm` / `react-markdown` are visualizer runtime deps, not linters), the `justfile` has no docs recipe, and `.github/workflows/ci.yml` configures neither — inventing one is barred by `scaffold-bootstrap.md` §3. A failing check here is reported per unkeyed hard rule (b)'s exception; hard rule (c) below covers why a passing one's coverage is not this audit's to re-report.
+  - `docs:` `bash tools/drift-checks.sh pair_q final_newline context_budget` — the CI `drift` job's doc checks run locally (Pair Q section-citation resolver, final-newline, context budget). No markdown linter and no link checker is configured: there is no root `package.json`, `viz/package.json` declares no markdown script (`remark-gfm` / `react-markdown` are visualizer runtime deps, not linters), the `justfile` has no docs recipe, and `.github/workflows/ci.yml` configures neither — inventing one is barred by `scaffold-bootstrap.md` §3. A failing check here is reported per unkeyed hard rule (b)'s exception; hard rule (c) below covers why a passing one's coverage is not this audit's to re-report.
   - `frontend:` `npm --prefix viz run build` · `npm --prefix viz run lint` · `npm --prefix viz run typecheck` · `npm --prefix viz test`. No bundle analyzer or a11y checker is configured, so those two slots are skipped, not invented.
   - `security:` `gitleaks dir . --config .gitleaks.toml --no-banner --redact` (the CI `validate` job's invocation; needs a local `gitleaks`) · `npm --prefix viz audit` — devDependencies included on purpose: `vite` and `chokidar` *are* the dev server, the only runtime that ships here. No SAST is configured.
   - `performance:` `npm --prefix viz run build` — its chunk table (raw and gzip) is the only measurement. No profiler, benchmark, or load test exists.

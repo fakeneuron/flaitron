@@ -212,8 +212,10 @@ Step 1 and re-reads at post-closure, carries the entire project history
 forever. **Rotation bounds the section without deleting anything.**
 
 **The bound.** `## Completed` holds at most **60** checked rows (nested epic
-children counted). Past that, older rows belong in the rotation file. This is
-also the advisory trigger below (one number, not two).
+children counted). Past that, the next closure rotates the oldest rows out
+until **40** or fewer remain (§"Rotation is an agent procedure"). The gap is
+deliberate hysteresis: one rotation buys about twenty closures, instead of a
+one-row commit after every closure once the bound is reached.
 
 **The rotation file.** `.flaitron/PLAN-ARCHIVE.md`, a sibling of `PLAN.md`.
 Rotated rows are grouped under `## Completed <YYYY-MM>` headings, newest month
@@ -230,7 +232,7 @@ no archived tasknote to fall back on.
 
 **Granularity: by row count, not by month.** A rotation moves the oldest
 checked rows — regardless of which calendar month they fall in, current month
-included — until `## Completed` is at or below the bound. There is no
+included — until `## Completed` is at or below the 40-row target. There is no
 "complete month" requirement: a still-open month's oldest rows are as
 eligible as any other. Rows still land under their own `Completed
 <YYYY-MM-DD>.` month's archive heading (§"The rotation file"), so the archive
@@ -242,21 +244,57 @@ token. Inline-audit-fix rows (§"Exception — inline audit fixes") carry no suc
 token — for those, read the date from their mandatory `Surfaced by <audit-label>
 <YYYY-MM-DD>` clause, which is the same day the fix landed. A row that resolves
 to neither is not rotated; leave it in `PLAN.md` and fix its filing instead.
+A 2-space-nested epic child takes its top-level parent's month, so a cohort
+lands under one heading (the never-split rule below).
 
 **One rule that overrides the bound:**
 
 - **Never split an epic cohort.** A 2-space-nested child always travels with
   its parent's block, even when its own `Completed` date falls in an earlier
-  month or the cohort's move lands `## Completed` slightly above or below the
-  bound.
+  month or the cohort's move takes `## Completed` below the 40-row target.
 
-**Rotation is an operator motion.** Nothing applies it automatically. When a
-runner skill reads `PLAN.md` and finds `## Completed` over **60** rows, it
-surfaces a one-line advisory and continues — never blocking, never editing.
-This mirrors the ~50/70-word filing-discipline advisory in
-[`SPEC/tasknote-selection.md`](tasknote-selection.md)
-§"PLAN.md filing-discipline thresholds" — the control is the human at the
-gate, not a validator (`SPEC.md` §"What flaitron does NOT provide").
+**Rotation is an agent procedure.** Every closing runner checks the bound
+once its closure commit lands ([`SPEC/post-closure.md`](post-closure.md)
+step 2). Over 60, the agent rotates in the same response, with no prompt,
+under every posture. The work is moving markdown lines an operator could move
+by hand, so it stays a procedure, not a script (`SPEC.md` §"Core principles"
+#2):
+
+1. **Main checkout, clean files only.** Skip in a linked worktree, where
+   `git rev-parse --path-format=absolute --git-dir` differs from
+   `git rev-parse --path-format=absolute --git-common-dir`: a branch that
+   moves dozens of PLAN rows conflicts on merge-back. Also skip when either
+   file has uncommitted changes (`git diff --quiet HEAD -- .flaitron/PLAN.md
+   .flaitron/PLAN-ARCHIVE.md` fails), so step 5 never sweeps someone else's
+   edit into its commit. Either way, the next main-checkout closure catches
+   up.
+2. **Cut.** Count the checked rows under `## Completed`. Over 60, take whole
+   top-level blocks (a row plus its 2-space-nested children) from the bottom
+   of the section, oldest first (§"Placement rule" inserts new rows at the
+   top). Stop as soon as 40 or fewer remain. A row that fails §"Date
+   resolution" stays where it is and still counts.
+3. **Move.** Group the cut rows by month. Each month's rows go, in their
+   `PLAN.md` order, to the end of that month's existing block in
+   `PLAN-ARCHIVE.md`, or under a new `## Completed <YYYY-MM>` heading placed
+   newest month first. Cut and paste the lines; never retype them. If the file
+   is absent, create it with a `# PLAN Archive` heading and a one-line pointer
+   to this section.
+4. **Verify.** `## Completed` holds 40 or fewer rows, and the `- [x]` row
+   lines removed from `PLAN.md` match the `- [x]` row lines added to
+   `PLAN-ARCHIVE.md` when both are sorted. Headings and blank lines the move
+   adds are not rows.
+5. **Commit separately**, after the closure commit and before 🏁, naming only
+   the two files:
+
+   ```sh
+   git add .flaitron/PLAN.md .flaitron/PLAN-ARCHIVE.md
+   git commit -m "chore: rotate <N> Completed rows to PLAN-ARCHIVE.md" -- .flaitron/PLAN.md .flaitron/PLAN-ARCHIVE.md
+   ```
+
+   A separate commit keeps the closure commit, and its 📦 review, about the
+   task alone. The `git add` covers a first rotation, when the archive file
+   is new. The paths after `--` keep any other change in the tree out of the
+   commit.
 
 **Why a second file and not a retention window.** Deleting rows past a window
 would destroy the inline-audit-fix records described above, and truncate the

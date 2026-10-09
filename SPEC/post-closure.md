@@ -16,7 +16,7 @@ After a tasknote is archived, run the three-step protocol (commit / mark landed 
 
    **ft-micro-task carve-out.** `/ft-micro-task` carries no 📦 banner block on the fire branch — its commit-go is the emphasized 🟢 GO ask (own line, blank-line isolated, bold label) in place of the banner. The 📦 cue does not apply; the 🟢 prefix does. The same conditional skip rule governs both forms. See `/ft-micro-task` SKILL.md Step 5.
 
-2. **Mark the commit landed and suggest the next move.** Once the commit lands **and** the SHA passes the deliverable-covering check in [`SPEC.md` §"Paper-complete guard"](../SPEC.md), prefix the next-move tail with a 🏁 state-marker (parallels 🛠️ → 📦 → 🏁). **Never emit 🏁 without the just-landed closure commit's real SHA** — never an invented or reused one.
+2. **Mark the commit landed and suggest the next move.** Once the commit lands **and** the SHA passes the deliverable-covering check in [`SPEC.md` §"Paper-complete guard"](../SPEC.md), record its SHA for 🏁, then count the checked rows under `## Completed`. Over 60, read [`SPEC/plan-filing.md`](plan-filing.md) §"`## Completed` rotation" and run its procedure before 🏁: the oldest whole cohorts move to `PLAN-ARCHIVE.md` until 40 or fewer remain, in their own `chore:` commit. It runs without a prompt under every posture and is skipped in a linked worktree or over uncommitted edits to either file. When it runs, append `· rotated <N> rows in <sha>` to the 🏁 line. Then prefix the next-move tail with a 🏁 state-marker (parallels 🛠️ → 📦 → 🏁). **Never emit 🏁 without the just-landed closure commit's real SHA** — never an invented or reused one.
 
    ```markdown
    🏁 **<TASK-ID> — committed `<sha>`** · archived to `<archive-path>`

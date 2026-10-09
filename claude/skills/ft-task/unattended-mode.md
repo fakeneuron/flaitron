@@ -116,4 +116,4 @@ What differs: it is **not a `--fast` superset** — nothing to inherit. Its
 parent flip is not a question and runs as attended
 (`SPEC/plan-filing.md` §"Epic parent flip").
 
-`/ft-epic-discovery` does not accept the flag at all.
+`/ft-open-epic` does not accept the flag at all.

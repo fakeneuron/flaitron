@@ -16,7 +16,7 @@ in `SPEC.md`; read it before starting non-trivial work.
 - Start a task with `/ft-task <TASK-ID>`; peer skills:
   `/ft-micro-task`,
   `/ft-file-task` (`--park`, `--starter`; flags: `SPEC/tasknote-selection.md`),
-  `/ft-epic-discovery`, `/ft-close-epic`, `/ft-task --debug`,
+  `/ft-open-epic`, `/ft-close-epic`, `/ft-task --debug`,
   `/ft-task --loop`, `/ft-refactor`, `/ft-release`.
   <!-- KEEP IN SYNC — guards the roster above AND the path-convention bullets
        (Plans / tasknotes / archive locations) further up this section. Mirror: the KEEP

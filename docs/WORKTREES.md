@@ -40,7 +40,7 @@ Three surfaces, one claim:
 
 | Surface | Who writes it | What a worktree sees |
 |---|---|---|
-| Discovery `.1` `## 🌳 Fan-out` | `/ft-epic-discovery` when M>1 | **Nothing** — the worktree copies only the child note |
+| Discovery `.1` `## 🌳 Fan-out` | `/ft-open-epic` when M>1 | **Nothing** — the worktree copies only the child note |
 | Child YAML `blocked-by:` / `parallel-safe-with:` | `/ft-task` scaffold echo | The copied child note |
 | Start-procedure warn | Whoever runs the [Procedure](#procedure) reads the child YAML | Warns if `blocked-by` lists a still-open PLAN `- [ ]` line; never locks or refuses |
 

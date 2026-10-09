@@ -7,7 +7,7 @@
 An epic Discovery `.1` that files more than one implementation child
 (M>1) may declare how those children relate — which may run in parallel
 worktrees, which stay serial, which is synthesis. It sits in the top
-block after `## 🔗 Related`. `/ft-epic-discovery` pre-fills an empty
+block after `## 🔗 Related`. `/ft-open-epic` pre-fills an empty
 placeholder at scaffold when M>1 and populates it when the child lines
 are filed; the default full template does not ship the heading, so a
 single-child or non-epic tasknote pays nothing. Fixed shape, three

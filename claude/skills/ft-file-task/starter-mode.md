@@ -146,11 +146,11 @@ Report the SHA as plain text; **no 🏁 marker** (reserved for closure commits �
   design decisions) for a task not ready to start, or a description that will
   not fit the 70w cap. One-liner suffices → drop the flag. Tangential idea,
   resume inline → `--park`. Starting an existing entry → `/ft-task`. Epic
-  scope → `/ft-epic-discovery`.
+  scope → `/ft-open-epic`.
 - **Proactive invocation on cross-session handoff:** when rich mid-conversation
   context (epic brief, design conclusion, multi-step plan) won't be consumed in
   this session — e.g., the user is about to `/clear` and run
-  `/ft-epic-discovery` or `/ft-task` against an ID not yet filed — file a
+  `/ft-open-epic` or `/ft-task` against an ID not yet filed — file a
   starter **now** rather than burying the brief in a "(run `/ft-X` next and
   paste this above)" parenthetical. The filing is cheap; regenerating a lost
   brief is not. Trigger list: `SPEC/tasknote-selection.md` §"File a starter".

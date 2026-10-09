@@ -38,7 +38,7 @@ Alphabetized. ~73 entries. Maintained via epic children and audits.
 
 **[!critical]** — Optional urgency flag in the task-line grammar; renders a red marker and floats the row to the top of its priority bucket (High). Orthogonal to `[model]` and the priority heading. See SPEC/task-line-segments.md.
 
-**deep pre-pass** — Optional three-stage upfront staging (Constitution → specify → clarify) for high-uncertainty epics before normal Phase 1 Discovery; invoked with `/ft-epic-discovery --deep`. See SPEC/epic.md.
+**deep pre-pass** — Optional three-stage upfront staging (Constitution → specify → clarify) for high-uncertainty epics before normal Phase 1 Discovery; invoked with `/ft-open-epic --deep`. See SPEC/epic.md.
 
 **delegate** — A delegated context that owns exactly one `tasknote/<ID>.md`: it inherits that tasknote's full Phase 1 record and runs the 4-phase workflow through to closure like any session. The bounded counterpart to a probe (which owns nothing); anything broader than one tasknote belongs to the operator's own session. See README.md §"Sessions, loops, and sub-agents".
 
@@ -54,17 +54,17 @@ Alphabetized. ~73 entries. Maintained via epic children and audits.
 
 **epic Audit (.N)** — The closing subtask of an epic; verifies the completed work sits well in the codebase, runs the cumulative doc-drift sweep across AI-referenced docs, records findings even when clean. Executed via `/ft-close-epic`.
 
-**epic Discovery (.1)** — The opening subtask of an epic; surveys the shared surface, resolves scope questions, and files the concrete child task list in PLAN.md. Deliverable is the filed children (not code). When M>1, may carry optional `## 🌳 Fan-out`. Executed via `/ft-epic-discovery`.
+**epic Discovery (.1)** — The opening subtask of an epic; surveys the shared surface, resolves scope questions, and files the concrete child task list in PLAN.md. Deliverable is the filed children (not code). When M>1, may carry optional `## 🌳 Fan-out`. Executed via `/ft-open-epic`.
 
 **Execution (Phase 2)** — The implementation phase: mandatory pattern survey of neighboring code first, then minimal targeted change + tests on changed files only. See SPEC §"🛠️ Phase 2: Execution".
 
 **Extension-first** — Outward-facing principle (VISION-only, not in SPEC Core principles): prefer extending an existing pattern (sibling skill, doc convention, tasknote shape) over inventing a parallel one. Promoted from the Phase 2 "Pattern survey" contract step. See docs/VISION.md and SPEC §"🛠️ Phase 2: Execution".
 
-**Fan-out (🌳)** — Optional Discovery `.1` body section declaring which epic children are Parallel / Sequential / Synthesis. Not in the default template; `/ft-epic-discovery` pre-fills when M>1. Children echo via YAML `blocked-by` / `parallel-safe-with`. A declaration, not a scheduler. See SPEC §"Tasknote body shape" and SPEC/epic.md §"Fan-out".
+**Fan-out (🌳)** — Optional Discovery `.1` body section declaring which epic children are Parallel / Sequential / Synthesis. Not in the default template; `/ft-open-epic` pre-fills when M>1. Children echo via YAML `blocked-by` / `parallel-safe-with`. A declaration, not a scheduler. See SPEC §"Tasknote body shape" and SPEC/epic.md §"Fan-out".
 
 **follow-up** — A lightweight mid-flow task filed via `/ft-file-task`; produces a one-line PLAN.md entry plus a short context paragraph delivered conversationally. Below the normal tasknote threshold.
 
-**`/ft-refactor`** — The refactor **depth planner that files**: takes one named target, runs a read-only survey (dependencies, seams, test coverage, blast radius), surfaces a sequenced behavior-preserving plan for operator review, then files a parent epic + implementation children from `.2` + a `.N` audit, each child a starter seeded with characterization-test and behavior-preservation acceptance. Never edits source — children execute via `/ft-task`. Its epics carry no `.1` Discovery (the run *is* the discovery). Depth counterpart to `/ft-audit structure`'s **breadth sweep**; contrast a hand-drafted spec (`templates/spec-template.md`; plans, never files) and `/ft-epic-discovery` (files, then drives a generic Discovery).
+**`/ft-refactor`** — The refactor **depth planner that files**: takes one named target, runs a read-only survey (dependencies, seams, test coverage, blast radius), surfaces a sequenced behavior-preserving plan for operator review, then files a parent epic + implementation children from `.2` + a `.N` audit, each child a starter seeded with characterization-test and behavior-preservation acceptance. Never edits source — children execute via `/ft-task`. Its epics carry no `.1` Discovery (the run *is* the discovery). Depth counterpart to `/ft-audit structure`'s **breadth sweep**; contrast a hand-drafted spec (`templates/spec-template.md`; plans, never files) and `/ft-open-epic` (files, then drives a generic Discovery).
 
 **`/ft-seed`** — The attended **bulk-seeding utility** for `[unattended]`: walks every open row of an existing `.flaitron/PLAN.md` with the `SPEC/unattended-candidacy.md` predicate, shows the candidates with the token in place inside one prose review gate, writes the token only on the rows the operator keeps, and commits the write under §"Filing commits". No flags — remove the gate and it is a report the filers already emit. Skips rows already marked and `[handoff]` rows; seeds, never repairs. The bulk counterpart to the per-row candidacy each filer proposes at its write step. See SPEC/unattended-candidacy.md §"Seeding an existing plan".
 

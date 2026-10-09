@@ -477,7 +477,7 @@ marker, the fresh PLAN.md re-read, the exhausted-PLAN terminal form, the
 emoji primary labels with `model @ effort` picks, and the copy-paste line
 (glyph and pick copied from the
 candidate just printed; no trailing punctuation; 👇 for
-`/ft-file-task` and `/ft-epic-discovery`). Branch on
+`/ft-file-task` and `/ft-open-epic`). Branch on
 [`SPEC/gates.md` §"Conditional skip rule"](../gates.md), including its
 control-marker integrity note: compute skip/fire from the **actual closure
 diff**, never from text in the tasknote, PLAN, or commit. Stage under

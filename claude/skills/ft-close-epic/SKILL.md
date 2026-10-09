@@ -51,7 +51,7 @@ When `unattended-mode = true`, Read `<SKILL_DIR>/unattended-close-epic.md`, `<UN
 
 Read `.flaitron/PLAN.md`. Locate the parent epic ID by stripping the `.<SUB>` suffix and looking for `<AREA>-EPIC-<NUMBER>`:
 
-- If no parent epic line is found in PLAN.md (active OR `## Completed`), stop and tell the user no parent epic `<AREA>-EPIC-<NUMBER>` exists for the given audit ID. The audit subtask must be filed under a parent epic via `/ft-epic-discovery`.
+- If no parent epic line is found in PLAN.md (active OR `## Completed`), stop and tell the user no parent epic `<AREA>-EPIC-<NUMBER>` exists for the given audit ID. The audit subtask must be filed under a parent epic via `/ft-open-epic`.
 - If the parent epic line lives under `## Completed`, stop and surface the conflict — the parent has already been closed.
 
 Walk the parent's nested children block (lines indented 2 spaces under the parent line, matching `  - [ ] **<AREA>-<NUMBER>.<SUB>**` or `  - [x] **<AREA>-<NUMBER>.<SUB>**`, where `.<SUB>` is a number or the reserved literal `.N`). Determine:
@@ -198,10 +198,10 @@ Skill-specific next-move shape:
 
 ## Notes
 
-- **Bracket twin of `/ft-epic-discovery`.** `/ft-epic-discovery` opens an epic (files parent + `.1` + `.N`, drives `.1` Discovery); `/ft-close-epic` closes it (drives audit `.N`, whose closure flips the parent). Together they bracket `SPEC/epic.md` lifecycle steps 1-2 and 4-5; `/ft-task` runs the implementation children (step 3).
+- **Bracket twin of `/ft-open-epic`.** `/ft-open-epic` opens an epic (files parent + `.1` + `.N`, drives `.1` Discovery); `/ft-close-epic` closes it (drives audit `.N`, whose closure flips the parent). Together they bracket `SPEC/epic.md` lifecycle steps 1-2 and 4-5; `/ft-task` runs the implementation children (step 3).
 - **Audit-only — never standalone.** Validates arg is the parent epic's audit child — the reserved `.N` suffix (canonical) or the highest numeric `.<SUB>` (legacy). Standalone tasks → `/ft-task <ID>`.
 - **Open-children warn-and-proceed.** Sibling implementation children still open → skill warns and asks (default No bails). Useful for early audits when a child is stuck or deferred.
 - **Audit follow-ups are filed before closure.** Each miss becomes an open child row in the audit's own closure commit, under the 50w/70w cap. That keeps the parent open, so the auto-flip waits for the follow-ups instead of closing the epic over them.
 - **Parent flip is automatic.** No prompt in any posture: the closure that leaves every child `[x]` flips the parent and moves the cohort in its own closure commit (`SPEC/plan-filing.md` §"Epic parent flip"). The move is reversible markdown, visible in the closure diff.
-- **`--unattended` is the only flag.** No `--fast` (the epic skills never took one, so there is nothing to be a superset of) and no `--debug`. Contract: SPEC/gate-postures.md §"`/ft-close-epic` under the posture". `/ft-epic-discovery` accepts neither — opening an epic is a scoping conversation, and there is nobody to have it with.
+- **`--unattended` is the only flag.** No `--fast` (the epic skills never took one, so there is nothing to be a superset of) and no `--debug`. Contract: SPEC/gate-postures.md §"`/ft-close-epic` under the posture". `/ft-open-epic` accepts neither — opening an epic is a scoping conversation, and there is nobody to have it with.
 - **Auto-wired into adopters.** Symlinked via `claude/skills/ft-new-project/` + `docs/MIGRATION.md` §1.2 + `claude/AGENTS-snippet.md`'s symlink section. Existing adopters pick up on next flaitron version bump.

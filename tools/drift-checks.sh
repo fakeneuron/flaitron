@@ -81,7 +81,7 @@ skill_pin_guard_parity() {
 # adopter-subset bodies that resolve <root>; edit all seven together.
 got=$(grep -h '^\*\*Skill/pin guard\.\*\*' claude/skills/*/SKILL.md | sort | uniq -c | awk '{print $1}' | tr '\n' ' ')
 [ "$got" = "7 " ] || { echo "GUARD DRIFT  copies-per-variant: $got (want one variant x7)"; exit 1; }
-diff -u <(printf 'claude/skills/%s/SKILL.md\n' ft-close-epic ft-epic-discovery ft-file-task ft-micro-task ft-refactor ft-seed ft-task) \
+diff -u <(printf 'claude/skills/%s/SKILL.md\n' ft-close-epic ft-file-task ft-micro-task ft-open-epic ft-refactor ft-seed ft-task) \
         <(grep -l '^\*\*Skill/pin guard\.\*\*' claude/skills/*/SKILL.md)
 }
 
@@ -205,7 +205,7 @@ done
 skill_frontmatter_yaml() {
 # Cursor drops a skill's description when its frontmatter fails to parse,
 # and Claude Code does not, so nothing local shows it; five blocks shipped
-# broken while the snippet called the defect repaired, and ft-epic-discovery's
+# broken while the snippet called the defect repaired, and ft-epic-discovery's (now ft-open-epic)
 # `argument-hint: [--deep]` parsed but loaded as a list (CORE-744). A line
 # check, not a parser — this file is zero-dependency — and sound only
 # because every line of a checked block must be one `key: value`; any other

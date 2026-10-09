@@ -105,7 +105,7 @@ of the fresh-scaffold / starter-promotion / blocked-resume branch, so no path
 carries its own variant. A path holding state the blurb could not know — the
 `park-reason:` a resume clears, a goal loop's `loop-max` budget — states it as
 ordinary prose when it reads it; that is not a second blurb.
-`/ft-epic-discovery` and `/ft-close-epic` are out of scope deliberately: the
+`/ft-open-epic` and `/ft-close-epic` are out of scope deliberately: the
 test is whether the invocation could arrive cold with nothing but an ID, and
 both run with the scoping conversation still live.
 
@@ -268,6 +268,6 @@ matching"). All five also serve as tier glyphs, and 🧩 additionally heads the
 
 👇 (`HERE`) replaces the model glyph on the copy-paste **label line** when the
 next-skill is context-dependent (`/ft-file-task` in any mode /
-`/ft-epic-discovery` — clearing the session destroys the context they draw on).
+`/ft-open-epic` — clearing the session destroys the context they draw on).
 It signals *where* to run, not task weight: the 🔧/🧩/🧠/💎/🔭 model signal stays on
 the candidate line just printed above.

@@ -10,7 +10,7 @@ related-tasks: []
 
 > Lightweight, review-first design spec. Living markdown — edit in place as
 > the design evolves; there is no version machine and no schema. **Optional**
-> input to planning: never required before `/ft-task` or `/ft-epic-discovery`,
+> input to planning: never required before `/ft-task` or `/ft-open-epic`,
 > and it files nothing on its own. The section order below is fixed so specs
 > read the same across a project; drop a section's body to a single line when
 > there's little to say, but keep the heading.
@@ -41,7 +41,7 @@ Proposed decomposition into Flaitron work. Each line names a **suggested**
 Flaitron type plus a one-line scope. Conversion stays operator-driven — run
 the named skill yourself; a spec never files PLAN entries or tasknotes.
 
-- **[epic]** `<scope>` — file via `/ft-epic-discovery`
+- **[epic]** `<scope>` — file via `/ft-open-epic`
 - **[task]** `<scope>` — add a PLAN.md line, then `/ft-task <ID>`
 - **[starter]** `<scope>` — `/ft-file-task --starter` (rich context, not ready to start)
 - **[micro]** `<scope>` — `/ft-micro-task <ID>`

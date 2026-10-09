@@ -113,7 +113,7 @@ of `proceeding`, and halts; the operator overrules inline
 ([`SPEC/blocked.md`](blocked.md) §"Under `--fast`, park and say so").
 
 `--fast` applies to `/ft-task` (every flag set, `--loop` included) and
-`/ft-micro-task` — the epic skills (`/ft-epic-discovery`,
+`/ft-micro-task` — the epic skills (`/ft-open-epic`,
 `/ft-close-epic`) do not accept it. `/ft-refactor` has its own,
 unrelated `--fast`: it only skips the operator review pause before
 filing the refactor epic and never touches the 👁️/📦/🛠️ gate surface
@@ -326,6 +326,6 @@ write-nothing and 🏁 still requires a deliverable-covering SHA.
 `/ft-micro-task` — plus `/ft-close-epic`, on the terms
 above, and `/ft-file-task`, on
 [`plan-filing.md`](plan-filing.md) §"Filing commits".
-`/ft-epic-discovery` does not accept it: it opens an epic by filing
+`/ft-open-epic` does not accept it: it opens an epic by filing
 PLAN.md lines from a scoping conversation, and there is no such conversation
 to have with nobody present.

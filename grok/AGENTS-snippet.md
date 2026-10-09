@@ -47,9 +47,9 @@ flaitron submodule at `.flaitron/core`:
 ```sh
 mkdir -p .grok/skills
 ln -s ../../.flaitron/core/claude/skills/ft-close-epic .grok/skills/ft-close-epic
-ln -s ../../.flaitron/core/claude/skills/ft-epic-discovery .grok/skills/ft-epic-discovery
 ln -s ../../.flaitron/core/claude/skills/ft-file-task .grok/skills/ft-file-task
 ln -s ../../.flaitron/core/claude/skills/ft-micro-task .grok/skills/ft-micro-task
+ln -s ../../.flaitron/core/claude/skills/ft-open-epic .grok/skills/ft-open-epic
 ln -s ../../.flaitron/core/claude/skills/ft-refactor .grok/skills/ft-refactor
 ln -s ../../.flaitron/core/claude/skills/ft-seed .grok/skills/ft-seed
 ln -s ../../.flaitron/core/claude/skills/ft-task .grok/skills/ft-task

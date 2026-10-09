@@ -83,7 +83,7 @@ row is **not** a candidate.
    an audit tagged `[light]` or `[medium]` is otherwise coherent).
 
 Three filers carry their own carve-outs on top: `/ft-audit`'s trivial-fix rows
-(written and closed in one motion — nothing to dispatch), `/ft-epic-discovery`
+(written and closed in one motion — nothing to dispatch), `/ft-open-epic`
 Step 4's parent + `.1` lines (clauses 5–6 by construction), and the epic
 parents and `.N` placeholders `/ft-audit-repo` files at first contact.
 
@@ -202,7 +202,7 @@ fails that check.
 
 | Surface | Write step | Existing gate the proposal rides | Owner |
 |---|---|---|---|
-| `/ft-epic-discovery` | Step 7 (`.2..M+1`, `.N`) | reconcile review prompt | [[CORE-577.3]] |
+| `/ft-open-epic` | Step 7 (`.2..M+1`, `.N`) | reconcile review prompt | [[CORE-577.3]] |
 | `/ft-file-task` default, `--starter` | Step 4 / S4 | Step 3 / S3 prose review | [[CORE-577.4]] |
 | `/ft-file-task --unattended` | Step 4 | none — emits, persists via the discharging runner | [[CORE-577.4]] |
 | `/ft-file-task --park` | — | **no candidacy** (one-motion by design; decided when the stub is promoted) | — |

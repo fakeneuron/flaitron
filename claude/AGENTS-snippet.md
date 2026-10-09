@@ -20,7 +20,7 @@ This project uses **flaitron** for task tracking. The canonical workflow contrac
 - Tasknotes live in `.flaitron/tasknote/<TASK-ID>.md` while active and `.flaitron/tasknote/archive/<area>/<TASK-ID>.md` once closed.
 - Start a task with `/ft-task <TASK-ID>`: it scaffolds the tasknote and drives Phase 1 Discovery before any code is written. Agents without `/ft-task` follow `.flaitron/core/SPEC/procedures/ft-task.md` (via `.flaitron/core/<platform>/procedures/ft-task.md` where one exists).
 - `/ft-task` flags: `--debug` (hypothesis-first bug cadence), `--loop` (iterate Phase 2↔3 to a machine-checkable target — `.flaitron/core/SPEC/loop.md`), `--fast` (suppresses conditional gates; also on `/ft-micro-task` and `/ft-refactor`), and `--unattended` (no operator present: gates park the tasknote instead of asking; never together with `--fast` — `.flaitron/core/SPEC/gate-postures.md` §"`--unattended` operator posture"). `/ft-micro-task`, `/ft-close-epic`, and `/ft-file-task` take `--unattended` too.
-- Peer skills: `/ft-micro-task <ID>`, `/ft-file-task [ID]` (`--park`, `--starter`), `/ft-epic-discovery`, `/ft-close-epic <ID>`, `/ft-refactor <target>` (plans only: a read-only survey, then an epic of children — it never edits source). Which shape fits which work: `.flaitron/core/SPEC/tasknote-selection.md` §"When to use a tasknote (and when not to)"; epics: `.flaitron/core/SPEC/epic.md`.
+- Peer skills: `/ft-micro-task <ID>`, `/ft-file-task [ID]` (`--park`, `--starter`), `/ft-open-epic`, `/ft-close-epic <ID>`, `/ft-refactor <target>` (plans only: a read-only survey, then an epic of children — it never edits source). Which shape fits which work: `.flaitron/core/SPEC/tasknote-selection.md` §"When to use a tasknote (and when not to)"; epics: `.flaitron/core/SPEC/epic.md`.
 - Utilities: `/ft-seed` seeds `[unattended]` across an existing plan and never writes it unconfirmed (`.flaitron/core/SPEC/unattended-candidacy.md` §"Seeding an existing plan"); `/ft-update` bumps the flaitron pin.
 - Filing a task, or a mid-flow decision that changes direction, runs a downstream-impact reconciliation scan against active PLAN entries; the plan is never rewritten without your confirm — `.flaitron/core/SPEC/tasknote-selection.md` §"Downstream-impact reconciliation".
 - Optional, by hand: parallel epic children in worktrees (`.flaitron/core/docs/WORKTREES.md`), review-first specs that never file or scaffold (`.flaitron/core/templates/spec-template.md` → `.flaitron/specs/<slug>.md`), recurring heartbeat loops (`.flaitron/core/templates/loop-heartbeat-template.md`).
@@ -89,7 +89,7 @@ mkdir -p .claude/skills
 ln -s ../../.flaitron/core/claude/skills/ft-task            .claude/skills/ft-task
 ln -s ../../.flaitron/core/claude/skills/ft-micro-task      .claude/skills/ft-micro-task
 ln -s ../../.flaitron/core/claude/skills/ft-file-task       .claude/skills/ft-file-task
-ln -s ../../.flaitron/core/claude/skills/ft-epic-discovery  .claude/skills/ft-epic-discovery
+ln -s ../../.flaitron/core/claude/skills/ft-open-epic       .claude/skills/ft-open-epic
 ln -s ../../.flaitron/core/claude/skills/ft-close-epic      .claude/skills/ft-close-epic
 ln -s ../../.flaitron/core/claude/skills/ft-update          .claude/skills/ft-update
 ln -s ../../.flaitron/core/claude/skills/ft-refactor        .claude/skills/ft-refactor

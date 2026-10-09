@@ -34,7 +34,7 @@ stays valid — both forms parse.
 1. **File the epic** with a Discovery subtask (`.1`) and a placeholder Audit
    subtask at the end. Implementation children may be empty at filing — the
    Discovery subtask populates them.
-2. **Run Discovery** via `/ft-epic-discovery` (which also files the epic in
+2. **Run Discovery** via `/ft-open-epic` (which also files the epic in
    step 1) or `/ft-task <ID>.1` if filed manually. Deliverable: filed child
    entries in PLAN.md, not code.
 3. **Run children** in order, normal flow. That serial default
@@ -99,14 +99,14 @@ drifted, surfaces the cumulative slice-local staleness that per-task
 Phase 4 closures can miss.
 
 **Skills.** The filing-and-Discovery side of the lifecycle (steps 1-2
-above) is codified in `claude/skills/ft-epic-discovery/`; the audit-and-close
+above) is codified in `claude/skills/ft-open-epic/`; the audit-and-close
 side (steps 4-5) is codified in `claude/skills/ft-close-epic/`. Both are
 auto-wired into adopter projects via `claude/skills/ft-new-project/SKILL.md`
 Step 3 + `docs/MIGRATION.md` §1.2.
 
 **Optional deep pre-pass.** For high-uncertainty epics — those where the
 shared design surface, contract impact, or per-child scope is genuinely
-unclear at filing time — `/ft-epic-discovery --deep` stages a
+unclear at filing time — `/ft-open-epic --deep` stages a
 `constitution → specify → clarify` pre-pass before Phase 1 Discovery,
 with structured-ask review-and-confirm gates between stages. The
 default flow is unchanged; reach for `--deep` only when upfront staging

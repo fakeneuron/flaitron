@@ -28,9 +28,9 @@ subset (tasknote execution family, `ft-seed`, and `ft-update`):
 ```sh
 mkdir -p .agents/skills
 ln -s ../../.flaitron/core/codex/skills/ft-close-epic .agents/skills/ft-close-epic
-ln -s ../../.flaitron/core/codex/skills/ft-epic-discovery .agents/skills/ft-epic-discovery
 ln -s ../../.flaitron/core/codex/skills/ft-file-task .agents/skills/ft-file-task
 ln -s ../../.flaitron/core/codex/skills/ft-micro-task .agents/skills/ft-micro-task
+ln -s ../../.flaitron/core/codex/skills/ft-open-epic .agents/skills/ft-open-epic
 ln -s ../../.flaitron/core/codex/skills/ft-refactor .agents/skills/ft-refactor
 ln -s ../../.flaitron/core/codex/skills/ft-seed .agents/skills/ft-seed
 ln -s ../../.flaitron/core/codex/skills/ft-task .agents/skills/ft-task

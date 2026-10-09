@@ -9,7 +9,7 @@ argument-hint: <target> [--fast | -f]
 You are planning a refactor of **one named target** and filing the result as
 a sequenced epic. `/ft-refactor` is a **depth planner that files** — it sits
 between a hand-drafted spec (`templates/spec-template.md`; plans, never
-files) and `/ft-epic-discovery` (files an epic, then drives a generic
+files) and `/ft-open-epic` (files an epic, then drives a generic
 Discovery): it performs the depth
 analysis itself, surfaces the plan for operator review, and on the
 operator's go files the epic + per-child starter tasknotes in one motion.
@@ -259,7 +259,7 @@ protocol" step 3 (label line
   multi-step restructuring of one target recommend an `/ft-refactor
   <target>` run; this skill is that depth path. No target → you want the
   breadth sweep, not this.
-- **Compare with `/ft-epic-discovery`** — generic epic opener: files parent
+- **Compare with `/ft-open-epic`** — generic epic opener: files parent
   + `.1` + `.N`, then drives the `.1` Discovery as its own tasknote. Use it
   when scope is genuinely open; use `/ft-refactor` when the epic is a
   restructuring of one named target and the analysis fits one reviewed run.

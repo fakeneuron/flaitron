@@ -1,6 +1,6 @@
 # Tasknote selection
 
-> Lazy-loaded SPEC module. Loaded by the filing/runner skills (`/ft-task`, `/ft-micro-task`, `/ft-file-task`, `/ft-epic-discovery`, `/ft-refactor`) when they need the use/skip thresholds, the filing-discipline word budget, or the downstream-impact reconciliation scan. See `SPEC.md` for the always-loaded core spec. What happens to a PLAN.md row *after* it is filed — the filing-commit contract, the `## Completed` stub-form convention, and `## Completed` rotation — lives in the sibling [`SPEC/plan-filing.md`](plan-filing.md).
+> Lazy-loaded SPEC module. Loaded by the filing/runner skills (`/ft-task`, `/ft-micro-task`, `/ft-file-task`, `/ft-open-epic`, `/ft-refactor`) when they need the use/skip thresholds, the filing-discipline word budget, or the downstream-impact reconciliation scan. See `SPEC.md` for the always-loaded core spec. What happens to a PLAN.md row *after* it is filed — the filing-commit contract, the `## Completed` stub-form convention, and `## Completed` rotation — lives in the sibling [`SPEC/plan-filing.md`](plan-filing.md).
 
 ## When to use a tasknote (and when not to)
 
@@ -27,14 +27,14 @@ mechanics.
 
 A spec is a planning artifact, not a filing: copy the template to
 `.flaitron/specs/<slug>.md` (create the directory on first use), fill its six
-sections, review it, then convert its Tasks section via `/ft-epic-discovery`,
+sections, review it, then convert its Tasks section via `/ft-open-epic`,
 `/ft-file-task --starter`, `/ft-task`, or a direct PLAN.md line. No skill
 drives it.
 
 **Skip the spec (go straight to filing) when:**
 
 - A one-liner idea needs neither a spec nor a starter — write the PLAN.md line directly
-- The design is already clear and decomposed — file with `/ft-file-task --starter` or `/ft-epic-discovery`
+- The design is already clear and decomposed — file with `/ft-file-task --starter` or `/ft-open-epic`
 
 **Plan a refactor (`/ft-refactor <target> [--fast]`) when:**
 
@@ -43,7 +43,7 @@ drives it.
 
 `/ft-refactor` is read-only on source and files a parent epic of starter
 children plus a `.N` audit; execution is normal `/ft-task` cycles. No target →
-`/ft-audit structure`; open scope → `/ft-epic-discovery`.
+`/ft-audit structure`; open scope → `/ft-open-epic`.
 
 **File a starter (`/ft-file-task [ID] --starter`) when:**
 
@@ -146,7 +146,7 @@ the old shape, and nobody notices until that task is picked up. The
 **Triggers.** Run the scan at two moments:
 
 - **New-task filing** — whenever a filing skill writes a new PLAN.md line
-  (`/ft-file-task` in its default or `--starter` mode, the `/ft-epic-discovery` child
+  (`/ft-file-task` in its default or `--starter` mode, the `/ft-open-epic` child
   cohort, or a direct inline addition).
 - **Mid-flow direction-changing decision** — whenever a decision inside an
   active task (typically `/ft-task` Phase 2) changes the approach, contract,

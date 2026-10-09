@@ -1,10 +1,10 @@
 ---
-name: ft-epic-discovery
+name: ft-open-epic
 description: File a new flaitron epic and drive its `.1` Discovery tasknote in one motion, filing parent, `.1`, and `.N` audit PLAN lines and scaffolding `.1` with tailored pre-fill. With `--deep`, stages a constitution-specify-clarify pre-pass for high-uncertainty epics before Phase 1 Discovery begins.
 argument-hint: '[--deep]'
 ---
 
-# ft-epic-discovery — flaitron epic filing + Discovery driver
+# ft-open-epic — flaitron epic filing + Discovery driver
 
 You are filing a new epic and driving its `.1` Discovery tasknote in one motion. The full lifecycle contract lives in `<SPEC_DIR>/epic.md` — this skill is the executable interpretation of the lifecycle's filing-and-Discovery side, not a replacement. Treat `SPEC/epic.md` as authoritative when this file is silent or in tension.
 
@@ -24,7 +24,7 @@ If neither matches, bail.
 Paths this skill uses:
 - SPEC: `<root>SPEC.md` (always loaded core)
 - SPEC_DIR (lazy modules `epic.md` · `post-closure.md`): `<root>SPEC/`
-- SKILL_DIR (lazy fragment `step-5.5-deep-prepass.md`): `<root>claude/skills/ft-epic-discovery/`
+- SKILL_DIR (lazy fragment `step-5.5-deep-prepass.md`): `<root>claude/skills/ft-open-epic/`
 - Template: `<root>templates/tasknote-template.md`
 - PLAN: `.flaitron/PLAN.md`, tasknote dir: `.flaitron/tasknote/` (always)
 
@@ -45,10 +45,10 @@ The skill recognizes one optional argument: `--deep`. Branch:
 - **`--unattended`** → this skill does not accept it (`SPEC/gate-postures.md` §"`--unattended` operator posture"): filing an epic means having a scoping conversation, and there is none to have with nobody present. Terminate readably and write nothing — do not fall through to the "Any other arg" branch below:
 
   ```markdown
-  ⏸ --unattended stop — unsupported-flag: `/ft-epic-discovery` requires an operator scoping conversation; it has no unattended mode. File the epic conversationally, or use a runner that accepts `--unattended` (`/ft-task`, `/ft-micro-task`, `/ft-file-task`, `/ft-close-epic`).
+  ⏸ --unattended stop — unsupported-flag: `/ft-open-epic` requires an operator scoping conversation; it has no unattended mode. File the epic conversationally, or use a runner that accepts `--unattended` (`/ft-task`, `/ft-micro-task`, `/ft-file-task`, `/ft-close-epic`).
   ```
 
-- **Any other arg** → surface a one-line usage notice ("Unknown arg `<arg>`. Usage: `/ft-epic-discovery` or `/ft-epic-discovery --deep`.") and ask via AskUserQuestion whether the user meant `--deep`, the default flow, or to abort. Do not proceed silently.
+- **Any other arg** → surface a one-line usage notice ("Unknown arg `<arg>`. Usage: `/ft-open-epic` or `/ft-open-epic --deep`.") and ask via AskUserQuestion whether the user meant `--deep`, the default flow, or to abort. Do not proceed silently.
 
 `--deep` is opt-in for **high-uncertainty epics**; the fragment's §"What `--deep` is for" carries the judgment call.
 
@@ -91,7 +91,7 @@ The user may override the numeric suffix (e.g., to align with an externally-trac
 Append to `.flaitron/PLAN.md` under the chosen `## <Priority>` heading. Use the canonical task-line grammar (SPEC §"Task-line format"; a dependency on another row is `Blocked by [[<ID>]]`, wikilink-only — `SPEC/plan-parser.md` §"Long-description conventions"). Three lines (or two if N excludes audit), nested with 2-space indent under the parent for the subtask lines:
 
 ```markdown
-- [ ] **<AREA>-EPIC-<next-N>** [<model>] | <shortname> — One-paragraph epic description (filed via /ft-epic-discovery; refined at .1 closure).
+- [ ] **<AREA>-EPIC-<next-N>** [<model>] | <shortname> — One-paragraph epic description (filed via /ft-open-epic; refined at .1 closure).
   - [ ] **<AREA>-<next-N>.1** [<.1-model>] | <shortname> discovery — Scope shared design and file children .2..(M+1) per SPEC/epic.md.
   - [ ] **<AREA>-<next-N>.N** [<.N-model>] | <shortname> audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
 ```
@@ -181,7 +181,7 @@ Skip entirely if `deep-mode = false`. On `--deep`, drive the three stages from t
 Walk the Phase 1 checklist per SPEC §"📝 Phase 1: Discovery". Tick boxes as each step completes. Skill-specific imperatives:
 
 - **Reviewed PLAN.md** — already done (the parent + `.1` + `.N` lines were written in Step 4).
-- **Relevance Assessment** — Verdict: Proceed (the user explicitly invoked `/ft-epic-discovery`, motivating filing an epic). Rationale: capture from the Step 1 conversation context.
+- **Relevance Assessment** — Verdict: Proceed (the user explicitly invoked `/ft-open-epic`, motivating filing an epic). Rationale: capture from the Step 1 conversation context.
 - **Read relevant source files** — read the source files the conversation surfaced as in-scope for the epic. If none surfaced yet, ask the user which directories / modules / files the epic touches and read those.
 - **Archive skim** — `ls <tasknote dir>/archive/<area>/` then `grep -l <source-path> <tasknote dir>/archive/<area>/*.md` for each source path (prefer YAML `touches:` when set). Read hits; also open IDs named by Related / `supersedes` / ⚠️ pointers — still grep + read, no query engine. Log load-bearing findings (file moves, precedents, design decisions, regressions) in Discovery Notes.
 - **Drift check** — verify file paths, line numbers, and concepts cited in the conversation context still match HEAD. Flag any drift.
@@ -248,8 +248,8 @@ Walk the closure steps in order under SPEC §"Paper-complete guard". **No banner
 
 **Read `<SPEC_DIR>/post-closure.md` now** — the protocol is a lazy module, loaded here and nowhere earlier — then run it under SPEC §"Paper-complete guard", branching on SPEC/gates.md §"Conditional skip rule". Skill-specific orchestration:
 
-- Evaluate the **📦 conditional skip rule** against the closure diff. For pure `/ft-epic-discovery` filings the diff is typically PLAN.md edits + a tasknote scaffold/archive — no privileged-ops surface — so the skip branch is the common case (workflow-only carve-out). Branch:
-  - **Skip branch** (signals clear; no bundled in-📦 prompt — `/ft-epic-discovery` carries none) — run that section's **autonomous-commit motion** end to end, naming the cleared signal in its marker (e.g., `PLAN.md edit + tasknote scaffold/archive; no privileged-ops surface`). Do not surface a 📦 banner.
+- Evaluate the **📦 conditional skip rule** against the closure diff. For pure `/ft-open-epic` filings the diff is typically PLAN.md edits + a tasknote scaffold/archive — no privileged-ops surface — so the skip branch is the common case (workflow-only carve-out). Branch:
+  - **Skip branch** (signals clear; no bundled in-📦 prompt — `/ft-open-epic` carries none) — run that section's **autonomous-commit motion** end to end, naming the cleared signal in its marker (e.g., `PLAN.md edit + tasknote scaffold/archive; no privileged-ops surface`). Do not surface a 📦 banner.
   - **Fire branch** (privileged-ops signal hits) — its **bundled-approval motion**: surface the 📦 gate (`SPEC/post-closure.md` step 1) and wait for commit-go.
 - Proposed commit message (skill-specific): `feat: <AREA>-<next-N>.1 — scope <AREA>-EPIC-<next-N> children`, or `feat: <AREA>-<next-N>.1 — file <AREA>-EPIC-<next-N> + scope children` when Step 4 left the filing uncommitted (or a user-edited variant). Do not commit unprompted on the fire branch.
 - 🏁 per `SPEC/post-closure.md` step 2, **only with a real SHA** whose paths cover PLAN + archive (and any other Discovery deliverables) — the skip branch collapses 🛠️ / 📦 to inline markers, but 🏁 still fires.
@@ -263,6 +263,6 @@ Walk the closure steps in order under SPEC §"Paper-complete guard". **No banner
 - **M can shift during Discovery.** If the Discovery surfaces that the implementation-child count M was wrong (scope shrinks or grows), Phase 2 in Step 7 files a different number of numeric children (`.2..(M+1)`) — the audit's reserved `.N` suffix is unaffected and never renumbers. Document the shift in Implementation Notes.
 - **Parent description is a placeholder.** The parent epic's long description filed in Step 4 is a one-paragraph placeholder; the Discovery's Final Summary refines it at closure time. The visualizer parses both states identically.
 - **Auto-wired into adopters.** Symlinked into adopter projects via `claude/skills/ft-new-project/SKILL.md` Step 3 + `docs/MIGRATION.md` §1.2 + `claude/AGENTS-snippet.md`'s "One-time symlink wiring" section. New adopter projects bootstrapping via `/ft-new-project` get this skill automatically; existing adopters pick it up on next flaitron version bump.
-- **Compare with `/ft-close-epic`** — the sibling skill that scaffolds + drives the audit `.N` tasknote at the end of an epic, whose closure flips the parent line to `Completed`. `/ft-epic-discovery` opens an epic; `/ft-close-epic` closes it.
-- **Compare with `/ft-task`** — `/ft-task <ID>` runs an existing PLAN.md entry (starter, in-progress, or fresh) through the 4-phase workflow. `/ft-epic-discovery` files a new epic AND its first child AND drives that first child to closure. The two skills don't overlap.
-- **Compare with `/ft-file-task --starter`** — `/ft-file-task [ID] --starter` files a single starter tasknote with rich AI-captured context. `/ft-epic-discovery` files an epic + its first two child lines + drives a full Discovery. Use `--starter` when scope is single-task; use `/ft-epic-discovery` when scope warrants the Discovery + Audit bracket. **Cross-session handoff:** when an epic brief is fully formed in the current session but `/ft-epic-discovery` itself will run in a fresh session (e.g., `/clear` planned, model swap), file a starter now to park the brief — next session reads the starter file as context before invoking `/ft-epic-discovery`. See `claude/skills/ft-file-task/starter-mode.md` §Notes "Proactive invocation on cross-session handoff".
+- **Compare with `/ft-close-epic`** — the sibling skill that scaffolds + drives the audit `.N` tasknote at the end of an epic, whose closure flips the parent line to `Completed`. `/ft-open-epic` opens an epic; `/ft-close-epic` closes it.
+- **Compare with `/ft-task`** — `/ft-task <ID>` runs an existing PLAN.md entry (starter, in-progress, or fresh) through the 4-phase workflow. `/ft-open-epic` files a new epic AND its first child AND drives that first child to closure. The two skills don't overlap.
+- **Compare with `/ft-file-task --starter`** — `/ft-file-task [ID] --starter` files a single starter tasknote with rich AI-captured context. `/ft-open-epic` files an epic + its first two child lines + drives a full Discovery. Use `--starter` when scope is single-task; use `/ft-open-epic` when scope warrants the Discovery + Audit bracket. **Cross-session handoff:** when an epic brief is fully formed in the current session but `/ft-open-epic` itself will run in a fresh session (e.g., `/clear` planned, model swap), file a starter now to park the brief — next session reads the starter file as context before invoking `/ft-open-epic`. See `claude/skills/ft-file-task/starter-mode.md` §Notes "Proactive invocation on cross-session handoff".

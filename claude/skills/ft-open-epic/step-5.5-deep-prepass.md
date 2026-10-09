@@ -1,8 +1,8 @@
 # `--deep` — deep pre-pass (executable steps)
 
-> Lazy-loaded SKILL fragment. Loaded by `ft-epic-discovery` SKILL.md Step 1.5 when `--deep` is present in `$ARGUMENTS`. Carries the whole of deep mode: what the flag is for, the Step 5 scaffold injection, and the three Step 5.5 pre-pass stages. See `claude/skills/ft-epic-discovery/SKILL.md` for the always-loaded default flow.
+> Lazy-loaded SKILL fragment. Loaded by `ft-open-epic` SKILL.md Step 1.5 when `--deep` is present in `$ARGUMENTS`. Carries the whole of deep mode: what the flag is for, the Step 5 scaffold injection, and the three Step 5.5 pre-pass stages. See `claude/skills/ft-open-epic/SKILL.md` for the always-loaded default flow.
 
-Deep mode adds **staging**, never mechanics. Filing, the `.1` scaffold, the 4-phase workflow, the operator-gate cues, closure, and the post-closure protocol are byte-identical to a default `/ft-epic-discovery` run. Nothing in this fragment creates a new phase, template, banner, or gate — the three stage gates are AskUserQuestion review prompts, and the two-banner cap is preserved.
+Deep mode adds **staging**, never mechanics. Filing, the `.1` scaffold, the 4-phase workflow, the operator-gate cues, closure, and the post-closure protocol are byte-identical to a default `/ft-open-epic` run. Nothing in this fragment creates a new phase, template, banner, or gate — the three stage gates are AskUserQuestion review prompts, and the two-banner cap is preserved.
 
 ## What `--deep` is for
 

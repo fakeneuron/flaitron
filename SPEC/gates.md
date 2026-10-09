@@ -1,6 +1,6 @@
 # Gate machinery
 
-> Lazy-loaded SPEC module. Loaded by `/ft-task`, `/ft-micro-task`, `/ft-epic-discovery`, `/ft-close-epic`, and `/ft-release` whenever an operator-gate decision is in play (Phase 1→2 exit, ready-to-commit). See `SPEC.md` for the always-loaded core spec and its §"Operator-gate cues" for the two sibling modules: [`SPEC/cue-vocabulary.md`](cue-vocabulary.md) (cue inventory) and [`SPEC/gate-postures.md`](gate-postures.md) (the `--fast` / `--unattended` postures and the flag×surface matrix, loaded only when a flag or the `[unattended]` row marker is set).
+> Lazy-loaded SPEC module. Loaded by `/ft-task`, `/ft-micro-task`, `/ft-open-epic`, `/ft-close-epic`, and `/ft-release` whenever an operator-gate decision is in play (Phase 1→2 exit, ready-to-commit). See `SPEC.md` for the always-loaded core spec and its §"Operator-gate cues" for the two sibling modules: [`SPEC/cue-vocabulary.md`](cue-vocabulary.md) (cue inventory) and [`SPEC/gate-postures.md`](gate-postures.md) (the `--fast` / `--unattended` postures and the flag×surface matrix, loaded only when a flag or the `[unattended]` row marker is set).
 
 This module carries the gate machinery: the two standing phase-gate banners and the cap that fixes them at two, the destructive-action escalation that is the cap's one exception, the Phase 1→2 exit-gate flavors, and the conditional skip rule behind 📦. Each section states its own rule; every flag interaction lives in [`SPEC/gate-postures.md`](gate-postures.md) §"Flag precedence and surface matrix".
 
@@ -102,7 +102,7 @@ their flow:
 | Flavor | Skills | Default | Fires 🛠️ when |
 |---|---|---|---|
 | `default-skip` | `/ft-task` | Skip 🛠️; emit inline marker; enter Phase 2 immediately | Discovery surfaced a **significant scope deviation** from the original plan — Re-scope/De-scope verdicts (always); or clarifications that materially reshaped execution (assistant judgment) |
-| `default-fire-on-clarifications` | `/ft-epic-discovery`, `/ft-close-epic` | Skip 🛠️ when zero asks fired; otherwise fire | Any structured ask fired, any prose ask reshaped scope, or a Re-scope verdict landed |
+| `default-fire-on-clarifications` | `/ft-open-epic`, `/ft-close-epic` | Skip 🛠️ when zero asks fired; otherwise fire | Any structured ask fired, any prose ask reshaped scope, or a Re-scope verdict landed |
 
 Both flavors share the same inline marker text on the skip path —
 emitted as plain prose, not a banner block, not a new gate:
@@ -135,7 +135,7 @@ recorded inline at the exit ("Discovery surfaced no significant
 deviation → skip 🛠️" or "Discovery surfaced <one-line reason> → fire
 🛠️"), so the operator can spot misjudgments in the transcript.
 
-**`default-fire-on-clarifications` rule** (used by `/ft-epic-discovery`,
+**`default-fire-on-clarifications` rule** (used by `/ft-open-epic`,
 `/ft-close-epic`). Lower-volume,
 higher-stakes flows where the operator wants more checkpoints — skip
 only when Discovery surfaced zero asks ("No clarifications needed");

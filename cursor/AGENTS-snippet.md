@@ -31,8 +31,7 @@ skills and no capability.
 [`../claude/AGENTS-snippet.md`](../claude/AGENTS-snippet.md) §"One-time symlink
 wiring", and the Cursor-only block below is that roster under one substitution —
 destination `.claude/skills/<n>` → `.cursor/skills/<n>`, source path unchanged
-(the targets are the canonical Claude bodies), `claude/commands/` lines dropped,
-lines sorted. Adding or removing a skill means editing the SSOT and regenerating
+(the targets are the canonical Claude bodies), lines sorted. Adding or removing a skill means editing the SSOT and regenerating
 this block, never editing this block alone. It stays a literal `ln -s` list
 because adopters copy-paste it and `tools/update-adopters.mjs` parses it;
 `/ft-release` §7.1 diffs it against the SSOT as a set.
@@ -66,10 +65,7 @@ fallback, keep it out of indexing and AI access with that line in a root
 `../docs/MIGRATION.md` §1.1.
 
 A Cursor skill auto-exposes as `/<skill-name>`, so `/ft-task <TASK-ID>` works
-after wiring with no command stubs to install. Flaitron's `claude/commands/`
-wrappers are **not** part of this block: Cursor's compatibility loading covers
-`.claude/skills/` but not `.claude/commands/`, and the skill bodies carry the
-whole procedure, so the wrappers add nothing here.
+after wiring.
 
 Prefer `.cursor/skills/` over `.agents/skills/` for repo-scoped Cursor wiring.
 Both work, but `.agents/skills/` is also Codex's repo-scoped directory — keeping
@@ -106,7 +102,7 @@ a comment), a trailing `:`, or a leading indicator such as `[` (an
 `argument-hint:` like `[TASK-ID]`), `{`, `*`, `- ` or a backtick. When unsure,
 quote.
 Upstream, the `skill_frontmatter_yaml` check in
-`../tools/drift-checks.sh` holds the shipped skill and command frontmatter to
+`../tools/drift-checks.sh` holds the shipped skill frontmatter to
 this rule.
 
 ## Pinning notes

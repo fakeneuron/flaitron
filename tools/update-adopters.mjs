@@ -141,11 +141,12 @@ const PRE_RENAME_SUBMODULE_PATH = join(PRE_RENAME_DIR, 'core');
 // The release that ships the rename. Its own Migration block is the move
 // applyMigrate performs, so only this tag is lifted from the migration gate.
 const RENAME_TAG = 'v6.0.0';
-// Cursor and Grok are "thin bundle" wiring surfaces: neither ships its own
-// skills directory — both symlink canonical claude/skills/ bodies into their
-// own <platform>/skills/ path — so their surface config is identical bar
-// `label` and `snippetPath`.
-function thinClaudeSkillsSurface(label, snippetPath) {
+// Claude, Cursor and Grok all symlink the canonical claude/skills/ bodies
+// into their own <platform>/skills/ path — Cursor and Grok ship no skills
+// directory of their own, and Claude's claude/commands/ stubs retired at
+// CORE-769.2 — so their surface config is identical bar `label` and
+// `snippetPath`.
+function claudeSkillsSurface(label, snippetPath) {
   return {
     label,
     snippetPath,
@@ -159,19 +160,7 @@ function thinClaudeSkillsSurface(label, snippetPath) {
 }
 
 const WIRING_SURFACES = [
-  {
-    label: 'Claude .claude/',
-    snippetPath: 'claude/AGENTS-snippet.md',
-    diffPaths: ['claude/skills/', 'claude/commands/'],
-    snippetKeyPattern: /\.flaitron\/core\/(claude\/(?:skills|commands)\/\S+)/,
-    addedKeyForFile(path) {
-      const skill = path.match(/^(claude\/skills\/[^/]+)/);
-      if (skill) return skill[1];
-      const command = path.match(/^(claude\/commands\/[^/]+\.md)$/);
-      if (command) return command[1];
-      return null;
-    },
-  },
+  claudeSkillsSurface('Claude .claude/', 'claude/AGENTS-snippet.md'),
   {
     label: 'Codex .agents/skills',
     snippetPath: 'codex/AGENTS-snippet.md',
@@ -182,8 +171,8 @@ const WIRING_SURFACES = [
       return skill ? skill[1] : null;
     },
   },
-  thinClaudeSkillsSurface('Cursor .cursor/skills', 'cursor/AGENTS-snippet.md'),
-  thinClaudeSkillsSurface('Grok .grok/skills', 'grok/AGENTS-snippet.md'),
+  claudeSkillsSurface('Cursor .cursor/skills', 'cursor/AGENTS-snippet.md'),
+  claudeSkillsSurface('Grok .grok/skills', 'grok/AGENTS-snippet.md'),
 ];
 
 // FLAITRON_FETCH_TIMEOUT_MS override read at call time (not cached at module

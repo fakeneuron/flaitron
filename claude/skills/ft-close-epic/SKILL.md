@@ -1,6 +1,7 @@
 ---
 name: ft-close-epic
 description: 'Close a flaitron epic by scaffolding and driving its audit `.N` tasknote in one motion; that closure flips the parent epic automatically once every child is closed. With `--unattended`, runs with no operator present: the audit still closes and commits, parent flip included.'
+argument-hint: <AUDIT-SUBTASK-ID> [--unattended]
 ---
 
 # close-epic — flaitron epic audit + close driver

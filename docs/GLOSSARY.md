@@ -8,13 +8,13 @@ Alphabetized. ~73 entries. Maintained via epic children and audits.
 
 ---
 
-**AGENTS.md** — The agent-neutral block adopters paste into their project `AGENTS.md`; defines the adopter-facing assistant surface (skills, commands, one-time wiring). Source: `claude/AGENTS-snippet.md`. See docs/MIGRATION.md §1.3.
+**AGENTS.md** — The agent-neutral block adopters paste into their project `AGENTS.md`; defines the adopter-facing assistant surface (skills, one-time wiring). Source: `claude/AGENTS-snippet.md`. See docs/MIGRATION.md §1.3.
 
 **AI-referenced docs** — The flat list in `.flaitron/tasknote/README.md` §"AI-referenced docs" that every Phase 4 closure and epic-audit subtask walks for the doc-drift sweep. Membership means *swept for drift*, not *loaded at cold start* — the two are independent per-doc properties (CORE-491). `SPEC/` lazy modules and `claude/skills/*` are excluded on both counts.
 
 **area prefix** — The leading token of a TASK-ID (e.g. `CORE-`, `FE-`, `BE-`); declares the scope bucket per SPEC §"Task ID convention". Adopters declare extra domain prefixes in their `.flaitron/tasknote/README.md`.
 
-**audit-family** — The two audit skills and command stubs `/ft-audit{,-repo}`: the forkable stack scaffold `/ft-audit <domain>` — a parameterized dispatcher over an eight-file `passes/` library (`general` · `backend` · `frontend` · `security` · `performance` · `docs` · `structure` · `context`) — plus `/ft-audit-repo`, the no-fork first-contact holistic audit run by reference from the submodule. Forking rules and naming (no `ft-` prefix on forks) in docs/MIGRATION.md §1.2.1.
+**audit-family** — The two audit skills `/ft-audit{,-repo}`: the forkable stack scaffold `/ft-audit <domain>` — a parameterized dispatcher over an eight-file `passes/` library (`general` · `backend` · `frontend` · `security` · `performance` · `docs` · `structure` · `context`) — plus `/ft-audit-repo`, the no-fork first-contact holistic audit run by reference from the submodule. Forking rules and naming (no `ft-` prefix on forks) in docs/MIGRATION.md §1.2.1.
 
 **audit-family fork** — An adopter-owned audit skill created by forking an upstream one; must drop the `ft-` prefix so ownership is visible in resolution (e.g. `audit-payments`).
 

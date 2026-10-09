@@ -34,9 +34,9 @@ function edit(rel, fn) {
 // One seeded drift per check: `seed` mutates the copy, `finding` is the line
 // the check must print. Keys are the check (function) names.
 const CASES = {
-  wrapper_name_invariant: {
-    seed: () => write('claude/commands/ft-zz-drift.md', 'A stub that never names itself.\n'),
-    finding: /^NO SELF-NAME {2}claude\/commands\/ft-zz-drift\.md$/m,
+  skill_name_invariant: {
+    seed: () => write('claude/skills/ft-zz-drift/SKILL.md', '---\nname: ft-zz-old\n---\n'),
+    finding: /^NAME MISMATCH {2}claude\/skills\/ft-zz-drift\/SKILL\.md :: name: ft-zz-old$/m,
   },
   shipped_skill_parity: {
     seed: () => write('codex/skills/zz-drift/SKILL.md', '---\nname: zz-drift\n---\n'),
@@ -98,11 +98,11 @@ const CASES = {
     finding: /^\+echo zz-drift$/m,
   },
   pair_j: {
-    seed: () => edit('claude/commands/ft-task.md', (s) => `${s}\nAlso \`/ft-task --zz-drift\`.\n`),
+    seed: () => edit('claude/skills/ft-task/SKILL.md', (s) => `${s}\nAlso \`/ft-task --zz-drift\`.\n`),
     finding: /^MISSING HINT FLAG ft-task --zz-drift$/m,
   },
   pair_m: {
-    seed: () => edit('claude/commands/ft-task.md', (s) => s.replace(/^(argument-hint:.*)$/m, '$1 [--zz-drift]')),
+    seed: () => edit('claude/skills/ft-task/SKILL.md', (s) => s.replace(/^(argument-hint:.*)$/m, '$1 [--zz-drift]')),
     finding: /^UNDOCUMENTED FLAG ft-task --zz-drift$/m,
   },
   pair_n: {

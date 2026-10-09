@@ -152,7 +152,6 @@ lookup depend on the install context resolved in step 2.
 ```sh
 mkdir -p .claude/skills/audit
 cp .flaitron/core/templates/audit-overlay-template.md .claude/skills/audit/SKILL.md
-cp .flaitron/core/claude/commands/ft-audit.md         .claude/commands/audit.md
 ```
 
 Set `flaitron-reconciled:` to the currently pinned flaitron tag (`git -C
@@ -160,25 +159,24 @@ Set `flaitron-reconciled:` to the currently pinned flaitron tag (`git -C
 
 **Flaitron-self:** the overlay body is **tracked** here, unlike an adopter's,
 and `.claude/` is reached by a symlink — `.claude/` stays wholly ignored, so an
-overlay written into it would be unversionable (`CONTRIBUTING.md` §"Developing flaitron skills & commands").
+overlay written into it would be unversionable (`CONTRIBUTING.md` §"Developing flaitron skills").
 
 ```sh
-mkdir -p .flaitron/audit-overlay .claude/skills .claude/commands
+mkdir -p .flaitron/audit-overlay .claude/skills
 cp templates/audit-overlay-template.md .flaitron/audit-overlay/SKILL.md
 ln -sfn ../../.flaitron/audit-overlay/ .claude/skills/audit
-cp claude/commands/ft-audit.md         .claude/commands/audit.md
 ```
 
 Set `flaitron-reconciled:` to this checkout's own tag (`git describe --tags`),
 and keep the copied `SKILL.md`'s in-tree "Referenced scaffold" line
 (`claude/skills/ft-audit/SKILL.md`) rather than the adopter submodule path —
 there is no `.flaitron/core/` submodule here to reference
-(`CONTRIBUTING.md` §"Developing flaitron skills & commands"). Commit the overlay body; the symlink lives under
+(`CONTRIBUTING.md` §"Developing flaitron skills"). Commit the overlay body; the symlink lives under
 ignored `.claude/` and is per-machine wiring the operator re-creates from
 that section's block on a fresh clone.
 
 In both cases, drop the template's `-<stack>` suffix everywhere it appears —
-this install is named `audit`, matching the `audit.md` wrapper: `name: audit`,
+this install is named `audit`, so `/audit` invokes it: `name: audit`,
 the `# audit` heading, and the `/audit <domain> [scope]` invocation line. In
 the `description:` blurb, replace `<stack>` with the project's name. Replace
 the `## Domains` placeholder with the domains this project audits. Then fill the overlay's `## Deltas` block with the

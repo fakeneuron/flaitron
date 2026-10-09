@@ -1,6 +1,6 @@
 # Flaitron adoption snippet
 
-Paste the block below into your project's `AGENTS.md`, then run the symlink commands once to wire flaitron's slash commands into your project's `.claude/`.
+Paste the block below into your project's `AGENTS.md`, then run the symlink commands once to wire flaitron's skills into your project's `.claude/`.
 
 ---
 
@@ -67,9 +67,9 @@ Five surfaces are *derived* from it and must never be edited independently:
 
 | Derived surface | Derivation |
 |---|---|
-| [`codex/AGENTS-snippet.md`](../codex/AGENTS-snippet.md) §"One-time skill wiring" | source `claude/skills/` → `codex/skills/`; dest `.claude/skills/` → `.agents/skills/`; commands dropped |
-| [`cursor/AGENTS-snippet.md`](../cursor/AGENTS-snippet.md) §"One-time symlink wiring" | dest `.claude/skills/` → `.cursor/skills/`; commands dropped; source unchanged |
-| [`grok/AGENTS-snippet.md`](../grok/AGENTS-snippet.md) §"One-time symlink wiring" | dest `.claude/skills/` → `.grok/skills/`; commands dropped; source unchanged |
+| [`codex/AGENTS-snippet.md`](../codex/AGENTS-snippet.md) §"One-time skill wiring" | source `claude/skills/` → `codex/skills/`; dest `.claude/skills/` → `.agents/skills/` |
+| [`cursor/AGENTS-snippet.md`](../cursor/AGENTS-snippet.md) §"One-time symlink wiring" | dest `.claude/skills/` → `.cursor/skills/`; source unchanged |
+| [`grok/AGENTS-snippet.md`](../grok/AGENTS-snippet.md) §"One-time symlink wiring" | dest `.claude/skills/` → `.grok/skills/`; source unchanged |
 | [`docs/MIGRATION.md`](../docs/MIGRATION.md) §1.6 | stages the destination paths this block creates |
 | [`claude/skills/ft-new-project/SKILL.md`](skills/ft-new-project/SKILL.md) Steps 7–8 | stages and verifies the destination paths this block creates |
 
@@ -85,32 +85,24 @@ roster left to drift.
 Run these from the project root after adding the flaitron submodule at `.flaitron/core/`:
 
 ```sh
-mkdir -p .claude/commands .claude/skills
-ln -s ../../.flaitron/core/claude/commands/ft-task.md            .claude/commands/ft-task.md
-ln -s ../../.flaitron/core/claude/commands/ft-micro-task.md      .claude/commands/ft-micro-task.md
-ln -s ../../.flaitron/core/claude/commands/ft-file-followup.md   .claude/commands/ft-file-followup.md
-ln -s ../../.flaitron/core/claude/commands/ft-epic-discovery.md  .claude/commands/ft-epic-discovery.md
-ln -s ../../.flaitron/core/claude/commands/ft-close-epic.md      .claude/commands/ft-close-epic.md
+mkdir -p .claude/skills
 ln -s ../../.flaitron/core/claude/skills/ft-task            .claude/skills/ft-task
 ln -s ../../.flaitron/core/claude/skills/ft-micro-task      .claude/skills/ft-micro-task
 ln -s ../../.flaitron/core/claude/skills/ft-file-followup   .claude/skills/ft-file-followup
 ln -s ../../.flaitron/core/claude/skills/ft-epic-discovery  .claude/skills/ft-epic-discovery
 ln -s ../../.flaitron/core/claude/skills/ft-close-epic      .claude/skills/ft-close-epic
-ln -s ../../.flaitron/core/claude/commands/ft-update.md       .claude/commands/ft-update.md
-ln -s ../../.flaitron/core/claude/skills/ft-update            .claude/skills/ft-update
-ln -s ../../.flaitron/core/claude/commands/ft-refactor.md     .claude/commands/ft-refactor.md
-ln -s ../../.flaitron/core/claude/skills/ft-refactor          .claude/skills/ft-refactor
-ln -s ../../.flaitron/core/claude/commands/ft-seed.md         .claude/commands/ft-seed.md
-ln -s ../../.flaitron/core/claude/skills/ft-seed              .claude/skills/ft-seed
+ln -s ../../.flaitron/core/claude/skills/ft-update          .claude/skills/ft-update
+ln -s ../../.flaitron/core/claude/skills/ft-refactor        .claude/skills/ft-refactor
+ln -s ../../.flaitron/core/claude/skills/ft-seed            .claude/skills/ft-seed
 ```
 
 The relative paths are intentional — they survive `git clone` and pin to whichever flaitron commit the submodule is checked out at. Commit the symlinks (`git add .claude/`).
 
 The submodule also brings flaitron's own tasknote archive at `.flaitron/core/.flaitron/` (~16 MB, ~1,000 files) — flaitron's history, not this project's context. Sparse-checkout drops it from the working tree, and `/ft-update` re-applies it after a re-clone. As the fallback, keep it out of Grep, Glob, and `@file` with a `Read(./.flaitron/core/.flaitron/**)` deny rule in `.claude/settings.json`. The sparse line, the per-tool list, and the rule's one cost are in [`docs/MIGRATION.md`](../docs/MIGRATION.md) §1.1.
 
-This snippet wires the adopter-installed subset: tasknote family, `/ft-seed`, and `/ft-update`. Global utilities live in the user's agent home when desired; `/ft-release` is flaitron-self-only. Never also install the adopter subset in `~/.claude/skills/` or `~/.claude/commands/`: a user-scope copy shadows this project's pinned wiring and runs against the pin (`⛔ skill/pin mismatch`) — [`docs/PLATFORMS.md`](../docs/PLATFORMS.md) §"One canonical install path per project".
+This snippet wires the adopter-installed subset: tasknote family, `/ft-seed`, and `/ft-update`. Global utilities live in the user's agent home when desired; `/ft-release` is flaitron-self-only. Never also install the adopter subset in `~/.claude/skills/`: a user-scope copy shadows this project's pinned wiring and runs against the pin (`⛔ skill/pin mismatch`) — [`docs/PLATFORMS.md`](../docs/PLATFORMS.md) §"One canonical install path per project".
 
-To verify Claude Code wiring: invoke `/ft-task` in a fresh Claude Code session. The command should appear in the menu (alongside the other wired adopter-subset skills) with the description from `commands/ft-task.md`. For Codex, use the sibling `codex/AGENTS-snippet.md` wiring and invoke the skill through `/skills` or `$ft-task`. For Cursor, Claude wiring is already enough (Cursor loads `.claude/skills/` as a compatibility surface); Cursor-only projects use the sibling `cursor/AGENTS-snippet.md` instead. For Grok, Claude, Codex, or Cursor wiring is already enough (Grok loads those dirs as compatibility surfaces); Grok-only projects use the sibling `grok/AGENTS-snippet.md` instead.
+To verify Claude Code wiring: invoke `/ft-task` in a fresh Claude Code session. The skill should appear in the menu (alongside the other wired adopter-subset skills) with the description and argument hint from `skills/ft-task/SKILL.md`. For Codex, use the sibling `codex/AGENTS-snippet.md` wiring and invoke the skill through `/skills` or `$ft-task`. For Cursor, Claude wiring is already enough (Cursor loads `.claude/skills/` as a compatibility surface); Cursor-only projects use the sibling `cursor/AGENTS-snippet.md` instead. For Grok, Claude, Codex, or Cursor wiring is already enough (Grok loads those dirs as compatibility surfaces); Grok-only projects use the sibling `grok/AGENTS-snippet.md` instead.
 
 ## Bumping the pinned flaitron version
 

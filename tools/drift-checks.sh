@@ -4,7 +4,7 @@
 # neither parses the other's shape:
 #
 #   bash tools/drift-checks.sh            # every check (CI)
-#   bash tools/drift-checks.sh 'pair_*' wrapper_name_invariant
+#   bash tools/drift-checks.sh 'pair_*' skill_name_invariant
 #                                         # names or globs pick checks (§7.1)
 #
 # Self-host repo maintenance, not a workflow tool: adopters never run it, and
@@ -12,7 +12,7 @@
 #
 # Every function IS the shell for its check (CORE-734.4); nothing else
 # carries a copy. SPEC/layout.md and step-7.1-standing-checks.md state the
-# rule for wrapper_name_invariant, shipped_skill_parity and context_budget
+# rule for skill_name_invariant, shipped_skill_parity and context_budget
 # and point here; cursor/AGENTS-snippet.md does the same for
 # skill_frontmatter_yaml (CORE-744). Each `pair_*` function has a §7.1 catalogue entry in
 # step-7.1-mirror-pairs.md that names it and says what a finding means.
@@ -36,7 +36,7 @@
 # - Each check counts what it actually compared in `n` and fails
 #   `VACUOUS <check>` on zero (CORE-739.2): a renamed heading, a moved
 #   directory or a copy without `.git` empties the loop, and an empty loop
-#   finds nothing. The floor is per check, not per row, so one stub with no
+#   finds nothing. The floor is per check, not per row, so one skill with no
 #   flags or one glob row with no file stays legal. Count with n=$((n+1)),
 #   never ((n++)), which returns 1 from zero and ends a `bash -e` check.
 #   skill_pin_guard_parity and pair_h need no counter: an empty read already
@@ -46,16 +46,22 @@
 # - Each check needs one seeded-drift case in tools/drift-checks.test.mjs
 #   (CORE-739.3); its coverage test fails on a check without one.
 
-# Wrapper-name invariant (SPEC/layout.md §"Skill namespace")
-wrapper_name_invariant() {
+# Skill-name invariant (SPEC/layout.md §"Skill namespace")
+skill_name_invariant() {
+# A runtime may take a skill's slug from its `name:` or from its directory,
+# so a rename that moves one and not the other ships a skill answering to
+# two slugs. Took over from wrapper_name_invariant, which read the
+# claude/commands/ stubs retired at CORE-769.2. The audit overlay is out of
+# scope: it lives outside both directories and is named for its fork.
 bad=
 n=0
-for f in claude/commands/ft-*.md; do
+for f in claude/skills/*/SKILL.md codex/skills/*/SKILL.md; do
   [ -f "$f" ] || continue
   n=$((n+1))
-  grep -q "\`$(basename "$f" .md)\`" "$f" || { echo "NO SELF-NAME  $f"; bad=1; }
+  nm=$(awk 'NR==1 { if ($0 != "---") exit; next } /^---$/ { exit } /^name: / { sub(/^name: /, ""); print; exit }' "$f")
+  [ "$nm" = "$(basename "$(dirname "$f")")" ] || { echo "NAME MISMATCH  $f :: name: $nm"; bad=1; }
 done
-[ "$n" -gt 0 ] || { echo "VACUOUS wrapper_name_invariant  no command stub examined"; exit 1; }
+[ "$n" -gt 0 ] || { echo "VACUOUS skill_name_invariant  no SKILL.md examined"; exit 1; }
 [ -z "$bad" ] || exit 1
 }
 
@@ -217,7 +223,7 @@ skill_frontmatter_yaml() {
 bad=
 n=0
 re='^([a-z][a-z0-9_-]*): (.+)$'
-for f in claude/skills/*/SKILL.md claude/commands/*.md codex/skills/*/SKILL.md .flaitron/audit-overlay/SKILL.md; do
+for f in claude/skills/*/SKILL.md codex/skills/*/SKILL.md .flaitron/audit-overlay/SKILL.md; do
   [ -f "$f" ] || continue
   while IFS= read -r line; do
     n=$((n+1))
@@ -295,18 +301,20 @@ ci=$(grep -E '^      - run: ' .github/workflows/ci.yml | sed 's/^      - run: //
 diff -u <(printf '%s\n' "$ssot") <(printf '%s\n' "$ci") || exit 1
 }
 
-# Pair J — command-stub argument-hint ↔ documented flags
+# Pair J — skill argument-hint ↔ documented flags
 pair_j() {
-# Both halves derive from the stub itself — one file per skill, no
-# cross-file join and no listed roster, so a stub added or a flag landed
-# later is covered the day it lands. Four properties are deliberate:
-# - The flag source is stub-local and structural, which is what makes
-#   cross-references invisible. A flag counts only from the stub's own
-#   description: line, or from a backticked span that invokes the stub's
+# Both halves derive from the SKILL.md itself — one file per skill, no
+# cross-file join and no listed roster, so a skill added or a flag landed
+# later is covered the day it lands. It read the claude/commands/ stubs
+# until CORE-769.2 retired them and moved each argument-hint: here. Four
+# properties are deliberate:
+# - The flag source is file-local and structural, which is what makes
+#   cross-references invisible. A flag counts only from the skill's own
+#   description: line, or from a backticked span that invokes the skill's
 #   *own* slug. See-also sentences never reach description:, and every
 #   cross-reference in a body carries either a foreign slug inside the
-#   span (`/ft-task --fast` in ft-micro-task.md) or no slug at all
-#   (`--fast` in ft-close-epic.md's "there is no --fast here"). The span
+#   span (/ft-task in ft-micro-task's `⚡ --fast active` marker) or no slug
+#   at all (`--fast` in ft-close-epic's "No `--fast`" clause). The span
 #   rule excludes both shapes, so no phrase blocklist is needed or
 #   wanted; that version breaks the first time someone rewords a
 #   sentence.
@@ -327,13 +335,13 @@ pair_j() {
 #   would report every one of those as drift. The same asymmetry costs a
 #   little coverage — ft-close-epic names --unattended only inside a
 #   negation clause, derives an empty set and passes vacuously — which is
-#   the `continue` idiom: a stub documenting no flag is skipped, not
-#   failed. The floor counts flags checked across every stub, so the
-#   skip stays legal while all stubs skipping does not.
+#   the `continue` idiom: a skill documenting no flag is skipped, not
+#   failed. The floor counts flags checked across every skill, so the
+#   skip stays legal while all skills skipping does not.
 bad=
 n=0
-for f in claude/commands/ft-*.md; do
-  s=$(basename "$f" .md)
+for f in claude/skills/ft-*/SKILL.md; do
+  s=$(basename "$(dirname "$f")")
   own=$( { grep -m1 '^description:' "$f" | sed -E 's/"[^"]*"//g'
            grep -o '`[^`]*`' "$f" | grep -E -- "/${s}[^a-z-]" ; } \
          | grep -oE -e '--[a-z][a-z-]+' | sort -u | tr '\n' ' ')
@@ -349,19 +357,20 @@ done
 [ -z "$bad" ] || exit 1
 }
 
-# Pair M — skill description ↔ command-stub argument-hint
+# Pair M — skill description ↔ its argument-hint
 pair_m() {
-# claude/commands/ft-*.md's argument-hint: is the ground truth, and Pair J
-# is what makes it trustworthy — J holds each hint to the flags its own
-# stub documents, so the hint cannot quietly fall behind. Both halves are
-# one file each with no cross-file join. Five properties are deliberate:
+# The SKILL.md argument-hint: is the ground truth, and Pair J is what makes
+# it trustworthy — J holds each hint to the flags its own skill documents,
+# so the hint cannot quietly fall behind. Both halves sit in the one
+# SKILL.md (the hint moved there from the claude/commands/ stub at
+# CORE-769.2), with no cross-file join. Five properties are deliberate:
 # - The flag extraction is Pair B's pipeline verbatim — same quote-strip,
 #   same load-bearing reason CORE-420.5 measured. A change to what counts
 #   as a *documented* flag belongs in B, J and M together, or the three
 #   start disagreeing.
 # - It runs opposite to Pair J, and the two compose into a chain. J is
 #   prose → hint; M is hint → description:. Together they carry a flag
-#   from the stub's Usage bullet all the way to the dispatch surface, and
+#   from the skill's own invocation spans all the way to the dispatch surface, and
 #   Pair B then carries it across to Codex — which is why M covers only
 #   the Claude half and needs no Codex twin.
 # - The park-priority exemption names --park's four arguments, and is not
@@ -377,18 +386,17 @@ pair_m() {
 #   --fast, exactly as in B and J. No description is ever asked to spell
 #   an alias.
 # - It is silent on a flag named in a description: but in no hint. That is
-#   J's MISSING HINT FLAG one layer down when the stub's prose documents
+#   J's MISSING HINT FLAG one layer down when the skill's prose documents
 #   it, and otherwise a mismatch no pair claims. Anyone closing that gap
 #   should mint a new pair rather than make M bidirectional, which would
 #   report every deliberate asymmetry above as drift.
 bad=
 n=0
 for d in claude/skills/ft-*/SKILL.md; do
-  s=$(basename "$(dirname "$d")"); c="claude/commands/$s.md"
-  [ -f "$c" ] || { echo "MISSING STUB  $s"; bad=1; n=$((n+1)); continue; }
+  s=$(basename "$(dirname "$d")")
   df=" $(grep -m1 '^description:' "$d" | sed -E 's/"[^"]*"//g' \
          | grep -oE '\-\-[a-z][a-z-]+' | sort -u | tr '\n' ' ')"
-  for fl in $(grep -m1 '^argument-hint:' "$c" | grep -oE '\-\-[a-z][a-z-]+' | sort -u); do
+  for fl in $(grep -m1 '^argument-hint:' "$d" | grep -oE '\-\-[a-z][a-z-]+' | sort -u); do
     case "$fl" in --low|--med|--fut|--high) continue ;; esac
     n=$((n+1))
     case "$df" in *" $fl "*) ;; *) echo "UNDOCUMENTED FLAG $s $fl"; bad=1 ;; esac

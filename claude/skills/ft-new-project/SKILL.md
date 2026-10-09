@@ -18,7 +18,7 @@ The skill operates on the current working directory. Before doing anything:
 - None of the following exist (their presence means flaitron is already adopted):
   - `.flaitron/core/`
   - `.flaitron/PLAN.md`
-  - `.claude/commands/ft-task.md`
+  - `.claude/commands/ft-task.md` (pre-v7.0.0 wiring; the stubs are retired, but an old adoption still carries it)
   - `.claude/skills/ft-task`
 
   If any are present, stop. Surface what's already there and ask whether the user meant to bump the pinned version (see `docs/MIGRATION.md` §"Pinning and bumping") instead of bootstrapping fresh.

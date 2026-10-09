@@ -66,7 +66,7 @@ not to)".
   the tracked body of flaitron-self's `/audit` thin overlay, which
   `.claude/skills/audit` symlinks to (`.claude/` is wholly gitignored, so the
   overlay's deltas would be unversionable there — `SPEC/layout.md`).
-- `claude/` — Claude Code wiring: commands, skills, and the historical
+- `claude/` — Claude Code wiring: skills and the historical
   source for the agent-neutral adopter snippet.
 - `codex/` — Codex CLI skill wrappers and wiring notes.
 - `cursor/` — Cursor thin wiring (snippet + `ft-task` procedure pointer; no skill wrappers).

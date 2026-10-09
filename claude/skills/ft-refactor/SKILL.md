@@ -1,6 +1,7 @@
 ---
 name: ft-refactor
 description: Plan a refactor of one named target as a sequenced, behavior-preserving epic. Read-only depth analysis, an operator-reviewed plan, then files the epic and implementation children. Never edits code. With `--fast` (`-f`), suppresses the conditional gates on filing.
+argument-hint: <target> [--fast | -f]
 ---
 
 # ft-refactor — flaitron refactor depth planner

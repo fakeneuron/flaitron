@@ -34,9 +34,8 @@ standalone or epic child) — see `claude/skills/ft-release/step-7.1-standing-ch
 
 ```sh
 git clone https://github.com/fakeneuron/flaitron.git ~/code/flaitron
-mkdir -p ~/.claude/skills ~/.claude/commands
-ln -s ~/code/flaitron/claude/skills/ft-new-project      ~/.claude/skills/ft-new-project
-ln -s ~/code/flaitron/claude/commands/ft-new-project.md ~/.claude/commands/ft-new-project.md
+mkdir -p ~/.claude/skills
+ln -s ~/code/flaitron/claude/skills/ft-new-project ~/.claude/skills/ft-new-project
 ```
 
 **Once per project** — from the project root (a git repo with an `AGENTS.md`
@@ -300,7 +299,7 @@ runtime lives in the runner; the contract lives in flaitron.
 - `SPEC.md` — workflow contract (authoritative)
 - `SPEC/` — lazy SPEC modules (epic, starter, blocked, model, versioning, gates, gate-postures, cue-vocabulary, post-closure, tasknote-selection, plan-filing, loop, layout, plan-parser, task-line-segments, scope-boundaries, tasknote-inserts, superseded-claims, unattended-candidacy) plus `procedures/` (pasteable skill procedures) and `fixtures/plan/` (task-line grammar conformance fixtures shared by every PLAN.md parser); loaded on demand by skills
 - `templates/` — canonical markdown templates and seed files (roster: `SPEC/layout.md` §"Working in the flaitron repo itself")
-- `claude/` — Claude Code skills + slash commands (adopter-facing snippet plus the full shipped `ft-*` inventory; adopter projects wire the policy subset, while flaitron-self-only skills like `/ft-release` stay upstream-only)
+- `claude/` — Claude Code skills (adopter-facing snippet plus the full shipped `ft-*` inventory; adopter projects wire the policy subset, while flaitron-self-only skills like `/ft-release` stay upstream-only)
 - `codex/` — Codex skill wrappers for the full `ft-*` inventory plus Codex-specific wiring notes
 - `cursor/` — Cursor thin wiring (`AGENTS-snippet.md` + `procedures/ft-task.md` pointer; no skill wrappers — adopters wire canonical `claude/skills/` bodies)
 - `grok/` — Grok thin wiring (`AGENTS-snippet.md` + `procedures/ft-task.md` pointer; no skill wrappers — adopters wire canonical `claude/skills/` bodies)

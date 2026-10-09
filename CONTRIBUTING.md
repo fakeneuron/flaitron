@@ -26,27 +26,28 @@ Pull requests are rare and best preceded by an issue. Flaitron is small, opinion
 1. Open an issue first describing the problem and the proposed shape.
 2. Wait for a thumbs-up before investing in the diff.
 3. Match the repo's existing style — [docs/CONVENTIONS.md](docs/CONVENTIONS.md) covers commit format, semver, GFM, and Diátaxis alignment; [SPEC.md](SPEC.md) is the workflow contract.
-4. If your change touches a skill or command, wire `.claude/` locally so you can run it — see §"Developing flaitron skills & commands" below for the one-time symlink setup. `.claude/` is gitignored by design (per-machine wiring, never committed), so a fresh clone has no `/ft-*` commands until you run it.
+4. If your change touches a skill, wire `.claude/` locally so you can run it — see §"Developing flaitron skills" below for the one-time symlink setup. `.claude/` is gitignored by design (per-machine wiring, never committed), so a fresh clone has no `/ft-*` skills until you run it.
 
 A PR that lands without prior discussion may be closed without merge even if the change itself is reasonable — the issue-first rule is about scope and direction, not code quality.
 
-## Developing flaitron skills & commands
+## Developing flaitron skills
 
 Maintainer and contributor wiring for this checkout. Adopting projects wire through [docs/MIGRATION.md](docs/MIGRATION.md) §1.2 instead.
 
-The canonical skill and command definitions live in `claude/skills/` and `claude/commands/` at the root of this checkout. The in-repo `.claude/` directory is gitignored (see root `.gitignore`) and must never contain committed per-machine wiring.
+The canonical skill definitions live in `claude/skills/` at the root of this checkout. The in-repo `.claude/` directory is gitignored (see root `.gitignore`) and must never contain committed per-machine wiring.
 
 For live editing with immediate effect, wire this checkout's own `.claude/`. The repo-scoped install is the canonical one ([`docs/PLATFORMS.md`](docs/PLATFORMS.md) §"One canonical install path per project"), and because its symlinks point into this tree, an edit to `claude/skills/` is live in the next session:
 
 ```sh
-# From the flaitron repo root (one-time, or after adding a skill/command)
-mkdir -p .claude/commands .claude/skills
-(cd .claude/commands && ln -s ../../claude/commands/*.md .)
-(cd .claude/skills   && ln -s ../../claude/skills/*      .)
+# From the flaitron repo root (one-time, or after adding a skill)
+mkdir -p .claude/skills
+(cd .claude/skills && ln -s ../../claude/skills/* .)
 
 # flaitron-self's own /audit overlay — tracked body, symlinked into place
 ln -sfn ../../.flaitron/audit-overlay/ .claude/skills/audit
-ln -s ../../claude/commands/ft-audit.md .claude/commands/audit.md
+
+# A checkout wired before v7.0.0 also has .claude/commands/ stub links, now dangling
+find .claude/commands -type l ! -exec test -e {} \; -delete 2>/dev/null
 ```
 
 The relative `../../` paths are clone-location independent, and the symlinks land under the ignored `.claude/` directory, so they never enter git history. This gives the complete `/ft-*` surface (`/ft-audit`, `/ft-audit-repo`, release, new-project, etc.) to any agent started inside the tree. It is expected rather than optional: [`docs/PLATFORMS.md`](docs/PLATFORMS.md) §"Installed-surface policy" treats a shipped `ft-*` slug with no `.claude/` symlink as a wiring miss, and `/ft-release` §7.1 checks for one. The glob also wires `/ft-update`, which is intentional — the skill is adopter-only but bails in flaitron-self with a clear message rather than silently misbehaving, so wiring it here is harmless. The `ft-` prefix remains flaitron's reserved namespace.
@@ -67,9 +68,8 @@ The canonical `claude/skills/ft-audit/` directory (`SKILL.md` + `scaffold-bootst
 Do **not** glob the shipped inventory into an agent home. `~/.claude/skills/` and `~/.agents/skills/` carry only the global-only utilities — the skills you need *before* a project is wired, or *outside* any flaitron checkout — installed one at a time with the MIGRATION §1.0 shape:
 
 ```sh
-mkdir -p ~/.claude/skills ~/.claude/commands
-ln -s ~/code/flaitron/claude/skills/<skill>       ~/.claude/skills/<skill>
-ln -s ~/code/flaitron/claude/commands/<skill>.md  ~/.claude/commands/<skill>.md
+mkdir -p ~/.claude/skills
+ln -s ~/code/flaitron/claude/skills/<skill>  ~/.claude/skills/<skill>
 ```
 
 Globally installing a slug the repo-scoped wiring above already provides can make it enumerate twice in a session's skill roster. Some runtimes collapse identical targets instead; the bounded Codex observation is in [docs/CODEX-VERIFICATION.md](docs/CODEX-VERIFICATION.md#before-and-after). The rule and its second failure mode — cross-agent slug shadowing in `~/.agents/skills/`, which is read by Codex, Claude Code, Cursor, and Grok alike — are canonical in [`docs/PLATFORMS.md`](docs/PLATFORMS.md) §"One canonical install path per project".

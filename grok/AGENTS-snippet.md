@@ -34,8 +34,7 @@ sessions. Run that block and stop there — a second parallel install into
 [`../claude/AGENTS-snippet.md`](../claude/AGENTS-snippet.md) §"One-time symlink
 wiring", and the Grok-only block below is that roster under one substitution —
 destination `.claude/skills/<n>` → `.grok/skills/<n>`, source path unchanged
-(the targets are the canonical Claude bodies), `claude/commands/` lines dropped,
-lines sorted. Adding or removing a skill means editing the SSOT and regenerating
+(the targets are the canonical Claude bodies), lines sorted. Adding or removing a skill means editing the SSOT and regenerating
 this block, never editing this block alone. It stays a literal `ln -s` list
 because adopters copy-paste it and `tools/update-adopters.mjs` parses it;
 `/ft-release` §7.1 diffs it against the SSOT as a set.
@@ -69,10 +68,7 @@ fallback, keep it out of search tooling with that line in a root `.ignore`. The
 sparse line and the per-tool list are in `../docs/MIGRATION.md` §1.1.
 
 A Grok skill auto-exposes as `/<skill-name>`, so `/ft-task <TASK-ID>` works
-after wiring with no command stubs to install. Flaitron's `claude/commands/`
-wrappers are **not** part of this Grok-only block: skill bodies carry the
-whole procedure. When Claude `.claude/commands/` is already present, Grok's
-Claude-compat scan already loads those stubs.
+after wiring.
 
 Prefer `.grok/skills/` over `.agents/skills/` for repo-scoped Grok-only
 wiring. Both work, but `.agents/skills/` is also Codex's repo-scoped

@@ -7,8 +7,8 @@
 **Standing wiring-consumer derivation check.** `claude/AGENTS-snippet.md` §"One-time symlink wiring" is the declared SSOT for the adopter-wiring roster (CORE-465). Its two doc consumers — `docs/MIGRATION.md` §1.6 and `claude/skills/ft-new-project/SKILL.md` Steps 7–8 — *derive* their staging and verify commands from that block instead of restating its paths, so there is no count to keep aligned. This check guards that property rather than the old count:
 
 ```sh
-awk '/^### 1\.6 Commit$/,/^### 1\.7 /' docs/MIGRATION.md | grep -n '\.claude/\(commands\|skills\)/ft-'
-awk '/^## Step 7 /,/^## Step 9 /' claude/skills/ft-new-project/SKILL.md | grep -n '\.claude/\(commands\|skills\)/ft-'
+awk '/^### 1\.6 Commit$/,/^### 1\.7 /' docs/MIGRATION.md | grep -n '\.claude/skills/ft-'
+awk '/^## Step 7 /,/^## Step 9 /' claude/skills/ft-new-project/SKILL.md | grep -n '\.claude/skills/ft-'
 ```
 
 Both must produce no output and exit 1. A hit means someone re-introduced a hand-maintained roster copy into a surface that is supposed to derive one — the CORE-329.2 drift class, which stayed alive for a year because the fix was "keep four counts equal" rather than "stop counting". Fix by restoring the derivation (`grep '^ln -s' … | awk '{print $NF}'`), not by re-syncing the list — fix inline as Critical/High before cutting the release.
@@ -46,11 +46,6 @@ diff -u <(ls claude/skills | grep '^ft-' \
           | sort) \
         <(printf '%s\n' "$ssot")
 
-# The SSOT's own command half must cover the same set as its skill half.
-diff -u <(printf '%s\n' "$ssot") \
-        <(grep '^ln -s ../../.flaitron/core/claude/commands/' claude/AGENTS-snippet.md \
-          | awk '{print $3}' | sed -E 's#.*/##; s#\.md$##' | sort -u)
-
 # Each derived platform block must be the same set under its substitution.
 diff -u <(printf '%s\n' "$ssot") <(grep '^ln -s ../../.flaitron/core/codex/skills/'  codex/AGENTS-snippet.md  | awk '{print $3}' | sed -E 's#.*/##' | sort -u)
 diff -u <(printf '%s\n' "$ssot") <(grep '^ln -s ../../.flaitron/core/claude/skills/' cursor/AGENTS-snippet.md | awk '{print $3}' | sed -E 's#.*/##' | sort -u)
@@ -69,15 +64,14 @@ The anchored `grep` prefixes are load-bearing: `codex/AGENTS-snippet.md` carries
 
 ```sh
 cd "$(git rev-parse --show-toplevel)"   # every path below is root-relative
-diff -u <(ls claude/skills   | grep '^ft-' | sort) <(ls .claude/skills   | grep '^ft-' | sort)
-diff -u <(ls claude/commands | grep '^ft-' | sort) <(ls .claude/commands | grep '^ft-' | sort)
-find .claude/skills .claude/commands -maxdepth 1 -type l ! -exec test -e {} \; \
+diff -u <(ls claude/skills | grep '^ft-' | sort) <(ls .claude/skills | grep '^ft-' | sort)
+find .claude/skills -maxdepth 1 -type l ! -exec test -e {} \; \
      -exec sh -c 'echo "DANGLING  $1 -> $(readlink "$1")"' _ {} \; | sort
-find .claude/skills .claude/commands -maxdepth 1 -name 'ft-*' ! -type l -print | sort
+find .claude/skills -maxdepth 1 -name 'ft-*' ! -type l -print | sort
 r=$(git rev-parse --show-toplevel) && o=$(cd -P "$r/.flaitron/audit-overlay" && pwd) && [ "$(cd -P "$r/.claude/skills/audit" 2>/dev/null && pwd)" = "$o" ] || echo "MISWIRED  .claude/skills/audit (want -> ../../.flaitron/audit-overlay/)"
 ```
 
-All five must produce no output. A `-` line is a shipped skill with no local symlink; a `+` line or a `DANGLING` line is wiring pointing at a slug that no longer ships — or, on an audit link, at a target that moved. The dangling scan is deliberately unfiltered by name: the unprefixed local forks `SPEC/layout.md` §"Skill namespace" requires — `.claude/skills/audit` and `.claude/commands/audit.md` — sit outside every `ft-*` compare, and since [[CORE-721]] the skill link is the only path to the tracked overlay body in `.flaitron/audit-overlay/`. The fourth command catches what the `diff` compares miss: they match on name only, so a skill directory *copied* into `.claude/` instead of symlinked passes both `diff`s and the `-type l`-filtered dangling scan, then silently diverges from source — any output here is a non-symlink entry, the same failure mode one layer in. The fifth pins the skill link to the overlay by resolved path (the wiring `CONTRIBUTING.md` §"Developing flaitron skills & commands" installs — keep the two in step; it is anchored at the repo root and requires the overlay to resolve, so neither a subdirectory cwd nor a moved overlay lets it pass vacuously as `[ "" = "" ]`), closing what the scans cannot see, and none of which `/audit` reports as an error: a *deleted* link or one re-pointed at the bundled `claude/skills/ft-audit/` runs the scaffold without flaitron-self's overlay deltas, and a leftover pre-[[CORE-721]] copied `audit/` directory — neither a link nor `ft-*`-named — runs its stale untracked body. `.claude/` is gitignored, so no commit carries the fix; unlike the advisory global half below, it still blocks, because this checkout is the dogfood surface the release ships from (`docs/PLATFORMS.md` §"Installed-surface policy"). Treat any finding as Critical/High and fix it inline before cutting the release: `rm` a retired slug's link; re-create a missing or miswired one from the repo root, `rm -r`-ing a copied directory first (`ln -sfn` onto a real directory nests the link inside it).
+All four must produce no output. A `-` line is a shipped skill with no local symlink; a `+` line or a `DANGLING` line is wiring pointing at a slug that no longer ships — or, on an audit link, at a target that moved. The dangling scan is deliberately unfiltered by name: the unprefixed local fork `SPEC/layout.md` §"Skill namespace" requires — `.claude/skills/audit` — sits outside every `ft-*` compare, and since [[CORE-721]] the skill link is the only path to the tracked overlay body in `.flaitron/audit-overlay/`. The third command catches what the `diff` compare misses: it matches on name only, so a skill directory *copied* into `.claude/` instead of symlinked passes the `diff` and the `-type l`-filtered dangling scan, then silently diverges from source — any output here is a non-symlink entry, the same failure mode one layer in. The fourth pins the skill link to the overlay by resolved path (the wiring `CONTRIBUTING.md` §"Developing flaitron skills" installs — keep the two in step; it is anchored at the repo root and requires the overlay to resolve, so neither a subdirectory cwd nor a moved overlay lets it pass vacuously as `[ "" = "" ]`), closing what the scans cannot see, and none of which `/audit` reports as an error: a *deleted* link or one re-pointed at the bundled `claude/skills/ft-audit/` runs the scaffold without flaitron-self's overlay deltas, and a leftover pre-[[CORE-721]] copied `audit/` directory — neither a link nor `ft-*`-named — runs its stale untracked body. `.claude/` is gitignored, so no commit carries the fix; unlike the advisory global half below, it still blocks, because this checkout is the dogfood surface the release ships from (`docs/PLATFORMS.md` §"Installed-surface policy"). Treat any finding as Critical/High and fix it inline before cutting the release: `rm` a retired slug's link; re-create a missing or miswired one from the repo root, `rm -r`-ing a copied directory first (`ln -sfn` onto a real directory nests the link inside it).
 
 **Machine-global wiring — advisory.** Global installs are discretionary (`docs/MIGRATION.md` §1.0 — "install each you want"), so **missing is deliberately not checked**: an uninstalled global utility is an operator choice, not drift. Broken links, path-casing drift, and over-install are reported.
 

@@ -29,12 +29,11 @@ The skill verifies preconditions (cwd is a git repo with `AGENTS.md` or `CLAUDE.
 | `/ft-new-project` | Adopters (+ flaitron-self) | Bootstrap a new project with flaitron wiring |
 | `/ft-audit-repo` | Adopters (+ flaitron-self) | First-contact holistic repo audit — Repo Map discovery, one thin capped sweep, 3–5 thematic synthesis, milestone-sequenced plan filed as flaitron epics, plus delegation hints for focused `/ft-audit <domain>` runs; read-only on source, no fork. Global install lets you run it on a repo before flaitron is wired in (see §1.2.1) |
 
-Install each you want with the same shape (substitute `<skill>`; the `mkdir -p` is needed once — a machine that has never had a user-scope skill has neither directory, and `ln -s` does not create them):
+Install each you want with the same shape (substitute `<skill>`; the `mkdir -p` is needed once — a machine that has never had a user-scope skill has no such directory, and `ln -s` does not create it):
 
 ```sh
-mkdir -p ~/.claude/skills ~/.claude/commands
-ln -s <path-to-flaitron-checkout>/claude/skills/<skill>       ~/.claude/skills/<skill>
-ln -s <path-to-flaitron-checkout>/claude/commands/<skill>.md  ~/.claude/commands/<skill>.md
+mkdir -p ~/.claude/skills
+ln -s <path-to-flaitron-checkout>/claude/skills/<skill>  ~/.claude/skills/<skill>
 ```
 
 The symlinks point at flaitron's working tree, so they pick up flaitron edits immediately rather than tracking a versioned submodule. To pin a specific version of a skill, copy the files instead of symlinking and re-copy on bump.
@@ -132,7 +131,7 @@ To install the scaffold, fork the **whole directory** — `SKILL.md`, its lazily
 SKILL=audit   # your fork's local (unprefixed) name
 mkdir -p .claude/skills/$SKILL
 cp -R .flaitron/core/claude/skills/ft-audit/. .claude/skills/$SKILL/
-cp .flaitron/core/claude/commands/ft-audit.md   .claude/commands/$SKILL.md
+# then edit SKILL.md: set name: to $SKILL (it is the slash name; the copy still says ft-audit)
 ```
 
 Upstream carries the `ft-` prefix (flaitron's owned namespace per `SPEC/layout.md` §"Skill namespace"); the local fork drops it so ownership is clear in skill resolution. Open the fork's SKILL.md and walk the **§0 Forker checklist** — for each domain you keep, set glob, rubric files, verification commands, stack-specific pass examples, and sacred-invariant callouts under Critical *in that domain's `passes/<domain>.md`*. Delete pass files for surfaces your project doesn't have (no frontend → remove `passes/frontend.md`). Delete §0 when filled in.
@@ -151,8 +150,7 @@ runs its passes *by reference*, and carries only a `## Deltas` block.
 SKILL=audit   # your fork's local (unprefixed) name
 mkdir -p .claude/skills/$SKILL
 cp .flaitron/core/templates/audit-overlay-template.md .claude/skills/$SKILL/SKILL.md
-cp .flaitron/core/claude/commands/ft-audit.md         .claude/commands/$SKILL.md
-# then edit SKILL.md: confirm the referenced scaffold path + fill the ## Deltas block
+# then edit SKILL.md: set name: to $SKILL (it is the slash name), confirm the referenced scaffold path + fill the ## Deltas block
 ```
 
 The overlay points at the **read-only submodule path**
@@ -315,7 +313,7 @@ In a fresh session with your coding agent, verify the platform's wired entry poi
 
 Running the task runner against a real entry in your `.flaitron/PLAN.md` should scaffold a tasknote and begin Phase 1 Discovery.
 
-If any command doesn't appear, the symlinks are likely wrong — check that each `readlink .claude/commands/<name>.md` and `readlink .claude/skills/<name>` resolves under the submodule.
+If any skill doesn't appear, the symlinks are likely wrong — check that each `readlink .claude/skills/<name>` resolves under the submodule.
 
 **Recommended follow-up.** Audit the context surfaces now: run `/ft-audit context` (your fork's name — e.g. `/audit context` — per §1.2.1; before a fork exists, ask your agent to run `.flaitron/core/claude/skills/ft-audit/SKILL.md` with `context` as the domain — the pass file carries no forker placeholders, so it runs unforked). The `context` domain scans the project's `CLAUDE.md`, `AGENTS.md`, and `.claude/{commands,skills}` for context bloat, redundancy with the freshly-pasted `AGENTS.md` block, `ft-*` namespace conflicts, and lean-context drift; findings land as PLAN tickets on the usual write-step confirmation. Catches first-day context-surface issues before they ossify.
 
@@ -358,7 +356,7 @@ Before any `git mv` or new files, walk this checklist — each item below trippe
 
 - **Working tree clean.** `git status` shows no uncommitted changes — bail and resolve before proceeding. Migration is a multi-commit shape; mixing in unrelated WIP makes the diff unreadable.
 - **Gitignore audit.** Confirm any project-specific transient paths (e.g. `__pycache__/`, `.coverage`, `node_modules/`, `.env*`, large local DB files) are already ignored. If any aren't, fix `.gitignore` and commit BEFORE staging migration files — `git add .flaitron/...` could otherwise leak compiled artifacts or secrets.
-- **Collision: project-local `/ft-task` command or skill.** Pre-existing `.claude/commands/ft-task.md` or `.claude/skills/ft-task/` (an artifact of any pre-flaitron internal `/ft-task`) will fail §1.2's symlink step (target exists). Back up or remove first: `git mv .claude/commands/ft-task.md .claude/commands/_legacy_task.md` (or `git rm` if the legacy skill has no salvageable content).
+- **Collision: project-local `/ft-task` command or skill.** A pre-existing `.claude/skills/ft-task/` (an artifact of any pre-flaitron internal `/ft-task`) will fail §1.2's symlink step (target exists); a pre-existing `.claude/commands/ft-task.md` is silently shadowed by the wired skill, since a same-name skill wins. Back up or remove either first: `git mv .claude/skills/ft-task .claude/skills/_legacy-task` (or `git rm` if the legacy skill has no salvageable content).
 - **Collision: `.flaitron/tasknote/README.md`.** §3.4's `cp .flaitron/core/templates/tasknote-README.md .flaitron/tasknote/README.md` would silently overwrite a pre-existing legacy README. Either run §3.2's `git mv .flaitron/tasknote .flaitron/legacy-tasknote` first so the path is freed naturally, or move the legacy README upfront (`git mv .flaitron/tasknote/README.md .flaitron/legacy-plan/<old-name>.md`). **This is the gap that motivated [[CORE-044]]'s `/ft-new-project` legacy detection** — the bail check protects fresh adoption; this checklist protects migration.
 - **Collision: `.flaitron/tasknote/tasknote-template.md`.** Pre-existing project-local template, redundant once flaitron's template lives at `.flaitron/core/templates/tasknote-template.md`. Either it moves with the directory rename in §3.2, or it requires explicit `git rm` after wiring — decide upfront.
 - **Active migration-tasknote disposition.** This very tasknote (the `CORE-XXX` driving the migration) IS the migration. Decide UPFRONT: stay in legacy-shape and self-close to the legacy archive as the final commit (cleanest — minimizes mid-migration churn) OR rewrap into flaitron's spec-on-top + log-below shape mid-migration (more work, more risk). Default: stay legacy. Same call applies to any sibling in-flight tasknotes per §3.5.
@@ -518,6 +516,7 @@ Remove each hit with `rm`. The commands are safe: these are symlinks into the su
 
 | Retired | Released in | Replacement |
 |---|---|---|
+| `claude/commands/ft-*.md` (all 12 command stubs) | v7.0.0 | The same-name skills — `/ft-task` and every other `/ft-*` now resolve to the skill directly, which already won over a same-name command. Each stub's `argument-hint:` moved into its `SKILL.md` frontmatter, so the menu still shows it. Remove the dangling `.claude/commands/ft-*.md` links `/ft-update` Step 4.6 reports, and any agent-home `~/.claude/commands/ft-*.md` link that the pre-v7 §"One-time global installs" recipe created. An audit fork's copied `.claude/commands/<fork>.md` is a real file, not a link, so the scan misses it: delete it by hand, and check that the fork's `SKILL.md` `name:` is the slash name you want, since the stub no longer supplies one |
 | `ft-audit-context` | v5.29.0 | `/ft-audit context` — the same four concerns (context bloat, paste-block redundancy, `ft-*` namespace, lean-context drift — the last split into prose drift and tooling/orphans) as the eighth `passes/context.md` domain, now under `ft-audit`'s normal contract: `Finding #N` format and PLAN tickets on the write-step confirmation rather than soft prose. Thin overlays inherit it on the next bump with no action; full-copy forks get it offered by `/ft-update` Step 4.5; unforked, ask your agent to run `.flaitron/core/claude/skills/ft-audit/SKILL.md` with `context` as the domain (no placeholders, so no bootstrap). Global install, so the dangling link is in your agent home, as for `ft-flowtron` |
 | `ft-flowtron` | v5.29.0 | None as a skill — the version is the `**Version:**` line at the top of `.flaitron/core/SPEC.md`, the principles are `SPEC.md` §"Core principles", and the bundled roster is `SPEC/layout.md` §"Skill namespace" (per-skill one-liners live in each `claude/skills/<slug>/SKILL.md` `description:`). It was a global install, so the dangling links are in your agent home (the `~/.claude/skills/<skill>` + `~/.claude/commands/<skill>.md` pair from §"One-time global installs"), not the project |
 | `ft-stats` | v5.29.0 | None as a skill — the visualizer (`viz/`) reads `## Completed` across `PLAN.md` + `PLAN-ARCHIVE.md` and is the surviving history consumer; a one-off count is a `grep -c` on the `[model]` glyphs. `.flaitron/STATS.md` is no longer written or ignored — delete any stale copy. Global install, so the dangling link is in your agent home, as for `ft-flowtron` |
@@ -545,6 +544,6 @@ The visualizer is one global instance per machine, run from flaitron's own check
 
 - **Symlinks survive `git clone`.** Don't recreate them after cloning a project — they're already there.
 - **The submodule is read-only in adopting projects.** Edits to flaitron itself happen in the flaitron repo; adopting projects pick them up via deliberate version bumps.
-- **`/ft-task` not appearing in the menu** almost always means the symlinks are broken or the submodule isn't checked out. `readlink .claude/commands/ft-task.md` should resolve into `.flaitron/core/claude/commands/ft-task.md`.
+- **`/ft-task` not appearing in the menu** almost always means the symlinks are broken or the submodule isn't checked out. `readlink .claude/skills/ft-task` should resolve into `.flaitron/core/claude/skills/ft-task`.
 - **Don't renumber tasks during migration.** Archived tasknotes reference the old IDs by name; renumbering silently invalidates those links.
 - **Two viz instances refuse to coexist.** The dev server pins port `5120` with `strictPort`; if a second `npm run dev` errors, an instance is already running — visit it at `http://localhost:5120/`.

@@ -1,6 +1,7 @@
 ---
 name: ft-epic-discovery
 description: File a new flaitron epic and drive its `.1` Discovery tasknote in one motion, filing parent, `.1`, and `.N` audit PLAN lines and scaffolding `.1` with tailored pre-fill. With `--deep`, stages a constitution-specify-clarify pre-pass for high-uncertainty epics before Phase 1 Discovery begins.
+argument-hint: '[--deep]'
 ---
 
 # ft-epic-discovery — flaitron epic filing + Discovery driver

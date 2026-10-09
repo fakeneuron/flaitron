@@ -40,9 +40,9 @@ Flaitron does not submodule itself. In this repo:
   because `.claude/` is wholly gitignored and these deltas are this repo's own
   audit contract: they exist nowhere else and must be versioned.
   `.claude/skills/audit` is a directory symlink to it — per-machine wiring the
-  operator re-creates from [`CONTRIBUTING.md`](../CONTRIBUTING.md) §"Developing flaitron skills & commands".
+  operator re-creates from [`CONTRIBUTING.md`](../CONTRIBUTING.md) §"Developing flaitron skills".
 - The `templates/` folder holds the canonical tasknote templates (full, micro, starter, sidequest) plus spec, loop-heartbeat, audit-overlay (usage: [`docs/MIGRATION.md`](../docs/MIGRATION.md) §1.2.1), and subagent-probe templates, and the `PLAN.md` / `tasknote-README.md` seed files.
-- `claude/` — Claude Code commands + skills (`/ft-task`, `/ft-release`, `/ft-new-project`, ...); the adopter snippet lives at `claude/AGENTS-snippet.md`.
+- `claude/` — Claude Code skills (`/ft-task`, `/ft-release`, `/ft-new-project`, ...); the adopter snippet lives at `claude/AGENTS-snippet.md`.
 - `codex/` — Codex skill wrappers for the full `ft-*` inventory plus Codex-specific wiring notes.
 - `cursor/` — Cursor thin wiring (`AGENTS-snippet.md` + `procedures/ft-task.md` pointer; no skill wrappers — adopters wire canonical `claude/skills/` bodies).
 - `grok/` — Grok thin wiring (`AGENTS-snippet.md` + `procedures/ft-task.md` pointer; no skill wrappers — adopters wire canonical `claude/skills/` bodies).
@@ -80,10 +80,10 @@ the prefix (e.g., `audit-payments`, not `ft-audit-payments`) — the fork is
 adopter-owned and the unprefixed name makes ownership clear in skill
 resolution.
 
-**Wrapper-name invariant (grep-able).** Every command wrapper
-`claude/commands/<name>.md` names its own basename in its invoke sentence
-(`` Invoke the `<name>` skill ``) — skill resolution must never depend on
-the model inferring a prefixed name from an unprefixed one. Check, from the
-flaitron repo root: `bash tools/drift-checks.sh wrapper_name_invariant`, which prints
-`wrapper_name_invariant ok` when clean and names each wrapper that lacks
-its own name.
+**Skill-name invariant (grep-able).** Every shipped skill's `name:`
+frontmatter equals its directory slug, in both `claude/skills/<name>/` and
+`codex/skills/<name>/` — skill resolution must never depend on which of the
+two a runtime reads. Check, from the flaitron repo root:
+`bash tools/drift-checks.sh skill_name_invariant`, which prints
+`skill_name_invariant ok` when clean and names each `SKILL.md` whose
+`name:` differs from its directory.

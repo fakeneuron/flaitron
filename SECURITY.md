@@ -126,7 +126,7 @@ invocations will execute.
   unreviewed commit on `main`. Release tags are reviewed deliberately;
   `main` is a moving target.
 - Review the diff between your pinned commit and the new tag before
-  bumping, especially in `claude/skills/` and `claude/commands/`. The
+  bumping, especially in `claude/skills/`. The
   release tag's annotated message documents migration steps for major
   bumps.
 - If you fork flaitron's skills into your project (the documented

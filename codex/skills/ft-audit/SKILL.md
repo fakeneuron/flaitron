@@ -17,7 +17,6 @@ description: Run the Flaitron parameterized audit workflow from Codex — `ft-au
 > `claude/skills/ft-audit/` directory (`SKILL.md` + `scaffold-bootstrap.md` +
 > `passes/`) only when you need to edit pass bodies. Both procedures:
 > `../../../docs/MIGRATION.md` §1.2.1 — its `cp` blocks are written in Claude
-> paths: substitute `.agents/skills/` for `.claude/skills/` and skip the
-> `.claude/commands/` copy (Codex has no command stub).
+> paths: substitute `.agents/skills/` for `.claude/skills/`.
 
 Read and follow `../../../claude/skills/ft-audit/SKILL.md`, applying the Codex translation rules in `../../AGENTS-snippet.md` §"Translation rules".

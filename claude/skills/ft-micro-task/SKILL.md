@@ -1,6 +1,7 @@
 ---
 name: ft-micro-task
 description: Start and complete a flaitron micro-tasknote in one shot for tasks above the skip threshold but below full ceremony. With `--fast` (`-f`), forces the autonomous-commit path at closure. With `--unattended`, runs with no operator present, parking at gates instead of asking.
+argument-hint: <TASK-ID> [--fast | -f] [--unattended]
 ---
 
 # micro-task — flaitron micro-tasknote runner

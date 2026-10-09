@@ -126,10 +126,10 @@ the cut that made them stale skipped its own standing check.
 
 **Default-path cold start.** A ledger row, not a budget — nothing here is
 CI-enforced; it sums the surfaces a flagless `/ft-task <ID>.<sub>` reads before
-any Phase 1 write: `claude/commands/ft-task.md` (2,520) + `claude/skills/ft-task/SKILL.md`
-(25,352) + `claude/skills/ft-task/preamble.md` (8,215) + `SPEC.md` (43,217) +
+any Phase 1 write: `claude/skills/ft-task/SKILL.md`
+(25,430) + `claude/skills/ft-task/preamble.md` (8,215) + `SPEC.md` (43,217) +
 `.flaitron/tasknote/README.md` (10,731) + `templates/tasknote-template.md`
-(3,993) + `SPEC/gates.md` (13,812) + `SPEC/epic.md` (5,738) = **113,578 chars**
+(3,993) + `SPEC/gates.md` (13,812) + `SPEC/epic.md` (5,738) = **111,136 chars**
 (≈28k tokens; `.flaitron/PLAN.md`'s own band, below, is excluded since it isn't
 a flaitron-shipped surface). Re-measured at [[CORE-674]] — the −231 since [[CORE-664]]'s 121,840 is `gates.md` losing
 464 (unrelated trims) against `ft-task/SKILL.md` +218 (CORE-656's review-probe
@@ -161,7 +161,10 @@ Re-measured at [[CORE-767]], with `ft-task/preamble.md` (8,215, every-run since
 `SPEC.md` 47,006 → 43,217, `ft-task/SKILL.md` 29,338 → 25,352, `gates.md`
 20,454 → 13,812, the template 5,635 → 3,993, and `epic.md` 5,959 → 5,738; the
 tasknote README moved −3 and the command stub held. Sum **113,578** (−8,068,
-net of the preamble's first count).
+net of the preamble's first count). [[CORE-769.2]] retired the
+`claude/commands/ft-task.md` stub, taking its 2,520 off the path; the
+`argument-hint:` line it carried moved into `ft-task/SKILL.md` (+78); the
+other rows keep their [[CORE-767]] readings. Sum **111,136**.
 
 [[CORE-664]] re-measured every row rather than differencing one against the
 v5.32.0 snapshot, and found the snapshot had gone stale on three of them —

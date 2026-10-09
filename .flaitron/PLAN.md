@@ -15,8 +15,14 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-EPIC-769** [heavy]🧠 | skill-surface — Rethink how flaitron skills are named, bundled, and installed before the next release: default wiring vs fork/global-only policy, renames, roster add/retire, and packaging channel. .1 may split this into two epics.
-  - [ ] **CORE-769.1** [heavy]🧠 | skill-surface discovery — Discovery: survey skill naming, bundling, and install policy — why ft-audit is fork-only and ft-audit-repo/ft-new-project global-only, ft-file-followup → ft-file-task and peer renames, roster additions/retirements, plugin vs submodule-symlink packaging; file children, or two epics if warranted. Filed with starter at `.flaitron/tasknote/CORE-769.1.md`.
+- [ ] **CORE-EPIC-769** [heavy]🧠 | skill-surface — Rethink how flaitron skills are named, bundled, and installed before the next release: default wiring vs fork/global-only policy, renames, roster add/retire. Packaging stays the submodule (CORE-384); one epic, shipping as v7.0.0.
+  - [x] **CORE-769.1** [heavy]🧠 | skill-surface discovery — Completed 2026-10-09.
+  - [ ] **CORE-769.2** [heavy]🧠 | retire-command-wrappers — Retire `claude/commands/` (skills win over same-name commands): move the six `argument-hint`s into SKILL.md frontmatter, drop the snippet's command half and every derived surface, retire or re-point the stub-assuming gates (`wrapper_name_invariant`, Pair J/M, §7.1, `/ft-update` smoke check), add a MIGRATION retired row. `feat!:`.
+  - [ ] **CORE-769.3** [medium]🧩 | rename-file-task — Hard-cut rename `ft-file-followup` → `ft-file-task`: claude + codex skill dirs, the four snippet `ln -s` blocks, prose rosters (`SPEC/layout.md`, `docs/PLATFORMS.md`, `AGENTS.md`, `docs/GLOSSARY.md`), drift-check slug lists, cross-references; MIGRATION retired-skills row naming the replacement. Archives untouched. `feat!:`.
+  - [ ] **CORE-769.4** [medium]🧩 | rename-open-epic — Hard-cut rename `ft-epic-discovery` → `ft-open-epic`, pairing it with `ft-close-epic`; same sweep shape as [[CORE-769.3]]. `feat!:`.
+  - [ ] **CORE-769.5** [medium]🧩 | rename-adopt — Hard-cut rename `ft-new-project` → `ft-adopt`, pairing it with `ft-update`; same sweep shape as [[CORE-769.3]], plus the global-only surfaces (§7.1 exclusion list + regex, `docs/PLATFORMS.md` global row, MIGRATION §1.0 global recipe). `feat!:`.
+  - [ ] **CORE-769.6** [medium]🧩 | rename-seed-unattended — Hard-cut rename `ft-seed` → `ft-seed-unattended`; same sweep shape as [[CORE-769.3]]. `feat!:`.
+  - [ ] **CORE-769.7** [heavy]🧠 | rename-migrate-mode — Rename-aware fleet migration for v7.0.0: `update-adopters.mjs` migrate mode swapping old→new symlinks from a rename map (fixing the `--diff-filter=A` rename blind spot), `/ft-update` naming a dangling slug's replacement, a MIGRATION manual recipe, and a natabula PLAN row for its 21 caller references.
   - [ ] **CORE-769.N** [heavy]🧠 | skill-surface audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed with the reserved terminal `.N` suffix.
 
 ## Low

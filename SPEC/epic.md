@@ -55,7 +55,6 @@ stays valid — both forms parse.
    waits for the last follow-up's closure. Filing after the audit closes is
    too late: by then its closure has already flipped the parent. For a few
    small follow-ups, close the audit and execute them as normal children.
-   For many, also file a fresh Audit subtask to cover the second wave.
 
 **Child placement invariant.** While the parent epic remains active, Phase 4
 closure checks each child and rewrites it to the standard stub form but keeps

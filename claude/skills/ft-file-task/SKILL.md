@@ -58,14 +58,10 @@ collecting the rest of the fields (park mode auto-allocates instead — see
    `DB`, `DEPLOY`, `TEST`, or a project-specific prefix declared in
    `.flaitron/tasknote/README.md`). If the area is genuinely ambiguous, ask one
    short area question before suggesting an ID.
-2. Scan `.flaitron/PLAN.md`, `.flaitron/tasknote/`,
-   `.flaitron/tasknote/archive/`, and `.flaitron/sidequest/` for IDs with that
-   prefix.
-3. Suggest the lowest unused next numeric task ID for that prefix. Use the
-   next integer after the highest existing non-epic task number; skip any ID
-   already present in PLAN.md, active tasknotes, archived tasknotes, or sidequest
-   stubs. Do not allocate epic decimal children unless the user explicitly asked
-   to file an epic subtask.
+2. Resolve the next number for that prefix per `SPEC/plan-filing.md`
+   §"ID allocation" — its scan set, epic IDs included.
+3. Suggest `<AREA>-<that number>`. Do not allocate epic decimal children
+   unless the user explicitly asked to file an epic subtask.
 4. Carry the suggested ID into Step 2 as a user-reviewable field. The user can
    accept it or provide a different valid ID before anything is written.
 
@@ -84,7 +80,7 @@ question cannot be asked either; stop:
 ## Step 1a — Pre-flight checks
 
 - Resolve the **Area** by reading the `.flaitron/tasknote/README.md` §"Archive layout" table — every task, every prefix, canonical ones included. `<area>` is **never derived from the task ID**: lowercasing the prefix is the adopter's declaration-time default, not a resolution you may perform, and a project may deliberately declare a folder it would not produce (`OPS-*` → `archive/operations/`). See SPEC §"Task ID convention". If the table has no row for this prefix, stop and ask — do not guess a folder.
-- The task ID must NOT already exist in PLAN.md. If it does, stop and ask whether the user meant a different ID — `/ft-file-task` files NEW tasks; reusing an existing entry is out of scope.
+- The task ID must NOT already exist in PLAN.md or `.flaitron/PLAN-ARCHIVE.md`, nor (top-level) reuse a claimed `N` — `SPEC/plan-filing.md` §"ID allocation" item 5. If it does, stop and ask whether the user meant a different ID — `/ft-file-task` files NEW tasks; reusing an existing entry is out of scope.
 - `.flaitron/tasknote/<TASK-ID>.md` must NOT already exist. If it does, stop. Surface the conflict (could be in-flight, blocked, completed, starter, or already a follow-up that was promoted). In starter mode this is the path being written, so the check is load-bearing rather than defensive.
 - `.flaitron/tasknote/archive/<area>/<TASK-ID>.md` must NOT already exist. If it does, stop — the ID has been used and archived; pick a fresh ID.
 - **Park mode only:** `.flaitron/sidequest/<TASK-ID>.md` must NOT already exist either. On conflict, stop and ask for a different ID.

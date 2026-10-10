@@ -164,12 +164,9 @@ non-zero, or any PLAN.md change beyond earlier task-row filings →
 `auto-commit = false`; otherwise `auto-commit = true`, recording any
 accumulated-filing IDs.
 
-1. **Resolve the epic ID.** Scan `.flaitron/PLAN.md` AND
-   `.flaitron/tasknote/archive/<area>/` for the highest used numeric suffix
-   in the chosen area across regular AND epic IDs (they share the suffix
-   per SPEC §"Task ID convention"); `next-N = max-used + 1` →
-   `<AREA>-EPIC-<next-N>`. Surface the resolved IDs; the operator may
-   override the number.
+1. **Resolve the epic ID.** Take `next-N` for the chosen area from
+   `SPEC/plan-filing.md` §"ID allocation" → `<AREA>-EPIC-<next-N>`.
+   Surface the resolved IDs; the operator may override the number.
 2. **Write the PLAN.md lines** under the chosen `## <Priority>` heading,
    canonical grammar (SPEC §"Task-line format"), 2-space indent on
    children, each long description ≤50w target / 70w hard cap:

@@ -57,7 +57,9 @@ not produce (`OPS-*` → `archive/operations/`), and the row wins. A prefix that
 "looks known" is the one that gets lowercased on autopilot, so the lookup carries
 no known/unknown branch.
 
-Numbering: sequential within prefix. Decimals only for epic subtasks (e.g.,
+Numbering: sequential within prefix — how a filing picks the next number,
+epic IDs included: [`SPEC/plan-filing.md`](SPEC/plan-filing.md)
+§"ID allocation". Decimals only for epic subtasks (e.g.,
 `CORE-EPIC-009` parent + `CORE-009.1`, `CORE-009.2` children). The subtask
 slot accepts either a number (`\d+`) or the reserved literal `N` — `<AREA>-<N>.N`
 is the epic's terminal **audit** child (see [`SPEC/epic.md`](SPEC/epic.md)),

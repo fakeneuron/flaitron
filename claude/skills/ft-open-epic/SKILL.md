@@ -66,9 +66,9 @@ The user may decline the audit subtask if the epic is a simple multi-child imple
 
 ## Step 3 — Resolve next available `<AREA>-EPIC-<N>`
 
-Scan `.flaitron/PLAN.md` AND `.flaitron/tasknote/archive/<area>/` for the highest used numeric suffix in the chosen area, considering BOTH regular task IDs (`<AREA>-NNN`, `<AREA>-NNN.M`) AND epic IDs (`<AREA>-EPIC-NNN`). Per SPEC §"Task ID convention": `<AREA>-EPIC-<N>` and `<AREA>-<N>.<sub>` share the numeric suffix — the epic and its children use the same N.
+Take `next-N` for the chosen area from `SPEC/plan-filing.md` §"ID allocation"; `<area>`, here and below, is the folder that section looks up, never the lowercased prefix.
 
-Compute `next-N = max-used + 1`. The new parent epic ID = `<AREA>-EPIC-<next-N>`; children will be `<AREA>-<next-N>.1` (Discovery), `<AREA>-<next-N>.2..(M+1)` (implementation, filed during Phase 2), and `<AREA>-<next-N>.N` (audit — the reserved literal suffix, filed now).
+The new parent epic ID = `<AREA>-EPIC-<next-N>`; children will be `<AREA>-<next-N>.1` (Discovery), `<AREA>-<next-N>.2..(M+1)` (implementation, filed during Phase 2), and `<AREA>-<next-N>.N` (audit — the reserved literal suffix, filed now).
 
 Surface to the user:
 

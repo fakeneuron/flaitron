@@ -21,9 +21,8 @@ wins** — it is a distinct filing contract, not a variation on the default one.
 
 If `args` carries a valid `<AREA>-<NUMBER>` (or `<AREA>-<NUMBER>.<SUB>`) token
 after flag-stripping, use it. Otherwise **auto-allocate** the next free ID: area
-= active tasknote prefix, else active PLAN entry prefix, else `CORE-`; scan all
-PLAN.md lines (open + `## Completed`) for `**<AREA>-<N>**` and
-`**<AREA>-<N>.<SUB>**`, take max `N`, use `N+1`. Do not ask unless the area is
+= active tasknote prefix, else active PLAN entry prefix, else `CORE-`; number
+per `SPEC/plan-filing.md` §"ID allocation". Do not ask unless the area is
 genuinely ambiguous — park mode auto-allocates rather than surfacing a
 suggested ID for confirmation.
 

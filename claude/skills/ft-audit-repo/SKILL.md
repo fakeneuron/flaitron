@@ -78,7 +78,7 @@ Present, in order:
 - Tag effort per line: `[heavy]🧠` (design, ambiguity, cross-module) / `[light]🔧` (mechanical, clear-diff); `[medium]🧩` where it genuinely fits; `[frontier]💎` only on a `SPEC/model.md` §"When to choose `[frontier]`" trigger (e.g. a security or migration finding). Never `[xheavy]` — manual-only, never auto-filed here.
 - A child carrying a confirmed `[unattended]` candidate writes the token immediately after `[model]`; a child the user drops or reshapes loses it. Parents and `.N` placeholders never carry it.
 - Append `Surfaced by audit-repo YYYY-MM-DD (Theme: <name>)` to each parent so the origin's traceable.
-- Milestone-0 goes under `## High`; later milestones under `## Medium` / `## Future Opportunities` by urgency. Pick the next free `<N>` per area prefix (valid prefixes in `.flaitron/tasknote/README.md` §"Area prefixes").
+- Milestone-0 goes under `## High`; later milestones under `## Medium` / `## Future Opportunities` by urgency. Pick the next free `<N>` per area prefix per `SPEC/plan-filing.md` §"ID allocation" (valid prefixes in `.flaitron/tasknote/README.md` §"Area prefixes").
 - User pushes back on a milestone or child → drop or reshape it before writing.
 
 **Commit the filing** (when `auto-commit = true`) — the confirmation above is the commit authorization; there is no separate commit-go ask:

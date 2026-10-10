@@ -13,7 +13,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-EPIC-775** [medium]🧩 | v7-bump-safety — Land before cutting v7.0.0: its skill-rename bump runs `tools/update-adopters.mjs --apply` across the fleet. Discovery supplied by audit-repo 2026-10-10. Surfaced by audit-repo 2026-10-10 (Theme: Fleet updater failure paths)
   - [x] **CORE-775.2** [medium]🧩 [unattended] | bump-rollback-staging — Completed 2026-10-10.
-  - [ ] **CORE-775.3** [light]🔧 [unattended] | migrate-staging-guards — `applyMigrate` step 4 re-points and stages tracked `.flowtron` symlinks with no `git diff --quiet -- <path>` guard; mirror step 5's `.gitignore` guard (rewrite in place, leave unstaged), re-check `git diff --cached --quiet` after the fetch before the first mutation, and test a dirty tracked link.
+  - [x] **CORE-775.3** [light]🔧 [unattended] | migrate-staging-guards — Completed 2026-10-10.
   - [ ] **CORE-775.N** [medium]🧩 | v7-bump-safety audit
 
 ## Medium

@@ -1116,6 +1116,15 @@ export async function applyMigrate(adopter, latest) {
   const oldConfigUrl = (await git(repo, 'config', `submodule.${oldName}.url`)).trim();
   const oldOriginUrl = (await git(oldSub, 'remote', 'get-url', 'origin')).trim();
 
+  // checkAdopter verified a clean index before the fetch above; re-check it now,
+  // since step 7 commits without a pathspec and step 1's undo resets the index.
+  try {
+    await git(repo, 'diff', '--cached', '--quiet');
+  } catch (e) {
+    if (e.code !== 1) throw e;
+    throw new Error('staged changes appeared in the index since the check — commit or unstage first');
+  }
+
   const undo = [];
   try {
     undo.push(['submodule left at the new tag', () => git(oldSub, 'checkout', '--quiet', priorSha)]);
@@ -1184,13 +1193,21 @@ export async function applyMigrate(adopter, latest) {
 
     // 4. Re-point tracked symlinks whose target runs through the old dir. A
     //    tracked link missing (or retyped) in the worktree is the adopter's own
-    //    unstaged change — left alone.
+    //    unstaged change — left alone; one carrying the adopter's own unstaged
+    //    retarget is re-pointed in place but left unstaged (like step 5).
     const toStage = [];
     for (const path of await trackedSymlinks(repo)) {
       const link = join(repo, path);
       const target = await readlink(link).catch(() => null);
       const next = target === null ? null : renamedDirSegments(target);
       if (next === null) continue;
+      let clean = true;
+      try {
+        await git(repo, 'diff', '--quiet', '--', path);
+      } catch (e) {
+        if (e.code !== 1) throw e;
+        clean = false;
+      }
       await unlink(link);
       undo.push([
         `symlink ${path} left re-pointed`,
@@ -1200,7 +1217,7 @@ export async function applyMigrate(adopter, latest) {
         },
       ]);
       await symlink(next, link);
-      toStage.push(path);
+      if (clean) toStage.push(path);
     }
 
     // 5. Ignore rules naming the old dir (`.flowtron/screenshots/`) stop

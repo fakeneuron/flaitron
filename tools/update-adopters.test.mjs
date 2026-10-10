@@ -3,7 +3,7 @@
 
 import assert from 'node:assert/strict';
 import { execFile } from 'node:child_process';
-import { lstat, mkdtemp, mkdir, readFile, readlink, rm, stat, symlink, writeFile } from 'node:fs/promises';
+import { lstat, mkdtemp, mkdir, readFile, readlink, rm, stat, symlink, unlink, writeFile } from 'node:fs/promises';
 import { availableParallelism, tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { after, before, describe, it } from 'node:test';
@@ -1069,6 +1069,50 @@ describe('rename migration (CORE-711.3)', { concurrency: GROUP_CONCURRENCY }, ()
       '.flowtron/screenshots/\nnode_modules/\n',
     );
     assert.equal((await git(repo, 'status', '--porcelain')).trim(), 'M .gitignore');
+  });
+
+  it('apply: a tracked link with unstaged edits is re-pointed in place but kept out of the commit', async () => {
+    const adopter = await makePreRenameAdopter(root, 'dirty-link', previous);
+    const { repo } = adopter;
+    const link = join(repo, 'vault', 'flowtron');
+    await unlink(link);
+    await symlink('../.flowtron/mine', link);
+
+    await applyMigrate({ ...adopter, current: previous }, latest);
+
+    assert.equal(await readlink(link), '../.flaitron/mine');
+    assert.equal(await git(repo, 'show', 'HEAD:vault/flowtron'), '../.flowtron');
+    assert.equal((await git(repo, 'status', '--porcelain')).trim(), 'M vault/flowtron');
+  });
+
+  it('rollback: a change staged after the check rejects before any mutation', async () => {
+    const adopter = await makePreRenameAdopter(root, 'staged-after-check', previous);
+    const { repo, sub } = adopter;
+    const result = await checkAdopter(adopter, latest, { renameTag: latest });
+    assert.equal(result.status, 'migrate');
+    await writeFile(join(repo, 'late.txt'), 'staged late\n');
+    await gitQuiet(repo, 'add', 'late.txt');
+    const before = {
+      head: (await git(repo, 'rev-parse', 'HEAD')).trim(),
+      subHead: (await git(sub, 'rev-parse', 'HEAD')).trim(),
+      status: await git(repo, 'status', '--porcelain'),
+    };
+
+    await assert.rejects(
+      () => applyMigrate({ ...adopter, current: previous }, latest),
+      /staged changes appeared in the index/,
+    );
+
+    assert.deepEqual(
+      {
+        head: (await git(repo, 'rev-parse', 'HEAD')).trim(),
+        subHead: (await git(sub, 'rev-parse', 'HEAD')).trim(),
+        status: await git(repo, 'status', '--porcelain'),
+      },
+      before,
+    );
+    assert.equal(await exists(join(repo, '.flowtron')), true);
+    assert.equal(await exists(join(repo, '.flaitron')), false);
   });
 
   it('dry-run CLI reports a pre-rename adopter by where latest sits against RENAME_TAG', async () => {

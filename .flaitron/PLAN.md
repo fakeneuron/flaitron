@@ -22,7 +22,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
-- [ ] **CORE-773** [light]🔧 [unattended] | single-model-decay-window — Decay window: drop `SPEC/model.md:42-45` ("no swapping mid-task … do not silently swap") — bootstrap-era (`59935990`), no incident, and unreachable where it applies: the module loads only pre-Discovery. Record the window-start SHA, keep `AGENTS.md:35`'s "end-to-end" mirror, and file the restore-read row: restore if any of the next 10 archived tasknotes shows a cross-model resume degrading the work. Surfaced by audit-context 2026-10-10 (Finding #3, Low)
+- [ ] **CORE-774** [light]🔧 | single-model-restore-read — Restore-read for [[CORE-773]]'s decay window (start SHA `b7106192`): read the tasknotes archived after that SHA; if any of the next 10 shows a cross-model resume degrading the work, restore the "no swapping mid-task" paragraph in `SPEC/model.md` (`git show b7106192:SPEC/model.md`, lines 42-45); otherwise record the clean read and close.
 
 ## Future Opportunities
 
@@ -30,6 +30,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-773** [light]🔧 [unattended] | single-model-decay-window — Completed 2026-10-10.
 - [x] **CORE-771** [light]🔧 [unattended] | roster-flag-guard — Completed 2026-10-10.
 - [x] **CORE-772** [light]🔧 | skill-wiring-v7 — Re-wired gitignored `.claude/skills/` after CORE-769's renames: removed four dangling links (`ft-epic-discovery`, `ft-file-followup`, `ft-new-project`, `ft-seed`) and linked `ft-adopt`, `ft-file-task`, `ft-open-epic`, `ft-seed-unattended`. Surfaced by audit-context 2026-10-10 (Finding #2, Medium), fixed inline.
 - [x] **CORE-EPIC-770** [heavy]🧠 | global-layer-alignment — Completed 2026-10-09.

@@ -39,11 +39,6 @@ identity and a **category** tag (`[xheavy]`/`[frontier]`/`[heavy]`/`[medium]`/`[
 - PLAN.md line has no `[model]` (legacy entry) → ask the user via a
   structured ask at `/ft-task` entry, before any scaffolding work.
 
-A task runs end-to-end on a single model — no swapping mid-task between
-Discovery, Execution, Testing, or Closure. If scope grows and the tagged
-model no longer fits, retag the PLAN.md line and re-invoke; do not silently
-swap.
-
 When suggesting a next task, name the recommended model alongside the task
 ID — the model is part of the PLAN.md grammar, so it's already known without
 asking.

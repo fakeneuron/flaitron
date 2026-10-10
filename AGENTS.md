@@ -19,7 +19,8 @@ in `SPEC.md`; read it before starting non-trivial work.
   `/ft-open-epic`, `/ft-close-epic`, `/ft-refactor`, `/ft-release`.
 - `/ft-task` flags: `--debug` (hypothesis-first bug cadence), `--loop` (iterate
   Phase 2↔3 to a machine-checkable target — `SPEC/loop.md`), `--fast`
-  (suppresses conditional gates; also on `/ft-micro-task` and `/ft-refactor`),
+  (suppresses conditional gates; also on `/ft-micro-task`; `/ft-refactor`'s
+  own `--fast` only skips its review pause),
   and `--unattended` (no operator present: gates park the tasknote instead of
   asking; never together with `--fast` — `SPEC/gate-postures.md`
   §"`--unattended` operator posture"). `/ft-micro-task`, `/ft-close-epic`, and

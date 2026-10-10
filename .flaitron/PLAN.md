@@ -16,7 +16,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Medium
 
 - [ ] **CORE-EPIC-776** [heavy]🧠 | closure-contract-coherence — Discovery supplied by audit-repo 2026-10-10. Surfaced by audit-repo 2026-10-10 (Theme: Semantic SPEC↔skill drift)
-  - [ ] **CORE-776.2** [light]🔧 [unattended] | micro-recap-no-wait — `claude/skills/ft-micro-task/SKILL.md` Step 4 item 5 ends "Wait for confirmation." after the PLAN flip and archive move, contradicting SPEC.md §"Paper-complete guard"; replace with "continue into Step 5 in the same turn" (skip branch commits autonomously; the fire branch's 🟢 GO ask is the only wait).
+  - [x] **CORE-776.2** [light]🔧 [unattended] | micro-recap-no-wait — Completed 2026-10-10.
   - [x] **CORE-776.3** [light]🔧 [unattended] | refactor-fast-label — Completed 2026-10-10.
   - [x] **CORE-776.4** [light]🔧 [unattended] | epic-second-audit — Completed 2026-10-10.
   - [ ] **CORE-776.5** [frontier]💎 | micro-unattended-review — `/ft-micro-task --unattended` runs no External review and no 👁️ check, yet `SPEC/gate-postures.md` §"What `--unattended` never relaxes" holds External review "on every path"; decide micro's posture (review probe + park on a rendered surface, or a terminal stop routing to `/ft-task`), then align gate-postures, `claude/skills/ft-task/unattended-mode.md`, and `docs/EXTERNAL-AGENTS.md`.

@@ -1400,6 +1400,25 @@ describe('skill-rename migration (CORE-769.7)', { concurrency: GROUP_CONCURRENCY
     assert.equal(await exists(join(repo, '.claude', 'skills', 'ft-update')), false);
   });
 
+  it('skip: a renamed link path under an ignore rule is reported, nothing mutated', async () => {
+    const adopter = await makeAdopter(root, 'ignored-skip', previous);
+    const { repo, sub } = adopter;
+    await addRenameLinks(repo);
+    await writeFile(join(repo, '.gitignore'), '.claude/skills/ft-update\n');
+    await gitQuiet(repo, 'add', '.gitignore');
+    await gitQuiet(repo, 'commit', '-q', '-m', 'ignore a renamed link');
+    const headBefore = (await git(repo, 'rev-parse', 'HEAD')).trim();
+    const subBefore = (await git(sub, 'rev-parse', 'HEAD')).trim();
+
+    const result = await checkAdopter(adopter, latest, { skillRename });
+
+    assert.equal(result.status, 'skip');
+    assert.match(result.reason, /gitignored: \.claude\/skills\/ft-update — run \/ft-update/);
+    assert.equal((await git(repo, 'rev-parse', 'HEAD')).trim(), headBefore);
+    assert.equal((await git(sub, 'rev-parse', 'HEAD')).trim(), subBefore);
+    assert.equal((await git(repo, 'status', '--porcelain')).trim(), '');
+  });
+
   it('apply: a swap that does not resolve at the new pin rolls back', async () => {
     const adopter = await makeAdopter(root, 'unresolved', previous);
     await addRenameLinks(adopter.repo);

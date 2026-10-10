@@ -795,6 +795,14 @@ export async function checkAdopter(
   // Planned here for the report and the note; each apply re-plans from the
   // links it finds (applyMigrate must, after re-pointing them).
   const plan = await skillLinkPlan(repo, skillRename);
+  const ignored = await ignoredNewLinks(repo, plan);
+  if (ignored.length > 0) {
+    return {
+      status: 'skip',
+      current,
+      reason: `renamed skill link path(s) gitignored: ${ignored.join(', ')} — run /ft-update`,
+    };
+  }
   const wired = plan.map((entry) => entry.newPath ?? entry.kept).filter(Boolean);
   const skillsNote = formatSkillsNote(await cachedNewSkillWiringSurfaces(current, latest, wired));
   const mentions = await renamedSlugMentions(repo, skillRename.map);
@@ -850,6 +858,21 @@ export async function skillLinkPlan(repo, { map, globalOnly = [] }) {
     }
   }
   return plan;
+}
+
+// The plan's new link paths an ignore rule covers: `git add` refuses them, which
+// would fail the whole bump after its checkout, and forcing them in would
+// override a rule the adopter may have set on purpose.
+async function ignoredNewLinks(repo, plan) {
+  const paths = plan.map((entry) => entry.newPath).filter(Boolean);
+  if (paths.length === 0) return [];
+  try {
+    const out = await git(repo, '-c', 'core.quotePath=false', 'check-ignore', '--', ...paths);
+    return out.split('\n').filter(Boolean);
+  } catch (e) {
+    if (e.code !== 1) throw e; // exit 1: none ignored
+    return [];
+  }
 }
 
 // Carry out `plan` in the worktree, pushing an undo per mutation (applyMigrate's

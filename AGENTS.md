@@ -16,17 +16,24 @@ in `SPEC.md`; read it before starting non-trivial work.
 - Start a task with `/ft-task <TASK-ID>`; peer skills:
   `/ft-micro-task`,
   `/ft-file-task` (`--park`, `--starter`; flags: `SPEC/tasknote-selection.md`),
-  `/ft-open-epic`, `/ft-close-epic`, `/ft-task --debug`,
-  `/ft-task --loop`, `/ft-refactor`, `/ft-release`.
+  `/ft-open-epic`, `/ft-close-epic`, `/ft-refactor`, `/ft-release`.
+- `/ft-task` flags: `--debug` (hypothesis-first bug cadence), `--loop` (iterate
+  Phase 2↔3 to a machine-checkable target — `SPEC/loop.md`), `--fast`
+  (suppresses conditional gates; also on `/ft-micro-task` and `/ft-refactor`),
+  and `--unattended` (no operator present: gates park the tasknote instead of
+  asking; never together with `--fast` — `SPEC/gate-postures.md`
+  §"`--unattended` operator posture"). `/ft-micro-task`, `/ft-close-epic`, and
+  `/ft-file-task` take `--unattended` too.
   <!-- KEEP IN SYNC — guards the roster above AND the path-convention bullets
        (Plans / tasknotes / archive locations) further up this section. Mirror: the KEEP
        IN SYNC comment above claude/AGENTS-snippet.md's paste-block fence.
-       1. The roster is names-only.
+       1. The skill roster is names-only; flags live on the `/ft-task` flags
+          line beside it, mirrored in claude/AGENTS-snippet.md's paste-block.
        2. Richer detail (stubs, gates) lives in SPEC/tasknote-selection.md and
           SPEC/gates.md — not in claude/AGENTS-snippet.md's paste-block, which
           since CORE-510 names the skills and points there.
-       3. Adding or removing a tasknote-family skill still requires editing
-          both rosters.
+       3. Adding or removing a tasknote-family skill or `/ft-task` flag still
+          requires editing both rosters.
        4. Version-bump skills are checkout-specific: this self-host guide names
           `/ft-release`; the adopter paste-block names `/ft-update`.
        5. The path-convention bullets are described in both files in slightly

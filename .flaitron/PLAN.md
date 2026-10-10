@@ -11,10 +11,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-- [ ] **CORE-EPIC-775** [medium]🧩 | v7-bump-safety — Land before cutting v7.0.0: its skill-rename bump runs `tools/update-adopters.mjs --apply` across the fleet. Discovery supplied by audit-repo 2026-10-10. Surfaced by audit-repo 2026-10-10 (Theme: Fleet updater failure paths)
-  - [x] **CORE-775.2** [medium]🧩 [unattended] | bump-rollback-staging — Completed 2026-10-10.
-  - [x] **CORE-775.3** [light]🔧 [unattended] | migrate-staging-guards — Completed 2026-10-10.
-  - [ ] **CORE-775.N** [medium]🧩 | v7-bump-safety audit
+(none)
 
 ## Medium
 
@@ -45,6 +42,10 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-EPIC-775** [medium]🧩 | v7-bump-safety — Completed 2026-10-10.
+  - [x] **CORE-775.2** [medium]🧩 [unattended] | bump-rollback-staging — Completed 2026-10-10.
+  - [x] **CORE-775.3** [light]🔧 [unattended] | migrate-staging-guards — Completed 2026-10-10.
+  - [x] **CORE-775.N** [medium]🧩 | v7-bump-safety audit — Completed 2026-10-10.
 - [x] **CORE-773** [light]🔧 [unattended] | single-model-decay-window — Completed 2026-10-10.
 - [x] **CORE-771** [light]🔧 [unattended] | roster-flag-guard — Completed 2026-10-10.
 - [x] **CORE-772** [light]🔧 | skill-wiring-v7 — Re-wired gitignored `.claude/skills/` after CORE-769's renames: removed four dangling links (`ft-epic-discovery`, `ft-file-followup`, `ft-new-project`, `ft-seed`) and linked `ft-adopt`, `ft-file-task`, `ft-open-epic`, `ft-seed-unattended`. Surfaced by audit-context 2026-10-10 (Finding #2, Medium), fixed inline.

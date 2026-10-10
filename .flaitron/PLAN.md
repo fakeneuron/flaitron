@@ -11,12 +11,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-- [ ] **CORE-EPIC-770** [heavy]🧠 | global-layer-alignment — Align the operator's global layer (`~/.claude/CLAUDE.md`, `~/Code/AGENTS.md`, flaitron-project memory, natabula's skills and Path Access hook) with flaitron v7. Discovery found no flaitron-side conflict, so fixes land per owner: memory, a layer-1/2 diff, natabula rows. Does not block the v7.0.0 release.
-  - [x] **CORE-770.1** [frontier]💎 | global-layer-alignment discovery — Completed 2026-10-09.
-  - [x] **CORE-770.2** [light]🔧 | memory-refresh — Completed 2026-10-09.
-  - [x] **CORE-770.3** [medium]🧩 | global-standards-diff — Completed 2026-10-09.
-  - [x] **CORE-770.4** [light]🔧 | natabula-v7-handoff — Completed 2026-10-09.
-  - [ ] **CORE-770.N** [heavy]🧠 | global-layer-alignment audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
+(none)
 
 ## Medium
 
@@ -34,6 +29,12 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-EPIC-770** [heavy]🧠 | global-layer-alignment — Completed 2026-10-09.
+  - [x] **CORE-770.1** [frontier]💎 | global-layer-alignment discovery — Completed 2026-10-09.
+  - [x] **CORE-770.2** [light]🔧 | memory-refresh — Completed 2026-10-09.
+  - [x] **CORE-770.3** [medium]🧩 | global-standards-diff — Completed 2026-10-09.
+  - [x] **CORE-770.4** [light]🔧 | natabula-v7-handoff — Completed 2026-10-09.
+  - [x] **CORE-770.N** [heavy]🧠 | global-layer-alignment audit — Completed 2026-10-09.
 - [x] **CORE-EPIC-769** [heavy]🧠 | skill-surface — Completed 2026-10-09.
   - [x] **CORE-769.1** [heavy]🧠 | skill-surface discovery — Completed 2026-10-09.
   - [x] **CORE-769.2** [heavy]🧠 | retire-command-wrappers — Completed 2026-10-09.

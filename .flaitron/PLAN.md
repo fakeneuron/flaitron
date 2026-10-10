@@ -12,7 +12,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## High
 
 - [ ] **CORE-EPIC-775** [medium]🧩 | v7-bump-safety — Land before cutting v7.0.0: its skill-rename bump runs `tools/update-adopters.mjs --apply` across the fleet. Discovery supplied by audit-repo 2026-10-10. Surfaced by audit-repo 2026-10-10 (Theme: Fleet updater failure paths)
-  - [ ] **CORE-775.2** [medium]🧩 [unattended] | bump-rollback-staging — `applyBump` sets `staged = true` and registers the link-reset undo only after `git add` succeeds, so a partial add (exit 1 on a gitignored new link, tracked paths already staged) survives `rollbackBump`; register both before the add and test a gitignored new-link dir, asserting `git diff --cached --quiet` after the ✗ rollback.
+  - [x] **CORE-775.2** [medium]🧩 [unattended] | bump-rollback-staging — Completed 2026-10-10.
   - [ ] **CORE-775.3** [light]🔧 [unattended] | migrate-staging-guards — `applyMigrate` step 4 re-points and stages tracked `.flowtron` symlinks with no `git diff --quiet -- <path>` guard; mirror step 5's `.gitignore` guard (rewrite in place, leave unstaged), re-check `git diff --cached --quiet` after the fetch before the first mutation, and test a dirty tracked link.
   - [ ] **CORE-775.N** [medium]🧩 | v7-bump-safety audit
 

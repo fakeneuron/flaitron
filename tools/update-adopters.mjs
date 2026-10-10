@@ -929,7 +929,8 @@ export function verifyPinnedSha(checkedOutSha, canonicalSha, latest) {
 }
 
 // Undo applyBump's mutations: put the submodule worktree back on `priorSha` and,
-// when the gitlink was already staged, drop it from the index (checkAdopter
+// once the `git add` was attempted (a partial add may have staged it), drop the
+// gitlink from the index (checkAdopter
 // verified the index was otherwise clean, so a pathspec reset restores it exactly).
 // Best-effort by construction — the caller is already unwinding a failure, so this
 // reports what it could not undo rather than throwing over the original error.
@@ -990,11 +991,13 @@ export async function applyBump(adopter, latest) {
     const linkPaths = skillRename
       ? await applySkillLinkPlan(repo, await skillLinkPlan(repo, skillRename), linkUndo)
       : [];
-    await git(repo, 'add', '--', SUBMODULE_PATH, ...linkPaths);
+    // Both unstage undos register before the add: a partial add (exit 1 on a
+    // gitignored new link) has already staged the paths it could.
     staged = true;
     if (linkPaths.length > 0) {
       linkUndo.push(['skill links left staged', () => git(repo, 'reset', '--quiet', '--', ...linkPaths)]);
     }
+    await git(repo, 'add', '--', SUBMODULE_PATH, ...linkPaths);
     // Pathspec commit: only the submodule gitlink (and the swapped links) lands,
     // never unrelated work. --no-verify: see the "Mid-bump rollback" note above
     // for why pre-commit/commit-msg hooks are skipped here (prepare-commit-msg/

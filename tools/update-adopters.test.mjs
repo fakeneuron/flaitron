@@ -1326,6 +1326,36 @@ describe('skill-rename migration (CORE-769.7)', { concurrency: GROUP_CONCURRENCY
     assert.equal(await exists(join(repo, '.agents', 'skills', 'ft-update')), false);
   });
 
+  // `git add` exits 1 on the ignored new link after staging everything else, so
+  // the gitlink and the link deletions are already in the index when it throws.
+  it('rollback: a partial add on a gitignored new link leaves the index clean', async () => {
+    const adopter = await makeAdopter(root, 'ignored-link', previous);
+    const { repo, sub } = adopter;
+    await addRenameLinks(repo);
+    await writeFile(join(repo, '.gitignore'), '.claude/skills/ft-update\n');
+    await gitQuiet(repo, 'add', '.gitignore');
+    await gitQuiet(repo, 'commit', '-q', '-m', 'ignore a renamed link');
+    const headBefore = (await git(repo, 'rev-parse', 'HEAD')).trim();
+    const subBefore = (await git(sub, 'rev-parse', 'HEAD')).trim();
+
+    await assert.rejects(
+      () => applyBump({ ...adopter, current: previous, skillRename }, latest),
+      (e) => {
+        // The path, not git's (translatable) wording.
+        assert.match(e.message, /\.claude\/skills\/ft-update/);
+        assert.doesNotMatch(e.message, /rollback incomplete/);
+        return true;
+      },
+    );
+
+    await gitQuiet(repo, 'diff', '--cached', '--quiet');
+    assert.equal((await git(repo, 'rev-parse', 'HEAD')).trim(), headBefore);
+    assert.equal((await git(sub, 'rev-parse', 'HEAD')).trim(), subBefore);
+    assert.equal((await git(repo, 'status', '--porcelain')).trim(), '');
+    // status hides ignored paths, so check the swapped-in link directly.
+    assert.equal(await exists(join(repo, '.claude', 'skills', 'ft-update')), false);
+  });
+
   it('apply: a swap that does not resolve at the new pin rolls back', async () => {
     const adopter = await makeAdopter(root, 'unresolved', previous);
     await addRenameLinks(adopter.repo);

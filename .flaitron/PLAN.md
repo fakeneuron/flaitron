@@ -22,6 +22,8 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
+- [ ] **CORE-771** [light]🔧 [unattended] | roster-flag-guard — `AGENTS.md:16-20`'s roster carries `/ft-task --debug` and `--loop` (fossils of folded skills) but not `--fast`/`--unattended`, while both KEEP IN SYNC guards call it names-only — the rule [[CORE-473.4]] cited to omit `--unattended`. Mirror the paste-block: one `/ft-task` flags line beside a names-only roster, and fix the guards' wording to match. Surfaced by audit-context 2026-10-10 (Finding #1, Low)
+- [ ] **CORE-773** [light]🔧 [unattended] | single-model-decay-window — Decay window: drop `SPEC/model.md:42-45` ("no swapping mid-task … do not silently swap") — bootstrap-era (`59935990`), no incident, and unreachable where it applies: the module loads only pre-Discovery. Record the window-start SHA, keep `AGENTS.md:35`'s "end-to-end" mirror, and file the restore-read row: restore if any of the next 10 archived tasknotes shows a cross-model resume degrading the work. Surfaced by audit-context 2026-10-10 (Finding #3, Low)
 
 ## Future Opportunities
 
@@ -29,6 +31,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-772** [light]🔧 | skill-wiring-v7 — Re-wired gitignored `.claude/skills/` after CORE-769's renames: removed four dangling links (`ft-epic-discovery`, `ft-file-followup`, `ft-new-project`, `ft-seed`) and linked `ft-adopt`, `ft-file-task`, `ft-open-epic`, `ft-seed-unattended`. Surfaced by audit-context 2026-10-10 (Finding #2, Medium), fixed inline.
 - [x] **CORE-EPIC-770** [heavy]🧠 | global-layer-alignment — Completed 2026-10-09.
   - [x] **CORE-770.1** [frontier]💎 | global-layer-alignment discovery — Completed 2026-10-09.
   - [x] **CORE-770.2** [light]🔧 | memory-refresh — Completed 2026-10-09.

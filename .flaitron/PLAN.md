@@ -11,11 +11,25 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-(none)
+- [ ] **CORE-EPIC-775** [medium]🧩 | v7-bump-safety — Land before cutting v7.0.0: its skill-rename bump runs `tools/update-adopters.mjs --apply` across the fleet. Discovery supplied by audit-repo 2026-10-10. Surfaced by audit-repo 2026-10-10 (Theme: Fleet updater failure paths)
+  - [ ] **CORE-775.2** [medium]🧩 [unattended] | bump-rollback-staging — `applyBump` sets `staged = true` and registers the link-reset undo only after `git add` succeeds, so a partial add (exit 1 on a gitignored new link, tracked paths already staged) survives `rollbackBump`; register both before the add and test a gitignored new-link dir, asserting `git diff --cached --quiet` after the ✗ rollback.
+  - [ ] **CORE-775.3** [light]🔧 [unattended] | migrate-staging-guards — `applyMigrate` step 4 re-points and stages tracked `.flowtron` symlinks with no `git diff --quiet -- <path>` guard; mirror step 5's `.gitignore` guard (rewrite in place, leave unstaged), re-check `git diff --cached --quiet` after the fetch before the first mutation, and test a dirty tracked link.
+  - [ ] **CORE-775.N** [medium]🧩 | v7-bump-safety audit
 
 ## Medium
 
-(none)
+- [ ] **CORE-EPIC-776** [heavy]🧠 | closure-contract-coherence — Discovery supplied by audit-repo 2026-10-10. Surfaced by audit-repo 2026-10-10 (Theme: Semantic SPEC↔skill drift)
+  - [ ] **CORE-776.2** [light]🔧 [unattended] | micro-recap-no-wait — `claude/skills/ft-micro-task/SKILL.md` Step 4 item 5 ends "Wait for confirmation." after the PLAN flip and archive move, contradicting SPEC.md §"Paper-complete guard"; replace with "continue into Step 5 in the same turn" (skip branch commits autonomously; the fire branch's 🟢 GO ask is the only wait).
+  - [ ] **CORE-776.3** [light]🔧 [unattended] | refactor-fast-label — `claude/AGENTS-snippet.md` paste-block and `AGENTS.md` (KEEP IN SYNC pair) say `--fast` "suppresses conditional gates; also on `/ft-micro-task` and `/ft-refactor`"; per `SPEC/gate-postures.md` §"`--fast` operator override", `/ft-refactor --fast` only skips its plan-review pause — reword both.
+  - [ ] **CORE-776.4** [light]🔧 [unattended] | epic-second-audit — `SPEC/epic.md` §"Epic lifecycle" says "For many, also file a fresh Audit subtask", which is unrunnable (`.N` is spent and `/ft-close-epic` refuses a numeric audit once `.N` exists); drop the sentence, since open follow-up children already hold the parent flip.
+  - [ ] **CORE-776.5** [frontier]💎 | micro-unattended-review — `/ft-micro-task --unattended` runs no External review and no 👁️ check, yet `SPEC/gate-postures.md` §"What `--unattended` never relaxes" holds External review "on every path"; decide micro's posture (review probe + park on a rendered surface, or a terminal stop routing to `/ft-task`), then align gate-postures, `claude/skills/ft-task/unattended-mode.md`, and `docs/EXTERNAL-AGENTS.md`.
+  - [ ] **CORE-776.6** [heavy]🧠 | id-allocation-home — ID allocators (`ft-file-task`, `ft-open-epic`, `ft-refactor`, `ft-audit`, `ft-audit-repo`) never scan `.flaitron/PLAN-ARCHIVE.md` (79 fixed-inline rows live only there), `ft-open-epic`/`ft-refactor` derive `archive/<area>/` instead of the README §"Archive layout" lookup, and `ft-file-task` skips epic numbers; add one `SPEC/plan-filing.md` §"ID allocation" and cite it from each skill (`ft-open-epic` has ~345 B of budget headroom, so the citation must net-shrink it).
+  - [ ] **CORE-776.N** [heavy]🧠 | closure-contract-coherence audit
+- [ ] **FE-EPIC-127** [medium]🧩 | viz-failure-paths — Discovery supplied by audit-repo 2026-10-10. Surfaced by audit-repo 2026-10-10 (Theme: viz dev-server failure paths)
+  - [ ] **FE-127.2** [light]🔧 [unattended] | devapi-guarded-catch — `viz/src/devApi.ts` `guarded` awaits the handler with no catch and `projectFromQuery` calls `new URL` outside any try, so `GET /api/plan//a:99999` is an unhandled rejection that exits the Vite process; catch in `guarded` (log; 500, or destroy if headers are sent), return 400 from `projectFromQuery` on a bad URL, and test that the malformed request gets a status.
+  - [ ] **FE-127.3** [light]🔧 [unattended] | viz-boundary-claims — `SECURITY.md` §Visualizer says the server binds localhost only and confines reads to `*/.flaitron/`; code relies on Vite's default bind and confines to the project-root realpath (`.flaitron/core` may be a symlinked checkout). Add a loopback `req.socket.remoteAddress` check to `guarded` (+ test) and correct the confinement sentence to the enforced boundary.
+  - [ ] **FE-127.4** [medium]🧩 [unattended] | watch-late-dirs — when `tasknote/` or `tasknote/archive/` is absent at dev-server start, chokidar watches the parent and counts depth from there, so later notes never fire (`viz/src/flaitronWatch.ts` + `watchSet.ts`); watch each project's `.flaitron/` root with the depth and `ignored` reach re-anchored, and test creating the archive dir after start.
+  - [ ] **FE-127.N** [medium]🧩 | viz-failure-paths audit
 
 ## Low
 

@@ -27,6 +27,9 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [ ] **FE-127.3** [light]🔧 [unattended] | viz-boundary-claims — `SECURITY.md` §Visualizer says the server binds localhost only and confines reads to `*/.flaitron/`; code relies on Vite's default bind and confines to the project-root realpath (`.flaitron/core` may be a symlinked checkout). Add a loopback `req.socket.remoteAddress` check to `guarded` (+ test) and correct the confinement sentence to the enforced boundary.
   - [ ] **FE-127.4** [medium]🧩 [unattended] | watch-late-dirs — when `tasknote/` or `tasknote/archive/` is absent at dev-server start, chokidar watches the parent and counts depth from there, so later notes never fire (`viz/src/flaitronWatch.ts` + `watchSet.ts`); watch each project's `.flaitron/` root with the depth and `ignored` reach re-anchored, and test creating the archive dir after start.
   - [ ] **FE-127.N** [medium]🧩 | viz-failure-paths audit
+- [ ] **CORE-EPIC-778** [frontier]💎 | micro-fold-in — Fold `/ft-micro-task` into `/ft-task --micro`: keep the light `## ⚡ Notes` record as a template-selection flag on the one runner; retire the second runner and every surface that mirrors it (conversion-map column, posture clauses, 🟢 GO carve-out, wrappers, viz parser reading). Discovery decides fold-in vs. outright scrap (filed via /ft-open-epic; refined at .1 closure).
+  - [ ] **CORE-778.1** [frontier]💎 | micro-fold-in discovery — Scope shared design and file children .2..5 per SPEC/epic.md.
+  - [ ] **CORE-778.N** [heavy]🧠 | micro-fold-in audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
 
 ## Low
 

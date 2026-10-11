@@ -22,7 +22,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
-- [ ] **CORE-774** [light]🔧 | single-model-restore-read — Restore-read for [[CORE-773]]'s decay window (start SHA `b7106192`): read the tasknotes archived after that SHA; if any of the next 10 shows a cross-model resume degrading the work, restore the "no swapping mid-task" paragraph in `SPEC/model.md` (`git show b7106192:SPEC/model.md`, lines 42-45); otherwise record the clean read and close.
 
 ## Future Opportunities
 
@@ -30,6 +29,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-774** [light]🔧 | single-model-restore-read — Completed 2026-10-11.
 - [x] **FE-128** [light] | viz-host-pin — Completed 2026-10-11.
 - [x] **FE-EPIC-127** [medium]🧩 | viz-failure-paths — Completed 2026-10-11.
   - [x] **FE-127.2** [light]🔧 [unattended] | devapi-guarded-catch — Completed 2026-10-11.

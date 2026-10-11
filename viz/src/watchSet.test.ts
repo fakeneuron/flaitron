@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { join } from 'node:path';
-import { projectForActiveTasknote, projectForPath, watchSets } from './watchSet';
+import { projectForActiveTasknote, projectForPath, watchRoots } from './watchSet';
 import type { ProjectDescriptor } from './workspace';
 
 function project(name: string, root: string): ProjectDescriptor {
@@ -17,31 +17,26 @@ function project(name: string, root: string): ProjectDescriptor {
   };
 }
 
-describe('watchSets', () => {
-  it('partitions PLAN + tasknote dir onto hot and archive roots onto archive', () => {
+describe('watchRoots', () => {
+  it("returns each project's .flaitron/ dir — present even before tasknote/ exists", () => {
     const alpha = project('alpha', '/ws');
     const beta = project('beta', '/ws');
 
-    expect(watchSets([alpha, beta])).toEqual({
-      hot: [alpha.planPath, alpha.tasknoteDir, beta.planPath, beta.tasknoteDir],
-      archive: [alpha.archiveDir, beta.archiveDir],
-    });
+    expect(watchRoots([alpha, beta])).toEqual([join('/ws', 'alpha', '.flaitron'), join('/ws', 'beta', '.flaitron')]);
   });
 
-  it('returns empty sets for no projects', () => {
-    expect(watchSets([])).toEqual({ hot: [], archive: [] });
+  it('returns no roots for no projects', () => {
+    expect(watchRoots([])).toEqual([]);
   });
 
   // chokidar 4 removed glob support, so v5 reads every watch path literally.
   // Escaping glob metacharacters would corrupt such a path.
   it('leaves glob metacharacters in project paths untouched (chokidar 5)', () => {
     const bracketed = project('foo[wip]', '/ws');
-    const sets = watchSets([bracketed]);
+    const [root] = watchRoots([bracketed]);
 
-    expect(sets.hot).toEqual([bracketed.planPath, bracketed.tasknoteDir]);
-    expect(sets.archive).toEqual([bracketed.archiveDir]);
-    expect(sets.hot[1]).toContain('foo[wip]');
-    expect(sets.hot[1]).not.toContain('\\[');
+    expect(root).toContain('foo[wip]');
+    expect(root).not.toContain('\\[');
   });
 });
 

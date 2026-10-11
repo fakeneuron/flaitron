@@ -3,7 +3,8 @@ import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import type { Stats } from 'node:fs';
 import type { ServerResponse } from 'node:http';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
+import chokidar, { type ChokidarOptions, type FSWatcher } from 'chokidar';
 import { createArchiveCache } from './archiveCache';
 import {
   archiveWatchOptions,
@@ -11,14 +12,15 @@ import {
   createHeartbeat,
   createOnWatchError,
   createOnWatchEvent,
-  ignoreNonMarkdown,
-  ignoreOutsideArchiveArea,
+  hotWatchOptions,
+  ignoreOutsideArchiveReach,
+  ignoreOutsideHotReach,
   SSE_DEBOUNCE_MS,
   SSE_MAX_WAIT_MS,
-  WATCH_HOT_OPTIONS,
   WATCH_POLL_MS,
   type ChangeHit,
 } from './flaitronWatch';
+import { watchRoots } from './watchSet';
 import type { ProjectDescriptor } from './workspace';
 
 interface FakeRes {
@@ -65,79 +67,197 @@ async function makeProject(name: string): Promise<ProjectDescriptor> {
   };
 }
 
+// Descriptor only — nothing on disk. `discoverProjects` builds the same shape.
+function descriptor(base: string, name: string): ProjectDescriptor {
+  const projectDir = join(base, name, '.flaitron');
+  const tasknoteDir = join(projectDir, 'tasknote');
+  return {
+    name,
+    root: join(base, name),
+    planPath: join(projectDir, 'PLAN.md'),
+    planArchivePath: join(projectDir, 'PLAN-ARCHIVE.md'),
+    tasknoteDir,
+    archiveDir: join(tasknoteDir, 'archive'),
+    flaitronVersion: null,
+  };
+}
+
 const FILE = { isFile: () => true, isDirectory: () => false } as unknown as Stats;
 const DIR = { isFile: () => false, isDirectory: () => true } as unknown as Stats;
 
-describe('watcher option pins (chokidar 5 depths)', () => {
-  it('polls the hot set at WATCH_POLL_MS with depth 0', () => {
-    expect(WATCH_HOT_OPTIONS).toEqual({
-      ignoreInitial: true,
-      depth: 0,
-      usePolling: true,
-      interval: WATCH_POLL_MS,
-      ignored: ignoreNonMarkdown,
-    });
-  });
+describe('watcher option pins (chokidar 5 depths from the .flaitron/ root)', () => {
+  const alpha = descriptor('/ws', 'alpha');
 
-  it('watches archives natively with depth 1', () => {
-    const roots = ['/ws/alpha/.flaitron/tasknote/archive'];
-    expect(archiveWatchOptions(roots)).toMatchObject({
+  it('polls the hot set at WATCH_POLL_MS with depth 1', () => {
+    expect(hotWatchOptions([alpha])).toMatchObject({
       ignoreInitial: true,
       depth: 1,
+      usePolling: true,
+      interval: WATCH_POLL_MS,
+    });
+    expect(typeof hotWatchOptions([alpha]).ignored).toBe('function');
+  });
+
+  it('watches archives natively with depth 3', () => {
+    expect(archiveWatchOptions([alpha])).toMatchObject({
+      ignoreInitial: true,
+      depth: 3,
       usePolling: false,
     });
-    expect(typeof archiveWatchOptions(roots).ignored).toBe('function');
+    expect(typeof archiveWatchOptions([alpha]).ignored).toBe('function');
   });
 });
 
 // chokidar 4 dropped glob support, so the retired `*.md` / `*/*.md` reach is
-// now carried by these predicates plus `depth`. They must not prune
-// directories: `ignored` gates traversal as well as events.
-describe('ignoreNonMarkdown', () => {
-  it('ignores non-markdown files', () => {
-    expect(ignoreNonMarkdown('/ws/a/.flaitron/tasknote/notes.txt', FILE)).toBe(true);
+// now carried by these predicates plus `depth`. `ignored` gates traversal as
+// well as events: every directory on a reach path must pass, stats-less
+// pre-checks included, while everything else under the root is pruned.
+describe('ignoreOutsideHotReach', () => {
+  const alpha = descriptor('/ws', 'alpha');
+  const root = dirname(alpha.planPath);
+  const ignored = ignoreOutsideHotReach([alpha]);
+
+  it('keeps PLAN.md and active tasknotes', () => {
+    expect(ignored(alpha.planPath, FILE)).toBe(false);
+    expect(ignored(join(alpha.tasknoteDir, 'CORE-001.md'), FILE)).toBe(false);
+    expect(ignored(join(alpha.tasknoteDir, 'CORE-001.md'))).toBe(false);
   });
 
-  it('keeps markdown files', () => {
-    expect(ignoreNonMarkdown('/ws/a/.flaitron/tasknote/CORE-001.md', FILE)).toBe(false);
+  it('keeps the root and tasknote dir so traversal can reach the files', () => {
+    expect(ignored(root, DIR)).toBe(false);
+    expect(ignored(root)).toBe(false);
+    expect(ignored(alpha.tasknoteDir, DIR)).toBe(false);
+    expect(ignored(alpha.tasknoteDir)).toBe(false);
   });
 
-  it('keeps directories and stats-less pre-checks so traversal can reach files', () => {
-    expect(ignoreNonMarkdown('/ws/a/.flaitron/tasknote/archive', DIR)).toBe(false);
-    expect(ignoreNonMarkdown('/ws/a/.flaitron/tasknote/archive')).toBe(false);
+  it('ignores non-markdown files in the tasknote dir', () => {
+    expect(ignored(join(alpha.tasknoteDir, 'scratch.txt'), FILE)).toBe(true);
+    expect(ignored(join(alpha.tasknoteDir, 'scratch.txt'))).toBe(true);
+  });
+
+  it('prunes the archive tree, core/, and PLAN-ARCHIVE.md', () => {
+    expect(ignored(alpha.archiveDir)).toBe(true);
+    expect(ignored(join(root, 'core'))).toBe(true);
+    expect(ignored(alpha.planArchivePath, FILE)).toBe(true);
+  });
+
+  it('is per-project', () => {
+    const beta = descriptor('/ws', 'beta');
+    expect(ignoreOutsideHotReach([alpha, beta])(join(beta.tasknoteDir, 'FE-001.md'), FILE)).toBe(false);
   });
 });
 
-describe('ignoreOutsideArchiveArea (reader-matching reach)', () => {
-  const archiveRoot = '/ws/alpha/.flaitron/tasknote/archive';
-  const ignored = ignoreOutsideArchiveArea([archiveRoot]);
+describe('ignoreOutsideArchiveReach (reader-matching reach)', () => {
+  const alpha = descriptor('/ws', 'alpha');
+  const root = dirname(alpha.planPath);
+  const ignored = ignoreOutsideArchiveReach([alpha]);
 
-  it('keeps <archiveRoot>/<area>/<file>.md — the shape readArchive reads', () => {
-    expect(ignored(join(archiveRoot, 'core', 'CORE-001.md'), FILE)).toBe(false);
+  it('keeps <archiveDir>/<area>/<file>.md — the shape readArchive reads', () => {
+    expect(ignored(join(alpha.archiveDir, 'core', 'CORE-001.md'), FILE)).toBe(false);
+    expect(ignored(join(alpha.archiveDir, 'core', 'CORE-001.md'))).toBe(false);
   });
 
-  it('ignores a stray .md sitting directly in the archive root', () => {
-    expect(ignored(join(archiveRoot, 'README.md'), FILE)).toBe(true);
+  it('keeps every directory on the reach path, stats-less pre-checks included', () => {
+    for (const dir of [root, alpha.tasknoteDir, alpha.archiveDir, join(alpha.archiveDir, 'core')]) {
+      expect(ignored(dir, DIR)).toBe(false);
+      expect(ignored(dir)).toBe(false);
+    }
+  });
+
+  it('ignores a stray .md sitting directly in the archive dir', () => {
+    expect(ignored(join(alpha.archiveDir, 'README.md'), FILE)).toBe(true);
+    expect(ignored(join(alpha.archiveDir, 'README.md'))).toBe(true);
   });
 
   it('ignores .md nested deeper than one area level', () => {
-    expect(ignored(join(archiveRoot, 'core', 'old', 'CORE-001.md'), FILE)).toBe(true);
+    expect(ignored(join(alpha.archiveDir, 'core', 'old', 'CORE-001.md'), FILE)).toBe(true);
+    expect(ignored(join(alpha.archiveDir, 'core', 'old'), DIR)).toBe(true);
   });
 
   it('ignores non-markdown files', () => {
-    expect(ignored(join(archiveRoot, 'core', 'notes.txt'), FILE)).toBe(true);
+    expect(ignored(join(alpha.archiveDir, 'core', 'notes.txt'), FILE)).toBe(true);
+    expect(ignored(join(alpha.archiveDir, 'notes.txt'), FILE)).toBe(true);
   });
 
-  it('keeps directories so traversal can reach the area dirs', () => {
-    expect(ignored(join(archiveRoot, 'core'), DIR)).toBe(false);
-    expect(ignored(join(archiveRoot, 'core'))).toBe(false);
+  it('prunes active tasknotes, PLAN.md, and core/', () => {
+    expect(ignored(join(alpha.tasknoteDir, 'CORE-001.md'), FILE)).toBe(true);
+    expect(ignored(alpha.planPath, FILE)).toBe(true);
+    expect(ignored(join(root, 'core'))).toBe(true);
   });
 
-  it('is per-root', () => {
-    const other = '/ws/beta/.flaitron/tasknote/archive';
-    expect(ignoreOutsideArchiveArea([archiveRoot, other])(join(other, 'fe', 'FE-001.md'), FILE)).toBe(
+  it('is per-project', () => {
+    const beta = descriptor('/ws', 'beta');
+    expect(ignoreOutsideArchiveReach([alpha, beta])(join(beta.archiveDir, 'fe', 'FE-001.md'), FILE)).toBe(
       false,
     );
+  });
+});
+
+// The FE-127.4 failure: chokidar never fires for a watch path absent at start.
+// Real chokidar with the production options, on a project that has a PLAN.md
+// but no tasknote/ dir yet — the state of a freshly adopted project.
+describe('watchers on a project whose tasknote dirs appear after start', () => {
+  const watchers: FSWatcher[] = [];
+
+  beforeEach(() => {
+    vi.useRealTimers();
+  });
+
+  afterEach(async () => {
+    await Promise.all(watchers.splice(0).map((w) => w.close()));
+  });
+
+  async function start(paths: string[], options: ChokidarOptions, events: string[]) {
+    const watcher = chokidar.watch(paths, options);
+    watchers.push(watcher);
+    watcher.on('all', (event, path) => {
+      if (path.endsWith('.md')) events.push(`${event} ${path}`);
+    });
+    await new Promise<void>((resolve) => watcher.on('ready', () => resolve()));
+  }
+
+  it('fires for a later active note and a later archive file, and never walks core/', async () => {
+    const alpha = descriptor(root, 'alpha');
+    const flaitronDir = dirname(alpha.planPath);
+    await mkdir(join(flaitronDir, 'core', 'viz'), { recursive: true });
+    await writeFile(alpha.planPath, '## High\n');
+
+    const hot: string[] = [];
+    const archive: string[] = [];
+    await start(watchRoots([alpha]), hotWatchOptions([alpha]), hot);
+    await start(watchRoots([alpha]), archiveWatchOptions([alpha]), archive);
+
+    // macOS `fs.watch` (FSEvents-backed) drops events for a moment after
+    // registration even once chokidar reports ready; in the dev server the
+    // watcher starts long before any of these dirs appear.
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    const archived = join(alpha.archiveDir, 'core', 'CORE-001.md');
+    await mkdir(dirname(archived), { recursive: true });
+    await writeFile(archived, 'x');
+    await writeFile(join(alpha.archiveDir, 'STRAY.md'), 'x');
+    await writeFile(join(alpha.tasknoteDir, 'scratch.txt'), 'x');
+    await writeFile(join(flaitronDir, 'core', 'viz', 'README.md'), 'x');
+    const active = join(alpha.tasknoteDir, 'CORE-002.md');
+    await writeFile(active, 'x');
+    await writeFile(alpha.planPath, '## High\n\n## Medium\n');
+
+    await vi.waitFor(
+      () => {
+        expect(archive).toContain(`add ${archived}`);
+        expect(hot).toContain(`add ${active}`);
+        expect(hot).toContain(`change ${alpha.planPath}`);
+      },
+      { timeout: 5000, interval: 50 },
+    );
+    // One more poll cycle so a late stray event would have had time to land.
+    // Paths, not exact events: a native create can arrive as `add` + `change`.
+    await new Promise((resolve) => setTimeout(resolve, WATCH_POLL_MS * 2));
+    const pathOf = (entry: string) => entry.slice(entry.indexOf(' ') + 1);
+    expect(new Set(archive.map(pathOf))).toEqual(new Set([archived]));
+    expect(new Set(hot.map(pathOf))).toEqual(new Set([active, alpha.planPath]));
+    for (const watcher of watchers) {
+      expect(Object.keys(watcher.getWatched())).not.toContain(join(flaitronDir, 'core'));
+    }
   });
 });
 

@@ -12,55 +12,82 @@ export const SSE_DEBOUNCE_MS = 200;
 export const SSE_MAX_WAIT_MS = 1000;
 export const SSE_HEARTBEAT_MS = 30_000;
 
-/**
- * Markdown files only. Directories must pass — chokidar applies `ignored` to
- * traversal as well as events, so pruning a directory would stop the watcher
- * ever reaching the files inside it. The stats-less pre-check chokidar makes
- * before stat'ing also passes, for the same reason.
- */
-export function ignoreNonMarkdown(path: string, stats?: Stats): boolean {
-  return stats?.isFile() === true && !path.endsWith('.md');
+// Both watchers watch each project's `.flaitron/` root (see `watchRoots`), not
+// `tasknote/` or `tasknote/archive/` directly: chokidar silently never fires for
+// a watch path that is absent at start, and a freshly adopted project has a
+// PLAN.md but no tasknote dir yet. The root always exists — discovery gates on
+// its PLAN.md — so the reach is carried entirely by `depth` + these predicates.
+//
+// `ignored` gates traversal as well as events, and the root also holds the
+// `core/` submodule (a whole flaitron checkout), so the predicates prune by path
+// shape: every directory on a reach path is named exactly and kept — stats-less
+// pre-checks included — and everything else under the root is pruned.
+
+function isMarkdownFile(path: string, stats?: Stats): boolean {
+  return path.endsWith('.md') && stats?.isDirectory() !== true;
 }
 
 /**
- * Archive reach must stay exactly `<archiveRoot>/<area>/<file>.md` — the shape
- * `archiveCache`'s `readArchive` reads — a single area level. `depth: 1` alone
- * is looser than that: it would also admit a stray `.md` sitting directly in
- * an archive root, so the root list narrows it back.
+ * Hot reach: `.flaitron/PLAN.md` + `tasknote/*.md`. `PLAN-ARCHIVE.md` stays
+ * out — rotation always edits PLAN.md too — and the archive tree below the
+ * tasknote dir is pruned at `archive/`.
  */
-export function ignoreOutsideArchiveArea(archiveRoots: readonly string[]) {
+export function ignoreOutsideHotReach(projects: readonly ProjectDescriptor[]) {
+  const roots = new Set(projects.map((p) => dirname(p.planPath)));
+  const plans = new Set(projects.map((p) => p.planPath));
+  const tasknoteDirs = new Set(projects.map((p) => p.tasknoteDir));
   return (path: string, stats?: Stats): boolean => {
-    if (stats?.isFile() !== true) return false;
-    if (!path.endsWith('.md')) return true;
-    return !archiveRoots.some((root) => dirname(dirname(path)) === root);
+    if (roots.has(path) || plans.has(path) || tasknoteDirs.has(path)) return false;
+    return !(tasknoteDirs.has(dirname(path)) && isMarkdownFile(path, stats));
+  };
+}
+
+/**
+ * Archive reach must stay exactly `<archiveDir>/<area>/<file>.md` — the shape
+ * `archiveCache`'s `readArchive` reads — a single area level. A stray `.md`
+ * directly in the archive dir, or one nested below an area, stays silent.
+ */
+export function ignoreOutsideArchiveReach(projects: readonly ProjectDescriptor[]) {
+  const roots = new Set(projects.map((p) => dirname(p.planPath)));
+  const tasknoteDirs = new Set(projects.map((p) => p.tasknoteDir));
+  const archiveDirs = new Set(projects.map((p) => p.archiveDir));
+  return (path: string, stats?: Stats): boolean => {
+    if (roots.has(path) || tasknoteDirs.has(path) || archiveDirs.has(path)) return false;
+    const parent = dirname(path);
+    // An area dir: anything but a file (or a `.md`, before stats arrive).
+    if (archiveDirs.has(parent)) return path.endsWith('.md') || stats?.isFile() === true;
+    return !(archiveDirs.has(dirname(parent)) && isMarkdownFile(path, stats));
   };
 }
 
 /**
  * Hot set (PLAN.md + active tasknotes) — must poll inside symlink roots.
- * `depth: 0` keeps the reach at the tasknote dir's immediate children (the
- * active notes); it also stops the hot watcher descending into the archive
- * tree below it.
+ * `depth: 1` from the `.flaitron/` root reaches `tasknote/<file>.md`.
  */
-export const WATCH_HOT_OPTIONS = {
-  ignoreInitial: true,
-  depth: 0,
-  usePolling: true,
-  interval: WATCH_POLL_MS,
-  ignored: ignoreNonMarkdown,
-} as const;
-
-/**
- * Archives — native watch: at fleet scale the cost is the poll, not the
- * watch. `depth: 1` reaches `<area>/<file>.md`. Takes the watched archive
- * roots because the reach predicate needs them (see above).
- */
-export function archiveWatchOptions(archiveRoots: readonly string[]) {
+export function hotWatchOptions(projects: readonly ProjectDescriptor[]) {
   return {
     ignoreInitial: true,
     depth: 1,
+    usePolling: true,
+    interval: WATCH_POLL_MS,
+    ignored: ignoreOutsideHotReach(projects),
+  } as const;
+}
+
+/**
+ * Archives — native watch: at fleet scale the cost is the poll, not the
+ * watch. `depth: 3` from the `.flaitron/` root reaches
+ * `tasknote/archive/<area>/<file>.md`. Anchoring at the root also puts native
+ * handles on the root and tasknote dir, so PLAN.md and active-note saves wake
+ * this watcher too and are dropped by the predicate — the accepted price of a
+ * root that exists before the archive does.
+ */
+export function archiveWatchOptions(projects: readonly ProjectDescriptor[]) {
+  return {
+    ignoreInitial: true,
+    depth: 3,
     usePolling: false,
-    ignored: ignoreOutsideArchiveArea(archiveRoots),
+    ignored: ignoreOutsideArchiveReach(projects),
   } as const;
 }
 
@@ -210,8 +237,9 @@ export function createOnWatchEvent(opts: {
   return (event, filepath) => {
     if (typeof filepath !== 'string') return;
     // chokidar reports directory events (`addDir` / `unlinkDir`) too. The
-    // retired globs matched files only, and `ignored` cannot prune directories
-    // without also pruning traversal — so the file-only reach is restored here.
+    // retired globs matched files only, and the reach predicates must keep the
+    // directories on each reach path for traversal — so the file-only reach is
+    // restored here.
     if (!filepath.endsWith('.md')) return;
     opts.archiveCache.invalidate(filepath, projects);
     if (event === 'unlink') {

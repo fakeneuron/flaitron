@@ -2,27 +2,17 @@ import { dirname, sep } from 'node:path';
 import type { ChangeScope } from './sseChange.ts';
 import type { ProjectDescriptor } from './workspace.ts';
 
-interface WatchSets {
-  hot: string[];
-  archive: string[];
-}
-
-// Hot paths are polled (PLAN.md + active tasknotes). Archive roots are
-// watched natively — the fleet-scale cost is the 200ms poll, not the watch.
+// Each project's `.flaitron/` dir — the root both watchers watch. Not the
+// tasknote or archive dirs themselves: either may be absent at dev-server
+// start, and chokidar never fires for a watch path that was missing then. The
+// hot (polled) and archive (native) reach lives in the `depth` + `ignored`
+// options beside the watchers in `flaitronWatch.ts`.
 //
 // These are literal paths, not globs: chokidar 4 removed glob support
 // and v5 treats every path literally, so escaping `[` or `*` in a project
-// directory name would corrupt the path rather than protect it. The `*.md` /
-// `*/*.md` reach the globs used to carry now lives in the `depth` + `ignored`
-// options beside the watchers in `flaitronWatch.ts`.
-export function watchSets(projects: Iterable<ProjectDescriptor>): WatchSets {
-  const hot: string[] = [];
-  const archive: string[] = [];
-  for (const p of projects) {
-    hot.push(p.planPath, p.tasknoteDir);
-    archive.push(p.archiveDir);
-  }
-  return { hot, archive };
+// directory name would corrupt the path rather than protect it.
+export function watchRoots(projects: Iterable<ProjectDescriptor>): string[] {
+  return [...projects].map((p) => dirname(p.planPath));
 }
 
 // Active tasknotes live directly in tasknoteDir. Archive files live one

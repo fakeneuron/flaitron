@@ -27,11 +27,11 @@ import {
   createHeartbeat,
   createOnWatchError,
   createOnWatchEvent,
+  hotWatchOptions,
   SSE_DEBOUNCE_MS,
   SSE_HEARTBEAT_MS,
-  WATCH_HOT_OPTIONS,
 } from './src/flaitronWatch.ts';
-import { watchSets } from './src/watchSet.ts';
+import { watchRoots } from './src/watchSet.ts';
 
 // Static nonce stamped onto every Vite-injected <script> (the React-refresh
 // preamble and @vite/client) via `html.cspNonce`, and echoed in the dev CSP's
@@ -77,25 +77,23 @@ function flaitronApi(): Plugin {
       const latestRelease = await latestReleaseTag(fileURLToPath(new URL('.', import.meta.url)));
 
       if (server.httpServer) {
-        const { hot, archive } = watchSets(discovered);
+        const roots = watchRoots(discovered);
         const onWatchEvent = createOnWatchEvent({
           projects: projects.values(),
           archiveCache,
           broadcast: changeBroadcaster,
         });
 
-        // Hot set (PLAN.md + active tasknotes) must poll: FSEvents does not
-        // reliably fire inside symlinked project roots.
-        if (hot.length > 0) {
-          hotWatcher = chokidar.watch(hot, WATCH_HOT_OPTIONS);
+        if (roots.length > 0) {
+          // Hot set (PLAN.md + active tasknotes) must poll: FSEvents does not
+          // reliably fire inside symlinked project roots.
+          hotWatcher = chokidar.watch(roots, hotWatchOptions(discovered));
           hotWatcher.on('all', onWatchEvent);
           hotWatcher.on('error', createOnWatchError('hot'));
-        }
 
-        // Archives are write-once and fleet-scale (~thousands of files). Native
-        // watch is cheap here; polling them at 200ms would waste CPU at this scale.
-        if (archive.length > 0) {
-          archiveWatcher = chokidar.watch(archive, archiveWatchOptions(archive));
+          // Archives are write-once and fleet-scale (~thousands of files). Native
+          // watch is cheap here; polling them at 200ms would waste CPU at this scale.
+          archiveWatcher = chokidar.watch(roots, archiveWatchOptions(discovered));
           archiveWatcher.on('all', onWatchEvent);
           archiveWatcher.on('error', createOnWatchError('archive'));
         }

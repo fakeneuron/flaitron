@@ -18,7 +18,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 - [ ] **FE-EPIC-127** [medium]🧩 | viz-failure-paths — Discovery supplied by audit-repo 2026-10-10. Surfaced by audit-repo 2026-10-10 (Theme: viz dev-server failure paths)
   - [x] **FE-127.2** [light]🔧 [unattended] | devapi-guarded-catch — Completed 2026-10-11.
   - [x] **FE-127.3** [light]🔧 [unattended] | viz-boundary-claims — Completed 2026-10-11.
-  - [ ] **FE-127.4** [medium]🧩 [unattended] | watch-late-dirs — when `tasknote/` or `tasknote/archive/` is absent at dev-server start, chokidar watches the parent and counts depth from there, so later notes never fire (`viz/src/flaitronWatch.ts` + `watchSet.ts`); watch each project's `.flaitron/` root with the depth and `ignored` reach re-anchored, and test creating the archive dir after start.
+  - [x] **FE-127.4** [medium]🧩 [unattended] | watch-late-dirs — Completed 2026-10-11.
   - [ ] **FE-127.N** [medium]🧩 | viz-failure-paths audit
 - [ ] **FE-128** [light] | viz-host-pin — Pin `server.host` to loopback in `viz/vite.config.ts` so `vite --host` cannot expose the page, `/src/*`, `/@fs/`, or HMR; FE-127.3's peer guard covers `/api/*` only.
 

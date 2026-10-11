@@ -1258,6 +1258,26 @@ describe('skill-rename migration (CORE-769.7)', { concurrency: GROUP_CONCURRENCY
     assert.equal(dirty.some((entry) => entry.path === '.claude/skills/ft-old'), false);
   });
 
+  it('plan: the real map folds ft-micro-task into an adopter\'s wired ft-task (CORE-778.3)', async () => {
+    const adopter = await makeAdopter(root, 'micro-fold', previous);
+    for (const [dir, platform] of [['.claude', 'claude'], ['.agents', 'codex']]) {
+      await mkdir(join(adopter.repo, dir, 'skills'), { recursive: true });
+      for (const leaf of ['ft-task', 'ft-micro-task']) {
+        await symlink(`../../.flaitron/core/${platform}/skills/${leaf}`, join(adopter.repo, dir, 'skills', leaf));
+      }
+    }
+    await gitQuiet(adopter.repo, 'add', '-A');
+    await gitQuiet(adopter.repo, 'commit', '-q', '-m', 'wire micro');
+    const plan = await skillLinkPlan(adopter.repo, SKILL_RENAME);
+    assert.deepEqual(
+      plan.map(({ path, kept, newPath }) => ({ path, kept, newPath })).sort((a, b) => a.path.localeCompare(b.path)),
+      [
+        { path: '.agents/skills/ft-micro-task', kept: '.agents/skills/ft-task', newPath: undefined },
+        { path: '.claude/skills/ft-micro-task', kept: '.claude/skills/ft-task', newPath: undefined },
+      ],
+    );
+  });
+
   it('classify: a crossing range carries the rename and counts links + mentions', async () => {
     const adopter = await makeAdopter(root, 'classify', previous);
     await addRenameLinks(adopter.repo);

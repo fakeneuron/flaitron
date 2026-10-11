@@ -14,18 +14,17 @@ in `SPEC.md`; read it before starting non-trivial work.
 - Lazy workflow modules live in `SPEC/` and are loaded when the task shape
   calls for them.
 - Start a task with `/ft-task <TASK-ID>`; peer skills:
-  `/ft-micro-task`,
   `/ft-file-task` (`--park`, `--starter`; flags: `SPEC/tasknote-selection.md`),
   `/ft-open-epic`, `/ft-close-epic`, `/ft-refactor`, `/ft-release`.
 - `/ft-task` flags: `--debug` (hypothesis-first bug cadence), `--loop` (iterate
   Phase 2↔3 to a machine-checkable target — `SPEC/loop.md`), `--micro`
   (one `## ⚡ Notes` log in place of the phase checklists), `--fast`
-  (suppresses conditional gates; also on `/ft-micro-task`; `/ft-refactor`'s
-  own `--fast` only skips its review pause),
+  (suppresses conditional gates; `/ft-refactor`'s own `--fast` only skips
+  its review pause),
   and `--unattended` (no operator present: gates park the tasknote instead of
   asking; never together with `--fast` — `SPEC/gate-postures.md`
-  §"`--unattended` operator posture"). `/ft-micro-task`, `/ft-close-epic`, and
-  `/ft-file-task` take `--unattended` too.
+  §"`--unattended` operator posture"). `/ft-close-epic` and `/ft-file-task`
+  take `--unattended` too.
   <!-- KEEP IN SYNC — guards the roster above AND the path-convention bullets
        (Plans / tasknotes / archive locations) further up this section. Mirror: the KEEP
        IN SYNC comment above claude/AGENTS-snippet.md's paste-block fence.

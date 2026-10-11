@@ -59,9 +59,10 @@
 // is lifted past that one migration-bearing tag, for either layout, and the
 // apply re-wires tracked skill links in the same commit, inside the same
 // rollback window: a link to a renamed slug (`ft-seed` → `ft-seed-unattended`,
-// per SKILL_RENAME.map) is swapped to the new name, and a link into the retired
-// claude/commands/ is removed, as is a per-project link to a slug renamed into a
-// global-only skill. Links the adopter edited without committing stay put.
+// per SKILL_RENAME.map) is swapped to the new name — or pruned when the new
+// name is already wired, the `ft-micro-task` → `ft-task` fold's normal case —
+// and a link into the retired claude/commands/ is removed, as is a per-project
+// link to a slug renamed into a global-only skill. Links the adopter edited without committing stay put.
 // The report counts the swapped and pruned links, the tracked files that still
 // name an old slug (the AGENTS.md paste-block, the adopter's own skills and
 // docs), and any real file left in .claude/commands/ (an audit fork's copied
@@ -153,10 +154,11 @@ const PRE_RENAME_SUBMODULE_PATH = join(PRE_RENAME_DIR, 'core');
 // The release that ships the rename. Its own Migration block is the move
 // applyMigrate performs, so only this tag is lifted from the migration gate.
 const RENAME_TAG = 'v6.0.0';
-// The release that hard-cut four skill slugs (CORE-EPIC-769) and retired the
-// claude/commands/ stubs (CORE-769.2). Its link work is what skillLinkPlan
-// plans, so only this tag is lifted. docs/MIGRATION.md's retired-skills table
-// is the human SSOT for the map; a test holds the two in step.
+// The release that hard-cut four skill slugs (CORE-EPIC-769), folded
+// ft-micro-task into ft-task (CORE-778.3), and retired the claude/commands/
+// stubs (CORE-769.2). Its link work is what skillLinkPlan plans, so only this
+// tag is lifted. docs/MIGRATION.md's retired-skills table is the human SSOT for
+// the map; a test holds the two in step.
 const SKILL_RENAME = {
   tag: 'v7.0.0',
   map: {
@@ -164,6 +166,9 @@ const SKILL_RENAME = {
     'ft-epic-discovery': 'ft-open-epic',
     'ft-new-project': 'ft-adopt',
     'ft-seed': 'ft-seed-unattended',
+    // A fold, not a rename: every adopter already wires ft-task, so the plan
+    // prunes the old link and keeps theirs.
+    'ft-micro-task': 'ft-task',
   },
   // Global-only by contract (MIGRATION's ft-new-project row): a per-project
   // link to the old name is pruned, never swapped to a per-project new one.

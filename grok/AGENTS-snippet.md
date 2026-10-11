@@ -48,7 +48,6 @@ flaitron submodule at `.flaitron/core`:
 mkdir -p .grok/skills
 ln -s ../../.flaitron/core/claude/skills/ft-close-epic .grok/skills/ft-close-epic
 ln -s ../../.flaitron/core/claude/skills/ft-file-task .grok/skills/ft-file-task
-ln -s ../../.flaitron/core/claude/skills/ft-micro-task .grok/skills/ft-micro-task
 ln -s ../../.flaitron/core/claude/skills/ft-open-epic .grok/skills/ft-open-epic
 ln -s ../../.flaitron/core/claude/skills/ft-refactor .grok/skills/ft-refactor
 ln -s ../../.flaitron/core/claude/skills/ft-seed-unattended .grok/skills/ft-seed-unattended

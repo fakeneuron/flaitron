@@ -34,7 +34,7 @@ Check: `pair_c` — no file in `templates/` may carry a `../../PLAN.md` back-lin
 | Template | Written by | Write target |
 |---|---|---|
 | `tasknote-template.md` | `/ft-task` (`--loop` included), `/ft-open-epic`, `/ft-close-epic`, `/ft-release` | `.flaitron/tasknote/<ID>.md` |
-| `tasknote-micro-template.md` | `/ft-micro-task` | `.flaitron/tasknote/<ID>.md` |
+| `tasknote-micro-template.md` | `/ft-task --micro` | `.flaitron/tasknote/<ID>.md` |
 | `tasknote-starter-template.md` | `/ft-file-task --starter` | `.flaitron/tasknote/<ID>.md` |
 | `sidequest-template.md` | `/ft-file-task --park` | `.flaitron/sidequest/<ID>.md` |
 | `spec-template.md` | by hand (no skill since CORE-573) | `.flaitron/specs/<slug>.md` (no back-link today) |

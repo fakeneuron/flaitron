@@ -44,7 +44,6 @@ after adding the flaitron submodule at `.flaitron/core`:
 mkdir -p .cursor/skills
 ln -s ../../.flaitron/core/claude/skills/ft-close-epic .cursor/skills/ft-close-epic
 ln -s ../../.flaitron/core/claude/skills/ft-file-task .cursor/skills/ft-file-task
-ln -s ../../.flaitron/core/claude/skills/ft-micro-task .cursor/skills/ft-micro-task
 ln -s ../../.flaitron/core/claude/skills/ft-open-epic .cursor/skills/ft-open-epic
 ln -s ../../.flaitron/core/claude/skills/ft-refactor .cursor/skills/ft-refactor
 ln -s ../../.flaitron/core/claude/skills/ft-seed-unattended .cursor/skills/ft-seed-unattended

@@ -241,6 +241,6 @@ Do **not** commit unprompted. Commit on the user's go, then stop — `/ft-update
 
 - **Adopter-only — inverse of `/ft-release`.** `/ft-release` runs only in flaitron's own checkout; `/ft-update` runs only in adopter projects. Both are layout-guarded; `/ft-update` is wired repo-scoped (Step 4.7 reports an agent-home copy).
 - **Submodule path is resolved, not assumed.** Step 0 reads the real path from `.gitmodules`; a pre-rename `.flowtron/` layout stops with a pointer to the v6 move rather than bumping in place.
-- **Thin procedural skill.** No tasknote, no 4-phase flow. If you want the bump tracked in PLAN.md, file a line first (e.g. `**<AREA>-NNN** [light] | bump flaitron <target>`) or wrap it in `/ft-micro-task`; `/ft-update` itself just performs the mechanical bump.
+- **Thin procedural skill.** No tasknote, no 4-phase flow. If you want the bump tracked in PLAN.md, file a line first (e.g. `**<AREA>-NNN** [light] | bump flaitron <target>`) or wrap it in `/ft-task <ID> --micro`; `/ft-update` itself just performs the mechanical bump.
 - **Why not `git submodule update`.** Plain `git submodule update` checks out the commit recorded in the superproject index — it restores the *current* pin, not a new one. Bumping requires checking out the new tag inside the submodule and re-recording the gitlink with `git add <FT>` (Step 3).
 - **Supersedes the manual prose.** Replaces `claude/AGENTS-snippet.md` §"Bumping the pinned flaitron version" as the executable path; the prose now points here.

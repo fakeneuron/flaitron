@@ -201,7 +201,7 @@ and is dispatchable by an operator-less caller that reads the marker
   next write.
 - **Seeds, never repairs.** A mis-positioned existing token, a `[handoff]`
   that reads stale, a `Blocked by` that has since cleared — all reported or
-  skipped, none rewritten. Row repair is a hand edit or a `/ft-micro-task`.
+  skipped, none rewritten. Row repair is a hand edit or a `/ft-task --micro`.
 - **Idempotent.** A second run walks the same plan, skips every row the first
   run seeded, and offers only what the predicate admits among the rest —
   typically rows filed since. Nothing it writes can make a row *less*

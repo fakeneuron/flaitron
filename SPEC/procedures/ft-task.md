@@ -49,13 +49,15 @@ equivalent where a step calls for one (full ledger:
 | **autonomous mode** | The operator may ask you to run without stopping at the conditional gates (Claude Code exposes this as `--fast`). Honor it as described under each gate; the concept is platform-neutral, the flag syntax is not. It is also **implied by a PLAN.md row's `[unattended]` marker** when no mode was requested — see Step 1. |
 | **debug mode** | The operator may ask you to drive the task hypothesis-first because the root cause is not yet known (Claude Code exposes this as `--debug`). **Explicit opt-in only** — never infer it from a bug-shaped task description. It adds *content* to Phases 1–4 and no mechanics: no new phase, template, banner, or gate. When requested, **read [`claude/skills/ft-task/step-4-debug-mode.md`](../../claude/skills/ft-task/step-4-debug-mode.md) now** — the mode's single body for Phases 1–4 (the Claude wiring reads the same file). Read its `--fast` / `fast-mode` as autonomous mode and `AskUserQuestion` as a structured ask. |
 | **loop mode** | The operator may ask you to run the task as an execute→verify loop because "done" is one or more machine-checkable commands (Claude Code exposes this as `--loop`). **Explicit opt-in only.** It changes the Phase 2↔3 drive, not the phases; cycles run autonomously, destructive steps park. Read [`SPEC/loop.md`](../loop.md) and [`claude/skills/ft-task/step-5-loop-mode.md`](../../claude/skills/ft-task/step-5-loop-mode.md) now. Apply its scaffold addendum and strict Acceptance rule, replace the plain Phase 2↔3 drive with its cycle procedure, and run its one-time taste checks and external review after convergence. Translate `fast-mode` to autonomous mode and `AskUserQuestion` to a structured ask. |
+| **micro mode** | The operator may ask for a micro-sized record (Claude Code exposes this as `--micro`). **Explicit opt-in only.** Same phases, gates, and closure; the note keeps the spec on top and logs each phase as lines in one `## ⚡ Notes` section. Read [`claude/skills/ft-task/micro-mode.md`](../../claude/skills/ft-task/micro-mode.md) now. Refuses loop and debug mode. |
 | **unattended mode** | The caller may declare that **no operator is present to answer a gate** (Claude Code exposes this as `--unattended`). It supersets autonomous mode's *autonomy* — nothing ever blocks waiting for an answer — plus exactly one added behavior: the six gates an operator-less run cannot answer **park the tasknote** instead of firing a banner into an empty session. It does **not** inherit autonomous mode's two *delegating* suppressions: the visual-confirmation ask hands the check to a present operator, and the Re-scope notice hands drift awareness to that operator. With nobody present both convert to parks rather than vanishing. Full contract, including which six and what a park writes: [`SPEC/gate-postures.md` §"`--unattended` operator posture"](../gate-postures.md). |
 
 Autonomous mode and debug mode are **orthogonal and compose** (the repro
 re-verify is not a gate autonomous mode may suppress). Loop mode composes the
 same way — autonomous mode reaches only its pre-loop Phase 1 surface, since
 the loop already runs autonomously.
-Unattended mode composes with all three — it is autonomous mode plus parking,
+Micro mode composes with autonomous mode.
+Unattended mode composes with all four — it is autonomous mode plus parking,
 never a replacement for any of them.
 
 **Parking, in one paragraph.** Under unattended mode a converted gate flips the
@@ -100,7 +102,7 @@ fallback if your surface strips emoji. Full vocabulary:
 
 ### 0 — Interpret invocation flags
 
-Accept `--fast` / `-f`, `--debug` / `-d`, `--loop`, and `--unattended`
+Accept `--fast` / `-f`, `--debug` / `-d`, `--loop`, `--micro`, and `--unattended`
 as an unordered set. When trailing tokens are present, read
 [`claude/skills/ft-task/step-0-flags.md`](../../claude/skills/ft-task/step-0-flags.md)
 and follow its flag validation, inline markers, and conditional fragment loads.

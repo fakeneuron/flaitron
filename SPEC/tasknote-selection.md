@@ -78,16 +78,17 @@ ID, and continues the main session inline; where it conflicts with the default
 follow-up contract, park mode wins. Cadence: the `park-mode.md` fragment. Drop `--park` for the review gate; switch to `--starter` (they do not
 compose) when context must persist beyond a stub.
 
-**File a micro-tasknote (`/ft-micro-task <ID>`) when:**
+**File a micro-tasknote (`/ft-task <ID> --micro`) when:**
 
 - The task is above the skip threshold, single-file or near it, with no design tradeoffs worth multiple subtasks — you still want the relevance / drift / archive-skim / pattern-survey contracts
 
-A micro-tasknote replaces the four phase checklists with one `## ⚡ Notes`
-section of bold-prefix prompts (relevance / drift / archive / pattern /
-implementation); closure flips PLAN.md and archives like a normal tasknote.
-`/ft-micro-task` scaffolds, executes, and closes in one conversation.
+A micro-tasknote keeps the spec on top (🎯 Goal / ✅ Acceptance / 🧩 Subtasks)
+and replaces the four phase checklists with one `## ⚡ Notes` log of
+bold-prefix lines; the phases, gates, and closure are `/ft-task`'s own. A
+`Re-scope` verdict converts it to the full shape in place. Cadence: the
+`micro-mode.md` fragment the flag loads.
 
-**Skip the micro-tasknote (use `/ft-task` instead) when:**
+**Skip the micro-tasknote (use plain `/ft-task` instead) when:**
 
 - The task touches multiple files or has design tradeoffs
 - The 4-phase log would carry useful state downstream

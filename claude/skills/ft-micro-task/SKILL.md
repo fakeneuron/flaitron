@@ -6,6 +6,8 @@ argument-hint: <TASK-ID> [--fast | -f] [--unattended]
 
 # micro-task — flaitron micro-tasknote runner
 
+> **Superseded — redirect only.** Since CORE-778.2 the micro shape runs on the one runner as `/ft-task <ID> --micro`, and `templates/tasknote-micro-template.md` is rewritten for that mode; this skill retires at CORE-778.3. **Do not run the steps below** — they no longer match the template. Write nothing, print `⛔ superseded by the one runner — run /ft-task <ID> --micro` (carrying any `--fast` / `--unattended` passed), and stop.
+
 You are starting **and completing** a micro-tasknote for the task ID provided in `args` (e.g., `CORE-050`). The full workflow contract lives in flaitron's `SPEC.md` — this skill is the executable interpretation, not a replacement. Treat SPEC.md as authoritative when this file is silent or in tension.
 
 A **micro-tasknote** is a single-section lightweight tasknote for tasks above the skip-tasknote threshold (more than a one-line typo, more than ~10 doc lines) but small enough that the full 4-phase ceremony is overkill — typically small audits, focused doc patches, single-file behavior tweaks with no design tradeoffs to record. The non-negotiable contracts (relevance, drift, archive skim, best-practices review, and pattern survey) survive as **bold-prefix prompts** in a single `## ⚡ Notes` section rather than checklist boxes. Closure is one step (recap + flip PLAN + archive).

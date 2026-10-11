@@ -18,7 +18,8 @@ in `SPEC.md`; read it before starting non-trivial work.
   `/ft-file-task` (`--park`, `--starter`; flags: `SPEC/tasknote-selection.md`),
   `/ft-open-epic`, `/ft-close-epic`, `/ft-refactor`, `/ft-release`.
 - `/ft-task` flags: `--debug` (hypothesis-first bug cadence), `--loop` (iterate
-  Phase 2↔3 to a machine-checkable target — `SPEC/loop.md`), `--fast`
+  Phase 2↔3 to a machine-checkable target — `SPEC/loop.md`), `--micro`
+  (one `## ⚡ Notes` log in place of the phase checklists), `--fast`
   (suppresses conditional gates; also on `/ft-micro-task`; `/ft-refactor`'s
   own `--fast` only skips its review pause),
   and `--unattended` (no operator present: gates park the tasknote instead of

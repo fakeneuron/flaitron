@@ -1,20 +1,24 @@
 # Step 0 — Flag parse, markers, and mode dispatch (executable steps)
 
-> Lazy-loaded SKILL fragment. Loaded by `task` SKILL.md Step 0 when `rest` — the tokens after `TASK-ID` — is non-empty. Carries the flag walk, the per-flag inline markers, the four mode definitions with their fragment dispatches, and the composition rule. A flagless run never reads it. See `claude/skills/ft-task/SKILL.md` for the always-loaded core flow.
+> Lazy-loaded SKILL fragment. Loaded by `task` SKILL.md Step 0 when `rest` — the tokens after `TASK-ID` — is non-empty. Carries the flag walk, the per-flag inline markers, the five mode definitions with their fragment dispatches, and the composition rule. A flagless run never reads it. See `claude/skills/ft-task/SKILL.md` for the always-loaded core flow.
 
-`fast-mode`, `debug-mode`, `loop-mode`, and `unattended-mode` were all initialized to `false` by the body before this Read. `rest` is an **unordered flag set** — recognize each token independently; order never matters, and any combination may appear together. Walk the tokens:
+`fast-mode`, `debug-mode`, `loop-mode`, `unattended-mode`, and `micro-mode` were all initialized to `false` by the body before this Read. `rest` is an **unordered flag set** — recognize each token independently; order never matters, and any combination may appear together. Walk the tokens:
 
 - **`--fast` or `-f`** → set `fast-mode = true`.
 - **`--debug` or `-d`** → set `debug-mode = true`.
 - **`--loop`** (no short alias) → set `loop-mode = true`.
 - **`--unattended`** (no short alias) → set `unattended-mode = true` **and** `fast-mode = true` — the posture supersets `--fast`'s autonomy — not its 👁️ delegation — so the operator never passes both.
-- **Any unrecognized token** → surface a one-line usage notice (``Unknown arg `<arg>`. Usage: `/ft-task <TASK-ID> [--debug] [--loop] [--fast] [--unattended]`.``) and ask via AskUserQuestion whether the user meant `--fast`, `--debug`, `--loop`, `--unattended`, the default flow, or to abort. Do not proceed silently.
+- **`--micro`** (no short alias) → set `micro-mode = true`.
+- **Any unrecognized token** → surface a one-line usage notice (``Unknown arg `<arg>`. Usage: `/ft-task <TASK-ID> [--debug] [--loop] [--micro] [--fast] [--unattended]`.``) and ask via AskUserQuestion whether the user meant `--fast`, `--debug`, `--loop`, `--micro`, `--unattended`, the default flow, or to abort. Do not proceed silently.
+
+**`--micro` refuses `--loop` and `--debug`.** When the walk ends with `micro-mode` and either of them set, surface ``--micro does not compose with `<flag>` (it needs the phase sections a micro note collapses).`` and ask via AskUserQuestion which flag to drop, or to abort. Under `--unattended`, terminate and write nothing with `⏸ --unattended stop — flag-conflict: --micro with <flag>. No tasknote written.`
 
 After path resolution, emit one inline marker per active flag (all of them, when several are set) — except that `--unattended`'s marker replaces `--fast`'s, since it names the superset:
 
 - `fast-mode` → `⚡ --fast active — 👁️ frontend ask and 📦 signal trips suppressed; Re-scope downgrades to an inline ⚠️ notice, De-scope still fires 🛠️ (🛠️ banner is no-op for routine trips under default-skip flavor).`
 - `debug-mode` → `🔬 --debug active — hypothesis-first Phase 1 scaffolding + Phase 3 repro re-verify. Guidance, not a gate; no new banners.`
 - `loop-mode` → `🔁 --loop active — Phase 2↔3 runs as an execute→verify loop under SPEC/loop.md: every Acceptance criterion needs a verify command, 📦 collapses to commit-per-verified-iteration, 👁️ defers to one post-loop ask, destructive steps park.`
+- `micro-mode` → `🪶 --micro active — one-section ⚡ Notes log under the spec on top; same phases, gates, and closure, recorded as lines instead of checklists.`
 - `unattended-mode` → `⚡ --unattended active — no operator present: --fast's 📦 and 🛠️ suppressions apply, and the six gates an operator-less run cannot answer — 👁️ included — park the tasknote instead of firing a banner.`
 
 Then continue to Step 1.
@@ -27,4 +31,6 @@ Then continue to Step 1.
 
 `unattended-mode` — nobody is present to answer a gate. **When `unattended-mode = true`, Read `<SKILL_DIR>/unattended-mode.md` now** (and `<SPEC_DIR>/gate-postures.md` + `<SPEC_DIR>/blocked.md` alongside it — the posture's contract, and the `park-reason:` codes every conversion writes); it carries the park recipe, the per-runner conversion map, and the pre-scaffold stop split. The body's Step 0 posture paragraph names the gates it converts; the steps themselves do not restate it. Contract: SPEC/gate-postures.md §"`--unattended` operator posture".
 
-The flags are orthogonal and compose in any order; `--debug`'s Phase 3 repro re-verify is not a signal trip `--fast` may suppress, and `--loop`'s per-cycle verify is the loop's own gate rather than one `--fast` collapses.
+`micro-mode` — the task is above the skip threshold but too small for four phase checklists to earn their keep. **When `micro-mode = true`, Read `<SKILL_DIR>/micro-mode.md` now** — it carries the existing-note shape rule, the template swap, where each phase's record lands in the `## ⚡ Notes` log, and the Re-scope convert-in-place; it is referenced at Steps 2, 3b, 4, and 5. **Explicit-opt-in only** — the operator picks the ceremony tier at invocation (`SPEC/tasknote-selection.md` §"When to use a tasknote (and when not to)").
+
+The flags are orthogonal and compose in any order — except `--micro`, which refuses `--loop` and `--debug` (above); `--debug`'s Phase 3 repro re-verify is not a signal trip `--fast` may suppress, and `--loop`'s per-cycle verify is the loop's own gate rather than one `--fast` collapses.

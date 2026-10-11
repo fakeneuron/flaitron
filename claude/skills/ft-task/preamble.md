@@ -2,7 +2,7 @@
 
 > SKILL fragment — **shared, every-run** (not lazy). Loaded by `/ft-task` and `/ft-micro-task` at their Step 1 on every run. The file is owned by `claude/skills/ft-task/`; `/ft-micro-task` resolves it through its `<PREAMBLE>` path. Each runner calls the three sections below from its own steps — §"Locate and capture", then §"Pre-flight", then §"Model gate" — and adds its own deltas there. Pre-flight runs first so every model-gate write (a retag, a legacy tag, an `--unattended` model-mismatch park) lands only in a tree the foreign-dirt gate has passed — clean but for this ID's own tasknote, which §"Pre-flight" exempts. See SPEC.md for every contract cited here.
 >
-> **`<SKILL>` below stands for the invoking skill's own slash command, flags included** — `/ft-task` (with whatever of `--debug` / `--loop` / `--fast` / `--unattended` was passed) or `/ft-micro-task`. Never hard-code a bare `/ft-task`; a re-entry without its flags drops the run's shape.
+> **`<SKILL>` below stands for the invoking skill's own slash command, flags included** — `/ft-task` (with whatever of `--debug` / `--loop` / `--micro` / `--fast` / `--unattended` was passed) or `/ft-micro-task`. Never hard-code a bare `/ft-task`; a re-entry without its flags drops the run's shape.
 
 ## Locate and capture
 

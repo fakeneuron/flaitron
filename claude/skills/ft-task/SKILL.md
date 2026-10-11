@@ -1,14 +1,14 @@
 ---
 name: ft-task
-description: Start a flaitron tasknote for a normal-sized, multi-step, or design-tradeoff-bearing task and drive it through the SPEC's 4-phase workflow. With `--debug` (`-d`), runs hypothesis-first for bugs. With `--loop`, iterates Phase 2/3 until a machine-checkable check passes. With `--fast` (`-f`), suppresses conditional gates. With `--unattended`, runs operator-less, parking at gates instead of asking.
-argument-hint: <TASK-ID> [--debug | -d] [--loop] [--fast | -f] [--unattended]
+description: Start a flaitron tasknote for a normal-sized, multi-step, or design-tradeoff-bearing task and drive it through the SPEC's 4-phase workflow. With `--debug` (`-d`), runs hypothesis-first for bugs. With `--loop`, iterates Phase 2/3 until a machine-checkable check passes. With `--micro`, records a micro-sized task in one ⚡ Notes log instead of four phase checklists. With `--fast` (`-f`), suppresses conditional gates. With `--unattended`, runs operator-less, parking at gates instead of asking.
+argument-hint: <TASK-ID> [--debug | -d] [--loop] [--micro] [--fast | -f] [--unattended]
 ---
 
 # task — flaitron tasknote runner
 
 You are starting a tasknote for the task ID provided in `args` (e.g., `CORE-004`). The full workflow contract lives in flaitron's `SPEC.md` — this skill is the executable interpretation, not a replacement. Treat SPEC.md as authoritative when this file is silent or in tension.
 
-If `args` is missing or its first token doesn't match `<AREA>-<NUMBER>` (or `<AREA>-<NUMBER>.<SUB>` for epic subtasks), stop and ask the user for a valid task ID. Do not guess. Trailing `--fast` / `-f`, `--debug` / `-d`, `--loop`, and `--unattended` flags are the only other accepted tokens — see Step 0.
+If `args` is missing or its first token doesn't match `<AREA>-<NUMBER>` (or `<AREA>-<NUMBER>.<SUB>` for epic subtasks), stop and ask the user for a valid task ID. Do not guess. Trailing `--fast` / `-f`, `--debug` / `-d`, `--loop`, `--micro`, and `--unattended` flags are the only other accepted tokens — see Step 0.
 
 ## Step 0 — Resolve paths
 
@@ -24,13 +24,13 @@ If neither matches, bail.
 Paths this skill uses:
 - SPEC: `<root>SPEC.md` (always loaded core)
 - SPEC_DIR (lazy modules `epic.md` · `starter.md` · `blocked.md` · `model.md` · `loop.md` · `versioning.md` · `gate-postures.md` · `post-closure.md`): `<root>SPEC/`
-- SKILL_DIR (`preamble.md` — **every-run**, shared with `/ft-micro-task`; lazy fragments `step-0-flags.md` · `step-1.5-model-edge.md` and `unattended-mode.md` — both shared, also loaded by `/ft-micro-task` — · `step-3a-promote-starter.md` · `step-3c-resume-blocked.md` · `step-4-debug-mode.md` · `step-5-loop-mode.md`): `<root>claude/skills/ft-task/`
-- Template: `<root>templates/tasknote-template.md`
+- SKILL_DIR (`preamble.md` — **every-run**, shared with `/ft-micro-task`; lazy fragments `step-0-flags.md` · `step-1.5-model-edge.md` and `unattended-mode.md` — both shared, also loaded by `/ft-micro-task` — · `step-3a-promote-starter.md` · `step-3c-resume-blocked.md` · `step-4-debug-mode.md` · `step-5-loop-mode.md` · `micro-mode.md`): `<root>claude/skills/ft-task/`
+- Template: `<root>templates/tasknote-template.md` (`--micro`: `<root>templates/tasknote-micro-template.md`)
 - PLAN: `.flaitron/PLAN.md`, tasknote dir: `.flaitron/tasknote/` (always)
 
 Subsequent steps name what to Read; the SPEC contract + matching SKILL fragment typically load in parallel.
 
-**Parse `args`.** Split on whitespace into `(TASK-ID, rest...)`. Initialize `fast-mode = false`, `debug-mode = false`, `loop-mode = false`, and `unattended-mode = false`. If `rest` is empty, continue to Step 1 — the default flow, which reads nothing further here. Otherwise **Read `<SKILL_DIR>/step-0-flags.md` now** and follow it: it walks `rest` as an unordered flag set, stops on any unrecognized token, emits one inline marker per active flag, defines the four modes, and dispatches the per-mode fragments (`step-4-debug-mode.md`; `step-5-loop-mode.md` + `<SPEC_DIR>/loop.md`; `unattended-mode.md` + `<SPEC_DIR>/blocked.md`); then continue to Step 1.
+**Parse `args`.** Split on whitespace into `(TASK-ID, rest...)`. Initialize `fast-mode = false`, `debug-mode = false`, `loop-mode = false`, `unattended-mode = false`, and `micro-mode = false`. If `rest` is empty, continue to Step 1 — the default flow, which reads nothing further here. Otherwise **Read `<SKILL_DIR>/step-0-flags.md` now** and follow it: it walks `rest` as an unordered flag set, stops on any unrecognized token, emits one inline marker per active flag, defines the five modes, and dispatches the per-mode fragments (`step-4-debug-mode.md`; `step-5-loop-mode.md` + `<SPEC_DIR>/loop.md`; `micro-mode.md`; `unattended-mode.md` + `<SPEC_DIR>/blocked.md`); then continue to Step 1.
 
 **When `unattended-mode = true`, the steps below do not restate the posture.** Every gate that would ask an operator — the Step 1.5 concrete-model STOP, the Step 4 drift carve-out, a destructive-action escalation or prerequisite ✋ `ACTION` in Phase 2, the Phase 3 👁️ ask, a queued in-📦 prompt at Step 6 — parks the tasknote instead (the concrete-model STOP on an existing starter/blocked note or sidequest stub terminates and writes nothing), with the `park-reason:` code keyed to this skill's step in `<SKILL_DIR>/unattended-mode.md` §"Conversion map"; the Step 1 pre-flight checks, the in-flight refusal included, terminate and write nothing (§"Pre-scaffold stops"). The posture sets `fast-mode = true` but does **not** inherit `--fast`'s two delegations — the 👁️ suppression and the Re-scope downgrade both park — and it relaxes neither the paper-complete guard nor the downstream-impact confirm (§"What `--unattended` never relaxes").
 
@@ -52,6 +52,7 @@ Run the preamble's §"Model gate". **Satisfied** proceeds to Step 2.
   - **`status: starter`** — starter tasknote awaiting promotion. Continue at **Step 3a (Promote a starter)**.
   - **`status: blocked`** — parked tasknote awaiting resume. Continue at **Step 3c (Resume a blocked tasknote)**.
   - **File absent** — fresh scaffold path. Continue at **Step 3b (Scaffold a fresh tasknote)**.
+- **When `micro-mode = true` on an existing note, or a blocked note carries `## ⚡ Notes`**, the note's shape decides the mode — apply `<SKILL_DIR>/micro-mode.md` §"Step 2" (Read it now if Step 0 did not) before taking the branch.
 
 ## Step 3a — Promote a starter (existing file with `status: starter`)
 
@@ -73,6 +74,8 @@ Copy the template (path resolved in Step 0) to `.flaitron/tasknote/<TASK-ID>.md`
 
 🎯 Goal is derived from the PLAN.md line at scaffold; ask the user if it's too terse for a clear one-sentence goal. ✅ Acceptance and 🧩 Subtasks are empty checklists at scaffold, populated during Phase 1 Discovery.
 
+**When `micro-mode = true`**, copy the micro template instead and apply `<SKILL_DIR>/micro-mode.md` §"Step 3b".
+
 **When `loop-mode = true`**, apply the scaffold addendum in `<SKILL_DIR>/step-5-loop-mode.md` §"Step 3b" — the three additive `loop:` / `loop-max:` / `loop-last-run:` keys and the `## 🔁 Iterations` section.
 
 Then continue at **Step 4 (Phase 1: Discovery)**.
@@ -88,6 +91,8 @@ Once the fragment has read the parked note, **name the `park-reason:` being clea
 Work through the Phase 1 checklist per SPEC §"📝 Phase 1: Discovery". Re-scope and De-scope behavior is canonical there; the Re-scope-to-blocked path defers to `<SPEC_DIR>/blocked.md` (Read it if Discovery surfaces a real-but-blocked prerequisite).
 
 **When `debug-mode = true`** (from Step 0): run the four hypothesis-first prompts from `<SKILL_DIR>/step-4-debug-mode.md` §"Phase 1" after the Relevance Assessment, recording answers in Discovery Notes. They sit *inside* this checklist — they add no box and no gate, and the exit-gate judgment below is unchanged.
+
+**When `micro-mode = true`**: the checklist below is recorded as lines in the `## ⚡ Notes` log, and a `Re-scope` verdict converts the note to the full shape before the exit gate routes it — `<SKILL_DIR>/micro-mode.md` §"Step 4".
 
 Skill-specific imperatives on top of the SPEC contract:
 
@@ -113,6 +118,8 @@ Skill-specific imperatives on top of the SPEC contract:
 After the Phase 1→2 cue clears, Phase 2 → Phase 3 → Phase 4 closure ops
 flow continuously without an intermediate gate. The next operator-gate
 cue is the 📦 ready-to-commit banner in Step 6.
+
+**When `micro-mode = true`**, Phases 2–4 below run as written and record in the `## ⚡ Notes` log — `<SKILL_DIR>/micro-mode.md` §"Step 5".
 
 **When `loop-mode = true`**, Phase 2 and Phase 3 below are replaced by the inline execute→verify loop in `<SKILL_DIR>/step-5-loop-mode.md` §"Step 5" (per-cycle relevance gate, commit-per-verified-iteration, `loop-max` soft stop, destructive-step park), followed by its §"Step 6" one-time 👁️ ask **and one-time External review**; then Phase 4 closure and Step 6 below run unchanged, on the Skip branch since the loop ran under `--fast` semantics.
 

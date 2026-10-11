@@ -4,7 +4,7 @@
 >
 > **The contract lives in [`SPEC/gate-postures.md`](../../../SPEC/gate-postures.md) §"`--unattended` operator posture"** — this fragment is its executable interpretation across the two runners, not a second copy. Read the contract when this file is silent or in tension. The `park-reason:` key and its closed-set codes (§"Park reason"), the parked state, and its resume path are canonical in [`SPEC/blocked.md`](../../../SPEC/blocked.md).
 >
-> **`<SKILL>` below stands for the invoking skill's own slash command, flags included** — `/ft-task` (with `--debug` / `--loop` as passed), `/ft-micro-task`, or `/ft-close-epic`. Substitute it wherever it appears; never hard-code a bare `/ft-task`.
+> **`<SKILL>` below stands for the invoking skill's own slash command, flags included** — `/ft-task` (with `--debug` / `--loop` / `--micro` as passed), `/ft-micro-task`, or `/ft-close-epic`. Substitute it wherever it appears; never hard-code a bare `/ft-task`.
 >
 > **Most of this file is written for the two runners.** `/ft-close-epic` shares the park recipe, the pre-scaffold stop shape, and the never-relaxed list, but it is **not** a `--fast` superset there — see §"`/ft-close-epic`" at the end, and `SPEC/gate-postures.md` §"`/ft-close-epic` under the posture" for the contract.
 

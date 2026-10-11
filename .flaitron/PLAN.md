@@ -25,7 +25,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [x] **CORE-778.2** [heavy]🧠 | micro-flag — Completed 2026-10-10.
   - [x] **CORE-778.3** [medium]🧩 | runner-retire — Completed 2026-10-10.
   - [x] **CORE-778.4** [heavy]🧠 | contract-reconcile — Completed 2026-10-10.
-  - [ ] **CORE-778.5** [light]🔧 | docs-sweep — Sweep the remaining micro mentions: `docs/GLOSSARY.md`, `README.md`, `docs/CONTEXT-BUDGET.md`, `docs/AGENT-NEUTRALITY.md` ledger rows, `docs/CODEX-VERIFICATION.md`, `templates/tasknote-README.md`, `templates/spec-template.md`; add a viz parser fixture for the `--micro` note shape; confirm `grep -rl ft-micro-task` outside `docs/VERSION-HISTORY.md` and the archive is empty.
+  - [x] **CORE-778.5** [light]🔧 | docs-sweep — Completed 2026-10-10.
   - [ ] **CORE-778.N** [heavy]🧠 | micro-fold-in audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
 
 ## Low

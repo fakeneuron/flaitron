@@ -705,6 +705,70 @@ Body
     expect(tn.subtasksProgress).toEqual({ total: 0, done: 0 });
   });
 
+  it('parses a `--micro` note: spec on top, one Notes log, no phase headings', () => {
+    const text = `---
+title: Demo micro
+status: completed
+tags: []
+created: 2026-10-10
+due:
+related-tasks: []
+---
+
+# DEMO-4 | Demo micro
+
+[← PLAN.md](../PLAN.md) · ✅ Completed
+
+## 🎯 Goal
+
+Fix one thing.
+
+## ✅ Acceptance
+
+- [x] The thing is fixed — \`npm test\`
+- [x] No regression — \`judgment\`
+
+## 🧩 Subtasks
+
+- [x] Edit the file
+- [ ] Re-run the suite
+
+## 🔗 Related
+
+- [[DEMO-1]] — predecessor
+
+---
+
+## ⚡ Notes
+
+**Relevance:** Proceed — one file.
+**Pattern survey:** Phase 2 reads the sibling module.
+**Verification receipt:** \`npm test\` → 0
+
+**Final Summary:**
+
+Fixed the thing.
+
+**Archived:** 2026-10-10
+`;
+    const tn = parseTasknote('DEMO-4', '/abs/DEMO-4.md', text);
+    expect(tn.frontmatter?.status).toBe('completed');
+    expect(tn.goal).toBe('Fix one thing.');
+    expect(tn.acceptance).toBe(
+      '- [x] The thing is fixed — `npm test`\n- [x] No regression — `judgment`',
+    );
+    expect(tn.subtasks).toBe('- [x] Edit the file\n- [ ] Re-run the suite');
+    expect(tn.subtasksProgress).toEqual({ total: 2, done: 1 });
+    // No phase headings: prose naming a phase never opens one, so every phase reads empty.
+    expect(tn.phases).toEqual([
+      { total: 0, done: 0 },
+      { total: 0, done: 0 },
+      { total: 0, done: 0 },
+      { total: 0, done: 0 },
+    ]);
+    expect(extractArchivedDate(text)).toBe('2026-10-10');
+  });
+
   it('parses a starter tasknote and populates starterContext', () => {
     const text = `---
 title: Demo starter

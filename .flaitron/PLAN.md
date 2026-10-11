@@ -22,7 +22,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
-- [ ] **CORE-780** [medium]🧩 [unattended] | sop-recheck-ft-task — Re-verify SPEC/procedures/ft-task.md against claude/skills/ft-task/ and templates/tasknote-template.md since its 2026-10-01 stamp: 3 new tier-1 candidates (CORE-778.4, CORE-776.5, CORE-769.2), 7 dismissed at v6.1.0, 12 SPEC.md commits; mirror any drift, bump last-verified.
 
 ## Future Opportunities
 
@@ -30,6 +29,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-780** [medium]🧩 [unattended] | sop-recheck-ft-task — Completed 2026-10-11.
 - [x] **CORE-779** [medium]🧩 | release v7.0.0 — Completed 2026-10-11.
 - [x] **CORE-774** [light]🔧 | single-model-restore-read — Completed 2026-10-11.
 - [x] **FE-128** [light] | viz-host-pin — Completed 2026-10-11.

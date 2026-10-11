@@ -440,7 +440,11 @@ already declined.
 skipped the tasknote altogether
 ([`SPEC/tasknote-selection.md`](SPEC/tasknote-selection.md)) — records `N/A` with
 a one-line reason, as the 👁️ item does on a task with no rendered surface.
-`/ft-micro-task` carries no such item at all: its whole threshold *is* that case.
+`/ft-micro-task` carries no such item attended: its whole threshold *is* that
+case, and an operator reads the commit. Under `--unattended` it runs one anyway,
+graded against its 🎯 Goal and PLAN.md row
+([`SPEC/gate-postures.md`](SPEC/gate-postures.md) §"What `--unattended` never
+relaxes").
 
 Neither flag suppresses it, since nothing here asks the operator anything,
 and it adds no phase or banner

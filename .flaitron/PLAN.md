@@ -19,7 +19,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [x] **CORE-776.2** [light]🔧 [unattended] | micro-recap-no-wait — Completed 2026-10-10.
   - [x] **CORE-776.3** [light]🔧 [unattended] | refactor-fast-label — Completed 2026-10-10.
   - [x] **CORE-776.4** [light]🔧 [unattended] | epic-second-audit — Completed 2026-10-10.
-  - [ ] **CORE-776.5** [frontier]💎 | micro-unattended-review — `/ft-micro-task --unattended` runs no External review and no 👁️ check, yet `SPEC/gate-postures.md` §"What `--unattended` never relaxes" holds External review "on every path"; decide micro's posture (review probe + park on a rendered surface, or a terminal stop routing to `/ft-task`), then align gate-postures, `claude/skills/ft-task/unattended-mode.md`, and `docs/EXTERNAL-AGENTS.md`.
+  - [x] **CORE-776.5** [frontier]💎 | micro-unattended-review — Completed 2026-10-10.
   - [x] **CORE-776.6** [heavy]🧠 | id-allocation-home — Completed 2026-10-10.
   - [ ] **CORE-776.N** [heavy]🧠 | closure-contract-coherence audit
 - [ ] **FE-EPIC-127** [medium]🧩 | viz-failure-paths — Discovery supplied by audit-repo 2026-10-10. Surfaced by audit-repo 2026-10-10 (Theme: viz dev-server failure paths)

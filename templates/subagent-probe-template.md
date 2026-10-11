@@ -65,7 +65,7 @@ above: the question is given, and the return is findings rather than an answer.
 >
 > **The diff.** `<paste `git diff` / `git diff --stat`, or name the changed paths>`
 >
-> **The criteria.** `<paste the tasknote's `## ✅ Acceptance` block verbatim>`
+> **The criteria.** `<paste the tasknote's `## ✅ Acceptance` block verbatim — a micro-tasknote has none: paste its 🎯 Goal and its PLAN.md row>`
 >
 > **Read-only.** Do not edit, create, move, or delete any file. Do not run
 > anything that writes, installs, or hits the network. Do not commit. **Do not

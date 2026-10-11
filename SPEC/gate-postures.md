@@ -296,7 +296,14 @@ grade is the only read of the diff that is not the generator's own. A
 `park-reason: input-needed — <the blocker>` rather than closing over it. A
 **note** is recorded and the run continues. The reviewer never patches, so
 this converts no gate and adds no row to a runner's park map — see
-[`SPEC.md`](../SPEC.md) §"🧪 Phase 3: Testing & Linting".
+[`SPEC.md`](../SPEC.md) §"🧪 Phase 3: Testing & Linting". `/ft-micro-task` is
+the case the rule has to reach for: attended it carries no review item at all
+([`SPEC.md`](../SPEC.md) §"🧪 Phase 3" → "When it is `N/A`"), because the
+operator reads a small commit; under the posture nobody does, so it runs one,
+graded against the only criteria a micro note states — its 🎯 Goal and PLAN.md
+row — on the same two rungs. Its visual check converts the same way: where the
+attended recap would ask the operator to look at a rendered surface, the run
+parks `visual-confirm` before the closure writes.
 
 `--unattended` removes *pauses*, never *proof*.
 

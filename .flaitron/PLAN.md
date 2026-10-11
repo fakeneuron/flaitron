@@ -20,6 +20,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [ ] **FE-127.3** [light]🔧 [unattended] | viz-boundary-claims — `SECURITY.md` §Visualizer says the server binds localhost only and confines reads to `*/.flaitron/`; code relies on Vite's default bind and confines to the project-root realpath (`.flaitron/core` may be a symlinked checkout). Add a loopback `req.socket.remoteAddress` check to `guarded` (+ test) and correct the confinement sentence to the enforced boundary.
   - [ ] **FE-127.4** [medium]🧩 [unattended] | watch-late-dirs — when `tasknote/` or `tasknote/archive/` is absent at dev-server start, chokidar watches the parent and counts depth from there, so later notes never fire (`viz/src/flaitronWatch.ts` + `watchSet.ts`); watch each project's `.flaitron/` root with the depth and `ignored` reach re-anchored, and test creating the archive dir after start.
   - [ ] **FE-127.N** [medium]🧩 | viz-failure-paths audit
+- [ ] **FE-128** [light] | viz-host-pin — Pin `server.host` to loopback in `viz/vite.config.ts` so `vite --host` cannot expose the page, `/src/*`, `/@fs/`, or HMR; FE-127.3's peer guard covers `/api/*` only.
 
 ## Low
 

@@ -242,16 +242,18 @@ out to `git` across many repos, and can commit inside them.
 on a network, behind a reverse proxy, or as a multi-tenant service. Its
 dev server:
 
-- Listens on port 5120 at Vite's default `localhost` bind — `vite.config.ts`
-  sets no `server.host`, so a `vite --host` run would expose the port on
-  the network. Every `/api/*` request is therefore also checked against
-  its peer address (`req.socket.remoteAddress`, `viz/src/devApi.ts`) and
-  answered 403 unless it is loopback (`127.0.0.0/8`, `::1`, or
-  IPv4-mapped `::ffff:127.*`), whatever the bind. This check runs ahead
-  of the method and origin checks below. It covers `/api/*` only: under
-  `--host`, Vite's own serving on the same port (the page, `/src/*`
-  modules, `/@fs/` files, the HMR websocket) is still reachable from the
-  network, so do not run the dev server with `--host`.
+- Listens on port 5120, bound to `localhost` only. The `flaitron-api` plugin
+  in `vite.config.ts` forces `server.host: 'localhost'` from its `config`
+  hook, which overrides a CLI `--host` (a static `server.host` key would
+  not) — the flag is ignored without a warning — so the dev server's own
+  serving (the page, `/src/*` modules, `/@fs/` files, the HMR websocket) is
+  not reachable from the network. The pin covers `vite` / `vite --host`;
+  `vite preview` reads `preview.host`, which is not pinned, so do not run
+  `vite preview --host`. Every `/api/*` request is also checked against its
+  peer address (`req.socket.remoteAddress`, `viz/src/devApi.ts`) and
+  answered 403 unless it is loopback (`127.0.0.0/8`, `::1`, or IPv4-mapped
+  `::ffff:127.*`), independent of the bind. This check runs ahead of the
+  method and origin checks below.
 - Enforces `server.allowedHosts: ['localhost', '127.0.0.1']`, so requests
   with a spoofed `Host` header (DNS rebinding) are rejected by Vite
   before reaching application code.

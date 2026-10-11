@@ -69,6 +69,12 @@ function flaitronApi(): Plugin {
 
   return {
     name: 'flaitron-api',
+    // Force the bind to Vite's default `localhost`. A static `server.host` is
+    // not enough: the CLI's `--host` overrides it and binds every interface,
+    // exposing the page, `/src/*`, `/@fs/` and HMR (the `/api/*` peer guard
+    // covers only the API). A plugin `config` hook is merged after the inline
+    // CLI options, so it wins.
+    config: () => ({ server: { host: 'localhost' } }),
     async configureServer(server) {
       const root = workspaceRoot();
       const discovered = await discoverProjects(root);

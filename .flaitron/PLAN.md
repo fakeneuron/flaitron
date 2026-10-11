@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **FE-128** [light] | viz-host-pin — Pin `server.host` to loopback in `viz/vite.config.ts` so `vite --host` cannot expose the page, `/src/*`, `/@fs/`, or HMR; FE-127.3's peer guard covers `/api/*` only.
+(none)
 
 ## Low
 
@@ -30,6 +30,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **FE-128** [light] | viz-host-pin — Completed 2026-10-11.
 - [x] **FE-EPIC-127** [medium]🧩 | viz-failure-paths — Completed 2026-10-11.
   - [x] **FE-127.2** [light]🔧 [unattended] | devapi-guarded-catch — Completed 2026-10-11.
   - [x] **FE-127.3** [light]🔧 [unattended] | viz-boundary-claims — Completed 2026-10-11.

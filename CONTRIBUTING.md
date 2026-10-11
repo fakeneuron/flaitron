@@ -46,8 +46,9 @@ mkdir -p .claude/skills
 # flaitron-self's own /audit overlay — tracked body, symlinked into place
 ln -sfn ../../.flaitron/audit-overlay/ .claude/skills/audit
 
-# A checkout wired before v7.0.0 also has .claude/commands/ stub links, now dangling
-find .claude/commands -type l ! -exec test -e {} \; -delete 2>/dev/null
+# A checkout wired before v7.0.0 also has dangling .claude/commands/ stub links and
+# renamed-slug links (v7.0.0); prune them, then re-run the glob above
+find .claude/commands .claude/skills -maxdepth 1 -type l ! -exec test -e {} \; -delete 2>/dev/null
 ```
 
 The relative `../../` paths are clone-location independent, and the symlinks land under the ignored `.claude/` directory, so they never enter git history. This gives the complete `/ft-*` surface (`/ft-audit`, `/ft-audit-repo`, release, adopt, etc.) to any agent started inside the tree. It is expected rather than optional: [`docs/PLATFORMS.md`](docs/PLATFORMS.md) §"Installed-surface policy" treats a shipped `ft-*` slug with no `.claude/` symlink as a wiring miss, and `/ft-release` §7.1 checks for one. The glob also wires `/ft-update`, which is intentional — the skill is adopter-only but bails in flaitron-self with a clear message rather than silently misbehaving, so wiring it here is harmless. The `ft-` prefix remains flaitron's reserved namespace.
@@ -57,6 +58,10 @@ Codex maintainers wire the same way, from the parallel wrapper inventory:
 ```sh
 mkdir -p .agents/skills
 (cd .agents/skills && ln -s ../../codex/skills/* .)
+
+# A checkout wired before v7.0.0 also has dangling renamed-slug links; prune them,
+# then re-run the glob above
+find .agents/skills -maxdepth 1 -type l ! -exec test -e {} \; -delete
 ```
 
 `.agents/` is gitignored alongside `.claude/` (see root `.gitignore`), so this stays per-machine too.

@@ -97,7 +97,7 @@ ln -s ../../.flaitron/core/claude/skills/ft-seed-unattended .claude/skills/ft-se
 
 The relative paths are intentional — they survive `git clone` and pin to whichever flaitron commit the submodule is checked out at. Commit the symlinks (`git add .claude/`).
 
-The submodule also brings flaitron's own tasknote archive at `.flaitron/core/.flaitron/` (~16 MB, ~1,000 files) — flaitron's history, not this project's context. Sparse-checkout drops it from the working tree, and `/ft-update` re-applies it after a re-clone. As the fallback, keep it out of Grep, Glob, and `@file` with a `Read(./.flaitron/core/.flaitron/**)` deny rule in `.claude/settings.json`. The sparse line, the per-tool list, and the rule's one cost are in [`docs/MIGRATION.md`](../docs/MIGRATION.md) §1.1.
+The submodule also brings flaitron's own tasknote archive at `.flaitron/core/.flaitron/` (~16 MB, ~1,200 files) — flaitron's history, not this project's context. Sparse-checkout drops it from the working tree, and `/ft-update` re-applies it after a re-clone. As the fallback, keep it out of Grep, Glob, and `@file` with a `Read(./.flaitron/core/.flaitron/**)` deny rule in `.claude/settings.json`. The sparse line, the per-tool list, and the rule's one cost are in [`docs/MIGRATION.md`](../docs/MIGRATION.md) §1.1.
 
 This snippet wires the adopter-installed subset: tasknote family, `/ft-seed-unattended`, and `/ft-update`. Global utilities live in the user's agent home when desired; `/ft-release` is flaitron-self-only. Never also install the adopter subset in `~/.claude/skills/`: a user-scope copy shadows this project's pinned wiring and runs against the pin (`⛔ skill/pin mismatch`) — [`docs/PLATFORMS.md`](../docs/PLATFORMS.md) §"One canonical install path per project".
 
@@ -105,7 +105,7 @@ To verify Claude Code wiring: invoke `/ft-task` in a fresh Claude Code session. 
 
 ## Bumping the pinned flaitron version
 
-Run `/ft-update` from the project root to bump the pin: it shows the current→target version + the annotated-tag changelog for confirmation, moves the submodule pin, re-wires symlinks for any newly shipped skills, runs a smoke check, and stages the bump with a proposed commit. The symlinks above don't change for *existing* skills — they always track whatever the submodule currently points at; `/ft-update` only adds a symlink when the bump ships a brand-new adopter-subset skill.
+Run `/ft-update` from the project root to bump the pin: it shows the current→target version + the annotated-tag changelog for confirmation, moves the submodule pin, re-wires symlinks for any newly shipped skills, runs a smoke check, and stages the bump with a proposed commit. It also reports dangling links a retired or renamed skill leaves behind (Step 4.6, report-only); v7.0.0's renames are that case — `docs/MIGRATION.md` §"Upgrading to v7.0.0 (skill renames)". The symlinks above don't change for skills that survive the bump — they always track whatever the submodule currently points at; `/ft-update` only adds a symlink when the bump ships a brand-new adopter-subset skill.
 
 Without `/ft-update`, bump by hand: [`docs/MIGRATION.md`](../docs/MIGRATION.md) §"Pinning and bumping".
 

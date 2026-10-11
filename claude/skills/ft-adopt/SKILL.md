@@ -68,7 +68,7 @@ Reference: `claude/AGENTS-snippet.md` §"One-time symlink wiring" (canonical) ·
 
 ## Step 3b — Fence the submodule's dogfood archive
 
-`.flaitron/core/.flaitron/` is flaitron's own plan and tasknote archive (~16 MB, ~1,000 files) — flaitron's history, not this project's context. Step 2's sparse-checkout already removed it from this clone. The fence below is the fallback for a fresh clone of the project, which comes back full until `/ft-update` runs again, and for older git that skipped the sparse step. Write it now:
+`.flaitron/core/.flaitron/` is flaitron's own plan and tasknote archive (~16 MB, ~1,200 files) — flaitron's history, not this project's context. Step 2's sparse-checkout already removed it from this clone. The fence below is the fallback for a fresh clone of the project, which comes back full until `/ft-update` runs again, and for older git that skipped the sparse step. Write it now:
 
 1. `.claude/settings.json` — add `Read(./.flaitron/core/.flaitron/**)` to `permissions.deny`. Create the file with just that key if it is absent; if it exists, merge the rule into the existing `deny` array and change nothing else. Claude Code applies the rule to its file tools, Grep/Glob, and `@file` mentions.
 2. `.ignore` at the project root — append the line `.flaitron/core/.flaitron/` (create if absent). Covers ripgrep-based greps; `.gitignore` is the wrong file, the path is tracked content.

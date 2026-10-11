@@ -56,6 +56,7 @@ it is not uniform:
 - `--fast` / `-f` — ledger row (`SPEC.md` + `SPEC/gates.md` + `SPEC/gate-postures.md`).
 - `--unattended` — ledger row (same `SPEC.md` + `SPEC/gates.md` + `SPEC/gate-postures.md` sites; the posture is orchestrator-neutral and names no vendor, so it adds no new ledger surface of its own). Its executable interpretation is the shared `unattended-mode.md` fragment — plus `/ft-close-epic`'s own `unattended-close-epic.md` sibling, which sites the posture at that skill's steps — wiring-layer by construction.
 - `--debug` / `-d` — ledger row (`SPEC/procedures/ft-task.md` §"Agent-neutral primitives", which names the flag as the Claude Code spelling of a neutral primitive).
+- `--micro` — ledger row (same `SPEC/procedures/ft-task.md` §"Agent-neutral primitives" row, which names it as the Claude Code spelling of the micro-mode primitive; the `micro-mode.md` fragment it loads is wiring-layer by construction).
 - `/model <X>` — ledger row (`SPEC/model.md` Step 1.5 mismatch path). `/clear` — no ledger row: `SPEC/post-closure.md` names it only to forbid emitting it, and its passing mentions in `SPEC/cue-vocabulary.md` §"🎯 Purpose blurb" and `SPEC/tasknote-selection.md` §"When to use a tasknote (and when not to)" are unregistered.
 - Structured ask — ledger §"Tool-call-specific terminology" (`structured ask` / `prose ask`).
 - Effort / thinking ↔ `[heavy]` / `[medium]` / `[light]` / `[frontier]` — ledger rows on `SPEC/model.md` (neutral vocabulary; specific models as examples).
@@ -73,7 +74,7 @@ ledger's §"Out of scope for this ledger", alongside `claude/AGENTS-snippet.md`.
 
 ## Last verified
 
-`v6.1.0 · 2026-10-08 (dogfooded)`. See [`../docs/AGENT-COMPAT.md`](../docs/AGENT-COMPAT.md) §"Reading the cells" for the full `last-verified` format and update obligation.
+`v7.0.0 · 2026-10-11 (dogfooded)`. See [`../docs/AGENT-COMPAT.md`](../docs/AGENT-COMPAT.md) §"Reading the cells" for the full `last-verified` format and update obligation.
 
 ## Related
 

@@ -61,7 +61,7 @@ survive `git clone` and pin to whichever flaitron commit the submodule is
 checked out at. Commit the symlinks (`git add .grok/`).
 
 The submodule also brings flaitron's own tasknote archive at
-`.flaitron/core/.flaitron/` (~16 MB, ~1,000 files) — flaitron's history, not
+`.flaitron/core/.flaitron/` (~16 MB, ~1,200 files) — flaitron's history, not
 this project's context. Sparse-checkout drops it from the working tree; as the
 fallback, keep it out of search tooling with that line in a root `.ignore`. The
 sparse line and the per-tool list are in `../docs/MIGRATION.md` §1.1.
@@ -93,7 +93,7 @@ These relative symlinks point through the project's pinned `.flaitron/core`
 submodule, so the wired skill bodies move only when the project deliberately
 bumps flaitron. Existing symlinks do not need rewiring on a normal version bump;
 newly shipped adopter-subset skills may need new symlinks, which `/ft-update`
-adds.
+adds. A bump that renames or retires a skill (v7.0.0) leaves dangling links, which `/ft-update` reports (Step 4.6) — `docs/MIGRATION.md` §"Upgrading to v7.0.0 (skill renames)".
 
 Do **not** glob the skill inventory into an agent home (`~/.grok/skills/`,
 `~/.agents/skills/`, `~/.cursor/skills/`, or `~/.claude/skills/`). Project

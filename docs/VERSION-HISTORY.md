@@ -22,6 +22,14 @@ unless correcting a factual error.
 
 ---
 
+## v7.0.0 — skill renames, /ft-task --micro, automatic Completed rotation
+
+- Four skills are renamed with no aliases: /ft-file-task, /ft-open-epic, /ft-adopt (global-only), and /ft-seed-unattended. The claude/commands/ stubs are retired, and each argument-hint lives in its SKILL.md. Existing adopters re-wire once (docs/MIGRATION.md §"Upgrading to v7.0.0 (skill renames)"), and tools/update-adopters.mjs --apply does the link swap in the bump commit.
+- /ft-micro-task folds into /ft-task --micro: one ## ⚡ Notes log, with the same phases, gates, and closure as any /ft-task run.
+- Closures rotate ## Completed on their own (>60 → ≤40, separate chore commit), and the closure that finishes an epic's last child flips its parent. /ft-close-epic's flip prompt is gone.
+
+Also: SPEC/plan-filing.md §"ID allocation" is the one home for new IDs; the visualizer survives malformed /api requests and late-created tasknote dirs, and stays on localhost under --host.
+
 ## v6.1.0 — [frontier] model tier, context diet, slimmer submodule
 
 - A [frontier]💎 tier sits between [heavy] and [xheavy]. Next-move cues name a `model @ effort` pick from a tier × platform map in docs/PLATFORMS.md.

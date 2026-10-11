@@ -17,7 +17,7 @@ we agree on a path.
 
 ### Prompt injection via user-authored markdown
 
-Flaitron's bundled execution surfaces — Claude Code skills/commands
+Flaitron's bundled execution surfaces — Claude Code skills
 (`/ft-task`, `/ft-audit`, `/ft-release`, `/ft-audit-repo`, and others),
 Codex skill wrappers under `codex/skills/`, and Cursor / Grok thin wiring
 under `cursor/` and `grok/` (snippet + procedure pointer; skills are the
@@ -122,7 +122,7 @@ invocations will execute.
 
 **Adopter mitigations.**
 
-- Pin to annotated release tags (e.g. `v6.1.0`), not to `main` or to an
+- Pin to annotated release tags (e.g. `v7.0.0`), not to `main` or to an
   unreviewed commit on `main`. Release tags are reviewed deliberately;
   `main` is a moving target.
 - Review the diff between your pinned commit and the new tag before
@@ -181,7 +181,9 @@ reviewed as one. Do not add repository secrets to this workflow.
 `/ft-update` recipe across every discovered adopter: bump the pinned
 `.flaitron/core` submodule to the latest release and commit — or, for an
 adopter still on the pre-rename `.flowtron/core` layout, move it to
-`.flaitron/` and bump in the same commit (`applyMigrate`) — run manually
+`.flaitron/` and bump in the same commit (`applyMigrate`); either path, on a
+range crossing v7.0.0, also re-wires the adopter's tracked skill links in that
+same commit (`applySkillLinkPlan`) — run manually
 by the maintainer (never on a schedule or in CI). Its execution surface
 differs from the rest of this document: it walks a filesystem tree, shells
 out to `git` across many repos, and can commit inside them.
@@ -211,10 +213,12 @@ out to `git` across many repos, and can commit inside them.
   `git push` anywhere in the script. Every bump commit stays local until
   the operator reviews and pushes it themselves, per repo.
 - **Bump and migrate commits pass `--no-verify`.** The bump commit is a
-  pathspec commit touching only the `.flaitron/core` gitlink; the migrate
+  pathspec commit touching only the `.flaitron/core` gitlink plus, on a range
+  crossing v7.0.0, the skill-link paths it swapped or pruned; the migrate
   commit carries only what the migration staged (the directory move,
   `.gitmodules`, re-pointed symlinks, rewritten `.gitignore` rules, the
-  gitlink), after verifying the index held nothing else. `--no-verify` skips only
+  gitlink, and — on a range crossing v7.0.0 — the skill-link paths it swapped or
+  pruned), after verifying the index held nothing else. `--no-verify` skips only
   `pre-commit`/`commit-msg` — the hooks that could run arbitrary adopter-authored
   code — as a side effect of an unattended fleet sweep; `prepare-commit-msg`/
   `post-commit` still run.
@@ -226,7 +230,9 @@ out to `git` across many repos, and can commit inside them.
   when enumerating the workspace root, and `applyBump` writes into whatever
   `.flaitron/core` resolves to for each discovered adopter (`applyMigrate`
   additionally writes the adopter's `.flowtron/` → `.flaitron/` move, its
-  `.git/config`, and `.git/modules/`) — unlike the viz
+  `.git/config`, and `.git/modules/`; on a range crossing v7.0.0 both also
+  unlink and re-create tracked symlinks under the adopter's skill-link
+  directories and remove its `.claude/commands/` links) — unlike the viz
   dev server's `discoverProjects` (see "Visualizer" below), there is no
   post-resolution containment check pinning writes inside the workspace
   root. This is a deliberate scope difference, not an oversight: the fleet

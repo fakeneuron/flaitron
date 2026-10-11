@@ -102,7 +102,8 @@
 // to it rather than swallowed.
 //
 // The bump commit itself passes --no-verify: it is a pathspec commit touching only
-// the .flaitron/core gitlink, a pure pin move with no adopter-authored content for a
+// the .flaitron/core gitlink (plus, on a range crossing SKILL_RENAME.tag, the skill
+// links it swapped or pruned), a pure pin move with no adopter-authored content for a
 // pre-commit or commit-msg hook to lint. --no-verify skips only those two hooks
 // (prepare-commit-msg and post-commit still run); during a fleet-wide sweep,
 // skipping pre-commit/commit-msg keeps the commit's success contingent only on

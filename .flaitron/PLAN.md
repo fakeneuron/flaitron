@@ -30,6 +30,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-779** [medium]🧩 | release v7.0.0 — Completed 2026-10-11.
 - [x] **CORE-774** [light]🔧 | single-model-restore-read — Completed 2026-10-11.
 - [x] **FE-128** [light] | viz-host-pin — Completed 2026-10-11.
 - [x] **FE-EPIC-127** [medium]🧩 | viz-failure-paths — Completed 2026-10-11.

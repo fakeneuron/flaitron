@@ -218,11 +218,8 @@ template files would have to guess. The shape below is the contract.
 ```text
 <platform>/
 ├── AGENTS-snippet.md                       # Adopter-facing paste-block + wiring commands
-├── commands/                               # Slash-command-equivalent entry points (if the platform supports them)
-│   ├── ft-task.<ext>
-│   ├── ft-file-task.<ext>
-│   ├── ft-open-epic.<ext>
-│   └── ft-close-epic.<ext>
+├── commands/                               # Only if the platform's skills can't carry their own argument hint (Claude Code ships none since CORE-769.2)
+│   └── ft-task.<ext>
 └── skills/                                 # Skill bodies (each in its own dir)
     ├── ft-task/
     │   └── SKILL.<ext>
@@ -292,8 +289,8 @@ Concrete instantiation:
 - **`skills/`**: 11 `SKILL.md` skill bodies (`ft-task`,
   `ft-file-task`, `ft-open-epic`, `ft-close-epic`, `ft-refactor`,
   the two `ft-audit`-family skills, plus `ft-adopt`, `ft-release`,
-  `ft-seed-unattended`, `ft-update`), each slash-invocable with its `argument-hint:` in
-  frontmatter — no separate command stubs since [[CORE-769.2]] — some with
+  `ft-seed-unattended`, `ft-update`), each slash-invocable, with any `argument-hint:` in
+  its own frontmatter — no separate command stubs since [[CORE-769.2]] — some with
   lazy-load fragments (`ft-task/step-*.md`, including `step-4-debug-mode.md` and `step-5-loop-mode.md`; `ft-task/micro-mode.md`; `ft-file-task/step-0-flags.md`, `park-mode.md` and `starter-mode.md`; `ft-audit/scaffold-bootstrap.md`; `ft-task/unattended-mode.md`; `ft-close-epic/unattended-close-epic.md`; `ft-open-epic/step-5.5-deep-prepass.md`; `ft-release/step-*.md`), the every-run `ft-task/preamble.md`, or sibling libraries (`ft-audit/passes/*.md`)
 - **Adopter install**: relative symlinks for the adopter-installed subset from
   `.claude/skills/*` into the submodule, per
@@ -501,7 +498,7 @@ that platform's routing. Do not add per-flag rows back (CORE-734.6)._
 
 First-use verification 2026-06-01 (CORE-257). /ft-task skill invocation, model gate (with retag), AskUserQuestion render, and cue emissions (✅ marker + post-closure expectations) exercised under Grok. Structured ask support observed (see trigger table note). Matrix currency lives in docs/AGENT-COMPAT.md.
 
-**Last verified:** `v6.1.0 · 2026-10-08 (dogfooded)`
+**Last verified:** `v7.0.0 · 2026-10-11 (dogfooded)`
 
 ### Codex CLI
 
@@ -535,7 +532,7 @@ shipped `codex/skills/` wrappers — desk research under Claude Code, not a
 standalone Codex verification session. CORE-734.6 later folded the flag rows,
 by then seven, into the one skill-body-flags row above.
 
-**Last verified:** `v6.1.0 · 2026-10-08 (dogfooded)`
+**Last verified:** `v7.0.0 · 2026-10-11 (dogfooded)`
 
 ### Cursor
 
@@ -558,7 +555,7 @@ Cursor-only projects (see §"Worked example: Cursor" and
 
 First-use verification 2026-08-12 ([[CORE-438.5]]): `/ft-task` under Cursor (Grok 4.5) ran DOGFOOD.md's three steps (contract comprehension at `v5.16.0`, full cue-render vocabulary, Phase-1 drive on CORE-438.N with clean Step-3 write boundary). Skill dispatch via `.claude/skills/` compat, Task subagent tool, modes, and `/model`+`/clear` cues confirmed; structured ask confirmed earlier under Cursor in [[CORE-438.1]]. Matrix currency lives in docs/AGENT-COMPAT.md.
 
-**Last verified:** `v5.33.0 · 2026-09-23 (dogfooded; skipped @ v6.1.0)`
+**Last verified:** `v5.33.0 · 2026-09-23 (dogfooded; skipped @ v7.0.0)`
 
 ### Gemini CLI (stub)
 

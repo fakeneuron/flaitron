@@ -23,6 +23,8 @@ interface FakeRes {
   chunks: string[];
   ended: boolean;
   flushed: boolean;
+  headersSent: boolean;
+  destroyed: boolean;
 }
 
 function makeReq(opts: {
@@ -53,6 +55,8 @@ function makeRes(): { res: ServerResponse & { _error: () => void }; state: FakeR
     chunks: [],
     ended: false,
     flushed: false,
+    headersSent: false,
+    destroyed: false,
   };
   const errorListeners: Array<() => void> = [];
   const res = {
@@ -61,6 +65,15 @@ function makeRes(): { res: ServerResponse & { _error: () => void }; state: FakeR
     },
     set statusCode(code: number) {
       state.statusCode = code;
+    },
+    get headersSent() {
+      return state.headersSent;
+    },
+    get writableEnded() {
+      return state.ended;
+    },
+    destroy() {
+      state.destroyed = true;
     },
     setHeader(name: string, value: string) {
       state.headers[name.toLowerCase()] = value;
@@ -171,6 +184,68 @@ describe('projectFromQuery', () => {
     // The caller-supplied name is operator-facing diagnostics, not wire content.
     expect(result).toEqual({ error: 'unknown project' });
     expect(logged).toHaveBeenCalledWith('[devApi] unknown project: "ghost"');
+    logged.mockRestore();
+  });
+
+  it('returns an error instead of throwing when the request URL does not parse', () => {
+    // What Connect hands a handler for `GET /api/plan//a:99999`: the mount
+    // prefix is stripped, leaving a protocol-relative URL with an invalid port.
+    const req = makeReq({ url: '//a:99999' });
+
+    const result = projectFromQuery(req, new Map());
+
+    expect(result).toEqual({ error: 'malformed request URL' });
+  });
+});
+
+describe('guarded', () => {
+  // `guarded` is not exported; a handler whose body throws drives it. Mapping
+  // over a null project throws inside createProjectsHandler's own body.
+  const poisoned = new Map([['alpha', null as unknown as ProjectDescriptor]]);
+
+  it('answers 500 and logs to stderr when a handler throws before headers are sent', async () => {
+    const handler = createProjectsHandler(poisoned, null);
+    const req = makeReq({ headers: { origin: ALLOWED_ORIGIN } });
+    const { res, state } = makeRes();
+    const logged = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    await expect(handler(req, res)).resolves.toBeUndefined();
+
+    expect(state.statusCode).toBe(500);
+    expect(state.body).toBe('Internal Server Error');
+    expect(state.headers['content-type']).toBe(PLAIN_TEXT);
+    expect(state.destroyed).toBe(false);
+    expect(logged).toHaveBeenCalledWith(expect.stringContaining('[devApi] Unhandled handler error:'));
+    logged.mockRestore();
+  });
+
+  it('destroys the response instead of writing again when headers were already sent', async () => {
+    const handler = createProjectsHandler(poisoned, null);
+    const req = makeReq({ headers: { origin: ALLOWED_ORIGIN } });
+    const { res, state } = makeRes();
+    state.headersSent = true;
+    const logged = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    await expect(handler(req, res)).resolves.toBeUndefined();
+
+    expect(state.destroyed).toBe(true);
+    expect(state.ended).toBe(false);
+    expect(state.body).toBe('');
+    expect(logged).toHaveBeenCalledWith(expect.stringContaining('[devApi] Unhandled handler error:'));
+    logged.mockRestore();
+  });
+
+  it('leaves a response the handler already ended alone', async () => {
+    const handler = createProjectsHandler(poisoned, null);
+    const req = makeReq({ headers: { origin: ALLOWED_ORIGIN } });
+    const { res, state } = makeRes();
+    state.headersSent = true;
+    state.ended = true;
+    const logged = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    await expect(handler(req, res)).resolves.toBeUndefined();
+
+    expect(state.destroyed).toBe(false);
     logged.mockRestore();
   });
 });
@@ -322,6 +397,34 @@ describe('createPlanHandler', () => {
     expect(state.statusCode).toBe(400);
     expect(state.body).toBe('missing ?project=<name>');
     expect(state.headers['content-type']).toBe(PLAIN_TEXT);
+  });
+
+  it('returns a typed 400, not a rejection, for a request URL that does not parse', async () => {
+    const handler = createPlanHandler(new Map());
+    const req = makeReq({ url: '//a:99999', headers: { origin: ALLOWED_ORIGIN } });
+    const { res, state } = makeRes();
+
+    await expect(handler(req, res)).resolves.toBeUndefined();
+
+    expect(state.statusCode).toBe(400);
+    expect(state.body).toBe('malformed request URL');
+    expect(state.headers['content-type']).toBe(PLAIN_TEXT);
+  });
+
+  // Every handler that resolves a project goes through projectFromQuery; pin
+  // that none of them stops mapping its `{ error }` to a 400.
+  it.each([
+    ['createPlanArchiveHandler', () => createPlanArchiveHandler(new Map())],
+    ['createActiveHandler', () => createActiveHandler(new Map())],
+    ['createArchiveHandler', () => createArchiveHandler(new Map(), createArchiveCache())],
+  ])('%s also answers a URL that does not parse with a typed 400', async (_name, make) => {
+    const req = makeReq({ url: '//a:99999', headers: { origin: ALLOWED_ORIGIN } });
+    const { res, state } = makeRes();
+
+    await make()(req, res);
+
+    expect(state.statusCode).toBe(400);
+    expect(state.body).toBe('malformed request URL');
   });
 
   it('returns a typed 500 when PLAN.md cannot be read', async () => {

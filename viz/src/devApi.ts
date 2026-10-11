@@ -50,12 +50,33 @@ function methodGuard(req: IncomingMessage, res: ServerResponse): boolean {
 // `AsyncHandler`. Their observable behavior is unchanged: an async body runs
 // synchronously up to its first suspension, and neither of those two contains
 // an `await`.
+//
+// It is also the backstop for whatever a handler's own try/catch misses: Connect
+// does not observe the returned promise, so a rejection here is an unhandled
+// rejection, which exits the Vite process. Detail goes to stderr, the wire gets
+// a generic body — or, once headers are out, the socket is destroyed so the
+// client sees a truncated response rather than a second write. A response the
+// handler already ended is left alone.
 function guarded(handler: Handler | AsyncHandler): AsyncHandler {
   return async (req, res) => {
-    applyApiHeaders(res);
-    if (!methodGuard(req, res)) return;
-    if (!originGuard(req, res)) return;
-    await handler(req, res);
+    try {
+      applyApiHeaders(res);
+      if (!methodGuard(req, res)) return;
+      if (!originGuard(req, res)) return;
+      await handler(req, res);
+    } catch (e) {
+      // String(e), not `.message`: a handler may throw a non-Error (`throw null`),
+      // and a throw from inside this catch would be the unhandled rejection again.
+      // JSON.stringify for the same reason projectFromQuery uses it — the message
+      // can embed request input.
+      const detail = e instanceof Error ? e.message : String(e);
+      console.error(`[devApi] Unhandled handler error: ${JSON.stringify(detail)}`);
+      if (!res.headersSent) {
+        endPlain(res, 500, 'Internal Server Error');
+      } else if (!res.writableEnded) {
+        res.destroy();
+      }
+    }
   };
 }
 
@@ -63,7 +84,16 @@ export function projectFromQuery(
   req: IncomingMessage,
   projects: Map<string, ProjectDescriptor>,
 ): ProjectDescriptor | { error: string } {
-  const url = new URL(req.url ?? '', 'http://localhost');
+  // Connect strips the mount prefix, so a request like `/api/plan//a:99999`
+  // reaches here as `//a:99999` — protocol-relative, with an invalid port — and
+  // `new URL` throws on it. Fold that into the same typed-400 path as a missing
+  // `?project=`.
+  let url: URL;
+  try {
+    url = new URL(req.url ?? '', 'http://localhost');
+  } catch {
+    return { error: 'malformed request URL' };
+  }
   const name = url.searchParams.get('project');
   if (!name) return { error: 'missing ?project=<name>' };
   const project = projects.get(name);

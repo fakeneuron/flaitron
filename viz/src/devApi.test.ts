@@ -31,12 +31,14 @@ function makeReq(opts: {
   url?: string;
   method?: string;
   headers?: Record<string, string | undefined>;
+  remoteAddress?: string | undefined;
 }): IncomingMessage & { _close: () => void } {
   const closeListeners: Array<() => void> = [];
   const req = {
     url: opts.url ?? '/',
     method: opts.method ?? 'GET',
     headers: opts.headers ?? {},
+    socket: { remoteAddress: 'remoteAddress' in opts ? opts.remoteAddress : '127.0.0.1' },
     on(event: string, cb: () => void) {
       if (event === 'close') closeListeners.push(cb);
     },
@@ -234,6 +236,47 @@ describe('guarded', () => {
     expect(logged).toHaveBeenCalledWith(expect.stringContaining('[devApi] Unhandled handler error:'));
     logged.mockRestore();
   });
+
+  it.each(['192.168.1.20', '::ffff:10.0.0.5', 'fe80::1', '128.0.0.1', undefined])(
+    'answers 403 to a non-loopback peer (%s) before the handler runs',
+    async (remoteAddress) => {
+      const handler = createProjectsHandler(new Map(), null);
+      const req = makeReq({ headers: { origin: ALLOWED_ORIGIN }, remoteAddress });
+      const { res, state } = makeRes();
+
+      await handler(req, res);
+
+      expect(state.statusCode).toBe(403);
+      expect(state.body).toBe('Forbidden: non-loopback client');
+      expect(state.headers['x-content-type-options']).toBe('nosniff');
+      expect(state.headers['content-security-policy']).toBe("default-src 'none'; frame-ancestors 'none'");
+    },
+  );
+
+  it('rejects a non-loopback peer ahead of the method and origin guards', async () => {
+    const handler = createProjectsHandler(new Map(), null);
+    const req = makeReq({ method: 'POST', headers: { origin: BLOCKED_ORIGIN }, remoteAddress: '192.168.1.20' });
+    const { res, state } = makeRes();
+
+    await handler(req, res);
+
+    expect(state.statusCode).toBe(403);
+    expect(state.body).toBe('Forbidden: non-loopback client');
+    expect(state.headers.allow).toBeUndefined();
+  });
+
+  it.each(['127.0.0.1', '127.1.2.3', '::1', '::ffff:127.0.0.1'])(
+    'lets a loopback peer (%s) through to the handler',
+    async (remoteAddress) => {
+      const handler = createProjectsHandler(new Map(), null);
+      const req = makeReq({ headers: { origin: ALLOWED_ORIGIN }, remoteAddress });
+      const { res, state } = makeRes();
+
+      await handler(req, res);
+
+      expect(state.statusCode).toBe(200);
+    },
+  );
 
   it('leaves a response the handler already ended alone', async () => {
     const handler = createProjectsHandler(poisoned, null);

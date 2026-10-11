@@ -41,8 +41,28 @@ function methodGuard(req: IncomingMessage, res: ServerResponse): boolean {
   return false;
 }
 
+// vite.config.ts sets no `server.host`, so the bind is Vite's default and a
+// `vite --host` run would put the port on the network; `allowedHosts` only
+// filters the Host header, which any remote client can set. Checking the peer
+// address keeps the API loopback-only whatever the bind. Node reports IPv4
+// peers on a dual-stack socket as `::ffff:127.x.x.x`. An absent address (the
+// socket is already gone) fails closed.
+function isLoopbackAddress(address: string | undefined): boolean {
+  if (address === undefined) return false;
+  if (address === '::1') return true;
+  const v4 = address.startsWith('::ffff:') ? address.slice('::ffff:'.length) : address;
+  return /^127\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(v4);
+}
+
+function loopbackGuard(req: IncomingMessage, res: ServerResponse): boolean {
+  if (isLoopbackAddress(req.socket.remoteAddress)) return true;
+  endPlain(res, 403, 'Forbidden: non-loopback client');
+  return false;
+}
+
 // The prelude every /api/* handler runs before its own logic: security headers
-// on every response (error bodies included), then the method and origin guards.
+// on every response (error bodies included), then the loopback, method, and
+// origin guards.
 // Wrapping rather than repeating it makes shipping a handler without them a
 // structural impossibility instead of a review catch.
 //
@@ -61,6 +81,7 @@ function guarded(handler: Handler | AsyncHandler): AsyncHandler {
   return async (req, res) => {
     try {
       applyApiHeaders(res);
+      if (!loopbackGuard(req, res)) return;
       if (!methodGuard(req, res)) return;
       if (!originGuard(req, res)) return;
       await handler(req, res);

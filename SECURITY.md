@@ -242,7 +242,16 @@ out to `git` across many repos, and can commit inside them.
 on a network, behind a reverse proxy, or as a multi-tenant service. Its
 dev server:
 
-- Binds to `localhost:5120` only.
+- Listens on port 5120 at Vite's default `localhost` bind — `vite.config.ts`
+  sets no `server.host`, so a `vite --host` run would expose the port on
+  the network. Every `/api/*` request is therefore also checked against
+  its peer address (`req.socket.remoteAddress`, `viz/src/devApi.ts`) and
+  answered 403 unless it is loopback (`127.0.0.0/8`, `::1`, or
+  IPv4-mapped `::ffff:127.*`), whatever the bind. This check runs ahead
+  of the method and origin checks below. It covers `/api/*` only: under
+  `--host`, Vite's own serving on the same port (the page, `/src/*`
+  modules, `/@fs/` files, the HMR websocket) is still reachable from the
+  network, so do not run the dev server with `--host`.
 - Enforces `server.allowedHosts: ['localhost', '127.0.0.1']`, so requests
   with a spoofed `Host` header (DNS rebinding) are rejected by Vite
   before reaching application code.
@@ -263,8 +272,10 @@ dev server:
   non-browser clients such as `curl` are unaffected.
 - Rejects non-GET/HEAD `/api/*` requests with 405, ahead of origin
   validation and business logic (`viz/src/devApi.ts`).
-- Reads files only from projects discovered under
-  `${FLAITRON_VIZ_WORKSPACE:-~/code}/*/.flaitron/`. There is no
+- Reads files only inside the resolved root of each project discovered
+  under `${FLAITRON_VIZ_WORKSPACE:-~/code}/*/` (a directory whose
+  `.flaitron/PLAN.md` resolves inside it), with the one version-line
+  exception named at the end of this bullet. There is no
   user-controlled path input on any endpoint. That bound is **enforced,
   not assumed**: `discoverProjects` (`viz/src/workspace.ts`),
   `archiveCache.readArchive` (`viz/src/archiveCache.ts`), and the

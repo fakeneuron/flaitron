@@ -15,13 +15,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-EPIC-776** [heavy]🧠 | closure-contract-coherence — Discovery supplied by audit-repo 2026-10-10. Surfaced by audit-repo 2026-10-10 (Theme: Semantic SPEC↔skill drift)
-  - [x] **CORE-776.2** [light]🔧 [unattended] | micro-recap-no-wait — Completed 2026-10-10.
-  - [x] **CORE-776.3** [light]🔧 [unattended] | refactor-fast-label — Completed 2026-10-10.
-  - [x] **CORE-776.4** [light]🔧 [unattended] | epic-second-audit — Completed 2026-10-10.
-  - [x] **CORE-776.5** [frontier]💎 | micro-unattended-review — Completed 2026-10-10.
-  - [x] **CORE-776.6** [heavy]🧠 | id-allocation-home — Completed 2026-10-10.
-  - [ ] **CORE-776.N** [heavy]🧠 | closure-contract-coherence audit
 - [ ] **FE-EPIC-127** [medium]🧩 | viz-failure-paths — Discovery supplied by audit-repo 2026-10-10. Surfaced by audit-repo 2026-10-10 (Theme: viz dev-server failure paths)
   - [ ] **FE-127.2** [light]🔧 [unattended] | devapi-guarded-catch — `viz/src/devApi.ts` `guarded` awaits the handler with no catch and `projectFromQuery` calls `new URL` outside any try, so `GET /api/plan//a:99999` is an unhandled rejection that exits the Vite process; catch in `guarded` (log; 500, or destroy if headers are sent), return 400 from `projectFromQuery` on a bad URL, and test that the malformed request gets a status.
   - [ ] **FE-127.3** [light]🔧 [unattended] | viz-boundary-claims — `SECURITY.md` §Visualizer says the server binds localhost only and confines reads to `*/.flaitron/`; code relies on Vite's default bind and confines to the project-root realpath (`.flaitron/core` may be a symlinked checkout). Add a loopback `req.socket.remoteAddress` check to `guarded` (+ test) and correct the confinement sentence to the enforced boundary.
@@ -48,6 +41,13 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-EPIC-776** [heavy]🧠 | closure-contract-coherence — Completed 2026-10-10.
+  - [x] **CORE-776.2** [light]🔧 [unattended] | micro-recap-no-wait — Completed 2026-10-10.
+  - [x] **CORE-776.3** [light]🔧 [unattended] | refactor-fast-label — Completed 2026-10-10.
+  - [x] **CORE-776.4** [light]🔧 [unattended] | epic-second-audit — Completed 2026-10-10.
+  - [x] **CORE-776.5** [frontier]💎 | micro-unattended-review — Completed 2026-10-10.
+  - [x] **CORE-776.6** [heavy]🧠 | id-allocation-home — Completed 2026-10-10.
+  - [x] **CORE-776.N** [heavy]🧠 | closure-contract-coherence audit — Completed 2026-10-10.
 - [x] **CORE-777** [medium] | ignored-skill-link-paths — Completed 2026-10-10.
 - [x] **CORE-EPIC-775** [medium]🧩 | v7-bump-safety — Completed 2026-10-10.
   - [x] **CORE-775.2** [medium]🧩 [unattended] | bump-rollback-staging — Completed 2026-10-10.

@@ -165,7 +165,7 @@ Edit per their feedback before writing anything. Do not skip the review. The rec
   postures").
 - **The reconciliation scan still runs.** `SPEC/gate-postures.md` §"What `--unattended`
   never relaxes" holds it: it guards plan correctness rather than pacing, so the
-  posture may not skip it. On the three runners an unconfirmable direction change
+  posture may not skip it. On `/ft-task` and `/ft-close-epic` an unconfirmable direction change
   parks as `drift`; here there is no tasknote to park, so the resolution is the
   same principle in the shape this motion allows — **scan, report, apply
   nothing.** Carry every classification and proposed action verbatim into the
@@ -219,7 +219,7 @@ In one continuous motion, after the user has confirmed the Step 3 review (includ
 Surface to the user, in one short message:
 
 - `<TASK-ID>` filed at `.flaitron/PLAN.md` under `## <Priority>` with model `<model>`, `committed <sha>` — or, when Step 4.4 was skipped, `left uncommitted (PLAN.md or the index already carried other changes)`.
-- The follow-up sits as a one-line PLAN.md entry until `/ft-task <TASK-ID>` (or `/ft-micro-task` for a one-shot) fires.
+- The follow-up sits as a one-line PLAN.md entry until `/ft-task <TASK-ID>` (or `/ft-task <TASK-ID> --micro` for a one-shot) fires.
 - (Conversational paragraph from Step 4.5 is included in this response.)
 
 **When `unattended-mode = true`**, the same message is the run's only output and
@@ -248,6 +248,6 @@ The filing is committed by Step 4.4 — the Step 3 review approval **is** the co
 ## Notes
 
 - **Filing-only — no design decisions in the skill flow itself.** All context (rationale, suspected files, recommended priority/model) comes from the prior conversation; the skill just records the line and surfaces the paragraph.
-- **Routing across the filing cohort:** see SPEC/tasknote-selection.md §"When to use a tasknote (and when not to)" for the full decision tree. One filer, three weights: the default flow's niche is ≤50w + ephemeral context only. Tangential idea + resume inline + no review gate → add `--park` (lighter; see `park-mode.md`). Above 50w, or a file survey / open questions / design decisions worth persisting → add `--starter` (heavier; see `starter-mode.md`). Filing+executing in one shot → `/ft-micro-task`. Starting an existing PLAN.md entry → `/ft-task`.
+- **Routing across the filing cohort:** see SPEC/tasknote-selection.md §"When to use a tasknote (and when not to)" for the full decision tree. One filer, three weights: the default flow's niche is ≤50w + ephemeral context only. Tangential idea + resume inline + no review gate → add `--park` (lighter; see `park-mode.md`). Above 50w, or a file survey / open questions / design decisions worth persisting → add `--starter` (heavier; see `starter-mode.md`). Starting an existing PLAN.md entry → `/ft-task` (`--micro` for a one-shot).
 - **`--unattended` is the operator-less posture, not a speed flag.** Its one legitimate caller is a closure with no operator present discharging `SPEC.md` §"Deferred hand-off filing". It buys no autonomy an attended run lacks: the filing-discipline cap, the reconciliation scan, the pre-check, and the pathspec discipline all still bind, and every question it cannot answer terminates readably rather than being answered on the operator's behalf. Posture contract: `SPEC/gate-postures.md` §"`--unattended` operator posture".
 - **No active-tasknote breadcrumb.** When invoked from inside `/ft-task`, `/ft-file-task` does not write into the active tasknote — keeps the active tasknote a record of what it was for, not a coordination ledger. This is the strict reading of "only one PLAN.md line on disk."

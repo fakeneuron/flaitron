@@ -1,6 +1,6 @@
 # PLAN.md filing
 
-> Lazy-loaded SPEC module. Loaded before a new row is written, by every motion that mints its ID (§"ID allocation"), and at the two moments a PLAN.md row changes hands with git: by the filing motions (`/ft-file-task` and its `--park` / `--starter` modes, `/ft-audit`, `/ft-audit-repo`, `/ft-refactor`, `/ft-open-epic` at Step 4) and `/ft-seed-unattended` when they commit their own write, and by every closing runner (`/ft-task`, `/ft-micro-task`, `/ft-open-epic`, `/ft-close-epic`, `/ft-release`) at the Phase 4 stub flip — plus the visualizer as a `## Completed` history consumer. See `SPEC.md` for the always-loaded core spec, and the sibling [`SPEC/tasknote-selection.md`](tasknote-selection.md) for the use/skip thresholds, the filing-discipline word budget, and the downstream-impact reconciliation scan that decide *what* to file.
+> Lazy-loaded SPEC module. Loaded before a new row is written, by every motion that mints its ID (§"ID allocation"), and at the two moments a PLAN.md row changes hands with git: by the filing motions (`/ft-file-task` and its `--park` / `--starter` modes, `/ft-audit`, `/ft-audit-repo`, `/ft-refactor`, `/ft-open-epic` at Step 4) and `/ft-seed-unattended` when they commit their own write, and by every closing runner (`/ft-task`, `/ft-open-epic`, `/ft-close-epic`, `/ft-release`) at the Phase 4 stub flip — plus the visualizer as a `## Completed` history consumer. See `SPEC.md` for the always-loaded core spec, and the sibling [`SPEC/tasknote-selection.md`](tasknote-selection.md) for the use/skip thresholds, the filing-discipline word budget, and the downstream-impact reconciliation scan that decide *what* to file.
 
 One subject — a PLAN.md row's life: §"ID allocation" (the number a new row
 takes before it is written), §"Filing commits" (how a filing lands in git),
@@ -206,7 +206,7 @@ found, but confirms and applies no edit — a run with no operator never perform
 the operator's motion.
 
 **Execution skills keep their commit-go gate.** This section governs the seven
-filing motions above and `/ft-seed-unattended`'s write, and nothing else. `/ft-task`, `/ft-micro-task`,
+filing motions above and `/ft-seed-unattended`'s write, and nothing else. `/ft-task`,
 `/ft-open-epic` past its Step 4 filing, `/ft-close-epic`, `/ft-release`,
 `/ft-adopt`, and `/ft-update` are unchanged: their commits
 land deliverables or cut releases, and it is the 📦 conditional skip rule

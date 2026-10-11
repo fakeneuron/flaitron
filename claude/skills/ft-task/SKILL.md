@@ -24,7 +24,7 @@ If neither matches, bail.
 Paths this skill uses:
 - SPEC: `<root>SPEC.md` (always loaded core)
 - SPEC_DIR (lazy modules `epic.md` · `starter.md` · `blocked.md` · `model.md` · `loop.md` · `versioning.md` · `gate-postures.md` · `post-closure.md`): `<root>SPEC/`
-- SKILL_DIR (`preamble.md` — **every-run**, shared with `/ft-micro-task`; lazy fragments `step-0-flags.md` · `step-1.5-model-edge.md` and `unattended-mode.md` — both shared, also loaded by `/ft-micro-task` — · `step-3a-promote-starter.md` · `step-3c-resume-blocked.md` · `step-4-debug-mode.md` · `step-5-loop-mode.md` · `micro-mode.md`): `<root>claude/skills/ft-task/`
+- SKILL_DIR (`preamble.md` — **every-run**; lazy fragments `step-0-flags.md` · `step-1.5-model-edge.md` · `unattended-mode.md` (shared, also loaded by `/ft-close-epic`) · `step-3a-promote-starter.md` · `step-3c-resume-blocked.md` · `step-4-debug-mode.md` · `step-5-loop-mode.md` · `micro-mode.md`): `<root>claude/skills/ft-task/`
 - Template: `<root>templates/tasknote-template.md` (`--micro`: `<root>templates/tasknote-micro-template.md`)
 - PLAN: `.flaitron/PLAN.md`, tasknote dir: `.flaitron/tasknote/` (always)
 
@@ -36,7 +36,7 @@ Subsequent steps name what to Read; the SPEC contract + matching SKILL fragment 
 
 ## Step 1 — Locate the task in PLAN.md and pre-flight
 
-**Read `<SKILL_DIR>/preamble.md` now** — shared with `/ft-micro-task`, read every run — and run its §"Locate and capture": the PLAN.md lookup, the status gate, the segment capture, the `[unattended]` row marker, the 🎯 purpose blurb, and the filing-discipline check. Here the row marker's `<suppressions>` clause is `same suppressions as --fast`, and the blurb fires ahead of the 3a / 3b / 3c branch.
+**Read `<SKILL_DIR>/preamble.md` now** — read every run — and run its §"Locate and capture": the PLAN.md lookup, the status gate, the segment capture, the `[unattended]` row marker, the 🎯 purpose blurb, and the filing-discipline check. The blurb fires ahead of the 3a / 3b / 3c branch.
 
 Then run its §"Pre-flight" (Area, epic-ID dispatch, foreign-dirt gate, archive collision, `--unattended` open-siblings audit), with this check ahead of its foreign-dirt bullet — run here, before the model gate, so a retag or an `--unattended` park never lands on a note this run then refuses, and before the dirt gate, so an uncommitted note is routed rather than stopped as dirt:
 

@@ -12,7 +12,7 @@ On activation, emit:
 
 `⚡ --unattended active — no operator present: the audit closes and commits autonomously, parent flip included. Gates that cannot be answered park or terminate.`
 
-The posture's contract is [`SPEC/gate-postures.md`](../../../SPEC/gate-postures.md) §"`--unattended` operator posture" → "`/ft-close-epic` under the posture". One thing differs from the runners: the flag is **not** a `--fast` superset here (the epic skills never accepted `--fast`). The parent flip is not a question, so it runs as attended (`SPEC/plan-filing.md` §"Epic parent flip"). Everything §"What `--unattended` never relaxes" lists holds in full — the audit commit is a real commit.
+The posture's contract is [`SPEC/gate-postures.md`](../../../SPEC/gate-postures.md) §"`--unattended` operator posture" → "`/ft-close-epic` under the posture". One thing differs from `/ft-task`: the flag is **not** a `--fast` superset here (the epic skills never accepted `--fast`). The parent flip is not a question, so it runs as attended (`SPEC/plan-filing.md` §"Epic parent flip"). Everything §"What `--unattended` never relaxes" lists holds in full — the audit commit is a real commit.
 
 ## Steps 1-2 — Pre-scaffold stops
 

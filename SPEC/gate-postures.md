@@ -1,6 +1,6 @@
 # Flag postures — `--fast` and `--unattended`
 
-> Lazy-loaded SPEC module. Loaded by `/ft-task` and `/ft-micro-task` at their Step 0 flag parse when `--fast` or `--unattended` is set, at their Step 1 when the PLAN.md row's `[unattended]` marker implies `--fast`, and by `/ft-close-epic` at its Step 0 under `--unattended`; consulted by any surface reasoning about what a flag suppresses, converts, or never reaches. A flagless run on an unmarked row never loads it. See [`SPEC/gates.md`](gates.md) for the gate machinery these postures cross-cut and `SPEC.md` for the always-loaded core spec.
+> Lazy-loaded SPEC module. Loaded by `/ft-task` at its Step 0 flag parse when `--fast` or `--unattended` is set, at its Step 1 when the PLAN.md row's `[unattended]` marker implies `--fast`, and by `/ft-close-epic` at its Step 0 under `--unattended`; consulted by any surface reasoning about what a flag suppresses, converts, or never reaches. A flagless run on an unmarked row never loads it. See [`SPEC/gates.md`](gates.md) for the gate machinery these postures cross-cut and `SPEC.md` for the always-loaded core spec.
 
 The two operator postures that cross-cut every gate live here — `--fast` (an
 operator who is present but does not want to be asked) and `--unattended` (no
@@ -85,8 +85,8 @@ matrix".
 **Implied by the `[unattended]` row marker.** A PLAN.md row carrying
 `[unattended]` ([`SPEC/task-line-segments.md`](task-line-segments.md)) is the operator's
 declaration that the row is safe to drive with nobody present — so it needs
-no pauses when somebody is. The two runners that accept `--fast` set
-fast-mode from the marker when no flag was passed, and say so inline
+no pauses when somebody is. `/ft-task`, the runner that accepts `--fast`, sets
+fast-mode from the marker when no flag was passed, and says so inline
 (`⚡ --fast implied by the [unattended] row marker …`). The marker implies
 **only** this flag: it never puts a run in the `--unattended` posture, which
 stays the caller's per-invocation declaration (§"`--unattended` operator
@@ -112,8 +112,8 @@ prerequisite it parks `drift` instead, names the park in the notice in place
 of `proceeding`, and halts; the operator overrules inline
 ([`SPEC/blocked.md`](blocked.md) §"Under `--fast`, park and say so").
 
-`--fast` applies to `/ft-task` (every flag set, `--loop` included) and
-`/ft-micro-task` — the epic skills (`/ft-open-epic`,
+`--fast` applies to `/ft-task` (every flag set, `--loop` and `--micro`
+included) — the epic skills (`/ft-open-epic`,
 `/ft-close-epic`) do not accept it. `/ft-refactor` has its own,
 unrelated `--fast`: it only skips the operator review pause before
 filing the refactor epic and never touches the 👁️/📦/🛠️ gate surface
@@ -224,10 +224,9 @@ PLAN.md edit defers.
 The Step 1 pre-flight checks and the Step 1.5 model gate run before this
 run has written a tasknote (the skill/pin guard, last below, can also fire
 later), so a "park" there may have nothing to park — or
-may find a note it must not touch. Each runner's pre-flight refuses an
-in-flight note (`/ft-micro-task`: any existing note but its own
-`model-mismatch` park), so only a starter or blocked note can reach
-`/ft-task`'s model gate, and only its own park `/ft-micro-task`'s. The posture splits by what
+may find a note it must not touch. `/ft-task`'s pre-flight refuses an
+in-flight note, so only a starter or blocked note can reach its model
+gate. The posture splits by what
 the stop is *about*:
 
 - **Concrete-model mismatch — scaffold, then park.** A task-level
@@ -247,8 +246,8 @@ the stop is *about*:
   nothing new to park, and scaffolding one would duplicate it.
 - **Open-siblings audit — terminate, write nothing.** A `.N` audit ID
   whose epic still has an open child would park on drift, and that note
-  would dirty the tree for the next dispatch. The runners walk the
-  parent's children at run time and stop with cause `open-siblings`
+  would dirty the tree for the next dispatch. `/ft-task` walks the
+  parent's children at run time and stops with cause `open-siblings`
   (`no-parent` / `parent-closed` when the parent is missing or closed),
   as `/ft-close-epic` Step 2 already does.
 - **Skill/pin guard — stop, never park.** Body and pin disagree, so a
@@ -296,27 +295,20 @@ grade is the only read of the diff that is not the generator's own. A
 `park-reason: input-needed — <the blocker>` rather than closing over it. A
 **note** is recorded and the run continues. The reviewer never patches, so
 this converts no gate and adds no row to a runner's park map — see
-[`SPEC.md`](../SPEC.md) §"🧪 Phase 3: Testing & Linting". `/ft-micro-task` is
-the case the rule has to reach for: attended it carries no review item at all
-([`SPEC.md`](../SPEC.md) §"🧪 Phase 3" → "When it is `N/A`"), because the
-operator reads a small commit; under the posture nobody does, so it runs one,
-graded against the only criteria a micro note states — its 🎯 Goal and PLAN.md
-row — on the same two rungs. Its visual check converts the same way: where the
-attended recap would ask the operator to look at a rendered surface, the run
-parks `visual-confirm` before the closure writes.
+[`SPEC.md`](../SPEC.md) §"🧪 Phase 3: Testing & Linting".
 
 `--unattended` removes *pauses*, never *proof*.
 
 ### `/ft-close-epic` under the posture
 
-The two runners above are not the whole surface. `/ft-close-epic` drives an
+`/ft-task` is not the whole surface. `/ft-close-epic` drives an
 epic's `.N` audit through closure under the posture too, and the audit commits
 exactly as an attended run with clear signals would. Its parent flip is not a
 question, so the posture leaves it alone: the closure that leaves every child
 `[x]` flips the parent and moves the cohort
 ([`plan-filing.md`](plan-filing.md) §"Epic parent flip").
 
-One semantic differs from the runners': **it is not a `--fast` superset.** The
+One semantic differs from `/ft-task`'s: **it is not a `--fast` superset.** The
 epic skills never accepted `--fast`, so there is nothing to be a superset of.
 `--unattended` carries the posture directly: suppress what has no operator,
 park or terminate what cannot be answered. The one conversion that parks is
@@ -329,8 +321,8 @@ Everything §"What `--unattended` never relaxes" lists holds here in full: the
 audit commit is a **real** commit, so the foreign-dirt gate still terminates
 write-nothing and 🏁 still requires a deliverable-covering SHA.
 
-**Applies to** the two runners `--fast` applies to — `/ft-task`,
-`/ft-micro-task` — plus `/ft-close-epic`, on the terms
+**Applies to** the runner `--fast` applies to — `/ft-task` — plus
+`/ft-close-epic`, on the terms
 above, and `/ft-file-task`, on
 [`plan-filing.md`](plan-filing.md) §"Filing commits".
 `/ft-open-epic` does not accept it: it opens an epic by filing

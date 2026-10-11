@@ -6,7 +6,7 @@ The value prop: some work is *converge-until-a-check-passes* rather than *do-it-
 
 Loop mode changes the **Phase 2↔3 drive** and one Phase 1 obligation. Path resolution, locate, the model gate, pre-flight, scaffold/promote/resume routing, Phase 4 closure, and the post-closure protocol are byte-identical to a plain `/ft-task` run. `--fast` is largely redundant here — the loop already runs with `--fast` semantics once it starts — and reaches only the pre-loop Phase 1 surface. `--unattended` composes as on any run; the loop-specific conversions are named in `unattended-mode.md` §"Conversion map" and repeated at the step where each fires. `--debug` composes too, but a goal loop assumes the target is known and verifiable while debug mode assumes it must be discovered first — pairing them is rarely right.
 
-**When to reach for `--loop`.** The "done" signal is one or more machine-checkable commands: drive a flaky suite to green, iterate a perf number under a threshold, satisfy a linter/type-checker across many sites, make a fuzzer/property test stop finding cases. Plain `/ft-task` (or `/ft-micro-task`) covers one-pass feature work, refactors with a clear diff, and anything with no repeatable verify command to loop on.
+**When to reach for `--loop`.** The "done" signal is one or more machine-checkable commands: drive a flaky suite to green, iterate a perf number under a threshold, satisfy a linter/type-checker across many sites, make a fuzzer/property test stop finding cases. Plain `/ft-task` (or `/ft-task --micro`) covers one-pass feature work, refactors with a clear diff, and anything with no repeatable verify command to loop on.
 
 ## Step 3b — scaffold addendum (fresh scaffold only)
 

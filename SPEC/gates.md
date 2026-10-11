@@ -1,6 +1,6 @@
 # Gate machinery
 
-> Lazy-loaded SPEC module. Loaded by `/ft-task`, `/ft-micro-task`, `/ft-open-epic`, `/ft-close-epic`, and `/ft-release` whenever an operator-gate decision is in play (Phase 1→2 exit, ready-to-commit). See `SPEC.md` for the always-loaded core spec and its §"Operator-gate cues" for the two sibling modules: [`SPEC/cue-vocabulary.md`](cue-vocabulary.md) (cue inventory) and [`SPEC/gate-postures.md`](gate-postures.md) (the `--fast` / `--unattended` postures and the flag×surface matrix, loaded only when a flag or the `[unattended]` row marker is set).
+> Lazy-loaded SPEC module. Loaded by `/ft-task`, `/ft-open-epic`, `/ft-close-epic`, and `/ft-release` whenever an operator-gate decision is in play (Phase 1→2 exit, ready-to-commit). See `SPEC.md` for the always-loaded core spec and its §"Operator-gate cues" for the two sibling modules: [`SPEC/cue-vocabulary.md`](cue-vocabulary.md) (cue inventory) and [`SPEC/gate-postures.md`](gate-postures.md) (the `--fast` / `--unattended` postures and the flag×surface matrix, loaded only when a flag or the `[unattended]` row marker is set).
 
 This module carries the gate machinery: the two standing phase-gate banners and the cap that fixes them at two, the destructive-action escalation that is the cap's one exception, the Phase 1→2 exit-gate flavors, and the conditional skip rule behind 📦. Each section states its own rule; every flag interaction lives in [`SPEC/gate-postures.md`](gate-postures.md) §"Flag precedence and surface matrix".
 
@@ -191,7 +191,7 @@ gate. Perf-narrative reasoning does not trip 📦.
 
 where `<…>` names the cleared signal as diff facts (e.g., `4 markdown files; no privileged-ops surface`). Then run the bundle in one response: closure review → recap → commit → 🏁 → suggest-next-move → copy-paste line.
 
-**On fire (bundled approval motion).** Proceed with [`SPEC/post-closure.md`](post-closure.md) step 1. The fire-branch turn emits the 📦 banner (or `/ft-micro-task`'s emphasized 🟢 GO) and **waits** — it does not emit 🏁, next-move, or the copy-paste line. Those land only after a deliverable-covering SHA.
+**On fire (bundled approval motion).** Proceed with [`SPEC/post-closure.md`](post-closure.md) step 1. The fire-branch turn emits the 📦 banner and **waits** — it does not emit 🏁, next-move, or the copy-paste line. Those land only after a deliverable-covering SHA.
 
 ## Gate discipline — read before skipping a gate
 

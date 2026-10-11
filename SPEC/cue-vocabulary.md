@@ -74,8 +74,8 @@ to it is a vocabulary change. The reuse is coherent by the same rule as every ot
 the blurb *is* the Goal, spoken instead of filed.
 
 **Non-cue glyphs.** A small residual sits outside all three layers — ⚡
-(`--fast` active), 🔬 (`--debug` active), 🧭 (deep pre-pass), 🌳 (worktree
-/ `## 🌳 Fan-out` heading), 🔁 (`## 🔁 Iterations` log), 🔄 (`## 🔄 Handoff`),
+(`--fast` active), 🔬 (`--debug` active), 🪶 (`--micro` active), 🧭 (deep
+pre-pass), 🌳 (worktree / `## 🌳 Fan-out` heading), 🔁 (`## 🔁 Iterations` log), 🔄 (`## 🔄 Handoff`),
 📌 (sidequest), 📋 (spec template), ⚠️ (inline advisory). These are
 **legitimate and bounded**: each is scoped to one skill or template, none
 collides with a cue, and none carries operator-gate meaning. They are not
@@ -99,8 +99,8 @@ would otherwise never learn what the task was.
 The `PLAN.md` line is the only source, because it is the only thing read yet;
 the `🎯 Goal` is derived from that same line at scaffold.
 
-**Which invocations.** The two ID-invoked runners — `/ft-task` (any flag set,
-`--loop` included) and `/ft-micro-task` — once each, at that one point, ahead
+**Which invocations.** The ID-invoked runner — `/ft-task` (any flag set,
+`--loop` and `--micro` included) — once, at that one point, ahead
 of the fresh-scaffold / starter-promotion / blocked-resume branch, so no path
 carries its own variant. A path holding state the blurb could not know — the
 `park-reason:` a resume clears, a goal loop's `loop-max` budget — states it as

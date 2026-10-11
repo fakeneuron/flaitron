@@ -21,5 +21,5 @@ to keep in sync on a bump. Bumping is a project-side task (e.g.,
 `CORE-XYZ: Bump flaitron to vX.Y.Z`) that runs the migration steps from the
 bump's annotated tag message (`git show vX.Y.Z` in the flaitron submodule)
 and commits the new submodule SHA. `/ft-update` performs that mechanical bump
-with no tasknote; wrap it in a PLAN line or `/ft-micro-task` when you want it
+with no tasknote; wrap it in a PLAN line or `/ft-task <ID> --micro` when you want it
 tracked.

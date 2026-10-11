@@ -76,7 +76,7 @@ From conversation context + remaining `args` text after flag/ID stripping:
 **Context hints** (for the question's parenthetical suggestion only — never
 auto-file without a flag or an answer): quick fix / typo → suggest Low; same
 feature/epic → suggest Medium; tangential exploration → suggest Future. Ready to
-execute **now** → `/ft-micro-task`, not this mode.
+execute **now** → `/ft-task <ID> --micro`, not this mode.
 
 ## Step P4 — Write (one motion)
 
@@ -156,8 +156,8 @@ SKILL's Step 5 hand-off, which ends its turn.
 - **Routing:** see `SPEC/tasknote-selection.md`. `--park` = park idea or quick
   fix, ≤80w, resume inline. Need a review gate or reconcile scan → drop the flag
   and run the default `/ft-file-task` flow. Rich context → `--starter`
-  instead (the two flags do not compose). Execute now → `/ft-micro-task` or
-  `/ft-task`.
+  instead (the two flags do not compose). Execute now → `/ft-task` (`--micro`
+  for a quick fix).
 - **PLAN row shape:** standard task-line grammar only — no park suffix, badge
   hook, or viz-specific label. The board shows a normal open task; rich context
   lives in the stub (`## Idea`, `## Resume anchor`). Viz parity is intentionally
@@ -166,7 +166,7 @@ SKILL's Step 5 hand-off, which ends its turn.
   gate, and park has none by design — the row is written without the token and
   without a candidates line, and is judged for the marker when the stub is
   promoted or run. Not a suppression to un-suppress; there is no gate to host it.
-- **Promotion:** fresh session → read stub; `/ft-micro-task <ID>` (quick fix),
+- **Promotion:** fresh session → read stub; `/ft-task <ID> --micro` (quick fix),
   `/ft-task <ID>` (normal), or expand the stub by hand into a starter from
   `tasknote-starter-template.md` (the row already exists, so the `--starter`
   filer's must-not-exist pre-flight refuses the ID — a manual edit, PLAN row

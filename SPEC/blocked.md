@@ -110,9 +110,11 @@ left off.
 Phase 1 is already complete — do not re-run it. **Exception:** a
 `model-mismatch` park is a bare scaffold the `--unattended` model gate wrote
 before Phase 1 ran, so its resume has nothing to drift-check and continues at
-Phase 1 Discovery instead. A micro-shaped `model-mismatch` park resumes under
-`/ft-micro-task <ID>` (`/ft-task` is not micro-aware); that runner fills its
-missing scaffold values and continues at its Step 3.
+Phase 1 Discovery instead. A micro-shaped park (a `## ⚡ Notes` log in place of
+the phase sections) is resumed by the same `/ft-task <ID>`: the note's shape,
+not a passed flag, puts the run in `--micro` mode, and it continues at the
+log's matching line rather than a phase section — the Implementation line, or
+Discovery for a `model-mismatch` park.
 
 ## Park reason
 
@@ -189,8 +191,8 @@ Phase 4 closure carries none.
 A park is a *deliberate* stop. A run can also simply **end** — the process is
 killed, the context window runs out, the session is lost — leaving the tasknote
 at `status: in-progress` with no gate having fired and no `park-reason:`
-written. The runners refuse that state by design: `/ft-task` (and its two
-siblings) stop on an in-flight tasknote and recommend continuing
+written. The runners refuse that state by design: `/ft-task` and `/ft-close-epic`
+stop on an in-flight tasknote and recommend continuing
 conversationally, because restarting a half-executed task from Step 1 would
 re-run Discovery over work already done.
 

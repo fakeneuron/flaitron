@@ -1,8 +1,8 @@
 # Runner preamble — locate, pre-flight, model gate (executable steps)
 
-> SKILL fragment — **shared, every-run** (not lazy). Loaded by `/ft-task` and `/ft-micro-task` at their Step 1 on every run. The file is owned by `claude/skills/ft-task/`; `/ft-micro-task` resolves it through its `<PREAMBLE>` path. Each runner calls the three sections below from its own steps — §"Locate and capture", then §"Pre-flight", then §"Model gate" — and adds its own deltas there. Pre-flight runs first so every model-gate write (a retag, a legacy tag, an `--unattended` model-mismatch park) lands only in a tree the foreign-dirt gate has passed — clean but for this ID's own tasknote, which §"Pre-flight" exempts. See SPEC.md for every contract cited here.
+> SKILL fragment — **every-run** (not lazy). Loaded by `/ft-task` at its Step 1 on every run. The body calls the three sections below from its own steps — §"Locate and capture", then §"Pre-flight", then §"Model gate" — and adds its own deltas there. Pre-flight runs first so every model-gate write (a retag, a legacy tag, an `--unattended` model-mismatch park) lands only in a tree the foreign-dirt gate has passed — clean but for this ID's own tasknote, which §"Pre-flight" exempts. See SPEC.md for every contract cited here.
 >
-> **`<SKILL>` below stands for the invoking skill's own slash command, flags included** — `/ft-task` (with whatever of `--debug` / `--loop` / `--micro` / `--fast` / `--unattended` was passed) or `/ft-micro-task`. Never hard-code a bare `/ft-task`; a re-entry without its flags drops the run's shape.
+> **`<SKILL>` below stands for the invoking slash command, flags included** — `/ft-task` with whatever of `--debug` / `--loop` / `--micro` / `--fast` / `--unattended` was passed. Never hard-code a bare `/ft-task`; a re-entry without its flags drops the run's shape.
 
 ## Locate and capture
 
@@ -17,7 +17,7 @@ Otherwise, capture:
 - The one-line long description (everything after ` — `; may be empty)
 - The section heading the line lives under (`High` / `Medium` / `Low` / `Future Opportunities`) — this is the task's **Priority**
 - The optional `[!critical]` segment — the urgency flag (orthogonal to priority; legacy `## Critical` sections soft-migrate to `High` with the flag implicit, per `SPEC/task-line-segments.md`).
-- The optional `[unattended]` marker (after `[model]`). **When present and no `--fast` / `--unattended` flag was passed**, set `fast-mode = true` and emit `⚡ --fast implied by the [unattended] row marker — <suppressions>; the --unattended posture is not implied.`, where `<suppressions>` is the clause the invoking skill names. Then **Read `<root>SPEC/gate-postures.md` now** — Step 0's flag walk did not load it. The marker never sets `unattended-mode`; under an explicit `--unattended` it changes nothing. Contract: SPEC/gate-postures.md §"`--fast` operator override" → "Implied by the `[unattended]` row marker".
+- The optional `[unattended]` marker (after `[model]`). **When present and no `--fast` / `--unattended` flag was passed**, set `fast-mode = true` and emit `⚡ --fast implied by the [unattended] row marker — same suppressions as --fast; the --unattended posture is not implied.` Then **Read `<root>SPEC/gate-postures.md` now** — Step 0's flag walk did not load it. The marker never sets `unattended-mode`; under an explicit `--unattended` it changes nothing. Contract: SPEC/gate-postures.md §"`--fast` operator override" → "Implied by the `[unattended]` row marker".
 
 The full grammar is `- [ ] **TASK-ID** [!critical] [model] [unattended] [handoff] | shortname — long description`, every segment but the ID optional (SPEC §"Task-line format"). `[handoff]` changes nothing on an attended run — capture nothing from it.
 

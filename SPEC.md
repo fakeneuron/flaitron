@@ -440,11 +440,6 @@ already declined.
 skipped the tasknote altogether
 ([`SPEC/tasknote-selection.md`](SPEC/tasknote-selection.md)) — records `N/A` with
 a one-line reason, as the 👁️ item does on a task with no rendered surface.
-`/ft-micro-task` carries no such item attended: its whole threshold *is* that
-case, and an operator reads the commit. Under `--unattended` it runs one anyway,
-graded against its 🎯 Goal and PLAN.md row
-([`SPEC/gate-postures.md`](SPEC/gate-postures.md) §"What `--unattended` never
-relaxes").
 
 Neither flag suppresses it, since nothing here asks the operator anything,
 and it adds no phase or banner
@@ -638,13 +633,12 @@ equivalent). If the working tree is **non-empty**:
   **themselves** — then re-invoke the skill.
 - No assistant-driven stash/clean/commit of foreign dirt.
 
-For `/ft-task` and `/ft-micro-task`, the task's own existing
+For `/ft-task`, the task's own existing
 `.flaitron/tasknote/<TASK-ID>.md` (any status but a deletion or rename)
 is not foreign dirt: the runner's existing-note check runs ahead of this gate
 and routes it. `/ft-task` refuses an in-flight note, promotes a starter, and
 resumes a blocked note (an uncommitted `--unattended` model-mismatch park
-included); `/ft-micro-task` refuses any existing note but its own
-`model-mismatch` park, which it resumes. `/ft-close-epic` runs the same
+included). `/ft-close-epic` runs the same
 check ahead of the gate and refuses its audit note at any status.
 
 Same-conversation continue after a start-only skill already opened the
@@ -725,7 +719,7 @@ incomplete `<AREA>-<NUMBER>` within that priority.
 
 Canonical contract: see [`SPEC/model.md`](SPEC/model.md). The `[model]`
 token names the task's cognitive load on a five-rung ladder, matched by
-tier against the active model at the runners' Step 1.5 gate:
+tier against the active model at `/ft-task`'s Step 1.5 gate:
 
 ```text
 light  <  medium  <  heavy  <  frontier  <  xheavy

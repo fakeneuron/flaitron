@@ -20,13 +20,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [ ] **FE-127.3** [light]🔧 [unattended] | viz-boundary-claims — `SECURITY.md` §Visualizer says the server binds localhost only and confines reads to `*/.flaitron/`; code relies on Vite's default bind and confines to the project-root realpath (`.flaitron/core` may be a symlinked checkout). Add a loopback `req.socket.remoteAddress` check to `guarded` (+ test) and correct the confinement sentence to the enforced boundary.
   - [ ] **FE-127.4** [medium]🧩 [unattended] | watch-late-dirs — when `tasknote/` or `tasknote/archive/` is absent at dev-server start, chokidar watches the parent and counts depth from there, so later notes never fire (`viz/src/flaitronWatch.ts` + `watchSet.ts`); watch each project's `.flaitron/` root with the depth and `ignored` reach re-anchored, and test creating the archive dir after start.
   - [ ] **FE-127.N** [medium]🧩 | viz-failure-paths audit
-- [ ] **CORE-EPIC-778** [frontier]💎 | micro-fold-in — Fold `/ft-micro-task` into `/ft-task --micro`: a spec-on-top, one-section-log template variant behind a flag on the one runner; hard-cut the second runner per the v7.0.0 precedent (major bump at release) and remove every carve-out that mirrored it (conversion-map column, posture clauses, 🟢 GO, wrappers, stable-surface rows). Run after [[CORE-776.N]] closes.
-  - [x] **CORE-778.1** [frontier]💎 | micro-fold-in discovery — Completed 2026-10-10.
-  - [x] **CORE-778.2** [heavy]🧠 | micro-flag — Completed 2026-10-10.
-  - [x] **CORE-778.3** [medium]🧩 | runner-retire — Completed 2026-10-10.
-  - [x] **CORE-778.4** [heavy]🧠 | contract-reconcile — Completed 2026-10-10.
-  - [x] **CORE-778.5** [light]🔧 | docs-sweep — Completed 2026-10-10.
-  - [ ] **CORE-778.N** [heavy]🧠 | micro-fold-in audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
 
 ## Low
 
@@ -41,6 +34,13 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-EPIC-778** [frontier]💎 | micro-fold-in — Completed 2026-10-10.
+  - [x] **CORE-778.1** [frontier]💎 | micro-fold-in discovery — Completed 2026-10-10.
+  - [x] **CORE-778.2** [heavy]🧠 | micro-flag — Completed 2026-10-10.
+  - [x] **CORE-778.3** [medium]🧩 | runner-retire — Completed 2026-10-10.
+  - [x] **CORE-778.4** [heavy]🧠 | contract-reconcile — Completed 2026-10-10.
+  - [x] **CORE-778.5** [light]🔧 | docs-sweep — Completed 2026-10-10.
+  - [x] **CORE-778.N** [heavy]🧠 | micro-fold-in audit — Completed 2026-10-10.
 - [x] **CORE-EPIC-776** [heavy]🧠 | closure-contract-coherence — Completed 2026-10-10.
   - [x] **CORE-776.2** [light]🔧 [unattended] | micro-recap-no-wait — Completed 2026-10-10.
   - [x] **CORE-776.3** [light]🔧 [unattended] | refactor-fast-label — Completed 2026-10-10.

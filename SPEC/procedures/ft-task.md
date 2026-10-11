@@ -496,4 +496,4 @@ Mode deltas a skimming agent must not miss — the module points at
   park with `park-reason: input-needed — …` instead of committing.
 - Neither mode suppresses the paper-complete guard. 🏁 still requires a
   real deliverable-covering SHA, and steps 2–3 never share a turn with a
-  fire-branch 📦 / 🟢 ask.
+  fire-branch 📦 ask.

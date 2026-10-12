@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-(none)
+- [ ] **CORE-781** [medium]🧩 | auto-priority — Drop the operator priority prompt: `--park` no-flag path (park-mode.md Step P2; SPEC/tasknote-selection.md "never auto-file") and the priority field in /ft-file-task and /ft-open-epic Step 2. AI files at its best-read priority; explicit flags still override. Sweep codex mirrors.
 
 ## Low
 

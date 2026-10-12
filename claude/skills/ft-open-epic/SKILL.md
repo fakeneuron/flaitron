@@ -8,7 +8,7 @@ argument-hint: '[--deep]'
 
 You are filing a new epic and driving its `.1` Discovery tasknote in one motion. The full lifecycle contract lives in `<SPEC_DIR>/epic.md` — this skill is the executable interpretation of the lifecycle's filing-and-Discovery side, not a replacement. Treat `SPEC/epic.md` as authoritative when this file is silent or in tension.
 
-The skill takes one optional argument: `--deep`. When passed, it stages a `constitution → specify → clarify` pre-pass for high-uncertainty epics before Phase 1 Discovery begins (see Step 1.5 + Step 5.5). All other inputs (area, shortname, priority, model, implementation-child count M) are collected via AskUserQuestion in Step 2.
+The skill takes one optional argument: `--deep`. When passed, it stages a `constitution → specify → clarify` pre-pass for high-uncertainty epics before Phase 1 Discovery begins (see Step 1.5 + Step 5.5). All other inputs (area, shortname, model, implementation-child count M) are collected via AskUserQuestion in Step 2; priority is AI-decided there and shown at Step 3.
 
 ## Step 0 — Resolve paths
 
@@ -54,11 +54,11 @@ The skill recognizes one optional argument: `--deep`. Branch:
 
 ## Step 2 — Collect inputs
 
-Use AskUserQuestion to gather all inputs in one motion. Pre-populate from conversation context where possible — the AI proposes; the user confirms or overrides:
+Use AskUserQuestion to gather the inputs below — all but Priority (item 3) — in one motion. Pre-populate from conversation context where possible — the AI proposes; the user confirms or overrides:
 
 1. **Area** — per SPEC §"Task ID convention"; any project-specific prefixes declared in `.flaitron/tasknote/README.md`. AI proposes from conversation context.
 2. **Shortname** — concise label up to ~30 chars (e.g., `expand-shipped-skills`, `viz-keyboard-overhaul`). Used as the parent epic's `| shortname` segment.
-3. **Priority** — `High | Medium | Low | Future Opportunities`. AI proposes its best read. For urgent epics, propose `High` with a `[!critical]` flag on the parent (see `SPEC/task-line-segments.md`).
+3. **Priority** — `High | Medium | Low | Future Opportunities`. **AI-decided, not asked** — leave it out of the AskUserQuestion call and file at your best read; Step 3's surface names the section, which is where the operator overrides. For urgent epics, choose `High` with a `[!critical]` flag on the parent (see `SPEC/task-line-segments.md`).
 4. **Model** — see `SPEC/model.md` §"Model field" (and its "Practical guidance and agent-aware defaults" subsection) for examples and realistic defaults (mid-tier models like Grok/Sonnet often `[medium]`, or `[light]` for mechanical work); AI proposes a token (primary labels or specific name; `[frontier]` only on a trigger, never `[xheavy]` — the operator's manual-only rung); this is the epic's token — it goes on the parent line, `.1` and `.N` take it as `<.1-model>` / `<.N-model>` (a `[heavy]` or `[frontier]` epic files `.1` as `[frontier]` and caps `.N` at `[heavy]`; a concrete or `[xheavy]` token stays as filed — `SPEC/model.md` §"When to choose `[frontier]`"), and each implementation child's Step 7 proposal starts from it.
 5. **Implementation-child count M** — number of implementation children, *excluding* Discovery (`.1`) and the audit (`.N`). E.g., M=3 → the epic has `.1` Discovery + `.2..4` implementation + `.N` audit. The audit is always the reserved terminal `.N` suffix (per SPEC/epic.md), decoupled from the count — it never renumbers as children are added. The Discovery's deliverable is filing `.2..(M+1)` (the implementation children).
 
@@ -74,7 +74,7 @@ Surface to the user:
 
 ```text
 Filing new epic:
-  Parent:    <AREA>-EPIC-<next-N> | <shortname>
+  Parent:    <AREA>-EPIC-<next-N> | <shortname>   (under ## <Priority>)
   Discovery: <AREA>-<next-N>.1
   Children:  <AREA>-<next-N>.2 .. <AREA>-<next-N>.<M+1>   (filed in Phase 2)
   Audit:     <AREA>-<next-N>.N     (reserved literal suffix; omit if no audit)
@@ -82,7 +82,7 @@ Filing new epic:
 Confirm or override?
 ```
 
-The user may override the numeric suffix (e.g., to align with an externally-tracked ID). Once locked, use this `<TASK-ID>` shape throughout.
+The user may override the numeric suffix (e.g., to align with an externally-tracked ID) or the priority section, which then sets Step 4's `## <Priority>` heading. Once locked, use this `<TASK-ID>` shape throughout.
 
 ## Step 4 — File the PLAN.md lines
 

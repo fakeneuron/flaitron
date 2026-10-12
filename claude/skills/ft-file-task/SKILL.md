@@ -94,7 +94,7 @@ a neighbouring number papers over that rather than surfacing it.
 
 ## Step 2 — Collect inputs
 
-Use AskUserQuestion to confirm the key fields. Pre-populate from conversation context where possible — the AI proposes; the user confirms or overrides.
+Use AskUserQuestion to confirm the key fields — every field below except Priority (item 2). Pre-populate from conversation context where possible — the AI proposes; the user confirms or overrides.
 
 **When `unattended-mode = true`**, skip the AskUserQuestion call entirely and
 **draft all five fields** from the calling context — the closing tasknote's
@@ -106,7 +106,7 @@ report where the absent operator will see them.
    Step 1. The user may override before filing. If the user changes the ID,
    rerun Step 1a against the final ID before Step 3.
 1. **Title (shortname)** — concise; up to ~30 chars. Used as the `| shortname` segment on the PLAN.md line.
-2. **Priority** — `High | Medium | Low | Future Opportunities`. AI proposes its best read. For urgent rows, propose `High` with a `[!critical]` flag (see `SPEC/task-line-segments.md`).
+2. **Priority** — `High | Medium | Low | Future Opportunities`. **AI-decided, not asked** — leave it out of the AskUserQuestion call and file at your best read; Step 3's review names the section, which is where the operator overrides. For urgent rows, choose `High` with a `[!critical]` flag (see `SPEC/task-line-segments.md`).
 3. **Model** — see `SPEC/model.md` §"Model field" (and its "Practical guidance and agent-aware defaults" subsection) for examples and realistic defaults (mid-tier models like Grok/Sonnet often `[medium]`, or `[light]` for mechanical work); AI proposes a token (primary labels or specific name; `[frontier]` only on a `SPEC/model.md` §"When to choose `[frontier]`" trigger, and never `[xheavy]` — the operator's manual-only rung); goes on the PLAN.md task line.
 4. **Long description** — the one-line PLAN.md long description (everything after `— ` on the task line). AI drafts from conversation context.
 
@@ -148,7 +148,7 @@ Keep the paragraph under ~80 words. If the conversation has surfaced more contex
 
 **Surface for review.** Show the user, in one short message:
 
-- The proposed PLAN.md line, exactly as it will be appended — **with `[unattended]` in place after `[<model>]` when the predicate admitted the row**, and one clause saying so (`candidate for [unattended] — <clause-6 predecessor, if any>`). The operator's assent keeps the token; an edit that drops it drops it. A row the predicate declined shows no token and says nothing.
+- The proposed PLAN.md line, exactly as it will be appended, and the `## <Priority>` section it lands under — **with `[unattended]` in place after `[<model>]` when the predicate admitted the row**, and one clause saying so (`candidate for [unattended] — <clause-6 predecessor, if any>`). The operator's assent keeps the token; an edit that drops it drops it. A row the predicate declined shows no token and says nothing.
 - The drafted conversational paragraph.
 - **Any proposed reconcile actions** — one impacted entry per line with its classification and proposed action (or "no downstream impact" when the scan found none or was skipped).
 

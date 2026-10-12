@@ -45,16 +45,11 @@ Examples: `/ft-file-task --park --low fix null guard in parser`,
 `/ft-file-task --park --med CORE-342`,
 `/ft-file-task --park explore redis --fut`.
 
-**No flag → one short question, then stop.** Before writing anything, ask
-exactly one line (no AskUserQuestion widget, no multi-field form):
-
-```text
-Park as **Low** (next-chat fix) · **Medium** (soon) · or **Future** (later)?
-```
-
-Optionally parenthesize your best read from context, e.g. `(sounds like Low)`.
-**Do not write files until the user answers.** On the next turn, map their reply
-(`low` / `med` / `fut` / full words / flag repeat) and continue at Step P3.
+**No flag → your best read, no question.** Pick the section from context and
+continue at Step P3 in the same turn, first match wins: quick fix / typo → Low;
+same feature or epic → Medium; tangential exploration → Future; High only when
+the context states explicit urgency. The Step P5 reply names the priority, so the operator
+corrects it there (Step P5's correction rule) rather than answering up front.
 
 ## Step P3 — Draft
 
@@ -68,15 +63,12 @@ From conversation context + remaining `args` text after flag/ID stripping:
 4. **Resume anchor** — one sentence in `## Resume anchor`: where the main
    session was (active task + step, or the in-flight user goal).
 5. **Parent** — YAML `parent:` = active task ID when one exists; else leave empty.
-6. **Priority** — from flag or the user's answer; set YAML `priority:` and
+6. **Priority** — from flag or your Step P2 read; set YAML `priority:` and
    `pickup:` per the table above. Default model `[light]`; `[medium]` only when
    the idea clearly needs design judgment. Add `[!critical]` on the PLAN line
-   only for `--high` with explicit urgency.
+   only for High with explicit urgency.
 
-**Context hints** (for the question's parenthetical suggestion only — never
-auto-file without a flag or an answer): quick fix / typo → suggest Low; same
-feature/epic → suggest Medium; tangential exploration → suggest Future. Ready to
-execute **now** → `/ft-task <ID> --micro`, not this mode.
+Ready to execute **now** → `/ft-task <ID> --micro`, not this mode.
 
 ## Step P4 — Write (one motion)
 
@@ -91,8 +83,7 @@ Then:
    `SPEC/plan-filing.md` §"Filing commits": `git diff --cached --quiet` non-zero,
    or any PLAN.md change beyond earlier task-row filings → `auto-commit = false`;
    otherwise `auto-commit = true`, recording any accumulated-filing IDs. Not a
-   gate. Run it here, not at Step P1 — the Step P2 priority question waits for
-   the operator.
+   gate. Run it here, immediately before the writes it guards.
 2. `mkdir -p .flaitron/sidequest/`
 3. Copy the template → `.flaitron/sidequest/<TASK-ID>.md`; fill frontmatter, H1,
    nav date, `## Idea`, `## Resume anchor`, `parent:`.
@@ -119,7 +110,7 @@ Then:
    recorded (their IDs go in the body line that section names). Anything else →
    `git restore --staged` both paths, skip the commit, and say so in the Step P5
    reply as the `auto-commit = false` case. Park mode has no review gate, so the
-   **invocation itself** (flag + priority flag, or the Step P2 priority answer)
+   **invocation itself** (the `--park` flag, with or without a priority flag)
    is the commit authorization. `auto-commit = false` → skip, and say so in the
    Step P5 reply. Full contract: `SPEC/plan-filing.md` §"Filing commits".
 
@@ -143,7 +134,8 @@ it is **not** a 🏁 marker (reserved for closure commits; `SPEC.md`
 `· uncommitted` instead.
 
 If the user immediately corrects priority in chat, move the PLAN line to the
-right section in the same turn (no re-file). When the park was already
+right section and update the stub's `priority:` / `pickup:` to match, in the
+same turn (no re-file). When the park was already
 committed, that correction is a follow-up commit, not a re-file.
 
 Then **continue the interrupted work inline** in the same response (pick up

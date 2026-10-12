@@ -68,10 +68,10 @@ children plus a `.N` audit; execution is normal `/ft-task` cycles. No target →
 
 - An idea or **quick fix** surfaces mid-session, you are **not** switching context, and it fits a ≤80-word stub plus a ≤30w PLAN one-liner
 
-**Priority flags** (skip the question): `--low` → `## Low` (`pickup:
+**Priority flags** (override the AI's read): `--low` → `## Low` (`pickup:
 next-chat`); `--med` / `--medium` → `## Medium`; `--fut` / `--future` →
-`## Future Opportunities`; `--high` → `## High`. **No flag** → one short
-question (`Low · Medium · Future?`) before any disk write — never auto-file.
+`## Future Opportunities`; `--high` → `## High`. **No flag** → the AI files
+at its best-read priority without asking; the reply names it for correction.
 
 Park mode skips the review gate and the reconciliation scan, auto-allocates the
 ID, and continues the main session inline; where it conflicts with the default

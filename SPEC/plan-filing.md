@@ -62,7 +62,7 @@ and `--starter` modes, `/ft-audit`, `/ft-audit-repo`, `/ft-refactor`, and
 filing** at hand-off, and `/ft-seed-unattended`, which edits existing rows rather than
 filing new ones, commits its write under the same contract. Filing approval *is* commit authorization: the operator
 already confirmed at the review gate (follow-up / starter), by passing the park
-flag and answering the priority question (park mode), at `/ft-audit`'s
+flag (park mode), at `/ft-audit`'s
 write-step confirmation (tickets plus any inline fixes), at `/ft-audit-repo`'s
 plan confirmation, at `/ft-refactor`'s plan-review confirmation, at
 `/ft-open-epic`'s ID confirmation, or at `/ft-seed-unattended`'s review gate, and a second commit-go ask buys nothing.
@@ -179,7 +179,7 @@ Rules:
 
 **Unattended filing authority.** The grounding above assumes an operator act
 exists to point at. `/ft-file-task --unattended` has none — no review gate
-was answered, no priority question, no write-step confirmation — yet
+was answered, no write-step confirmation — yet
 `SPEC.md` §"Deferred hand-off filing" still obliges an operator-less closure to
 file the deferred step as its own unchecked PLAN.md row. The authorization is
 therefore **the duty itself**: the run is discharging an obligation the contract

@@ -15,7 +15,9 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-(none)
+- [ ] **CORE-EPIC-783** [heavy]🧠 | unattended-prep — Attended prep pass that classifies rows the candidacy predicate declines, pins a fact or splits a mechanical child from an attended remainder, and files starters. /ft-seed-unattended stays the only writer of [unattended]. A caobunga mirror is a handoff. (filed via /ft-open-epic; refined at .1 closure).
+  - [ ] **CORE-783.1** [frontier]💎 | unattended-prep discovery — Scope shared design and file children .2..3 per SPEC/epic.md.
+  - [ ] **CORE-783.N** [heavy]🧠 | unattended-prep audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
 
 ## Low
 

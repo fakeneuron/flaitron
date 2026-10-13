@@ -17,7 +17,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-EPIC-783** [heavy]🧠 | unattended-prep — Attended /ft-prep-unattended classifies declined rows, pins a fact or splits a mechanical child plus an attended remainder, and files starters without writing [unattended]. /ft-seed-unattended stays the marker walk. Clause 3 keeps its keyword screen plus an LLM decline on a person-shaped row. Caobunga mirror is a handoff.
   - [x] **CORE-783.1** [frontier]💎 | unattended-prep discovery — Completed 2026-10-13.
-  - [ ] **CORE-783.2** [heavy]🧠 | candidacy-prep-boundary — Pin clause 3 as two layers: the keyword list stays the mechanical screen, and a keyword miss is not a semantic pass. An LLM filer and /ft-prep-unattended decline a row that reads as needing a person. No new visual keywords. Caobunga's mirror is a handoff.
+  - [x] **CORE-783.2** [heavy]🧠 | candidacy-prep-boundary — Completed 2026-10-13.
   - [ ] **CORE-783.3** [heavy]🧠 | prep-unattended-skill — Add attended flagless /ft-prep-unattended. It classifies declined rows, pins a fact, splits a mechanical child from an attended remainder, and files starters. It never writes [unattended]. Ship it in the adopter subset beside seed.
   - [ ] **CORE-783.N** [heavy]🧠 | unattended-prep audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
 

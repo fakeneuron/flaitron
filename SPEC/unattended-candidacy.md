@@ -61,9 +61,11 @@ row is **not** a candidate.
    falls back to the description: any of the cue glyphs `👁️` `🗄️` `▶️` `📡`
    `💻` `✋`, or any of the words *operator*, *hand-off* / *handoff*, *manual*,
    *credential*, *secret*, *password*, *physical*, *cross-repo*, *production*,
-   *deploy*, *migration*. The list is a keyword screen, not a semantic
-   judgment — a row that reads as needing a person but trips no keyword is
-   still declined under the conservative default. Candidacy never proposes
+   *deploy*, *migration*. Two layers. That list is the mechanical screen,
+   and it stays that list: do not add visual or raster keywords to close a
+   miss. A keyword miss is not a semantic pass. An LLM filer and
+   `/ft-prep-unattended` decline a row that reads as needing a person even
+   when no keyword trips. Candidacy never proposes
    `[handoff]` itself; like `[unattended]`, it is written only by the operator.
 4. **No `Blocked by` clause of any form** — `Blocked by [[ID]]`, bare `Blocked
    by`, or a `blocked-by:` echo. A blocked row is by construction waiting on

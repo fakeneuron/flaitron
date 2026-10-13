@@ -286,10 +286,10 @@ Concrete instantiation:
 
 - **Sibling dir**: `claude/` at the repo root
 - **Adopter-facing snippet**: `claude/AGENTS-snippet.md`
-- **`skills/`**: 11 `SKILL.md` skill bodies (`ft-task`,
+- **`skills/`**: 12 `SKILL.md` skill bodies (`ft-task`,
   `ft-file-task`, `ft-open-epic`, `ft-close-epic`, `ft-refactor`,
   the two `ft-audit`-family skills, plus `ft-adopt`, `ft-release`,
-  `ft-seed-unattended`, `ft-update`), each slash-invocable, with any `argument-hint:` in
+  `ft-prep-unattended`, `ft-seed-unattended`, `ft-update`), each slash-invocable, with any `argument-hint:` in
   its own frontmatter — no separate command stubs since [[CORE-769.2]] — some with
   lazy-load fragments (`ft-task/step-*.md`, including `step-4-debug-mode.md` and `step-5-loop-mode.md`; `ft-task/micro-mode.md`; `ft-file-task/step-0-flags.md`, `park-mode.md` and `starter-mode.md`; `ft-audit/scaffold-bootstrap.md`; `ft-task/unattended-mode.md`; `ft-close-epic/unattended-close-epic.md`; `ft-open-epic/step-5.5-deep-prepass.md`; `ft-release/step-*.md`), the every-run `ft-task/preamble.md`, or sibling libraries (`ft-audit/passes/*.md`)
 - **Adopter install**: relative symlinks for the adopter-installed subset from
@@ -315,7 +315,7 @@ Concrete instantiation:
 
 - **Sibling dir**: `codex/` at the repo root
 - **Adopter-facing snippet**: `codex/AGENTS-snippet.md`
-- **`skills/`**: 11 `SKILL.md` wrappers, one per Claude `ft-*` skill slug.
+- **`skills/`**: 12 `SKILL.md` wrappers, one per Claude `ft-*` skill slug.
   Each keeps short Codex-native metadata, then routes to the agent-neutral SOP
   (`ft-task`) or the canonical Claude skill body, applying the Codex primitive
   translation rules that live once in `codex/AGENTS-snippet.md`

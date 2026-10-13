@@ -15,11 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-EPIC-783** [heavy]🧠 | unattended-prep — Attended /ft-prep-unattended classifies declined rows, pins a fact or splits a mechanical child plus an attended remainder, and files starters without writing [unattended]. /ft-seed-unattended stays the marker walk. Clause 3 keeps its keyword screen plus an LLM decline on a person-shaped row. Caobunga mirror is a handoff.
-  - [x] **CORE-783.1** [frontier]💎 | unattended-prep discovery — Completed 2026-10-13.
-  - [x] **CORE-783.2** [heavy]🧠 | candidacy-prep-boundary — Completed 2026-10-13.
-  - [x] **CORE-783.3** [heavy]🧠 | prep-unattended-skill — Completed 2026-10-13.
-  - [ ] **CORE-783.N** [heavy]🧠 | unattended-prep audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
+(none)
 
 ## Low
 
@@ -33,6 +29,11 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-EPIC-783** [heavy]🧠 | unattended-prep — Completed 2026-10-13.
+  - [x] **CORE-783.1** [frontier]💎 | unattended-prep discovery — Completed 2026-10-13.
+  - [x] **CORE-783.2** [heavy]🧠 | candidacy-prep-boundary — Completed 2026-10-13.
+  - [x] **CORE-783.3** [heavy]🧠 | prep-unattended-skill — Completed 2026-10-13.
+  - [x] **CORE-783.N** [heavy]🧠 | unattended-prep audit — Completed 2026-10-13.
 - [x] **CORE-782** [medium]🧩 | rotation-receipt — Completed 2026-10-12.
 - [x] **CORE-781** [medium]🧩 | auto-priority — Completed 2026-10-12.
 - [x] **CORE-780** [medium]🧩 [unattended] | sop-recheck-ft-task — Completed 2026-10-11.

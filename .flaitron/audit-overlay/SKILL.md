@@ -1,7 +1,7 @@
 ---
 name: audit
 description: flaitron-self audit — thin overlay over flaitron's bundled `ft-audit` (runs its passes by reference, applies the project deltas below). Forked from flaitron's audit-overlay template; see `docs/MIGRATION.md` §1.2.1 (recipe) and `CONTRIBUTING.md` (this file's flaitron-self home).
-flaitron-reconciled: v6.0.0
+flaitron-reconciled: v7.0.0
 flaitron-tracks: ft-audit
 ---
 
@@ -57,7 +57,7 @@ Where a value differs per domain, key it by domain as a nested sub-bullet
 every domain this overlay covers that does not override it.
 
 - **Scope glob** (default-`all` target): `viz/src/**` · `tools/**/*.mjs` · `tools/drift-checks.sh` (the only code surfaces — everything else is markdown; derived from repo layout, 2026-09-21; `drift-checks.sh` added 2026-10-08)
-  - `docs:` every tracked `*.md` except the two write-once archives — `git ls-files '*.md' | grep -v -e '^\.flaitron/tasknote/archive/' -e '^\.flaitron/PLAN-ARCHIVE\.md$'` (139 files at v6.0.0). Lifted from the `drift` job's Pair Q file selection (`pair_q` in `tools/drift-checks.sh`), whose two exclusions are already this pass file's write-once hard rule. An unqualified `**/*.md` default would be wrong by two orders of magnitude — 1,085 of the repo's 1,219 tracked markdown files are archived tasknotes.
+  - `docs:` every tracked `*.md` except the two write-once archives — `git ls-files '*.md' | grep -v -e '^\.flaitron/tasknote/archive/' -e '^\.flaitron/PLAN-ARCHIVE\.md$'` (139 files at v6.0.0). Lifted from the `drift` job's Pair Q file selection (`pair_q` in `tools/drift-checks.sh`), whose two exclusions are already this pass file's write-once hard rule. An unqualified `**/*.md` default would be wrong by two orders of magnitude — 1,188 of the repo's 1,317 tracked markdown files are archived tasknotes (as of 2026-10-13).
   - `frontend:` `viz/src/ui/**` · `viz/src/main.tsx` · `viz/src/styles.css` · `viz/src/{parser,tasknote,fence,sseChange,storage,viewMode,visibilityPrefs,projectStorage}.ts` — the Browser UI tier plus the Shared-pure modules it bundles (`viz/README.md` §"Architecture — three tiers"). The Node-only dev API never ships to the browser and is `security`'s and `general`'s.
   - `security:` `viz/src/**` · `viz/vite.config.ts` · `tools/**/*.mjs` — adds the Vite config, which holds the dev server's host allowlist and CSP.
   - `performance:` `viz/src/**` · `tools/update-adopters.mjs` as the `all` fallback, but the pass file prefers a narrow scope — name one path, e.g. `viz/src/ui/**` (bundle), `viz/src/archiveCache.ts` + `viz/src/flaitronWatch.ts` (workspace scan and watch), or `tools/update-adopters.mjs` (fleet sweep).

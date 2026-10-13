@@ -77,11 +77,11 @@ diff -u <([ -z "$cl" ] || printf '%s\n' "$cl") <([ -z "$cx" ] || printf '%s\n' "
 
 # Skill/pin guard parity (docs/PLATFORMS.md §"One canonical install path per project")
 skill_pin_guard_parity() {
-# CORE-729: one byte-identical guard paragraph in each of the six
-# adopter-subset bodies that resolve <root>; edit all six together.
+# CORE-729: one byte-identical guard paragraph in each of the seven
+# adopter-subset bodies that resolve <root>; edit all seven together.
 got=$(grep -h '^\*\*Skill/pin guard\.\*\*' claude/skills/*/SKILL.md | sort | uniq -c | awk '{print $1}' | tr '\n' ' ')
-[ "$got" = "6 " ] || { echo "GUARD DRIFT  copies-per-variant: $got (want one variant x6)"; exit 1; }
-diff -u <(printf 'claude/skills/%s/SKILL.md\n' ft-close-epic ft-file-task ft-open-epic ft-refactor ft-seed-unattended ft-task) \
+[ "$got" = "7 " ] || { echo "GUARD DRIFT  copies-per-variant: $got (want one variant x7)"; exit 1; }
+diff -u <(printf 'claude/skills/%s/SKILL.md\n' ft-close-epic ft-file-task ft-open-epic ft-prep-unattended ft-refactor ft-seed-unattended ft-task) \
         <(grep -l '^\*\*Skill/pin guard\.\*\*' claude/skills/*/SKILL.md)
 }
 

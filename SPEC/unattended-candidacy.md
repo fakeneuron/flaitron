@@ -1,6 +1,6 @@
 # `[unattended]` candidacy
 
-> Lazy-loaded SPEC module. Read by a filing surface at its write step — the moment it is about to write a `- [ ]` row into `PLAN.md` — by `/ft-seed-unattended` before it walks an existing plan, and by a runner whose closure discharged a deferred step through `/ft-file-task --unattended`. Not needed to run a task. See `SPEC.md` for the always-loaded core spec.
+> Lazy-loaded SPEC module. Read by a filing surface at its write step — the moment it is about to write a `- [ ]` row into `PLAN.md` — by `/ft-seed-unattended` before it walks an existing plan, by `/ft-prep-unattended` before it classifies declined rows, and by a runner whose closure discharged a deferred step through `/ft-file-task --unattended`. Not needed to run a task. See `SPEC.md` for the always-loaded core spec.
 
 The `[unattended]` marker ([`SPEC/task-line-segments.md`](task-line-segments.md)) is
 scarce for an accidental reason: nothing in the filing flow ever asks whether
@@ -161,6 +161,41 @@ the chain, and an audit resolves last. A second run never re-offers what the
 first seeded; an open sibling the first run marked does not settle a
 dependent, which stays declined until that sibling closes.
 
+## Preparing declined rows
+
+`/ft-prep-unattended` is the attended, flagless walk of open rows the
+candidacy predicate **declines**. `/ft-seed-unattended` marks rows the
+predicate admits. This section does not. Rows already carrying
+`[unattended]`, `[handoff]` rows, and candidates are not proposed.
+
+Prefer a pin when one fact removes the person. Prefer a split when a
+factual slice separates cleanly and the rest still needs a person.
+Otherwise stay. Each declined row is one class:
+
+- **Pin.** Add a fact to the existing line: a file, a command, or which of
+  two patterns already in the repo. A visual phrase, including `👁️`, is
+  rewritten only when the replacement names a test command that already
+  exists. The pin does not add a test, a Playwright spec, or a keyword to
+  clause 3, and it does not change `[model]`.
+- **Split.** A mechanical row plus an attended remainder. The mechanical
+  row is new, `[light]` or `[medium]`, and describes only the factual
+  slice. The source row becomes the remainder. File a starter for the
+  remainder when its line alone does not say what to do.
+- **Stay.** Taste, credentials, deploy, and a true look stay declined — a
+  true look is a result someone must see, where no existing test command
+  decides it. So does a row whose whole text is the person act, a
+  `[!critical]` row, an epic parent, a `.1` Discovery row, a `.N` audit
+  row, and a row clause 4 still blocks. A source ID that already has a
+  tasknote, active or archived, stays too: the skill does not overwrite
+  a note.
+
+The confirm writes the rewritten lines, the mechanical row, and the
+starter. It never writes `[unattended]` or `[handoff]`. A later
+`/ft-seed-unattended` marks a row the predicate then admits. Existing
+filers keep their own gates. The skill accepts neither `--fast` nor
+`--unattended`, so it never emits `unattended-candidates:`. The write
+commits under [`SPEC/plan-filing.md`](plan-filing.md) §"Filing commits".
+
 ## Persistence
 
 A terminal line is not durable ([`SPEC.md`](../SPEC.md) §"🚀 Phase 4:
@@ -213,6 +248,7 @@ fails that check.
 | `/ft-audit-repo` §6 | milestone write | write-confirm structured ask | [[CORE-577.6]] |
 | `/ft-task` · `/ft-close-epic` | — | not filers; carry the §"Persistence" hook only | [[CORE-577.4]] |
 | `/ft-seed-unattended` | Step 4 (existing rows, bulk) | Step 3 prose review — the skill's only gate; no flags, attended only (§"Seeding an existing plan") | [[CORE-619]] |
+| `/ft-prep-unattended` | Step 4 (declined rows) | Step 3 prose review — the skill's only gate; no flags, attended only; never writes the token (§"Preparing declined rows") | [[CORE-783.3]] |
 
 Adopter forks of `ft-audit` (`.claude/skills/audit/`) pick the mirror up only
 through `/ft-update`'s fork refresh; until then a fork files as before —

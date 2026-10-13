@@ -23,13 +23,14 @@ parses it; `/ft-release` §7.1 diffs it against the SSOT as a set.
 Codex discovers repo-scoped skills from `.agents/skills` in the current
 directory walk. From an adopting project's repository root, after adding the
 flaitron submodule at `.flaitron/core`, wire the adopter-facing Flaitron skill
-subset (tasknote execution family, `ft-seed-unattended`, and `ft-update`):
+subset (tasknote execution family, `ft-prep-unattended`, `ft-seed-unattended`, and `ft-update`):
 
 ```sh
 mkdir -p .agents/skills
 ln -s ../../.flaitron/core/codex/skills/ft-close-epic .agents/skills/ft-close-epic
 ln -s ../../.flaitron/core/codex/skills/ft-file-task .agents/skills/ft-file-task
 ln -s ../../.flaitron/core/codex/skills/ft-open-epic .agents/skills/ft-open-epic
+ln -s ../../.flaitron/core/codex/skills/ft-prep-unattended .agents/skills/ft-prep-unattended
 ln -s ../../.flaitron/core/codex/skills/ft-refactor .agents/skills/ft-refactor
 ln -s ../../.flaitron/core/codex/skills/ft-seed-unattended .agents/skills/ft-seed-unattended
 ln -s ../../.flaitron/core/codex/skills/ft-task .agents/skills/ft-task

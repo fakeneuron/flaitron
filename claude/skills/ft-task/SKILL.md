@@ -129,7 +129,7 @@ cue is the 📦 ready-to-commit banner in Step 6.
 
 ## Step 6 — Post-closure protocol
 
-**Read `<SPEC_DIR>/post-closure.md` now** — the protocol is a lazy module, loaded here and nowhere earlier — then run its three-step protocol (commit / suggest next move / copy-paste line) under SPEC §"Paper-complete guard", branching on SPEC/gates.md §"Conditional skip rule" against the closure diff. Stage **deliverable paths + PLAN + archive** together; refuse a Completed-only commit when Acceptance requires non-workflow deliverables.
+**Read `<SPEC_DIR>/post-closure.md` now** — the protocol is a lazy module, loaded here and nowhere earlier — then run its three-step protocol (commit / mark landed, with the rotation count / copy-paste line) under SPEC §"Paper-complete guard", branching on SPEC/gates.md §"Conditional skip rule" against the closure diff. Stage **deliverable paths + PLAN + archive** together; refuse a Completed-only commit when Acceptance requires non-workflow deliverables.
 
 - **Skip branch** (signals clear, no bundled in-📦 prompt) — run that section's **autonomous-commit motion** end to end, naming the cleared signal in its marker as diff facts (e.g., `4 markdown files; no privileged-ops surface`). Before 🏁, verify `git show --name-only` covers the deliverables; never invent a SHA.
 - **Fire branch** (privileged-ops signal hits OR bundled in-📦 prompt queued) — run its **bundled-approval motion**: surface the 📦 gate and wait for commit-go (SPEC/cue-vocabulary.md §"Accepted gate replies"). The 🏁 marker — carrying a 1-2 sentence accomplishment summary — plus next-move and copy-paste land only in the later post-commit response.
@@ -137,7 +137,7 @@ cue is the 📦 ready-to-commit banner in Step 6.
 **`--fast` override.** Canonical in SPEC/gates.md §"Conditional skip rule" → Flag overrides and SPEC/gate-postures.md §"`--fast` operator override": `--fast` forces Skip regardless of signal trips (naming the suppressed signals in the marker). Two things it does not reach: the Step 4 drift carve-out upstream, and the paper-complete guard here — 🏁 still requires a real deliverable-covering SHA.
 
 Skill-specific:
-- Suggest-next-move: run `SPEC/post-closure.md` step 2 as written — the **fresh PLAN.md re-read** (never the Step 1 cached parse), the unchecked-and-open-section verification that drops failing candidates, the **PLAN exhausted (terminal)** form when none survives, the emoji-primary-label + `model @ effort` pick print, and the 🔍 prefix on `/ft-audit*` candidates. On the terminal form, skip the copy-paste line below: there is nothing to run after a clear.
+- Suggest-next-move: run `SPEC/post-closure.md` step 2 as written — the rotation count and `Completed rotation:` line before 🏁 (over 60, rotate in this response or name the legal skip), then the **fresh PLAN.md re-read** (never the Step 1 cached parse), the unchecked-and-open-section verification that drops failing candidates, the **PLAN exhausted (terminal)** form when none survives, the emoji-primary-label + `model @ effort` pick print, and the 🔍 prefix on `/ft-audit*` candidates. On the terminal form, skip the copy-paste line below: there is nothing to run after a clear.
 - Copy-paste helper: run `SPEC/post-closure.md` step 3 as written — the glyph and pick copied from the chosen candidate line, the own-line inline-code invocation with no trailing punctuation, and the 👇 `Run in this session:` exception for context-dependent skills. Here `<args>` is the next task ID and the invocation line is `` `/ft-task <next-ID>` ``.
 
 ## Notes

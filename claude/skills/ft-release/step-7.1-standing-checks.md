@@ -108,6 +108,7 @@ The first command is the closed-task count — one archived tasknote per closed 
 **Standing completed-rotation check (advisory backstop).** Independently of the subroutine findings, count checked rows under `## Completed` in `.flaitron/PLAN.md` (nested epic children included). Every closing runner rotates past **60** on its own (`SPEC/plan-filing.md` §"`## Completed` rotation", run from `SPEC/post-closure.md` step 2), so this count should always read at or under the bound. Past 60 means rows landed without a rotation — a closure in a linked worktree, over uncommitted edits to either file, or by a hand-made commit, or rows added outside any closure (an `/ft-audit` inline fix, `SPEC/plan-filing.md` §"Exception — inline audit fixes") — and this release's own post-closure rotation (Step 8) repairs it once the release commit lands. Surface the warning, then continue; this check **never blocks the cut** and never rotates. Carry the verdict into the §7.4 closure review as one line, the same flag-don't-block posture as the machine-global wiring half above.
 
 ```sh
+# Same command as SPEC/post-closure.md step 2 ("Rotation, before 🏁"). Keep the two copies identical.
 n=$(awk '/^## Completed$/{f=1;next}/^## /{f=0} f' .flaitron/PLAN.md | grep -c '^\s*- \[x\]')
 if [ "$n" -gt 60 ]; then
   echo "⚠️ PLAN.md \`## Completed\` holds $n rows (>60) — rows landed without a rotation; this release's post-closure rotates it. Proceeding."

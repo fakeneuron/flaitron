@@ -189,7 +189,7 @@ After the audit closes cleanly, scan `.flaitron/PLAN.md` for the parent epic lin
 On commit (either branch): stage audit deliverables + PLAN/archive together, the parent flip riding in PLAN.md when it ran; emit 🏁 only after a real deliverable-covering SHA (SPEC §"Paper-complete guard") — never invent a SHA.
 
 Skill-specific next-move shape:
-- Candidates: run `SPEC/post-closure.md` step 2 as written — the fresh PLAN.md re-read, the open-section verification, and the emoji-primary-label + `model @ effort` pick print (read the full task line, `[model]` included, to pick the label). This skill's branches:
+- Candidates: run `SPEC/post-closure.md` step 2 as written — the rotation count and `Completed rotation:` line before 🏁 (over 60, rotate in this response or name the legal skip), then the fresh PLAN.md re-read, the open-section verification, and the emoji-primary-label + `model @ effort` pick print (read the full task line, `[model]` included, to pick the label). This skill's branches:
   - Misses filed → suggest the first filed child (`/ft-task <ID>`); the last one's closure flips the parent.
   - No misses + parent flipped + next task queued in PLAN.md → suggest that task (next epic or standalone).
   - No misses + parent flipped + PLAN.md empty of queued tasks → step 2's **PLAN exhausted (terminal)** form: stop, don't invent a next move; offer to file a new epic in this session before clearing.

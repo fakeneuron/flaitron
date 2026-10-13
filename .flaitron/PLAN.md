@@ -29,6 +29,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-782** [medium]🧩 | rotation-receipt — Completed 2026-10-12.
 - [x] **CORE-781** [medium]🧩 | auto-priority — Completed 2026-10-12.
 - [x] **CORE-780** [medium]🧩 [unattended] | sop-recheck-ft-task — Completed 2026-10-11.
 - [x] **CORE-779** [medium]🧩 | release v7.0.0 — Completed 2026-10-11.

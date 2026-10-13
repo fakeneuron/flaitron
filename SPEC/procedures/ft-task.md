@@ -475,8 +475,11 @@ Run the three-step protocol in
 [`SPEC/post-closure.md`](../post-closure.md) — a lazy module, read here and
 nowhere earlier — and follow it. That module owns the skip/fire shapes, the
 `✅ Closure complete; committing autonomously (<concrete-signal-summary>).`
-marker, the fresh PLAN.md re-read, the exhausted-PLAN terminal form, the
-emoji primary labels with `model @ effort` picks, and the copy-paste line
+marker, the `## Completed` rotation count and its `Completed rotation:`
+line (printed before 🏁 on every close; over 60, rotate in this response
+or name the legal skip), the fresh PLAN.md re-read, the exhausted-PLAN
+terminal form, the emoji primary labels with `model @ effort` picks, and
+the copy-paste line
 (glyph and pick copied from the
 candidate just printed; no trailing punctuation; 👇 for
 `/ft-file-task` and `/ft-open-epic`). Branch on

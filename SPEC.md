@@ -611,7 +611,7 @@ Canonical contract: see [`SPEC/loop.md`](SPEC/loop.md).
 ## Post-closure protocol
 
 Canonical contract: see [`SPEC/post-closure.md`](SPEC/post-closure.md) — the
-commit, the 🏁 marker plus next-move suggestion, and the copy-paste line. Read
+commit, the 🏁 marker (the `## Completed` rotation count prints before the next-move suggestion), and the copy-paste line. Read
 it at a closing runner's final step, once the tasknote is archived; nothing
 before Phase 4 loads it.
 

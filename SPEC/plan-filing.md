@@ -327,11 +327,14 @@ lands under one heading (the never-split rule below).
   month or the cohort's move takes `## Completed` below the 40-row target.
 
 **Rotation is an agent procedure.** Every closing runner checks the bound
-once its closure commit lands ([`SPEC/post-closure.md`](post-closure.md)
-step 2). Over 60, the agent rotates in the same response, with no prompt,
-under every posture. The work is moving markdown lines an operator could move
-by hand, so it stays a procedure, not a script (`SPEC.md` §"Core principles"
-#2):
+once its closure commit lands
+([`SPEC/post-closure.md`](post-closure.md) §"Rotation, before 🏁").
+The check is that step's command, and its `Completed rotation:` line prints
+on every close, under the bound as well as over it. Over 60, the agent
+rotates in the same response, with no prompt, under every posture. A
+next-move list with no count line has not finished the close. The work is
+moving markdown lines an operator could move by hand, so it stays a
+procedure, not a script (`SPEC.md` §"Core principles" #2):
 
 1. **Main checkout, clean files only.** Skip in a linked worktree, where
    `git rev-parse --path-format=absolute --git-dir` differs from

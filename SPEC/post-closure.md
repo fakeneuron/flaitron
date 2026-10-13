@@ -2,7 +2,7 @@
 
 > Lazy-loaded SPEC module. Loaded by every closing runner at its final step — `/ft-task` Step 6, `/ft-close-epic` Step 9, `/ft-open-epic` Step 10, `/ft-release` Step 8 — once the tasknote is archived and the closure commit is the next motion. Nothing before Phase 4 loads it. See `SPEC.md` for the always-loaded core spec (the four phases and the paper-complete guard this protocol runs under) and [`SPEC/gates.md`](gates.md) §"Conditional skip rule" for the skip/fire decision step 1 branches on.
 
-After a tasknote is archived, run the three-step protocol (commit / mark landed / offer copy-paste line). Whether step 1 fires or skips is [`SPEC/gates.md` §"Conditional skip rule"](gates.md), which also carries the skip branch's autonomous-commit motion; what `--fast` and `--unattended` do to it is one row of [`SPEC/gate-postures.md` §"Flag precedence and surface matrix"](gate-postures.md). Steps 2–3 run **only after** a deliverable-covering SHA — never in the same turn as a fire-branch 📦 ask.
+After a tasknote is archived, run the three-step protocol (commit / mark landed, rotation count included / offer copy-paste line). Whether step 1 fires or skips is [`SPEC/gates.md` §"Conditional skip rule"](gates.md), which also carries the skip branch's autonomous-commit motion; what `--fast` and `--unattended` do to it is one row of [`SPEC/gate-postures.md` §"Flag precedence and surface matrix"](gate-postures.md). Steps 2–3 run **only after** a deliverable-covering SHA — never in the same turn as a fire-branch 📦 ask.
 
 **Epic parent flip first.** Before step 1 stages anything, on either branch: if this closure left every child of its epic `- [x]`, run [`SPEC/plan-filing.md`](plan-filing.md) §"Epic parent flip". It has no prompt and runs under every posture. The flip and cohort move land in the closure commit, and step 1's closure review names them. When it runs, append `· flipped <AREA>-EPIC-<N>` to the 🏁 line, ahead of any rotation suffix.
 
@@ -16,10 +16,21 @@ After a tasknote is archived, run the three-step protocol (commit / mark landed 
 
    The commit-go prompt carries a `🟢` prefix (e.g., `🟢 Reply commit / go to land.`). Accepted replies are the closed set in [`SPEC/cue-vocabulary.md` §"Accepted gate replies"](cue-vocabulary.md) (`commit` / `go` / `yes` and the explicit commit verbs named there); `okay` / `looks good` are not members. Skill-level extensions (e.g., `/ft-release` push-go) ride inside this bundle; the commit-go is the single approval authorizing recap + closure + bundled prompts + commit.
 
-2. **Mark the commit landed and suggest the next move.** Once the commit lands **and** the SHA passes the deliverable-covering check in [`SPEC.md` §"Paper-complete guard"](../SPEC.md), record its SHA for 🏁, then count the checked rows under `## Completed`. Over 60, read [`SPEC/plan-filing.md`](plan-filing.md) §"`## Completed` rotation" and run its procedure before 🏁: the oldest whole cohorts move to `PLAN-ARCHIVE.md` until 40 or fewer remain, in their own `chore:` commit. It runs without a prompt under every posture and is skipped in a linked worktree or over uncommitted edits to either file. When it runs, append `· rotated <N> rows in <sha>` to the 🏁 line. Then prefix the next-move tail with a 🏁 state-marker (parallels 🛠️ → 📦 → 🏁). **Never emit 🏁 without the just-landed closure commit's real SHA** — never an invented or reused one.
+2. **Mark the commit landed and suggest the next move.** Once the commit lands **and** the SHA passes the deliverable-covering check in [`SPEC.md` §"Paper-complete guard"](../SPEC.md), record its SHA for 🏁. **Never emit 🏁 without that SHA** — never an invented or reused one. The rest of this step runs in order, in the same response. The next-move list does not stand in for the rotation count.
+
+   **Rotation, before 🏁.** Count the checked rows under `## Completed` (nested children included):
+
+   ```sh
+   awk '/^## Completed$/{f=1;next}/^## /{f=0} f' .flaitron/PLAN.md | grep -c '^\s*- \[x\]'
+   ```
+
+   `grep -c` prints `0` on an empty section. Print the result on its own line, `Completed rotation: <N> rows (bound 60)`, on every close. Over 60, read [`SPEC/plan-filing.md`](plan-filing.md) §"`## Completed` rotation" and run its procedure before that line: the oldest whole cohorts move to `PLAN-ARCHIVE.md` until 40 or fewer remain, in their own `chore:` commit, with no prompt, under every posture. `<N>` is the count after that move, and append `· rotated <M> rows in <sha>` to the 🏁 line. The procedure is skipped in a linked worktree or over uncommitted edits to either file; still print the line, as `Completed rotation: <N> rows (bound 60) — skipped (<reason>)`. Any other over-60 close rotates in this response. Do not emit 🏁 or the next-move list until the line is printed.
+
+   Then prefix the next-move tail with a 🏁 state-marker (parallels 🛠️ → 📦 → 🏁).
 
    ```markdown
    🏁 **<TASK-ID> — committed `<sha>`** · archived to `<archive-path>`
+   Completed rotation: <N> rows (bound 60)
    <1-2 sentence plain-English description of what was accomplished in this commit>
    ```
 

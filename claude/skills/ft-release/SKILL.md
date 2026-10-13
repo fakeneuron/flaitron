@@ -370,12 +370,13 @@ The post-closure protocol is canonical in `SPEC/post-closure.md` — **Read it n
 
   ```markdown
   🏁 **<TASK-ID> — committed `<sha>`, tagged `vA.B.C`, published release** · archived to `.flaitron/tasknote/archive/core/<TASK-ID>.md`
+  Completed rotation: <N> rows (bound 60)
   <1-2 sentence plain-English summary of what shipped + adopter-impact>
   ```
 
   On push-go No, drop "published release" from the marker and append a one-line manual follow-up reminder under it (e.g., `Manual push pending: ▶️ RUN: \`git push origin <branch>\` then \`git push origin vA.B.C\`, then \`gh release create vA.B.C --latest --title "<title>" --notes "<notes>"\`.`).
 
-- **Rotation** — post-closure step 2's `## Completed` rotation runs here as for any closer, after §7.5's operations land and before the 🏁 marker; when it runs, append `· rotated <N> rows in <sha>` to the marker. Its `chore:` commit is not part of the pushed release — it stays local and rides the next push.
+- **Rotation** — post-closure step 2's `## Completed` rotation runs here as for any closer, after §7.5's operations land and before the 🏁 marker. Print `Completed rotation: <N> rows (bound 60)` even when the section is under the bound; the §7.4 advisory line is the pre-commit backstop, not this receipt. Over 60, rotate in this response or name the legal skip. When the move runs, append `· rotated <M> rows in <sha>` to the marker (`<M>` is rows moved; `<N>` on the receipt is the count after). Its `chore:` commit is not part of the pushed release — it stays local and rides the next push.
 
 - **Suggest-next-move + copy-paste line** — follow in the same response as the 🏁 marker. Candidates carry `[model]` inline per option (`**<TASK-ID>** [model] | shortname — one-sentence "why now"`). The next move is typically the next pending child in the cohort that filed this release, or `/ft-file-task` for any drift surfaced during the cut.
 

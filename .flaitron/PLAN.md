@@ -25,10 +25,13 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Future Opportunities
 
-(none)
+- [ ] **CORE-787** [medium]🧩 | overlay-reconcile-pin — Reconcile `.flaitron/audit-overlay/SKILL.md` with the ft-audit scaffold since v6.0.0, set `flaitron-reconciled:` to v7.0.0, and replace the undated archived-tasknote census with the current tracked-markdown counts. Surfaced by audit-docs 2026-10-13 (Finding #3, Medium).
 
 ## Completed
 
+- [x] **CORE-784** [light]🔧 | glossary-archetype-pointer — Point the PR / suggestion archetypes glossary entry at SPEC/scope-boundaries.md §"PR / suggestion archetypes flaitron does not accept". Surfaced by audit-docs 2026-10-13 (Finding #1, Medium), fixed inline.
+- [x] **CORE-785** [light]🔧 | budget-epic-wikilink — Retarget the ft-release directory budget history wikilink from [[CORE-734]] to [[CORE-EPIC-734]]. Surfaced by audit-docs 2026-10-13 (Finding #2, Medium), fixed inline.
+- [x] **CORE-786** [light]🔧 | glossary-maintenance-stamp — Set the glossary maintenance line to CORE-783.3 (2026-10-13). Surfaced by audit-docs 2026-10-13 (Finding #4, Low), fixed inline.
 - [x] **CORE-EPIC-783** [heavy]🧠 | unattended-prep — Completed 2026-10-13.
   - [x] **CORE-783.1** [frontier]💎 | unattended-prep discovery — Completed 2026-10-13.
   - [x] **CORE-783.2** [heavy]🧠 | candidacy-prep-boundary — Completed 2026-10-13.

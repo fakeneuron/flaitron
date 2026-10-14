@@ -16,6 +16,8 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Medium
 
 
+- [ ] **CORE-789** [heavy] | codex-wiring-bootstrap — Make adoption/update establish and reconcile the explicitly selected Codex skill surface, including absent directories and retired links. Preserve repo pinning and other platforms; add bootstrap, same-version, rename and idempotence regressions and reconcile wiring docs. Existing fleet repair belongs to Natabula NAT-416. Filed with starter at `.flaitron/tasknote/CORE-789.md`.
+
 ## Low
 
 

@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "project_id": "a7118fc2-2807-4b01-b316-80d562dfe195",
+  "display_name": "Flaitron",
+  "copy_source": "brand/BRAND.md",
+  "copy_evidence": {
+    "tagline": [
+      "README.md",
+      "SPEC.md"
+    ],
+    "one_liner": [
+      "README.md",
+      "SPEC.md"
+    ],
+    "description": [
+      "README.md",
+      "SPEC.md"
+    ]
+  },
+  "assets": [
+    {
+      "id": "symbol",
+      "path": "brand/logo.svg",
+      "role": "symbol",
+      "media_type": "image/svg+xml",
+      "dimensions": {
+        "width": 64,
+        "height": 64
+      },
+      "variant": "default",
+      "background": "transparent",
+      "audience": "public",
+      "review": "approved",
+      "provenance": {
+        "origin": "authored",
+        "source_paths": [
+          "LOGO.webp",
+          ".flaitron/tasknote/archive/core/CORE-643.md"
+        ],
+        "note_path": "brand/PROMPTS.md"
+      }
+    },
+    {
+      "id": "favicon",
+      "path": "brand/favicon.svg",
+      "role": "favicon",
+      "media_type": "image/svg+xml",
+      "dimensions": {
+        "width": 32,
+        "height": 32
+      },
+      "variant": "default",
+      "background": "transparent",
+      "audience": "public",
+      "review": "approved",
+      "provenance": {
+        "origin": "authored",
+        "source_paths": [
+          "LOGO.webp",
+          ".flaitron/tasknote/archive/core/CORE-643.md"
+        ],
+        "note_path": "brand/PROMPTS.md"
+      }
+    }
+  ]
+}

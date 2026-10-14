@@ -15,7 +15,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-788** [heavy] | brand-pilot-provenance — Declare brand/assets.json v1 with stable identity and copy evidence; recover truthful provenance for existing marks, recording unknowns honestly. Validate the Natabula NAT-415.5 evidence pilot. Preserve CORE-643 work and explicit missing promo; no new promo required. Public export approval remains separate.
 
 ## Low
 
@@ -28,6 +27,8 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 (none)
 
 ## Completed
+
+- [x] **CORE-788** [heavy] | brand-pilot-provenance — Completed 2026-10-14.
 
 - [x] **CORE-787** [medium]🧩 | overlay-reconcile-pin — Completed 2026-10-13.
 - [x] **CORE-784** [light]🔧 | glossary-archetype-pointer — Point the PR / suggestion archetypes glossary entry at SPEC/scope-boundaries.md §"PR / suggestion archetypes flaitron does not accept". Surfaced by audit-docs 2026-10-13 (Finding #1, Medium), fixed inline.

@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-(none)
+- [ ] **CORE-788** [heavy] | brand-pilot-provenance — Declare brand/assets.json v1 with stable identity and copy evidence; recover truthful provenance for existing marks, recording unknowns honestly. Validate the Natabula NAT-415.5 evidence pilot. Preserve CORE-643 work and explicit missing promo; no new promo required. Public export approval remains separate.
 
 ## Low
 

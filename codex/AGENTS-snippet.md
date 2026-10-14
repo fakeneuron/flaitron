@@ -2,7 +2,7 @@
 
 This file is the Codex-specific sibling of `claude/AGENTS-snippet.md`.
 The workflow block itself is agent-neutral and remains canonical there for
-historical continuity; this file owns only the Codex wiring commands.
+historical continuity; this file owns the Codex wiring surface.
 
 ## Block to paste into `AGENTS.md`
 
@@ -36,6 +36,16 @@ ln -s ../../.flaitron/core/codex/skills/ft-seed-unattended .agents/skills/ft-see
 ln -s ../../.flaitron/core/codex/skills/ft-task .agents/skills/ft-task
 ln -s ../../.flaitron/core/codex/skills/ft-update .agents/skills/ft-update
 ```
+
+For adoption/update and repeatable manual repair, use
+[Reconcile pinned Codex skills](reconcile-skills.md) instead of rerunning
+the literal `ln -s` commands. Its inline block reads this pinned roster,
+creates an absent `.agents/skills`, preserves custom destinations, reports
+conflicts, and removes only proven-owned retired links. The invoking skill
+selects Codex unless the operator explicitly chooses another platform; it
+does not install every platform. Update repairs the current pin before its
+same-version/offline/declined-bump exits, then reconciles again after an
+approved bump. No checkout is needed for wiring repair.
 
 The submodule also brings flaitron's own tasknote archive at
 `.flaitron/core/.flaitron/` (~16 MB, ~1,200 files) — flaitron's history, not
@@ -76,8 +86,11 @@ A wrapper may add a rule of its own — `ft-task` names one for its lazy fragmen
 
 These relative symlinks point through the project's pinned
 `.flaitron/core` submodule, so the wired skill bodies move only when the
-project deliberately bumps flaitron. Existing symlinks do not need rewiring on
-a normal version bump; newly shipped adopter-subset skills may need new symlinks, which `/ft-update` adds. A bump that renames or retires a skill (v7.0.0) leaves dangling links, which `/ft-update` reports (Step 4.6) — `docs/MIGRATION.md` §"Upgrading to v7.0.0 (skill renames)".
+project deliberately bumps flaitron. Update adds missing subset links even
+at the same version. It removes an exact-target Codex retired link only when
+the pinned retirement table names it and the body is absent; all other
+dangling links remain report-only (Step 4.6). See `docs/MIGRATION.md`
+§"Retired skills leave dangling symlinks".
 
 For flaitron maintainers who want hot-reload behavior while editing this
 checkout, wire the wrapper inventory **repo-scoped**, from the checkout root:
@@ -86,6 +99,15 @@ checkout, wire the wrapper inventory **repo-scoped**, from the checkout root:
 mkdir -p .agents/skills
 (cd .agents/skills && ln -s ../../codex/skills/* .)
 ```
+
+This self-host full-inventory path differs from adopter reconciliation:
+`../../codex/skills/<slug>` has no submodule segment. When renames leave
+stale self-host links, inventory the current wrappers and verify each old
+link's type, exact self-host target, absent body and retirement-table row
+before unlinking it. Preserve custom destinations and report conflicts;
+do not run the adopter block with the full inventory or delete arbitrary
+directories. Existing fleet repair remains an operator motion outside the
+upstream adoption/update task.
 
 Do **not** glob the inventory into `~/.agents/skills/`. That directory is read by
 Codex, Claude Code, Cursor, and Grok alike, and same-named skills resolve by slug

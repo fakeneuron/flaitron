@@ -47,8 +47,8 @@ mkdir -p .claude/skills
 ln -sfn ../../.flaitron/audit-overlay/ .claude/skills/audit
 
 # A checkout wired before v7.0.0 also has dangling .claude/commands/ stub links and
-# renamed-slug links (v7.0.0); prune them, then re-run the glob above
-find .claude/commands .claude/skills -maxdepth 1 -type l ! -exec test -e {} \; -delete 2>/dev/null
+# renamed-slug links (v7.0.0); inventory them before a verified cleanup
+find .claude/commands .claude/skills -maxdepth 1 -type l ! -exec test -e {} \; -print 2>/dev/null
 ```
 
 The relative `../../` paths are clone-location independent, and the symlinks land under the ignored `.claude/` directory, so they never enter git history. This gives the complete `/ft-*` surface (`/ft-audit`, `/ft-audit-repo`, release, adopt, etc.) to any agent started inside the tree. It is expected rather than optional: [`docs/PLATFORMS.md`](docs/PLATFORMS.md) §"Installed-surface policy" treats a shipped `ft-*` slug with no `.claude/` symlink as a wiring miss, and `/ft-release` §7.1 checks for one. The glob also wires `/ft-update`, which is intentional — the skill is adopter-only but bails in flaitron-self with a clear message rather than silently misbehaving, so wiring it here is harmless. The `ft-` prefix remains flaitron's reserved namespace.
@@ -59,12 +59,19 @@ Codex maintainers wire the same way, from the parallel wrapper inventory:
 mkdir -p .agents/skills
 (cd .agents/skills && ln -s ../../codex/skills/* .)
 
-# A checkout wired before v7.0.0 also has dangling renamed-slug links; prune them,
-# then re-run the glob above
-find .agents/skills -maxdepth 1 -type l ! -exec test -e {} \; -delete
+# A checkout wired before v7.0.0 may have dangling renamed-slug links
+find .agents/skills -maxdepth 1 -type l ! -exec test -e {} \; -print
 ```
 
 `.agents/` is gitignored alongside `.claude/` (see root `.gitignore`), so this stays per-machine too.
+Before unlinking a retired self-host skill, verify its retirement-table row,
+symlink type, exact `../../codex/skills/<own-slug>` target (Claude:
+`../../claude/skills/<own-slug>`) and absent source directory. Command stubs
+likewise need an exact target under `../../claude/commands/`. Preserve custom
+entries and report conflicts; never prune every dangling link on that fact
+alone. Re-run the inventory glob only for missing destinations. Adopters use
+the pinned subset and [Codex reconciliation](codex/reconcile-skills.md)
+instead of this full self-host mirror.
 
 The canonical `claude/skills/ft-audit/` directory (`SKILL.md` + `scaffold-bootstrap.md` + `passes/`) is the **stack-neutral scaffold** of [docs/MIGRATION.md](docs/MIGRATION.md) §1.2.1 — it intentionally retains `SKILL.md`'s §0 forker checklist and placeholder globs/rubrics so adopters (and flaitron's own release tooling) can fork it. It is **not** a pre-filled flaitron-self specialization — that lives in flaitron-self's thin overlay, so audit this tree with **`/audit <domain> [scope]`**, not `/ft-audit`. The overlay answers the bundled pass files' forker placeholders for every domain it covers, so a covered run should reach pass 1 without the scaffold bootstrap; a bootstrap stop there means a slot the overlay has not filled yet. `backend` is deliberately uncovered (the overlay's §"Domains") and still stops. An agent without `audit` wiring (the `.agents/skills` block above links only the `ft-*` wrappers) reads `.flaitron/audit-overlay/SKILL.md` and follows it as the skill body, which is what `/ft-release` §7.1 always does. A bare `/ft-audit` here stops at that bootstrap because nothing fills its slots. `/audit docs ai-referenced` narrows the `docs` domain to `.flaitron/tasknote/README.md` §"AI-referenced docs" — the args `/ft-release` §7.1 runs the overlay with (it Reads the tracked body rather than relying on the `/audit` wiring). The overlay is the single statement of that config: change a glob or gate there, not here or in §7.1. Its "Referenced scaffold" line points at the in-tree `claude/skills/ft-audit/SKILL.md` rather than the adopter submodule path, since this checkout has no `.flaitron/core/` to reference (`claude/skills/ft-audit/scaffold-bootstrap.md` §2 "Flaitron-self"). **Its body is tracked at `.flaitron/audit-overlay/SKILL.md`, and `.claude/skills/audit` is a directory symlink to it** — unlike every adopter fork, flaitron-self's overlay is versioned. It has to be: the deltas are this repo's own audit contract, they exist nowhere else, and an untracked overlay is absent from `HEAD`, from review, and from CI's Pair Q section-citation sweep (which selects tracked `*.md`). Keeping it under `.claude/` instead would mean carving an exception into the ignore rule for one real file — the exact partially-committed `.claude/` that [[CORE-217]] drove to zero — so the overlay moved out rather than the rule bending. `.claude/` therefore stays **wholly** ignored, and the symlink keeps `.claude/skills/` uniformly symlinks, which is one `find` to check.
 

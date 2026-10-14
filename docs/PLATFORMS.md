@@ -84,10 +84,24 @@ must be kept aligned to this policy. Release guardrails verifying these
 surfaces stay aligned ship in `/ft-release` §7.1's installed-surface check
 ([[CORE-349.5]]).
 
+**Selection during adoption/update.** An explicit operator platform choice
+wins; otherwise the invocation platform selects its surface. Codex creates
+`.agents/skills` even when absent; Claude selects `.claude/skills`. Cursor
+and Grok keep the compatible-surface choices above. An unknown caller asks;
+multiple new surfaces require an explicit request. Update also maintains
+already-present surfaces and repairs the current pin before a same-version,
+offline or declined-bump exit. Repair alone changes no pin. Codex's shared
+inline [reconciliation procedure](../codex/reconcile-skills.md) derives the
+roster from the pin, preserves custom destinations and reports conflicts;
+it prunes only exact-owned links named retired whose bodies are absent.
+Other platforms keep remaining retired-link reporting. These are markdown
+instructions executed by the caller, not a new installer or fleet tool.
+
 **Flaitron's own checkout is not an adopter.** The adopter-installed subset
 above governs projects that consume flaitron through `.flaitron/core/`. Flaitron
-itself dogfoods everything it ships, so its repo-scoped `.claude/skills/`
-mirrors the **full** shipped inventory one-for-one —
+itself dogfoods everything it ships, so its repo-scoped `.claude/skills/` and
+Codex `.agents/skills/`
+mirror the **full** shipped inventory one-for-one —
 including the global-only utilities, `ft-release`, and `ft-update` (adopter-only
 and bails immediately here, but a no-op *wiring miss* would be its absence, not
 its presence). A shipped `ft-*` slug with no `.claude/` symlink is a wiring

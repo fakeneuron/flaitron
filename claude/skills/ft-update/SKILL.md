@@ -1,6 +1,6 @@
 ---
 name: ft-update
-description: Bump an adopter project's pinned flaitron submodule to the latest released tag — show current→target version + tag changelog, fetch + checkout the tag, record the new pin, re-wire per-project Claude/Codex symlinks for newly shipped skills, report any dangling symlinks left by retired skills, refresh full-copy audit forks with newly shipped pass files without clobbering filled rubrics, and run a lightweight smoke check. Use when the user asks to update or bump their project's flaitron submodule to the latest release. Adopter-only (bails in flaitron-self); thin procedural skill, no tasknote.
+description: Bump an adopter project's pinned flaitron submodule to the latest released tag and reconcile selected skill wiring, including Codex repair at the same version. Show current→target + tag notes, confirm the bump, preserve custom destinations, report dangling links, refresh audit forks without clobbering filled rubrics, and smoke-check. Adopter-only; thin procedural skill, no tasknote.
 ---
 
 # update — flaitron submodule bump (adopter-side)
@@ -39,16 +39,42 @@ Then guard — the skill bails unless this is a flaitron-adopting project:
 If no flaitron submodule resolves, or any guard fails, stop. Tell the user `/ft-update` only runs inside a flaitron-adopting project (one with a flaitron submodule under `.flaitron/`). For flaitron's own checkout, releases are cut with `/ft-release`, not bumped. Do not modify any files.
 
 Use `<FT>` in place of the submodule path for every command below.
+Record entry submodule HEAD (`git -C <FT> rev-parse HEAD`) and index gitlink
+(`git ls-files --stage -- <FT>`) before writes, for repair-only preservation.
+
+**Select the wiring surface.** An explicit operator platform choice wins;
+otherwise use the invocation platform. Codex selects `.agents/skills`, even
+when absent; Claude selects `.claude/skills`. Cursor uses existing Claude
+wiring or its native surface; Grok uses an existing compatible surface or
+its native one. Unknown caller → ask. Record the selection. Step 4 also
+maintains already-present surfaces; never bootstrap an unselected platform.
+When Codex is selected or `.agents/skills` exists (including a dangling
+symlink), read the executing
+bundle's `codex/reconcile-skills.md` (from flaitron's root) now and retain it
+across checkout. It derives data from the adopter pin, including older pins.
 
 ## Step 1 — Resolve current pin and latest available tag
 
 - **Re-apply the sparse trim** (`docs/MIGRATION.md` §1.1): if `test -L <FT>` fails (`<FT>` is not a symlink) and `git --version` is 2.35 or newer, run `git -C <FT> sparse-checkout set --no-cone '/*' '!/.flaitron/'`. This keeps flaitron's dogfood archive (`<FT>/.flaitron/`) out of the working tree. The command is idempotent and changes no gitlink. A superproject re-clone drops the per-clone sparse config, and this step restores it on every run that gets past Step 0. It runs first, before the network fetch and before any confirm, so neither an offline fetch nor a declined bump skips it. Every exit and the Step 5 recap say which happened: re-applied (files removed), already sparse, skipped on older git, where the adopter's deny/`.ignore` fence still covers the path, or skipped because `<FT>` is a symlink to a local flaitron checkout, whose own `.flaitron/` the trim would remove.
 - **Current version:** read `<FT>/SPEC.md:3` (`**Version:** vX.Y.Z`).
 - **Current pinned commit:** `git -C <FT> rev-parse --short HEAD`.
+- **Repair wiring at the current pin:** run Step 4's wiring rules now, before
+  the fetch or any early exit. For selected/present Codex, execute the
+  already-read reconciliation block with `FT_DIR` set to `<FT>`; it creates
+  an absent selected root. Stop on conflicts. Record changed paths for Step 5.
+  This makes same-version, offline and declined-bump runs useful without a
+  checkout or gitlink change. Existing unselected platforms follow their
+  Step 4 rules; only selected surfaces may be bootstrapped.
 - **Fetch tags:** `git -C <FT> fetch --tags --quiet origin`.
 - **Latest tag:** `git -C <FT> tag --sort=-v:refname | head -1`.
 
-If the latest tag's version equals the current `SPEC.md` version, report "already on the latest release (`vX.Y.Z`)" with the sparse outcome, and stop — nothing to bump. Otherwise capture `<current>` and `<target>` for the rest of the run.
+If fetch fails, report the failure and current-pin repair result; take the
+Step 5 repair-only hand-off without inferring a latest release. If the latest
+tag's version equals the current `SPEC.md` version, report "already on the
+latest release (`vX.Y.Z`)" with the sparse/wiring outcomes; go to Step 5 for
+any repair changes instead of returning before staging them. Do not checkout
+or stage a gitlink for repair-only runs. Otherwise capture `<current>` and
+`<target>` for the rest of the run.
 
 ## Step 2 — Surface the bump + tag changelog, confirm
 
@@ -73,6 +99,9 @@ Proceed with the bump?
 
 Use AskUserQuestion (default Yes). If the tag message carries a **Migration** block with required project-side edits, call those out explicitly — the adopter may need to act on them after the pin moves. Do not proceed silently past a non-empty Migration block.
 
+If the bump is declined, retain the current-pin repair and take Step 5's
+repair-only hand-off. Do not run Step 3 or the target-version fork refresh.
+
 ## Step 3 — Move the pin
 
 Bumping is **not** `git submodule update` — that command *restores* the commit already recorded in the superproject index (it would undo a bump). Move the pin explicitly:
@@ -84,16 +113,24 @@ git add <FT>
 
 When Step 1 applied the sparse config, the checkout respects it and never writes the dogfood archive back; on the older-git skip it does. `git add <FT>` records the new gitlink in the superproject. Verify: `git -C <FT> describe --tags` reads `<target>`, and `git diff --cached <FT>` shows the gitlink moving `<current>` → `<target>`.
 
-## Step 4 — Re-wire per-project symlinks for newly shipped skills
+## Step 4 — Reconcile per-project skill wiring
 
-Existing relative symlinks need no change — they track whatever the submodule points at. Only a **newly shipped** per-project skill needs a fresh symlink (it has none yet).
+Run at the current pin in Step 1 and again after an approved Step 3 checkout.
+Existing correct relative links follow the pin; missing skills need links.
+Create an absent root only for the selected platform, and maintain other
+already-present roots. Record exact created/removed paths for staging.
 
 Handle each platform wiring surface independently:
 
-- **Claude Code:** authoritative list is the `ln -s … .claude/skills/<name>` block in the freshly-bumped `<FT>/claude/AGENTS-snippet.md` §"One-time symlink wiring". If `.claude/` exists, create any missing symlinks with the same relative form the snippet uses (substituting the resolved `<FT>`, e.g. `ln -s ../../<FT>/claude/skills/<name> .claude/skills/<name>`). If `.claude/` is absent, do not create a new Claude wiring surface during an update; report "Claude wiring not present; skipped `.claude/` symlink check."
-- **Codex:** authoritative list is the `ln -s … .agents/skills/<name>` block in the freshly-bumped `<FT>/codex/AGENTS-snippet.md` §"One-time skill wiring". If `.agents/skills/` exists, create any missing symlinks with the same relative form the snippet uses (substituting the resolved `<FT>`, e.g. `ln -s ../../<FT>/codex/skills/<name> .agents/skills/<name>`). If `.agents/skills/` is absent, do not create a new Codex wiring surface during an update; report "Codex wiring not present; skipped `.agents/skills/` symlink check."
-- **Cursor:** authoritative list is the Cursor-only `ln -s … .cursor/skills/<name>` block in the freshly-bumped `<FT>/cursor/AGENTS-snippet.md` §"One-time symlink wiring" (targets are canonical `claude/skills/` bodies). If `.cursor/skills/` exists, create any missing symlinks with the same relative form the snippet uses (substituting the resolved `<FT>`). If `.cursor/skills/` is absent, do not create a new Cursor wiring surface during an update; report "Cursor wiring not present; skipped `.cursor/skills/` symlink check." (Projects that only have `.claude/` and rely on Cursor's compat load need no Cursor-specific re-wire — the Claude surface above covers them.)
-- **Grok:** authoritative list is the Grok-only `ln -s … .grok/skills/<name>` block in the freshly-bumped `<FT>/grok/AGENTS-snippet.md` §"One-time symlink wiring" (targets are canonical `claude/skills/` bodies). If `.grok/skills/` exists, create any missing symlinks with the same relative form the snippet uses (substituting the resolved `<FT>`). If `.grok/skills/` is absent, do not create a new Grok wiring surface during an update; report "Grok wiring not present; skipped `.grok/skills/` symlink check." (Projects that only have `.claude/`, `.agents/skills/`, or `.cursor/skills/` and rely on Grok's compat load need no Grok-specific re-wire — those surfaces above cover them.)
+- **Claude Code:** authoritative list is the `ln -s … .claude/skills/<name>` block in the current `<FT>/claude/AGENTS-snippet.md` §"One-time symlink wiring". If selected or `.claude/` exists, create missing symlinks in `.claude/skills` with the same relative form (substituting the resolved `<FT>`). Otherwise report "Claude wiring not selected or present; skipped `.claude/` symlink check."
+- **Codex:** authoritative list is the derived literal block in the current `<FT>/codex/AGENTS-snippet.md` §"One-time skill wiring". If selected or `.agents/skills` exists (including a dangling root symlink), run the retained `codex/reconcile-skills.md` block with `FT_DIR=<FT>`. It creates an absent selected root, adds missing subset links, keeps correct links, prunes only exact-owned absent-body retired links, and reports conflicts without overwriting custom entries. A conflict stops the run. Otherwise report "Codex wiring not selected or present; skipped `.agents/skills` check."
+- **Cursor:** authoritative list is the Cursor-only `ln -s … .cursor/skills/<name>` block in the current `<FT>/cursor/AGENTS-snippet.md` §"One-time symlink wiring" (targets are canonical `claude/skills/` bodies). If selected or `.cursor/skills/` exists, create missing symlinks with the snippet's relative form (substituting `<FT>`). Otherwise skip. Projects using Claude compatibility need no native Cursor root.
+- **Grok:** authoritative list is the Grok-only block in the current `<FT>/grok/AGENTS-snippet.md` §"One-time symlink wiring" (canonical `claude/skills` targets). If selected or `.grok/skills/` exists, create missing links with the snippet's relative form (substituting `<FT>`). Otherwise skip. Projects using an existing compatibility surface need no native Grok root.
+
+For non-Codex roots, preserve existing files/directories and custom or dangling
+links; report conflicts rather than using a force-link command. A symlinked
+root is a conflict, not a directory to traverse. Retirement pruning is bounded
+to the Codex block; other platforms retain Step 4.6's report-only behavior.
 
 Report the added symlinks per platform (or "no new skills to wire"). Note: global/by-reference skills (`/ft-adopt`, `/ft-audit-repo`) are picked up by the user's agent-home wiring when desired, not per-project — do not add extra repo-scoped symlinks beyond each platform's snippet list. `/ft-update` is intentionally in the adopter subset; `/ft-release` is flaitron-self-only.
 
@@ -165,7 +202,7 @@ Drift warnings are **informational only** — the bump proceeds regardless. Afte
 
 ## Step 4.6 — Dangling symlink check
 
-A release can retire or fold a skill (see `docs/MIGRATION.md` §"Retired skills leave dangling symlinks"). Step 4 wires symlinks for *newly shipped* skills; it does not prune ones left behind by a retired skill — check for those here, report-only.
+A release can retire or fold a skill (see `docs/MIGRATION.md` §"Retired skills leave dangling symlinks"). Step 4 prunes exact-owned retired Codex links with absent bodies. Check remaining dangling links here, report-only; missing targets alone do not prove ownership.
 
 For each wiring surface confirmed present in Step 4:
 
@@ -182,10 +219,10 @@ If any of those commands print hits, name each one's replacement. Take the link'
 ⚠️  Dangling symlink(s) found — target no longer resolves in the bumped submodule:
     <path>  → <replacement, e.g. /ft-file-task (renamed in v7.0.0)>
     <path>  → <replacement>
-Each replacement comes from <FT>/docs/MIGRATION.md §"Retired skills leave dangling symlinks". For a renamed skill in the snippet list, Step 4 has already wired the new name. Safe to `rm` — these are symlinks into the submodule, never real files. Not pruned automatically; remove them yourself.
+Each replacement comes from <FT>/docs/MIGRATION.md §"Retired skills leave dangling symlinks". For a renamed skill in the snippet list, Step 4 has already wired the new name. Verify each link's type and exact target before deciding to remove it; these remaining hits have not been proven owned by Flaitron.
 ```
 
-If all present-surface commands print nothing, report "No dangling symlinks found." This check is informational only — the bump proceeds regardless, and `/ft-update` never runs `rm` on the adopter's behalf.
+If all present-surface commands print nothing, report "No dangling symlinks found." This remaining-link check is informational only; it performs no deletion.
 
 ## Step 4.7 — Agent-home shadow check
 
@@ -210,30 +247,52 @@ No hits → "No agent-home shadows found." Declined, or a refused read (a path-a
 
 ## Step 5 — Smoke check, stage, hand off
 
+For repair-only paths, run Step 4.6's remaining dangling-link report before
+this hand-off; do not run the target-version fork refresh. This also reports
+unknown/grouped links the bounded Codex retirement procedure preserved.
+
 - **Symlink resolve check:** for each wiring surface present, verify one canonical link resolves into `<FT>`:
   - Claude: `readlink .claude/skills/ft-task` resolves into `<FT>/claude/skills/ft-task`.
   - Codex: `readlink .agents/skills/ft-task` resolves into `<FT>/codex/skills/ft-task`.
   - Cursor: `readlink .cursor/skills/ft-task` resolves into `<FT>/claude/skills/ft-task` (thin bundle — targets are Claude bodies).
   - Grok: `readlink .grok/skills/ft-task` resolves into `<FT>/claude/skills/ft-task` (thin bundle — targets are Claude bodies).
   A broken link means the submodule isn't checked out or the symlink target is stale — surface it.
-- **Version confirm:** re-read `<FT>/SPEC.md:3` — now `<target>`.
+  For Codex, verify **all** pinned roster links' exact targets and readable
+  `SKILL.md` bodies, as required by `codex/reconcile-skills.md`.
+- **Version confirm:** re-read `<FT>/SPEC.md:3` — `<target>` after a bump,
+  `<current>` on repair-only runs. For repair-only, verify both submodule HEAD
+  and superproject gitlink/index are unchanged from entry.
 - Optionally **offer** (do not auto-run) a full `/ft-task <ID>` against a real PLAN.md entry as a deeper smoke test.
 
-Stage the bump explicitly, plus whichever wiring dirs exist and were checked (do **not** `git add .` / `-A` — there may be unrelated work):
+Stage the bump only if Step 3 ran, plus exact wiring paths created/removed by
+this run (do **not** stage whole skill roots, `git add .` or `-A`):
+
+Accumulate reports from both pins and stage **net** changes only: existing
+destinations (including symlinks) and index-tracked removals. Skip removed
+untracked paths, which have nothing to stage. Use the net-path selector in
+`codex/reconcile-skills.md` for Codex; apply the same rule to other surfaces.
 
 ```sh
-git add <FT>
-git add .claude/         # if present
-git add .agents/skills/  # if present
-git add .cursor/skills/  # if present
-git add .grok/skills/    # if present
+git add <FT>                       # approved bump only
+git add -- <net-changed-wiring-paths> # existing additions + tracked removals
 ```
+
+If a created path is ignored, ask for an ignore edit or explicit force-add
+choice; never override ignore rules by default. No changes → report the
+wiring/sparse outcomes and stop without proposing an empty commit.
 
 Surface a recap (current→target, tag headline, any new symlinks wired, any Step 4.7 shadow hits, the Step 1 sparse outcome, any Migration action items) and a proposed commit message:
 
 ```text
 chore: bump flaitron <current> → <target>
 ```
+
+For repair-only runs, report the reason (same version, offline, or declined
+bump), unchanged pin and wiring changes; propose `chore: repair flaitron
+skill wiring at <current>`. Do not run target-version fork refresh or claim
+that an offline run established the latest release. Static smoke checks are
+distinct from discovery: restart Codex and inspect `/skills` or `$ft-task`
+before claiming runtime verification.
 
 Do **not** commit unprompted. Commit on the user's go, then stop — `/ft-update` drives no further workflow.
 

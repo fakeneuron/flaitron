@@ -1590,3 +1590,301 @@ describe('canonicalTagSha memoization (CORE-493)', () => {
     }
   });
 });
+
+// CORE-789: execute the shipped markdown block, not a second installer.
+// This suite covers per-project wiring; the fleet updater's remit is unchanged.
+describe('pinned Codex wiring procedure', () => {
+  let wiringRoot;
+  let wiringBlock;
+  let stagingBlock;
+  let codexSnippet;
+  let migration;
+  let expectedSlugs;
+
+  before(async () => {
+    wiringRoot = await mkdtemp(join(tmpdir(), 'ft-codex-wiring-'));
+    const procedure = await readFile(join(FLAITRON_REPO, 'codex/reconcile-skills.md'), 'utf8');
+    const blocks = [...procedure.matchAll(/```sh\n([\s\S]*?)\n```/g)];
+    assert.equal(blocks.length, 2);
+    wiringBlock = blocks[0][1];
+    stagingBlock = blocks[1][1];
+    codexSnippet = await readFile(join(FLAITRON_REPO, 'codex/AGENTS-snippet.md'), 'utf8');
+    migration = await readFile(join(FLAITRON_REPO, 'docs/MIGRATION.md'), 'utf8');
+    const claudeSnippet = await readFile(join(FLAITRON_REPO, 'claude/AGENTS-snippet.md'), 'utf8');
+    const slugs = (snippet) => [...snippet.matchAll(/^ln -s .*\/skills\/(ft-[a-z-]+)\s*$/gm)].map((m) => m[1]).sort();
+    expectedSlugs = slugs(claudeSnippet);
+    assert.ok(expectedSlugs.length > 0);
+    assert.deepEqual(slugs(codexSnippet), expectedSlugs, 'Codex roster must derive from Claude');
+  });
+
+  after(async () => { if (wiringRoot) await rmTree(wiringRoot); });
+
+  async function fixture(pinPath = '.flaitron/core', snippet = codexSnippet) {
+    const repo = await mkdtemp(join(wiringRoot, 'adopter-'));
+    await gitQuiet(repo, 'init', '-q');
+    const core = join(repo, pinPath);
+    await mkdir(join(core, 'codex'), { recursive: true });
+    await mkdir(join(core, 'docs'), { recursive: true });
+    await writeFile(join(core, 'codex/AGENTS-snippet.md'), snippet);
+    await writeFile(join(core, 'docs/MIGRATION.md'), migration);
+    for (const slug of expectedSlugs) {
+      const dir = join(core, 'codex/skills', slug);
+      await mkdir(dir, { recursive: true });
+      await writeFile(join(dir, 'SKILL.md'), `---\nname: ${slug}\ndescription: Pinned fixture skill\n---\n`);
+    }
+    return { repo, core, pinPath };
+  }
+
+  async function reconcile(f) {
+    try {
+      const { stdout } = await execFileAsync('sh', ['-c', wiringBlock], {
+        cwd: f.repo, env: { ...process.env, FT_DIR: f.pinPath },
+      });
+      return { code: 0, stdout };
+    } catch (e) {
+      return { code: e.code, stdout: e.stdout, stderr: e.stderr };
+    }
+  }
+
+  async function checkRoster(f, slugs = expectedSlugs) {
+    for (const slug of slugs) {
+      const link = join(f.repo, '.agents/skills', slug);
+      assert.ok((await lstat(link)).isSymbolicLink());
+      assert.equal(await readlink(link), `../../${f.pinPath}/codex/skills/${slug}`);
+      assert.match(await readFile(join(link, 'SKILL.md'), 'utf8'), new RegExp(`name: ${slug}\\n`));
+    }
+  }
+
+  it('bootstraps an absent directory from the canonical pinned subset', async () => {
+    const f = await fixture();
+    const result = await reconcile(f);
+    assert.equal(result.code, 0, result.stderr);
+    assert.equal(result.stdout.match(/^CREATED /gm).length, expectedSlugs.length);
+    await checkRoster(f);
+    for (const platform of ['.claude', '.cursor', '.grok']) {
+      await assert.rejects(lstat(join(f.repo, platform)), { code: 'ENOENT' });
+    }
+    for (const excluded of ['ft-release', 'ft-adopt', 'ft-audit-repo', 'ft-audit']) {
+      await assert.rejects(lstat(join(f.repo, '.agents/skills', excluded)), { code: 'ENOENT' });
+    }
+  });
+
+  it('fills a partial install and is idempotent on healthy links', async () => {
+    const f = await fixture();
+    await mkdir(join(f.repo, '.agents/skills'), { recursive: true });
+    const slug = expectedSlugs[0];
+    const link = join(f.repo, '.agents/skills', slug);
+    await symlink(`../../${f.pinPath}/codex/skills/${slug}`, link);
+    const before = await lstat(link);
+    assert.equal((await reconcile(f)).code, 0);
+    assert.equal((await lstat(link)).ino, before.ino, 'correct link was not replaced');
+    const second = await reconcile(f);
+    assert.equal(second.code, 0);
+    assert.doesNotMatch(second.stdout, /CREATED|REMOVED|CONFLICT/);
+    await checkRoster(f);
+  });
+
+  it('reads an older pin roster instead of silently installing the current inventory', async () => {
+    const omitted = expectedSlugs[0];
+    const older = codexSnippet.split('\n').filter((line) => !line.startsWith('ln -s ') || !line.endsWith(`/${omitted}`)).join('\n');
+    const f = await fixture('.flaitron/core', older);
+    assert.equal((await reconcile(f)).code, 0);
+    await checkRoster(f, expectedSlugs.filter((slug) => slug !== omitted));
+    await assert.rejects(lstat(join(f.repo, '.agents/skills', omitted)), { code: 'ENOENT' });
+  });
+
+  it('uses a resolved relative pin path with spaces', async () => {
+    const f = await fixture('vendor/pinned flaitron');
+    assert.equal((await reconcile(f)).code, 0);
+    await checkRoster(f);
+  });
+
+  it('repairs at the same version without changing HEAD or the index gitlink', async () => {
+    const f = await fixture();
+    await gitQuiet(f.core, 'init', '-q');
+    await gitQuiet(f.core, 'add', '.');
+    await gitQuiet(f.core, '-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid', 'commit', '-qm', 'pinned fixture');
+    const sha = (await execFileAsync('git', ['rev-parse', 'HEAD'], { cwd: f.core })).stdout.trim();
+    await gitQuiet(f.repo, 'update-index', '--add', '--cacheinfo', `160000,${sha},${f.pinPath}`);
+    const indexBefore = (await execFileAsync('git', ['ls-files', '--stage'], { cwd: f.repo })).stdout;
+    assert.equal((await reconcile(f)).code, 0);
+    assert.equal((await execFileAsync('git', ['rev-parse', 'HEAD'], { cwd: f.core })).stdout.trim(), sha);
+    assert.equal((await execFileAsync('git', ['ls-files', '--stage'], { cwd: f.repo })).stdout, indexBefore);
+    assert.equal((await reconcile(f)).code, 0);
+    await checkRoster(f);
+  });
+
+  it('reconciles renamed/folded links using the pinned retirement table', async () => {
+    const f = await fixture();
+    await mkdir(join(f.repo, '.agents/skills'), { recursive: true });
+    const retired = ['ft-file-followup', 'ft-epic-discovery', 'ft-seed', 'ft-micro-task', 'ft-new-project'];
+    for (const slug of retired) {
+      assert.ok(migration.includes(`| \`${slug}\` |`), 'fixture retirement must have source evidence');
+      await symlink(`../../${f.pinPath}/codex/skills/${slug}`, join(f.repo, '.agents/skills', slug));
+    }
+    const result = await reconcile(f);
+    assert.equal(result.code, 0, result.stderr);
+    for (const slug of retired) {
+      assert.ok(result.stdout.includes(`REMOVED .agents/skills/${slug}\n`));
+      await assert.rejects(lstat(join(f.repo, '.agents/skills', slug)), { code: 'ENOENT' });
+    }
+    await checkRoster(f);
+    assert.doesNotMatch((await reconcile(f)).stdout, /REMOVED/);
+  });
+
+  it('does not retire a name still shipped by an older pin', async () => {
+    const slug = 'ft-seed';
+    const older = codexSnippet.replaceAll('ft-seed-unattended', slug);
+    const f = await fixture('.flaitron/core', older);
+    await mkdir(join(f.core, 'codex/skills', slug));
+    await writeFile(join(f.core, 'codex/skills', slug, 'SKILL.md'), `name: ${slug}\n`);
+    assert.equal((await reconcile(f)).code, 0);
+    assert.equal(await readlink(join(f.repo, '.agents/skills', slug)), `../../${f.pinPath}/codex/skills/${slug}`);
+  });
+
+  it('stages net wiring changes across two pins and skips removed untracked links', async () => {
+    const older = codexSnippet.replaceAll('ft-seed-unattended', 'ft-seed');
+    const f = await fixture('.flaitron/core', older);
+    const oldBody = join(f.core, 'codex/skills/ft-seed');
+    await mkdir(oldBody);
+    await writeFile(join(oldBody, 'SKILL.md'), 'name: ft-seed\n');
+    const first = await reconcile(f);
+    assert.equal(first.code, 0);
+    assert.match(first.stdout, /CREATED .agents\/skills\/ft-seed\n/);
+    // One tracked retirement and one untracked retirement at the target pin.
+    const tracked = join(f.repo, '.agents/skills/ft-file-followup');
+    await symlink(`../../${f.pinPath}/codex/skills/ft-file-followup`, tracked);
+    await gitQuiet(f.repo, 'add', '--', '.agents/skills/ft-file-followup');
+    await gitQuiet(f.repo, '-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid', 'commit', '-qm', 'tracked retirement baseline');
+    const untracked = join(f.repo, '.agents/skills/ft-micro-task');
+    await symlink(`../../${f.pinPath}/codex/skills/ft-micro-task`, untracked);
+    await writeFile(join(f.core, 'codex/AGENTS-snippet.md'), codexSnippet);
+    await rmTree(oldBody);
+    const second = await reconcile(f);
+    assert.equal(second.code, 0);
+    assert.match(second.stdout, /REMOVED .agents\/skills\/ft-seed\n/);
+    const reports = join(f.repo, 'reports.txt');
+    await writeFile(reports, first.stdout + second.stdout);
+    const { stdout } = await execFileAsync('sh', ['-c', stagingBlock], {
+      cwd: f.repo, env: { ...process.env, FT_WIRING_REPORT: reports },
+    });
+    const paths = stdout.trim().split('\n');
+    assert.ok(paths.includes('.agents/skills/ft-file-followup'));
+    assert.ok(!paths.includes('.agents/skills/ft-seed'));
+    assert.ok(!paths.includes('.agents/skills/ft-micro-task'));
+    await gitQuiet(f.repo, 'add', '--', ...paths);
+    const staged = (await execFileAsync('git', ['ls-files'], { cwd: f.repo })).stdout.trim().split('\n');
+    assert.deepEqual(staged, expectedSlugs.map((slug) => `.agents/skills/${slug}`));
+    assert.match((await execFileAsync('git', ['diff', '--cached', '--name-status'], { cwd: f.repo })).stdout,
+      /^D\s+\.agents\/skills\/ft-file-followup$/m);
+    await checkRoster(f);
+  });
+
+  for (const kind of ['file', 'directory', 'live link', 'dangling link', 'wrong pinned slug']) {
+    it(`preserves and reports a current-slug conflict: ${kind}`, async () => {
+      const f = await fixture();
+      await mkdir(join(f.repo, '.agents/skills'), { recursive: true });
+      const link = join(f.repo, '.agents/skills', expectedSlugs[0]);
+      if (kind === 'file') await writeFile(link, 'custom body');
+      else if (kind === 'directory') {
+        await mkdir(link);
+        await writeFile(join(link, 'SKILL.md'), 'custom body');
+      } else {
+        const target = kind === 'live link' ? '../../custom' : kind === 'wrong pinned slug'
+          ? `../../${f.pinPath}/codex/skills/${expectedSlugs[1]}` : '../../missing-custom';
+        if (kind === 'live link') await writeFile(join(f.repo, 'custom'), 'custom body');
+        await symlink(target, link);
+      }
+      const before = await lstat(link);
+      const targetBefore = before.isSymbolicLink() ? await readlink(link) : null;
+      const result = await reconcile(f);
+      assert.equal(result.code, 1);
+      assert.ok(result.stdout.includes(`CONFLICT preserved .agents/skills/${expectedSlugs[0]}\n`));
+      assert.equal((await lstat(link)).ino, before.ino);
+      if (targetBefore) assert.equal(await readlink(link), targetBefore);
+      else assert.equal(await readFile(kind === 'file' ? link : join(link, 'SKILL.md'), 'utf8'), 'custom body');
+    });
+  }
+
+  it('preserves custom retired destinations and unknown dangling links', async () => {
+    const f = await fixture();
+    await mkdir(join(f.repo, '.agents/skills'), { recursive: true });
+    await symlink('../../missing-custom', join(f.repo, '.agents/skills/ft-seed'));
+    await mkdir(join(f.repo, '.agents/skills/ft-new-project'));
+    await writeFile(join(f.repo, '.agents/skills/ft-new-project/SKILL.md'), 'custom body');
+    await symlink(`../../${f.pinPath}/codex/skills/ft-unknown`, join(f.repo, '.agents/skills/ft-unknown'));
+    const result = await reconcile(f);
+    assert.equal(result.code, 1);
+    assert.match(result.stdout, /CONFLICT preserved retired destination .agents\/skills\/ft-seed/);
+    assert.equal(await readlink(join(f.repo, '.agents/skills/ft-seed')), '../../missing-custom');
+    assert.equal(await readFile(join(f.repo, '.agents/skills/ft-new-project/SKILL.md'), 'utf8'), 'custom body');
+    assert.equal(await readlink(join(f.repo, '.agents/skills/ft-unknown')), `../../${f.pinPath}/codex/skills/ft-unknown`);
+  });
+
+  for (const rootPath of ['.agents', '.agents/skills']) {
+    for (const kind of ['live directory link', 'dangling link', 'file']) {
+      it(`refuses a redirected root ${rootPath}: ${kind}`, async () => {
+        const f = await fixture();
+        if (rootPath.includes('/')) await mkdir(join(f.repo, '.agents'));
+        const root = join(f.repo, rootPath);
+        if (kind === 'file') await writeFile(root, 'custom root');
+        else {
+          const external = join(f.repo, 'external');
+          if (kind === 'live directory link') await mkdir(external);
+          await symlink(external, root);
+        }
+        const result = await reconcile(f);
+        assert.equal(result.code, 1);
+        assert.match(result.stdout, /CONFLICT skill root:/);
+        assert.doesNotMatch(result.stdout, /CREATED|REMOVED/);
+        if (kind === 'file') assert.equal(await readFile(root, 'utf8'), 'custom root');
+        else assert.equal(await readlink(root), join(f.repo, 'external'));
+      });
+    }
+  }
+
+  it('leaves other platform surfaces and unrelated skills intact', async () => {
+    const f = await fixture();
+    const preserved = [];
+    for (const platform of ['.claude', '.cursor', '.grok', '.agents']) {
+      const root = join(f.repo, platform, 'skills');
+      await mkdir(root, { recursive: true });
+      const file = join(root, 'custom');
+      await writeFile(file, `${platform} user work`);
+      const link = join(root, 'unrelated');
+      await symlink('custom', link);
+      preserved.push({ file, link, ino: (await lstat(link)).ino, text: `${platform} user work` });
+    }
+    assert.equal((await reconcile(f)).code, 0);
+    for (const entry of preserved) {
+      assert.equal(await readFile(entry.file, 'utf8'), entry.text);
+      assert.equal(await readlink(entry.link), 'custom');
+      assert.equal((await lstat(entry.link)).ino, entry.ino);
+    }
+  });
+
+  it('checks missing bodies and an empty roster before changing destinations', async () => {
+    for (const defect of ['body', 'roster']) {
+      const f = await fixture();
+      if (defect === 'body') await unlink(join(f.core, 'codex/skills', expectedSlugs[0], 'SKILL.md'));
+      else await writeFile(join(f.core, 'codex/AGENTS-snippet.md'), '# No roster\n');
+      assert.equal((await reconcile(f)).code, 1);
+      await assert.rejects(lstat(join(f.repo, '.agents')), { code: 'ENOENT' });
+    }
+  });
+
+  it('routes current-pin repair before update early exits and retains thin Codex wrappers', async () => {
+    const update = await readFile(join(FLAITRON_REPO, 'claude/skills/ft-update/SKILL.md'), 'utf8');
+    const step1 = update.split('## Step 1 —')[1].split('## Step 2 —')[0];
+    assert.ok(step1.indexOf('**Repair wiring at the current pin:**') < step1.indexOf('**Fetch tags:**'));
+    assert.match(step1, /same-version, offline and declined-bump/);
+    assert.match(step1, /go to Step 5/);
+    for (const slug of ['ft-adopt', 'ft-update']) {
+      const wrapper = await readFile(join(FLAITRON_REPO, 'codex/skills', slug, 'SKILL.md'), 'utf8');
+      assert.match(wrapper, /\.\.\/\.\.\/reconcile-skills\.md/);
+      assert.match(wrapper, /unless the operator explicitly chooses another/);
+      assert.match(wrapper, /claude\/skills/);
+      assert.match(wrapper, /When Codex is selected/);
+    }
+  });
+});

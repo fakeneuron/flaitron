@@ -41,6 +41,15 @@ Use AskUserQuestion to gather:
 
 Record both before proceeding. If the user picks `main`, set the variable but skip the `git -C .flaitron/core checkout vX.Y.Z` step in Step 2.
 
+**Select the wiring surface.** An explicit operator platform choice wins;
+otherwise use the invocation platform: Codex → `.agents/skills`, Claude →
+`.claude/skills`. Cursor uses existing Claude wiring or its Cursor-only
+snippet; Grok uses an existing compatible surface or its Grok-only snippet.
+If the caller platform is unknown, ask. Record the selected snippet as
+`<wiring-snippet>`; install multiple surfaces only on an explicit request.
+For Codex, read this executing bundle's `codex/reconcile-skills.md` now
+(relative to flaitron's root); its data will come from the chosen pin.
+
 ## Step 2 — Add the submodule
 
 From cwd:
@@ -58,7 +67,16 @@ Reference: `docs/MIGRATION.md` §1.1.
 
 ## Step 3 — Wire the adopter skill subset via symlinks
 
-Read `.flaitron/core/claude/AGENTS-snippet.md` and run the bash block under the §"One-time symlink wiring" heading from the project root. That block is the single source of truth for which skills an adopter installs — this skill never restates the roster, so it cannot drift from it. Run it verbatim — relative paths are intentional (they survive `git clone` and pin to whichever flaitron commit the submodule is checked out at). Do not substitute absolute paths.
+Read the **selected** pinned `<wiring-snippet>` from Step 1. Claude uses
+`.flaitron/core/claude/AGENTS-snippet.md` §"One-time symlink wiring"; Codex
+uses `.flaitron/core/codex/AGENTS-snippet.md` §"One-time skill wiring".
+The Claude snippet defines the roster; Codex's literal block is its derived
+surface. For Codex, execute the already-read `codex/reconcile-skills.md`
+block with `FT_DIR=.flaitron/core`, even when `.agents/skills` is absent.
+It derives the subset from the pin, reports exact created/removed paths,
+preserves custom destinations and stops on conflicts. For other selections,
+run their snippet block. Relative targets survive cloning and follow the
+project pin; do not substitute absolute targets.
 
 **Cursor note:** Cursor loads `.claude/skills/` as a documented compatibility surface, so this Claude wiring already serves Cursor sessions. For a Cursor-only project (no `.claude/`), follow `.flaitron/core/cursor/AGENTS-snippet.md` §"One-time symlink wiring" instead — see `docs/MIGRATION.md` §1.2.
 
@@ -70,7 +88,7 @@ Reference: `claude/AGENTS-snippet.md` §"One-time symlink wiring" (canonical) ·
 
 `.flaitron/core/.flaitron/` is flaitron's own plan and tasknote archive (~16 MB, ~1,200 files) — flaitron's history, not this project's context. Step 2's sparse-checkout already removed it from this clone. The fence below is the fallback for a fresh clone of the project, which comes back full until `/ft-update` runs again, and for older git that skipped the sparse step. Write it now:
 
-1. `.claude/settings.json` — add `Read(./.flaitron/core/.flaitron/**)` to `permissions.deny`. Create the file with just that key if it is absent; if it exists, merge the rule into the existing `deny` array and change nothing else. Claude Code applies the rule to its file tools, Grep/Glob, and `@file` mentions.
+1. `.claude/settings.json` — when the project uses Claude Code, add `Read(./.flaitron/core/.flaitron/**)` to `permissions.deny`. Create the file with just that key if it is absent; if it exists, merge the rule into the existing `deny` array and change nothing else. Claude Code applies the rule to its file tools, Grep/Glob, and `@file` mentions.
 2. `.ignore` at the project root — append the line `.flaitron/core/.flaitron/` (create if absent). Covers ripgrep-based greps; `.gitignore` is the wrong file, the path is tracked content.
 3. `.cursorignore` — the same line, when the file already exists or the project is Cursor-only (Step 3's Cursor note). Otherwise skip.
 
@@ -82,7 +100,9 @@ Reference: `docs/MIGRATION.md` §1.1.
 
 Read `.flaitron/core/claude/AGENTS-snippet.md` and extract the markdown block under the "Block to paste into AGENTS.md" heading (the fenced ```markdown ... ``` block). If `AGENTS.md` doesn't exist in the project root, create it with the block's *contents* (without the outer fences) as initial content. If it exists, append the contents at the end of the file — do not overwrite or insert mid-file (project-specific instructions in `AGENTS.md` must be preserved).
 
-**Then make sure the block will load.** A contract in a file the session never reads fails silently, so wire the Claude Code entry point now rather than leaving it to the Step 8 hand-off. Branch on what's at the project root:
+**Then make sure the block will load.** Codex reads `AGENTS.md` directly.
+When the project also uses Claude Code, wire its entry point now. Branch on
+what's at the project root:
 
 - **No `CLAUDE.md`** — create the compatibility symlink; it is one file deep and relative, so it survives `git clone`:
 
@@ -125,7 +145,7 @@ Stage the bootstrap files explicitly. Do **not** use `git add .` or `git add -A`
 
 ```sh
 git add .gitmodules .flaitron/core .flaitron/PLAN.md .flaitron/tasknote/ AGENTS.md
-grep '^ln -s' .flaitron/core/claude/AGENTS-snippet.md | awk '{print $NF}' | xargs git add
+grep '^ln -s' <wiring-snippet> | awk '{print $NF}' | xargs git add
 ```
 
 Add `CLAUDE.md` to the first line when Step 4 created or modified it (the
@@ -137,6 +157,10 @@ files Step 3b created or edited (`.claude/settings.json`, `.ignore`,
 The second line stages exactly the symlinks Step 3 created, read back from the
 snippet that created them — no roster is restated here, so a skill added
 upstream is staged the day it ships.
+For Codex, use the reconciliation's net-path selector to stage only existing
+changed destinations and index-tracked removals; skip deleted untracked links.
+Leave preserved conflicts and unrelated skills out. If a path is ignored,
+ask for an ignore edit or explicit force-add choice before staging it.
 
 Surface the proposed commit message and wait for commit-go (e.g. "yes", "go", "commit"). Do not commit unprompted — same protocol as the `/ft-task` post-closure flow.
 
@@ -152,7 +176,7 @@ Confirm every symlink Step 3 created resolves — derived from the snippet, not
 from a restated list, so the check never falls behind the roster:
 
 ```sh
-grep '^ln -s' .flaitron/core/claude/AGENTS-snippet.md | awk '{print $NF}' |
+grep '^ln -s' <wiring-snippet> | awk '{print $NF}' |
   while read -r l; do
     [ -e "$l" ] || echo "BROKEN  $l -> $(readlink "$l")"
   done
@@ -160,6 +184,8 @@ grep '^ln -s' .flaitron/core/claude/AGENTS-snippet.md | awk '{print $NF}' |
 
 No output means every link resolves into the submodule. Any `BROKEN` line names
 the symlink to re-create from the snippet — fix before reporting success.
+For Codex, also check every roster link's exact target and readable `SKILL.md`
+as required by `codex/reconcile-skills.md`; existence alone is insufficient.
 
 Then surface to the user, in one short message:
 
@@ -168,13 +194,13 @@ Then surface to the user, in one short message:
 - **Next steps for them** (the skill leaves these as placeholders):
   - Edit `.flaitron/PLAN.md` — fill in the vision paragraph and initial task list.
   - Edit `.flaitron/tasknote/README.md` — declare any project-specific area prefixes; replace the "Project quick commands" section with real commands; extend `## AI-referenced docs` (seeded with `README.md` / `AGENTS.md` / `CLAUDE.md` / `.flaitron/PLAN.md`) as the architecture matures (architecture notes, API specs, DB schema docs, ADRs, inventories).
-- **To verify the wiring:** invoke `/ft-task` in a fresh session with your coding agent (Claude Code, Cursor, Grok Build, Codex CLI, etc.; or the platform's equivalent slash/prompt command) in the project root. The command should appear in the menu (alongside the other flaitron skills) with its description.
+- **To verify the wiring:** restart the selected agent in the project root. In Codex, inspect `/skills` or type `$ft-task`; in Claude/Cursor/Grok, invoke `/ft-task`. The selected skill should appear with its description. Static link checks alone are not runtime discovery evidence.
 - **Recommended follow-up.** Suggest auditing the context surfaces now with `/ft-audit context` — the `context` domain of the audit scaffold (`docs/MIGRATION.md` §1.2.1; before a fork exists, run `.flaitron/core/claude/skills/ft-audit/SKILL.md` with `context` as the domain — no forker placeholders, so it runs unforked). It scans the freshly-bootstrapped `CLAUDE.md`, `AGENTS.md`, and `.claude/{commands,skills}` for context bloat, redundancy with the just-pasted `AGENTS.md` block, `ft-*` namespace conflicts, and lean-context drift; findings land as PLAN tickets on the write-step confirmation. Catches first-day context-surface issues before they ossify.
 
 Reference: `docs/MIGRATION.md` §1.7.
 
 ## Notes
 
-- This skill does not touch existing files except `AGENTS.md` (created or appended-to in Step 4) and the exclusion files Step 3b merges a line into when they already exist (`.claude/settings.json`, `.ignore`, `.cursorignore`). Everything else is new.
+- Existing project files are preserved except the documented `AGENTS.md` append and exclusion merges. Codex reconciliation can also remove exact-owned retired symlinks; custom skill destinations survive and conflicts stop the bootstrap.
 - For migrating from a prior workflow system (existing `plan.json`, `WORKFLOW.md`, etc.), use `docs/MIGRATION.md` §3 (lightweight, active-queue-only) or §2 (full, ID-preserving) manually — the migration path involves judgment calls that don't fit a recipe.
 - For bumping flaitron's pinned version in an already-adopted project, see `docs/MIGRATION.md` §"Pinning and bumping" — that's a different task (`CORE-XXX: Bump flaitron to vX.Y.Z`).

@@ -866,3 +866,59 @@ receipts and actual Git artifacts: no blockers, two evidence-wording notes
 fixed (bytecode-producing Grok review commands; historical quota wording).
 The follow-up review returned no blockers or notes. These documentation
 checks and evidence review are separate from compatibility DOGFOOD.
+
+## CORE-789 bootstrap receipt — 2026-10-14
+
+This additional receipt verifies the new shared inline reconciliation block;
+CORE-677.2's historical receipt above remains as recorded. CLI:
+`codex-cli 0.162.1`, macOS. Official [Build skills](https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills)
+was fetched through OpenAI Docs on this date and still documents the repo
+`.agents/skills` walk and symlink support.
+
+The disposable fixture at `/private/tmp/core789-runtime-5li3btnm/adopter`
+has a real local submodule at `.flaitron/core`. Its source is an **unreleased
+snapshot of CORE-789's implementation**, committed only in a temporary source
+repo at `945441cb52d3f78128dacf9adc8218b9a7435eb1`, with SPEC v7.0.0. It is
+not a released Flaitron tag or a repaired member of the real adopter fleet.
+The snapshot contains the actual wrappers, canonical bodies, snippets and
+shared reconciliation procedure; its roster is derived from Claude's snippet.
+
+Each catalog starts a separate `codex app-server --stdio`, sends
+`initialize`/`initialized`, then `skills/list` with the explicit adopter cwd
+and `forceReload: true`. No thread, model turn or skill invocation is sent.
+Only repo-scoped `ft-*` entries are counted; user utilities are outside the
+adopter subset. Saved catalogs and the reproduction script are temporary
+artifacts beside the fixture, not shipped workflow tools.
+
+| Check | Result |
+|---|---|
+| Fresh catalog before wiring | 0 repo `ft-*` skills; 0 errors |
+| Shipped `codex/reconcile-skills.md` shell block, first run | Exit 0; 8 `CREATED` links |
+| Fresh catalog after bootstrap | 8 enabled repo skills; 0 errors |
+| Same block, repeated at the same pin | Exit 0; 8 `KEPT`; no additions/removals/conflicts |
+| Fresh catalog after repeated repair | Same 8 enabled repo skills; 0 errors |
+| Submodule HEAD and parent index gitlink before/after | Both unchanged at the snapshot SHA |
+
+Every returned repo path resolves under the fixture's pinned
+`.flaitron/core/codex/skills/<slug>/SKILL.md`, and every body is readable.
+The names are exactly the canonical adopter subset, with no repo-scoped
+`ft-adopt`, `ft-audit-repo`, `ft-audit` or `ft-release`. To reproduce with a
+later source, create a disposable source snapshot and local submodule as
+above, derive expected names from its pinned snippet, and execute the shared
+block from the project root. Start a fresh catalog process before, after,
+and after one repeated run, following the protocol above.
+
+The initial sandbox catalog attempt exited 1 with `RuntimeError: server
+closed stdout`; app-server initialization was denied. Approved escalated
+retries of `python3 .../discover.py before`, `after`, and `repeated` each
+exited 0. No machine skill directories or existing adopter repos were edited.
+The portable regression suite separately executes the shipped shell block
+against absent/partial/healthy/older-roster/renamed/custom/redirected-root
+fixtures, and asserts idempotence plus HEAD/index preservation. Procedural
+platform selection and early-exit sequencing are reviewed as markdown; these
+fixtures do not prove an agent obeys every adoption/update instruction.
+
+This is representative **runtime discovery** evidence, separate from static
+link assertions. It does not establish interactive-selector behavior,
+end-to-end tasknote execution, all-fleet coverage, or a new compatibility or
+dogfood stamp. Natabula NAT-416 retains existing-fleet repair ownership.

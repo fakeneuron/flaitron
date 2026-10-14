@@ -20,6 +20,8 @@ cd ~/code/<your-new-project>
 /ft-adopt
 ```
 
+In Codex, invoke `$ft-adopt` (or use `/skills`). The invocation platform selects the wiring surface unless the operator explicitly chooses another; an unknown caller asks. Codex bootstrap creates `.agents/skills` through the selected pin and preserves custom destinations, stopping on conflicts. Multiple new platform surfaces require an explicit request.
+
 The skill verifies preconditions (cwd is a git repo with `AGENTS.md` or `CLAUDE.md`, no existing flaitron wiring, and no legacy workflow tooling at the root — `PLAN.md`, `plan.json`, or `WORKFLOW.md` route to §3 / §2 instead), asks for the project name and pinned flaitron version, and walks through §1.1–1.7 conversationally. It stages all bootstrap files and surfaces the commit message for your approval — no unprompted commits.
 
 **One-time global installs** (run once per machine, after cloning flaitron anywhere on your local machine).
@@ -35,6 +37,14 @@ Install each you want with the same shape (substitute `<skill>`; the `mkdir -p` 
 mkdir -p ~/.claude/skills
 ln -s <path-to-flaitron-checkout>/claude/skills/<skill>  ~/.claude/skills/<skill>
 ```
+
+For Codex, install only the same optional utility names using
+`mkdir -p ~/.agents/skills` and
+`ln -s <path-to-flaitron-checkout>/codex/skills/<skill> ~/.agents/skills/<skill>`.
+On a machine where Codex is the driver, replace a retired global
+`ft-new-project` only after verifying its exact Flaitron target; install
+`ft-adopt` individually, preserving unrelated entries. Never glob the wrapper
+inventory into the user directory.
 
 The symlinks point at flaitron's working tree, so they pick up flaitron edits immediately rather than tracking a versioned submodule. To pin a specific version of a skill, copy the files instead of symlinking and re-copy on bump.
 
@@ -82,7 +92,7 @@ Global utilities (`/ft-adopt`, `/ft-audit-repo`) live in the user's agent home w
 
 **Claude Code install:** open `.flaitron/core/claude/AGENTS-snippet.md` §"One-time symlink wiring" and run the commands from the project root — that file is the single source of truth for Claude wiring (and also holds the §1.3 `AGENTS.md` paste-block). The relative paths in the snippet survive `git clone` and pin to the submodule's current SHA, so symlinks never need touching on a normal version bump.
 
-**Codex install:** open `.flaitron/core/codex/AGENTS-snippet.md` §"One-time skill wiring" and run the commands from the project root. Codex discovers these repo-scoped subset skills under `.agents/skills/`; invoke them through `/skills` or `$ft-task` / `$ft-update`.
+**Codex install:** open `.flaitron/core/codex/AGENTS-snippet.md` §"One-time skill wiring". Its literal roster is derived from the canonical Claude block. For adoption or repeatable repair, use [codex/reconcile-skills.md](../codex/reconcile-skills.md) from the executing bundle with `FT_DIR` set to the adopter pin path; the block reads the pinned snippet, so an older pin need not ship the procedure. It bootstraps absent directories, adds missing links, keeps correct links, and reports conflicts while preserving custom destinations. Invoke through `/skills` or `$ft-task` / `$ft-update`. A fresh runtime catalog/selector check establishes discovery; static links alone do not.
 
 **Cursor install:** if the project is already wired for Claude Code, it is already wired for Cursor — Cursor loads `.claude/skills/` as a documented compatibility surface. For a **Cursor-only** project (no `.claude/` wiring), open `.flaitron/core/cursor/AGENTS-snippet.md` §"One-time symlink wiring" and run the Cursor-only `.cursor/skills/` block from the project root; targets are the canonical `claude/skills/` bodies. Invoke skills as `/ft-task` (and siblings) in a Cursor session.
 
@@ -291,7 +301,7 @@ If §1.3's verification sent you to the `CLAUDE.md` shim, add it to the first li
 
 The second line stages exactly the symlinks §1.2 created, read back from the snippet that created them. That snippet is the single source of truth for the adopter-wiring roster ([`claude/AGENTS-snippet.md`](../claude/AGENTS-snippet.md) §"One-time symlink wiring"), so this block restates no path list and cannot fall behind a newly shipped skill. Explicit paths — not `git add .` — keep the migration commit scoped to the flaitron wiring even if your project already has other files under `.claude/` (settings, other skills).
 
-**Codex-only (no `.claude/` wiring).** Replace the second command above with the command below, deriving only the adopter symlinks from [`codex/AGENTS-snippet.md`](../codex/AGENTS-snippet.md) §"One-time skill wiring". The snippet's later self-host glob is outside this block. Keep the first staging command and include whichever exclusion files §1.1 created.
+**Codex-selected adoption.** Use the reconciliation procedure's net-path selector to stage existing changed destinations and index-tracked removals; skip removed untracked links. Include the first command's bootstrap files and whichever exclusion files §1.1 created. Preserve custom destinations and unrelated skills. If a new link is ignored, ask for an ignore edit or explicit force-add choice. For a fresh manual literal install, replace the second command above with the command below, deriving only adopter links from [`codex/AGENTS-snippet.md`](../codex/AGENTS-snippet.md) §"One-time skill wiring". The later self-host glob is outside this block.
 
 ```sh
 awk '/^## One-time skill wiring$/{p=1;next} p && /^## /{p=0} p && /^ln -s/{print $NF}' .flaitron/core/codex/AGENTS-snippet.md | xargs git add
@@ -495,11 +505,11 @@ To bump:
    ```
 3. Commit. The parent repo's submodule pointer (the SHA recorded for `.flaitron/core`) changes; `.gitmodules` itself only changes if the URL or branch field changes.
 
-Existing symlinks in `.claude/` and `.agents/skills/` don't need to be touched — they always track whatever the submodule currently points at. Two exceptions: a release that **retires** a skill (see the note below), and v6.0.0's `.flowtron/` → `.flaitron/` rename, which re-points every symlink ([UPGRADING.md](UPGRADING.md) §"Upgrading an existing adopter from v5.x" step 4).
+Correct existing symlinks follow the submodule pin. `/ft-update` selects the invocation platform unless the operator chooses another, creates an absent selected root, and maintains already-present surfaces. It repairs the current pin before checking for a newer tag, and again after an approved checkout. Same-version, offline or declined-bump repair leaves the submodule HEAD and index gitlink unchanged, stages only changed wiring paths, and offers a repair commit when needed. Codex's [inline reconciliation](../codex/reconcile-skills.md) reads the pinned roster, preserves custom destinations, and stops on conflicts; other unselected absent platforms are not installed. Two exceptions: a release that **retires** a skill (see the note below), and v6.0.0's `.flowtron/` → `.flaitron/` rename, which re-points every symlink ([UPGRADING.md](UPGRADING.md) §"Upgrading an existing adopter from v5.x" step 4).
 
 #### Retired skills leave dangling symlinks
 
-When a release removes a skill from the adopter subset, the symlinks you created for it still exist in your project and now point at a path that no longer exists in the submodule. Nothing breaks elsewhere — the dead symlink just surfaces a slash command that fails when invoked. `/ft-update` wires symlinks for *newly shipped* skills and, as of its Step 4.6, also reports any dangling ones left by a retired skill, naming each one's replacement from the table below — but it never prunes them, so removal is still manual.
+When a release removes a skill from the adopter subset, the symlinks you created for it still exist in your project and now point at a path that no longer exists in the submodule. Nothing breaks elsewhere — the dead symlink just surfaces a slash command that fails when invoked. `/ft-update` adds missing skills from each selected/present pinned snippet. Codex reconciliation removes only a symlink whose exact relative target is `../../<FT>/codex/skills/<own-slug>`, whose slug is a single-name row in the pinned retired table, and whose body directory is absent at that pin. A still-shipped old name is preserved. Custom destinations are preserved and reported as conflicts. Step 4.6 reports all remaining dangling links and their replacements; other platforms retain report-only retirement handling.
 
 Running `/ft-update` surfaces dangling hits automatically; to check outside of a bump (or on a project that ran an older `/ft-update`), run the same command it uses:
 
@@ -510,7 +520,7 @@ for d in .claude .agents/skills .cursor/skills .grok/skills; do
 done
 ```
 
-Remove each hit with `rm`. The commands are safe: these are symlinks into the submodule, never real files.
+Before removing any hit, verify its symlink type and exact Flaitron target against the retirement evidence. A missing target alone does not prove ownership; preserve custom links and real directories.
 
 **Skills retired so far**, with what replaced them:
 

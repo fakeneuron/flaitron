@@ -66,8 +66,8 @@ find .agents/skills -maxdepth 1 -type l ! -exec test -e {} \; -print
 `.agents/` is gitignored alongside `.claude/` (see root `.gitignore`), so this stays per-machine too.
 Before unlinking a retired self-host skill, verify its retirement-table row,
 symlink type, exact `../../codex/skills/<own-slug>` target (Claude:
-`../../claude/skills/<own-slug>`) and absent source directory. Command stubs
-likewise need an exact target under `../../claude/commands/`. Preserve custom
+`../../claude/skills/<own-slug>`) and absent source directory. Pre-v7.0.0
+command stubs likewise need an exact target under `../../claude/commands/`. Preserve custom
 entries and report conflicts; never prune every dangling link on that fact
 alone. Re-run the inventory glob only for missing destinations. Adopters use
 the pinned subset and [Codex reconciliation](codex/reconcile-skills.md)

@@ -122,7 +122,9 @@ both the bare filename in a shell loop that reddened CI and the ledger row whose
 file and section sit in different table cells. The declination stands; CORE-543
 was re-scoped to the detector the failure actually wanted (§7.1 **Pair L**,
 binding the `drift` CI job to the sources it lifts, plus a `/ft-release`
-CI-status gate).
+CI-status gate). Pair L has since been retired: CORE-734.4 made
+`tools/drift-checks.sh` the only shell for those checks, leaving no second copy
+to bind.
 
 **Landed at CORE-622.3 (2026-09-20), because the false-positive shape moved.**
 The third filing came from `/ft-audit-repo` with the two declinations'

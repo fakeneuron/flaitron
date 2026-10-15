@@ -73,7 +73,7 @@ serves it; Grok-only projects follow [`grok/AGENTS-snippet.md`](grok/AGENTS-snip
   is for, the principles (recap of SPEC), and the PR/suggestion archetypes
   flaitron deliberately rejects
 - [docs/GLOSSARY.md](docs/GLOSSARY.md) — alphabetized one-line definitions for
-  ~73 load-bearing terms, phases, markers, and grammar elements (lazy-loaded
+  74 load-bearing terms, phases, markers, and grammar elements (lazy-loaded
   pointer to SPEC anchors)
 - [docs/MIGRATION.md](docs/MIGRATION.md) — adoption guide for fresh projects
   and migration from a prior workflow system
@@ -110,7 +110,8 @@ serves it; Grok-only projects follow [`grok/AGENTS-snippet.md`](grok/AGENTS-snip
 - [docs/GATE-DISCIPLINE.md](docs/GATE-DISCIPLINE.md) — gate-skip excuses,
   observer symptoms, and refused carve-outs
 - [docs/CODEX-VERIFICATION.md](docs/CODEX-VERIFICATION.md) — dated Codex
-  installation receipt (CORE-677.2): discovery and repair observations
+  installation receipt (CORE-677.2): discovery and repair observations, plus
+  the CORE-677.3 workflow-parity review and CORE-677.4 bounded comparison
 - [docs/CONTEXT-BUDGET.md](docs/CONTEXT-BUDGET.md) — per-file byte budgets for
   the surfaces an agent loads to run one task, the measured ledger behind them,
   and the CI and release-time checks that keep them honest

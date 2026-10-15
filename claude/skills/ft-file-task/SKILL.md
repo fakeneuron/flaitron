@@ -1,7 +1,7 @@
 ---
 name: ft-file-task
 description: File a mid-flow follow-up task from inside an active tasknote. With `--park`, parks an idea or quick fix without losing it (tiny stub, resume inline). With `--starter`, files a starter tasknote with rich AI-captured context for work not ready to start. With `--unattended`, files with no operator present, auto-allocating the ID and suppressing review gates.
-argument-hint: '[TASK-ID] [--park [--low|--med|--fut|--high]] [--starter] [--unattended]'
+argument-hint: '[TASK-ID] [--park|-p [--low|--med|--fut|--high]] [--starter] [--unattended]'
 ---
 
 # file-task — flaitron lightweight follow-up filer

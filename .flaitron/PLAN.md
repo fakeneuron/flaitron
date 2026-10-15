@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-(none)
+- [ ] **CORE-797** [heavy]🧠 | prep-unattended-dryrun — Dry-run /ft-prep-unattended (gate reply `none`, zero writes) against flaitron's PLAN and 2–3 adopter PLANs; record each pin/split/stay with its failing clause. Check pins never strip a 👁️/hand-off cue without an existing test command, and splits never shed a person-act into the mechanical row. File fixes for any miss.
 
 ## Low
 

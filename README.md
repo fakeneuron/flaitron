@@ -21,8 +21,8 @@ actually review. No scripts, daemons, databases, or schemas to maintain.
 
 ![The flaitron visualizer showing flaitron's own PLAN.md — open tasks by priority, phase-progress dots, and the completed archive](.flaitron/screenshots/viz-board.png)
 
-Flaitron is built with flaitron: **1180 tasks** closed through this exact
-workflow between 2026-04-28 and 2026-10-11 (as of 2026-10-11) — each one with
+Flaitron is built with flaitron: **1193 tasks** closed through this exact
+workflow between 2026-04-28 and 2026-10-15 (as of 2026-10-15) — each one with
 a tasknote preserved in [`.flaitron/tasknote/archive/`](.flaitron/tasknote/archive/).
 Count and date range are recomputed each release by `/ft-release` §7.1's
 "Standing README task-counter check" (one archived tasknote per closed task,
@@ -111,7 +111,8 @@ serves it; Grok-only projects follow [`grok/AGENTS-snippet.md`](grok/AGENTS-snip
   observer symptoms, and refused carve-outs
 - [docs/CODEX-VERIFICATION.md](docs/CODEX-VERIFICATION.md) — dated Codex
   installation receipt (CORE-677.2): discovery and repair observations, plus
-  the CORE-677.3 workflow-parity review and CORE-677.4 bounded comparison
+  the CORE-677.3 workflow-parity review, CORE-677.4 bounded comparison, and
+  CORE-789 bootstrap receipt
 - [docs/CONTEXT-BUDGET.md](docs/CONTEXT-BUDGET.md) — per-file byte budgets for
   the surfaces an agent loads to run one task, the measured ledger behind them,
   and the CI and release-time checks that keep them honest

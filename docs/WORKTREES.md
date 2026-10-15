@@ -91,7 +91,7 @@ A `git branch --list 'wt-*'` with no matching `git worktree list` entry is an or
 
 ## Relationship to the Rest of Flaitron
 
-- **No 4-phase change inside a worktree.** The relevance gate, operator cues (🛠️ / 📦), conditional skip rule, and post-closure protocol are unchanged inside any tasknote that happens to run here. Fan-out / child YAML (CORE-445.3) is a planning declaration, not a second lifecycle.
+- **No 4-phase change inside a worktree.** The relevance gate, operator cues (🛠️ / 📦), conditional skip rule, and post-closure protocol are unchanged inside any tasknote that happens to run here, except that post-closure step 2's `## Completed` rotation is skipped in a linked worktree (its receipt line says so); the next over-60 close in the main checkout rotates. Fan-out / child YAML (CORE-445.3) is a planning declaration, not a second lifecycle.
 - **Epic lifecycle still governs.** The `.1` Discovery + children + `.N` Audit bracket (see [`SPEC/epic.md`](../SPEC/epic.md)) owns multi-child work; worktrees are the execution accelerator for the independent subset, declared on `.1` as optional `## 🌳 Fan-out`.
 - **Adopter wiring.** None — the procedure is this doc. At the next `/ft-update`, exact-owned retired Codex links with absent bodies are pruned; other dangling links from the retired skill pair are reported (`docs/MIGRATION.md` §"Retired skills leave dangling symlinks").
 - **External CLI agents.** Worktrees are the isolation layer for running independent children in parallel; [`docs/EXTERNAL-AGENTS.md`](EXTERNAL-AGENTS.md) adds the "one external agent per tasknote" convention on top — hand each worktree-isolated child to a single external agent (Kiro / Claude Code / Codex).

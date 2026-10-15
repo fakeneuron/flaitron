@@ -178,7 +178,7 @@ repo root, named after the platform:
 ```text
 flaitron/
 ├── claude/         # Claude Code wiring
-├── codex/          # Codex skill wrappers + ft-task procedure pointer
+├── codex/          # Codex skill wrappers + reconcile procedure + ft-task procedure pointer
 ├── grok/           # Grok thin wiring (snippet + ft-task procedure pointer; Cursor-shaped compat)
 └── cursor/         # Cursor thin wiring (snippet + ft-task procedure pointer)
 ```
@@ -336,6 +336,9 @@ Concrete instantiation:
   §"Translation rules" (CORE-465 folded them out of the wrapper bodies).
 - **`procedures/`**: `ft-task.md` retained as a contract-only pointer for
   agents/operators that ask to load the SOP directly.
+- **`reconcile-skills.md`**: the inline reconciliation block `/ft-adopt` and
+  `/ft-update` run for Codex (adoption, update, same-pin repair); the literal
+  `ln -s` block in the snippet stays the parsed roster (CORE-789).
 - **Adopter install**: relative symlinks for the adopter-installed subset from
   `.agents/skills/*` into the submodule, per `codex/AGENTS-snippet.md`
   §"One-time skill wiring". The relative paths survive `git clone` and pin to
@@ -512,7 +515,7 @@ that platform's routing. Do not add per-flag rows back (CORE-734.6)._
 
 First-use verification 2026-06-01 (CORE-257). /ft-task skill invocation, model gate (with retag), AskUserQuestion render, and cue emissions (✅ marker + post-closure expectations) exercised under Grok. Structured ask support observed (see trigger table note). Matrix currency lives in docs/AGENT-COMPAT.md.
 
-**Last verified:** `v7.0.0 · 2026-10-11 (dogfooded)`
+**Last verified:** `v7.1.0 · 2026-10-15 (dogfooded)`
 
 ### Codex CLI
 
@@ -546,7 +549,7 @@ shipped `codex/skills/` wrappers — desk research under Claude Code, not a
 standalone Codex verification session. CORE-734.6 later folded the flag rows,
 by then seven, into the one skill-body-flags row above.
 
-**Last verified:** `v7.0.0 · 2026-10-11 (dogfooded)`
+**Last verified:** `v7.1.0 · 2026-10-15 (dogfooded)`
 
 ### Cursor
 
@@ -569,7 +572,7 @@ Cursor-only projects (see §"Worked example: Cursor" and
 
 First-use verification 2026-08-12 ([[CORE-438.5]]): `/ft-task` under Cursor (Grok 4.5) ran DOGFOOD.md's three steps (contract comprehension at `v5.16.0`, full cue-render vocabulary, Phase-1 drive on CORE-438.N with clean Step-3 write boundary). Skill dispatch via `.claude/skills/` compat, Task subagent tool, modes, and `/model`+`/clear` cues confirmed; structured ask confirmed earlier under Cursor in [[CORE-438.1]]. Matrix currency lives in docs/AGENT-COMPAT.md.
 
-**Last verified:** `v5.33.0 · 2026-09-23 (dogfooded; skipped @ v7.0.0)`
+**Last verified:** `v7.1.0 · 2026-10-15 (dogfooded)`
 
 ### Gemini CLI (stub)
 

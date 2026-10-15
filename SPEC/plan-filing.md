@@ -212,7 +212,8 @@ found, but confirms and applies no edit — a run with no operator never perform
 the operator's motion.
 
 **Execution skills keep their commit-go gate.** This section governs the seven
-filing motions above and `/ft-seed-unattended`'s write, and nothing else. `/ft-task`,
+filing motions above, `/ft-seed-unattended`'s write, and `/ft-prep-unattended`'s
+write, and nothing else. `/ft-task`,
 `/ft-open-epic` past its Step 4 filing, `/ft-close-epic`, `/ft-release`,
 `/ft-adopt`, and `/ft-update` are unchanged: their commits
 land deliverables or cut releases, and it is the 📦 conditional skip rule

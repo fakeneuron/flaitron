@@ -122,11 +122,13 @@ invocations will execute.
 
 **Adopter mitigations.**
 
-- Pin to annotated release tags (e.g. `v7.0.0`), not to `main` or to an
+- Pin to annotated release tags (e.g. `v7.1.0`), not to `main` or to an
   unreviewed commit on `main`. Release tags are reviewed deliberately;
   `main` is a moving target.
 - Review the diff between your pinned commit and the new tag before
-  bumping, especially in `claude/skills/`. The
+  bumping, especially in `claude/skills/` and `codex/` (`/ft-adopt` and
+  `/ft-update` execute `codex/reconcile-skills.md`'s shell block, which
+  creates and removes symlinks in your tree). The
   release tag's annotated message documents migration steps for major
   bumps.
 - If you fork flaitron's skills into your project (the documented
@@ -177,8 +179,9 @@ reviewed as one. Do not add repository secrets to this workflow.
 
 `tools/update-adopters.mjs` is the singular script exception to
 `SPEC/scope-boundaries.md` §"What flaitron does NOT provide" — operator-side fleet maintenance across
-`~/code`, not workflow machinery inside a project. It batches the
-`/ft-update` recipe across every discovered adopter: bump the pinned
+`~/code`, not workflow machinery inside a project. It batches the bump
+half of the `/ft-update` recipe (not its per-platform wiring repair) across
+every discovered adopter: bump the pinned
 `.flaitron/core` submodule to the latest release and commit — or, for an
 adopter still on the pre-rename `.flowtron/core` layout, move it to
 `.flaitron/` and bump in the same commit (`applyMigrate`); either path, on a

@@ -29,6 +29,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-796** [medium]🧩 | release v7.1.0 — Completed 2026-10-15.
 - [x] **CORE-791** [light]🔧 | frontier-grok-wording — Completed 2026-10-15.
 - [x] **CORE-790** [light]🔧 | doc-nit-sweep — Completed 2026-10-15.
 - [x] **CORE-792** [light]🔧 | budget-cap-cell — Reword the `claude/skills/*/SKILL.md` Budgets cell in docs/CONTEXT-BUDGET.md to cite §"Skill bodies" instead of restating byte counts that disagreed with the ledger. Surfaced by audit-docs 2026-10-15 (Finding #1, Medium), fixed inline.

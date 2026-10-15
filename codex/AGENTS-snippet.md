@@ -18,7 +18,7 @@ wiring", and the block below is that roster under one substitution — source
 `.agents/skills/<n>`, lines sorted. Adding or removing a skill means editing the SSOT and
 regenerating this block, never editing this block alone. It stays a literal
 `ln -s` list because adopters copy-paste it and `tools/update-adopters.mjs`
-parses it; `/ft-release` §7.1 diffs it against the SSOT as a set.
+and `reconcile-skills.md` parse it; `/ft-release` §7.1 diffs it against the SSOT as a set.
 
 Codex discovers repo-scoped skills from `.agents/skills` in the current
 directory walk. From an adopting project's repository root, after adding the

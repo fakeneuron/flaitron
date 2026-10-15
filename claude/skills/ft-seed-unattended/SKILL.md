@@ -6,7 +6,7 @@ description: Seed `[unattended]` onto an existing `.flaitron/PLAN.md` in one att
 # seed-unattended — bulk `[unattended]` seeding of an existing plan
 
 You are seeding the `[unattended]` marker onto rows of a project's existing
-`.flaitron/PLAN.md`. Every filing skill already *proposes* the marker for the
+`.flaitron/PLAN.md`. Every filing skill except `/ft-file-task --park` already *proposes* the marker for the
 row it is about to write, but candidacy fires only at filing time — a plan
 filed before that contract existed, or by hand, has no path to the token but
 hand-editing. This skill is that path: one walk, one gate, and a write that

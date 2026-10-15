@@ -1,8 +1,8 @@
 # Codex verification
 
-CORE-677.2 installation receipt, 2026-10-01, followed by two later dated
-records: the CORE-677.3 workflow-parity review and the CORE-677.4 bounded
-comparison. This is a dated observation, not a second install roster. Canonical commands remain in
+CORE-677.2 installation receipt, 2026-10-01, followed by three later dated
+records: the CORE-677.3 workflow-parity review, the CORE-677.4 bounded
+comparison, and the CORE-789 bootstrap receipt. This is a dated observation, not a second install roster. Canonical commands remain in
 [codex/AGENTS-snippet.md](../codex/AGENTS-snippet.md); policy remains in
 [PLATFORMS.md](PLATFORMS.md#installed-surface-policy). It predates v6.0.0, so
 its names and paths — reproduce steps included — are those of the pinned

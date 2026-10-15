@@ -22,6 +22,14 @@ unless correcting a factual error.
 
 ---
 
+## v7.1.0 — /ft-prep-unattended, no-ask filing priority, Codex wiring repair
+
+- /ft-prep-unattended joins /ft-seed-unattended: an attended walk that pins a fact or splits a mechanical row from an attended remainder for rows the [unattended] predicate declines. It never writes the marker.
+- /ft-file-task and /ft-open-epic stop asking for priority; the AI picks the section and names it for correction.
+- /ft-adopt and /ft-update establish and repair Codex skill wiring at the pinned version, even on same-version runs (codex/reconcile-skills.md).
+
+Also: every closer prints its Completed-rotation count before 🏁; candidacy clause 3's keyword list is a screen, not a semantic pass.
+
 ## v7.0.0 — skill renames, /ft-task --micro, automatic Completed rotation
 
 - Four skills are renamed with no aliases: /ft-file-task, /ft-open-epic, /ft-adopt (global-only), and /ft-seed-unattended. The claude/commands/ stubs are retired, and each argument-hint lives in its SKILL.md. Existing adopters re-wire once (docs/MIGRATION.md §"Upgrading to v7.0.0 (skill renames)"), and tools/update-adopters.mjs --apply does the link swap in the bump commit.

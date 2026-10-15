@@ -111,7 +111,8 @@ These relative symlinks point through the project's pinned `.flaitron/core`
 submodule, so the wired skill bodies move only when the project deliberately
 bumps flaitron. Existing symlinks do not need rewiring on a normal version bump;
 newly shipped adopter-subset skills may need new symlinks, which `/ft-update`
-adds. A bump that renames or retires a skill (v7.0.0) leaves dangling links, which `/ft-update` reports (Step 4.6) — `docs/MIGRATION.md` §"Upgrading to v7.0.0 (skill renames)".
+adds. It also adds missing subset links at the current pin, even on a
+same-version, offline, or declined-bump run. A bump that renames or retires a skill (v7.0.0) leaves dangling links, which `/ft-update` reports (Step 4.6) — `docs/MIGRATION.md` §"Upgrading to v7.0.0 (skill renames)".
 
 Cursor follows relative directory symlinks at adopter depth — verified
 discovered, resolved, and invoked in live sessions, in all three candidate

@@ -22,7 +22,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
-- [ ] **CORE-791** [light]🔧 | frontier-grok-wording — Tighten SPEC/model.md §"Model field"'s frontier clause so a flagship with nothing above it earns `frontier` only where docs/PLATFORMS.md §"Platform×model×effort calibration table" bands it frontier at `xhigh` (Astra does, Grok 4.7 does not); PLATFORMS stays the calibration authority and its Grok note is unchanged. Surfaced by audit-docs 2026-10-15 (Finding #4, Low).
 
 ## Future Opportunities
 
@@ -30,6 +29,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-791** [light]🔧 | frontier-grok-wording — Completed 2026-10-15.
 - [x] **CORE-790** [light]🔧 | doc-nit-sweep — Completed 2026-10-15.
 - [x] **CORE-792** [light]🔧 | budget-cap-cell — Reword the `claude/skills/*/SKILL.md` Budgets cell in docs/CONTEXT-BUDGET.md to cite §"Skill bodies" instead of restating byte counts that disagreed with the ledger. Surfaced by audit-docs 2026-10-15 (Finding #1, Medium), fixed inline.
 - [x] **CORE-793** [light]🔧 | budget-large-refs — Re-measure docs/CONTEXT-BUDGET.md §"Large reference docs" (PLATFORMS 59,973 · MIGRATION 67,201, 2026-10-15) and make its refresh-policy sentence and the §Ledger intro agree: hand-refreshed, outside the §7.1 block. Surfaced by audit-docs 2026-10-15 (Finding #2, Low), fixed inline.

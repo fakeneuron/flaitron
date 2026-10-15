@@ -85,9 +85,10 @@ releases. Calibration baseline:
 
 - **`frontier`** — each vendor's top-of-roster model, the step above the
   workhorse flagship: `fable` (with its limited-access `mythos` sibling) and
-  peers; on a platform whose roster has no such model above its flagship,
-  that flagship dialed up to `xhigh` (e.g. OpenAI's Astra) can also earn a
-  `frontier` verdict — `opus` cannot, since `fable` sits above it. A platform
+  peers; a flagship with no model above it earns a `frontier` verdict at
+  `xhigh` only where `docs/PLATFORMS.md` bands it so — OpenAI's Astra does,
+  Grok 4.7 does not (its `xhigh` stays heavy-band), and `opus` cannot, since
+  `fable` sits above it. A platform
   with no frontier-band configuration lands the ⚠️ under-tier advisory on
   `[frontier]` work, and the map names the switch (§"Effort recommendations"
   below).

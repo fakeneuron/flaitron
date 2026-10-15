@@ -71,7 +71,7 @@ CORE-194.1 Q3's correct lazy-loading decision (settled by CORE-491).
 - `docs/AGENT-COMPAT.md` — living agent-compatibility matrix: per-agent consume-mode, context entry-point, skill/command primitive, and last-verified currency
 - `docs/EXTERNAL-AGENTS.md` — one-agent-per-tasknote rule, the handoff contract for external CLI agents, the orchestration contract an operator-less caller reports to, the caller-facing stable-surface list (what a reader or dispatcher may hook, and what is out of contract), and the not-an-orchestration-runtime boundary; contract edits that touch delegation, handoff, the unattended posture, template labels, or the task-line grammar routinely drift against it; a closure that moves, renames, or retires a **stable-surface row** files the caller-side row **in the same closure** — filed in the caller's own `PLAN.md` (an operator-private orchestrator today), never left as recap prose for the caller to discover at its next pin bump (`SPEC.md` §"Cross-repo edit remit" · `SPEC.md` §"Deferred hand-off filing")
 - `docs/WORKTREES.md` — the locked isolation convention for parallel epic children (`wt-<ID>` branch + hand-run start / end procedure; no skill since CORE-572); named by `docs/EXTERNAL-AGENTS.md` as the isolation layer and cited wherever parallelism is discussed
-- `docs/VISION.md` — canonical statement of flaitron's scope boundaries; mirrored by `SPEC/scope-boundaries.md` §"What flaitron does NOT provide", `docs/CONVENTIONS.md`, and `docs/EXTERNAL-AGENTS.md`. Lazy-loaded: swept, not cold-start
+- `docs/VISION.md` — canonical statement of flaitron's scope boundaries; mirrored by `SPEC/scope-boundaries.md` §"PR / suggestion archetypes flaitron does not accept", `SPEC/loop.md`, `SPEC/gate-postures.md`, `docs/EXTERNAL-AGENTS.md`, and `docs/WORKTREES.md` (the pattern is ratified in `docs/CONVENTIONS.md` §"Canonical source with labeled mirrors"). Lazy-loaded: swept, not cold-start
 
 `SPEC/*.md` (lazy modules) and `claude/skills/*/SKILL.md` sit outside this
 sweep set, excluded on both counts, so the distinction above does not arise for
@@ -83,7 +83,7 @@ per-task step Core Principle #3 exists to keep small.
 
 Eight `docs/` files are likewise outside the set, each for a reason the sweep
 would not add to: `docs/PHILOSOPHY.md` is history (nothing live mirrors it —
-unlike `docs/VISION.md`, which three surfaces restate); `docs/DOGFOOD.md` is
+unlike `docs/VISION.md`, which five surfaces restate); `docs/DOGFOOD.md` is
 release-gated (`/ft-release` Step 5 exercises it every cut);
 `docs/CONTEXT-BUDGET.md` is CI-enforced and re-measured by `/ft-release` §7.1;
 `docs/VERSION-HISTORY.md` is written *by* releases;

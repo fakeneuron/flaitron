@@ -46,7 +46,7 @@ Checked on every push by the CI `drift` job and at every release cut by
 | `SPEC/post-closure.md` | 10,000 | The three post-archive steps — commit decision, 🏁 marker (rotation count included) plus next-move suggestion, copy-paste line — split out of `SPEC.md`. Budgeted although lazy — it arrives only at a closing runner's final step, once the tasknote is archived — for the same un-budgets-what-it-moves reason as `gate-postures.md`. Sized like its siblings: the file plus ~1.5 working units. |
 | `SPEC/task-line-segments.md` | 10,000 | The per-segment table, the worked examples, and the `[unattended]`-candidacy proposal contract, split out of `SPEC.md` §"Task-line format". Budgeted for the same reason as its siblings. Sized like its siblings: the file plus ~1.5 working units. The split point is read-vs-write, not frequency — a runner *capturing* a row at Step 1 needs only the grammar block and the ordering rule, both of which stay in `SPEC.md`; the per-token write semantics travel here. |
 | `SPEC/tasknote-selection.md` | 12,500 | The use/skip routing, the filing-discipline word budget, and the downstream-impact scan. Lazy by declaration, near-universal in practice: every filing and runner skill cites it, so it is budgeted like its loaded siblings. Sized like them: the file plus ~1.5 working units. |
-| `claude/skills/*/SKILL.md` | 33,000 | One skill body is loaded per task, on top of `SPEC.md`. Sized to give the largest ordinary body — `ft-open-epic` (32,749 since [[CORE-766]]'s Model-clause edit, from 32,663 after [[CORE-741.4]]'s routing-skill sweep; `ft-close-epic` 28,321) — now ~250 of headroom, under one working unit, so its next substantial edit extracts a lazy fragment (a substantial skill edit runs +1,187 to +3,390 chars). Not lowered when `ft-task` dropped below it: much of that drop moved into `preamble.md`, which has its own row below, rather than leaving the run. Extracting a lazy fragment ([[CORE-556.2]]) is the preferred remedy over raising this cap when a body is genuinely overgrown rather than merely near its line. |
+| `claude/skills/*/SKILL.md` | 33,000 | One skill body is loaded per task, on top of `SPEC.md`. Sized to give the largest ordinary body — `ft-open-epic`, per §"Skill bodies" (the numbers live there, not here: [[CORE-793]] retired this cell's restatement after it drifted from the ledger) — under one working unit of headroom, so its next substantial edit extracts a lazy fragment (a substantial skill edit runs +1,187 to +3,390 chars). Not lowered when `ft-task` dropped below it: much of that drop moved into `preamble.md`, which has its own row below, rather than leaving the run. Extracting a lazy fragment ([[CORE-556.2]]) is the preferred remedy over raising this cap when a body is genuinely overgrown rather than merely near its line. |
 | `claude/skills/ft-task/preamble.md` | 9,000 | The one `ft-task` fragment read on **every** run — the Step 1 / 1.5 preamble, single-sourced rather than branch-gated ([[CORE-724.4]]). Budgeted because a fragment that loads every run is body by another name, and leaving it uncapped would let the `SKILL.md` row be met by moving bytes. Sized like `post-closure.md`: the file plus ~1.5 working units. |
 | `claude/skills/ft-release/SKILL.md` | 40,000 | More specific row wins. A release cut is a whole-repo motion whose skill is loaded alone, never alongside a tasknote, and this body is already post-trim ([[CORE-507]] cut it from ~77,000 to 37,274). Budgeted rather than exempted so it still ratchets. |
 | `claude/skills/ft-release/**` | 113,000 | Directory total — every file under the skill, summed, not a per-file cap. The row above caps only the body, and the ledger's own §"Skill bodies" note says why that is not enough: fragments defer load, they do not remove it, and a release cut walks every fragment in this directory on every cut. Sized to the directory's measured total plus ~1.5 working units — a working unit here is a new mirror pair or CI binding, which across the last twenty touching commits ran +4,000 to +5,300. |
@@ -120,7 +120,7 @@ its cap.
 
 Measured 2026-10-11 at v7.0.0, refreshed by [[CORE-779]] — the release cut,
 which re-measured the four command-covered subsections. The large-reference
-figures stay the 2026-09-22 readings named in that subsection. Refreshed by
+figures are hand-refreshed and carry their own date in that subsection. Refreshed by
 `/ft-release` §7.1 in the same cut that reads it — if these numbers are stale,
 the cut that made them stale skipped its own standing check.
 
@@ -322,9 +322,10 @@ which is why it carries its own §"Budgets" row.
 
 ### Large reference docs
 
-`docs/PLATFORMS.md` 67,894 · `docs/MIGRATION.md` 62,249 (measured
-2026-09-22 at [[CORE-670.4]]). Up from 21,497 and 33,194 on 2026-06-01
-(3.2× and 1.9×), so neither has ever had a ratchet.
+`docs/PLATFORMS.md` 59,973 · `docs/MIGRATION.md` 67,201 (measured
+2026-10-15 at [[CORE-793]]; 67,894 and 62,249 on 2026-09-22 at
+[[CORE-670.4]]). Up from 21,497 and 33,194 on 2026-06-01, so neither has ever
+had a ratchet.
 
 [[CORE-670.4]] **exempted** both rather than budgeting them. A budget here
 caps what a runner loads, and no runner loads either file whole. Each reader
@@ -343,8 +344,9 @@ a skill or procedure step that names `docs/X.md` without a section. Until then,
 watch the sections instead. The largest ones readers cite today are PLATFORMS
 §"Non-Claude capability triggers" at 34,235 and MIGRATION §1.2.1 at 11,992
 (ft-adopt cites §1 by subsection). When a cited section outgrows its
-reader, split the section rather than cap the file. These figures are refreshed
-with the rest of the ledger, and a jump between cuts means checking which
+reader, split the section rather than cap the file. These figures are
+hand-refreshed, outside the `/ft-release` §7.1 ledger block (whose `wc -c`
+commands do not reach them), and a jump between readings means checking which
 section grew.
 
 ## How this is enforced

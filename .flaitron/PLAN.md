@@ -22,6 +22,8 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
+- [ ] **CORE-790** [light]🔧 | doc-nit-sweep — Fix the present-tense prose residue no drift pair reads: qualify the retired command stubs as pre-v7.0.0 at step-7.1-mirror-pairs.md Pair F, CONTRIBUTING.md §"Developing flaitron skills", and the ft-flowtron row of docs/MIGRATION.md §"Skills retired so far"; add `-p` to ft-file-task's argument-hint and `--medium` / `--future` to the `--park` row in claude/CAPABILITIES.md; reconcile the two roster parentheticals in docs/CONVENTIONS.md §"GitHub Actions CI" (release-only checks) and §"Dependency audit cadence" (the eight validate commands); name both receipts in docs/CODEX-VERIFICATION.md's preamble and README.md's entry; set the glossary count to 74 in docs/GLOSSARY.md and README.md; note Pair L's retirement at .flaitron/tasknote/README.md §"AI-referenced docs". Surfaced by audit-docs 2026-10-15 (Findings #5, #6, #8, #9, #10, #11, Low).
+- [ ] **CORE-791** [light]🔧 | frontier-grok-wording — Tighten SPEC/model.md §"Model field"'s frontier clause so a flagship with nothing above it earns `frontier` only where docs/PLATFORMS.md §"Platform×model×effort calibration table" bands it frontier at `xhigh` (Astra does, Grok 4.7 does not); PLATFORMS stays the calibration authority and its Grok note is unchanged. Surfaced by audit-docs 2026-10-15 (Finding #4, Low).
 
 ## Future Opportunities
 
@@ -29,6 +31,10 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-792** [light]🔧 | budget-cap-cell — Reword the `claude/skills/*/SKILL.md` Budgets cell in docs/CONTEXT-BUDGET.md to cite §"Skill bodies" instead of restating byte counts that disagreed with the ledger. Surfaced by audit-docs 2026-10-15 (Finding #1, Medium), fixed inline.
+- [x] **CORE-793** [light]🔧 | budget-large-refs — Re-measure docs/CONTEXT-BUDGET.md §"Large reference docs" (PLATFORMS 59,973 · MIGRATION 67,201, 2026-10-15) and make its refresh-policy sentence and the §Ledger intro agree: hand-refreshed, outside the §7.1 block. Surfaced by audit-docs 2026-10-15 (Finding #2, Low), fixed inline.
+- [x] **CORE-794** [light]🔧 | vision-mirror-list — Correct the docs/VISION.md mirror list and count in .flaitron/tasknote/README.md §"AI-referenced docs" to the five surfaces docs/VISION.md §"What we won't accept" names. Surfaced by audit-docs 2026-10-15 (Finding #3, Medium), fixed inline.
+- [x] **CORE-795** [light]🔧 | upgrading-v7-pointer — Append a forward pointer from docs/UPGRADING.md's v5.x recipe to docs/MIGRATION.md §"Upgrading to v7.0.0 (skill renames)". Surfaced by audit-docs 2026-10-15 (Finding #7, Low), fixed inline.
 - [x] **CORE-789** [heavy] | codex-wiring-bootstrap — Completed 2026-10-14.
 
 - [x] **CORE-788** [heavy] | brand-pilot-provenance — Completed 2026-10-14.

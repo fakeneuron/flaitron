@@ -15,7 +15,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-798** [heavy]🧠 | prep-guard-wording — Tighten SPEC/unattended-candidacy.md §"Preparing declined rows": a pin clears a clause-3 cue only with an existing test command that decides that result (a generic runner or a path-tripped keyword stays), and a split's mechanical row never consumes the person act's result. Surfaced by CORE-797 dry-run 2026-10-15.
 - [ ] **CORE-799** [medium]🧩 | prep-split-collisions — /ft-prep-unattended Step 2 splits: on an epic whose audit is a legacy numeric child (no `.N`), the next `.k` lands after the audit and clause 6 cycles; a source ID with a `.flaitron/sidequest/` stub gets a starter, failing `sidequest_orphan`. Classify both as stay. Surfaced by CORE-797 dry-run 2026-10-15.
 
 ## Low
@@ -30,6 +29,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-798** [heavy]🧠 | prep-guard-wording — Completed 2026-10-15.
 - [x] **CORE-797** [heavy]🧠 | prep-unattended-dryrun — Completed 2026-10-15.
 - [x] **CORE-796** [medium]🧩 | release v7.1.0 — Completed 2026-10-15.
 - [x] **CORE-791** [light]🔧 | frontier-grok-wording — Completed 2026-10-15.

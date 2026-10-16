@@ -173,21 +173,33 @@ factual slice separates cleanly and the rest still needs a person.
 Otherwise stay. Each declined row is one class:
 
 - **Pin.** Add a fact to the existing line: a file, a command, or which of
-  two patterns already in the repo. A visual phrase, including `👁️`, is
-  rewritten only when the replacement names a test command that already
-  exists. The pin does not add a test, a Playwright spec, or a keyword to
-  clause 3, and it does not change `[model]`.
+  two patterns already in the repo. A pin may rewrite the words that ask
+  for a look or a manual check — a cue such as `👁️` or *manual*, or a
+  phrase that reads as one — only when it names an existing test command
+  that decides that check. A generic runner that merely exists (`npm run
+  test:e2e` with no spec for that result) does not, so the row is a split
+  or a stay. Rewording a keyword that trips on a path or a name removes
+  no person, so the skill does not do it. A pin leaves no other clause-3
+  trip on the row, or it is not a pin. The pin does not add a test, a
+  Playwright spec, or a keyword to clause 3, and it does not change
+  `[model]`.
 - **Split.** A mechanical row plus an attended remainder. The mechanical
   row is new, `[light]` or `[medium]`, and describes only the factual
-  slice. The source row becomes the remainder. File a starter for the
-  remainder when its line alone does not say what to do.
+  slice. It never uses the person act's result — an answer, a value, or a
+  state the act leaves behind — so it is correct before, after, or
+  without the act. A slice that fails that test has not separated
+  cleanly, and the row stays. The source row becomes the remainder. File
+  a starter for the remainder when its line alone does not say what to
+  do.
 - **Stay.** Taste, credentials, deploy, and a true look stay declined — a
   true look is a result someone must see, where no existing test command
-  decides it. So does a row whose whole text is the person act, a
-  `[!critical]` row, an epic parent, a `.1` Discovery row, a `.N` audit
-  row, and a row clause 4 still blocks. A source ID that already has a
-  tasknote, active or archived, stays too: the skill does not overwrite
-  a note.
+  decides it. So does a row whose whole text is the person act, a row
+  whose clause-3 keyword trips only on a path or a name
+  (`migrations/0001`, `docs/MIGRATION.md` — the reason names the path,
+  for a hand edit), a `[!critical]` row, an epic parent, a `.1` Discovery
+  row, a `.N` audit row, and a row clause 4 still blocks. A source ID
+  that already has a tasknote, active or archived, stays too: the skill
+  does not overwrite a note.
 
 The confirm writes the rewritten lines, the mechanical row, and the
 starter. It never writes `[unattended]` or `[handoff]`. A later

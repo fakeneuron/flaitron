@@ -15,6 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
+- [ ] **CORE-800** [medium] | brand-chamber-reference — Attended, in this repo: generate a 16:9 `chamber-reference` visual reference for Fakeneuron (role `visual-reference`, ≥1280×720, png/jpeg/webp, no tunnel crop). Record `origin: generated` and the prompt in `brand/PROMPTS.md`, declare it in `brand/assets.json` at asset review `draft`, then a person confirms `in-review → approved` (natabula `examples/visual-reference-approval.json`, checked with `brand-workflow.sh transition`). Feeds fakeneuron FE-127.
 
 ## Low
 

@@ -197,9 +197,12 @@ Otherwise stay. Each declined row is one class:
   whose clause-3 keyword trips only on a path or a name
   (`migrations/0001`, `docs/MIGRATION.md` — the reason names the path,
   for a hand edit), a `[!critical]` row, an epic parent, a `.1` Discovery
-  row, a `.N` audit row, and a row clause 4 still blocks. A source ID
-  that already has a tasknote, active or archived, stays too: the skill
-  does not overwrite a note.
+  row, a `.N` audit row, and a row clause 4 still blocks. A split of an
+  epic child whose parent has no `.N` row stays too: there is no `.N` to
+  insert before, so the new `.k` would land after a legacy numeric audit or
+  take the slot an unfiled one needs. A source ID that already has a
+  tasknote, active or archived, or a `.flaitron/sidequest/<ID>.md` stub,
+  stays as well: the skill does not overwrite a note or orphan a stub.
 
 The confirm writes the rewritten lines, the mechanical row, and the
 starter. It never writes `[unattended]` or `[handoff]`. A later

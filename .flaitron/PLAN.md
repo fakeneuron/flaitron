@@ -15,7 +15,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-799** [medium]🧩 | prep-split-collisions — /ft-prep-unattended Step 2 splits: on an epic whose audit is a legacy numeric child (no `.N`), the next `.k` lands after the audit and clause 6 cycles; a source ID with a `.flaitron/sidequest/` stub gets a starter, failing `sidequest_orphan`. Classify both as stay. Surfaced by CORE-797 dry-run 2026-10-15.
 
 ## Low
 
@@ -29,6 +28,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-799** [medium]🧩 | prep-split-collisions — Completed 2026-10-15.
 - [x] **CORE-798** [heavy]🧠 | prep-guard-wording — Completed 2026-10-15.
 - [x] **CORE-797** [heavy]🧠 | prep-unattended-dryrun — Completed 2026-10-15.
 - [x] **CORE-796** [medium]🧩 | release v7.1.0 — Completed 2026-10-15.

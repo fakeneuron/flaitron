@@ -72,7 +72,12 @@ over each remaining open row. A row the predicate admits is a **candidate**:
 count it and leave it for `/ft-seed-unattended`. A row it declines is classified by
 §"Preparing declined rows" into exactly one of `stay`, `pin`, or `split`.
 Record the first clause that failed beside the class — the operator will want
-it, and it costs nothing to keep.
+it, and it costs nothing to keep. Settle that section's Stay-bullet
+collisions while classifying, before any draft: a source ID with
+`.flaitron/tasknote/<ID>.md`, `.flaitron/tasknote/archive/*/<ID>.md`, or
+`.flaitron/sidequest/<ID>.md` is `stay`, and so is a would-be split of an
+epic child whose parent has no `.N` row. The stay reason names the file or
+the missing `.N`.
 
 Draft the bytes Step 4 will write. No draft contains `[unattended]` or
 `[handoff]`.
@@ -105,9 +110,8 @@ Draft the bytes Step 4 will write. No draft contains `[unattended]` or
     `.flaitron/tasknote/<source-ID>.md`, `status: starter`, `created:` today,
     title from the remainder shortname, and fill the template's sections from
     the remainder. Do not call `/ft-file-task --starter` — that filer keeps
-    its own gate. If `.flaitron/tasknote/<source-ID>.md` or an archived note
-    for that ID already exists, do not overwrite it: classify the row `stay`
-    and say why.
+    its own gate. The collision check above has already ruled out a note or
+    stub for that ID.
 
 ## Step 3 — One review gate
 

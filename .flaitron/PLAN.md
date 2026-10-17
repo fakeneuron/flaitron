@@ -11,7 +11,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-(none)
+- [ ] **CORE-801** [heavy] | public-privacy-scrub — This repo is public, and its tree and history still carry operator home paths and private project names, mostly in the `.flaitron/` dogfood but also in this PLAN's Vision. Audit the tree and history, then scrub the product paths. The operator rules on two things: rewrite history and force-push, or accept what is already published; and whether the `.flaitron/` dogfood stays public. Record the findings.
 
 ## Medium
 

@@ -34,7 +34,7 @@ Add adopter version-currency tracking: a green/red dot on viz project chips show
 ## 🔗 Related
 
 - `/ft-update` (CORE-272) — canonical single-repo bump recipe the CLI batches.
-- `natabula-align` (natabula-owned) — read-only currency report; same latest-tag reference semantics.
+- `project-20-align` (project-20-owned) — read-only currency report; same latest-tag reference semantics.
 
 ---
 
@@ -45,7 +45,7 @@ Add adopter version-currency tracking: a green/red dot on viz project chips show
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** Version-currency is already half-plumbed in viz (per-project `flowtronVersion` served by `/api/projects` since FE-048); the dot is a natural completion. The batch-update tool fills a real gap (`/ft-update` is single-repo, `natabula-align` is report-only) — but its *form* needs operator input because SPEC §"What flowtron does NOT provide" excludes CLI tools (clarifying question below).
+  **Rationale:** Version-currency is already half-plumbed in viz (per-project `flowtronVersion` served by `/api/projects` since FE-048); the dot is a natural completion. The batch-update tool fills a real gap (`/ft-update` is single-repo, `project-20-align` is report-only) — but its *form* needs operator input because SPEC §"What flowtron does NOT provide" excludes CLI tools (clarifying question below).
 
 - [x] Read relevant source files
 
@@ -56,7 +56,7 @@ Add adopter version-currency tracking: a green/red dot on viz project chips show
 - [x] Asked clarifying questions OR logged "No clarifications needed" with explicit assumptions
 
   1. **Batch-tool form** → **Real Node/bash CLI** (operator override of the markdown-skill recommendation). Requires a narrow SPEC carve-out in §"What flowtron does NOT provide", mirroring the viz exception.
-  2. **"Current release" reference** → **latest git tag, resolved server-side** (natabula-align semantics; no hardcoded version).
+  2. **"Current release" reference** → **latest git tag, resolved server-side** (project-20-align semantics; no hardcoded version).
   3. **Batch depth** → **bump + commit per adopter repo**; skip dirty worktrees and Migration-block release ranges; never `git push`.
 
 - [x] Subtasks above populated with concrete, ordered steps
@@ -64,8 +64,8 @@ Add adopter version-currency tracking: a green/red dot on viz project chips show
 **Discovery Notes:**
 
 - **Existing plumbing (frontend is mostly wired):** `viz/src/workspace.ts` reads each adopter's pinned version from `.flowtron/core/SPEC.md` (`flowtronVersion`, `v`-normalized, `null` when absent). `/api/projects` (`viz/src/devApi.ts:createProjectsHandler`) already serves `{name, flowtronVersion}`. `useProjects.ts` exposes `projectVersions`; `App.tsx:282` shows the active project's version in the header. `ProjectSelector.tsx` renders plain buttons — the dot is the only missing UI piece.
-- **Missing piece — "current release" reference:** nothing in viz knows the latest released tag. Candidates: (a) server-side `git tag --sort=-v:refname | head -1` in the flowtron repo (matches `natabula-align` semantics), (b) client-side `VIZ_VERSION` constant (`viz/src/ui/constants.ts`, bumped by /ft-release).
-- **Prior art:** `natabula-align` skill (global, natabula-owned) does the same currency check read-only across `~/code` using the latest-tag reference and warns "do not hardcode a version". `/ft-update` SKILL.md holds the canonical single-repo bump recipe (resolve `<FT>` path from `.gitmodules`, fetch tags, checkout tag, `git add <FT>`, symlink re-wire, smoke check) — the batch tool is essentially this looped.
+- **Missing piece — "current release" reference:** nothing in viz knows the latest released tag. Candidates: (a) server-side `git tag --sort=-v:refname | head -1` in the flowtron repo (matches `project-20-align` semantics), (b) client-side `VIZ_VERSION` constant (`viz/src/ui/constants.ts`, bumped by /ft-release).
+- **Prior art:** `project-20-align` skill (global, project-20-owned) does the same currency check read-only across `~/code` using the latest-tag reference and warns "do not hardcode a version". `/ft-update` SKILL.md holds the canonical single-repo bump recipe (resolve `<FT>` path from `.gitmodules`, fetch tags, checkout tag, `git add <FT>`, symlink re-wire, smoke check) — the batch tool is essentially this looped.
 - **SPEC tension:** SPEC §"What flowtron does NOT provide" — "A CLI tool (use `cp`, `mv`, and your editor)"; core principle 2 "Zero scripts". A literal batch CLI script contradicts the constitution; a markdown skill (à la `/ft-update`) is the constitutional shape. Surfaced as clarifying question.
 - **Archive skim:** `archive/fe/` has no FE-048/FE-056 tasknotes (done as micros); FE-054 (dedupe `safeReaddir`), FE-055 (active-handler partial tolerance) touched `devApi.ts` — no constraints on this work. CORE-262 renamed the viz version constant to `VIZ_VERSION` (single source, /ft-release bumps it). CORE-272 built `/ft-update`; CORE-288 added its fork-drift warning.
 - **Drift check:** no drift — PLAN line's "viz project chips" = `ProjectSelector.tsx`; per-adopter version extraction exists as described; no backend CLI exists yet (greenfield as expected).
@@ -100,7 +100,7 @@ Add adopter version-currency tracking: a green/red dot on viz project chips show
 - `npm --prefix viz run lint` ✓, `typecheck` ✓.
 - Full viz suite: 186/187 — the one failure is the FE-045-documented `navigateToTask` contention flake (timeout under parallel jsdom); passes 28/28 in isolation. Not related to this change.
 - New tests: `latestReleaseTag` (3 cases, hermetic temp git repos), `versionCurrency` (3 cases), `createProjectsHandler` envelope (2 cases), `ProjectSelector` dot rendering (2 cases). Fixture `seedFetch` updated to the envelope shape (+ optional `projectVersions`/`latestRelease` seeds).
-- CLI: `node --check` ✓; dry-run against `~/code` ✓ — 13 adopters, 12 would-bump v5.5.0/v5.4.0 → v5.6.0, stockshock correctly skipped (staged changes), flowtron excluded, new-skills note fires (v5.6.0 shipped ft-audit-repo). `--apply` not exercised (operator-side action).
+- CLI: `node --check` ✓; dry-run against `~/code` ✓ — 13 adopters, 12 would-bump v5.5.0/v5.4.0 → v5.6.0, project-27 correctly skipped (staged changes), flowtron excluded, new-skills note fires (v5.6.0 shipped ft-audit-repo). `--apply` not exercised (operator-side action).
 - 👁️ visual confirmation requested at the 📦 gate.
 
 ## 🚀 Phase 4: Closure

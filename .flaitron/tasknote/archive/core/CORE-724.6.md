@@ -42,25 +42,25 @@ touches:
 
 ## 🎯 Goal
 
-Remove the operator's personal conventions from flaitron core — natabula/caobunga names and paths, machine paths, personal-repo fixture names, `~/code` prose, and the NAS-specific 📡 label — so an adopter reads a self-standing surface, while kept taste (emoji cues, commit conventions, env-overridable `~/code` defaults) stays.
+Remove the operator's personal conventions from flaitron core — project-20/project-07 names and paths, machine paths, personal-repo fixture names, `~/code` prose, and the NAS-specific 📡 label — so an adopter reads a self-standing surface, while kept taste (emoji cues, commit conventions, env-overridable `~/code` defaults) stays.
 
 ## ✅ Acceptance
 
-- [x] No non-archive `natabula` hit outside history files — `git grep -n -i natabula -- . ':!.flaitron/tasknote/archive' ':!.flaitron/PLAN-ARCHIVE.md' ':!.flaitron/PLAN.md' ':!docs/VERSION-HISTORY.md' ':!.flaitron/tasknote/CORE-724.6.md'` prints nothing
-- [x] No non-archive `caobunga` hit (same exclusions) — `git grep -n -i caobunga …` prints nothing; `caobunga-status.md` still ignored locally — `git check-ignore -q caobunga-status.md` exits 0
+- [x] No non-archive `project-20` hit outside history files — `git grep -n -i project-20 -- . ':!.flaitron/tasknote/archive' ':!.flaitron/PLAN-ARCHIVE.md' ':!.flaitron/PLAN.md' ':!docs/VERSION-HISTORY.md' ':!.flaitron/tasknote/CORE-724.6.md'` prints nothing
+- [x] No non-archive `project-07` hit (same exclusions) — `git grep -n -i project-07 …` prints nothing; `caobunga-status.md` still ignored locally — `git check-ignore -q caobunga-status.md` exits 0
 - [x] No machine path — `git grep -n -e 'Users.fakeneuron' -- . <same exclusions>` prints nothing
 - [x] No `~/code` prose in ft-new-project / ft-release SKILL.md / SPEC/layout.md — `git grep -n -i '~/code' -- claude/skills/ft-new-project claude/skills/ft-release/SKILL.md SPEC/layout.md` prints nothing (step-7.1 generic clone example kept by design)
-- [x] No `fintown` / `invisipaw` in viz — `git grep -n -i -e fintown -e invisipaw -- viz` prints nothing; `npm --prefix viz test` passes
+- [x] No `project-14` / `project-17` in viz — `git grep -n -i -e project-14 -e project-17 -- viz` prints nothing; `npm --prefix viz test` passes
 - [x] 📡 relabelled `REMOTE` everywhere — `git grep -n -w NAS -- SPEC docs claude codex cursor grok ':!docs/VERSION-HISTORY.md'` prints nothing
 - [x] CI drift gates still green — Pair Q citation resolution + context-budget check (commands recorded in Testing Notes)
 
 ## 🧩 Subtasks
 
-- [x] natabula: strip `~/Code/natabula/...` paths from `.gitleaks.toml`, `justfile`, `brand/BRAND.md`, `brand/README.md`; drop the "Natabula CI spine" name in `docs/CONVENTIONS.md`
-- [x] caobunga: move the ignore to `.git/info/exclude` (local); genericize `SPEC/gate-postures.md`, `docs/HARNESS-SURVEY.md`, `.flaitron/tasknote/README.md`
+- [x] project-20: strip `~/code/project-20/...` paths from `.gitleaks.toml`, `justfile`, `brand/BRAND.md`, `brand/README.md`; drop the "Project-20 CI spine" name in `docs/CONVENTIONS.md`
+- [x] project-07: move the ignore to `.git/info/exclude` (local); genericize `SPEC/gate-postures.md`, `docs/HARNESS-SURVEY.md`, `.flaitron/tasknote/README.md`
 - [x] Machine paths → placeholders in `docs/CODEX-VERIFICATION.md`
 - [x] `~/code` prose out of ft-new-project (description + example), ft-release SKILL.md, `SPEC/layout.md`
-- [x] Rename viz fixtures `fintown`/`invisipaw` → neutral names
+- [x] Rename viz fixtures `project-14`/`project-17` → neutral names
 - [x] Relabel 📡 `NAS` → `REMOTE` (cue-vocabulary, gates, AGENT-COMPAT, DOGFOOD)
 - [x] Phase 3: acceptance greps, viz test/lint/typecheck, CI drift checks, external review
 
@@ -68,7 +68,7 @@ Remove the operator's personal conventions from flaitron core — natabula/caobu
 
 - [[CORE-EPIC-724]] — parent epic (context-diet)
 - [[CORE-724.1]] — Discovery that inventoried these leaks
-- [[CORE-652.2]] — predecessor: labelled natabula pointers `operator-private`; this task removes the remaining paths
+- [[CORE-652.2]] — predecessor: labelled project-20 pointers `operator-private`; this task removes the remaining paths
 - [[CORE-597]] — introduced the `caobunga-status.md` ignore
 - [[CORE-444]] — introduced the 📡 NAS cue
 
@@ -98,23 +98,23 @@ Remove the operator's personal conventions from flaitron core — natabula/caobu
 **Discovery Notes:**
 
 **Leak inventory (git grep, HEAD `7a2fc7b6`).**
-- natabula: `.gitleaks.toml:2`, `justfile:8`, `brand/BRAND.md:18`, `brand/README.md:21` (all `operator-private`-labelled paths, from CORE-652.2), plus `docs/CONVENTIONS.md:54` "the Natabula CI spine shape" (CORE-715, unlabelled).
-- caobunga: `.gitignore:11-12`, `SPEC/gate-postures.md:264`, `docs/HARNESS-SURVEY.md` (6 sites), `.flaitron/tasknote/README.md:72` (not in the PLAN line, but the same leak class).
+- project-20: `.gitleaks.toml:2`, `justfile:8`, `brand/BRAND.md:18`, `brand/README.md:21` (all `operator-private`-labelled paths, from CORE-652.2), plus `docs/CONVENTIONS.md:54` "the Project-20 CI spine shape" (CORE-715, unlabelled).
+- project-07: `.gitignore:11-12`, `SPEC/gate-postures.md:264`, `docs/HARNESS-SURVEY.md` (6 sites), `.flaitron/tasknote/README.md:72` (not in the PLAN line, but the same leak class).
 - Machine paths: `docs/CODEX-VERIFICATION.md:20,50,175`.
 - `~/code`: `ft-new-project/SKILL.md:3,39`, `ft-release/SKILL.md:28`, `SPEC/layout.md:30`. **Kept:** `ft-release/step-7.1-standing-checks.md:93`, which explicitly protects `~/code/flaitron` as a generic clone example (CORE-410.4), and the env-overridable defaults in `tools/`.
 - viz fixtures: `parser.test.ts`, `ui/App.test.tsx`, `visibilityPrefs.test.ts`.
 - 📡 label: `SPEC/cue-vocabulary.md:133-140`, `SPEC/gates.md:25,57,80,86`, `docs/AGENT-COMPAT.md:161`, `docs/DOGFOOD.md:61`. Glyph-only sites (`🗄️/▶️/📡/💻`) need no edit.
-- **Out of scope, kept:** `docs/PHILOSOPHY.md` origin story (fintown/InvisiPaw; kept per CORE-724.1); `docs/GATE-DISCIPLINE.md:34` "InvisiPaw FE-64" motivating case (history, not named in the PLAN line); `SPEC/scope-boundaries.md:19` (already unnamed).
+- **Out of scope, kept:** `docs/PHILOSOPHY.md` origin story (project-14/Project-17; kept per CORE-724.1); `docs/GATE-DISCIPLINE.md:34` "Project-17 FE-64" motivating case (history, not named in the PLAN line); `SPEC/scope-boundaries.md:19` (already unnamed).
 
 **Archive skim.**
-- CORE-652.2 chose to *keep* five natabula pointers labelled `operator-private`. This task deliberately goes further, as the operator scoped in 724.1, and removes the paths.
+- CORE-652.2 chose to *keep* five project-20 pointers labelled `operator-private`. This task deliberately goes further, as the operator scoped in 724.1, and removes the paths.
 - CORE-597 / CORE-598.x added the `caobunga-status.md` ignore because orchestrator status writes were landing as commits; the ignore must survive locally.
 - CORE-444 introduced 📡 NAS / 💻 TERM.
 - `docs/EXTERNAL-AGENTS.md` §"Stable surfaces" does not list cue labels, and the orchestrator reads no SPEC prose (HARNESS-SURVEY §exposure), so the relabel needs no caller-side row.
 
 **Drift check.** The PLAN line's targets all resolve. The one addition is `.flaitron/tasknote/README.md:72`, which is the same class and is noted above. No contradiction with the SPEC.
 
-**Clarifications (AskUserQuestion, 2026-10-07):** 📡 label → `REMOTE` ("Remote-host command"); caobunga ignore → move to `.git/info/exclude`; HARNESS-SURVEY → genericize ("the external caller"), drop internal paths and CBN-235.
+**Clarifications (AskUserQuestion, 2026-10-07):** 📡 label → `REMOTE` ("Remote-host command"); project-07 ignore → move to `.git/info/exclude`; HARNESS-SURVEY → genericize ("the external caller"), drop internal paths and CBN-235.
 
 ## 🛠️ Phase 2: Execution
 
@@ -128,11 +128,11 @@ Remove the operator's personal conventions from flaitron core — natabula/caobu
 
 **Implementation Notes:**
 
-- **natabula:** removed the four `~/Code/natabula/...` paths and kept the `operator-private` qualifier only where a baseline is still being described (`.gitleaks.toml`). Dropped the justfile rationale pointer, because the comment already states its reason in place. Removed the "Natabula CI spine shape" label from CONVENTIONS and kept the `CORE-715` cite.
-- **caobunga:** removed the `.gitignore` entry and added `caobunga-status.md` to this clone's `.git/info/exclude`, which is local and untracked. `git check-ignore` still matches. gate-postures, HARNESS-SURVEY and tasknote/README now say "an orchestrator" / "the external caller". HARNESS-SURVEY also drops the caller's internal paths, `phase_progress()`, and CBN-235. The renamed `### External-caller exposure` heading has no citers.
+- **project-20:** removed the four `~/code/project-20/...` paths and kept the `operator-private` qualifier only where a baseline is still being described (`.gitleaks.toml`). Dropped the justfile rationale pointer, because the comment already states its reason in place. Removed the "Project-20 CI spine shape" label from CONVENTIONS and kept the `CORE-715` cite.
+- **project-07:** removed the `.gitignore` entry and added `caobunga-status.md` to this clone's `.git/info/exclude`, which is local and untracked. `git check-ignore` still matches. gate-postures, HARNESS-SURVEY and tasknote/README now say "an orchestrator" / "the external caller". HARNESS-SURVEY also drops the caller's internal paths, `phase_progress()`, and CBN-235. The renamed `### External-caller exposure` heading has no citers.
 - **Machine paths:** `<self-host-root>` placeholder in CODEX-VERIFICATION (3 sites).
 - **`~/code`:** removed from the ft-new-project description, which also meant the mirrored `claude/commands/ft-new-project.md` description (needed to keep Pair M in sync). Also removed from the ft-new-project example (`…/flowmagic`), the ft-release bail message, and `SPEC/layout.md`.
-- **viz fixtures:** `fintown` → `acme`, `invisipaw` → `globex`.
+- **viz fixtures:** `project-14` → `acme`, `project-17` → `globex`.
 - **📡:** label `NAS` → `REMOTE`, row name "Remote-host command", banner `Destructive REMOTE command`. The examples were neutralized (`on the server`, `ssh server`). Glyph-only `🗄️/▶️/📡/💻` sites are unchanged. `park-reason: destructive` is unaffected, and cue labels are not an EXTERNAL-AGENTS stable surface.
 - Downstream-impact scan: none needed. No decision reached beyond this task.
 
@@ -153,11 +153,11 @@ Remove the operator's personal conventions from flaitron core — natabula/caobu
 **Testing Notes:**
 
 Verification receipt (acceptance commands, exclusions as written in Acceptance):
-- `git grep -n -i natabula -- . <excl>` → 1 (no hits)
-- `git grep -n -i caobunga -- . <excl>` → 1 (no hits); `git check-ignore -q caobunga-status.md` → 0 (`.git/info/exclude:20`)
+- `git grep -n -i project-20 -- . <excl>` → 1 (no hits)
+- `git grep -n -i project-07 -- . <excl>` → 1 (no hits); `git check-ignore -q caobunga-status.md` → 0 (`.git/info/exclude:20`)
 - `git grep -n -e 'Users.fakeneuron' -- . <excl>` → 1 (no hits)
 - `git grep -n -i '~/code' -- claude/skills/ft-new-project claude/skills/ft-release/SKILL.md SPEC/layout.md` → 1 (no hits)
-- `git grep -n -i -e fintown -e invisipaw -- viz` → 1 (no hits)
+- `git grep -n -i -e project-14 -e project-17 -- viz` → 1 (no hits)
 - `git grep -n -w NAS -- SPEC docs claude codex cursor grok ':!docs/VERSION-HISTORY.md'` → 1 (no hits)
 - `npm --prefix viz test -- src/ui/App.test.tsx src/parser.test.ts src/visibilityPrefs.test.ts` → 0 (193/193). The full `npm --prefix viz test` run under load hit a 14s timeout in `App — navigateToTask > clicking a wikilink…`, which doesn't use any renamed fixture and passes in isolation. The reviewer's full run passed 587/587.
 - `npm --prefix viz run typecheck` → 0; `npm --prefix viz run lint` → 0
@@ -169,13 +169,13 @@ External review (`/code-review medium`, working-tree diff), 7 findings, all **no
 2. The `NAS`→`REMOTE` rename called a breaking contract change → **no change**. Under `SPEC/versioning.md`, a breaking (major) change needs a project-side change; this one doesn't, and cue labels aren't an EXTERNAL-AGENTS stable surface. The rename goes into the release notes.
 3. The `.git/info/exclude` rule is clone-local → **no change**. This was the operator's choice in Discovery; it's surfaced again in the recap.
 4. CODEX-VERIFICATION's "exact absolute prefix" no longer showed a prefix → **fixed** with #1.
-5. GATE-DISCIPLINE "InvisiPaw FE-64" and PHILOSOPHY still name personal repos → **no change**, already logged out of scope in Discovery (history and origin story).
+5. GATE-DISCIPLINE "Project-17 FE-64" and PHILOSOPHY still name personal repos → **no change**, already logged out of scope in Discovery (history and origin story).
 6. ft-update "`~/code` fleet" wording → **fixed** ("adopter fleet").
 7. layout.md sentence repeats its heading → **fixed** ("In this repo:").
 
 ## 🚀 Phase 4: Closure
 
-- [x] **Doc-drift sweep** — CONVENTIONS (Natabula label dropped) and AGENT-COMPAT (label list `NAS`→`REMOTE`) updated in-diff; SPEC.md, README, AGENTS, MIGRATION, the four snippets, CONTRIBUTING, SECURITY, AGENT-NEUTRALITY, PLATFORMS, CAPABILITIES (glyph-only 📡), EXTERNAL-AGENTS, WORKTREES, VISION: no change; — per `.flaitron/tasknote/README.md` §"AI-referenced docs" entry: "no change" or the update
+- [x] **Doc-drift sweep** — CONVENTIONS (Project-20 label dropped) and AGENT-COMPAT (label list `NAS`→`REMOTE`) updated in-diff; SPEC.md, README, AGENTS, MIGRATION, the four snippets, CONTRIBUTING, SECURITY, AGENT-NEUTRALITY, PLATFORMS, CAPABILITIES (glyph-only 📡), EXTERNAL-AGENTS, WORKTREES, VISION: no change; — per `.flaitron/tasknote/README.md` §"AI-referenced docs" entry: "no change" or the update
 
 - [x] Closed — Acceptance ticked or annotated (`N/A` / not met + reason), YAML `status: completed`, PLAN.md line → `Completed YYYY-MM-DD.` stub (standalone → top of `## Completed`; epic child → stays nested under its parent), then tasknote moved to `.flaitron/tasknote/archive/<area>/`
 
@@ -185,7 +185,7 @@ External review (`/code-review medium`, working-tree diff), 7 findings, all **no
 
 **Final Summary:**
 
-Removed the operator's personal conventions from flaitron core. The natabula paths, caobunga mentions, machine paths, `~/code` prose in skill and SPEC text, and personal-repo viz fixtures are gone. The 📡 cue is relabelled `REMOTE` (Remote-host command). The emoji cues, commit conventions, and env-overridable `~/code` defaults are kept.
+Removed the operator's personal conventions from flaitron core. The project-20 paths, project-07 mentions, machine paths, `~/code` prose in skill and SPEC text, and personal-repo viz fixtures are gone. The 📡 cue is relabelled `REMOTE` (Remote-host command). The emoji cues, commit conventions, and env-overridable `~/code` defaults are kept.
 
 - 22 tracked files changed, all prose/comments/test fixtures. No behavior change.
 - `caobunga-status.md` is now ignored through this clone's `.git/info/exclude`, so any other checkout the orchestrator writes into needs the same local line.

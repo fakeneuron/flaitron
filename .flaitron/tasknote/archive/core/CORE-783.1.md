@@ -94,7 +94,7 @@ Predicate and seed, read at HEAD:
 - `docs/CONTEXT-BUDGET.md` skill-body row lists `ft-seed-unattended` at 12,457. A new `SKILL.md` needs its own measured row.
 - Templates: `templates/tasknote-starter-template.md` is the starter body a prep pass would fill. No new template is assumed.
 
-Out of this repo, recorded so the handoff is specific: caobunga `backend/caobunga/flaitron/selection.py` mirrors clause 3 as keywords only, and its comment treats a keyword miss as `obvious`. `caobunga run` does not drive Playwright against adopter UI. Playwright there is the status UI suite. A `👁️` ask under `--unattended` parks `visual-confirm` (`claude/skills/ft-task/unattended-mode.md`).
+Out of this repo, recorded so the handoff is specific: project-07 `backend/project-07/flaitron/selection.py` mirrors clause 3 as keywords only, and its comment treats a keyword miss as `obvious`. `project-07 run` does not drive Playwright against adopter UI. Playwright there is the status UI suite. A `👁️` ask under `--unattended` parks `visual-confirm` (`claude/skills/ft-task/unattended-mode.md`).
 
 ### Archive skim
 
@@ -108,7 +108,7 @@ Out of this repo, recorded so the handoff is specific: caobunga `backend/caobung
 
 Cited flaitron paths exist at HEAD and match the reads above. PLAN parent, `.1`, and `.N` match the locked filing (`1ba288e8`).
 
-One wording split is live, not bit-rot: `SPEC/unattended-candidacy.md` clause 3 says a person-shaped row with no keyword is still declined. Caobunga's mirror comment says that same miss is still `obvious`. This epic can clarify the SPEC sentence. The mirror edit is a handoff, filed in caobunga, not written here.
+One wording split is live, not bit-rot: `SPEC/unattended-candidacy.md` clause 3 says a person-shaped row with no keyword is still declined. Project-07's mirror comment says that same miss is still `obvious`. This epic can clarify the SPEC sentence. The mirror edit is a handoff, filed in project-07, not written here.
 
 Parent placeholder overclaim, refined in this closure: "stays the only writer of `[unattended]`" was stronger than the contract. Every attended filer already writes the token when its own confirm keeps it. The parent line now says this pass never writes the token and `/ft-seed-unattended` stays the marker walk.
 
@@ -118,7 +118,7 @@ Parent placeholder overclaim, refined in this closure: "stays the only writer of
 |---|---|
 | Shape | Sibling attended skill. Seed stays a one-gate marker walk. |
 | What may be proposed | A factual pin (file, command, or which of two existing patterns). A visual phrase may be rewritten only when an existing test command is named. A row may be split into a mechanical child plus an attended remainder. Taste, credentials, deploy, and a true look stay declined. The worker does not gain a new Playwright spec as its acceptance. |
-| Where | Flaitron only. Caobunga mirror of any SPEC clarification is a handoff. |
+| Where | Flaitron only. Project-07 mirror of any SPEC clarification is a handoff. |
 | Epic | CORE-EPIC-783, Medium, `[heavy]`, M=2, audit kept. `.1` is `[frontier]` by the heavy-epic Discovery trigger. |
 
 ### Resolved scoping
@@ -127,14 +127,14 @@ Parent placeholder overclaim, refined in this closure: "stays the only writer of
 |---|---|
 | Skill slug | `/ft-prep-unattended`. Attended, flagless. Never writes `[unattended]`. |
 | What a confirm writes | Rewritten lines, a split's mechanical child plus attended remainder, and a starter note when the remainder needs context. No token. A later `/ft-seed-unattended` marks a child the predicate admits. Existing filers keep their own gates. |
-| Clause 3 | Two layers. The keyword list stays the mechanical screen. A keyword miss is not a semantic pass: an LLM filer and this prep pass decline a row that reads as needing a person. No new visual or raster keywords. Caobunga's miss-means-obvious comment is a handoff. |
+| Clause 3 | Two layers. The keyword list stays the mechanical screen. A keyword miss is not a semantic pass: an LLM filer and this prep pass decline a row that reads as needing a person. No new visual or raster keywords. Project-07's miss-means-obvious comment is a handoff. |
 | Shipping | Adopter subset, same class as `/ft-seed-unattended`: Claude body, Codex wrapper, four snippet `ln -s` blocks, drift pin-guard list, glossary, platforms, migration, context budget. |
 
 ### Draft child lines (written in Phase 2)
 
 Both `[heavy]`, uniform with the epic seed. `.2` clarifies an existing sentence, so the contract-design frontier trigger was noted and not taken.
 
-- `CORE-783.2` `| candidacy-prep-boundary` — 45w. Pin clause 3 as two layers: the keyword list stays the mechanical screen, and a keyword miss is not a semantic pass. An LLM filer and /ft-prep-unattended decline a row that reads as needing a person. No new visual keywords. Caobunga's mirror is a handoff.
+- `CORE-783.2` `| candidacy-prep-boundary` — 45w. Pin clause 3 as two layers: the keyword list stays the mechanical screen, and a keyword miss is not a semantic pass. An LLM filer and /ft-prep-unattended decline a row that reads as needing a person. No new visual keywords. Project-07's mirror is a handoff.
 - `CORE-783.3` `| prep-unattended-skill` — 34w. Add attended flagless /ft-prep-unattended. It classifies declined rows, pins a fact, splits a mechanical child from an attended remainder, and files starters. It never writes [unattended]. Ship it in the adopter subset beside seed.
 
 Fan-out to fill at the write: Sequential `CORE-783.3` after `CORE-783.2`. Synthesis `CORE-783.N`. No parallel row. Candidacy over these two lines plus `.N` admits nothing (clause 1, all `[heavy]`). The only other open PLAN row is CORE-641, a parked TypeScript wait. No downstream impact.
@@ -193,7 +193,7 @@ Markdown mental-pass on the Medium block: 2-space indent on `.1`, `.2`, `.3`, an
 
 Discovery closed for CORE-EPIC-783. Two implementation children are filed. The prep pass never writes `[unattended]`, and the parent no longer claims seed is the only writer.
 
-Doc-drift, each AI-referenced entry: no change. `README.md`, `AGENTS.md`, `SPEC.md`, `docs/MIGRATION.md`, `claude/AGENTS-snippet.md`, `codex/AGENTS-snippet.md`, `cursor/AGENTS-snippet.md`, `grok/AGENTS-snippet.md`, `docs/CONVENTIONS.md`, `CONTRIBUTING.md`, `SECURITY.md`, `docs/AGENT-NEUTRALITY.md`, `docs/PLATFORMS.md`, `claude/CAPABILITIES.md`, `docs/AGENT-COMPAT.md`, `docs/EXTERNAL-AGENTS.md`, `docs/WORKTREES.md`, `docs/VISION.md`. Contract edits land in CORE-783.2 and CORE-783.3. The caobunga mirror is not a stable-surface move, so no caller-side row is filed in this closure. CORE-783.2 files that handoff when the sentence actually changes.
+Doc-drift, each AI-referenced entry: no change. `README.md`, `AGENTS.md`, `SPEC.md`, `docs/MIGRATION.md`, `claude/AGENTS-snippet.md`, `codex/AGENTS-snippet.md`, `cursor/AGENTS-snippet.md`, `grok/AGENTS-snippet.md`, `docs/CONVENTIONS.md`, `CONTRIBUTING.md`, `SECURITY.md`, `docs/AGENT-NEUTRALITY.md`, `docs/PLATFORMS.md`, `claude/CAPABILITIES.md`, `docs/AGENT-COMPAT.md`, `docs/EXTERNAL-AGENTS.md`, `docs/WORKTREES.md`, `docs/VISION.md`. Contract edits land in CORE-783.2 and CORE-783.3. The project-07 mirror is not a stable-surface move, so no caller-side row is filed in this closure. CORE-783.2 files that handoff when the sentence actually changes.
 
 `touches:` declared `.flaitron/PLAN.md`. The closure also archives this note. Nav chip left `🟢 In progress` — the completed chip is render-derived from YAML.
 

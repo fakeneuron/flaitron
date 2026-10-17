@@ -21,11 +21,11 @@ Clear the four currency/consistency defects in `docs/PLATFORMS.md` surfaced by t
 - [x] `docs/PLATFORMS.md:220` lists the `--fast` surface as the four skills `SPEC/gates.md` §"`--fast` operator override" names (`/ft-task`, `/ft-micro-task`, `/ft-debug`, `/ft-goal-task`)
 - [x] The Grok **Structured ask** cell states one coherent position — the observed behavior leads, the launch-doc assumption is marked as superseded — with no self-refuting sentence pair
 - [x] The Grok **Procedure pointer** row carries four cells, matching the table's four-column header and the Codex table's equivalent row
-- [x] No other `docs/PLATFORMS.md` content changed; `docs/PHILOSOPHY.md` and `.flowtron/PLAN.md` origin-story mentions of fintown/photard are left intact (past-tense history, not currency claims)
+- [x] No other `docs/PLATFORMS.md` content changed; `docs/PHILOSOPHY.md` and `.flowtron/PLAN.md` origin-story mentions of project-14/project-22 are left intact (past-tense history, not currency claims)
 
 ## 🧩 Subtasks
 
-- [x] Fix `:94` — replace `(InvisiPaw, fintown, photard)` with live adopters
+- [x] Fix `:94` — replace `(Project-17, project-14, project-22)` with live adopters
 - [x] Fix `:220` — expand the `--fast` skill list to four, with a parenthetical for `/ft-spec`'s unrelated flag
 - [x] Fix `:286` — rewrite the Grok Structured-ask cell so observation leads and the launch-doc claim reads as superseded
 - [x] Fix `:287` — add the missing "When to reach for it" cell to the Grok Procedure-pointer row
@@ -56,11 +56,11 @@ Clear the four currency/consistency defects in `docs/PLATFORMS.md` surfaced by t
 
 - [x] **Archive skim** — `grep -l PLATFORMS.md archive/core/*.md` returns ~20 hits. Load-bearing findings:
   - `CORE-271.5` (`83f7a40`) added the Grok **Procedure pointer** row — `git log -L 287,287` confirms the 3-cell row is an authoring slip at insertion, not a deliberate shape. The Codex table's equivalent row (`:305`) has all four cells and is the correct model to mirror.
-  - `CORE-133` / `CORE-136` / `CORE-182` are a prior *series* of fintown/photard leak-cleanups (2026-05-22 → 2026-05-24) across `SPEC.md` and `MIGRATION.md`. `docs/PLATFORMS.md:94` was missed by that sweep — this task is the tail of a known, repeatedly-fixed drift class, which raises confidence that removing the names is the intended treatment.
+  - `CORE-133` / `CORE-136` / `CORE-182` are a prior *series* of project-14/project-22 leak-cleanups (2026-05-22 → 2026-05-24) across `SPEC.md` and `MIGRATION.md`. `docs/PLATFORMS.md:94` was missed by that sweep — this task is the tail of a known, repeatedly-fixed drift class, which raises confidence that removing the names is the intended treatment.
   - `CORE-154.3` locked the wiring-layer structure and is what `:92-96` cites as non-negotiable. The *claim* at `:94` (adopter symlink path stability) is still true and must survive; only the example names are stale.
 
 - [x] **Drift check** — all four citations verified against current `docs/PLATFORMS.md`:
-  - `:94` — `production (InvisiPaw, fintown, photard) point at` ✅ reproduces. `~/code` scan: `fintown` absent entirely; `photard` renamed → `siteguy` (2026-06-13, CORE-44.3). `InvisiPaw` still live. Verified six adopters (`InvisiPaw`, `siteguy`, `marscharts`, `bidviz`, `bananapeel`, `wandora`) all resolve `.claude/skills/ft-task → ../../.flowtron/core/claude/skills/ft-task`, so the cited path is exactly right.
+  - `:94` — `production (Project-17, project-14, project-22) point at` ✅ reproduces. `~/code` scan: `project-14` absent entirely; `project-22` renamed → `project-26` (2026-06-13, CORE-44.3). `Project-17` still live. Verified six adopters (`Project-17`, `project-26`, `project-19`, `project-05`, `project-04`, `project-29`) all resolve `.claude/skills/ft-task → ../../.flowtron/core/claude/skills/ft-task`, so the cited path is exactly right.
   - `:220` — `` `--fast` / `-f` on `/ft-task` and `/ft-micro-task` `` ✅ reproduces. `SPEC/gates.md:302-307` is authoritative: four skills, and `/ft-spec` carries a separate unrelated `--fast`. `grep -l` over `claude/skills/*/SKILL.md` returns seven files mentioning `--fast`, but three are non-gate mentions (`ft-spec` = unrelated flag; `ft-worktree-start`/`ft-worktree-end` = prose references), so the contract's four is correct.
   - `:286` — Structured-ask cell asserts `Grok Build will always use prose asks per launch docs.` then immediately parenthesizes the 2026-06-01 CORE-257 observation that AskUserQuestion rendered a clean multi-option UI ✅ reproduces. Note `:266` (prose, same doc) already states the corrected position — "Structured ask primitive observed to work (divergence from launch-coverage assumption in the triggers table below)" — so the doc is internally inconsistent and `:266` shows the intended direction.
   - `:287` — Grok Procedure-pointer row has 3 cells against the 4-column header (`Trigger | Syntax | What it controls in flowtron | When to reach for it`) ✅ reproduces.
@@ -68,7 +68,7 @@ Clear the four currency/consistency defects in `docs/PLATFORMS.md` surfaced by t
 - [x] Asked clarifying questions OR logged "No clarifications needed" with explicit assumptions
 
   **No clarifications needed.** Explicit assumptions:
-  1. Scope is `docs/PLATFORMS.md` only. `docs/PHILOSOPHY.md:7-11` and `.flowtron/PLAN.md:8` also name fintown/photard, but both are **past-tense origin story** ("By early 2026 I was running three projects in parallel…"), not present-tense currency claims. Rewriting history is out of scope and would damage the record.
+  1. Scope is `docs/PLATFORMS.md` only. `docs/PHILOSOPHY.md:7-11` and `.flowtron/PLAN.md:8` also name project-14/project-22, but both are **past-tense origin story** ("By early 2026 I was running three projects in parallel…"), not present-tense currency claims. Rewriting history is out of scope and would damage the record.
   2. `:94`'s replacement names three live adopters as illustration rather than enumerating all 19 — the sentence's job is to establish that production symlinks depend on path stability, not to maintain an adopter registry (which would itself become a drift source).
   3. `:286` resolves in favor of the **observation**, not the launch docs. The dogfood evidence is first-hand and `:266` already committed to that reading.
   4. `:287`'s missing cell is authored to mirror the Codex Procedure-pointer row's "When to reach for it" framing (`:305`).
@@ -107,7 +107,7 @@ Discovery surfaced no significant deviation → skip 🛠️.
 
 **Implementation Notes:**
 
-`:94` names three live adopters (`InvisiPaw, siteguy, marscharts, …`) with an
+`:94` names three live adopters (`Project-17, project-26, project-19, …`) with an
 ellipsis rather than enumerating all 19. Enumerating would recreate the exact
 drift being fixed; the sentence's job is to establish that production symlinks
 depend on path stability, not to maintain a registry.
@@ -126,7 +126,7 @@ of the contradiction.
 - [x] Ran lint/type-check on changed code — `N/A` (no linter covers `docs/*.md`). Substituted:
   - **Table well-formedness:** `awk -F'|'` cell count across every table in `docs/PLATFORMS.md` — all 8 tables now have rows matching their header width. The Grok trigger table (`:282-289`) is uniformly 4 cells, including the previously-malformed Procedure-pointer row.
   - **Wikilink integrity:** all 5 `[[TASK-ID]]` links in the file (`CORE-091`, `CORE-154.1/.2/.3`, `CORE-349.5`) resolve to real PLAN.md entries or archived tasknotes — no danglers.
-  - **Fix verification:** `grep` confirms zero `fintown`/`photard` and zero `will always use prose` remaining in `docs/PLATFORMS.md`.
+  - **Fix verification:** `grep` confirms zero `project-14`/`project-22` and zero `will always use prose` remaining in `docs/PLATFORMS.md`.
 
 - [x] **Quality assertions** — no duplication introduced (`:220` points at SPEC rather than restating the gate semantics); no dead content; the four edits are each one sentence or one table cell; no public-surface growth; the changed doc is now consistent with `SPEC/gates.md:302-307` and `claude/CAPABILITIES.md:30`, which are the code-facing authorities for the `--fast` surface.
 
@@ -138,7 +138,7 @@ Verification commands and results:
 
 ```
 awk -F'|' '/^\|/ {n=NF-2; ...}' docs/PLATFORMS.md   → 8 tables, all rows match header width ✅
-grep -n "fintown\|photard" docs/PLATFORMS.md         → no matches ✅
+grep -n "project-14\|project-22" docs/PLATFORMS.md         → no matches ✅
 grep -n "will always use prose" docs/PLATFORMS.md    → no matches ✅
 wikilink resolve loop (5 links)                      → 5 OK, 0 dangling ✅
 git diff --stat                                      → 1 file, +7 −5 ✅

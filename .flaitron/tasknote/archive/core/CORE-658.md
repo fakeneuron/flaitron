@@ -26,7 +26,7 @@ flowtron a push-memory step beside Phase 1's existing archive pull-memory.
 
 - [x] `templates/tasknote-template.md` Phase 4 section carries a new
       checklist item, positioned as the last item before the blank line and
-      `**Final Summary:**` label, so caobunga's lede-regex contract in
+      `**Final Summary:**` label, so project-07's lede-regex contract in
       `docs/EXTERNAL-AGENTS.md` §"Template labels" (`**Final Summary:**`
       immediately followed by `**Archived:**`, nothing interposed) is
       untouched — `judgment` (verified by reading `templates/tasknote-template.md:93-106`)
@@ -113,7 +113,7 @@ flowtron a push-memory step beside Phase 1's existing archive pull-memory.
 
 **Discovery Notes:** No prior tasknote precedent for this exact edit.
 `docs/EXTERNAL-AGENTS.md` §"Template labels" is the binding external
-contract: it documents caobunga's lede-regex as reading the paragraph
+contract: it documents project-07's lede-regex as reading the paragraph
 *immediately after* `**Final Summary:**` as the lede, which is why the new
 box must land above the blank line preceding that label, not between it and
 `**Archived:**`. No CI mirror pair binds `SPEC.md`'s Phase 4 checklist to
@@ -131,7 +131,7 @@ consistency call, not a gate requirement.
 
 - [x] Updated/added tests for non-trivial behavior — N/A, markdown-only prose change with no executable behavior.
 
-**Implementation Notes:** Verified the caobunga lede-regex contract (`docs/EXTERNAL-AGENTS.md` §"Template labels") stays intact in `templates/tasknote-template.md`: `**Final Summary:**` still sits on its own line immediately preceded by a blank line and immediately followed by the lede paragraph placeholder, with no other content interposed. `SPEC.md` has no `**Final Summary:**` label to protect — that contract binds the template only.
+**Implementation Notes:** Verified the project-07 lede-regex contract (`docs/EXTERNAL-AGENTS.md` §"Template labels") stays intact in `templates/tasknote-template.md`: `**Final Summary:**` still sits on its own line immediately preceded by a blank line and immediately followed by the lede paragraph placeholder, with no other content interposed. `SPEC.md` has no `**Final Summary:**` label to protect — that contract binds the template only.
 
 ## 🧪 Phase 3: Testing & Linting
 
@@ -146,9 +146,9 @@ consistency call, not a gate requirement.
 **Choosing a test strategy:** see SPEC.md §"🧪 Phase 3: Testing & Linting".
 
 **Testing Notes:**
-- `git -C /Users/fakeneuron/Code/flowtron status --porcelain` (pre-flight, foreign-dirt gate) → exit 0, clean
-- `git -C /Users/fakeneuron/Code/flowtron diff -- templates/tasknote-template.md SPEC.md` → exit 0; diff shows exactly the one added checklist line per file (plus SPEC.md's one added rationale paragraph), no other line touched
-- Manual re-read of `templates/tasknote-template.md:93-106` and `SPEC.md:511-540` confirms: (1) wording matches PLAN.md CORE-658's quoted text verbatim, (2) `**Final Summary:**` in the template is still immediately preceded by a blank line and immediately followed by the lede paragraph placeholder with nothing interposed — the caobunga lede-regex contract (`docs/EXTERNAL-AGENTS.md` §"Template labels") holds
+- `git -C ~/code/flowtron status --porcelain` (pre-flight, foreign-dirt gate) → exit 0, clean
+- `git -C ~/code/flowtron diff -- templates/tasknote-template.md SPEC.md` → exit 0; diff shows exactly the one added checklist line per file (plus SPEC.md's one added rationale paragraph), no other line touched
+- Manual re-read of `templates/tasknote-template.md:93-106` and `SPEC.md:511-540` confirms: (1) wording matches PLAN.md CORE-658's quoted text verbatim, (2) `**Final Summary:**` in the template is still immediately preceded by a blank line and immediately followed by the lede paragraph placeholder with nothing interposed — the project-07 lede-regex contract (`docs/EXTERNAL-AGENTS.md` §"Template labels") holds
 
 ## 🚀 Phase 4: Closure
 

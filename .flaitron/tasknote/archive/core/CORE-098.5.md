@@ -46,11 +46,11 @@ Add a List / Board segmented control to the viz header that toggles between the 
 - [x] **(rework)** Surface `id` toggle in `SettingsModal` "Row chips" section.
 - [x] **(rework)** Update `visibilityPrefs.test.ts`: add `id` to round-trip fixture, add default-to-true on pre-id payload, add preserve-explicit-false.
 - [x] Run `npm --prefix viz test` + `npm --prefix viz run typecheck` — all green (119/119; typecheck clean).
-- [x] Visual smoke confirmed in browser (`http://localhost:5120` against `bananapeel`): default List with IDs visible, Board 3-column area, ID toggle removes cramping, below-board sections render Critical/FO/Completed.
+- [x] Visual smoke confirmed in browser (`http://localhost:5120` against `project-04`): default List with IDs visible, Board 3-column area, ID toggle removes cramping, below-board sections render Critical/FO/Completed.
 - [x] **(2nd-round rework)** BoardView columns changed from fixed-width to `flex-1 min-w-72` so 3 columns fill the viewport.
 - [x] **(2nd-round rework)** `STATUS_CHIP_LABEL` reduced to emoji-only; `STATUS_LABEL.starter` cleaned to text-only (`'Starter'`); StatusChip test updated; legend added to `ShortcutsModal` (`STATUS_LEGEND` array + small `<ul>` of `emoji + label` items below the shortcuts table, with `aria-hidden` on the emoji `<span>`s for screen-reader continuity).
 - [x] **(2nd-round rework)** Header Status filter UI removed from `App.tsx`; `STATUS_FILTER_VALUES` const + `presentStatuses` memo dropped; imports trimmed (`STATUS_LABEL` / `STATUS_BADGE` / `PILL_ACTIVE` / `PILL_FOCUS_RING` no longer needed in App.tsx); `toggleStatus` destructured as `_` because the state remains for keyboard-Esc semantics; `App.test.tsx`: dropped `App — matchesFilter intersection` + `App — status badge selection` describe blocks; `within` import re-added because the StatusChip test now scopes to `<main>` to avoid colliding with the new modal legend.
-- [x] **(2nd-round rework)** Filed 3 follow-up tickets in PLAN.md: `CORE-100` (investigate flowtron-nat-011 + safe-delete), `FE-032` (ProjectSelector chip restyle), `FE-EPIC-033` + `FE-033.1` (theme system, multi-theme picker; viz color-schema overhaul).
+- [x] **(2nd-round rework)** Filed 3 follow-up tickets in PLAN.md: `CORE-100` (investigate project-15 + safe-delete), `FE-032` (ProjectSelector chip restyle), `FE-EPIC-033` + `FE-033.1` (theme system, multi-theme picker; viz color-schema overhaul).
 - [ ] **Final user 👁️ confirmation** on the 2nd-round rework.
 
 ## 🔗 Related
@@ -160,7 +160,7 @@ The ID toggle is the actual fix for the v1 cramping issue — without it, Board 
 
 **Testing Notes:**
 
-- Visual smoke conducted live in browser at `http://localhost:5120` (existing dev server) on the `bananapeel` project (8 High / 3 Medium / 20 Low / 82 Completed / 0 Critical). All acceptance criteria visually verified — see screenshots `core-098.5-list-default.png`, `core-098.5-board-bananapeel.png`, `core-098.5-board-after-reload.png`, `core-098.5-list-after-board-completed-expand.png`.
+- Visual smoke conducted live in browser at `http://localhost:5120` (existing dev server) on the `project-04` project (8 High / 3 Medium / 20 Low / 82 Completed / 0 Critical). All acceptance criteria visually verified — see screenshots `core-098.5-list-default.png`, `core-098.5-board-project-04.png`, `core-098.5-board-after-reload.png`, `core-098.5-list-after-board-completed-expand.png`.
 - **Known tradeoff** (explicitly accepted in Discovery design intent): row content gets cramped in narrow Board columns when chips are dense. The Completed column visibly shows IDs overlapping with status chips + progress bars. Direct consequence of "re-use TaskRow / EpicRow / SubtaskRow verbatim" (no row-internal branching on viewMode). Mitigations available today via Settings (toggle off `tags` / `model` / `related` / `due` chips). If user finds it unacceptable in practice, a follow-up subtask could add Board-mode chip suppression.
 
 ## 🚀 Phase 4: Closure
@@ -175,6 +175,6 @@ The ID toggle is the actual fix for the v1 cramping issue — without it, Board 
 
 **Final Summary:**
 
-Added a `[List | Board]` segmented view-switcher to viz. Board lays the three active priority sections (High, Medium, Low) as full-viewport-width columns above a vertical Critical / Future Opportunities / Completed slab; `viewMode` persists globally in `localStorage`. To make Board readable, Task ID became an opt-in row chip (default ON; toggleable in Settings) and `StatusChip` collapsed to emoji-only (`🌱⚪🟢⏸✅`) with a new Status legend in the ⓘ shortcuts modal. Header Status filter UI removed per user direction (state retained for keyboard-Esc semantics). 8-file diff: net-new `viewMode.ts` + `viewMode.test.ts` + `BoardView.tsx`; edits to `App.tsx`, `visibilityPrefs.ts` + test, `TaskRowInner.tsx`, `SettingsModal.tsx`, `ShortcutsModal.tsx`, `constants.ts`, `App.test.tsx`. Tests 117/117; typecheck clean. Filed 3 follow-ups in PLAN.md: `CORE-100` (flowtron-nat-011 investigation), `FE-032` (ProjectSelector restyle), `FE-EPIC-033` + `.1` (theme system).
+Added a `[List | Board]` segmented view-switcher to viz. Board lays the three active priority sections (High, Medium, Low) as full-viewport-width columns above a vertical Critical / Future Opportunities / Completed slab; `viewMode` persists globally in `localStorage`. To make Board readable, Task ID became an opt-in row chip (default ON; toggleable in Settings) and `StatusChip` collapsed to emoji-only (`🌱⚪🟢⏸✅`) with a new Status legend in the ⓘ shortcuts modal. Header Status filter UI removed per user direction (state retained for keyboard-Esc semantics). 8-file diff: net-new `viewMode.ts` + `viewMode.test.ts` + `BoardView.tsx`; edits to `App.tsx`, `visibilityPrefs.ts` + test, `TaskRowInner.tsx`, `SettingsModal.tsx`, `ShortcutsModal.tsx`, `constants.ts`, `App.test.tsx`. Tests 117/117; typecheck clean. Filed 3 follow-ups in PLAN.md: `CORE-100` (project-15 investigation), `FE-032` (ProjectSelector restyle), `FE-EPIC-033` + `.1` (theme system).
 
 **Archived:** 2026-05-16

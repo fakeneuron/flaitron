@@ -37,7 +37,7 @@ Promote `[unattended]` from an accidental stacked-`[model]` tolerance to a first
 
 ## 🔗 Related
 
-- [[CORE-495]] — sibling upstream filing from the same caobunga epic (👁️→park under `--unattended`); shares no file with this one
+- [[CORE-495]] — sibling upstream filing from the same project-07 epic (👁️→park under `--unattended`); shares no file with this one
 
 ---
 
@@ -48,9 +48,9 @@ Promote `[unattended]` from an accidental stacked-`[model]` tolerance to a first
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** Filed 2026-08-29 by caobunga `CBN-EPIC-17.4` from a working reference implementation landed the same day; the gap is live at flowtron HEAD — `viz/src/parser.ts:99` still discards the token run as a `[model]` tolerance and SPEC §"Task-line format" has no marker row.
+  **Rationale:** Filed 2026-08-29 by project-07 `CBN-EPIC-17.4` from a working reference implementation landed the same day; the gap is live at flowtron HEAD — `viz/src/parser.ts:99` still discards the token run as a `[model]` tolerance and SPEC §"Task-line format" has no marker row.
 
-- [x] Read relevant source files — `viz/src/parser.ts` (full), `viz/src/parser.test.ts` (tolerance block), `SPEC.md` §"Task-line format", the three UI `Task` fixtures, and the reference implementation's tasknote at `~/code/caobunga/.flowtron/tasknote/archive/cbn/CBN-EPIC-17.2.md`. Narrow, known read set — no probe needed.
+- [x] Read relevant source files — `viz/src/parser.ts` (full), `viz/src/parser.test.ts` (tolerance block), `SPEC.md` §"Task-line format", the three UI `Task` fixtures, and the reference implementation's tasknote at `~/code/project-07/.flowtron/tasknote/archive/cbn/CBN-EPIC-17.2.md`. Narrow, known read set — no probe needed.
 
 - [x] **Best Practices Review** — `parser.ts` is SPEC's declared canonical grammar reference; the marker belongs in the same composed-fragment shape the three FE-066 tolerances already use, not in a second pass over the line. `unattended` mirrors `critical: boolean` (required, not optional) so the flag pair reads uniformly; that requires touching the three UI test fixtures that build `Task` literally — a direct consequence of the field, not adjacent cleanup. No refactor needed.
 
@@ -60,7 +60,7 @@ Promote `[unattended]` from an accidental stacked-`[model]` tolerance to a first
 
 - [x] Asked clarifying questions OR logged "No clarifications needed" with explicit assumptions
 
-  No clarifications needed. Explicit assumptions: (1) scope is exactly the two surfaces the PLAN line names — SPEC + parser — so **no viz UI chip** is added and `Task.unattended` ships with no renderer, which is coherent because SPEC declares `parser.ts` the canonical grammar reference that adopters (caobunga) read rather than flowtron's own board; a UI chip is offered as a follow-up at closure rather than folded in. (2) The marker is matched anywhere in the post-`[model]` token run, mirroring the reference implementation, rather than pinned to the immediately-following slot. (3) `SPEC.md`'s `Version:` header is release-managed by `/ft-release` and is not bumped here.
+  No clarifications needed. Explicit assumptions: (1) scope is exactly the two surfaces the PLAN line names — SPEC + parser — so **no viz UI chip** is added and `Task.unattended` ships with no renderer, which is coherent because SPEC declares `parser.ts` the canonical grammar reference that adopters (project-07) read rather than flowtron's own board; a UI chip is offered as a follow-up at closure rather than folded in. (2) The marker is matched anywhere in the post-`[model]` token run, mirroring the reference implementation, rather than pinned to the immediately-following slot. (3) `SPEC.md`'s `Version:` header is release-managed by `/ft-release` and is not bumped here.
 
 - [x] Subtasks above populated with concrete, ordered steps
 
@@ -68,9 +68,9 @@ Promote `[unattended]` from an accidental stacked-`[model]` tolerance to a first
 
 - **Grammar mechanics.** `TASK_LINE` is composed from nine named fragments; capture groups today are `mark, id, criticalRaw, modelRaw, criticalAfter, shortnameRaw, longRaw`. Making `STACKED_MODEL_TOKENS` capturing inserts a group at position 5, shifting `criticalAfter` → 6, `shortnameRaw` → 7, `longRaw` → 8. The FE-084 invariant (declaration order == concatenation order) means the fragment rename and the destructure must move together.
 
-- **The one PLAN-line correction.** The PLAN line says `[!unattended]` "drops the whole line." That is exactly true of *caobunga's* reader, which has no diagnostics channel. In **flowtron's** parser the line fails `TASK_LINE`, then falls through to `CHECKBOX_BULLET` + the `*`-emphasis check and surfaces in `parsePlanWithDiagnostics().unparsed` — it is dropped from the task list but **not** silent. SPEC must state flowtron's behavior, so the footgun is documented as "fails the grammar and surfaces as an unparsed diagnostic," not as a silent drop. Verified by test rather than by reading.
+- **The one PLAN-line correction.** The PLAN line says `[!unattended]` "drops the whole line." That is exactly true of *project-07's* reader, which has no diagnostics channel. In **flowtron's** parser the line fails `TASK_LINE`, then falls through to `CHECKBOX_BULLET` + the `*`-emphasis check and surfaces in `parsePlanWithDiagnostics().unparsed` — it is dropped from the task list but **not** silent. SPEC must state flowtron's behavior, so the footgun is documented as "fails the grammar and surfaces as an unparsed diagnostic," not as a silent drop. Verified by test rather than by reading.
 
-- **Reference implementation.** caobunga `CBN-EPIC-17.2` (`backend/caobunga/flowtron.py`) captures the same token run, sets `PlanTask.unattended` from `[unattended]` membership, and pins both footguns as behavior tests with doc-honesty docstrings. This task formalizes that grammar upstream; it does not import code (cross-repo edit remit — the deliverable lands in this repo only).
+- **Reference implementation.** project-07 `CBN-EPIC-17.2` (`backend/project-07/flowtron.py`) captures the same token run, sets `PlanTask.unattended` from `[unattended]` membership, and pins both footguns as behavior tests with doc-honesty docstrings. This task formalizes that grammar upstream; it does not import code (cross-repo edit remit — the deliverable lands in this repo only).
 
 ## 🛠️ Phase 2: Execution
 
@@ -88,7 +88,7 @@ Promote `[unattended]` from an accidental stacked-`[model]` tolerance to a first
 - `SPEC.md` (+28/−5): grammar line, segment-table row (semantics + deny-by-default expectation + "flowtron never writes it"), one example row, the amended tolerances bullet, and a new **`[unattended]` mis-authoring footguns** subsection naming both shapes.
 - `templates/PLAN.md` (+8/−3): the adopter seed's grammar-reference comment was a complete projection of the old grammar line, so it was made complete again — with an explicit "most projects never use it" so the seed doesn't read as a recommendation.
 - **8 `Task` fixtures** across 6 test files gained `unattended: false`. Required by the boolean-not-optional choice; vitest does not typecheck, so three of them (`taskView` / `utils` / `useBoardSelection`) only surfaced under `tsc --noEmit` after the suite was already green — worth noting for the next field addition.
-- Deliberately **not** done: no viz UI chip. SPEC declares `parser.ts` the canonical grammar reference that adopters read, so the field's consumer is the adopter reader (caobunga), not flowtron's own board. Offered as a follow-up at closure instead of folded in.
+- Deliberately **not** done: no viz UI chip. SPEC declares `parser.ts` the canonical grammar reference that adopters read, so the field's consumer is the adopter reader (project-07), not flowtron's own board. Offered as a follow-up at closure instead of folded in.
 
 ## 🧪 Phase 3: Testing & Linting
 
@@ -140,8 +140,8 @@ Promote `[unattended]` from an accidental stacked-`[model]` tolerance to a first
 
 - **Parser** (`viz/src/parser.ts`, +34/−17). The FE-066 trailing-token run became capturing (`STACKED_MODEL_TOKENS` → `TRAILING_TOKENS`), and `[unattended]` membership in that run sets a new required `Task.unattended: boolean`. Every other trailing token stays a dropped tolerance, so no existing row changes meaning.
 - **Contract** (`SPEC.md`, +28/−5). The grammar line, segment table, and examples carry the marker with its position-after-`[model]` constraint, its deny-by-default expectation for operator-less callers, and an explicit "flowtron itself never writes it." The tolerances bullet no longer claims the token is dropped.
-- **Footguns pinned, and one corrected.** Both mis-authoring shapes are documented and test-pinned: `[!unattended]` fails the grammar outright, and a pre-`[model]` or model-less `[unattended]` is captured *as* the model. The PLAN line called the first a whole-line drop — true of caobunga's reader, but flowtron surfaces it in `parsePlanWithDiagnostics().unparsed`, so SPEC states flowtron's behavior and names the sharper adopter-side edge in a parenthetical.
+- **Footguns pinned, and one corrected.** Both mis-authoring shapes are documented and test-pinned: `[!unattended]` fails the grammar outright, and a pre-`[model]` or model-less `[unattended]` is captured *as* the model. The PLAN line called the first a whole-line drop — true of project-07's reader, but flowtron surfaces it in `parsePlanWithDiagnostics().unparsed`, so SPEC states flowtron's behavior and names the sharper adopter-side edge in a parenthetical.
 - **Verification.** 521 tests pass across 28 files (5 new, verified by name); `tsc --noEmit` and `eslint src` clean. Three of the eight fixture updates surfaced only under typecheck, not the suite.
-- **Maintainability effect.** caobunga's shipped reference implementation now has an upstream contract to point at instead of a tolerance it reverse-engineered, and the next reader of `parser.ts` learns from the file itself which trailing tokens are grammar and which are decoration.
+- **Maintainability effect.** project-07's shipped reference implementation now has an upstream contract to point at instead of a tolerance it reverse-engineered, and the next reader of `parser.ts` learns from the file itself which trailing tokens are grammar and which are decoration.
 
 **Archived:** 2026-08-29

@@ -1,5 +1,5 @@
 ---
-title: caobunga-contract-fit
+title: project-07-contract-fit
 status: completed
 tags: []
 created: 2026-09-10
@@ -20,13 +20,13 @@ blocked-by:
 #   - TASK-ID
 ---
 
-# CORE-565.3 | caobunga-contract-fit
+# CORE-565.3 | project-07-contract-fit
 
 [← PLAN.md](../PLAN.md) · 🟢 In progress · 🔗 [[CORE-EPIC-565]] [[CORE-565.1]] [[CORE-565.2]]
 
 ## 🎯 Goal
 
-Verify the caller contract flowtron declares against what caobunga's reader and dispatcher actually consume (approved read-only paths), declare every surface a caller may rely on — and the ones it may not — in `docs/EXTERNAL-AGENTS.md`, resolve each known mismatch on flowtron's side or list it as a ready-to-paste CBN row in the Final Summary.
+Verify the caller contract flowtron declares against what project-07's reader and dispatcher actually consume (approved read-only paths), declare every surface a caller may rely on — and the ones it may not — in `docs/EXTERNAL-AGENTS.md`, resolve each known mismatch on flowtron's side or list it as a ready-to-paste CBN row in the Final Summary.
 
 ## ✅ Acceptance
 
@@ -36,10 +36,10 @@ Verify the caller contract flowtron declares against what caobunga's reader and 
 - [x] `**Suggested next task:**`, `### Follow-up…` headings, and unratified trailing tokens declared out-of-contract — `grep -q 'Suggested next task' docs/EXTERNAL-AGENTS.md`; `grep -q 'Follow-up' docs/EXTERNAL-AGENTS.md`
 - [x] Closed-row set declared as `PLAN.md` `## Completed` **plus** `PLAN-ARCHIVE.md` after rotation — `grep -q 'PLAN-ARCHIVE' docs/EXTERNAL-AGENTS.md`
 - [x] Template labels a caller may hook (`**Final Summary:**` / `**Archived:**` / `**Verdict:**`) declared, with the micro-template carve-out (no `**Final Summary:**`) — `grep -q 'Final Summary' docs/EXTERNAL-AGENTS.md`
-- [x] Task-line grammar parity between `viz/src/parser.ts` and caobunga's `grammar.py` verified and recorded — `judgment` (Discovery Notes §D: in parity; one deliberate caller-side gap; no flowtron edit)
-- [x] No adopter IDs or names in contract prose — `grep -ci 'caobunga\|CBN-' SPEC.md SPEC/blocked.md docs/EXTERNAL-AGENTS.md` → 0
+- [x] Task-line grammar parity between `viz/src/parser.ts` and project-07's `grammar.py` verified and recorded — `judgment` (Discovery Notes §D: in parity; one deliberate caller-side gap; no flowtron edit)
+- [x] No adopter IDs or names in contract prose — `grep -ci 'project-07\|CBN-' SPEC.md SPEC/blocked.md docs/EXTERNAL-AGENTS.md` → 0
 - [x] Neutrality ledger carries a row for the `claude/` probe path now named by a `docs/` contract doc — `grep -q 'EXTERNAL-AGENTS' docs/AGENT-NEUTRALITY.md`
-- [x] caobunga-side findings listed as ready-to-paste CBN rows in the Final Summary, numbered from caobunga's next free ID — `judgment` (three rows, CBN-148..150; max filed ID at read time was CBN-147)
+- [x] project-07-side findings listed as ready-to-paste CBN rows in the Final Summary, numbered from project-07's next free ID — `judgment` (three rows, CBN-148..150; max filed ID at read time was CBN-147)
 - [x] Markdown hygiene — `git diff --check` → 0
 
 ## 🧩 Subtasks
@@ -55,12 +55,12 @@ Verify the caller contract flowtron declares against what caobunga's reader and 
 ## 🔗 Related
 
 - [[CORE-EPIC-565]] — parent epic (harness-value-review)
-- [[CORE-565.1]] — Discovery: Constitution #3/#4, Q1 (flowtron declares, caobunga adapts), Q3 (CBN rows in Final Summary), Q5 (caobunga read scope) bind this child; Drift check §C seeds the five mismatches
+- [[CORE-565.1]] — Discovery: Constitution #3/#4, Q1 (flowtron declares, project-07 adapts), Q3 (CBN rows in Final Summary), Q5 (project-07 read scope) bind this child; Drift check §C seeds the five mismatches
 - [[CORE-565.2]] — blocked-by: Sequential predecessor (Fan-out); fixed `step-3c` to clear `park-reason:` on resume; filed [[CORE-567]] (`park-reason:` table home) after this task
 - [[CORE-473.6]] — depends-on: the layering decision — `docs/EXTERNAL-AGENTS.md` is the *convention* layer that names canonical owners in `SPEC/` and never copies them
-- [[CORE-494]] — `[unattended]` marker upstreamed from caobunga's reference reader; deny-by-default; "adopter reader is the consumer" stance
+- [[CORE-494]] — `[unattended]` marker upstreamed from project-07's reference reader; deny-by-default; "adopter reader is the consumer" stance
 - [[CORE-470]] — related-decision: consumers of the closed-row set read `PLAN.md` **and** `PLAN-ARCHIVE.md`; a missing archive is empty, never an error
-- [[CORE-551]] — unattended filing authority; assumed caobunga's need because the path was unapproved
+- [[CORE-551]] — unattended filing authority; assumed project-07's need because the path was unapproved
 - [[CORE-533]] — adopter IDs stay out of SPEC prose; `docs/CONVENTIONS.md` §"Verify behavioral claims…" applies in both directions
 
 ---
@@ -72,27 +72,27 @@ Verify the caller contract flowtron declares against what caobunga's reader and 
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** The five `.1` seeds reproduce at HEAD in caobunga's source (line numbers unchanged) and caobunga's own `docs/CONTRACT.md` — approved this session for the first time — confirms it treats four of them as *its* contract surface while flowtron declares none of them. The PLAN line's scope (declare probes stable; resolve continue-vs-`interrupted`, the two unspecified tokens, PLAN-ARCHIVE blocker resolution, the four reader hooks, grammar parity; CBN rows for the rest) matches exactly what the read surfaced. No re-scope.
+  **Rationale:** The five `.1` seeds reproduce at HEAD in project-07's source (line numbers unchanged) and project-07's own `docs/CONTRACT.md` — approved this session for the first time — confirms it treats four of them as *its* contract surface while flowtron declares none of them. The PLAN line's scope (declare probes stable; resolve continue-vs-`interrupted`, the two unspecified tokens, PLAN-ARCHIVE blocker resolution, the four reader hooks, grammar parity; CBN rows for the rest) matches exactly what the read surfaced. No re-scope.
 
-- [x] Read relevant source files — flowtron: `SPEC.md`, `SPEC/epic.md`, `SPEC/blocked.md`, `SPEC/plan-parser.md`, `SPEC/gates.md` §"`--unattended` operator posture", `SPEC/tasknote-selection.md` §"`## Completed` rotation" + §archive convention, `claude/skills/ft-task/unattended-mode.md`, `viz/src/parser.ts` TASK_LINE block, `docs/EXTERNAL-AGENTS.md`, `docs/CONVENTIONS.md` §"Verify behavioral claims…", `docs/AGENT-NEUTRALITY.md` ledger shape, `docs/PLATFORMS.md` posture rows, templates (full + micro), tasknote README. caobunga (operator-approved, read-only, one `ls` level then named files): `backend/caobunga/flowtron/{layout,grammar,selection,tasknote,reader}.py`, `loop.py`, `close.py`, greps over `dto.py` / `brief.py`; `.flowtron/PLAN.md` (header, open rows, max ID); `docs/CONTRACT.md` §"Flowtron reader" → §"Unattended capability probe", §"Continue prompt", §"Follow-up capture" → §"Park reason", §"Fleet boundary", header. Archive skim via one read-only probe (§C).
+- [x] Read relevant source files — flowtron: `SPEC.md`, `SPEC/epic.md`, `SPEC/blocked.md`, `SPEC/plan-parser.md`, `SPEC/gates.md` §"`--unattended` operator posture", `SPEC/tasknote-selection.md` §"`## Completed` rotation" + §archive convention, `claude/skills/ft-task/unattended-mode.md`, `viz/src/parser.ts` TASK_LINE block, `docs/EXTERNAL-AGENTS.md`, `docs/CONVENTIONS.md` §"Verify behavioral claims…", `docs/AGENT-NEUTRALITY.md` ledger shape, `docs/PLATFORMS.md` posture rows, templates (full + micro), tasknote README. project-07 (operator-approved, read-only, one `ls` level then named files): `backend/project-07/flowtron/{layout,grammar,selection,tasknote,reader}.py`, `loop.py`, `close.py`, greps over `dto.py` / `brief.py`; `.flowtron/PLAN.md` (header, open rows, max ID); `docs/CONTRACT.md` §"Flowtron reader" → §"Unattended capability probe", §"Continue prompt", §"Follow-up capture" → §"Park reason", §"Fleet boundary", header. Archive skim via one read-only probe (§C).
 
 - [x] **Best Practices Review** — `N/A`: markdown contract + one caller-facing doc. The one boundary in play is [[CORE-473.6]]'s layering — EXTERNAL-AGENTS names owners in `SPEC/` and never restates them — and the new section is written to that rule (every row cites its owner; no code table is copied).
 
 - [x] **Archive skim** — probe over `archive/core/` (170+ hits on the paths in scope); load-bearing subset in §C. `archive/core/` confirmed against the README table (`CORE-*` → `archive/core/`).
 
-- [x] **Drift check** — §D. Every `.1`-cited caobunga line resolves at HEAD; the one `.1` assumption that has moved is Q5's "CONTRACT.md not approved" (approved now). No SPEC contract is contradicted by declaring surfaces that already exist; the plan diverges from nothing on the PLAN line.
+- [x] **Drift check** — §D. Every `.1`-cited project-07 line resolves at HEAD; the one `.1` assumption that has moved is Q5's "CONTRACT.md not approved" (approved now). No SPEC contract is contradicted by declaring surfaces that already exist; the plan diverges from nothing on the PLAN line.
 
-- [x] Asked clarifying questions — one (per-session path approval for the three caobunga paths, AskUserQuestion): **all three approved**, read-only, one `ls` level then named files. Assumptions carried: (1) "flowtron declares" (Q1) means a surface is either *declared stable*, *declared out-of-contract*, or *specified upstream* only where it shows value in flowtron's own terms — nothing is specified merely because caobunga reads it; (2) the stability list lives in `docs/EXTERNAL-AGENTS.md` (the `.1` spec's named home) as a section, not a new file; (3) no template edit — the labels are declared as they ship, and [[CORE-568]]'s pending blockquote change does not touch them; (4) `SPEC/blocked.md` may take a one-sentence factual correction (its "dead end" claim is false against a caller that exists) without re-opening the resume contract.
+- [x] Asked clarifying questions — one (per-session path approval for the three project-07 paths, AskUserQuestion): **all three approved**, read-only, one `ls` level then named files. Assumptions carried: (1) "flowtron declares" (Q1) means a surface is either *declared stable*, *declared out-of-contract*, or *specified upstream* only where it shows value in flowtron's own terms — nothing is specified merely because project-07 reads it; (2) the stability list lives in `docs/EXTERNAL-AGENTS.md` (the `.1` spec's named home) as a section, not a new file; (3) no template edit — the labels are declared as they ship, and [[CORE-568]]'s pending blockquote change does not touch them; (4) `SPEC/blocked.md` may take a one-sentence factual correction (its "dead end" claim is false against a caller that exists) without re-opening the resume contract.
 
 - [x] Subtasks above populated with concrete, ordered steps, and YAML `touches:` declared (four paths; `.flowtron/PLAN.md` excluded by construction)
 
 **Discovery Notes:**
 
-**Bar (Constitution #3):** the contract caobunga reads must be *complete, stable, verified against its actual reader and dispatcher, and no larger than caobunga needs*. Completeness and stability are judged from flowtron's side (what a caller may rely on); "no larger than needed" is judged by refusing to specify anything caobunga reads that flowtron never writes.
+**Bar (Constitution #3):** the contract project-07 reads must be *complete, stable, verified against its actual reader and dispatcher, and no larger than project-07 needs*. Completeness and stability are judged from flowtron's side (what a caller may rely on); "no larger than needed" is judged by refusing to specify anything project-07 reads that flowtron never writes.
 
-### A. What caobunga actually consumes (verified in source, HEAD 2026-09-10)
+### A. What project-07 actually consumes (verified in source, HEAD 2026-09-10)
 
-| Surface | Where caobunga reads it | Flowtron owner today | Declared? |
+| Surface | Where project-07 reads it | Flowtron owner today | Declared? |
 |---|---|---|---|
 | Task-line grammar (`TASK_LINE`, `TASK_ID_BODY`, `Blocked by [[ID]]`, `[[ID]]`) | `grammar.py:44-93`, `parse_blocked_by` :135 — a port of `viz/src/parser.ts`, pinned per bump (`CONTRACT` §"Parse contract") | `SPEC.md` §"Task-line format", `SPEC/plan-parser.md`, `viz/src/parser.ts` | yes (SPEC) — not on the caller doc |
 | `[unattended]` marker, deny-by-default | `selection.py:353-355`; `reader.py:102` | `SPEC.md` §"Task-line format"; EXTERNAL-AGENTS step 2 | yes |
@@ -100,25 +100,25 @@ Verify the caller contract flowtron declares against what caobunga's reader and 
 | `Blocked by [[ID]]` resolved against checked `PLAN.md` rows only | `selection.py:52-54`, `:212-237` | `SPEC/blocked.md`; rotation in `SPEC/tasknote-selection.md` §rotation | rotation unmentioned on the caller doc |
 | Tasknote frontmatter `status:` (open set = SPEC's five minus `completed`, `tasknote.py:22`) and `park-reason:` split on first ` — ` (`reader.py:36-52`) | `tasknote.py`, `reader.py` | `SPEC.md` §"Tasknote frontmatter" | yes (steps 4-5) |
 | Capability probes: `.flowtron/core/claude/skills/ft-task/unattended-mode.md` present **and** `--unattended` in `ft-task/SKILL.md` (`layout.py:35-59`); `--unattended` in `ft-file-followup/SKILL.md` (`:62-86`) | `loop.py:626,634` | nothing — a `claude/` fragment path, not named by any contract doc | **no** |
-| Continue prompt for a stranded `in-progress` note — prose, "do not re-invoke /ft-task", points at `unattended-mode.md` by path (`loop.py:162-167, 232-238`); caobunga **never** writes `interrupted` (`CONTRACT` §"Continue prompt": its loop refuses to launch a `blocked` note, so the write would stop the run it meant to resume) | `loop.py` | `SPEC/blocked.md` §"Resuming an interrupted run" (two-write path as the only path; calls the state "a dead end" for an operator-less caller); EXTERNAL-AGENTS step 6 | the path caobunga takes is *not* the one declared |
-| `**Suggested next task:** **ID**` — read as `suggested_next`, "not the selector", validated under a drain (`grammar.py:66`, `close.py:357-386`) | `reader.py:230` | nothing — flowtron writes this line nowhere (`grep` over SPEC/, claude/, templates/, docs/ → 0); it is caobunga's own PLAN header convention (`caobunga/.flowtron/PLAN.md:13`) | **no** |
+| Continue prompt for a stranded `in-progress` note — prose, "do not re-invoke /ft-task", points at `unattended-mode.md` by path (`loop.py:162-167, 232-238`); project-07 **never** writes `interrupted` (`CONTRACT` §"Continue prompt": its loop refuses to launch a `blocked` note, so the write would stop the run it meant to resume) | `loop.py` | `SPEC/blocked.md` §"Resuming an interrupted run" (two-write path as the only path; calls the state "a dead end" for an operator-less caller); EXTERNAL-AGENTS step 6 | the path project-07 takes is *not* the one declared |
+| `**Suggested next task:** **ID**` — read as `suggested_next`, "not the selector", validated under a drain (`grammar.py:66`, `close.py:357-386`) | `reader.py:230` | nothing — flowtron writes this line nowhere (`grep` over SPEC/, claude/, templates/, docs/ → 0); it is project-07's own PLAN header convention (`project-07/.flowtron/PLAN.md:13`) | **no** |
 | `**Final Summary:**` … `**Archived:**` lede (`close.py:25-28`, `brief.py:32`); `**Verdict:** De-scope` → `de-scoped` outcome (`:29`); `### Follow-up…` list items (`:37`, prefix family, CONTRACT says flowtron defines no such heading) | `close.py` | template labels (`templates/tasknote-template.md`); no follow-up heading anywhere in flowtron | **no** |
 | Three endings as filesystem facts: `[x]` + HEAD moved; `archive/*/<ID>.md`; open note `status: blocked` | `close.py:274-354` | EXTERNAL-AGENTS §"The Return" | yes |
 | `.flowtron/sidequest/` path (never read; presence classification only) | `layout.py:19` | `SPEC/layout.md` | yes |
 
-Not consumed by caobunga (so nothing to declare for it): the `⏸ --unattended stop — <cause>:` / `⏸ --unattended park — …` markers (caobunga classifies from the worker status + repo, never the transcript); `unattended-close-epic.md` (it never invokes `/ft-close-epic`); YAML `blocked-by:` (deliberately not a gate, `grammar.py:143-146`); the 📦/🛠️ cue vocabulary.
+Not consumed by project-07 (so nothing to declare for it): the `⏸ --unattended stop — <cause>:` / `⏸ --unattended park — …` markers (project-07 classifies from the worker status + repo, never the transcript); `unattended-close-epic.md` (it never invokes `/ft-close-epic`); YAML `blocked-by:` (deliberately not a gate, `grammar.py:143-146`); the 📦/🛠️ cue vocabulary.
 
 ### B. Archive skim — load-bearing decisions (probe return)
 
 - [[CORE-473.6]] (`:87`, `:224`, `:228`) — **layering**: EXTERNAL-AGENTS = convention layer; `SPEC/*` = contract layer; `docs/PLATFORMS.md` = wiring. Its numbered rules each *name a canonical owner* and never copy — rule 3 states the `<code> — <prose>` shape and closed-set property without copying the codes (`:132`). The new section follows the same rule.
-- [[CORE-494]] (`:99`, `:91`, `:71`, `:143`) — `Task.unattended` is "a deliberate contract surface with an out-of-repo consumer"; `parser.ts` is the canonical grammar reference; flowtron states *flowtron's* behavior (`parsePlanWithDiagnostics().unparsed`), never caobunga's reader's.
+- [[CORE-494]] (`:99`, `:91`, `:71`, `:143`) — `Task.unattended` is "a deliberate contract surface with an out-of-repo consumer"; `parser.ts` is the canonical grammar reference; flowtron states *flowtron's* behavior (`parsePlanWithDiagnostics().unparsed`), never project-07's reader's.
 - [[CORE-533]] (`:51`) + [[CORE-534]] — adopter IDs stay out of contract prose; verify behavioral claims against `parser.ts`.
 - [[CORE-495]] (`:49`, `:134`, `:174`) + [[CORE-536]] (`:294`) — marker + deny-by-default is a rule of the orchestration contract; codes are a closed set extended only by adding a row; the marker implies `--fast`, never the posture.
 - [[CORE-535.5]] (`:295`) — `SPEC.md` owns the `park-reason:` code set; `gates.md` owns gate→behavior; the duplicate table was deleted. ([[CORE-567]] may move the table; the caller doc cites the section by name, so a move carries the pointer.)
 - [[CORE-473.5]] (`:30`, `:98`, `:154`, `:177`) + [[CORE-473.6]] (`:84`) — `interrupted` is the one code **a caller** writes; flowtron ships no crash detector.
 - [[CORE-467]] / [[CORE-470]] (`:25`) / `docs/MIGRATION.md:285` — rotation to `PLAN-ARCHIVE.md` is adopter-general (MIGRATION tells adopters it "appears later"); consumers read both files, missing archive = empty. No prior decision links rotation to blocker resolution.
 - [[CORE-527]] → [[CORE-533]] — blocker-clause handling narrowed to one sentence in `SPEC/blocked.md` (clause removal clears the gate).
-- [[CORE-502]] — glyph-then-marker footgun; caobunga's `seeded_line` and `unparsed_plan_rows` are built around it and its CBN-127 declined the before-tokens glyph slot deliberately.
+- [[CORE-502]] — glyph-then-marker footgun; project-07's `seeded_line` and `unparsed_plan_rows` are built around it and its CBN-127 declined the before-tokens glyph slot deliberately.
 - [[CORE-551]] (`:254`) / [[CORE-552]] — EXTERNAL-AGENTS step 1's roster + step 8; `/ft-epic-discovery` refuses the flag terminally.
 - No prior decision anywhere on `**Suggested next task:**`, `[handoff]`, or `### Follow-up` (the only hits are `.1` and CORE-208.2's post-closure UX text).
 
@@ -129,27 +129,27 @@ Nothing in the archive contradicts declaring the surfaces above; [[CORE-473.6]] 
 ### D. Drift check
 
 - `.1` seeds vs HEAD: `layout.py` probes at `:35-59` (`supports_unattended`) and `:62-86` (`supports_unattended_filing`, added CBN-138.2 — a *second* probe `.1` did not list); `loop.py:203-240` continue prompt ✓; `grammar.py:34` `HANDOFF_MARKER`, `:66` `SUGGESTED_NEXT` ✓; `selection.py:52` `completed_task_ids` ✓; `close.py:25-37` hooks ✓; `tasknote.py:22` `OPEN_STATUSES` ✓ (in sync with SPEC's set).
-- **Grammar parity** (`viz/src/parser.ts:116-140` vs `grammar.py:81-93`): `TASK_ID_BODY` byte-identical; fragment order identical *except* caobunga omits the before-tokens `SUGGESTION_GLYPH` slot (flowtron [[CORE-502]] / caobunga CBN-127 — a deliberate, reported gap surfaced through `unparsed_plan_rows`). `BLOCKED_BY_BLOCK` / `WIKILINK` / `CODE_SPAN` are ports. **No flowtron-side drift; nothing to change.** caobunga pins v5.26.0, which is HEAD's `SPEC.md` version.
-- Template labels: full template ships `**Verdict:** Proceed | Re-scope | De-scope` (placeholder does not match `\*\*Verdict:\*\*\s*De-scope` — first token is `Proceed`), `**Final Summary:**`, `**Archived:**`. **Micro template ships `## ✅ Recap` + `**Archived:**` and no `**Final Summary:**`** — a micro closure's `summary` in caobunga falls back to the PLAN stub. Caller-visible fact; declare it.
-- `SPEC/blocked.md:94-97` claims an operator-less caller "has neither the session nor a flag, so the state is a dead end" — **false against the caller that exists**: caobunga points a fresh worker at the note with a prose continue, and the tasknote (not the session) carries the context. The runner's own recommendation ("continue conversationally") is that path. One-sentence correction, no contract change.
+- **Grammar parity** (`viz/src/parser.ts:116-140` vs `grammar.py:81-93`): `TASK_ID_BODY` byte-identical; fragment order identical *except* project-07 omits the before-tokens `SUGGESTION_GLYPH` slot (flowtron [[CORE-502]] / project-07 CBN-127 — a deliberate, reported gap surfaced through `unparsed_plan_rows`). `BLOCKED_BY_BLOCK` / `WIKILINK` / `CODE_SPAN` are ports. **No flowtron-side drift; nothing to change.** project-07 pins v5.26.0, which is HEAD's `SPEC.md` version.
+- Template labels: full template ships `**Verdict:** Proceed | Re-scope | De-scope` (placeholder does not match `\*\*Verdict:\*\*\s*De-scope` — first token is `Proceed`), `**Final Summary:**`, `**Archived:**`. **Micro template ships `## ✅ Recap` + `**Archived:**` and no `**Final Summary:**`** — a micro closure's `summary` in project-07 falls back to the PLAN stub. Caller-visible fact; declare it.
+- `SPEC/blocked.md:94-97` claims an operator-less caller "has neither the session nor a flag, so the state is a dead end" — **false against the caller that exists**: project-07 points a fresh worker at the note with a prose continue, and the tasknote (not the session) carries the context. The runner's own recommendation ("continue conversationally") is that path. One-sentence correction, no contract change.
 - Cross-artifact: EXTERNAL-AGENTS step 6 declares only the two-write path — narrower than what `/ft-task` itself recommends and than what the caller does. Widening to name both is declaration, not new mechanism.
 - Adopter names: `docs/EXTERNAL-AGENTS.md`, `SPEC.md`, `SPEC/blocked.md` carry none today (grep → 0); the edit keeps it so.
 
 ### E. Resolution table — what flowtron declares (Q1: declare and list; specify upstream only on shown value)
 
-| # | Mismatch (from `.1`) | Verdict | Flowtron-side action | caobunga-side (→ CBN row) |
+| # | Mismatch (from `.1`) | Verdict | Flowtron-side action | project-07-side (→ CBN row) |
 |---|---|---|---|---|
 | 1 | Capability probes keyed on `claude/skills/ft-task/unattended-mode.md` + `--unattended` token in two `SKILL.md` bodies — undeclared | **Declare stable** | Stability list row: the fragment's path/name and the literal token in those two bodies are the probe surface; a rename or move is a versioned change. Ledger row in `docs/AGENT-NEUTRALITY.md` | none |
-| 2 | `in-progress` continue prompt vs step 6's `interrupted` (caobunga writes none) | **Declare both paths legal** | Step 6 names two caller paths: (a) two-write conversion + re-invoke; (b) prose continue pointing an agent at the note, posture carried in prose. Flowtron performs neither. Fix the "dead end" sentence in `SPEC/blocked.md` | CBN: cite the declaration in `CONTRACT` §"Continue prompt" after the next flowtron release; wording only |
-| 3 | `[handoff]` token — parsed, never specified | **Out of contract** (VISION two-project precedent; caobunga's own CBN-137 reached the same verdict) | Stability list: the trailing-token run is tolerated-and-dropped; a caller may read its own lowercase tokens there and flowtron never fails a row on one or assigns it meaning. No `[handoff]` mention | CBN: `grammar.py:25,33` comments say "flowtron formalizes the grammar later" / "filed upstream separately" — stale (v5.22.0 formalized `[unattended]`; CBN-137 de-scoped `[handoff]`) |
+| 2 | `in-progress` continue prompt vs step 6's `interrupted` (project-07 writes none) | **Declare both paths legal** | Step 6 names two caller paths: (a) two-write conversion + re-invoke; (b) prose continue pointing an agent at the note, posture carried in prose. Flowtron performs neither. Fix the "dead end" sentence in `SPEC/blocked.md` | CBN: cite the declaration in `CONTRACT` §"Continue prompt" after the next flowtron release; wording only |
+| 3 | `[handoff]` token — parsed, never specified | **Out of contract** (VISION two-project precedent; project-07's own CBN-137 reached the same verdict) | Stability list: the trailing-token run is tolerated-and-dropped; a caller may read its own lowercase tokens there and flowtron never fails a row on one or assigns it meaning. No `[handoff]` mention | CBN: `grammar.py:25,33` comments say "flowtron formalizes the grammar later" / "filed upstream separately" — stale (v5.22.0 formalized `[unattended]`; CBN-137 de-scoped `[handoff]`) |
 | 4 | `**Suggested next task:** **ID**` — parsed, never specified | **Out of contract** — flowtron writes this line nowhere; it is an adopter's own PLAN header | Stability list "out of contract" entry names it | CBN: `CONTRACT:896` "prose flowtron wrote" and `close.py:364` "flowtron has no notion of the `[unattended]` marker" are both false — flowtron never writes the line and has captured the marker since v5.22.0. Wording only; behavior (`dispatchable` validation) is already right |
 | 5 | `Blocked by` resolved against `PLAN.md` only; rotation to `PLAN-ARCHIVE.md` unread | **Declare** the closed-row set as both files | Stability list row: closed rows live in `PLAN.md` `## Completed` and, after rotation, `PLAN-ARCHIVE.md`; a caller resolving an ID against completion reads both ([[CORE-470]] precedent) | CBN: `completed_task_ids` reads `PLAN.md` only, so a blocker rotated to `PLAN-ARCHIVE.md` loses the `(completed; clause is stale, remove it)` annotation and reads as unconfirmed. Deny outcome unchanged (clause removal clears the gate either way); annotation only. `marker_drift` is already scoped to survive rotation |
-| 6 | Reader hooks: `**Final Summary:**` / `**Archived:**` / `**Verdict:** De-scope` / `### Follow-up…` / frontmatter keys | **Declare** the three template labels stable (with the micro carve-out); **out of contract** for `### Follow-up…` (flowtron files follow-ups as PLAN rows — §"Deferred hand-off filing" — and defines no heading; a caller may ask *its own* worker for one); frontmatter keys already declared | Stability list rows | none — `CONTRACT` §"Follow-up capture" already records the heading as caobunga-originated |
-| 7 | Grammar parity with `viz/src/parser.ts` | **Verified, in parity** (one deliberate gap on caobunga's side) | Stability list row naming `parser.ts` as the canonical grammar reference and `SPEC/plan-parser.md` as the tolerance list | none |
+| 6 | Reader hooks: `**Final Summary:**` / `**Archived:**` / `**Verdict:** De-scope` / `### Follow-up…` / frontmatter keys | **Declare** the three template labels stable (with the micro carve-out); **out of contract** for `### Follow-up…` (flowtron files follow-ups as PLAN rows — §"Deferred hand-off filing" — and defines no heading; a caller may ask *its own* worker for one); frontmatter keys already declared | Stability list rows | none — `CONTRACT` §"Follow-up capture" already records the heading as project-07-originated |
+| 7 | Grammar parity with `viz/src/parser.ts` | **Verified, in parity** (one deliberate gap on project-07's side) | Stability list row naming `parser.ts` as the canonical grammar reference and `SPEC/plan-parser.md` as the tolerance list | none |
 
 Also declared, because a caller already relies on them and no row said so: the `[unattended]` marker survives the Phase 4 stub rewrite (closure copies the trailing token run verbatim — `SPEC/tasknote-selection.md` §archive convention); the archive folder is per the project's README table, so `archive/*/<ID>.md` is the portable glob; the `⏸ --unattended …` markers are transcript prose, **not** a surface.
 
-**Not done, on purpose:** no `[handoff]` or `**Suggested next task:**` specification upstream (no shown value in flowtron's terms; VISION precedent); no template edit; no `park-reason:` relocation ([[CORE-567]]); no edit to caobunga.
+**Not done, on purpose:** no `[handoff]` or `**Suggested next task:**` specification upstream (no shown value in flowtron's terms; VISION precedent); no template edit; no `park-reason:` relocation ([[CORE-567]]); no edit to project-07.
 
 ## 🛠️ Phase 2: Execution
 
@@ -171,7 +171,7 @@ Also declared, because a caller already relies on them and no row said so: the `
 
 **`.flowtron/tasknote/README.md` (+1/−1).** The EXTERNAL-AGENTS one-liner now names the stable-surface list and widens its drift triggers to template labels and the task-line grammar.
 
-**Not done, on purpose:** no `[handoff]` / `**Suggested next task:**` specification upstream (declared out of contract — VISION two-project precedent; no value in flowtron's terms); no template edit; no `park-reason:` relocation ([[CORE-567]], sequenced after this task — its move carries EXTERNAL-AGENTS step 4's and the new row's by-name pointer); no caobunga edit (CBN rows in the Final Summary). Downstream-impact scan: the only active PLAN entries are the 565 cohort and [[CORE-566]]–[[CORE-569]]; none plans an edit to the three files touched except [[CORE-567]], which is already ordered after `.3`. **No downstream impact; no reconcile edit.**
+**Not done, on purpose:** no `[handoff]` / `**Suggested next task:**` specification upstream (declared out of contract — VISION two-project precedent; no value in flowtron's terms); no template edit; no `park-reason:` relocation ([[CORE-567]], sequenced after this task — its move carries EXTERNAL-AGENTS step 4's and the new row's by-name pointer); no project-07 edit (CBN rows in the Final Summary). Downstream-impact scan: the only active PLAN entries are the 565 cohort and [[CORE-566]]–[[CORE-569]]; none plans an edit to the three files touched except [[CORE-567]], which is already ordered after `.3`. **No downstream impact; no reconcile edit.**
 
 ## 🧪 Phase 3: Testing & Linting
 
@@ -205,16 +205,16 @@ grep -q 'Suggested next task' docs/EXTERNAL-AGENTS.md                          �
 grep -q 'Follow-up' docs/EXTERNAL-AGENTS.md                                    → 0
 grep -q 'PLAN-ARCHIVE' docs/EXTERNAL-AGENTS.md                                 → 0
 grep -q 'Final Summary' docs/EXTERNAL-AGENTS.md                                → 0
-grep -ci 'caobunga\|CBN-' SPEC.md SPEC/blocked.md docs/EXTERNAL-AGENTS.md      → 0 / 0 / 0
+grep -ci 'project-07\|CBN-' SPEC.md SPEC/blocked.md docs/EXTERNAL-AGENTS.md      → 0 / 0 / 0
 grep -q 'EXTERNAL-AGENTS' docs/AGENT-NEUTRALITY.md                             → 0
 git diff --check                                                               → 0
 grep -c '^## The Return\|^## Not an Orchestration Runtime' docs/EXTERNAL-AGENTS.md → 2 (both in-doc anchors used by the new section resolve)
 git diff | grep -cE 'API_KEY|SECRET|TOKEN|PASSWORD'                            → 0 (keyword clause clear)
 ```
 
-Grammar parity (judgment, recorded in Discovery §D): `TASK_ID_BODY` byte-identical; fragment order identical except caobunga's deliberately omitted before-tokens glyph slot. No flowtron drift.
+Grammar parity (judgment, recorded in Discovery §D): `TASK_ID_BODY` byte-identical; fragment order identical except project-07's deliberately omitted before-tokens glyph slot. No flowtron drift.
 
-**Structural assertions (changed prose):** no duplication — every table row names an owner and states one fact; the `park-reason:` row and step 6 point at the code table and `SPEC/blocked.md` rather than copying either. No dead prose: the bridge sentence before the runtime section still names both halves. Public-surface growth is the deliverable (a declared stability list) and is bounded to what a verified caller consumes — nothing caobunga does not read was declared. No stale code-facing docs: the ledger row registers the one new `claude/` reference; `docs/PLATFORMS.md`'s posture rows already describe `unattended-mode.md` as the shared fragment and need no edit.
+**Structural assertions (changed prose):** no duplication — every table row names an owner and states one fact; the `park-reason:` row and step 6 point at the code table and `SPEC/blocked.md` rather than copying either. No dead prose: the bridge sentence before the runtime section still names both halves. Public-surface growth is the deliverable (a declared stability list) and is bounded to what a verified caller consumes — nothing project-07 does not read was declared. No stale code-facing docs: the ledger row registers the one new `claude/` reference; `docs/PLATFORMS.md`'s posture rows already describe `unattended-mode.md` as the shared fragment and need no edit.
 
 ## 🚀 Phase 4: Closure
 
@@ -228,11 +228,11 @@ Grammar parity (judgment, recorded in Discovery §D): `TASK_ID_BODY` byte-identi
 
 **Final Summary:**
 
-Verified flowtron's caller contract against the one out-of-repo reader and dispatcher that exists, and found the contract *behaviorally* in sync and *declaratively* short: every surface caobunga hooks parses correctly against HEAD (task-line grammar in parity with `viz/src/parser.ts`, `status:` open set in sync, `park-reason:` split as specified), but four of the surfaces it treats as its own contract — the `claude/` capability-probe paths, the template labels, the closed-row set after rotation, and the prose-continue route for a stranded note — were named by no flowtron doc, and two things it reads (`**Suggested next task:**`, `### Follow-up…`) flowtron never writes. `docs/EXTERNAL-AGENTS.md` now carries §"Stable surfaces for callers": ten owner-naming rows a caller may hook and a five-item out-of-contract list, sized to what a verified caller consumes and no larger. Step 6 declares both caller paths for a stranded `in-progress` note, and `SPEC/blocked.md` no longer calls that state a dead end — a claim the caller's practice already falsified. The one `claude/` path now named from the contract layer is ledgered in `docs/AGENT-NEUTRALITY.md`.
+Verified flowtron's caller contract against the one out-of-repo reader and dispatcher that exists, and found the contract *behaviorally* in sync and *declaratively* short: every surface project-07 hooks parses correctly against HEAD (task-line grammar in parity with `viz/src/parser.ts`, `status:` open set in sync, `park-reason:` split as specified), but four of the surfaces it treats as its own contract — the `claude/` capability-probe paths, the template labels, the closed-row set after rotation, and the prose-continue route for a stranded note — were named by no flowtron doc, and two things it reads (`**Suggested next task:**`, `### Follow-up…`) flowtron never writes. `docs/EXTERNAL-AGENTS.md` now carries §"Stable surfaces for callers": ten owner-naming rows a caller may hook and a five-item out-of-contract list, sized to what a verified caller consumes and no larger. Step 6 declares both caller paths for a stranded `in-progress` note, and `SPEC/blocked.md` no longer calls that state a dead end — a claim the caller's practice already falsified. The one `claude/` path now named from the contract layer is ledgered in `docs/AGENT-NEUTRALITY.md`.
 
 Verdicts per `.1` seed: probes **declared stable**; continue-vs-`interrupted` **both declared legal** (flowtron performs neither); `[handoff]` and `**Suggested next task:**` **out of contract** (VISION two-project precedent; flowtron writes neither); `PLAN-ARCHIVE.md` **declared** part of the closed-row set (adopter-general per `docs/MIGRATION.md`); the four reader hooks **declared** for the three template labels (with the micro-template carve-out — no `**Final Summary:**` there) and **out of contract** for the follow-up heading; grammar parity **verified**, no edit. Nothing was specified upstream merely because a caller reads it.
 
-**caobunga-side findings — ready-to-paste CBN rows** (next free ID at read time: CBN-148; paste under `## Low` from caobunga's own session, per `.1` Q3):
+**project-07-side findings — ready-to-paste CBN rows** (next free ID at read time: CBN-148; paste under `## Low` from project-07's own session, per `.1` Q3):
 
 ```markdown
 - [ ] **CBN-148** [light] | contract-provenance-refresh — Three stale claims about flowtron, wording only: `docs/CONTRACT.md` §"Flowtron reader" and `close._next_after` call `**Suggested next task:**` "prose flowtron wrote" (flowtron writes it nowhere — it is this repo's own PLAN header, and the flowtron release carrying `CORE-565.3` lists it out-of-contract in `docs/EXTERNAL-AGENTS.md` §"Stable surfaces for callers"); `close.py` says "flowtron has no notion of the `[unattended]` marker" (captured since v5.22.0); `grammar.py`'s `UNATTENDED_MARKER` / `HANDOFF_MARKER` comments say "flowtron formalizes the grammar later" / "filed upstream separately" (done at v5.22.0; CBN-137 de-scoped the second). No behavior change.

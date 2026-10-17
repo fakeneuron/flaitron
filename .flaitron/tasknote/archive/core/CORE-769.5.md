@@ -61,7 +61,7 @@ Hard-cut rename the global-only `ft-new-project` skill to `ft-adopt` (pairing it
 - [[CORE-769.3]] — sweep shape this copies
 - [[CORE-769.4]] — predecessor (`blocked-by`, Fan-out Sequential)
 - [[CORE-769.6]] — next rename
-- [[CORE-769.7]] — rename-aware migrate mode; natabula caller row (`natabula-adopt` calls `/ft-new-project`)
+- [[CORE-769.7]] — rename-aware migrate mode; project-20 caller row (`project-20-adopt` calls `/ft-new-project`)
 - [[CORE-769.N]] — terminal audit
 
 ---
@@ -147,7 +147,7 @@ Residue (`git grep -n new-project`, non-archive), all kept on purpose:
 
 External review (`/code-review medium`, working-tree diff), graded against Acceptance — all notes:
 
-1. **handed off (operator)** — the operator's global `~/.claude/skills/ft-new-project` link points at this working tree, so it dangles at commit time, not at release; natabula's `natabula-adopt` calls `/ft-new-project`. The link is outside the Path Access roots (operator relink). The natabula caller row is [[CORE-769.7]]'s filing per CORE-769.1. The immediate break is surfaced in the recap.
+1. **handed off (operator)** — the operator's global `~/.claude/skills/ft-new-project` link points at this working tree, so it dangles at commit time, not at release; project-20's `project-20-adopt` calls `/ft-new-project`. The link is outside the Path Access roots (operator relink). The project-20 caller row is [[CORE-769.7]]'s filing per CORE-769.1. The immediate break is surfaced in the recap.
 2. **fixed** — CONTRIBUTING L53 bare `new-project` → `adopt`.
 3. **declined (operator)** — flaitron-self local `.claude/skills` / `.agents/skills` links: gitignored per-machine state, same disposition as CORE-769.3/.4.
 4. **fixed** — MIGRATION row now names every user skill directory (Claude plus Codex/Cursor/Grok), not just `~/.claude`.
@@ -190,6 +190,6 @@ External review (`/code-review medium`, working-tree diff), graded against Accep
 - **Docs verdict:** updated; see the doc-drift sweep.
 - **`touches:` reconciliation:** one undeclared path, `CONTRIBUTING.md` (review note 2). The `ft-new-project` dirs are declared as renamed paths. `.flaitron/PLAN.md` changes at this closure. Every other declared path changed.
 - **Maintainability:** the bootstrap and bump skills now read as a pair (`ft-adopt` / `ft-update`).
-- **Operator follow-up (local, outside the repo):** re-point `~/.claude/skills/ft-new-project` → `ft-adopt`. It points at this working tree, so it dangles at commit time, and `natabula-adopt` (which calls `/ft-new-project`) breaks until natabula is updated ([[CORE-769.7]] files that row). Also re-point flaitron-self's gitignored `.claude/skills` and `.agents/skills` links.
+- **Operator follow-up (local, outside the repo):** re-point `~/.claude/skills/ft-new-project` → `ft-adopt`. It points at this working tree, so it dangles at commit time, and `project-20-adopt` (which calls `/ft-new-project`) breaks until project-20 is updated ([[CORE-769.7]] files that row). Also re-point flaitron-self's gitignored `.claude/skills` and `.agents/skills` links.
 
 **Archived:** 2026-10-09

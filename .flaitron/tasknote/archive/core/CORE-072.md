@@ -13,7 +13,7 @@ related-tasks: [CORE-069, CORE-070, CORE-071]
 
 ## 🎯 Goal
 
-Ship a stack-neutral `/audit` skill in flowtron that adopters fork per stack, generalizing the 5-pass / capped-findings / writes-tickets-to-PLAN.md pattern from InvisiPaw's `audit-backend` and `audit-frontend` skills.
+Ship a stack-neutral `/audit` skill in flowtron that adopters fork per stack, generalizing the 5-pass / capped-findings / writes-tickets-to-PLAN.md pattern from Project-17's `audit-backend` and `audit-frontend` skills.
 
 ## ✅ Acceptance
 
@@ -47,19 +47,19 @@ Ship a stack-neutral `/audit` skill in flowtron that adopters fork per stack, ge
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** Audit 2026-05-10 produced 4 findings — Findings #1, #2, #3, #4 closed via [[CORE-069]] (template `status:` default), [[CORE-070]] (repo-layout / doc-currency), [[CORE-071]] (release global-install doc). CORE-072 is the meta-finding: the audit itself was run manually (no shipped skill); InvisiPaw's `audit-backend` + `audit-frontend` skills hold a reusable scaffold worth promoting. Generalizing into a single shipped flowtron skill prevents adopters from re-deriving the same 5-pass / capped-findings / writes-to-PLAN.md scaffold per-stack and locks in flowtron's conventions (task-line grammar, area-prefix list, priority sections, model tagging).
+  **Rationale:** Audit 2026-05-10 produced 4 findings — Findings #1, #2, #3, #4 closed via [[CORE-069]] (template `status:` default), [[CORE-070]] (repo-layout / doc-currency), [[CORE-071]] (release global-install doc). CORE-072 is the meta-finding: the audit itself was run manually (no shipped skill); Project-17's `audit-backend` + `audit-frontend` skills hold a reusable scaffold worth promoting. Generalizing into a single shipped flowtron skill prevents adopters from re-deriving the same 5-pass / capped-findings / writes-to-PLAN.md scaffold per-stack and locks in flowtron's conventions (task-line grammar, area-prefix list, priority sections, model tagging).
 
 - [x] Read relevant source files
 - [x] **Archive skim** — `_project/tasknote/archive/core/` searched for prior audit-pattern tasknotes:
   - [[CORE-069]], [[CORE-070]], [[CORE-071]] (2026-05-10) — sibling audit-derived tasks closed today; same audit cycle.
   - [[CORE-042.8]], [[CORE-057.6]] — epic-internal "audit" subtasks (epic-shape verification, not skill-shipping). No prior decision contradicts shipping `/audit` as a generalized skill.
-  - No prior tasknote re-examined InvisiPaw's audit skills as a flowtron-source pattern.
+  - No prior tasknote re-examined Project-17's audit skills as a flowtron-source pattern.
 - [x] **Drift check** — verified at HEAD 2026-05-10:
-  - `~/code/invisipaw/.claude/skills/audit-backend/SKILL.md` (8571B) and `~/code/invisipaw/.claude/skills/audit-frontend/SKILL.md` (7167B) live at cited paths.
-  - 5-pass structure (Security & hardening / Idioms / Hygiene & naming / Orphans / Doc drift) identical across both InvisiPaw skills.
+  - `~/code/project-17/.claude/skills/audit-backend/SKILL.md` (8571B) and `~/code/project-17/.claude/skills/audit-frontend/SKILL.md` (7167B) live at cited paths.
+  - 5-pass structure (Security & hardening / Idioms / Hygiene & naming / Orphans / Doc drift) identical across both Project-17 skills.
   - "Cap each pass at 5 findings max" and "Write tickets, not fixes" rules identical across both.
   - PLAN.md write-step mandate cites `_project/flowtron/SPEC.md §"Task-line format"` for grammar.
-  - flowtron house frontmatter style: `name:` + `description:` only (release / new-project / epic-discovery / file-followup all confirmed); InvisiPaw's `when_to_use:` / `argument-hint:` / `disable-model-invocation:` fields are not used. Shipped `/audit` will follow flowtron house style.
+  - flowtron house frontmatter style: `name:` + `description:` only (release / new-project / epic-discovery / file-followup all confirmed); Project-17's `when_to_use:` / `argument-hint:` / `disable-model-invocation:` fields are not used. Shipped `/audit` will follow flowtron house style.
   - No drift from task-description hypotheses.
 - [x] Asked clarifying questions — three design questions resolved via AskUserQuestion:
   1. Skill location → `claude/skills/audit/SKILL.md` alongside other shipped skills, SKILL.md self-documents fork-don't-symlink.
@@ -69,7 +69,7 @@ Ship a stack-neutral `/audit` skill in flowtron that adopters fork per stack, ge
 
 **Discovery Notes:**
 
-**Source pattern (InvisiPaw skeleton — what's universal vs. stack-specific):**
+**Source pattern (Project-17 skeleton — what's universal vs. stack-specific):**
 
 | Universal (ships in flowtron's scaffold) | Stack-specific (forker fills in) |
 |------------------------------------------|----------------------------------|
@@ -109,7 +109,7 @@ Ship a stack-neutral `/audit` skill in flowtron that adopters fork per stack, ge
 **Implementation Notes:**
 
 **Pattern survey verdict (matched existing shapes, no new shapes invented):**
-- Skill frontmatter: `name:` + `description:` only — matches `release/`, `new-project/`, `epic-discovery/`, `close-epic/`, `file-followup/`, `micro-task/`, `starter-task/`. InvisiPaw's `when_to_use:` / `argument-hint:` / `disable-model-invocation:` extras dropped to align with flowtron house style.
+- Skill frontmatter: `name:` + `description:` only — matches `release/`, `new-project/`, `epic-discovery/`, `close-epic/`, `file-followup/`, `micro-task/`, `starter-task/`. Project-17's `when_to_use:` / `argument-hint:` / `disable-model-invocation:` extras dropped to align with flowtron house style.
 - Skill directory shape: flat `SKILL.md`-only — matches all shipped skills except `task/` (which is special-cased with lazy fragments). `/audit` is a single SKILL.md.
 - Slash-command stub: 1-line `description:` frontmatter + 1-paragraph "Invoke the `<name>` skill" body — matches `release.md` and `new-project.md`.
 
@@ -159,6 +159,6 @@ The AskUserQuestion option for MIGRATION docs said "Add MIGRATION.md §1.3 … s
 
 **Final Summary:**
 
-Shipped a stack-neutral `/audit` skill in flowtron at `claude/skills/audit/SKILL.md` (~5.6KB) that generalizes InvisiPaw's two-skill audit pattern (`audit-backend` + `audit-frontend`) into a single 5-pass / capped-findings / writes-tickets-to-PLAN.md scaffold. The scaffold ships with generic placeholders marked `_(forker: …)_` at the customization points (default glob, rubric files, verification gates, per-pass examples, Critical-severity sacred invariants, project-specific hard rules); a §0 Forker checklist lists what to fill in and instructs the forker to delete §0 from their fork once filled in. Sibling slash-command stub at `claude/commands/audit.md`. Adopter-side install workflow documented in a new `docs/MIGRATION.md` §1.2.1 covering copy semantics (fork-not-symlink because per-stack rubrics diverge), the `cp` commands, and the per-stack split option. Numbering choice: §1.2.1 (sub-subsection of §1.2 wiring) was used instead of strict §1.3 to preserve ~13 existing cross-refs (new-project SKILL.md §1.3–§1.7 cites, MIGRATION self-cites at §1.3/§1.6/§1.7, SPEC §1.0 cite, epic.md §1.2 cite, README §1.0 cite). Functionally identical placement; flag at the gate if strict §1.3 numbering matters.
+Shipped a stack-neutral `/audit` skill in flowtron at `claude/skills/audit/SKILL.md` (~5.6KB) that generalizes Project-17's two-skill audit pattern (`audit-backend` + `audit-frontend`) into a single 5-pass / capped-findings / writes-tickets-to-PLAN.md scaffold. The scaffold ships with generic placeholders marked `_(forker: …)_` at the customization points (default glob, rubric files, verification gates, per-pass examples, Critical-severity sacred invariants, project-specific hard rules); a §0 Forker checklist lists what to fill in and instructs the forker to delete §0 from their fork once filled in. Sibling slash-command stub at `claude/commands/audit.md`. Adopter-side install workflow documented in a new `docs/MIGRATION.md` §1.2.1 covering copy semantics (fork-not-symlink because per-stack rubrics diverge), the `cp` commands, and the per-stack split option. Numbering choice: §1.2.1 (sub-subsection of §1.2 wiring) was used instead of strict §1.3 to preserve ~13 existing cross-refs (new-project SKILL.md §1.3–§1.7 cites, MIGRATION self-cites at §1.3/§1.6/§1.7, SPEC §1.0 cite, epic.md §1.2 cite, README §1.0 cite). Functionally identical placement; flag at the gate if strict §1.3 numbering matters.
 
 **Archived:** 2026-05-10

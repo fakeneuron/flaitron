@@ -71,7 +71,7 @@ month's heading, that older heading is "closed" — so a late-swept row that
 resolves to that older month has no valid append target, contradicting
 "oldest first" / "never split a cohort" and the append-only file contract
 stated two sentences earlier ("Rows move verbatim... The file is
-append-only"). Surfaced in adppro 2026-09-20 (17 late-swept May-July rows)
+append-only"). Surfaced in project-02 2026-09-20 (17 late-swept May-July rows)
 per the PLAN.md line.
 
 Fix: drop the "closed to further appends" framing entirely. Every month

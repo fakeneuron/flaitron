@@ -1,5 +1,5 @@
 ---
-title: spec-tasklinegrammar-invisipaw-leak
+title: spec-tasklinegrammar-project-17-leak
 status: completed
 tags: []
 created: 2026-05-22
@@ -7,18 +7,18 @@ due:
 related-tasks: []
 ---
 
-# CORE-134 | spec-tasklinegrammar-invisipaw-leak
+# CORE-134 | spec-tasklinegrammar-project-17-leak
 
 [← PLAN.md](../PLAN.md) · 🟢 In progress · 🔗 [[CORE-132]]
 
 ## 🎯 Goal
 
-Replace the "InvisiPaw migration" examples at SPEC.md:151,154 with stack-neutral migration examples so the task-line-grammar section reads as generic adopter documentation.
+Replace the "Project-17 migration" examples at SPEC.md:151,154 with stack-neutral migration examples so the task-line-grammar section reads as generic adopter documentation.
 
 ## ✅ Acceptance
 
-- [ ] SPEC.md:151 no longer references InvisiPaw
-- [ ] SPEC.md:154 no longer references InvisiPaw
+- [ ] SPEC.md:151 no longer references Project-17
+- [ ] SPEC.md:154 no longer references Project-17
 - [ ] Replacement examples are clearly stack-neutral and illustrate the same grammar concepts (model-only with no shortname; legacy no-model form)
 
 ## 🧩 Subtasks
@@ -30,7 +30,7 @@ Replace the "InvisiPaw migration" examples at SPEC.md:151,154 with stack-neutral
 ## 🔗 Related
 
 - [[CORE-132]] — user-idiosyncrasy audit that surfaced this finding (Finding #1.2)
-- [[CORE-133]] — sibling fix (photard OCR example, same section)
+- [[CORE-133]] — sibling fix (project-22 OCR example, same section)
 
 ---
 
@@ -40,10 +40,10 @@ Replace the "InvisiPaw migration" examples at SPEC.md:151,154 with stack-neutral
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** SPEC.md:151,154 both still read "InvisiPaw migration" — confirmed leak.
+  **Rationale:** SPEC.md:151,154 both still read "Project-17 migration" — confirmed leak.
 
 - [x] Read relevant source files
-- [x] **Archive skim** — CORE-132 surfaced this finding (#1.2). CORE-133 is the immediately prior sibling fix (photard OCR, same grammar-examples block); its pattern (plain in-place replacement, same line shape) applies directly here. No other archive file is load-bearing.
+- [x] **Archive skim** — CORE-132 surfaced this finding (#1.2). CORE-133 is the immediately prior sibling fix (project-22 OCR, same grammar-examples block); its pattern (plain in-place replacement, same line shape) applies directly here. No other archive file is load-bearing.
 - [x] **Drift check** — SPEC.md:151,154 match the task description exactly; no drift.
 - [x] Asked clarifying questions OR logged "No clarifications needed" with explicit assumptions
 - [x] Subtasks above populated with concrete, ordered steps
@@ -51,10 +51,10 @@ Replace the "InvisiPaw migration" examples at SPEC.md:151,154 with stack-neutral
 **Discovery Notes:**
 
 No clarifications needed. Current lines:
-- 151: `- [ ] **CORE-016** [sonnet] — Execute InvisiPaw migration per CORE-008 playbook.`
-- 154: `- [ ] **CORE-016** — Execute InvisiPaw migration per CORE-008 playbook.    (legacy)`
+- 151: `- [ ] **CORE-016** [sonnet] — Execute Project-17 migration per CORE-008 playbook.`
+- 154: `- [ ] **CORE-016** — Execute Project-17 migration per CORE-008 playbook.    (legacy)`
 
-Both rows illustrate "no shortname" forms — line 151 with a `[model]` tag, line 154 as the legacy no-model variant. The replacement only needs to keep the grammar shape intact; the description content is illustrative. Replacing "InvisiPaw migration" with "project adoption" keeps it generic without losing the instructional shape.
+Both rows illustrate "no shortname" forms — line 151 with a `[model]` tag, line 154 as the legacy no-model variant. The replacement only needs to keep the grammar shape intact; the description content is illustrative. Replacing "Project-17 migration" with "project adoption" keeps it generic without losing the instructional shape.
 
 ## 🛠️ Phase 2: Execution
 
@@ -64,7 +64,7 @@ Both rows illustrate "no shortname" forms — line 151 with a `[model]` tag, lin
 
 **Implementation Notes:**
 
-SPEC.md:151,154: `Execute InvisiPaw migration per CORE-008 playbook.` → `Execute project adoption per CORE-008 playbook.` (both the `[sonnet]` form and the legacy no-model form).
+SPEC.md:151,154: `Execute Project-17 migration per CORE-008 playbook.` → `Execute project adoption per CORE-008 playbook.` (both the `[sonnet]` form and the legacy no-model form).
 
 ## 🧪 Phase 3: Testing & Linting
 
@@ -78,12 +78,12 @@ Doc-only change to SPEC.md:151,154. Verified replacement text reads correctly in
 
 ## 🚀 Phase 4: Closure
 
-- [x] **Doc-drift sweep** — README.md: no change · SPEC.md: updated (lines 151,154 `InvisiPaw migration` → `project adoption`) · docs/MIGRATION.md: no change · claude/AGENTS-snippet.md: no change · docs/CONVENTIONS.md: no change · CONTRIBUTING.md: no change · SECURITY.md: no change
+- [x] **Doc-drift sweep** — README.md: no change · SPEC.md: updated (lines 151,154 `Project-17 migration` → `project adoption`) · docs/MIGRATION.md: no change · claude/AGENTS-snippet.md: no change · docs/CONVENTIONS.md: no change · CONTRIBUTING.md: no change · SECURITY.md: no change
 - [x] Closed — PLAN.md line flipped to stub form `Completed 2026-05-22.` and tasknote moved to `_project/tasknote/archive/core/`
 - [x] Recap drafted (surfaces at the 📦 ready-to-commit gate, or inline on conditional skip)
 
 **Final Summary:**
 
-Two-word fix: replaced `InvisiPaw migration` with `project adoption` in both SPEC.md:151 (model-tagged form) and SPEC.md:154 (legacy no-model form). The task-line-grammar examples in the `## Task-line format` section now read as generic adopter documentation.
+Two-word fix: replaced `Project-17 migration` with `project adoption` in both SPEC.md:151 (model-tagged form) and SPEC.md:154 (legacy no-model form). The task-line-grammar examples in the `## Task-line format` section now read as generic adopter documentation.
 
 **Archived:** 2026-05-22

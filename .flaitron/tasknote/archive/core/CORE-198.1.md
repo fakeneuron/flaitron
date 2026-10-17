@@ -26,7 +26,7 @@ Scope the `CORE-EPIC-198` epic (`context-chain-portability`) before any implemen
 ## 🧩 Subtasks
 
 - [ ] Inventory shared design surface (user's ~/CLAUDE.md + ~/code/CLAUDE.md, flowtron contract docs that reference either, multi-platform wiring posture, Grok-specific gaps) — log in Discovery Notes
-- [ ] Skim _project/tasknote/archive/core/ for relevant precedents (CORE-EPIC-154 multi-agent-portability, CORE-010 ~/Code/CLAUDE.md flowtron pointer) — log load-bearing findings
+- [ ] Skim _project/tasknote/archive/core/ for relevant precedents (CORE-EPIC-154 multi-agent-portability, CORE-010 ~/code/CLAUDE.md flowtron pointer) — log load-bearing findings
 - [ ] Drift check on cited paths and concepts (PLATFORMS.md Grok mention, AGENT-NEUTRALITY.md ledger, AGENTS-snippet.md paste-block) — flag any drift before re-interpreting the epic
 - [ ] Surface open scoping questions via structured ask (multi-agent-discovery model, redundancy threshold, Grok-specific deliverables, environment-agnostic-lift candidates) — record answers in a "Resolved scoping" table
 - [ ] Draft refined long descriptions for CORE-198.2 .. CORE-198.4; word-count each (≤50w target / 70w hard cap)
@@ -38,7 +38,7 @@ Scope the `CORE-EPIC-198` epic (`context-chain-portability`) before any implemen
 
 - [[CORE-EPIC-198]] — parent epic
 - [[CORE-EPIC-154]] — multi-agent-portability epic (closest precedent; established the two-layer contract/wiring split and the sibling-platform plug-in pattern)
-- [[CORE-010]] — added flowtron pointer to ~/Code/CLAUDE.md (the file the user now wants to retire)
+- [[CORE-010]] — added flowtron pointer to ~/code/CLAUDE.md (the file the user now wants to retire)
 
 ---
 
@@ -51,7 +51,7 @@ Scope the `CORE-EPIC-198` epic (`context-chain-portability`) before any implemen
   **Rationale:** User explicitly invoked `/ft-epic-discovery` with a multi-pronged scope description spanning user-machine CLAUDE.md consolidation, Grok adoption, and flowtron-side redundancy audit. Scope is multi-child structural sweep (not single-task), warrants the Discovery + Audit bracket per `SPEC/epic.md`.
 
 - [x] Read relevant source files:
-  - `~/.claude/CLAUDE.md` (global) + `~/Code/CLAUDE.md` (workspace) — full read; surfaced four user-CLAUDE.md rule clusters (core principles, surgical-changes, shell discipline, model selection)
+  - `~/.claude/CLAUDE.md` (global) + `~/code/CLAUDE.md` (workspace) — full read; surfaced four user-CLAUDE.md rule clusters (core principles, surgical-changes, shell discipline, model selection)
   - `SPEC.md` + `SPEC/model.md` + `SPEC/epic.md` — confirmed contract-layer agent-neutrality posture (CORE-EPIC-154 closed 2026-05-23)
   - `docs/PLATFORMS.md` + `docs/AGENT-NEUTRALITY.md` — confirmed Grok already accommodated as sibling-platform slot; AGENTS.md paste-block agent-neutral
   - `claude/AGENTS-snippet.md` — confirmed paste-block + symlink wiring; flowtron-self has no `~/code/CLAUDE.md` references
@@ -61,7 +61,7 @@ Scope the `CORE-EPIC-198` epic (`context-chain-portability`) before any implemen
 
 - [x] **Drift check** — file paths cited in conversation context all verified at HEAD:
   - `~/.claude/CLAUDE.md` exists ✓
-  - `~/Code/CLAUDE.md` exists ✓
+  - `~/code/CLAUDE.md` exists ✓
   - Flowtron contract surface has **zero references to `~/code/CLAUDE.md`** — confirmed via grep across README/SPEC/docs/templates/CONTRIBUTING/SECURITY. Retiring it has no flowtron-side rename burden.
   - `docs/PLATFORMS.md` references `grok` 5× — all in the sibling-platform-slot framing established at CORE-154.4.
   - `docs/AGENT-NEUTRALITY.md` references `grok` 3× — all in the platform-plug-in-mechanism out-of-scope clarifier.
@@ -77,7 +77,7 @@ Scope the `CORE-EPIC-198` epic (`context-chain-portability`) before any implemen
 | Precedent | What it locked | How CORE-198 extends it |
 |---|---|---|
 | [[CORE-EPIC-154]] multi-agent-portability (closed 2026-05-23) | Contract layer is agent-neutral; wiring layer is per-platform; `claude/` keeps its name; sibling-platform pattern documented in `docs/PLATFORMS.md`; `docs/AGENT-NEUTRALITY.md` ledger records intentional Claude-specific surfaces | Most of the heavy-lift for Grok already shipped. CORE-198 is the lens-specific follow-up: verify the existing posture holds for Grok adoption; audit user-side redundancy against the (now agent-neutral) flowtron contract. |
-| [[CORE-010]] flowtron pointer in ~/Code/CLAUDE.md (2026-04-30) | Workspace-standards layer references flowtron as "available, not required"; multi-line bullet shape in "Shared Workflow Philosophy" section | CORE-198.3 migrates this pointer to `~/.claude/CLAUDE.md` (the new global home) when `~/Code/CLAUDE.md` retires. |
+| [[CORE-010]] flowtron pointer in ~/code/CLAUDE.md (2026-04-30) | Workspace-standards layer references flowtron as "available, not required"; multi-line bullet shape in "Shared Workflow Philosophy" section | CORE-198.3 migrates this pointer to `~/.claude/CLAUDE.md` (the new global home) when `~/code/CLAUDE.md` retires. |
 | [[CORE-132]] user-idiosyncrasy comb (2026-05-22) | 5-pass audit posture for adopter-facing content; findings surfaced as discrete PLAN.md follow-up tickets (no in-place edits in the audit task) | CORE-198.2 uses the same surgical posture: redundancy findings table + recommendations; actual lifts file as follow-up tickets, not as edits inside the audit child. |
 | [[CORE-129]] AGENTS.md migration (2026-05-22) | AGENTS.md is the canonical agent-neutral entry point; read by Claude Code, Codex CLI, Cursor, Amp, Aider — and by extension any future tool including Grok | CORE-198.4 verifies Grok-cli reads AGENTS.md the same way (verification-only doc pass; no new wiring). |
 
@@ -172,7 +172,7 @@ Technical detail:
 - **Child sequencing locked:** `.2` redundancy-audit (audit-first; produces lift/keep/drop findings) → `.3` claude-md-consolidation (executes consolidation with `.2`'s findings as input; retires `~/code/CLAUDE.md`) → `.4` grok-adoption-verification (independent flowtron-side read-through). Sequencing matters: `.4` doesn't depend on `.2`/`.3`, but `.3` consumes `.2`'s findings.
 - **4 load-bearing scoping clarifications resolved** via structured ask: scope = hybrid (children may touch user-machine files); Grok = verification-only doc pass (no new wiring); lift policy = audit + recommendations only (no in-place contract edits in audit child); no new agnostic context-chain doc.
 - **Archive skim surfaced 4 load-bearing precedents:** [[CORE-EPIC-154]] (most of the heavy-lift for multi-agent portability already shipped; CORE-198 is the lens-specific follow-up), [[CORE-010]] (`.3` migrates the flowtron-pointer to `~/.claude/CLAUDE.md`), [[CORE-132]] (`.2` uses the recommendations-only audit posture), [[CORE-129]] (AGENTS.md is the canonical agent-neutral entry point Grok inherits).
-- **Drift check key finding:** Flowtron's contract surface has **zero references to `~/code/CLAUDE.md`** — retiring it has no flowtron-side rename burden. The CORE-010 pointer in `~/Code/CLAUDE.md` migrates to `~/.claude/CLAUDE.md` as part of `.3`.
+- **Drift check key finding:** Flowtron's contract surface has **zero references to `~/code/CLAUDE.md`** — retiring it has no flowtron-side rename burden. The CORE-010 pointer in `~/code/CLAUDE.md` migrates to `~/.claude/CLAUDE.md` as part of `.3`.
 - **N=5 held** — no audit-number bump; `.5` audit line filed at Step 4 stays as-is.
 
 **Archived:** 2026-05-25

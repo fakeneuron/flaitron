@@ -20,7 +20,7 @@ blocked-by: [CORE-769.6]
 
 ## 🎯 Goal
 
-Make the fleet updater carry adopters across v7.0.0's skill renames: a rename-aware migrate that swaps old→new skill links and prunes the retired command links in the bump commit, a rename-blind-spot fix in the new-skills note, `/ft-update` naming a dangling slug's replacement, a MIGRATION manual recipe, and natabula's caller row.
+Make the fleet updater carry adopters across v7.0.0's skill renames: a rename-aware migrate that swaps old→new skill links and prunes the retired command links in the bump commit, a rename-blind-spot fix in the new-skills note, `/ft-update` naming a dangling slug's replacement, a MIGRATION manual recipe, and project-20's caller row.
 
 ## ✅ Acceptance
 
@@ -31,7 +31,7 @@ Make the fleet updater carry adopters across v7.0.0's skill renames: a rename-aw
 - [x] Updater syntax clean — `node --check tools/update-adopters.mjs && node --check tools/update-adopters.test.mjs`
 - [x] `/ft-update` Step 4.6 names each dangling slug's replacement from the MIGRATION table — `grep -q 'Replacement' claude/skills/ft-update/SKILL.md` + `judgment` (prose contract)
 - [x] MIGRATION carries a v7.0.0 manual recipe, and the fleet-updater paragraph names the v7 exception — `grep -q 'Upgrading to v7.0.0' docs/MIGRATION.md`
-- [x] natabula NAT-391 caller row filed and committed locally in natabula — `git -C ~/Code/natabula log -1 --format=%s | grep -q NAT-391`
+- [x] project-20 NAT-391 caller row filed and committed locally in project-20 — `git -C ~/code/project-20 log -1 --format=%s | grep -q NAT-391`
 - [x] Drift checks clean — `bash tools/drift-checks.sh`
 
 ## 🧩 Subtasks
@@ -43,7 +43,7 @@ Make the fleet updater carry adopters across v7.0.0's skill renames: a rename-aw
 - [x] `reportResult` wording; header comment paragraph
 - [x] Tests: plan unit, classify lift, apply end-to-end + rollback, note blind spot, MIGRATION parity
 - [x] `/ft-update` Step 4.6 replacement lookup; MIGRATION recipe + fleet-updater sentence
-- [x] File + commit NAT-391 in natabula
+- [x] File + commit NAT-391 in project-20
 - [x] Phase 3: updater suite, checks, drift checks, `/code-review medium`
 
 ## 🔗 Related
@@ -64,7 +64,7 @@ Make the fleet updater carry adopters across v7.0.0's skill renames: a rename-aw
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** v7.0.0 is not cut yet (latest tag v6.1.0), and all 24 fleet adopters sit at v6.0.0 with **tracked** skill links (16–34 each). Each would cross v7's BREAKING block, and today that skips them all. natabula, for one, tracks 3 renamed `.claude/skills` links, 3 renamed `.agents/skills` links, a per-project `ft-new-project` link, and 8 `.claude/commands/*.md` links that v7 leaves dangling. Without this child the fleet bump to v7 is entirely manual.
+  **Rationale:** v7.0.0 is not cut yet (latest tag v6.1.0), and all 24 fleet adopters sit at v6.0.0 with **tracked** skill links (16–34 each). Each would cross v7's BREAKING block, and today that skips them all. project-20, for one, tracks 3 renamed `.claude/skills` links, 3 renamed `.agents/skills` links, a per-project `ft-new-project` link, and 8 `.claude/commands/*.md` links that v7 leaves dangling. Without this child the fleet bump to v7 is entirely manual.
 
 - [x] Read relevant source files — `tools/update-adopters.mjs` in full (gates, v6 `applyMigrate` undo stack, `WIRING_SURFACES`, `addedFilesForSurface`), `/ft-update` Steps 3–4.7, MIGRATION §"Pinning and bumping" + retired-skills table, UPGRADING.md v6 recipe, `SPEC/scope-boundaries.md` §"Cross-repo edit remit". Small known read set, so no probe.
 
@@ -72,7 +72,7 @@ Make the fleet updater carry adopters across v7.0.0's skill renames: a rename-aw
 
 - [x] **Archive skim** — `archive/core/` confirmed (README: `CORE-*` → `archive/core/`). 122 hits for `update-adopters.mjs`; the load-bearing ones were read directly. CORE-711.3 (v6 migrate) set the precedents: a `checkAdopter` option seam, only the rename tag lifted from the bearing gate, an undo stack unwound newest-first, tracked symlinks only, a real-submodule fixture, and a rollback asserted with a byte-identical snapshot. Its review blocker (ignored files resurfacing) is a reminder to check what a move leaves visible. CORE-769.2 narrowed the Claude surface to `claude/skills/` (`claudeSkillsSurface`). CORE-769.6's Learnings carry the final map.
 
-- [x] **Drift check** — `--diff-filter=A` is at `update-adopters.mjs:492` as Probe B said. PLAN line vs this note: two operator-approved extensions, both inside "rename-aware fleet migration for v7.0.0": (1) prune tracked retired command links, since without it the lifted gate would commit a v7 bump that leaves 8 dangling tracked links per repo; (2) a report-only count of tracked files still naming an old slug, the analogue of v6's per-project step-6 prose sweep. The PLAN's "21 caller references" are 21 in `.claude/skills` at `.1` time; today it is ~68 across 19 natabula files (skills, templates, scripts + tests, docs), and the row scopes them all. MIGRATION's retired rows for the four renames and the command stubs already exist (`.2`–`.6`), so the manual recipe is a new subsection, not new rows. `ft-new-project` is global-only by contract, yet natabula tracks a per-project link to it; the map covers it generically.
+- [x] **Drift check** — `--diff-filter=A` is at `update-adopters.mjs:492` as Probe B said. PLAN line vs this note: two operator-approved extensions, both inside "rename-aware fleet migration for v7.0.0": (1) prune tracked retired command links, since without it the lifted gate would commit a v7 bump that leaves 8 dangling tracked links per repo; (2) a report-only count of tracked files still naming an old slug, the analogue of v6's per-project step-6 prose sweep. The PLAN's "21 caller references" are 21 in `.claude/skills` at `.1` time; today it is ~68 across 19 project-20 files (skills, templates, scripts + tests, docs), and the row scopes them all. MIGRATION's retired rows for the four renames and the command stubs already exist (`.2`–`.6`), so the manual recipe is a new subsection, not new rows. `ft-new-project` is global-only by contract, yet project-20 tracks a per-project link to it; the map covers it generically.
 
 - [x] Asked clarifying questions OR logged "No clarifications needed" with explicit assumptions — 4 asks; see Resolved scoping
 
@@ -86,7 +86,7 @@ Make the fleet updater carry adopters across v7.0.0's skill renames: a rename-aw
 |---|---|
 | Retired command links | Swap + prune in the same commit |
 | Prose references | Report-only count on the report line |
-| natabula row | File NAT-391 + local commit in natabula (unpushed) |
+| project-20 row | File NAT-391 + local commit in project-20 (unpushed) |
 | Map SSOT | Script constant + MIGRATION table; test-bound parity |
 
 **Design.**
@@ -136,7 +136,7 @@ Make the fleet updater carry adopters across v7.0.0's skill renames: a rename-aw
   - `applyMigrate` composition
 - `claude/skills/ft-update/SKILL.md` Step 4.6: each dangling hit gets `→ <replacement>`, looked up in MIGRATION's retired table.
 - `docs/MIGRATION.md`: the Step 4.6 sentence names the replacement lookup; a new `#### Upgrading to v7.0.0 (skill renames)` recipe; the fleet-updater paragraph names v7.0.0 as the second lifted breaking release. The recipe was exercised against a scratch layout: renamed Claude and Codex links swapped and resolving, the command link pruned, a real `.claude/commands/audit.md` left alone.
-- natabula: `NAT-391` filed under `## High`, local commit `e6f66a6` (unpushed).
+- project-20: `NAT-391` filed under `## High`, local commit `e6f66a6` (unpushed).
 
 ## 🧪 Phase 3: Testing & Linting
 
@@ -161,7 +161,7 @@ node --test tools/update-adopters.test.mjs                                 → 0
 node --check tools/update-adopters.mjs && node --check tools/update-adopters.test.mjs → 0
 grep -q 'Replacement' claude/skills/ft-update/SKILL.md                     → 0
 grep -q 'Upgrading to v7.0.0' docs/MIGRATION.md                            → 0
-git -C ~/Code/natabula log -1 --format=%s | grep -q NAT-391               → 0
+git -C ~/code/project-20 log -1 --format=%s | grep -q NAT-391               → 0
 bash tools/drift-checks.sh                                                 → 0
 scratchpad recipe-check.sh (MIGRATION v7 recipe on a fake layout)           → swaps resolve; ft-new-project removed, no per-project ft-adopt; ft-* command link pruned; vendor look-alike + real audit.md kept
 ```
@@ -226,7 +226,7 @@ The fleet updater can now carry adopters across v7.0.0. A range crossing `SKILL_
 - a per-project link renamed into the global-only `ft-adopt` is removed, not swapped;
 - links the adopter edited without committing are left alone.
 
-The report line counts the rewired links, the tracked files still naming an old slug, and any leftover real `.claude/commands` files. The new-skills note now sees `git mv`'d skills and leaves out only the ones this adopter's plan wires. `/ft-update` Step 4.6 names each dangling slug's replacement, and MIGRATION gains a hand recipe. natabula has NAT-391 for its callers.
+The report line counts the rewired links, the tracked files still naming an old slug, and any leftover real `.claude/commands` files. The new-skills note now sees `git mv`'d skills and leaves out only the ones this adopter's plan wires. `/ft-update` Step 4.6 names each dangling slug's replacement, and MIGRATION gains a hand recipe. project-20 has NAT-391 for its callers.
 
 - **Changed files:**
   - `tools/update-adopters.mjs`
@@ -236,14 +236,14 @@ The report line counts the rewired links, the tracked files still naming an old 
   - `docs/PLATFORMS.md`
   - `.flaitron/PLAN.md` (stub flip)
   - this note
-  - natabula `e6f66a6` (`.flaitron/PLAN.md`; local, unpushed)
+  - project-20 `e6f66a6` (`.flaitron/PLAN.md`; local, unpushed)
 - **Verification:** updater suite → 0 (74 pass), `node --check` ×2 → 0, Acceptance greps → 0, drift checks → 0, and the manual recipe exercised on a scratch layout.
 - **Refactors:** none. `applyBump` runs the link undos ahead of the unchanged `rollbackBump`.
 - **Docs verdict:** PLATFORMS updated; everything else "no change" (sweep above).
 - **`touches:` reconciliation:** declared 5 files; `git diff --name-only` shows those 5 plus `docs/PLATFORMS.md`, from the doc-drift sweep.
 - **Maintainability:** the rename map is one constant, held to MIGRATION's table by a test. A future rename release needs a new tag/map entry, not new machinery. An unmapped `git mv` now surfaces in the note instead of going silent.
 - **Operator follow-ups:**
-  - Push natabula when ready (one local commit).
+  - Push project-20 when ready (one local commit).
   - At `/ft-release` v7.0.0, write the tag's BREAKING Migration block so it points at MIGRATION §"Upgrading to v7.0.0 (skill renames)". The updater lifts only that tag.
 
 **Archived:** 2026-10-09

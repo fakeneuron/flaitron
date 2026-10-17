@@ -51,7 +51,7 @@ Make the project `.flowtron/tasknote/README.md` §"Archive layout" table the man
 
 ## 🔗 Related
 
-- [[CORE-412]] — `supersedes:` (partial). CORE-412 (2026-08-08) stated the archive-folder rule and, on an explicit operator choice, picked "lowercase the prefix (mechanical, no lookup table)" over "full descriptive word (needs a maintained lookup)". The *rule* survives as the recommended default when declaring a new prefix; the "no lookup table" half is overturned — the table is now the read-path authority, because a project may legitimately declare a folder the rule would not produce (`NAT-` → `archive/natabula/`).
+- [[CORE-412]] — `supersedes:` (partial). CORE-412 (2026-08-08) stated the archive-folder rule and, on an explicit operator choice, picked "lowercase the prefix (mechanical, no lookup table)" over "full descriptive word (needs a maintained lookup)". The *rule* survives as the recommended default when declaring a new prefix; the "no lookup table" half is overturned — the table is now the read-path authority, because a project may legitimately declare a folder the rule would not produce (`NAT-` → `archive/project-20/`).
 
 ---
 
@@ -82,8 +82,8 @@ Make the project `.flowtron/tasknote/README.md` §"Archive layout" table the man
   **No clarifications needed.** Four explicit assumptions the operator is asserting by proceeding:
 
   1. **Mandatory for *all* prefixes, not just non-canonical ones.** The PLAN line offers both. All-prefixes is chosen: the failure mechanism *is* the branch — `NAT-` "reads as known", so any rule with a known/unknown split re-opens the same hole for the next adopter prefix that looks canonical. An unconditional lookup has no branch to misjudge.
-  2. **`NAT-` → `archive/natabula/` is declared in natabula's own README table.** Taken from the PLAN line; not verified. natabula is outside this checkout, so reading it is barred by both the operator's path-access rule and `SPEC/scope-boundaries.md` §"Cross-repo edit remit". Nothing in this deliverable depends on the specific mapping — only on a declared folder being allowed to differ from the derived one.
-  3. **No mechanical guard ships from flowtron.** natabula's `scripts/check-archive-layout.sh` (NAT-232) stays adopter-side. `SPEC/scope-boundaries.md` §"What flowtron does NOT provide" deliberately omits a CLI, with one carved-out exception that explicitly does not extend; this row is the contract half.
+  2. **`NAT-` → `archive/project-20/` is declared in project-20's own README table.** Taken from the PLAN line; not verified. project-20 is outside this checkout, so reading it is barred by both the operator's path-access rule and `SPEC/scope-boundaries.md` §"Cross-repo edit remit". Nothing in this deliverable depends on the specific mapping — only on a declared folder being allowed to differ from the derived one.
+  3. **No mechanical guard ships from flowtron.** project-20's `scripts/check-archive-layout.sh` (NAT-232) stays adopter-side. `SPEC/scope-boundaries.md` §"What flowtron does NOT provide" deliberately omits a CLI, with one carved-out exception that explicitly does not extend; this row is the contract half.
   4. **CORE-412 is refined, not reversed.** The lowercase rule remains the recommended default for *declaring* a new prefix's folder. Only its "no lookup table needed" claim is overturned, on the read path.
 
 - [x] Subtasks above populated with concrete, ordered steps, and YAML `touches:` declared with the paths this task expects to edit
@@ -110,7 +110,7 @@ Make the project `.flowtron/tasknote/README.md` §"Archive layout" table the man
 
 **Two halves, as planned.**
 
-*Half (a) — `<area>` is looked up, never derived.* Both README §"Archive layout" sections inverted: the prefix→folder table is now declared authoritative, and the lowercase rule is demoted to a **declaration-time default** for adding a row. Both explicitly note that a project may declare a folder the default would not produce (`NAT-*` → `archive/natabula/`) and that the row wins. `SPEC.md` §"Task ID convention" gained the canonical paragraph. Five skill bullets and `SPEC/procedures/ft-task.md` §2 converted from `Unknown prefix → read README` to an unconditional table read, with `no row → stop and ask; do not guess a folder` replacing the old fall-through.
+*Half (a) — `<area>` is looked up, never derived.* Both README §"Archive layout" sections inverted: the prefix→folder table is now declared authoritative, and the lowercase rule is demoted to a **declaration-time default** for adding a row. Both explicitly note that a project may declare a folder the default would not produce (`NAT-*` → `archive/project-20/`) and that the row wins. `SPEC.md` §"Task ID convention" gained the canonical paragraph. Five skill bullets and `SPEC/procedures/ft-task.md` §2 converted from `Unknown prefix → read README` to an unconditional table read, with `no row → stop and ask; do not guess a folder` replacing the old fall-through.
 
 *Half (b) — empty is not the same as absent.* The Archive-skim step at six surfaces now treats an absent or empty `archive/<area>/` as a prompt to re-check `<area>` against the README table before logging "no prior tasknotes": `SPEC.md` §"📝 Phase 1: Discovery", `templates/tasknote-template.md`, `templates/tasknote-micro-template.md`, `claude/skills/ft-task/SKILL.md` Step 4, `claude/skills/ft-micro-task/SKILL.md`, and `SPEC/procedures/ft-task.md`.
 

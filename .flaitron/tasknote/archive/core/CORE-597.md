@@ -16,7 +16,7 @@ touches:
 
 ## 🎯 Goal
 
-Untrack `caobunga-status.md` and gitignore it so the cross-repo orchestrator's status writes stop landing as unconventional `caobunga:` commits on `main`.
+Untrack `caobunga-status.md` and gitignore it so the cross-repo orchestrator's status writes stop landing as unconventional `project-07:` commits on `main`.
 
 ## ✅ Acceptance
 
@@ -43,9 +43,9 @@ Untrack `caobunga-status.md` and gitignore it so the cross-repo orchestrator's s
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** File exists, is currently tracked (1 commit: `71e5051 caobunga: update GitHub-facing status`), and is absent from both `.gitignore` and `CLAUDE.md` §"Repo Layout". `caobunga:` is not a recognized commit type (`docs/CONVENTIONS.md`: `feat:`/`fix:`/`chore:`/`docs:` only). Task as filed matches current repo state exactly; proceeding with the "untrack + gitignore" alternative (see clarifying-questions note below).
+  **Rationale:** File exists, is currently tracked (1 commit: `71e5051 project-07: update GitHub-facing status`), and is absent from both `.gitignore` and `CLAUDE.md` §"Repo Layout". `project-07:` is not a recognized commit type (`docs/CONVENTIONS.md`: `feat:`/`fix:`/`chore:`/`docs:` only). Task as filed matches current repo state exactly; proceeding with the "untrack + gitignore" alternative (see clarifying-questions note below).
 
-- [x] Read relevant source files — `.gitignore` (line 9: `SCRATCH*.md`), `caobunga-status.md` (680B, single tracked commit), `CLAUDE.md` §"Repo Layout" (no mention of the file), `docs/CONVENTIONS.md` (commit-type list, no `caobunga:`).
+- [x] Read relevant source files — `.gitignore` (line 9: `SCRATCH*.md`), `caobunga-status.md` (680B, single tracked commit), `CLAUDE.md` §"Repo Layout" (no mention of the file), `docs/CONVENTIONS.md` (commit-type list, no `project-07:`).
 
 - [x] **Best Practices Review** — N/A, no code/module-boundary work; this is a repo-hygiene/ignore-list change matching the existing `SCRATCH*.md` precedent (generated, machine-local status file that shouldn't accrue commit history on `main`).
 
@@ -98,7 +98,7 @@ Untrack `caobunga-status.md` and gitignore it so the cross-repo orchestrator's s
 - [x] **Evidence-based recap** drafted — see Final Summary below.
 
 **Final Summary:**
-Untracked `caobunga-status.md` (`git rm --cached`) and added it to `.gitignore` beside `SCRATCH*.md` (with a one-line comment), so the cross-repo caobunga orchestrator's status writes no longer land as `caobunga:` commits on `main` (`caobunga:` was never a recognized commit type per `docs/CONVENTIONS.md`). Chose the "untrack + gitignore" alternative over "register as a tracked convention" — more surgical, matches the existing `SCRATCH*.md` precedent, and avoids adding a new commit-type convention for one generated status file.
+Untracked `caobunga-status.md` (`git rm --cached`) and added it to `.gitignore` beside `SCRATCH*.md` (with a one-line comment), so the cross-repo project-07 orchestrator's status writes no longer land as `project-07:` commits on `main` (`project-07:` was never a recognized commit type per `docs/CONVENTIONS.md`). Chose the "untrack + gitignore" alternative over "register as a tracked convention" — more surgical, matches the existing `SCRATCH*.md` precedent, and avoids adding a new commit-type convention for one generated status file.
 
 - **Changed:** `.gitignore` (+3 lines), git index (`caobunga-status.md` untracked; file unchanged on disk).
 - **Verification:** `git ls-files caobunga-status.md` → exit 0, empty; `git check-ignore caobunga-status.md` → exit 0, prints filename; file still present on disk.

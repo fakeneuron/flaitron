@@ -118,7 +118,7 @@ its watched surfaces, with `last-verified:` tracking that sync.
 | `b75a55d` | CORE-535.4 skills-cite-dont-restate | **no** | **non-drift** — pure compression of the Claude skill (restated contract → one-line citations, 33,940→27,570 bytes). Its commit message asserts every branch, marker, fragment Read, and flag interaction preserved; diff confirms no behavior added. The SOP already routes rather than restates, so there is nothing to mirror. |
 | `e0773c2` | CORE-535.3 spec-core-lazy-split | yes | mirrored |
 | `1fbc7a3` | CORE-535.2 context-load-ledger | **no** | **drift — this task.** The probe clause below. |
-| `bc916a0` | CORE-533 narrow-caobunga-batch | yes | mirrored |
+| `bc916a0` | CORE-533 narrow-project-07-batch | yes | mirrored |
 | `b9a30d8` | CORE-527 blocked-by sweep | yes | mirrored |
 | `0e68ce5` | CORE-526 purpose blurb Step 1 | yes | mirrored |
 | `4f9ac47` | CORE-503 visual-baseline refusal | no | non-drift — refuses a carve-out; the SOP's Phase 3 already states the unattended 👁️ park unconditionally (lines 369-371). |

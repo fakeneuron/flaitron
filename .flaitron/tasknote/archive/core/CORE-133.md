@@ -1,5 +1,5 @@
 ---
-title: spec-area-prefix-photard-leak
+title: spec-area-prefix-project-22-leak
 status: completed
 tags: []
 created: 2026-05-22
@@ -7,17 +7,17 @@ due:
 related-tasks: []
 ---
 
-# CORE-133 | spec-area-prefix-photard-leak
+# CORE-133 | spec-area-prefix-project-22-leak
 
 [← PLAN.md](../PLAN.md) · 🟢 In progress
 
 ## 🎯 Goal
 
-Replace the `photard`-specific example on SPEC.md:113 with a stack-neutral placeholder so flowtron's SPEC reads as a generic tool, not a photard-aware one.
+Replace the `project-22`-specific example on SPEC.md:113 with a stack-neutral placeholder so flowtron's SPEC reads as a generic tool, not a project-22-aware one.
 
 ## ✅ Acceptance
 
-- [ ] SPEC.md:113 no longer references `photard` or `OCR`
+- [ ] SPEC.md:113 no longer references `project-22` or `OCR`
 - [ ] Replacement example is clearly stack-neutral
 
 ## 🧩 Subtasks
@@ -38,7 +38,7 @@ Replace the `photard`-specific example on SPEC.md:113 with a stack-neutral place
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** SPEC.md:113 still contains `(e.g., \`OCR-\` for photard's OCR pipeline)` — the photard leak is confirmed.
+  **Rationale:** SPEC.md:113 still contains `(e.g., \`OCR-\` for project-22's OCR pipeline)` — the project-22 leak is confirmed.
 
 - [x] Read relevant source files
 - [x] **Archive skim** — CORE-132.md is the only load-bearing prior file; it surfaced this finding (#1.1) and proposed two neutral wordings: `<project>'s OCR` or `a vision-heavy project's OCR pipeline`. No other archive touched this specific line.
@@ -58,7 +58,7 @@ No clarifications needed. Replacement text: `(e.g., \`OCR-\` for a vision-heavy 
 
 **Implementation Notes:**
 
-Changed SPEC.md:113: `for photard's OCR pipeline` → `for a vision-heavy project's OCR pipeline`.
+Changed SPEC.md:113: `for project-22's OCR pipeline` → `for a vision-heavy project's OCR pipeline`.
 
 ## 🧪 Phase 3: Testing & Linting
 
@@ -72,12 +72,12 @@ Doc-only change to SPEC.md:113. Verified replacement text reads correctly in con
 
 ## 🚀 Phase 4: Closure
 
-- [x] **Doc-drift sweep** — README.md: no change · SPEC.md: updated (line 113 `photard's OCR pipeline` → `a vision-heavy project's OCR pipeline`) · docs/MIGRATION.md: no change · claude/AGENTS-snippet.md: no change · docs/CONVENTIONS.md: no change · CONTRIBUTING.md: no change · SECURITY.md: no change
+- [x] **Doc-drift sweep** — README.md: no change · SPEC.md: updated (line 113 `project-22's OCR pipeline` → `a vision-heavy project's OCR pipeline`) · docs/MIGRATION.md: no change · claude/AGENTS-snippet.md: no change · docs/CONVENTIONS.md: no change · CONTRIBUTING.md: no change · SECURITY.md: no change
 - [x] Closed — PLAN.md line flipped to stub form `Completed 2026-05-22.` and tasknote moved to `_project/tasknote/archive/core/`
 - [x] Recap drafted (surfaces at the 📦 ready-to-commit gate, or inline on conditional skip)
 
 **Final Summary:**
 
-One-word fix: replaced `photard's OCR pipeline` with `a vision-heavy project's OCR pipeline` in SPEC.md:113. The domain-prefix example now reads as generic adopter guidance rather than a personal-project reference.
+One-word fix: replaced `project-22's OCR pipeline` with `a vision-heavy project's OCR pipeline` in SPEC.md:113. The domain-prefix example now reads as generic adopter guidance rather than a personal-project reference.
 
 **Archived:** 2026-05-22

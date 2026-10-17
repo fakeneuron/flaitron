@@ -95,7 +95,7 @@ Discovery surfaced no significant deviation → skip 🛠️.
 
 **Testing Notes:**
 
-- Cross-checked SHAs directly: `v5.11.0^{commit}` = `72905fc…`; adppro (reported `current`) gitlink = `72905fc…` (matches → clean); bananapeel (reported `drift`) gitlink = `f94bc84…` = `v5.9.0^{commit}` (matches → `describePin` renders `v5.9.0`). Confirms the equality/mismatch branches and tag resolution all execute correctly (not a swallowed-error false pass).
+- Cross-checked SHAs directly: `v5.11.0^{commit}` = `72905fc…`; project-02 (reported `current`) gitlink = `72905fc…` (matches → clean); project-04 (reported `drift`) gitlink = `f94bc84…` = `v5.9.0^{commit}` (matches → `describePin` renders `v5.9.0`). Confirms the equality/mismatch branches and tag resolution all execute correctly (not a swallowed-error false pass).
 - **Live finding (out of scope — detection only):** 10 `~/code` adopters currently carry real gitlink drift — worktree SPEC.md at v5.11.0 but committed pin at v5.9.0. Per-repo fixes are `/ft-update` / manual gitlink commit in each repo's own session (not bulk-pushed from flowtron).
 
 ## 🚀 Phase 4: Closure

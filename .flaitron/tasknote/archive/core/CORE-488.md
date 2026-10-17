@@ -13,7 +13,7 @@ related-tasks: [CORE-483.3]
 
 ## 🎯 Goal
 
-Decide whether flowtron needs an explicit cross-repo-edit remit rule, or whether CORE-483.3's direct-edit-to-natabula-from-a-flowtron-task-cycle precedent should simply be ratified as-is.
+Decide whether flowtron needs an explicit cross-repo-edit remit rule, or whether CORE-483.3's direct-edit-to-project-20-from-a-flowtron-task-cycle precedent should simply be ratified as-is.
 
 ## ✅ Acceptance
 
@@ -32,7 +32,7 @@ Decide whether flowtron needs an explicit cross-repo-edit remit rule, or whether
 
 ## 🔗 Related
 
-- [[CORE-483.3]] — the precedent under review: executed its whole deliverable as direct edits to natabula files from this flowtron task cycle
+- [[CORE-483.3]] — the precedent under review: executed its whole deliverable as direct edits to project-20 files from this flowtron task cycle
 
 ---
 
@@ -43,23 +43,23 @@ Decide whether flowtron needs an explicit cross-repo-edit remit rule, or whether
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** Filed same-day by natabula NAT-182.3 as an optional operator-ratified extra, off the CORE-483.3 precedent. The decision the PLAN line asks for is real and unresolved — no drift.
+  **Rationale:** Filed same-day by project-20 NAT-182.3 as an optional operator-ratified extra, off the CORE-483.3 precedent. The decision the PLAN line asks for is real and unresolved — no drift.
 
-- [x] Read relevant source files — narrow, known read set: `SPEC.md` in full (§"What flowtron does NOT provide", §"Working in the flowtron repo itself", §"Blocked tasks" / "Loop tasks" placement), `.flowtron/tasknote/archive/core/CORE-483.3.md` (the precedent itself), `~/Code/natabula/.flowtron/tasknote/archive/natabula/NAT-182.3.md` and `NAT-148.md` (the routing task that filed this line, and the remit precedent it names), `README.md` §"Sessions, loops, and sub-agents" (session/context boundary language — found no existing repo-boundary rule), `.flowtron/tasknote/README.md` §"AI-referenced docs" (doc-drift sweep list). No probe needed.
+- [x] Read relevant source files — narrow, known read set: `SPEC.md` in full (§"What flowtron does NOT provide", §"Working in the flowtron repo itself", §"Blocked tasks" / "Loop tasks" placement), `.flowtron/tasknote/archive/core/CORE-483.3.md` (the precedent itself), `~/code/project-20/.flowtron/tasknote/archive/project-20/NAT-182.3.md` and `NAT-148.md` (the routing task that filed this line, and the remit precedent it names), `README.md` §"Sessions, loops, and sub-agents" (session/context boundary language — found no existing repo-boundary rule), `.flowtron/tasknote/README.md` §"AI-referenced docs" (doc-drift sweep list). No probe needed.
 
 - [x] **Best Practices Review** — N/A for code: this is a SPEC.md contract addition, not a code change. The "responsibility" in scope is where a new cross-repo scoping rule belongs among SPEC.md's existing scope-boundary sections (§"Blocked tasks", §"Loop tasks", §"What flowtron does NOT provide") — resolved by placement choice below, not a refactor.
 
-- [x] **Archive skim** — `archive/core/`: only `CORE-483.3.md` touches this surface (read in full above; no other flowtron tasknote mentions cross-repo edits). `archive/natabula/` (cross-referenced via `related-tasks`): `NAT-182.3.md` (filed this PLAN line; records the routing table and the operator's opt-in) and `NAT-148.md` (the remit precedent NAT-182.3 cites — natabula routes flowtron findings as filed CORE- tickets rather than fixing flowtron directly; establishes the *reverse* direction of the same boundary this task now considers making symmetric).
+- [x] **Archive skim** — `archive/core/`: only `CORE-483.3.md` touches this surface (read in full above; no other flowtron tasknote mentions cross-repo edits). `archive/project-20/` (cross-referenced via `related-tasks`): `NAT-182.3.md` (filed this PLAN line; records the routing table and the operator's opt-in) and `NAT-148.md` (the remit precedent NAT-182.3 cites — project-20 routes flowtron findings as filed CORE- tickets rather than fixing flowtron directly; establishes the *reverse* direction of the same boundary this task now considers making symmetric).
 
-- [x] **Drift check** — CORE-483.3's claim re-verified directly from its own archived tasknote (read above): it edited `~/Code/natabula/configs/.gitignore` and `~/Code/natabula/.gitignore` (3-line comment insertions each) as its whole deliverable, "deliberate and recorded ... flowtron edits live outside this repo," flowtron-side commit only (`git status` in the archived note shows only the tasknote touched in the flowtron repo). Matches the PLAN.md line's description exactly — no drift. No SPEC.md section currently states a cross-repo edit boundary in either direction (grepped for "cross-repo" / "other repo" / "outside this repo" across SPEC.md, docs/, README.md — zero hits before this task).
+- [x] **Drift check** — CORE-483.3's claim re-verified directly from its own archived tasknote (read above): it edited `~/code/project-20/configs/.gitignore` and `~/code/project-20/.gitignore` (3-line comment insertions each) as its whole deliverable, "deliberate and recorded ... flowtron edits live outside this repo," flowtron-side commit only (`git status` in the archived note shows only the tasknote touched in the flowtron repo). Matches the PLAN.md line's description exactly — no drift. No SPEC.md section currently states a cross-repo edit boundary in either direction (grepped for "cross-repo" / "other repo" / "outside this repo" across SPEC.md, docs/, README.md — zero hits before this task).
 
-- [x] Asked clarifying questions — this is a genuine governance decision only the operator can make (ratify the precedent as-is vs. record a durable rule vs. record nothing), so AskUserQuestion was used rather than picking silently. Operator chose: **record a symmetric remit rule** in SPEC.md, mirroring the NAT-148/NAT-182.3 direction (natabula doesn't fix flowtron directly; flowtron shouldn't fix other repos directly either), with CORE-483.3 named as the explicit pre-rule exception.
+- [x] Asked clarifying questions — this is a genuine governance decision only the operator can make (ratify the precedent as-is vs. record a durable rule vs. record nothing), so AskUserQuestion was used rather than picking silently. Operator chose: **record a symmetric remit rule** in SPEC.md, mirroring the NAT-148/NAT-182.3 direction (project-20 doesn't fix flowtron directly; flowtron shouldn't fix other repos directly either), with CORE-483.3 named as the explicit pre-rule exception.
 
 - [x] Subtasks above populated with concrete, ordered steps
 
 **Discovery Notes:**
 
-The gap: CORE-483.3 (this repo) edited natabula's files directly as its whole deliverable — no SPEC.md rule permitted or forbade this. Meanwhile natabula's own NAT-148/NAT-182.3 precedent already established the *reverse* direction as policy: a natabula task that finds a flowtron-side issue files a CORE- ticket and routes it, never fixes flowtron directly from the natabula session. CORE-488 closes that asymmetry by writing the same boundary into SPEC.md, applying in both directions, with the one tasknote that predates the rule named as a scoped, non-precedent-setting exception — the same framing SPEC.md already uses for `tools/update-adopters.mjs` and the viz cross-project exception in §"What flowtron does NOT provide".
+The gap: CORE-483.3 (this repo) edited project-20's files directly as its whole deliverable — no SPEC.md rule permitted or forbade this. Meanwhile project-20's own NAT-148/NAT-182.3 precedent already established the *reverse* direction as policy: a project-20 task that finds a flowtron-side issue files a CORE- ticket and routes it, never fixes flowtron directly from the project-20 session. CORE-488 closes that asymmetry by writing the same boundary into SPEC.md, applying in both directions, with the one tasknote that predates the rule named as a scoped, non-precedent-setting exception — the same framing SPEC.md already uses for `tools/update-adopters.mjs` and the viz cross-project exception in §"What flowtron does NOT provide".
 
 ## 🛠️ Phase 2: Execution
 
@@ -105,7 +105,7 @@ One file changed: `SPEC.md` (+19 lines), inserted between `## Blocked tasks` (:8
 
 **Final Summary:**
 
-Resolved CORE-488's open governance question by adding `## Cross-repo edit remit` to `SPEC.md` (between `## Blocked tasks` and `## Loop tasks`): a tasknote's deliverable lands in the repo whose session opened it, and cross-repo work gets filed in the target repo rather than edited directly from the task cycle that found it. This makes the boundary symmetric with the routing convention natabula's NAT-148/NAT-182.3 precedent already enforces in the other direction (natabula routes flowtron-side findings as filed `CORE-` tickets rather than fixing flowtron directly). CORE-483.3 — the one tasknote that edited natabula's `.gitignore` files directly as its whole deliverable — is named in the new section as the explicit pre-rule exception, framed like the existing "singular exception, not a precedent" carve-outs in §"What flowtron does NOT provide" (`tools/update-adopters.mjs`, the viz cross-project query exception).
+Resolved CORE-488's open governance question by adding `## Cross-repo edit remit` to `SPEC.md` (between `## Blocked tasks` and `## Loop tasks`): a tasknote's deliverable lands in the repo whose session opened it, and cross-repo work gets filed in the target repo rather than edited directly from the task cycle that found it. This makes the boundary symmetric with the routing convention project-20's NAT-148/NAT-182.3 precedent already enforces in the other direction (project-20 routes flowtron-side findings as filed `CORE-` tickets rather than fixing flowtron directly). CORE-483.3 — the one tasknote that edited project-20's `.gitignore` files directly as its whole deliverable — is named in the new section as the explicit pre-rule exception, framed like the existing "singular exception, not a precedent" carve-outs in §"What flowtron does NOT provide" (`tools/update-adopters.mjs`, the viz cross-project query exception).
 
 **Changed files:** `SPEC.md` (+19 lines, one new section; no existing line touched). `.flowtron/PLAN.md` (CORE-488 line → stub) and this tasknote (scaffold → archive) round out the commit.
 
@@ -115,6 +115,6 @@ Resolved CORE-488's open governance question by adding `## Cross-repo edit remit
 
 **Documentation verdict:** 16 of 17 AI-referenced docs unaffected; `SPEC.md` itself carries the deliverable (see doc-drift sweep above).
 
-**Maintainability effect:** closes a real asymmetry — the reverse-direction remit (adopter → flowtron) was already policy via natabula's own precedent, but flowtron had no rule governing the forward direction (flowtron task → other repo) until now. Future tasknotes that discover cross-repo work have an explicit, findable rule to follow instead of re-litigating CORE-483.3's judgment call each time.
+**Maintainability effect:** closes a real asymmetry — the reverse-direction remit (adopter → flowtron) was already policy via project-20's own precedent, but flowtron had no rule governing the forward direction (flowtron task → other repo) until now. Future tasknotes that discover cross-repo work have an explicit, findable rule to follow instead of re-litigating CORE-483.3's judgment call each time.
 
 **Archived:** 2026-08-28

@@ -120,7 +120,7 @@ Content is surface-specific, not copied: `gates.md`'s entries are about banners,
 - **Scope held to the gate surface** (the Discovery answer). The one entry that brushes `SPEC.md` core — "PLAN and the archive are flipped, so the task is done" — is written in its **cue-scoped** form: it refutes the excuse against the 🏁 emission rule that `gates.md` already owns, and links to `SPEC.md` §"Paper-complete guard" for the full contract rather than restating it.
 - **No new glyph.** The sections reference existing cues only, so the §"Casing rule" uniqueness constraint and the CORE-065 two-banner cap are both untouched. One entry actively defends the cap (an agent reading "two-banner cap" as forbidding a destructive-action escalation).
 - **Fork-safe.** The `ft-audit` sections contain no fillable `<placeholder>` (grep-verified: 0) and cite only §§1/2/5/6, all of which survive a fork — §0 is deleted by the forker, so nothing in §7/§8 points at it. §0's checklist is unchanged, per the Discovery assumption.
-- **Grounded citations kept sparing:** InvisiPaw FE-64 (the paper-complete motivating case, already named in `SPEC.md`) and `SECURITY.md` for the forged-clearance vector. `gates.md`'s internal precedent (CORE-065 cap, control-marker integrity) is referenced by section, not by task ID, since those clauses already carry their own history.
+- **Grounded citations kept sparing:** Project-17 FE-64 (the paper-complete motivating case, already named in `SPEC.md`) and `SECURITY.md` for the forged-clearance vector. `gates.md`'s internal precedent (CORE-065 cap, control-marker integrity) is referenced by section, not by task ID, since those clauses already carry their own history.
 
 ## 🧪 Phase 3: Testing & Linting
 

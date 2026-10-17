@@ -22,7 +22,7 @@ Declare the existing Flaitron brand kit with stable identity, committed copy evi
 
 ## ✅ Acceptance
 
-- [x] Manifest v1 has a newly allocated immutable UUID, exactly the two existing SVG records with truthful roles/dimensions/review/provenance, three committed copy-evidence lists, and valid referenced bytes — Natabula `validate-brand.sh <isolated committed snapshot>` before closure and `validate-brand.sh . --revision <closure-sha>` afterward.
+- [x] Manifest v1 has a newly allocated immutable UUID, exactly the two existing SVG records with truthful roles/dimensions/review/provenance, three committed copy-evidence lists, and valid referenced bytes — Project-20 `validate-brand.sh <isolated committed snapshot>` before closure and `validate-brand.sh . --revision <closure-sha>` afterward.
 - [x] Existing BRAND copy, SVG pixels, root/viz source images and tab chrome are byte-preserved; promo stays absent — `python3 /private/tmp/core-788-verify.py <snapshot> <base-sha>`.
 - [x] PROMPTS reconstructs the documented redraw/source chain, records unrecovered original prompt/model and geometry-script unknowns honestly, and distinguishes producer review from export permission — `judgment`: compare git history and CORE-643/329.3/632.2/711.4 records.
 - [x] The pinned NAT-415.5 evidence pilot reports a valid 3/4 kit, two valid declared assets, evidenced copy and missing landscape/social coverage, with no export/approval/consumer claims — `python3 /private/tmp/core-788-pilot.py <snapshot>`.
@@ -33,7 +33,7 @@ Declare the existing Flaitron brand kit with stable identity, committed copy evi
 
 - [x] Reconstruct mark provenance from committed history; write detailed notes and a v1 manifest without altering the assets.
 - [x] Update the self-contained brand README with declaration and validation boundaries.
-- [x] Validate an isolated committed snapshot using Natabula's pinned runtime, check evidence/coverage and byte preservation, and obtain external review.
+- [x] Validate an isolated committed snapshot using Project-20's pinned runtime, check evidence/coverage and byte preservation, and obtain external review.
 - [x] Sweep docs, close atomically and validate the final producer commit for the existing NAT-415.5 pilot.
 
 
@@ -51,7 +51,7 @@ Declare the existing Flaitron brand kit with stable identity, committed copy evi
 
 - [x] Reviewed the task entry in PLAN.md — Medium, [heavy], no unattended marker; active model satisfies the category.
 - [x] **Relevance Assessment** — **Verdict:** Proceed. **Rationale:** The existing 3/4 kit has neither manifest nor detailed provenance; this matches the routed NAT-415.5 prerequisite.
-- [x] Read relevant source files — brand kit, root/viz images' history, Natabula DESIGN-STANDARDS manifest section, schema/example, validator, inventory and parked NAT-415.5 receipts. Natabula tool revision: a78a1d9562f8aafb6c6c9a7b1c746d76f895c4cc; its dirty pilot note is read-only input, left untouched.
+- [x] Read relevant source files — brand kit, root/viz images' history, Project-20 DESIGN-STANDARDS manifest section, schema/example, validator, inventory and parked NAT-415.5 receipts. Project-20 tool revision: a78a1d9562f8aafb6c6c9a7b1c746d76f895c4cc; its dirty pilot note is read-only input, left untouched.
 - [x] **Best Practices Review** — N/A for code/module boundaries. Extend the existing producer contract; keep copy in BRAND, provenance in PROMPTS, and machine declarations in assets.json. Reuse HQ validation without depositing a new Flaitron schema/tool.
 - [x] **Archive skim** — README resolves CORE to archive/core. Read CORE-643, CORE-329.3 and CORE-632.2; targeted CORE-652.2/711.4/724.6 sections preserve the self-contained README and rename history. No factual correction to archived notes.
 - [x] **Drift check** — existing logo/favicon are 64×64/32×32 viewBoxes, renamed aria-label only since the redraw. BRAND has 5/21/75 words under current parsing, not the historical pre-rename count. Promo remains absent. Current SPEC scope boundaries forbid implementing HQ or consumer work here.
@@ -75,7 +75,7 @@ Validation reads committed bytes only. Before closure use a disposable local Git
 
 Allocated project UUID `a7118fc2-2807-4b01-b316-80d562dfe195` once. Asset IDs `symbol` and `favicon`; 64×64/32×32 SVG viewBoxes, default/transparent, public audience, prior approved producer review. Authored source references point to committed LOGO.webp and CORE-643; PROMPTS documents why no repeatable derivation recipe is asserted. No optional state/URL declarations or promo record. Copy evidence for every field is README.md + SPEC.md, which support the workflow description; evidence is not automatic semantic proof or export permission.
 
-Preflight uses isolated producer snapshot `4ceeffdaea698c4b4de0c240aad533ecb155a994` based on entry SHA `a5806a9e9ffea78932d54405e7ae7988d8b6a9d3`. Tool files were extracted from Natabula commit `a78a1d9562f8aafb6c6c9a7b1c746d76f895c4cc` into `/private/tmp/core-788-rfi4u0sc/natabula`; no HQ writes. The snapshot is a local test artifact, not a real public/export/consumer receipt. Real producer SHA is the atomic closure commit containing this note.
+Preflight uses isolated producer snapshot `4ceeffdaea698c4b4de0c240aad533ecb155a994` based on entry SHA `a5806a9e9ffea78932d54405e7ae7988d8b6a9d3`. Tool files were extracted from Project-20 commit `a78a1d9562f8aafb6c6c9a7b1c746d76f895c4cc` into `/private/tmp/core-788-rfi4u0sc/project-20`; no HQ writes. The snapshot is a local test artifact, not a real public/export/consumer receipt. Real producer SHA is the atomic closure commit containing this note.
 
 ## 🧪 Phase 3: Testing & Linting
 
@@ -87,12 +87,12 @@ Preflight uses isolated producer snapshot `4ceeffdaea698c4b4de0c240aad533ecb155a
 
 **Testing Notes:**
 
-Receipt (pinned tool directory abbreviated below as `/private/tmp/core-788-rfi4u0sc/natabula`, producer snapshot as `/private/tmp/core-788-rfi4u0sc/producer`):
+Receipt (pinned tool directory abbreviated below as `/private/tmp/core-788-rfi4u0sc/project-20`, producer snapshot as `/private/tmp/core-788-rfi4u0sc/producer`):
 
-- `bash /private/tmp/core-788-rfi4u0sc/natabula/scripts/validate-brand.sh /private/tmp/core-788-rfi4u0sc/producer` → 2 initially, uv cache access denied by sandbox. Re-ran the wrapper's exact uv invocation with approved cache access.
-- `uv run --no-project --with-requirements /private/tmp/core-788-rfi4u0sc/natabula/scripts/brand-requirements.txt python /private/tmp/core-788-rfi4u0sc/natabula/scripts/validate-brand.py /private/tmp/core-788-rfi4u0sc/producer` → 0; valid manifest, both assets valid, no findings.
+- `bash /private/tmp/core-788-rfi4u0sc/project-20/scripts/validate-brand.sh /private/tmp/core-788-rfi4u0sc/producer` → 2 initially, uv cache access denied by sandbox. Re-ran the wrapper's exact uv invocation with approved cache access.
+- `uv run --no-project --with-requirements /private/tmp/core-788-rfi4u0sc/project-20/scripts/brand-requirements.txt python /private/tmp/core-788-rfi4u0sc/project-20/scripts/validate-brand.py /private/tmp/core-788-rfi4u0sc/producer` → 0; valid manifest, both assets valid, no findings.
 - `python3 /private/tmp/core-788-verify.py /private/tmp/core-788-rfi4u0sc/producer a5806a9e9ffea78932d54405e7ae7988d8b6a9d3` → 0; compares preserved files against base Git blobs, identical root/viz WebP, no promo, changed paths restricted to declared deliverables/workflow.
-- `uv run --no-project --with-requirements /private/tmp/core-788-rfi4u0sc/natabula/scripts/brand-requirements.txt python /private/tmp/core-788-pilot.py /private/tmp/core-788-rfi4u0sc/producer` → 0; asserts inventory validation, two asset hashes/fingerprints, evidenced copy, baseline 3/4, all profiles missing (not undeclared/available). Temporary helpers are verification artifacts, not shipped Flaitron tools.
+- `uv run --no-project --with-requirements /private/tmp/core-788-rfi4u0sc/project-20/scripts/brand-requirements.txt python /private/tmp/core-788-pilot.py /private/tmp/core-788-rfi4u0sc/producer` → 0; asserts inventory validation, two asset hashes/fingerprints, evidenced copy, baseline 3/4, all profiles missing (not undeclared/available). Temporary helpers are verification artifacts, not shipped Flaitron tools.
 - `bash tools/drift-checks.sh` → 0 (all checks).
 - `git diff --check` → 0.
 - Provenance judgment: notes agree with the committed source/adoption/redraw/rename chain and the known unknowns. README judgment: opt-in identity/presence/validation/review boundaries agree with HQ v1, while retaining CORE-724.6's self-contained public-kit decision.

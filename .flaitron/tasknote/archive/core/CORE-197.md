@@ -53,7 +53,7 @@ Add the flowtron logo to the viz header and the flowtron version to the stats su
 
 - Logo source: `viz/public/LOGO.png` (user-supplied 228KB PNG)
 - Version source: `FLOWTRON_VERSION = 'v4.0.0'` added to `constants.ts`; bumped as part of each `/ft-release`
-- Logo placement: `<img src="/LOGO.png" alt="" aria-hidden="true" className="h-6 w-auto" />` inside `<h1 className="flex items-center gap-2 ...">` — img with empty alt so existing `toHaveTextContent('Flowtron — fintown')` assertions still pass
+- Logo placement: `<img src="/LOGO.png" alt="" aria-hidden="true" className="h-6 w-auto" />` inside `<h1 className="flex items-center gap-2 ...">` — img with empty alt so existing `toHaveTextContent('Flowtron — project-14')` assertions still pass
 - Version placement: `{' · flowtron '}{FLOWTRON_VERSION}` appended as a sibling text node at the end of the stats `<p>`, always visible regardless of filter state
 - No stats text assertions in App.test.tsx — no test changes required
 

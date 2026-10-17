@@ -39,7 +39,7 @@ Produce a redundancy-findings table classifying overlaps across `~/.claude/CLAUD
 - [[CORE-EPIC-198]] — parent epic (context-chain-portability)
 - [[CORE-198.1]] — predecessor Discovery that filed this child with locked scope (hybrid scope; recommendations-only posture; sequenced audit-first so `.3` consumes findings)
 - [[CORE-132]] — `user-idiosyncrasy comb` precedent: audit surfaces findings, follow-ups file as discrete PLAN.md tickets; no in-place edits inside the audit child
-- [[CORE-010]] — added the flowtron pointer to `~/Code/CLAUDE.md`; downstream `.3` migrates it to `~/.claude/CLAUDE.md` using this audit's findings as input
+- [[CORE-010]] — added the flowtron pointer to `~/code/CLAUDE.md`; downstream `.3` migrates it to `~/.claude/CLAUDE.md` using this audit's findings as input
 - [[CORE-129]] — AGENTS.md migration; the AGENTS.md paste-block is one of the four corpora in scope
 - [[CORE-EPIC-154]] — multi-agent-portability epic; locked contract-layer agent-neutrality (sets the "what does flowtron promise to be agnostic about?" baseline that this audit measures user-side content against)
 - [[CORE-037]] — workflow token-cost audit (archive-skim find); characterized both user CLAUDE.md files as "already lean / no section-level trim candidates" on the **size axis**. This audit operates on the orthogonal **redundancy axis** (cross-file overlap classification) — explicitly does not re-do CORE-037's word-count analysis
@@ -62,7 +62,7 @@ Produce a redundancy-findings table classifying overlaps across `~/.claude/CLAUD
   - `claude/AGENTS-snippet.md` (AGENTS.md paste-block source) — one paste-block (~13 lines of markdown body) + symlink-wiring section + viz/bumping appendices (the paste-block proper is the in-scope content)
   - `_project/tasknote/README.md` — confirmed AI-referenced doc set (9 entries) for Phase 4 sweep at closure
 
-- [x] **Archive skim** — `_project/tasknote/archive/core/` (221 archives). Confirmed the four precedents `.1` named ([[CORE-EPIC-154]], [[CORE-010]], [[CORE-132]], [[CORE-129]]) and surfaced one additional load-bearing precedent: [[CORE-037]] (workflow token-cost audit, archived 2026-05-05). Targeted greps for `~/.claude/CLAUDE.md` / `~/Code/CLAUDE.md` / `AGENTS-snippet` hit ~20+ archives; the orthogonal ones (e.g., CORE-008 InvisiPaw playbook, CORE-011 TasknoteSystem deletion, CORE-042.1 / .8 workflow-rethink, doc-drift-sweep cohorts) all visit these paths but on different axes (migration prose; legacy cleanup; size/token audit; drift checks) — none re-do redundancy classification. CORE-037 is the closest prior and is explicitly orthogonal to this task (size vs. redundancy).
+- [x] **Archive skim** — `_project/tasknote/archive/core/` (221 archives). Confirmed the four precedents `.1` named ([[CORE-EPIC-154]], [[CORE-010]], [[CORE-132]], [[CORE-129]]) and surfaced one additional load-bearing precedent: [[CORE-037]] (workflow token-cost audit, archived 2026-05-05). Targeted greps for `~/.claude/CLAUDE.md` / `~/code/CLAUDE.md` / `AGENTS-snippet` hit ~20+ archives; the orthogonal ones (e.g., CORE-008 Project-17 playbook, CORE-011 Project-28 deletion, CORE-042.1 / .8 workflow-rethink, doc-drift-sweep cohorts) all visit these paths but on different axes (migration prose; legacy cleanup; size/token audit; drift checks) — none re-do redundancy classification. CORE-037 is the closest prior and is explicitly orthogonal to this task (size vs. redundancy).
 
 - [x] **Drift check** — verified at HEAD:
   - `~/.claude/CLAUDE.md` and `~/code/CLAUDE.md` both exist ✓ (re-confirms `.1`)
@@ -218,7 +218,7 @@ Both tickets word-counts (long-desc only, after ` — `):
 Verification gates (substituting for automated tests):
 
 1. **ID collision check** — `grep -nE '\*\*CORE-(199|200)\*\*' _project/PLAN.md _project/tasknote/archive/core/*.md` returned zero hits. Both IDs are free.
-2. **Source-file existence (drift recheck)** — all cited paths exist at HEAD: `~/.claude/CLAUDE.md` · `~/Code/CLAUDE.md` · `SPEC.md` · `SPEC/{blocked,epic,model,starter,versioning}.md` · `claude/AGENTS-snippet.md` · `docs/CONVENTIONS.md`. ✓
+2. **Source-file existence (drift recheck)** — all cited paths exist at HEAD: `~/.claude/CLAUDE.md` · `~/code/CLAUDE.md` · `SPEC.md` · `SPEC/{blocked,epic,model,starter,versioning}.md` · `claude/AGENTS-snippet.md` · `docs/CONVENTIONS.md`. ✓
 3. **Wikilink integrity** — all 7 cited `[[ID]]`s in the related-tasks YAML, chip row, and 🔗 Related section resolve to PLAN.md entries (active or completed): CORE-EPIC-198 · CORE-198.1 · CORE-132 · CORE-010 · CORE-129 · CORE-EPIC-154 · CORE-037. ✓
 4. **Word-counts** (per SPEC §"PLAN.md filing-discipline thresholds"):
 

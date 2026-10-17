@@ -65,7 +65,7 @@ Ship `/release` as a flowtron-self-only skill that scaffolds and drives a releas
 
 ### Source-file inventory (live at 2026-05-09)
 
-- **Closest install precedent:** `claude/skills/new-project/SKILL.md` + `claude/commands/new-project.md` — the only other flowtron-self global skill today. User-global symlinks confirmed live: `~/.claude/skills/new-project → ~/code/flowtron/claude/skills/new-project` and `~/.claude/commands/new-project.md → ~/code/flowtron/claude/commands/new-project.md`. Note: symlink targets use lowercase `~/code/` (case-insensitive on this filesystem; cwd reports `/Users/fakeneuron/Code/flowtron`).
+- **Closest install precedent:** `claude/skills/new-project/SKILL.md` + `claude/commands/new-project.md` — the only other flowtron-self global skill today. User-global symlinks confirmed live: `~/.claude/skills/new-project → ~/code/flowtron/claude/skills/new-project` and `~/.claude/commands/new-project.md → ~/code/flowtron/claude/commands/new-project.md`. Note: symlink targets use lowercase `~/code/` (case-insensitive on this filesystem; cwd reports `~/code/flowtron`).
 - **Closest scaffold-and-drive precedent:** `claude/skills/task/SKILL.md` (200+ lines, 6 steps, lazy-load fragments under `claude/skills/task/`). `/release` mirrors the scaffold-and-drive shape but specialized for releases.
 - **Slash-command stub precedent:** `claude/commands/{task,new-project}.md` — frontmatter (`description`, optional `argument-hint`) + one-paragraph "invoke the skill" body.
 - **Recipe targets (live):**
@@ -134,7 +134,7 @@ Asking these via AskUserQuestion before writing Phase 1 subtasks.
 - **Auto-propose bump kind.** SKILL Step 2 reads `SPEC.md:3` + `git describe --tags --abbrev=0` + `git log <last-tag>..HEAD --oneline`; classifies by Conventional-Commits prefix (feat!→major, feat→minor, others→patch); proposes the bump. Drift between SPEC.md version and last tag short-circuits the skill (likely aborted prior release; reconcile first). PLAN-line target wins by default if it differs from auto-proposed.
 - **Auto-draft tag message.** SKILL Step 7.2 uses CORE-048's structure verbatim (subject + summary + Changes since vX.Y.Z grouped + Migration block). The `## Notes` block surfaces CORE-048's "non-boilerplate Migration block" lesson — auto-draft seeds; user is expected to review/edit. Adopter-impact classification happens in Phase 1 Discovery and feeds the Migration block draft.
 - **Why no SPEC.md cross-ref.** SPEC.md doesn't have a "Shipped skills" section; `/release` is flowtron-self only and doesn't fit any adopter-facing carve-out (§"When to use a tasknote" is for adopter filing skills). The release recipe was already canonical via CORE-048's archived tasknote precedent; the SKILL.md is now the executable codification of that precedent. No SPEC change needed.
-- **Symlink target casing.** Used lowercase `~/code/flowtron/...` (matches `/new-project`'s existing symlink target). The filesystem is case-insensitive on this Mac; cwd reports `/Users/fakeneuron/Code/flowtron` but `~/code/flowtron/...` resolves to the same directory. Verified via `readlink`.
+- **Symlink target casing.** Used lowercase `~/code/flowtron/...` (matches `/new-project`'s existing symlink target). The filesystem is case-insensitive on this Mac; cwd reports `~/code/flowtron` but `~/code/flowtron/...` resolves to the same directory. Verified via `readlink`.
 - **No new lazy SPEC module.** The release recipe lives entirely inside `claude/skills/release/SKILL.md`. SPEC/versioning.md (the existing lazy module) is about adopter-side pinning/bumping — different concern. No `SPEC/release.md` needed.
 - **Sibling-cohort independence.** This task ships zero adopter-wiring edits — the 3 wiring surfaces (`new-project` Step 3, MIGRATION §1.2, CLAUDE-snippet) are explicitly NOT touched per the locked install policy from CORE-057.1 Discovery. CORE-057.3 (`/epic-discovery`) and CORE-057.4 (`/close-epic`) will each add 2 more symlinks per surface following CORE-057.5's pattern.
 
@@ -146,8 +146,8 @@ Asking these via AskUserQuestion before writing Phase 1 subtasks.
 
 **Testing Notes:**
 
-`readlink ~/.claude/skills/release` → `/Users/fakeneuron/code/flowtron/claude/skills/release` ✓
-`readlink ~/.claude/commands/release.md` → `/Users/fakeneuron/code/flowtron/claude/commands/release.md` ✓
+`readlink ~/.claude/skills/release` → `~/code/flowtron/claude/skills/release` ✓
+`readlink ~/.claude/commands/release.md` → `~/code/flowtron/claude/commands/release.md` ✓
 
 The harness picked up the new skill mid-task (visible in the available-skills system reminder after symlink creation). Symlink wiring is live. Functional smoke of the skill itself defers to the next release cut (when the recipe will actually fire); the SKILL.md content is the canonical executable interpretation and reviewed against CORE-048's archived precedent for fidelity.
 

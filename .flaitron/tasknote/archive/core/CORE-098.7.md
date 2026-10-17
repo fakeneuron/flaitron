@@ -89,7 +89,7 @@ Add subtle visual distinction to epic rows (heavier border, leading icon, backgr
 
 **Testing Notes:**
 
-Visual tab-through and density-mode check done in Playwright. Both light and dark modes confirmed. Epic rows clearly distinct from task rows in bananapeel (mixed content) and flowtron (epic-only) projects. Comfortable density mode tested — no regression. Expand/collapse approved by user.
+Visual tab-through and density-mode check done in Playwright. Both light and dark modes confirmed. Epic rows clearly distinct from task rows in project-04 (mixed content) and flowtron (epic-only) projects. Comfortable density mode tested — no regression. Expand/collapse approved by user.
 
 ## 🚀 Phase 4: Closure
 

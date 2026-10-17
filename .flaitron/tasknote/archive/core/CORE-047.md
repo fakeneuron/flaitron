@@ -55,7 +55,7 @@ Tighten flowtron's doc-drift contract — light Phase 4 wording + strict epic-au
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** Bananapeel BP-300.x doc-drift evidence is concrete and recent; the three-part solution shape (light Phase 4 + strict epic-audit + project-declared doc set) is well-scoped and well-precedented by [[CORE-046]]'s closure-contract tightening.
+  **Rationale:** Project-04 BP-300.x doc-drift evidence is concrete and recent; the three-part solution shape (light Phase 4 + strict epic-audit + project-declared doc set) is well-scoped and well-precedented by [[CORE-046]]'s closure-contract tightening.
 
 - [x] Read relevant source files
 - [x] **Archive skim** — skim `_project/tasknote/archive/<area>/` for prior tasknotes that touched the source paths in scope; log relevant findings in Discovery Notes before re-interpreting the task

@@ -190,7 +190,7 @@ Excluded by design: `_project/tasknote/archive/` (write-once historical records)
 - Wikilink grep across `SPEC.md` + `claude/skills/`: 5 valid wikilinks (CORE-008, CORE-016, CORE-017, FE-001, FE-004 — all archived) + 2 template-token placeholders (RELATED-1, RELATED-2 — placeholder examples, not real wikilinks). Clean.
 - Frontmatter parity across 9 SKILLs: clean.
 - Version-pin: SPEC.md v1.3.0 = latest git tag v1.3.0; no CHANGELOG.md (retired per [[CORE-013]]). Clean.
-- Retired-convention residue: `legacy/`, `TasknoteSystem`, `Pinned to:` all clean.
+- Retired-convention residue: `legacy/`, `Project-28`, `Pinned to:` all clean.
 
 **5-pass walkthrough results:**
 

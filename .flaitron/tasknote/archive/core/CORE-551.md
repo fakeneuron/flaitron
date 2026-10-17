@@ -144,7 +144,7 @@ bodies stay executable interpretations that cite them. No new abstraction; the
   their commit-go gate verbatim."* The fence is about execution skills, not about
   unattended filing, so extending the section for the posture does not reopen it.
 - [[CORE-529]] — authored `SPEC.md` §"Deferred hand-off filing", motivated by
-  caobunga CBN-120.2 F4 / adppro DATA-13.3. Carries a ⚠️ `Superseded by [[CORE-533]]`
+  project-07 CBN-120.2 F4 / project-02 DATA-13.3. Carries a ⚠️ `Superseded by [[CORE-533]]`
   pointer (the adopter-ID citation was later stripped from contract prose — adopter
   task IDs stay in tasknotes, not in SPEC). Followed the pointer; the supersession
   touched only the citation, not the duty. Confirms the duty was written from a real
@@ -190,7 +190,7 @@ already-supported behavior; atomicity is not weakened.
 **Clarifying questions:** Asked two via AskUserQuestion (design fork; the adjacent
 `/ft-epic-discovery` gap). Both answered — Design B, and file-don't-fix.
 
-**Assumption on the blocked adopter.** caobunga CBN-138.2 lives outside this repo and
+**Assumption on the blocked adopter.** project-07 CBN-138.2 lives outside this repo and
 was not read (cross-repo paths are not opened without explicit approval). Assumed need:
 "an operator-less worker must be able to file the deferred hand-off row." The PLAN.md
 line's own framing supports this and nothing in the deliverable depends on details

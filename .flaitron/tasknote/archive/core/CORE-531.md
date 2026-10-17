@@ -29,7 +29,7 @@ parser regex), but `SPEC/tasknote-selection.md`'s Downstream-impact
 reconciliation section — the contract governing the `Nest` reconcile action,
 which is exactly where a filing skill turns an impacted entry into "a
 dependency of the new task" — says nothing about the required grammar. That
-silence is what let caobunga CBN-123 F5 happen: three of three seeded rows
+silence is what let project-07 CBN-123 F5 happen: three of three seeded rows
 recorded the dependency in a form the parser doesn't match.
 
 **Best Practices Review:** Contract-layer markdown only, no module touched.
@@ -84,7 +84,7 @@ design (same README section: "a volume decision, not a laziness one").
 Added a **Grammar discipline (Nest, and any dependency clause)** paragraph to
 `SPEC/tasknote-selection.md`'s Downstream-impact reconciliation section,
 immediately after the Reconcile actions table. It closes the gap that let
-caobunga CBN-123 F5 happen: the file told filers to turn an impacted entry
+project-07 CBN-123 F5 happen: the file told filers to turn an impacted entry
 into "a dependency of the new task" (the `Nest` action) without ever stating
 the parser-required grammar, so three of three seeded rows in that incident
 were written as `Blocked on [[ID]]` / free prose and silently dispatched as

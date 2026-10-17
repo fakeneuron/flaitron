@@ -27,8 +27,8 @@ Dry-run `/ft-prep-unattended` (gate reply `none`, zero writes) against flaitron'
 
 ## ✅ Acceptance
 
-- [x] Dry-run walk recorded for flaitron's PLAN plus three adopter PLANs (aetherlace, fakeneuron-nas, marscharts; email-manager added as a fourth — Implementation Notes): Step 3 counts, then every declined open row as `ID — class — first failing clause` — `judgment` (the classification is the deliverable; no command decides it). Presence check: `grep -c '^| ' .flaitron/tasknote/CORE-797.md`
-- [x] Zero writes in every walked repo — `git -C ~/Code/<repo> status --porcelain` empty for aetherlace, fakeneuron-nas, marscharts (and email-manager) before and after
+- [x] Dry-run walk recorded for flaitron's PLAN plus three adopter PLANs (project-03, project-11, project-19; project-10 added as a fourth — Implementation Notes): Step 3 counts, then every declined open row as `ID — class — first failing clause` — `judgment` (the classification is the deliverable; no command decides it). Presence check: `grep -c '^| ' .flaitron/tasknote/CORE-797.md`
+- [x] Zero writes in every walked repo — `git -C ~/code/<repo> status --porcelain` empty for project-03, project-11, project-19 (and project-10) before and after
 - [x] Guard A graded: every pin that touches a 👁️ / visual phrase or a hand-off cue names a test command that already exists in that repo, else the row stays — `judgment` + a `grep`/`ls` per cited command recorded in Testing Notes
 - [x] Guard B graded: no split's mechanical row carries a person-act (the operator act, or a step that needs its result) — `judgment`, one line per split
 - [x] Each miss — a guard violation, or a contract gap a real run would hit — filed as an open flaitron PLAN row ≤50w, or logged "no miss" — `grep -n` on the filed IDs in `.flaitron/PLAN.md`
@@ -36,7 +36,7 @@ Dry-run `/ft-prep-unattended` (gate reply `none`, zero writes) against flaitron'
 ## 🧩 Subtasks
 
 - [x] Walk flaitron's PLAN (Step 1 skip classes → Step 2 predicate + class → Step 3 gate text) and reply `none`
-- [x] Walk aetherlace, fakeneuron-nas, and marscharts the same way, read-only; record each repo's gate and the `none` reply (plus email-manager, the one walk that reached a gate)
+- [x] Walk project-03, project-11, and project-19 the same way, read-only; record each repo's gate and the `none` reply (plus project-10, the one walk that reached a gate)
 - [x] Grade Guard A and Guard B over every drafted pin/split; check each named test command exists
 - [x] Collect misses and contract gaps; draft a flaitron PLAN row for each (≤50w, next CORE IDs)
 - [x] Confirm zero writes in the walked repos (`git status --porcelain`)
@@ -65,13 +65,13 @@ Dry-run `/ft-prep-unattended` (gate reply `none`, zero writes) against flaitron'
 
 - [x] **Drift check** — the PLAN line matches the skill. Step 3's ask names `none` as the zero-write reply, and §"Preparing declined rows" names pin / split / stay. The guard wording comes from the SPEC: "A visual phrase, including `👁️`, is rewritten only when the replacement names a test command that already exists." A person-act in a mechanical row is ruled out by "describes only the factual slice." One version fact: all five adopters checked pin `v7.0.0`, which predates the skill. The adopter walks therefore apply flaitron HEAD's contract to their PLAN text. They do not run the skill from their own pin. This is a scoping fact, not drift.
 
-- [x] Asked clarifying questions OR logged "No clarifications needed" with explicit assumptions — No clarifications needed. Assumptions: (1) Adopters are chosen for coverage, not at random. **aetherlace** has `Operator:` rows with a follow-up that depends on the answer, a `Blocked by`, and epic `.N` rows. **fakeneuron-nas** has an operator probe with a conditional fix, a cross-repo dependency, and a mechanical-looking row. **marscharts** has `👁️` on epic children, which is the only place an unmarked open row in the fleet carries the glyph, and an upstream-wait row. (2) "Dry-run" means following the skill's Steps 1–3 by hand from this checkout, then replying `none`. Nothing is written in any walked repo. (3) "File fixes" means open flaitron PLAN rows written in this task's closure commit. The SPEC and skill stay unedited here.
+- [x] Asked clarifying questions OR logged "No clarifications needed" with explicit assumptions — No clarifications needed. Assumptions: (1) Adopters are chosen for coverage, not at random. **project-03** has `Operator:` rows with a follow-up that depends on the answer, a `Blocked by`, and epic `.N` rows. **project-11** has an operator probe with a conditional fix, a cross-repo dependency, and a mechanical-looking row. **project-19** has `👁️` on epic children, which is the only place an unmarked open row in the fleet carries the glyph, and an upstream-wait row. (2) "Dry-run" means following the skill's Steps 1–3 by hand from this checkout, then replying `none`. Nothing is written in any walked repo. (3) "File fixes" means open flaitron PLAN rows written in this task's closure commit. The SPEC and skill stay unedited here.
 
 - [x] Subtasks above populated with ordered steps; YAML `touches:` declared (omit only with no file deliverable)
 
 **Discovery Notes:**
 
-Open rows at HEAD: flaitron 2 (CORE-797 itself, CORE-641). aetherlace 15, fakeneuron-nas 11, marscharts 7 (counts include epic parents). No unmarked open row in the fleet carries a literal `👁️` outside marscharts FE-486.3–.5.
+Open rows at HEAD: flaitron 2 (CORE-797 itself, CORE-641). project-03 15, project-11 11, project-19 7 (counts include epic parents). No unmarked open row in the fleet carries a literal `👁️` outside project-19 FE-486.3–.5.
 
 Early lead, verified in Phase 2: the skill's starter-collision check (Step 2 "Starter") looks only at `.flaitron/tasknote/<ID>.md` and the archive. A split whose source ID has a `.flaitron/sidequest/<ID>.md` stub would write a starter. `sidequest_orphan()` then fails CI `PROMOTED STUB`, and `/ft-task`'s Step 3a promote path never retires the stub (Step 3b does). flaitron's CORE-641 has such a stub.
 
@@ -93,7 +93,7 @@ Discovery surfaced no significant deviation → skip 🛠️.
 
 **Implementation Notes:**
 
-**Scope deviation (inside the task).** The three planned adopters produced zero proposals, so the Step 3 gate never surfaced and the `none` reply was never reached. email-manager was added as a fourth adopter. It was the one surveyed PLAN with a draftable split. No downstream impact.
+**Scope deviation (inside the task).** The three planned adopters produced zero proposals, so the Step 3 gate never surfaced and the `none` reply was never reached. project-10 was added as a fourth adopter. It was the one surveyed PLAN with a draftable split. No downstream impact.
 
 **Reading rules applied.** (a) A `.k` whose `.1` was never filed (audit-repo epics state "Discovery supplied by audit-repo") is a chain head. (b) An upstream wait written in prose ("Parked: wait for …", "Blocked upstream") is read as a clause-4 block, by the predicate's uncertain-means-not-a-candidate rule. See O1.
 
@@ -106,7 +106,7 @@ Counts: 2 walked · 0 marked · 0 `[handoff]` · 0 candidates · 2 stay · 0 pin
 | CORE-797 | stay | 1 (`[heavy]`) | active tasknote (this one) |
 | CORE-641 | stay | 4 (prose wait) | "Parked: wait for a proper typescript-eslint release"; has `.flaitron/sidequest/CORE-641.md` (G4) |
 
-### Walk 2 — aetherlace (`2d05529`, pin v7.0.0)
+### Walk 2 — project-03 (`2d05529`, pin v7.0.0)
 
 Counts: 15 walked · 0 marked · 0 `[handoff]` · 1 candidate (AL-028) · 14 stay · 0 pin · 0 split. Zero proposals: no gate.
 
@@ -128,7 +128,7 @@ Counts: 15 walked · 0 marked · 0 `[handoff]` · 1 candidate (AL-028) · 14 sta
 | AL-021.N | stay | 1 | `.N` audit |
 | AL-022 | stay | 3 (`Operator`) | physical bench act; also `Blocked by` (clause 4); "tune the limits if a clean cable misses" is a G2 temptation |
 
-### Walk 3 — fakeneuron-nas (`c3f3b1a`, pin v7.0.0)
+### Walk 3 — project-11 (`c3f3b1a`, pin v7.0.0)
 
 Counts: 11 walked · 0 marked · 0 `[handoff]` · 4 candidates (NAS-10.N, NAS-12.2, NAS-12.N, NAS-14) · 7 stay · 0 pin · 0 split. Zero proposals: no gate.
 
@@ -137,16 +137,16 @@ Counts: 11 walked · 0 marked · 0 `[handoff]` · 4 candidates (NAS-10.N, NAS-12
 | NAS-EPIC-10 | stay | 1 | epic parent |
 | NAS-10.N | candidate | — | every sibling `[x]` |
 | NAS-EPIC-11 | stay | 1 | epic parent |
-| NAS-11.8 | stay | 3 (`deploy`, via `DEPLOY-033`; also cross-repo in substance) | "once InvisiPaw's runbook … stops"; a split temptation (G2): the 644 chmod must wait for the InvisiPaw edit |
+| NAS-11.8 | stay | 3 (`deploy`, via `DEPLOY-033`; also cross-repo in substance) | "once Project-17's runbook … stops"; a split temptation (G2): the 644 chmod must wait for the Project-17 edit |
 | NAS-11.N | stay | 6 | waits on open NAS-11.8 |
 | NAS-EPIC-12 | stay | 5 | epic parent (`[light]`) |
 | NAS-12.2 | candidate | — | chain head (no `.1` filed) |
 | NAS-12.N | candidate | — | settled by NAS-12.2, a candidate in the same walk |
 | NAS-15 | stay | 3 (`Operator`) | blocked tasknote exists; G2 temptation ("record the value … set it to 1") |
 | NAS-14 | candidate | — | left for seed |
-| NAS-13 | stay | 3 (`migration`, via the path `docs/MIGRATION.md`) | pin temptation (G1), the same shape as email-manager CORE-EPIC-2.3: the keyword trips on a path, not a person |
+| NAS-13 | stay | 3 (`migration`, via the path `docs/MIGRATION.md`) | pin temptation (G1), the same shape as project-10 CORE-EPIC-2.3: the keyword trips on a path, not a person |
 
-### Walk 4 — marscharts (`d91ba6c8a`, pin v7.0.0)
+### Walk 4 — project-19 (`d91ba6c8a`, pin v7.0.0)
 
 Counts: 7 walked · 0 marked · 0 `[handoff]` · 0 candidates · 7 stay · 0 pin · 0 split. Zero proposals: no gate.
 
@@ -160,7 +160,7 @@ Counts: 7 walked · 0 marked · 0 `[handoff]` · 0 candidates · 7 stay · 0 pin
 | FE-486.N | stay | 1 | `.N` audit |
 | CORE-229 | stay | 4 (prose wait) | "Blocked upstream, not by this repo"; the 2026-10-09 seed (`350cf27de`) also left it unmarked |
 
-### Walk 5 — email-manager (`7623062`, pin v7.0.0)
+### Walk 5 — project-10 (`7623062`, pin v7.0.0)
 
 Counts: 14 walked · 3 marked (DEPLOY-EPIC-1.4, BE-EPIC-2.5, CORE-EPIC-2.4, skipped) · 0 `[handoff]` · 2 candidates (CORE-EPIC-2.2, CORE-010) · 8 stay · 0 pin · 1 split.
 
@@ -193,20 +193,20 @@ Reply: **`none`**. Zero writes.
 
 ### Guard grading
 
-**Guard A — no pin strips a `👁️` or hand-off cue without an existing test command.** Zero pins were drafted in five walks, so no violation. Both pin temptations were resolved to stay by reading the whole section, not by the pin bullet alone. **G1:** the pin bullet's literal test is "names a test command that already exists." Any repo's generic runner passes that test (`npm run test:e2e` for FE-486.5). Only the stay bullet's "where no existing test command *decides* it" stops the pin. The bullet also gives no rule for a non-visual cue. Rewording `migrations/0001` to the bare filename would clear clause 3 for CORE-EPIC-2.3 with no person removed. fakeneuron-nas NAS-13 (`docs/MIGRATION.md`) has the same shape. (The first pass listed NAS-13 as a candidate. The external review caught that, and it is corrected above.)
+**Guard A — no pin strips a `👁️` or hand-off cue without an existing test command.** Zero pins were drafted in five walks, so no violation. Both pin temptations were resolved to stay by reading the whole section, not by the pin bullet alone. **G1:** the pin bullet's literal test is "names a test command that already exists." Any repo's generic runner passes that test (`npm run test:e2e` for FE-486.5). Only the stay bullet's "where no existing test command *decides* it" stops the pin. The bullet also gives no rule for a non-visual cue. Rewording `migrations/0001` to the bare filename would clear clause 3 for CORE-EPIC-2.3 with no person removed. project-11 NAS-13 (`docs/MIGRATION.md`) has the same shape. (The first pass listed NAS-13 as a candidate. The external review caught that, and it is corrected above.)
 
-**Guard B — no split sheds a person act into the mechanical row.** The one drafted split holds. `cf-rule-paginate` is code plus vitest (`worker/package.json` `test: vitest run`), and the remainder keeps the migration. **G2:** four rows tempt a split whose slice uses the person act's result: AL-017, AL-022, NAS-11.8, and NAS-15. Only the phrase "separates cleanly" stops it. A slice drafted from AL-017 would read "set oakley-2013-low's pass1.tsv row to other-author and run `screen apply pass1`." That row is `[light]`, trips no keyword, and has no `Blocked by`. A later seed would admit it, and an unattended run would flip the screening without the authorship check. A slice from NAS-11.8 would tighten the db to 644 before InvisiPaw's recovery stops `cp`-ing onto it.
+**Guard B — no split sheds a person act into the mechanical row.** The one drafted split holds. `cf-rule-paginate` is code plus vitest (`worker/package.json` `test: vitest run`), and the remainder keeps the migration. **G2:** four rows tempt a split whose slice uses the person act's result: AL-017, AL-022, NAS-11.8, and NAS-15. Only the phrase "separates cleanly" stops it. A slice drafted from AL-017 would read "set oakley-2013-low's pass1.tsv row to other-author and run `screen apply pass1`." That row is `[light]`, trips no keyword, and has no `Blocked by`. A later seed would admit it, and an unattended run would flip the screening without the authorship check. A slice from NAS-11.8 would tighten the db to 644 before Project-17's recovery stops `cp`-ing onto it.
 
 ### Mechanics gaps
 
-- **G3 — legacy numeric audit.** The Step 2 epic-child rule allocates "the next `.<k>` after the highest numeric sibling … inserted … immediately before that `.N` row." email-manager's epics have no `.N`. Their audit is the numeric `.5` / `.4`, already `[unattended]`. The split allocates BE-EPIC-2.6 *after* the audit. Then `/ft-close-epic`'s legacy rule ("the chosen ID matches the highest numeric `.<SUB>`") would read `.6` as the audit. Clause 6 also cycles: `.6` waits on `.5` (its `.k-1`), and `.5` waits on every child. Related: on any epic, the mechanical `.k` lands after its own remainder, so clause 6 holds it until the person act closes. That direction is safe, but it is worth stating.
+- **G3 — legacy numeric audit.** The Step 2 epic-child rule allocates "the next `.<k>` after the highest numeric sibling … inserted … immediately before that `.N` row." project-10's epics have no `.N`. Their audit is the numeric `.5` / `.4`, already `[unattended]`. The split allocates BE-EPIC-2.6 *after* the audit. Then `/ft-close-epic`'s legacy rule ("the chosen ID matches the highest numeric `.<SUB>`") would read `.6` as the audit. Clause 6 also cycles: `.6` waits on `.5` (its `.k-1`), and `.5` waits on every child. Related: on any epic, the mechanical `.k` lands after its own remainder, so clause 6 holds it until the person act closes. That direction is safe, but it is worth stating.
 - **G4 — sidequest-stub collision.** Step 2 "Starter" refuses only an existing `.flaitron/tasknote/<ID>.md` or an archived note. A split on an ID that has `.flaitron/sidequest/<ID>.md` (flaitron CORE-641) would write a starter. `tools/drift-checks.sh` `sidequest_orphan()` then fails `PROMOTED STUB` (line 197). The `/ft-task` Step 3a promote path never retires the stub; only Step 3b does. `SPEC/plan-filing.md` §"ID allocation" already scans `.flaitron/sidequest/`, so the asymmetry is local to the skill.
 
 ### Observations, not filed
 
-- **O1 — clause 4 and prose waits.** CORE-641 and marscharts CORE-229 match none of clause 4's three literal forms. They are declined only by the uncertain-means-not rule. Both postures write nothing either way, and seed's confirm catches a mark. The marscharts seed left CORE-229 unmarked. Not a prep miss.
-- **O2.** Marked audits with open siblings (email-manager DEPLOY-EPIC-1.4) are skipped and not repaired, by design.
-- **O3.** marscharts carries four sidequest stubs whose rows are closed (BE-282, CORE-257, FE-447, FE-448). That is adopter housekeeping, outside this task.
+- **O1 — clause 4 and prose waits.** CORE-641 and project-19 CORE-229 match none of clause 4's three literal forms. They are declined only by the uncertain-means-not rule. Both postures write nothing either way, and seed's confirm catches a mark. The project-19 seed left CORE-229 unmarked. Not a prep miss.
+- **O2.** Marked audits with open siblings (project-10 DEPLOY-EPIC-1.4) are skipped and not repaired, by design.
+- **O3.** project-19 carries four sidequest stubs whose rows are closed (BE-282, CORE-257, FE-447, FE-448). That is adopter housekeeping, outside this task.
 
 ### Filed
 
@@ -232,9 +232,9 @@ Reply: **`none`**. Zero writes.
 Verification receipt (re-run after the Phase 2 return):
 
 - `grep -c '^| ' .flaitron/tasknote/CORE-797.md` → exit 0 (51 table lines across five walks)
-- `test -z "$(git -C ~/Code/<repo> status --porcelain)"` for aetherlace, fakeneuron-nas, marscharts, email-manager → exit 0 each, before the walks and after. HEADs were unchanged (`2d05529`, `c3f3b1a`, `d91ba6c8a`, `7623062`).
-- Guard A commands cited: `grep -q '"test:e2e"' marscharts/frontend/package.json` → 0. `grep -rlE 'toHaveScreenshot|toMatchSnapshot' marscharts/frontend/playwright/tests` → 1 (none, so FE-486.5 is a true look). `grep -q '"test": "vitest run"' email-manager/worker/package.json` → 0 (the split's mechanical slice has a command).
-- Keyword re-checks: fakeneuron-nas NAS-13 contains `MIGRATION.md` and NAS-11.8 contains `DEPLOY-033` → both stay at clause 3.
+- `test -z "$(git -C ~/code/<repo> status --porcelain)"` for project-03, project-11, project-19, project-10 → exit 0 each, before the walks and after. HEADs were unchanged (`2d05529`, `c3f3b1a`, `d91ba6c8a`, `7623062`).
+- Guard A commands cited: `grep -q '"test:e2e"' project-19/frontend/package.json` → 0. `grep -rlE 'toHaveScreenshot|toMatchSnapshot' project-19/frontend/playwright/tests` → 1 (none, so FE-486.5 is a true look). `grep -q '"test": "vitest run"' project-10/worker/package.json` → 0 (the split's mechanical slice has a command).
+- Keyword re-checks: project-11 NAS-13 contains `MIGRATION.md` and NAS-11.8 contains `DEPLOY-033` → both stay at clause 3.
 - G4 evidence: `sed -n 197p tools/drift-checks.sh | grep -q 'PROMOTED STUB'` → 0. `grep -c sidequest claude/skills/ft-task/step-3a-promote-starter.md` → 0.
 - Filed rows: `grep -n 'CORE-798\|CORE-799' .flaitron/PLAN.md` → lines 19–20. The descriptions are 45 and 48 words. Neither ID appeared in PLAN, PLAN-ARCHIVE, the tasknote dirs, or the sidequest dir before filing.
 - `bash tools/drift-checks.sh` → exit 0
@@ -260,7 +260,7 @@ External review (a read-only general-purpose subagent, graded against Acceptance
 
 **Final Summary:**
 
-`/ft-prep-unattended` was dry-run over five PLANs: flaitron, aetherlace, fakeneuron-nas, marscharts, and email-manager. That covered 49 open rows, with zero writes. One walk reached the gate, email-manager's BE-EPIC-2.2 split, and it was answered `none`. The two guards held on every draft. Each held only because the walk read the whole section, not the pin and split bullets alone. Four gaps were found and filed as CORE-798 (G1 + G2, the guard wording) and CORE-799 (G3 + G4, the split mechanics).
+`/ft-prep-unattended` was dry-run over five PLANs: flaitron, project-03, project-11, project-19, and project-10. That covered 49 open rows, with zero writes. One walk reached the gate, project-10's BE-EPIC-2.2 split, and it was answered `none`. The two guards held on every draft. Each held only because the walk read the whole section, not the pin and split bullets alone. Four gaps were found and filed as CORE-798 (G1 + G2, the guard wording) and CORE-799 (G3 + G4, the split mechanics).
 
 Doc-drift sweep: no change to any entry. `README.md`, `AGENTS.md`, `SPEC.md`, `docs/MIGRATION.md`, the four `*/AGENTS-snippet.md`, `docs/CONVENTIONS.md`, `CONTRIBUTING.md`, `SECURITY.md`, `docs/AGENT-NEUTRALITY.md`, `docs/PLATFORMS.md`, `claude/CAPABILITIES.md`, `docs/AGENT-COMPAT.md`, `docs/EXTERNAL-AGENTS.md`, `docs/WORKTREES.md`, and `docs/VISION.md` are all unchanged. The SPEC and skill fixes belong to CORE-798 and CORE-799.
 

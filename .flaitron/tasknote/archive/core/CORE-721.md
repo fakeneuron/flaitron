@@ -42,7 +42,7 @@ unblocks.
 ## ✅ Acceptance
 
 - [x] The overlay's content is tracked at its new home — `git ls-files --error-unmatch .flaitron/audit-overlay/SKILL.md`
-- [x] The relocation is byte-identical to the overlay as [[CORE-720]] left it (no content edit rode in) — `cmp -s "/private/tmp/claude-501/-Users-fakeneuron-Code-flaitron/0e434bc6-3f9d-4fbc-aee6-2314a9e27c55/scratchpad/overlay-premove.md" .flaitron/audit-overlay/SKILL.md` against the 7,643-byte pre-move snapshot
+- [x] The relocation is byte-identical to the overlay as [[CORE-720]] left it (no content edit rode in) — `cmp -s "/private/tmp/claude-501/-home-flaitron/0e434bc6-3f9d-4fbc-aee6-2314a9e27c55/scratchpad/overlay-premove.md" .flaitron/audit-overlay/SKILL.md` against the 7,643-byte pre-move snapshot
 - [x] `.claude/skills/audit` is a **directory** symlink at the sibling depth — `[ -L .claude/skills/audit ] && [ "$(readlink .claude/skills/audit)" = "../../.flaitron/audit-overlay/" ]`
 - [x] The uniform-symlink invariant that justified this disposition holds — `.claude/skills/` contains nothing but symlinks: `[ -z "$(find .claude/skills -mindepth 1 -maxdepth 1 ! -type l)" ]`
 - [x] Skill resolution still reads the overlay through the old path — `[ -r .claude/skills/audit/SKILL.md ] && cmp -s .claude/skills/audit/SKILL.md .flaitron/audit-overlay/SKILL.md`
@@ -59,7 +59,7 @@ unblocks.
 
 ## 🧩 Subtasks
 
-- [x] Snapshot the overlay pre-move (done in Phase 1 — `/private/tmp/claude-501/-Users-fakeneuron-Code-flaitron/0e434bc6-3f9d-4fbc-aee6-2314a9e27c55/scratchpad/overlay-premove.md`, 7,643 B) so the byte-identity criterion has a referent after the move
+- [x] Snapshot the overlay pre-move (done in Phase 1 — `/private/tmp/claude-501/-home-flaitron/0e434bc6-3f9d-4fbc-aee6-2314a9e27c55/scratchpad/overlay-premove.md`, 7,643 B) so the byte-identity criterion has a referent after the move
 - [x] Create `.flaitron/audit-overlay/`, move the overlay's `SKILL.md` into it, and `git add` it
 - [x] Replace `.claude/skills/audit/` with the directory symlink `../../.flaitron/audit-overlay/`; confirm resolution and the uniform-symlink invariant
 - [x] Rewrite `docs/MIGRATION.md` §1.2.2's local-fork sentence: tracked home, symlink wiring, and why (the ignore rule stands unamended)

@@ -24,23 +24,23 @@ touches:
 
 ## 🎯 Goal
 
-Sharpen the Phase 4 doc-drift line so a moved stable-surface row in `docs/EXTERNAL-AGENTS.md` files the cross-repo caller-side (caobunga) row in the same closure, and add a stable-surface row covering the `## <emoji> Phase N:` headings, per-phase checkboxes, and `## 🎯 Goal`.
+Sharpen the Phase 4 doc-drift line so a moved stable-surface row in `docs/EXTERNAL-AGENTS.md` files the cross-repo caller-side (project-07) row in the same closure, and add a stable-surface row covering the `## <emoji> Phase N:` headings, per-phase checkboxes, and `## 🎯 Goal`.
 
 ## ✅ Acceptance
 
 - [x] `docs/EXTERNAL-AGENTS.md` §"Stable surfaces for callers" carries a tasknote-body-headings row — `grep -c 'Tasknote body headings' docs/EXTERNAL-AGENTS.md` → 1
 - [x] The row names the `## <emoji> Phase N:` headings, the per-phase checkbox run, `## 🎯 Goal`, and the micro-template carve-out — `grep -c '⚡ Notes' docs/EXTERNAL-AGENTS.md` ≥ 1; completeness is `judgment` against Discovery Notes §B
-- [x] The row names canonical owners and copies nothing; the doc stays adopter-name-free — `grep -ci 'caobunga\|CBN-' docs/EXTERNAL-AGENTS.md` → 0 hits
+- [x] The row names canonical owners and copies nothing; the doc stays adopter-name-free — `grep -ci 'project-07\|CBN-' docs/EXTERNAL-AGENTS.md` → 0 hits
 - [x] `.flowtron/tasknote/README.md` §"AI-referenced docs" binds a moved / renamed / retired stable-surface row to file the caller-side row in the **same** closure — `grep -c 'same closure' .flowtron/tasknote/README.md` ≥ 1
 - [x] That entry cites its owner section rather than restating it — `grep -c 'Cross-repo edit remit' .flowtron/tasknote/README.md` ≥ 1
-- [x] The caller-side row for *this* closure is filed in the caller's own `PLAN.md` (operator-chosen discharge, Discovery §D) — `grep -c 'CBN-236' ~/Code/caobunga/.flowtron/PLAN.md` → 1
+- [x] The caller-side row for *this* closure is filed in the caller's own `PLAN.md` (operator-chosen discharge, Discovery §D) — `grep -c 'CBN-236' ~/code/project-07/.flowtron/PLAN.md` → 1
 - [x] Citations resolve and markdown is clean — CI Pair Q loop over the two changed files → 0 findings; `git diff --check` → 0
 
 ## 🧩 Subtasks
 
 - [x] Phase 2: add the body-headings row to `docs/EXTERNAL-AGENTS.md` §"Stable surfaces for callers", placed with the body-shape family (immediately before the `Template labels` row)
 - [x] Phase 2: sharpen the `docs/EXTERNAL-AGENTS.md` entry in `.flowtron/tasknote/README.md` §"AI-referenced docs" with the same-closure caller-side filing duty
-- [x] Phase 2: file `CBN-236` in `~/Code/caobunga/.flowtron/PLAN.md` — row only, left uncommitted for caobunga's own session to carry
+- [x] Phase 2: file `CBN-236` in `~/code/project-07/.flowtron/PLAN.md` — row only, left uncommitted for project-07's own session to carry
 - [x] Phase 3: run the Acceptance greps, the CI Pair Q citation loop over both changed files, `git diff --check`
 - [ ] Phase 4: doc-drift sweep (20 entries), Acceptance tick-through, stub flip, archive
 
@@ -84,12 +84,12 @@ Flowtron: `docs/EXTERNAL-AGENTS.md` (whole), `.flowtron/tasknote/README.md`
 §"Cross-repo edit remit" / §"Deferred hand-off filing" / §"Handoff persistence" /
 §"Tasknote body shape", `docs/CONVENTIONS.md` §"Verify behavioral claims against
 flowtron's own source", `docs/CONTEXT-BUDGET.md` §"Budgets" + §"Always loaded to
-run one task", `docs/HARNESS-SURVEY.md` §"Caobunga exposure",
+run one task", `docs/HARNESS-SURVEY.md` §"Project-07 exposure",
 `.github/workflows/ci.yml` (`drift` job: budget step, Pair Q), both tasknote
 templates, `templates/tasknote-README.md`. Archive: `CORE-565.3` (whole),
-`CORE-598.4` (frontmatter → Drift check). Caller (sibling read, `~/Code`
-standing exception): `backend/caobunga/flowtron/tasknote.py:95-190`,
-`backend/caobunga/brief.py:21`, `docs/CONTRACT.md:601` / `:845` / `:1173` /
+`CORE-598.4` (frontmatter → Drift check). Caller (sibling read, `~/code`
+standing exception): `backend/project-07/flowtron/tasknote.py:95-190`,
+`backend/project-07/brief.py:21`, `docs/CONTRACT.md:601` / `:845` / `:1173` /
 `:1347`, `.flowtron/PLAN.md` + `.flowtron/PLAN-ARCHIVE.md` (max ID only).
 
 ### B. The surface, verified at the caller's HEAD
@@ -216,7 +216,7 @@ self-host sweep list, not shipped contract, and the duty is not executable
 without knowing where to file; `docs/EXTERNAL-AGENTS.md` and the SPEC layer stay
 adopter-name-free (Acceptance grep → 0 hits).
 
-**`~/Code/caobunga/.flowtron/PLAN.md` (+1 row, uncommitted).** `CBN-236`
+**`~/code/project-07/.flowtron/PLAN.md` (+1 row, uncommitted).** `CBN-236`
 `contract-phase-row-cite`, filed at the top of `## Low`: once the flowtron
 release carrying `CORE-655` is pinned, repoint `docs/CONTRACT.md` §"Fleet
 boundary" ¶CBN-235 at the new row and drop its "a row that does not exist yet"
@@ -274,7 +274,7 @@ them.
 `## 🎯 Goal` — with the micro carve-out (`## ⚡ Notes`, no phase headings) the
 operator asked for, mirroring the `Template labels` row's own carve-out. Owners
 named, nothing copied, no caller named: the doc stays adopter-name-free
-(`grep -ci 'caobunga\|CBN-'` → 0 hits).
+(`grep -ci 'project-07\|CBN-'` → 0 hits).
 
 `.flowtron/tasknote/README.md` §"AI-referenced docs" sharpens the sweep entry
 for that doc: a closure that moves, renames, or retires a stable-surface row now
@@ -327,7 +327,7 @@ no rendered surface.
 ```text
 grep -c 'Tasknote body headings' docs/EXTERNAL-AGENTS.md              → 0 (prints 1)
 grep -c '⚡ Notes' docs/EXTERNAL-AGENTS.md                             → 0 (prints 1)
-grep -ci 'caobunga\|CBN-' docs/EXTERNAL-AGENTS.md                     → 1 (prints 0 — no hits, as required)
+grep -ci 'project-07\|CBN-' docs/EXTERNAL-AGENTS.md                     → 1 (prints 0 — no hits, as required)
 grep -c 'same closure' .flowtron/tasknote/README.md                   → 0 (prints 1)
 grep -c 'Cross-repo edit remit' .flowtron/tasknote/README.md          → 0 (prints 1)
 grep -c 'Deferred hand-off filing' .flowtron/tasknote/README.md       → 0 (prints 1)

@@ -143,7 +143,7 @@ CORE-024 filed mid-Phase-3 from visual review: PLAN.md descriptions still mentio
 
 - `npm test`: 41/41 pass (was 32 before CORE-023 → +9 net: +8 parser cases for the new grammar, +1 tasknote back-compat for legacy `model:` tolerance, with the prior status/model rejection test split + retitled).
 - `npm run build`: `tsc --noEmit && vite build` clean. 402 KB JS bundle (no size regression). Pre-existing gray-matter `eval()` warning unchanged.
-- Visual confirmation in browser: shortnames render as row titles for migrated tasks (e.g. "task-line grammar" for CORE-023, "InvisiPaw migration" for CORE-016); ModelChip shows on tasks without tasknotes; CORE-EPIC-009 expands with children showing shortnames + per-child model chips; legacy Completed entries render unchanged. Post-review: dropped redundant "Description" label in TaskDetail; filed CORE-024 for description-prose signal extraction.
+- Visual confirmation in browser: shortnames render as row titles for migrated tasks (e.g. "task-line grammar" for CORE-023, "Project-17 migration" for CORE-016); ModelChip shows on tasks without tasknotes; CORE-EPIC-009 expands with children showing shortnames + per-child model chips; legacy Completed entries render unchanged. Post-review: dropped redundant "Description" label in TaskDetail; filed CORE-024 for description-prose signal extraction.
 
 ## 🚀 Phase 4: Closure
 

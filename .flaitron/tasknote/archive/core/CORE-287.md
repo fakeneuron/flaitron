@@ -33,8 +33,8 @@ Design a sanctioned thin-overlay pattern for adopter audit forks: a short projec
 
 ## 🔗 Related
 
-- [[CORE-288]] — fork-provenance markers + `/ft-update` drift warning (sibling FinTown audit-context idea)
-- [[CORE-289]] — promote commonly-forked audit orphans into bundled skills (sibling FinTown audit-context idea)
+- [[CORE-288]] — fork-provenance markers + `/ft-update` drift warning (sibling Project-14 audit-context idea)
+- [[CORE-289]] — promote commonly-forked audit orphans into bundled skills (sibling Project-14 audit-context idea)
 
 ---
 

@@ -428,7 +428,7 @@ Left untouched under the surgical-change rule; worth a one-line follow-up.
 - `docs/PLATFORMS.md` — no change.
 - `claude/CAPABILITIES.md` — no change: no task-line-grammar reference.
 - `docs/AGENT-COMPAT.md` — no change.
-- `docs/EXTERNAL-AGENTS.md` — **updated**: three stable-surface Owner cells repointed. Its sweep entry flags "contract edits that touch … the task-line grammar" as routine drift against it, and requires a caller-side filing **in the same closure** when a closure *moves, renames, or retires a stable-surface row*. `judgment`: none of the three rows moved, was renamed, or was retired — each keeps its name and its guarantee, and only the Owner column gained the module. The row's own stated mechanism ("a caller that ports the grammar re-verifies it against both on every pin bump") is what carries this to the caller. **No caobunga-side filing owed.**
+- `docs/EXTERNAL-AGENTS.md` — **updated**: three stable-surface Owner cells repointed. Its sweep entry flags "contract edits that touch … the task-line grammar" as routine drift against it, and requires a caller-side filing **in the same closure** when a closure *moves, renames, or retires a stable-surface row*. `judgment`: none of the three rows moved, was renamed, or was retired — each keeps its name and its guarantee, and only the Owner column gained the module. The row's own stated mechanism ("a caller that ports the grammar re-verifies it against both on every pin bump") is what carries this to the caller. **No project-07-side filing owed.**
 - `docs/WORKTREES.md` — no change.
 - `docs/VISION.md` — no change: scope boundaries untouched.
 

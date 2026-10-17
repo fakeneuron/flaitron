@@ -26,7 +26,7 @@ touches:
   - .editorconfig
   - .gitleaks.toml
   - .flowtron/** → .flaitron/**
-  - ~/Code/caobunga/.flowtron/PLAN.md
+  - ~/code/project-07/.flowtron/PLAN.md
 blocked-by:
   - CORE-711.2
   - CORE-711.3
@@ -47,7 +47,7 @@ Rename every live `flowtron` reference in-repo outside `viz/` and `tools/` to `f
 - [x] Archive content untouched — `git diff --cached -M --stat -- .flaitron/tasknote/archive .flaitron/PLAN-ARCHIVE.md` shows renames only (0 line changes)
 - [x] MIGRATION.md carries a manual v5→v6 recipe and the updater paragraph documents `.3`'s auto-migrate; SECURITY.md fleet-updater bullets match `tools/update-adopters.mjs` (`FLAITRON_*`, migrate commit) — `grep -q 'flowtron/` → `.flaitron/`' docs/MIGRATION.md` + `judgment` read against the tool
 - [x] `flowtron-reconciled:` → `flaitron-reconciled:` across template, ft-update, ft-audit bootstrap, MIGRATION; `/ft-update` stops on a pre-rename layout with a pointer to the recipe — `! git grep -n 'flowtron-reconciled' -- ':!.flaitron/tasknote/archive' ':!.flaitron/PLAN-ARCHIVE.md' ':!.flaitron/PLAN.md' ':!.flaitron/tasknote/CORE-711.4.md' ':!docs/MIGRATION.md'` (command amended: the v6 recipe step 6 and `.7`'s row must name the old key — §Fence item 4)
-- [x] Caller-side row filed in caobunga (CBN-278, High) and CORE-711.7 notes it must land first; CORE-711.N line cites this note's fence; CORE-711.7 also rewrites adopter forks' `flowtron-reconciled:` — `grep -n 'CBN-278' ~/Code/caobunga/.flowtron/PLAN.md` + `grep -n 'CBN-278' .flaitron/PLAN.md`
+- [x] Caller-side row filed in project-07 (CBN-278, High) and CORE-711.7 notes it must land first; CORE-711.N line cites this note's fence; CORE-711.7 also rewrites adopter forks' `flowtron-reconciled:` — `grep -n 'CBN-278' ~/code/project-07/.flowtron/PLAN.md` + `grep -n 'CBN-278' .flaitron/PLAN.md`
 - [x] CI-equivalent local checks pass (viz suite, updater suite, context budgets) — `npm --prefix viz test && node --test tools/update-adopters.test.mjs` + the ci.yml drift/budget steps run locally
 
 ## 🧩 Subtasks
@@ -56,7 +56,7 @@ Rename every live `flowtron` reference in-repo outside `viz/` and `tools/` to `f
 - [x] Hand edits: MIGRATION.md v6 section + updater paragraph + v4 section pointer; SECURITY.md fleet-updater bullets; ft-update pre-rename stop; VERSION-HISTORY / HARNESS-SURVEY headers only; PLAN.md header
 - [x] `git mv .flowtron .flaitron` (untracked `.DS_Store` travels)
 - [x] PLAN amendments: `.7` (land CBN-278 first; rewrite `flowtron-reconciled:` in forks), `.N` (cite this fence)
-- [x] File CBN-278 in caobunga's PLAN.md; commit there locally (no push)
+- [x] File CBN-278 in project-07's PLAN.md; commit there locally (no push)
 - [x] Review the full diff for anachronisms and wrong rewrites; run residual greps
 - [x] Run viz + updater suites and the CI drift/budget checks locally
 
@@ -98,13 +98,13 @@ Rename every live `flowtron` reference in-repo outside `viz/` and `tools/` to `f
 
 **Archive skim.** `.1` (inventory, precedent CORE-264/265: single `git mv` + longest-first substitution, archives untouched, hard cut), `.2` (viz fenced the `flowtron v5.2.0 bump` parser fixture; deferred README/SECURITY/MIGRATION/WORKTREES/snippet env-var cites here), `.3` (deferred MIGRATION updater paragraph — "skips any repo whose range carries real migration steps" no longer holds for the rename tag — and SECURITY §"Fleet updater" names `FLOWTRON_UPDATE_LATEST`/`FLOWTRON_REPO` and "pathspec commit touching only the gitlink", now bump-only). CORE-661 recorded that ft-audit's flowtron-mode detection keys on the SPEC heading.
 
-**Drift check.** PLAN line matches the tree. SPEC contracts honored: archive write-once (fenced), Cross-repo edit remit (caobunga change is a filed row, not an edit to its code), EXTERNAL-AGENTS same-closure caller row (two stable-surface rows move: closed-row set `.flowtron/PLAN-ARCHIVE.md`, tasknote location `.flowtron/tasknote/<ID>.md`). Transitional effect (accepted by the epic ordering): between this commit and `.5`'s tag, global skill symlinks into this checkout speak `.flaitron/` while every adopter still sits on `.flowtron/core` v5.35.0 with its own per-project skill copies.
+**Drift check.** PLAN line matches the tree. SPEC contracts honored: archive write-once (fenced), Cross-repo edit remit (project-07 change is a filed row, not an edit to its code), EXTERNAL-AGENTS same-closure caller row (two stable-surface rows move: closed-row set `.flowtron/PLAN-ARCHIVE.md`, tasknote location `.flowtron/tasknote/<ID>.md`). Transitional effect (accepted by the epic ordering): between this commit and `.5`'s tag, global skill symlinks into this checkout speak `.flaitron/` while every adopter still sits on `.flowtron/core` v5.35.0 with its own per-project skill copies.
 
 **Clarifications (AskUserQuestion, 2026-10-03).**
 - `flowtron-reconciled:` → **rename** to `flaitron-reconciled:`; `.7` also rewrites the key in adopter audit forks (its line amended).
 - `/ft-update` at v6 → resolves `.flaitron/core/` only; a `.flowtron/` layout **stops** with a pointer to MIGRATION's v6 section / the fleet updater; the `.flowtron/flowtron` branch is dropped.
 - **Fence approved** (§Fence below); `.N`'s line cites it.
-- caobunga caller row → **CBN-278 `[medium]` under High**, committed locally there (no push); `.7` notes it lands first.
+- project-07 caller row → **CBN-278 `[medium]` under High**, committed locally there (no push); `.7` notes it lands first.
 
 **§Fence — text that stays `flowtron` on purpose** (history, not live state):
 1. `docs/VERSION-HISTORY.md` release entries (only the line-3 header renames).
@@ -134,7 +134,7 @@ Rename every live `flowtron` reference in-repo outside `viz/` and `tools/` to `f
 - `flowtron-tracks:` (the sibling fork key) renamed alongside `flowtron-reconciled:`, same rationale; `.7`'s line names both. The operator-local, gitignored `.claude/skills/audit/SKILL.md` (this checkout's own overlay fork, outside `.7`'s reach) was renamed in place and is uncommitted by design.
 - CI Pair Q: a pre-rename `.flowtron/` citation in fenced history (closed row CORE-650, MIGRATION's v4 recipe) resolves at its v6 location (`.flowtron/core/` stripped, `.flowtron/` → `.flaitron/`).
 - `git mv .flowtron .flaitron`: 1,066 renames (1,062 archive/PLAN-ARCHIVE at R100); the ignored `.DS_Store` and this untracked note travelled with it.
-- PLAN: `.7` → also rewrites fork keys and lands caobunga CBN-278 first; `.N` → excludes this note's §Fence. caobunga: CBN-278 filed under High, committed locally as `5097201` (no push).
+- PLAN: `.7` → also rewrites fork keys and lands project-07 CBN-278 first; `.N` → excludes this note's §Fence. project-07: CBN-278 filed under High, committed locally as `5097201` (no push).
 
 ## 🧪 Phase 3: Testing & Linting
 
@@ -158,7 +158,7 @@ Receipt:
 - archive integrity: `git diff --cached -M --name-status` over the archive + PLAN-ARCHIVE → 1062 × R100 (0 content change)
 - `grep -q 'flowtron/` → `.flaitron/`' docs/MIGRATION.md` → 0; SECURITY bullets read against `tools/update-adopters.mjs` (`applyMigrate` L905, `checkoutVerified` L791, `verifyPinnedSha` L756) → match
 - `! git grep -n 'flowtron-reconciled' …` (amended exclusions) → 0
-- `grep -c CBN-278` → 1 in caobunga PLAN (commit `5097201`), 1 in `.flaitron/PLAN.md`
+- `grep -c CBN-278` → 1 in project-07 PLAN (commit `5097201`), 1 in `.flaitron/PLAN.md`
 - `npm --prefix viz test` → 0 (587/587); `node --test tools/update-adopters.test.mjs` → 0 (65/65); `node --check` ×2 → 0
 - CI drift job, all 15 `run:` blocks extracted and run locally under GitHub's default `bash -e` → 0 each (Pair Q failed at first on two pre-rename citations in fenced history → mapping added, then 0); `gitleaks dir . --config .gitleaks.toml` → 0 (no leaks)
 - `git diff --cached --check` → 0
@@ -166,13 +166,13 @@ Receipt:
 
 External review (`/code-review medium`, scoped to this task's staged diff) — no blockers; 3 notes:
 - **note** — `/ft-release` §7.1 casing check grouped only `[Ff]laitron`, but `.5` cuts the release before re-pointing the global links → false "multiple casings" → **fixed**: `[Ff]l(ow|ai)tron`.
-- **note** — `.gitleaks.toml` claims byte-identity with natabula's `configs/` source, which still says `.flowtron/`; a layer-refresh before natabula updates would revert the allowlist → **covered by CORE-711.6** (its line moves natabula's `configs/` deposits to `.flaitron/` before the wave); no change here.
+- **note** — `.gitleaks.toml` claims byte-identity with project-20's `configs/` source, which still says `.flowtron/`; a layer-refresh before project-20 updates would revert the allowlist → **covered by CORE-711.6** (its line moves project-20's `configs/` deposits to `.flaitron/` before the wave); no change here.
 - **note** — v6 recipe step 7 didn't tell the reader to stage steps 4–6 → **fixed**: explicit staging (on whichever wiring dirs exist).
 - The reviewer confirmed: CI shell, SECURITY vs the tool, URL/tag consistency, snippet `ln -s` blocks, `/ft-update` stop placement, residuals all fenced.
 
 ## 🚀 Phase 4: Closure
 
-- [x] **Doc-drift sweep** — for each entry in `.flaitron/tasknote/README.md` §"AI-referenced docs", state "no change" or the update — every entry is this task's deliverable: README, AGENTS, SPEC, the four AGENTS-snippets, CONVENTIONS, CONTRIBUTING, AGENT-NEUTRALITY, PLATFORMS, CAPABILITIES, AGENT-COMPAT, WORKTREES, VISION → renamed; MIGRATION → + v6 section, updater exception; SECURITY → + migrate bullets; EXTERNAL-AGENTS → two stable-surface rows' paths moved (closed-row set, tasknote location) → caller row CBN-278 filed in caobunga this closure. No further drift
+- [x] **Doc-drift sweep** — for each entry in `.flaitron/tasknote/README.md` §"AI-referenced docs", state "no change" or the update — every entry is this task's deliverable: README, AGENTS, SPEC, the four AGENTS-snippets, CONVENTIONS, CONTRIBUTING, AGENT-NEUTRALITY, PLATFORMS, CAPABILITIES, AGENT-COMPAT, WORKTREES, VISION → renamed; MIGRATION → + v6 section, updater exception; SECURITY → + migrate bullets; EXTERNAL-AGENTS → two stable-surface rows' paths moved (closed-row set, tasknote location) → caller row CBN-278 filed in project-07 this closure. No further drift
 
 - [x] Closed — every `## ✅ Acceptance` criterion ticked or explicitly annotated (`N/A` / not-met with a one-line reason), YAML `status:` flipped to `completed`, PLAN.md line flipped to stub form `Completed YYYY-MM-DD.` and placed (standalone → top of `## Completed`; epic child → kept nested beneath its active parent — see SPEC/plan-filing.md §"`## Completed` archive convention" if unclear), then tasknote moved to `.flaitron/tasknote/archive/<area>/`
 
@@ -182,6 +182,6 @@ External review (`/code-review medium`, scoped to this task's staged diff) — n
 
 **Final Summary:**
 
-Renamed every live flowtron reference outside `viz/` and `tools/` to flaitron (111 files, ~1,110 lines) and moved the self-host `.flowtron/` → `.flaitron/` (1,066 renames; 1,062 archive/PLAN-ARCHIVE at R100, content untouched) in one commit with the skill text that names the path. Added MIGRATION's manual v5→v6 recipe and the updater's `migrate` exception, brought SECURITY's fleet-updater bullets in line with `applyMigrate`, made `/ft-update` stop on a pre-rename layout, renamed the `flowtron-reconciled:` / `-tracks:` fork keys, and taught CI Pair Q to resolve pre-rename citations in fenced history. The historical fence (§Fence) is recorded for `.N`. Downstream: `.7` amended (fork keys; CBN-278 first), `.N` amended (fence), caobunga CBN-278 filed and committed locally (`5097201`, unpushed). Review: 0 blockers, 2 notes fixed, 1 covered by `.6`. `touches:` reconciliation: diff = the declared dirs/files + the `.flowtron/` → `.flaitron/` move + caobunga's PLAN. Undeclared but in scope: the gitignored `.claude/skills/audit/SKILL.md` (local, uncommitted). Transitional effect until `.5` tags v6.0.0: global skills in this checkout speak `.flaitron/` while adopters stay on `.flowtron/core` v5.35.0. For `.5`: `.claude/settings.local.json` carries absolute `~/Code/flowtron/viz` allow-rules (operator-local, folder-path-bound). Learnings: `N/A`. The bracket-class miss (`[Ff]lowtron`) is a sweep technique worth reusing in `.7`/`.N` (grep the case-insensitive stem `lowtron`), recorded here rather than in the always-loaded layer.
+Renamed every live flowtron reference outside `viz/` and `tools/` to flaitron (111 files, ~1,110 lines) and moved the self-host `.flowtron/` → `.flaitron/` (1,066 renames; 1,062 archive/PLAN-ARCHIVE at R100, content untouched) in one commit with the skill text that names the path. Added MIGRATION's manual v5→v6 recipe and the updater's `migrate` exception, brought SECURITY's fleet-updater bullets in line with `applyMigrate`, made `/ft-update` stop on a pre-rename layout, renamed the `flowtron-reconciled:` / `-tracks:` fork keys, and taught CI Pair Q to resolve pre-rename citations in fenced history. The historical fence (§Fence) is recorded for `.N`. Downstream: `.7` amended (fork keys; CBN-278 first), `.N` amended (fence), project-07 CBN-278 filed and committed locally (`5097201`, unpushed). Review: 0 blockers, 2 notes fixed, 1 covered by `.6`. `touches:` reconciliation: diff = the declared dirs/files + the `.flowtron/` → `.flaitron/` move + project-07's PLAN. Undeclared but in scope: the gitignored `.claude/skills/audit/SKILL.md` (local, uncommitted). Transitional effect until `.5` tags v6.0.0: global skills in this checkout speak `.flaitron/` while adopters stay on `.flowtron/core` v5.35.0. For `.5`: `.claude/settings.local.json` carries absolute `~/code/flowtron/viz` allow-rules (operator-local, folder-path-bound). Learnings: `N/A`. The bracket-class miss (`[Ff]lowtron`) is a sweep technique worth reusing in `.7`/`.N` (grep the case-insensitive stem `lowtron`), recorded here rather than in the always-loaded layer.
 
 **Archived:** 2026-10-03

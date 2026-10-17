@@ -324,7 +324,7 @@ Net: the side-by-side comparison is delivered (above); the ship/propose decision
 > - `templates/PLAN.md` → possibly status-source-of-truth changes (Thrust C).
 > - `docs/MIGRATION.md` → major-version migration notes (Thrusts A + C).
 > - `claude/CLAUDE-snippet.md` → adoption snippet may need updating.
-> - Adopting projects' CLAUDE.md (`photard`, `natabula`, etc.) — re-read on submodule bump; no in-place edits from here.
+> - Adopting projects' CLAUDE.md (`project-22`, `project-20`, etc.) — re-read on submodule bump; no in-place edits from here.
 >
 > ### Explicitly out of scope
 >

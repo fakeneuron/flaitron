@@ -13,7 +13,7 @@ related-tasks: [CORE-EPIC-598, CORE-593, CORE-594, CORE-595, CORE-596, CORE-597,
 
 ## 🎯 Goal
 
-Cut v5.28.0, a minor release tagging the flowtron↔caobunga concert epic (CORE-EPIC-598: caller-write boundary fixes, handoff-token ratify, caobunga handoff rows), the CORE-593–597 filing/SPEC hardening run, and the FE-118/119/120 viz changes since v5.27.0.
+Cut v5.28.0, a minor release tagging the flowtron↔project-07 concert epic (CORE-EPIC-598: caller-write boundary fixes, handoff-token ratify, project-07 handoff rows), the CORE-593–597 filing/SPEC hardening run, and the FE-118/119/120 viz changes since v5.27.0.
 
 ## ✅ Acceptance
 
@@ -42,7 +42,7 @@ Cut v5.28.0, a minor release tagging the flowtron↔caobunga concert epic (CORE-
 ## 🔗 Related
 
 - [[CORE-586]] — prior release tasknote (v5.27.0), structural precedent
-- [[CORE-EPIC-598]] — flowtron↔caobunga concert epic, tagged in this cut
+- [[CORE-EPIC-598]] — flowtron↔project-07 concert epic, tagged in this cut
 - [[CORE-593]] [[CORE-594]] [[CORE-595]] [[CORE-596]] [[CORE-597]] — filing / SPEC hardening run, tagged in this cut
 - [[FE-118]] [[FE-119]] [[FE-120]] — viz changes, tagged in this cut
 
@@ -71,7 +71,7 @@ Cut v5.28.0, a minor release tagging the flowtron↔caobunga concert epic (CORE-
 
 **Discovery Notes:**
 
-26 commits since v5.27.0 (11 feat / 2 fix / 5 docs / 7 chore / 1 `caobunga:` status write, since retired by CORE-597), no `feat!:` or `BREAKING CHANGE:` → minor bump confirmed (v5.27.0 → v5.28.0).
+26 commits since v5.27.0 (11 feat / 2 fix / 5 docs / 7 chore / 1 `project-07:` status write, since retired by CORE-597), no `feat!:` or `BREAKING CHANGE:` → minor bump confirmed (v5.27.0 → v5.28.0).
 
 **Adopter migration impact:** no required adopter-side edits. Classified per commit:
 
@@ -166,7 +166,7 @@ Per-entry verdicts for the other 13 docs: no change (README.md's task-counter re
 
 **Final Summary:**
 
-Cut flowtron v5.28.0, a minor release headlined by the `[handoff]` marker — ratified as the second canonical trailing token on a PLAN.md row (CORE-598.3) — and the close of the flowtron↔caobunga concert epic (CORE-EPIC-598): a caller commits nothing of its own into a producer repo, `park-reason:` values are YAML-safe scalars, and VISION records the one-real-consumer exception to the two-project rule. Around it: the PLAN.md-row contracts split out of `SPEC/tasknote-selection.md` into a new `SPEC/plan-filing.md` (CORE-595), the consumer-less `paths:` frontmatter left the `SPEC/` modules (CORE-596), every filing runner gained an index-empty pre-check plus a post-stage read of the staged index (CORE-591/593) bound by new CI Pair O (CORE-594), the dogfood gate was hardened against parallel-session writes (CORE-588), and viz shipped the 🤖 unattended chip, a same-site SSE origin-guard reject, and a heartbeat extract (FE-118/119/120). No required adopter-side edits — `[handoff]` is additive, and CORE-595's move resolves through a forward pointer.
+Cut flowtron v5.28.0, a minor release headlined by the `[handoff]` marker — ratified as the second canonical trailing token on a PLAN.md row (CORE-598.3) — and the close of the flowtron↔project-07 concert epic (CORE-EPIC-598): a caller commits nothing of its own into a producer repo, `park-reason:` values are YAML-safe scalars, and VISION records the one-real-consumer exception to the two-project rule. Around it: the PLAN.md-row contracts split out of `SPEC/tasknote-selection.md` into a new `SPEC/plan-filing.md` (CORE-595), the consumer-less `paths:` frontmatter left the `SPEC/` modules (CORE-596), every filing runner gained an index-empty pre-check plus a post-stage read of the staged index (CORE-591/593) bound by new CI Pair O (CORE-594), the dogfood gate was hardened against parallel-session writes (CORE-588), and viz shipped the 🤖 unattended chip, a same-site SSE origin-guard reject, and a heartbeat extract (FE-118/119/120). No required adopter-side edits — `[handoff]` is additive, and CORE-595's move resolves through a forward pointer.
 
 Standing validation gate passed clean (561 viz tests, 53 fleet-updater tests, typecheck + lint clean, 0 `npm audit` findings at `--audit-level=high`). Step 6.1 could not observe a CI run (HEAD 26 commits unpushed) and was resolved by executing every `validate` + `drift` job step locally (gitleaks, 12 drift checks incl. new Pair O) — all clean. `/ft-audit docs ai-referenced` returned five findings (3 Medium, 2 Low; health 9/10) over the 18-doc set, all absorbed as trivial doc edits: the filing-motion count (four → five, `/ft-refactor` added to the message-shape table), a stale `SPEC.md` pointer to a deleted `layout.md` section, a stale Codex wrapper count, a renamed `plan-parser.md` anchor label, and the Grok-only dangling-symlink loop. All §7.1 standing checks and mirror pairs (A–O) clean; the README task-counter (919 → 939) and the `docs/CONTEXT-BUDGET.md` ledger were refreshed inline. Machine-global wiring check could not run (path-access guard, same as the prior two cuts) — advisory-only, never-blocking.
 

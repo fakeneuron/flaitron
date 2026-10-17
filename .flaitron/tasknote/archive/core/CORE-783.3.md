@@ -105,7 +105,7 @@ Add the attended, flagless `/ft-prep-unattended` skill that classifies declined 
 
 **Discovery Notes:**
 
-Archive probe: no contradiction. [[CORE-783.1]] withdrew the claim that seed is the only writer. [[CORE-783.2]] forbids copying the clause-3 sentence into a skill body and forbids new visual keywords. [[CORE-736]] says mirrors do not restate the predicate. [[CORE-619]] is the roster shape: read the module, labeled mirror, never-emitted `unattended-candidates:` literal, four active sections only, nothing written before the reply. [[CORE-577.2]] adds no gate, banner, cue, or checklist box. [[CORE-769.2]] retired command stubs. The caobunga mirror stays a handoff.
+Archive probe: no contradiction. [[CORE-783.1]] withdrew the claim that seed is the only writer. [[CORE-783.2]] forbids copying the clause-3 sentence into a skill body and forbids new visual keywords. [[CORE-736]] says mirrors do not restate the predicate. [[CORE-619]] is the roster shape: read the module, labeled mirror, never-emitted `unattended-candidates:` literal, four active sections only, nothing written before the reply. [[CORE-577.2]] adds no gate, banner, cue, or checklist box. [[CORE-769.2]] retired command stubs. The project-07 mirror stays a handoff.
 
 Fan-out echo: Sequential `[[CORE-783.3]] after [[CORE-783.2]]` → `blocked-by: CORE-783.2`. No Parallel row. `.2` is `[x]`.
 

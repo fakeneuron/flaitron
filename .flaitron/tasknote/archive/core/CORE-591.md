@@ -58,7 +58,7 @@ Make the filing-commit pre-check refuse to auto-commit when the index already ca
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** Observed live (caobunga CBN-179, 2026-09-13): ten `git rm`s a closure had staged landed in `chore: file CBN-183 follow-up`. The pre-check reads only PLAN.md's working-tree status, so a non-PLAN staged index passes it, and the bare `git commit -m` publishes the whole index. The post-stage read is scoped to the filing's pathspecs, so the foreign staged deletions were invisible to it too. The defect is class-wide across every runner that restates the rule.
+  **Rationale:** Observed live (project-07 CBN-179, 2026-09-13): ten `git rm`s a closure had staged landed in `chore: file CBN-183 follow-up`. The pre-check reads only PLAN.md's working-tree status, so a non-PLAN staged index passes it, and the bare `git commit -m` publishes the whole index. The post-stage read is scoped to the filing's pathspecs, so the foreign staged deletions were invisible to it too. The defect is class-wide across every runner that restates the rule.
 
 - [x] Read relevant source files — `SPEC/tasknote-selection.md` §"Filing commits" (lines 143-215), `/ft-file-followup` Step 4-5 (SKILL.md 179-262), `park-mode.md` 88-135, `starter-mode.md` 70-125, `/ft-audit` §5 steps 2 and 5, `/ft-refactor` Step 5 opener + commit paragraph
 

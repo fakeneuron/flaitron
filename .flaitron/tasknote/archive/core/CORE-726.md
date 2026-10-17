@@ -46,7 +46,7 @@ Make `/ft-epic-discovery` propose a `[model]` per implementation child at Phase 
 
 ## 🔗 Related
 
-- Adopter precedent: sciphoenix SCI-128 `research/extraction/ROLLOUT.md` §3 "Model per child".
+- Adopter precedent: project-25 SCI-128 `research/extraction/ROLLOUT.md` §3 "Model per child".
 - [[CORE-415.1]], [[CORE-416.1]], [[CORE-438.1]], [[CORE-483.1]] — prior epics whose Discovery already diverged child tags by shape (practice ahead of the skill prose).
 
 ---
@@ -88,11 +88,11 @@ Carried from the retired sidequest stub:
 >
 > Fix: at the Phase 2 child-filing step, propose a `[model]` per child (default = the epic's token; raise or lower per child from its Discovery-settled shape), shown in the existing review prompt alongside `[unattended]` candidacy; reword the "tag preserved on every line" note to "tag present on every line". Add a `SPEC/model.md` practical-guidance line: when a child must run on one named model, file the concrete token (e.g. `[fable]`) — the exact-identity gate enforces it; a category tag only advises.
 >
-> Origin: sciphoenix SCI-128 (2026-10-07) hand-patched this as a project-local per-archetype table in `research/extraction/ROLLOUT.md` §3 "Model per child" — `[fable]` for T1/T2 source mining, chart + synthesis and B1 inventories; `[heavy]` for `.1`/`.N`. That table is the adopter precedent.
+> Origin: project-25 SCI-128 (2026-10-07) hand-patched this as a project-local per-archetype table in `research/extraction/ROLLOUT.md` §3 "Model per child" — `[fable]` for T1/T2 source mining, chart + synthesis and B1 inventories; `[heavy]` for `.1`/`.N`. That table is the adopter precedent.
 >
 > **Resume anchor**
 >
-> Not started. Filed from a sciphoenix session; nothing in flight here.
+> Not started. Filed from a project-25 session; nothing in flight here.
 
 ## 🛠️ Phase 2: Execution
 

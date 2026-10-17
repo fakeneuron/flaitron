@@ -46,7 +46,7 @@ Add a cross-session AI-handoff trigger to flowtron's "file a starter" guidance s
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** The behavioral gap is real and observed (starter captured during a stockshock-side `/ft-epic-discovery` invocation where prior-chat context was lost on `/clear`). The fix is a small routing/behavior nudge — surface the cross-session-handoff trigger explicitly so Claude defaults to invoking `/ft-starter-task` rather than burying the suggestion in prose.
+  **Rationale:** The behavioral gap is real and observed (starter captured during a project-27-side `/ft-epic-discovery` invocation where prior-chat context was lost on `/clear`). The fix is a small routing/behavior nudge — surface the cross-session-handoff trigger explicitly so Claude defaults to invoking `/ft-starter-task` rather than burying the suggestion in prose.
 
 - [x] Read relevant source files
 - [x] **Archive skim** — skim `_project/tasknote/archive/core/` for prior tasknotes that touched the source paths in scope; log relevant findings in Discovery Notes before re-interpreting the task

@@ -35,7 +35,7 @@ Close the paper-complete hole: require a commit that lands deliverables before P
 
 ## 🔗 Related
 
-- InvisiPaw FE-64 (2026-07-15) — paper-complete without deliverable commit; densify lost (external provenance)
+- Project-17 FE-64 (2026-07-15) — paper-complete without deliverable commit; densify lost (external provenance)
 
 ---
 
@@ -46,7 +46,7 @@ Close the paper-complete hole: require a commit that lands deliverables before P
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** Real hole (InvisiPaw FE-64): PLAN/archive marked Completed with no deliverable commit; uncommitted work discarded. Scope is contract-only (SPEC+procedures+skills), not general git UX.
+  **Rationale:** Real hole (Project-17 FE-64): PLAN/archive marked Completed with no deliverable commit; uncommitted work discarded. Scope is contract-only (SPEC+procedures+skills), not general git UX.
 
 - [x] Read relevant source files
 
@@ -61,7 +61,7 @@ Close the paper-complete hole: require a commit that lands deliverables before P
 **Discovery Notes:**
 
 ### Incident (external)
-InvisiPaw FE-64 (2026-07-15): Phase 4 flipped PLAN + archived tasknote; **no deliverable commit ever landed**; uncommitted densify discarded before CORE-100.x. Provenance: `InvisiPaw/.flowtron/tasknote/archive/frontend/FE-64.reopen-provenance-2026-07-15.md`. Filed here as CORE-358 2026-07-16.
+Project-17 FE-64 (2026-07-15): Phase 4 flipped PLAN + archived tasknote; **no deliverable commit ever landed**; uncommitted densify discarded before CORE-100.x. Provenance: `Project-17/.flowtron/tasknote/archive/frontend/FE-64.reopen-provenance-2026-07-15.md`. Filed here as CORE-358 2026-07-16.
 
 ### Current hole (flowtron HEAD)
 1. Phase 4 **writes** PLAN Completed + archive **before** commit; post-closure then commits. If session ends / commit skipped / only workflow paths staged, PLAN can read "done" without deliverables in git.

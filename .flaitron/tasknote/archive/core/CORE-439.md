@@ -94,8 +94,8 @@ Three directories install flowtron skills for one agent:
 | Install path | Points at | `ft-*` count | Authorised by |
 |---|---|---|---|
 | `<repo>/.claude/skills/` | `../../claude/skills/*` (relative) | 18 | `docs/PLATFORMS.md` §"Installed-surface policy" → "Flowtron's own checkout is not an adopter" (**mandatory**: full inventory, 1:1) |
-| `~/.claude/skills/` | `/Users/…/Code/flowtron/claude/skills/*` (absolute) | 17 (no `ft-spec`) | `docs/MIGRATION.md` §1.0 install table + §1.2.2 hot-reload glob (**discretionary**) |
-| `~/.agents/skills/` | `/Users/…/Code/flowtron/codex/skills/*` (absolute) | 18 | `codex/AGENTS-snippet.md` §"Pinning notes" maintainer hot-reload block (**discretionary**) |
+| `~/.claude/skills/` | `/Users/…/code/flowtron/claude/skills/*` (absolute) | 17 (no `ft-spec`) | `docs/MIGRATION.md` §1.0 install table + §1.2.2 hot-reload glob (**discretionary**) |
+| `~/.agents/skills/` | `/Users/…/code/flowtron/codex/skills/*` (absolute) | 18 | `codex/AGENTS-snippet.md` §"Pinning notes" maintainer hot-reload block (**discretionary**) |
 
 Session roster: **84 skill entries, 36 of them `ft-*`, for 18 unique skills** —
 18 redundant entries, all flowtron-owned. (A further 13 duplicates come from the

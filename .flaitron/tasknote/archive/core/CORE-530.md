@@ -27,6 +27,6 @@ State, in SPEC.md's Task-line format section, that any task-line rewrite (Re-sco
 
 ## ✅ Recap
 
-Added a canonical "rewrites must preserve the trailing bracket-token run verbatim" rule to `SPEC.md` §"Task-line format", plus one-clause pointers at the three sites that rewrite a task line: Re-scope (`SPEC.md` Phase 1), model retag (`SPEC/model.md`), and the Phase 4 stub flip (`SPEC/tasknote-selection.md`). Closes the gap the PLAN.md line described (caobunga CBN-120.2 F5): a rewrite that preserves visible text but drops a bracket token like `[unattended]` previously had no documented guard against it. Docs-only; no code changed, no tests affected.
+Added a canonical "rewrites must preserve the trailing bracket-token run verbatim" rule to `SPEC.md` §"Task-line format", plus one-clause pointers at the three sites that rewrite a task line: Re-scope (`SPEC.md` Phase 1), model retag (`SPEC/model.md`), and the Phase 4 stub flip (`SPEC/tasknote-selection.md`). Closes the gap the PLAN.md line described (project-07 CBN-120.2 F5): a rewrite that preserves visible text but drops a bracket token like `[unattended]` previously had no documented guard against it. Docs-only; no code changed, no tests affected.
 
 **Archived:** 2026-09-06

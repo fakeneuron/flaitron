@@ -18,7 +18,7 @@ Clear the machine-global `~/.claude/` half of the wiring-parity gap: remove the 
 ## ✅ Acceptance
 
 - [x] All nine dangling `~/.claude/` links are gone — `ft-audit-{backend,docs,frontend,performance,security}`, `ft-debug`, `ft-quality`, `ft-sidequest` (skills) and `ft-quality.md` (command). Nothing else in `~/.claude/` is removed.
-- [x] Every surviving global symlink target — the 23 `ft-*` links **and** the 4 `natabula-*` links — spells the home directory `/Users/fakeneuron/Code/…`, matching the true on-disk casing.
+- [x] Every surviving global symlink target — the 23 `ft-*` links **and** the 4 `project-20-*` links — spells the home directory `~/code/…`, matching the true on-disk casing.
 - [x] `/ft-release` §7.1's machine-global half, run verbatim, prints nothing for the dangling scan and exactly **one** line for the casing report.
 - [x] `/ft-release` §7.1's local half still passes unchanged — the `.claude/` bidirectional diffs and broken-link scan stay silent (guards against collateral damage from [[CORE-410.3]]).
 - [x] Every surviving link resolves to a real file/directory after the rewrite (no link broken by the re-point).
@@ -29,7 +29,7 @@ Clear the machine-global `~/.claude/` half of the wiring-parity gap: remove the 
 - [x] Snapshot the pre-change state of `~/.claude/{skills,commands}` for before/after evidence.
 - [x] Surface the exact `rm` list for operator approval (destructive, outside the repo, not git-recoverable).
 - [x] Remove the nine dangling links.
-- [x] Re-point every mis-cased surviving link (`ft-*` + `natabula-*`) to `/Users/fakeneuron/Code/…` via `ln -sfn`.
+- [x] Re-point every mis-cased surviving link (`ft-*` + `project-20-*`) to `~/code/…` via `ln -sfn`.
 - [x] Verify: all links resolve; dangling scan silent; casing report exactly one line.
 - [x] Run `/ft-release` §7.1 in full (local + global halves) to confirm the epic's clean end state.
 - [x] Doc-drift sweep, closure, archive.
@@ -74,17 +74,17 @@ Clear the machine-global `~/.claude/` half of the wiring-parity gap: remove the 
 **Measured current state (2026-08-07).**
 
 - Shipped: 18 skills + 18 commands. Local `.claude/`: 18 + 18, exact match both directions — [[CORE-410.3]] closed the `ft-spec` gap, so the blocking half of §7.1 is already green.
-- Global `~/.claude/`: 32 `ft-*` links (25 skills + 7 commands) plus 4 `natabula-*` skill links. Exactly 9 dangle, and the slug list matches the PLAN line character-for-character.
-- Casing across all 36 global links: 34 spell `/Users/fakeneuron/code`, 2 spell `/Users/fakeneuron/Code` (`ft-sidequest`, which is one of the nine being deleted, and `ft-update`).
+- Global `~/.claude/`: 32 `ft-*` links (25 skills + 7 commands) plus 4 `project-20-*` skill links. Exactly 9 dangle, and the slug list matches the PLAN line character-for-character.
+- Casing across all 36 global links: 34 spell `~/code`, 2 spell `~/code` (`ft-sidequest`, which is one of the nine being deleted, and `ft-update`).
 
 **Every dangling link maps to a deliberate retirement.** None is an accident to investigate — each is residue from a fold that landed upstream and never reached back into machine state: the five `ft-audit-<domain>` slugs to [[CORE-389.2]]'s `/ft-audit <domain>` fold, `ft-debug` to [[CORE-390]]'s `/ft-task --debug`, `ft-sidequest` to [[CORE-391]]'s `/ft-file-followup --park`, and the `ft-quality` skill + command pair to [[CORE-392]]'s outright retirement. Cross-checked against the shipped inventory: not one of those slugs exists under `claude/skills/` or `claude/commands/` today. Deleting them removes no reachable capability.
 
-**Drift found — the casing target was undecided, and the majority answer is the wrong one.** The PLAN line says "normalize every remaining target to one path casing (`~/code/` vs `~/Code/` currently mixed)" without naming which. The obvious reading is majority-wins → lowercase `code`, a single relink. That reading is wrong. The true on-disk directory is `/Users/fakeneuron/Code` (verified by `find -maxdepth 1 -iname code`, which prints the real entry name rather than echoing the query). So 34 of 36 links currently resolve only because the boot volume is case-insensitive — and the *stated rationale* for the casing check in `claude/skills/ft-release/SKILL.md:350` is precisely that mixed casing "resolves on a case-insensitive volume and silently stops resolving on a case-sensitive one." Normalizing down to `code` would make the check print its one clean line while leaving all 23 surviving links latently broken: a green check over the exact failure mode the check was written to catch. Surfaced to the operator; resolved to `Code`.
+**Drift found — the casing target was undecided, and the majority answer is the wrong one.** The PLAN line says "normalize every remaining target to one path casing (`~/code/` vs `~/code/` currently mixed)" without naming which. The obvious reading is majority-wins → lowercase `code`, a single relink. That reading is wrong. The true on-disk directory is `~/code` (verified by `find -maxdepth 1 -iname code`, which prints the real entry name rather than echoing the query). So 34 of 36 links currently resolve only because the boot volume is case-insensitive — and the *stated rationale* for the casing check in `claude/skills/ft-release/SKILL.md:350` is precisely that mixed casing "resolves on a case-insensitive volume and silently stops resolving on a case-sensitive one." Normalizing down to `code` would make the check print its one clean line while leaving all 23 surviving links latently broken: a green check over the exact failure mode the check was written to catch. Surfaced to the operator; resolved to `Code`.
 
 **Clarifications asked (2, both resolved to the recommended option).**
 
 1. *Casing target* → **`Code`, the true on-disk casing.** ~22 relinks instead of 1. Chosen because it is the only option under which a clean §7.1 casing report means the links are actually correct, per the drift note above.
-2. *Scope — include the 4 `natabula-*` links?* → **Yes.** They carry the identical lowercase defect but fall outside §7.1's `-name 'ft-*'` filter, so the check will never report them. The PLAN line says "every remaining target," and stopping at the boundary of a grep pattern would leave a known-defective residue of exactly the kind this epic exists to eliminate. Four extra one-line relinks, no added risk.
+2. *Scope — include the 4 `project-20-*` links?* → **Yes.** They carry the identical lowercase defect but fall outside §7.1's `-name 'ft-*'` filter, so the check will never report them. The PLAN line says "every remaining target," and stopping at the boundary of a grep pattern would leave a known-defective residue of exactly the kind this epic exists to eliminate. Four extra one-line relinks, no added risk.
 
 **Assumptions asserted (not asked).**
 
@@ -98,7 +98,7 @@ Clear the machine-global `~/.claude/` half of the wiring-parity gap: remove the 
 
 **Best Practices Review.** `N/A` — no code, no module boundaries, no repo files. The work is filesystem state changes plus verification.
 
-Discovery surfaced no significant deviation → skip 🛠️. Both clarifications resolved to the recommended option and neither changed the approach, the surface, or the subtask shape: the casing answer picked a direction the PLAN line had left open rather than reversing one it had set, and the natabula answer widened the target set by four identical one-line operations. Root cause, edit surface, and sequencing are unchanged from the PLAN line.
+Discovery surfaced no significant deviation → skip 🛠️. Both clarifications resolved to the recommended option and neither changed the approach, the surface, or the subtask shape: the casing answer picked a direction the PLAN line had left open rather than reversing one it had set, and the project-20 answer widened the target set by four identical one-line operations. Root cause, edit surface, and sequencing are unchanged from the PLAN line.
 
 ✅ Phase 1 Discovery complete; entering Phase 2 Execution.
 
@@ -122,7 +122,7 @@ Discovery surfaced no significant deviation → skip 🛠️. Both clarification
 
 **Step 1 — removals (9).** Each `rm` was guarded by `[ -L "$f" ] && [ ! -e "$f" ]`, so the command could only ever remove a path that was *both* a symlink *and* already broken. A live link or a real file would have printed `SKIPPED` instead. All nine reported `removed`; none skipped.
 
-**Step 2 — re-points (26).** A single loop over every symlink in `~/.claude/{skills,commands}` rewrote the target prefix `/Users/fakeneuron/code/` → `/Users/fakeneuron/Code/` with `ln -sfn`, guarded by an `[ ! -e "$new" ] && exit 1` pre-check so a rewrite that would have produced a broken link aborted the whole run before touching anything. Result: **26 re-pointed, 1 already correct** (`ft-update`, the sole pre-existing `Code` link once `ft-sidequest` was deleted). That accounts for all 27 surviving links — 23 `ft-*` + 4 `natabula-*`.
+**Step 2 — re-points (26).** A single loop over every symlink in `~/.claude/{skills,commands}` rewrote the target prefix `~/code/` → `~/code/` with `ln -sfn`, guarded by an `[ ! -e "$new" ] && exit 1` pre-check so a rewrite that would have produced a broken link aborted the whole run before touching anything. Result: **26 re-pointed, 1 already correct** (`ft-update`, the sole pre-existing `Code` link once `ft-sidequest` was deleted). That accounts for all 27 surviving links — 23 `ft-*` + 4 `project-20-*`.
 
 Deliberately prefix-anchored (`${old/#…}`) rather than a bare substitution, so only the leading home-directory segment could change; a `code` appearing later in a path would have been left alone.
 
@@ -155,11 +155,11 @@ The change is machine state, so the test *is* the check [[CORE-410.2]] built for
 **1. Global half (the target) — clean.**
 
 - Dangling scan: **no output**. Was 9 lines before.
-- Casing report: **exactly one line** — `23 /Users/fakeneuron/Code/flowtron`. Was two (`30 …/code`, `2 …/Code`) when [[CORE-410.2]] measured it. Both of the check's stated pass conditions are met.
+- Casing report: **exactly one line** — `23 ~/code/flowtron`. Was two (`30 …/code`, `2 …/code`) when [[CORE-410.2]] measured it. Both of the check's stated pass conditions are met.
 
 **2. Local half — still clean (regression guard).** Both `diff -u` exact-set comparisons silent, broken-link scan silent. This is not incidental: it confirms the global work did not disturb [[CORE-410.3]]'s `.claude/` wiring, and it is the half that *blocks* a release cut.
 
-**3. Every surviving link resolves.** Independent sweep over all 27 links (`[ -e "$f" ]` per link, including the 4 `natabula-*` outside §7.1's `ft-*` filter): zero broken. The re-point could not have stranded anything.
+**3. Every surviving link resolves.** Independent sweep over all 27 links (`[ -e "$f" ]` per link, including the 4 `project-20-*` outside §7.1's `ft-*` filter): zero broken. The re-point could not have stranded anything.
 
 **4. Before/after snapshot diff — the change is exactly what was authorized, and nothing more.** Full pre- and post-state captured to scratchpad and diffed. The diff contains precisely two classes of change: the 9 removed lines (exactly the approved slug list) and 26 target-casing rewrites. No link added, no link's *name* changed, no non-link entry touched, `ft-update` correctly untouched as already-correct. 38 entries before → 29 after (38 − 9).
 
@@ -169,7 +169,7 @@ The change is machine state, so the test *is* the check [[CORE-410.2]] built for
 
 **7. `👁️` visual confirmation** — `N/A`, no frontend surface.
 
-**Recurrence vector, noted not fixed.** `docs/MIGRATION.md` §1.2.2's maintainer hot-reload snippet is `ln -s ~/code/flowtron/claude/skills/* ~/.claude/skills/` — lowercase. Re-running it on this machine would reintroduce the exact casing drift just cleaned. It is deliberately left alone: `~/code/flowtron` there is a *generic clone destination* for any reader, correct for anyone who actually clones to a lowercase path, and rewriting it to `~/Code/` would impose one maintainer's local directory casing on every adopter. The recurrence is instead covered by design — §7.1's casing report is the standing detector that catches it at the next cut, which is precisely what [[CORE-EPIC-410]] exists to provide.
+**Recurrence vector, noted not fixed.** `docs/MIGRATION.md` §1.2.2's maintainer hot-reload snippet is `ln -s ~/code/flowtron/claude/skills/* ~/.claude/skills/` — lowercase. Re-running it on this machine would reintroduce the exact casing drift just cleaned. It is deliberately left alone: `~/code/flowtron` there is a *generic clone destination* for any reader, correct for anyone who actually clones to a lowercase path, and rewriting it to `~/code/` would impose one maintainer's local directory casing on every adopter. The recurrence is instead covered by design — §7.1's casing report is the standing detector that catches it at the next cut, which is precisely what [[CORE-EPIC-410]] exists to provide.
 
 ## 🚀 Phase 4: Closure
 
@@ -177,7 +177,7 @@ The change is machine state, so the test *is* the check [[CORE-410.2]] built for
 
   Two greps drove the sweep rather than per-file reading: one for the nine retired slugs across the whole doc set, one for `~/code/flowtron` path literals and `ln -s` install commands. Verdicts below cite those results.
 
-  - `README.md` — **no change, checked deliberately.** Lines 31-33 carry `git clone … ~/code/flowtron` + two `ln -s ~/code/flowtron/…` commands. Left as-is: that path is a generic clone destination for any reader, correct for anyone who clones lowercase. Normalizing it to `~/Code/` would publish one maintainer's local directory casing as adopter instruction. Neither command references a retired slug.
+  - `README.md` — **no change, checked deliberately.** Lines 31-33 carry `git clone … ~/code/flowtron` + two `ln -s ~/code/flowtron/…` commands. Left as-is: that path is a generic clone destination for any reader, correct for anyone who clones lowercase. Normalizing it to `~/code/` would publish one maintainer's local directory casing as adopter instruction. Neither command references a retired slug.
   - `SPEC.md` — no change. Line 49 ("when working in `~/code/flowtron/`") is the same generic shorthand; the contract enumerates no global install state.
   - `docs/MIGRATION.md` — **no change, checked closely — it is the doc most likely to be stale and is not.** §"Skills retired so far" (lines 474-479) lists all four retirements (`ft-debug`, `ft-sidequest`, `ft-quality`, `ft-audit-{backend,frontend,security,performance,docs}`) with replacements, and the preceding paragraph already prescribes exactly this cleanup ("Remove each hit with `rm`. The commands are safe: these are symlinks into the submodule, never real files"). That table is a deliberate historical record and correct as written — the fix here was the machine catching up to the doc, not the reverse. §1.2.2's lowercase hot-reload snippet is left alone per the recurrence-vector note in Testing Notes.
   - `claude/AGENTS-snippet.md` — no change; adopter repo-scoped wiring, no retired slug, no global install command.
@@ -200,11 +200,11 @@ The change is machine state, so the test *is* the check [[CORE-410.2]] built for
 
 **Final Summary:**
 
-The machine's global Claude wiring now matches what flowtron actually ships. Nine `~/.claude/` symlinks pointing at skill slugs retired four releases ago were deleted, and every surviving link — 23 `ft-*` plus 4 `natabula-*` — was re-pointed at the home directory's true on-disk casing. `/ft-release` §7.1's advisory global half, which reported 9 dangling links and a split casing yesterday, now reports nothing and a single casing line.
+The machine's global Claude wiring now matches what flowtron actually ships. Nine `~/.claude/` symlinks pointing at skill slugs retired four releases ago were deleted, and every surviving link — 23 `ft-*` plus 4 `project-20-*` — was re-pointed at the home directory's true on-disk casing. `/ft-release` §7.1's advisory global half, which reported 9 dangling links and a split casing yesterday, now reports nothing and a single casing line.
 
 Deliverables are entirely machine state: **0 repo files changed**, 9 links removed, 26 re-pointed, 1 already correct. The removals were guarded so each `rm` could only fire on a path that was both a symlink and already broken; the re-points were prefix-anchored and pre-checked so a rewrite producing a broken link would have aborted the run. Verification ran §7.1 verbatim — global half clean on both conditions, local half still clean as a regression guard on [[CORE-410.3]] — plus an all-27-link resolution sweep and a before/after snapshot diff confirming the change set contains exactly the nine authorized deletions and 26 casing rewrites and nothing else.
 
-The one judgment call worth recording: the PLAN line left the casing *target* open, and the obvious majority-wins reading (34 of 36 links spelled `code`) was the wrong answer. The directory is really `/Users/fakeneuron/Code`, so those 34 resolved only by grace of a case-insensitive volume — and the check's own stated rationale is that mixed casing "silently stops resolving on a case-sensitive one." Normalizing down to `code` would have produced a green one-line report over 23 latently-broken links: the check passing while the defect it exists to catch got worse. Normalizing up to `Code` costs 25 extra relinks and makes a clean report mean something. The operator confirmed both that and the decision to include the 4 out-of-scope `natabula-*` links, which carry the identical defect but fall outside §7.1's `ft-*` filter and would never have been reported.
+The one judgment call worth recording: the PLAN line left the casing *target* open, and the obvious majority-wins reading (34 of 36 links spelled `code`) was the wrong answer. The directory is really `~/code`, so those 34 resolved only by grace of a case-insensitive volume — and the check's own stated rationale is that mixed casing "silently stops resolving on a case-sensitive one." Normalizing down to `code` would have produced a green one-line report over 23 latently-broken links: the check passing while the defect it exists to catch got worse. Normalizing up to `Code` costs 25 extra relinks and makes a clean report mean something. The operator confirmed both that and the decision to include the 4 out-of-scope `project-20-*` links, which carry the identical defect but fall outside §7.1's `ft-*` filter and would never have been reported.
 
 No refactor (no code). Documentation verdict: 14/14 AI-referenced entries swept, **0 updated** — and the notable finding is that `docs/MIGRATION.md` was already correct, carrying both the retirement table and the `rm` cleanup procedure this task executed. The drift was the machine lagging the docs, not the docs lagging the code. Deliberately left alone: §1.2.2's lowercase `ln -s ~/code/flowtron/…` hot-reload snippet, which would reintroduce the drift if re-run here but is correct as generic adopter instruction — the recurrence is covered by the standing §7.1 casing check rather than by publishing one maintainer's path casing.
 

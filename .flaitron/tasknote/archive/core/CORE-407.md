@@ -107,7 +107,7 @@ Discovery surfaced no significant deviation → skip 🛠️.
 
 **Testing Notes:**
 
-- Dry-run: `find /Users/fakeneuron/Code/flowtron/.claude -type l ! -exec test -e {} \; -print` → exit 0, zero hits (no dangling symlinks in flowtron-self today, as expected). Confirmed the command errors (`No such file or directory`) when a scanned directory is absent, which is why the new step scopes to only the surfaces Step 4 confirmed present, rather than always running both `find` invocations.
+- Dry-run: `find ~/code/flowtron/.claude -type l ! -exec test -e {} \; -print` → exit 0, zero hits (no dangling symlinks in flowtron-self today, as expected). Confirmed the command errors (`No such file or directory`) when a scanned directory is absent, which is why the new step scopes to only the surfaces Step 4 confirmed present, rather than always running both `find` invocations.
 
 ## 🚀 Phase 4: Closure
 

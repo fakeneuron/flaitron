@@ -64,7 +64,7 @@ Verify the completed `CORE-EPIC-735` (`adopter-footprint`) cohort sits coherentl
 
 - [x] **Drift check** — every surface `.4` names still carries its edit at HEAD, `tools/update-adopters.mjs` is unchanged, and `bash tools/drift-checks.sh` → 0. The PLAN row matches the SPEC/epic.md audit shape.
 
-- [x] No clarifications needed. Assumptions: the audit judges `.4`'s deferred trade (sparse caveats repeated across ~10 surfaces) rather than re-opening `.3`'s decision; sibling-repo reads (natabula, fleet `.flaitron/core` symlink check) are covered by the `~/Code` standing exception.
+- [x] No clarifications needed. Assumptions: the audit judges `.4`'s deferred trade (sparse caveats repeated across ~10 surfaces) rather than re-opening `.3`'s decision; sibling-repo reads (project-20, fleet `.flaitron/core` symlink check) are covered by the `~/code` standing exception.
 
 - [x] Subtasks above populated with ordered steps; YAML `touches:` declared (omit only with no file deliverable)
 
@@ -99,12 +99,12 @@ Regressions: none. `.2` and `.3` shipped nothing outside `.flaitron/`. `.4`'s su
 
 Deferred trade from `.4` (caveats repeated across ~10 surfaces): **accepted, no follow-up.** Each repetition sits at an action point. `ft-new-project` and `ft-update` are self-contained skill bodies, the snippets are one-liners pointing at §1.1 (as PLATFORMS requires), and the full rationale (non-cone, per-clone, objects unchanged) lives only in MIGRATION §1.1. The drift-prone facts are the recipe, the floor, and the size. All three agree today (above). A new drift pair to pin them would cut against [[CORE-EPIC-734]]'s mirror-tax direction.
 
-Cross-repo: natabula's dogfood-archive fence (`natabula-init` Step 2b, `natabula-layer-drift` column 17, `natabula-layer-refresh`) is still correct as the fallback. `natabula-adopt` runs `/ft-new-project`, so it picks up sparse automatically. Nothing to hand off. Any rewording there is natabula's call, as `.3` recorded.
+Cross-repo: project-20's dogfood-archive fence (`project-20-init` Step 2b, `project-20-layer-drift` column 17, `project-20-layer-refresh`) is still correct as the fallback. `project-20-adopt` runs `/ft-new-project`, so it picks up sparse automatically. Nothing to hand off. Any rewording there is project-20's call, as `.3` recorded.
 
 Inline fixes: none.
 
 Follow-up candidates (`/ft-file-followup` after closure):
-1. **Symlinked-core sparse guard** `[light]` — SECURITY.md calls `.flaitron/core -> ~/code/flaitron` "the common local-dev link". Through that link, the sparse line (MIGRATION §1.1, `ft-new-project` Step 2, `ft-update` Step 1's unconditional re-apply) trims the *linked flaitron checkout's own* `.flaitron/`: PLAN.md and the tasknote archive vanish from the developer's flaitron working tree. A scratchpad probe confirmed it. It is recoverable with `git -C <checkout> sparse-checkout disable`, and no fleet adopter uses a symlinked core today (checked `~/Code/*/.flaitron/core`). The fix: skip the sparse step when `<FT>` is a symlink, and add one clause to MIGRATION §1.1.
+1. **Symlinked-core sparse guard** `[light]` — SECURITY.md calls `.flaitron/core -> ~/code/flaitron` "the common local-dev link". Through that link, the sparse line (MIGRATION §1.1, `ft-new-project` Step 2, `ft-update` Step 1's unconditional re-apply) trims the *linked flaitron checkout's own* `.flaitron/`: PLAN.md and the tasknote archive vanish from the developer's flaitron working tree. A scratchpad probe confirmed it. It is recoverable with `git -C <checkout> sparse-checkout disable`, and no fleet adopter uses a symlinked core today (checked `~/code/*/.flaitron/core`). The fix: skip the sparse step when `<FT>` is a symlink, and add one clause to MIGRATION §1.1.
 
 ## 🧪 Phase 3: Testing & Linting
 
@@ -125,7 +125,7 @@ Follow-up candidates (`/ft-file-followup` after closure):
 - `git grep -ho "sparse-checkout set --no-cone '[^']*' '[^']*'" -- ':!.flaitron' | sort | uniq -c` → one variant, 5 hits (+ `ft-update`'s `<FT>` form)
 - `git grep -nE '2\.35|2\.25' -- ':!.flaitron' ':!viz'` → 5 hits, all 2.35
 - `bash tools/drift-checks.sh` → 0
-- `git -C /Users/fakeneuron/Code/flaitron sparse-checkout list` → "this worktree is not sparse" (flaitron-self unaffected)
+- `git -C ~/code/flaitron sparse-checkout list` → "this worktree is not sparse" (flaitron-self unaffected)
 - Symlink probe (scratchpad): `git -C <adopter>/.flaitron/core sparse-checkout set --no-cone '/*' '!/.flaitron/'` with `core` symlinked to a throwaway repo → that repo's `.flaitron/` gone from its working tree; `sparse-checkout disable` restores it
 
 ## 🚀 Phase 4: Closure

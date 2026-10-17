@@ -86,7 +86,7 @@ Decide whether `/ft-goal-task` demotes to a `/ft-task --loop` flag (contract `SP
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** The evidence line on the PLAN row re-verifies at HEAD: zero `## 🔁 Iterations` *sections* in 880 archived notes (the 12 `grep -l` hits are prose mentions in authoring/roster notes, none a heading), no `.flowtron/LOOP-LOG.md`, no `.claude/loop.md`; caobunga wires the skill and has never run it. The skill's own Notes (§"Relationship to /ft-task") argued for a separate skill on execution-model grounds — that argument assumed operators would reach for it; ten weeks say they don't. The `[[CORE-390]]` precedent (`/ft-debug` → `/ft-task --debug`, 25 files, one `[medium]` task) proves the fold shape at this footprint.
+  **Rationale:** The evidence line on the PLAN row re-verifies at HEAD: zero `## 🔁 Iterations` *sections* in 880 archived notes (the 12 `grep -l` hits are prose mentions in authoring/roster notes, none a heading), no `.flowtron/LOOP-LOG.md`, no `.claude/loop.md`; project-07 wires the skill and has never run it. The skill's own Notes (§"Relationship to /ft-task") argued for a separate skill on execution-model grounds — that argument assumed operators would reach for it; ten weeks say they don't. The `[[CORE-390]]` precedent (`/ft-debug` → `/ft-task --debug`, 25 files, one `[medium]` task) proves the fold shape at this footprint.
 
 - [x] Read relevant source files — when the read set is broad or its shape is unknown, consider isolating the search in a **probe** (`templates/subagent-probe-template.md`) and recording only its distilled return in Discovery Notes
 

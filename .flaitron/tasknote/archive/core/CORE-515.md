@@ -110,7 +110,7 @@ registers `docs/MIGRATION.md` §1.3 as an intentional Claude-specific surface,
 so the addition extends an existing ledger row rather than needing a new one.
 
 **Empirical basis for the claim.** This session's own loaded-context set names
-`/Users/fakeneuron/Code/flowtron/CLAUDE.md` (the symlink) and no separate
+`~/code/flowtron/CLAUDE.md` (the symlink) and no separate
 `AGENTS.md` entry — i.e. the symlink is what makes the guide load. The docs
 are therefore written as *verify, then apply the fallback*, not as a flat
 assertion about any Claude Code version's behavior.

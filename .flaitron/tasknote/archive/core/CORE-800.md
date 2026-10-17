@@ -33,8 +33,8 @@ Generate Flaitron's 16:9 `chamber-reference`, record `origin: generated` and the
 - [x] `brand/assets.json` is schema 2, keeps project id `a7118fc2-2807-4b01-b316-80d562dfe195`, and declares `chamber-reference` with role `visual-reference` — `python3` JSON check
 - [x] Before the person's confirm, that asset's review state is `draft`; after confirm it is `approved` — `python3` JSON check of `review.state`
 - [x] `symbol` and `favicon` stay the same paths and stay taste-approved; only their review field becomes the v2 object dated 2026-09-21 — `python3` JSON check
-- [x] A filled `in-review` → `approved` transition checks clean — `bash ~/Code/natabula/scripts/brand-workflow.sh transition <file>`
-- [x] The manifest validates against committed bytes — `bash ~/Code/natabula/scripts/validate-brand.sh` on an isolated snapshot, then on the closure SHA
+- [x] A filled `in-review` → `approved` transition checks clean — `bash ~/code/project-20/scripts/brand-workflow.sh transition <file>`
+- [x] The manifest validates against committed bytes — `bash ~/code/project-20/scripts/validate-brand.sh` on an isolated snapshot, then on the closure SHA
 - [x] A person confirms the pixels — `👁️` (producer taste; the checker cannot decide it)
 
 ## 🧩 Subtasks
@@ -49,7 +49,7 @@ Generate Flaitron's 16:9 `chamber-reference`, record `origin: generated` and the
 ## 🔗 Related
 
 - [[CORE-788]] — related-decision: v1 manifest and provenance this asset extends
-- fakeneuron FE-127 — consumer import, blocked on this approval and on blastimage CORE-012
+- fakeneuron FE-127 — consumer import, blocked on this approval and on project-06 CORE-012
 
 ---
 
@@ -78,7 +78,7 @@ Generate Flaitron's 16:9 `chamber-reference`, record `origin: generated` and the
 
 Area is `archive/core/` per the README table. The only archive hit for `brand/assets.json` / `brand/PROMPTS.md` is CORE-788 (brand-pilot-provenance, archived 2026-10-14). Its Related notes (CORE-643, CORE-329.3, CORE-632.2, CORE-711.4) are the mark's source chain, already summarized in `brand/PROMPTS.md`. CORE-643's visual confirm is archived 2026-09-21. No superseded-claim pointer on CORE-788. No `chamber-reference` tasknote exists.
 
-Natabula `templates/brand/profiles-v1.json` profile `chamber-reference`: role `visual-reference`, png/jpeg/webp, fit `minimum-ratio`, 1280×720, exact 16:9 (`width * 720 == height * 1280`). No tunnel crop. `templates/brand/README.md` says new pixels start at asset review `draft`, the prompt lives in `brand/PROMPTS.md`, and a person confirms before `in-review` → `approved`. The checker is `scripts/brand-workflow.sh transition` and writes nothing. The example the PLAN names is `templates/brand/examples/visual-reference-approval.json`.
+Project-20 `templates/brand/profiles-v1.json` profile `chamber-reference`: role `visual-reference`, png/jpeg/webp, fit `minimum-ratio`, 1280×720, exact 16:9 (`width * 720 == height * 1280`). No tunnel crop. `templates/brand/README.md` says new pixels start at asset review `draft`, the prompt lives in `brand/PROMPTS.md`, and a person confirms before `in-review` → `approved`. The checker is `scripts/brand-workflow.sh transition` and writes nothing. The example the PLAN names is `templates/brand/examples/visual-reference-approval.json`.
 
 Manifest v1 stores review as `pending` | `approved`. `pending` normalizes to `draft` and cannot store `in-review`. Schema v2 replaces that string with `review: {state, updated_on, evidence_paths}`. Readers already accept v2; nothing auto-rewrites a producer file. This task opts in so the declared state can be `draft`. `marketing_readiness` stays omitted. Project UUID and the two mark IDs stay. Their approved taste moves into a v2 object dated 2026-09-21 with evidence `.flaitron/tasknote/archive/core/CORE-643.md`.
 
@@ -104,7 +104,7 @@ Extended the CORE-788 manifest, `PROMPTS.md`, and brand README. No new schema or
 
 The still is `brand/chamber-reference.jpg`, 1280×720 JPEG. The operator kept the portal direction and asked for the digital chamber inside the fleshy tunnel. The 2026-10-16 pass was cyan holographic schematics in the round opening, with the mark as a loose wave-gear and a screen-headed rider in scan light. The mist pass and the literal badge were set aside. The logo raster was not an image input. `brand/logo.svg` is not the source.
 
-2026-10-17, from the blastimage CORE-012 session: the operator liked the chamber and asked for flaitron's hologram to be growth and structure, an idea becoming an actuated project. That pass replaces the gear still. Image input was blastimage's chamber, for the tunnel and the green ring. `source_paths` is empty. Review stays `draft`, updated 2026-10-17. The receipt below is for the 2026-10-16 gear still. Tests: N/A, no executable behavior. The Natabula validator is the check.
+2026-10-17, from the project-06 CORE-012 session: the operator liked the chamber and asked for flaitron's hologram to be growth and structure, an idea becoming an actuated project. That pass replaces the gear still. Image input was project-06's chamber, for the tunnel and the green ring. `source_paths` is empty. Review stays `draft`, updated 2026-10-17. The receipt below is for the 2026-10-16 gear still. Tests: N/A, no executable behavior. The Project-20 validator is the check.
 
 ## 🧪 Phase 3: Testing & Linting
 
@@ -131,9 +131,9 @@ python3 JPEG SOF + JSON assertions on brand/chamber-reference.jpg and brand/asse
     jpeg 1280 720, review draft, three assets
 grep -n 'origin: generated' brand/PROMPTS.md → 0
     72:- origin: generated
-bash ~/Code/natabula/scripts/brand-workflow.sh transition /tmp/core-800-approve.json → 0
+bash ~/code/project-20/scripts/brand-workflow.sh transition /tmp/core-800-approve.json → 0
     {"axis":"asset-review","kind":"transition","ok":true,"to":"approved"}
-bash ~/Code/natabula/scripts/validate-brand.sh /tmp/core-800-snap → 0
+bash ~/code/project-20/scripts/validate-brand.sh /tmp/core-800-snap → 0
     status valid, manifest_valid true, three assets valid, findings empty
     snapshot e36f353e66ba1e69973e4f4d4ff72454342b56b5
     chamber review draft updated_on 2026-10-16
@@ -147,7 +147,7 @@ The transition document checks the shape only. The manifest stays `draft` until 
 ```text
 python3 JPEG SOF on brand/chamber-reference.jpg → 0
     jpeg 1280 720, width*9 == height*16, 234812 bytes
-bash ~/Code/natabula/scripts/validate-brand.sh /tmp/flaitron-core-800.VyDSvr/producer --revision 89c7c30330c231eda48b272a9b101d0ff04a830a → 0
+bash ~/code/project-20/scripts/validate-brand.sh /tmp/flaitron-core-800.VyDSvr/producer --revision 89c7c30330c231eda48b272a9b101d0ff04a830a → 0
     status valid, manifest_valid true, three assets valid, findings empty
 ```
 
@@ -161,9 +161,9 @@ python3 JPEG SOF + JSON assertions → 0
     symbol and favicon approved 2026-09-21
 grep -n 'origin: generated' brand/PROMPTS.md → 0
     72:- origin: generated
-bash ~/Code/natabula/scripts/brand-workflow.sh transition /tmp/core-800-approve.json → 0
+bash ~/code/project-20/scripts/brand-workflow.sh transition /tmp/core-800-approve.json → 0
     {"axis":"asset-review","kind":"transition","ok":true,"to":"approved"}
-bash ~/Code/natabula/scripts/validate-brand.sh /tmp/core-800-snap → 0
+bash ~/code/project-20/scripts/validate-brand.sh /tmp/core-800-snap → 0
     status valid, manifest_valid true, three assets valid, findings empty
     snapshot c11f4eddf0f32cb7a298fc739b57ad2e4f71a2b5
     chamber review approved

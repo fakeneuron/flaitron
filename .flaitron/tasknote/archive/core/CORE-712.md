@@ -32,7 +32,7 @@ Cut v6.0.0 major release tagging the flaitron rebrand (CORE-711.2 + CORE-711.3 +
 
 ## ⏸ Parked 2026-10-04
 
-The first `/ft-release` drive reached the 📦 gate and the operator declined to cut. The repo folder (`~/Code/flowtron`) and the GitHub repo (`fakeneuron/flowtron`) still carried the old name, and no full-repo `flowtron` sweep had run. The release-only edits were reverted, so `SPEC.md` stays at v5.35.0 and matches the tag. The doc-sweep fixes that hold either way landed as `d43ad4d2`. CORE-EPIC-711 was re-sequenced: .5 renames → .9 full-repo sweep → this cut.
+The first `/ft-release` drive reached the 📦 gate and the operator declined to cut. The repo folder (`~/code/flowtron`) and the GitHub repo (`fakeneuron/flowtron`) still carried the old name, and no full-repo `flowtron` sweep had run. The release-only edits were reverted, so `SPEC.md` stays at v5.35.0 and matches the tag. The doc-sweep fixes that hold either way landed as `d43ad4d2`. CORE-EPIC-711 was re-sequenced: .5 renames → .9 full-repo sweep → this cut.
 
 **Resume with `/ft-release`** once [[CORE-711.5]] and [[CORE-711.9]] close. It re-scans PLAN, finds this line, and scaffolds over this note: carry the Discovery Notes and the tag-draft below forward. Redo all of the following at resume. None of it survives the park:
 

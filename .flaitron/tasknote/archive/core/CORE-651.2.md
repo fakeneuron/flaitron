@@ -25,7 +25,7 @@ touches:
 
 ## 🎯 Goal
 
-Teach Pair Q (`.github/workflows/ci.yml` + its `step-7.1-mirror-pairs.md` catalogue entry) to skip citations whose path is absolute or `~`-rooted, so the `brand/BRAND.md:18` / `brand/README.md:22` citations of `~/Code/natabula/docs/DESIGN-STANDARDS.md` stop reporting MISSING FILE, and replay the drift job locally to 16/16.
+Teach Pair Q (`.github/workflows/ci.yml` + its `step-7.1-mirror-pairs.md` catalogue entry) to skip citations whose path is absolute or `~`-rooted, so the `brand/BRAND.md:18` / `brand/README.md:22` citations of `~/code/project-20/docs/DESIGN-STANDARDS.md` stop reporting MISSING FILE, and replay the drift job locally to 16/16.
 
 ## ✅ Acceptance
 
@@ -58,7 +58,7 @@ Teach Pair Q (`.github/workflows/ci.yml` + its `step-7.1-mirror-pairs.md` catalo
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** Reproduced locally — Pair Q reports `MISSING FILE` on both `brand/*.md` citations of `~/Code/natabula/docs/DESIGN-STANDARDS.md`; the other 14 named drift steps pass (15/16). The step's skip rule covers placeholders and regex escapes only; an out-of-repo path has no escape, so the CORE-643 back-port reddens CI on every push until this lands.
+  **Rationale:** Reproduced locally — Pair Q reports `MISSING FILE` on both `brand/*.md` citations of `~/code/project-20/docs/DESIGN-STANDARDS.md`; the other 14 named drift steps pass (15/16). The step's skip rule covers placeholders and regex escapes only; an out-of-repo path has no escape, so the CORE-643 back-port reddens CI on every push until this lands.
 
 - [x] Read relevant source files — when the read set is broad or its shape is unknown, consider isolating the search in a **probe** (`templates/subagent-probe-template.md`) and recording only its distilled return in Discovery Notes
 

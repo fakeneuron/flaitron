@@ -66,7 +66,7 @@ Cut v7.0.0 major release tagging CORE-EPIC-769 (skill renames + command-stub ret
 - [[CORE-EPIC-769]] — skill-surface rename wave: four hard-cut renames, `claude/commands/` retired, fleet-updater migrate mode
 - [[CORE-EPIC-768]] — `## Completed` rotation made automatic; epic parent auto-flip on last child close
 - [[CORE-EPIC-778]] — `/ft-micro-task` retired into `/ft-task --micro`
-- [[CORE-EPIC-770]] — global layer 1/2 aligned with flaitron v7 (out-of-repo edits + natabula handoff rows)
+- [[CORE-EPIC-770]] — global layer 1/2 aligned with flaitron v7 (out-of-repo edits + project-20 handoff rows)
 - [[CORE-767]] — prior release (v6.1.0); precedent for the 6-line subtask shape
 
 ---
@@ -102,7 +102,7 @@ Cut v7.0.0 major release tagging CORE-EPIC-769 (skill renames + command-stub ret
   - **CORE-769.7 — tooling.** `tools/update-adopters.mjs --apply` re-wires tracked renamed links and prunes `.claude/commands/` links in the bump commit; prose sweeps stay per-project. MIGRATION §"Upgrading to v7.0.0 (skill renames)" is the manual recipe.
   - **CORE-EPIC-768 — behavior change, no action.** `## Completed` rotation runs automatically after closures (>60 → ≤40, separate `chore:` commit); the closure that finishes an epic's last child flips the parent itself (`/ft-close-epic`'s Yes/No prompt retired).
   - **CORE-776.6 — behavior, no action.** `SPEC/plan-filing.md` §"ID allocation" is the single home for new-ID allocation.
-  - **CORE-EPIC-775, CORE-777 — fleet-updater hardening, operator-side.** **FE-EPIC-127, FE-128 — viz-only.** **CORE-EPIC-770 — out-of-repo + natabula handoff.** CORE-683/727/773/774 — single-model restore notes.
+  - **CORE-EPIC-775, CORE-777 — fleet-updater hardening, operator-side.** **FE-EPIC-127, FE-128 — viz-only.** **CORE-EPIC-770 — out-of-repo + project-20 handoff.** CORE-683/727/773/774 — single-model restore notes.
 
 ## 🛠️ Phase 2: Execution
 

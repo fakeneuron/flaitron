@@ -23,10 +23,10 @@ Verify the completed flowtron → flaitron rename sits well across the repo, the
 - [x] All implementation children closed — `grep -E '^\s+- \[ \] \*\*CORE-711\.[0-9]' .flaitron/PLAN.md` prints nothing
 - [x] Zero stray text `flowtron` — `git grep -Il -i flowtron -- ':!.flaitron/tasknote/archive' ':!.flaitron/PLAN-ARCHIVE.md'` prints only files inside CORE-711.4 §Fence, `tools/update-adopters*`, the CORE-711 PLAN rows / closed rows, and README's canonical `### Formerly flowtron` note (CORE-711.9); no tracked filename contains `flowtron` — `judgment` on the residual line list
 - [x] Image surface clean (CORE-711.9 Learnings) — tracked raster images viewed; none renders the old name — `👁️` (agent-viewed; grep cannot see pixels)
-- [x] Fleet landed — every `~/Code/*/.flaitron/core` describes as `v6.0.0` and no `~/Code/*/.flowtron` exists — `ls -d ~/Code/*/.flowtron` (no match) + per-repo `git -C <core> describe --tags`
+- [x] Fleet landed — every `~/code/*/.flaitron/core` describes as `v6.0.0` and no `~/code/*/.flowtron` exists — `ls -d ~/code/*/.flowtron` (no match) + per-repo `git -C <core> describe --tags`
 - [x] Release gate green — the seven AGENTS.md §Validation commands exit 0
 - [x] Doc-drift sweep across `.flaitron/tasknote/README.md` §"AI-referenced docs": for each entry, "no change" or the update — `judgment`
-- [x] Out-of-repo remainder is routed, not dropped — CORE-713 open in PLAN.md (global config + `~/fakeneuron/` scan), judedelparte JD-030 filed per CORE-711.8 — `grep -n 'CORE-713' .flaitron/PLAN.md`
+- [x] Out-of-repo remainder is routed, not dropped — CORE-713 open in PLAN.md (global config + `~/operator/` scan), project-18 JD-030 filed per CORE-711.8 — `grep -n 'CORE-713' .flaitron/PLAN.md`
 
 ## 🧩 Subtasks
 
@@ -70,7 +70,7 @@ Verify the completed flowtron → flaitron rename sits well across the repo, the
 
 **Discovery Notes:**
 
-**Archive skim.** Area `CORE-*` → `archive/core/` (README table). Read CORE-711.1–.9 summaries and CORE-712. Load-bearing: .4 §Fence (items 1–6: VERSION-HISTORY entries; CODEX-VERIFICATION + HARNESS-SURVEY dated passes; retired `ft-flowtron`; MIGRATION v4 + v6 recipes and every pre-rename name v6 text needs — `/ft-update` stop, SECURITY migrate bullets, ci.yml Pair Q mapping, step-7.1 Pair Q Reads line; the `flowtron v5.2.0 bump` parser fixture; closed PLAN rows / archives / CORE-711 rows). .9 added README's canonical `### Formerly flowtron` note plus pointers, re-captured the hero screenshot, and handed the image check to .N. .7: fleet wave local-only commits, NAT-355 open on natabula's side. .8: routed JD-030 (judedelparte) + CORE-713 (operator global config).
+**Archive skim.** Area `CORE-*` → `archive/core/` (README table). Read CORE-711.1–.9 summaries and CORE-712. Load-bearing: .4 §Fence (items 1–6: VERSION-HISTORY entries; CODEX-VERIFICATION + HARNESS-SURVEY dated passes; retired `ft-flowtron`; MIGRATION v4 + v6 recipes and every pre-rename name v6 text needs — `/ft-update` stop, SECURITY migrate bullets, ci.yml Pair Q mapping, step-7.1 Pair Q Reads line; the `flowtron v5.2.0 bump` parser fixture; closed PLAN rows / archives / CORE-711 rows). .9 added README's canonical `### Formerly flowtron` note plus pointers, re-captured the hero screenshot, and handed the image check to .N. .7: fleet wave local-only commits, NAT-355 open on project-20's side. .8: routed JD-030 (project-18) + CORE-713 (operator global config).
 
 **Nav-chip non-finding.** .6/.7/.8 archived with `🟢 In progress` chips while .1–.5/.9 show `✅ Completed`. Correct per SPEC.md §"Tasknote body shape" → Nav header: closure deliberately does not flip the chip; YAML `status: completed` is canonical in all nine.
 
@@ -88,11 +88,11 @@ Verify the completed flowtron → flaitron rename sits well across the repo, the
 
 **Images.** `viz-board.png` renders "Flaitron — flaitron", project chip `flaitron`; `LOGO.webp` (= `viz/public/LOGO.webp`, `cmp` identical) and `viz/public/favicon.png` carry no wordmark; `brand/*.svg` are text and grep-clean.
 
-**Fleet.** `ls -d ~/Code/*/.flowtron` → no match. All 23 `~/Code/*/.flaitron/core` describe `v6.0.0`. flaitron origin = `github.com/fakeneuron/flaitron.git`; `main` is ahead of origin by 3 local commits (.6/.7/.8 closures) — push is the operator's.
+**Fleet.** `ls -d ~/code/*/.flowtron` → no match. All 23 `~/code/*/.flaitron/core` describe `v6.0.0`. flaitron origin = `github.com/fakeneuron/flaitron.git`; `main` is ahead of origin by 3 local commits (.6/.7/.8 closures) — push is the operator's.
 
 **Unfiled learning from CORE-712.** CORE-712's Learnings box records that the `/ft-release` §7.1 standing context-budget block's `for f in $surface` silently skips glob rows under zsh (zsh does not glob-expand an unquoted parameter), passing only because CI and the cut ran under bash. It was never filed, and `step-7.1-standing-checks.md` §"On the globs" still calls those globs "safe here". Not a rebrand miss — out of this epic's scope.
 
-**Clarifications (AskUserQuestion, 2026-10-04).** The unfiled CORE-712 zsh learning → **park standalone** (Low, outside the epic). Assumptions: fleet state is checked read-only, one level deep, under the `~/Code` sibling exception. `~/.claude` and `~/fakeneuron/` are not read here because they belong to CORE-713. natabula NAT-355 and judedelparte JD-030 are those repos' own open rows, not this epic's misses.
+**Clarifications (AskUserQuestion, 2026-10-04).** The unfiled CORE-712 zsh learning → **park standalone** (Low, outside the epic). Assumptions: fleet state is checked read-only, one level deep, under the `~/code` sibling exception. `~/.claude` and `~/operator/` are not read here because they belong to CORE-713. project-20 NAT-355 and project-18 JD-030 are those repos' own open rows, not this epic's misses.
 
 **Drift check.** PLAN line matches the tree. Its fence list omits the README canonical note (added later by .9) — inherited, not re-litigated. No SPEC contract touched; archives write-once honored.
 
@@ -132,9 +132,9 @@ Verification receipt:
 - `grep -E '^\s+- \[ \] \*\*CORE-711\.[0-9]' .flaitron/PLAN.md` → 1 (no match; all children closed)
 - `git grep -Il -i flowtron -- ':!.flaitron/tasknote/archive' ':!.flaitron/PLAN-ARCHIVE.md'` → 0, 19 files, every line adjudicated as fenced (Discovery Notes); `git ls-files | grep -ci flowtron` → 0 matches
 - Images: 4 raster files viewed (the two `LOGO.webp` copies are `cmp`-identical) → no old name
-- `ls -d ~/Code/*/.flowtron` → no match; 23/23 `.flaitron/core` → `v6.0.0`
+- `ls -d ~/code/*/.flowtron` → no match; 23/23 `.flaitron/core` → `v6.0.0`
 - `npm --prefix viz test` → 0 (29 files, 587 tests); `npm --prefix viz run typecheck` → 0; `npm --prefix viz run lint` → 0; `npm --prefix viz run build` → 0; `node --test tools/update-adopters.test.mjs` → 0 (65/65); `node --check tools/update-adopters.test.mjs` → 0; `node --check tools/update-adopters.mjs` → 0
-- `grep -n 'CORE-713' .flaitron/PLAN.md` → 0; caobunga CBN-278 closed; judedelparte JD-030 + natabula NAT-355 open in their own PLANs (routed)
+- `grep -n 'CORE-713' .flaitron/PLAN.md` → 0; project-07 CBN-278 closed; project-18 JD-030 + project-20 NAT-355 open in their own PLANs (routed)
 - Structural quality: `N/A`, no code changed.
 
 External review: `N/A`. The diff is this tasknote plus a one-line PLAN.md stub flip. There is no code or doc deliverable to grade, and every finding above is a re-runnable command receipt. (The CORE-714 park landed separately as `4cf9a354`.)
@@ -149,7 +149,7 @@ External review: `N/A`. The diff is this tasknote plus a one-line PLAN.md stub f
 
 - [x] **Learnings** — did this task teach something the always-loaded layer (AGENTS.md / README §AI-referenced docs) should carry? `N/A` or the line — `N/A`
 
-**Final Summary:** The epic audit found no rebrand miss. All nine children and CORE-712 are closed. Outside the fences, 19 files still mention `flowtron`, and every line is either one of CORE-711.4's approved historical exceptions, a pre-rename read in `tools/update-adopters*`, a CORE-711 or closed PLAN row, or README's canonical `### Formerly flowtron` note. No tracked filename has the old name, and none of the tracked images renders it. All 23 adopters are on `.flaitron/core` at v6.0.0 with no `.flowtron/` left. The seven release-gate commands all exit 0. The out-of-repo remainder is routed rather than dropped: CORE-713 here, JD-030 in judedelparte, NAT-355 in natabula; caobunga's CBN-278 is closed. The one finding is out of scope: CORE-712's unfiled zsh glob learning, parked as CORE-714 (Low, `4cf9a354`). The epic is ready for its parent flip.
+**Final Summary:** The epic audit found no rebrand miss. All nine children and CORE-712 are closed. Outside the fences, 19 files still mention `flowtron`, and every line is either one of CORE-711.4's approved historical exceptions, a pre-rename read in `tools/update-adopters*`, a CORE-711 or closed PLAN row, or README's canonical `### Formerly flowtron` note. No tracked filename has the old name, and none of the tracked images renders it. All 23 adopters are on `.flaitron/core` at v6.0.0 with no `.flowtron/` left. The seven release-gate commands all exit 0. The out-of-repo remainder is routed rather than dropped: CORE-713 here, JD-030 in project-18, NAT-355 in project-20; project-07's CBN-278 is closed. The one finding is out of scope: CORE-712's unfiled zsh glob learning, parked as CORE-714 (Low, `4cf9a354`). The epic is ready for its parent flip.
 
 Doc-drift sweep (fixed audit line): `README.md`, `AGENTS.md`, `SPEC.md`, `docs/MIGRATION.md`, `claude/AGENTS-snippet.md`, `codex/AGENTS-snippet.md`, `cursor/AGENTS-snippet.md`, `grok/AGENTS-snippet.md`, `docs/CONVENTIONS.md`, `CONTRIBUTING.md`, `SECURITY.md`, `docs/AGENT-NEUTRALITY.md`, `docs/PLATFORMS.md`, `claude/CAPABILITIES.md`, `docs/AGENT-COMPAT.md`, `docs/EXTERNAL-AGENTS.md`, `docs/WORKTREES.md`, `docs/VISION.md`: **no change**. Since CORE-711.9's sweep (`0955e779`), only README, SECURITY, SPEC, CAPABILITIES, AGENT-COMPAT, MIGRATION and PLATFORMS changed, all through CORE-712's release stamps and counters. Their remaining `flowtron` lines are fenced, README's rename note is accurate, and EXTERNAL-AGENTS' moved stable-surface rows have their caller row closed (CBN-278).
 

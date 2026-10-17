@@ -55,7 +55,7 @@ Make every tasknote read like a small, polished spec — consistent emoji-prefix
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** CORE-017 closure explicitly deferred body restructure to CORE-018 (`"Scope kept tight per CORE-018 separation"`). Frontmatter just shipped and adopting projects (photard, natabula) consume the polished template via submodule bumps; landing this completes the template evolution arc and unblocks CORE-019/CORE-020 cleanly.
+  **Rationale:** CORE-017 closure explicitly deferred body restructure to CORE-018 (`"Scope kept tight per CORE-018 separation"`). Frontmatter just shipped and adopting projects (project-22, project-20) consume the polished template via submodule bumps; landing this completes the template evolution arc and unblocks CORE-019/CORE-020 cleanly.
 
 - [x] Read relevant source files
 - [x] **Drift check** — `templates/tasknote-template.md`, `templates/tasknote-README.md`, `templates/PLAN.md`, `SPEC.md` §"Tasknote frontmatter" + §"The 4-phase workflow", and `.claude/skills/task/SKILL.md` Step 3 all exist at expected paths and reflect the post-CORE-017 shape. Archived CORE-017 tasknote names CORE-018 as the body-restructure owner. No drift.

@@ -91,7 +91,7 @@ does not fill this gap.
 - path: `brand/chamber-growth.jpg`
 - role: `visual-reference`
 - size: 1280×720 JPEG. Exact 16:9. The shipped file is the model's output, not a crop and not an upscale.
-- Chamber style: the same dark ribbed tunnel and green bioluminescent cell ring as `chamber-reference`. The image input was blastimage's shipped chamber still, used for that tunnel and ring only.
+- Chamber style: the same dark ribbed tunnel and green bioluminescent cell ring as `chamber-reference`. The image input was an operator-private project's shipped chamber still, used for that tunnel and ring only.
 - Hologram: an idea growing into an actuated project. A seed of light rises into a spare tree, the upper growth hardens into a small built scaffold, and the roots sit in older rings of memory. One node is the living task. This still does not depict the gear or the rider.
 - Source mark: no in-repo file was placed in the frame. The manifest `source_paths` is empty. `brand/logo.svg` and `LOGO.webp` are not this still's source.
 - Method: one `image_edit` pass. The prompt carried the growth. No crop and no upscale.

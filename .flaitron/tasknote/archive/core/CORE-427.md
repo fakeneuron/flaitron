@@ -172,7 +172,7 @@ Cut the v5.16.0 minor release tagging the 72 commits since v5.15.0 — headlined
 | Shipped-skill parity (claude ↔ codex inventories) | clean |
 | Installed-surface policy (adopter subset exact; forbidden empty) | clean |
 | Local self-wiring (`.claude/` ↔ shipped; no dangling; no non-symlink) | clean |
-| Global wiring (advisory) | clean — 23 links, single path casing `/Users/fakeneuron/Code/flowtron`, no dangling |
+| Global wiring (advisory) | clean — 23 links, single path casing `~/code/flowtron`, no dangling |
 | README task-counter | fixed 646→645; matches archive |
 | Mirror pair A (templates roster) | clean |
 | Mirror pair B (Claude flags ↔ Codex descriptions) | clean |

@@ -13,7 +13,7 @@ related-tasks: []
 
 ## 🎯 Goal
 
-Land FinTown CORE-098 review proposals 1+2 — fold `/model` into the canonical post-closure copy-paste line, and promote "recap is recap-only" from soft prose to an enforced callout — then tag v1.1.0.
+Land Project-14 CORE-098 review proposals 1+2 — fold `/model` into the canonical post-closure copy-paste line, and promote "recap is recap-only" from soft prose to an enforced callout — then tag v1.1.0.
 
 ## ✅ Acceptance
 
@@ -40,8 +40,8 @@ Land FinTown CORE-098 review proposals 1+2 — fold `/model` into the canonical 
 
 ## 🔗 Related
 
-- `flowtron-upstream-proposals.md` (repo root, untracked) — source proposal document; FinTown CORE-098 review filed it.
-- Proposal 3 (non-task-commit pattern) is intentionally **out of scope** for this task — see the FinTown-side feedback note for rationale.
+- `flowtron-upstream-proposals.md` (repo root, untracked) — source proposal document; Project-14 CORE-098 review filed it.
+- Proposal 3 (non-task-commit pattern) is intentionally **out of scope** for this task — see the Project-14-side feedback note for rationale.
 
 ---
 
@@ -67,8 +67,8 @@ Land FinTown CORE-098 review proposals 1+2 — fold `/model` into the canonical 
   - `CORE-043.md` (release v1.0.0) — sets the release shape: annotated tag with subject + body + Changes section + adopter Migration block; SPEC.md `**Version:**` line bumped as part of the release commit. v1.1.0 tag message will follow this template (smaller scope: two SPEC tweaks, no symlink wiring needed).
   - `CORE-042.9.md` (SKILL-side lazy-load) — confirms SKILL editing pattern; also confirms the lazy-load architecture means edits to `SKILL.md` Step 6 don't cascade into the lazy fragments.
 - **No SPEC contract change.** Proposals 1+2 are an additive/clarification pair — adopters who paste the old line still work (Step 1.5 model gate handles the mismatch). Versioning rule: minor bump (v1.0.0 → v1.1.0) per `SPEC/versioning.md`.
-- **Out of scope:** Proposal 3 (non-task-commit pattern). FinTown keeps it project-side per the feedback note already drafted in conversation; flowtron will revisit if a second adopter independently surfaces the same friction.
-- **Adopter impact:** FinTown can trim its `CLAUDE.md` model-gate + copy-paste-line guidance to a SPEC pointer after pinning v1.1.0 (the model-per-task and copy-paste-line sections become redundant). Non-task-commit guidance in FinTown's `CLAUDE.md` stays as-is — SPEC won't cover it.
+- **Out of scope:** Proposal 3 (non-task-commit pattern). Project-14 keeps it project-side per the feedback note already drafted in conversation; flowtron will revisit if a second adopter independently surfaces the same friction.
+- **Adopter impact:** Project-14 can trim its `CLAUDE.md` model-gate + copy-paste-line guidance to a SPEC pointer after pinning v1.1.0 (the model-per-task and copy-paste-line sections become redundant). Non-task-commit guidance in Project-14's `CLAUDE.md` stays as-is — SPEC won't cover it.
 
 ## 🛠️ Phase 2: Execution
 
@@ -110,6 +110,6 @@ No automated check applies. The viz codebase is untouched; PLAN.md schema, taskn
 
 **Final Summary:**
 
-Cut flowtron v1.1.0 — minor bump landing FinTown CORE-098 review proposals 1+2. (1) SPEC §"Post-closure protocol" canonical copy-paste line is now `/clear then /model <opus|sonnet> then /task <NEXT-ID>`; assistants resolve `<opus|sonnet>` to the next task's PLAN-line `[model]` tag at hand-off, pre-empting the Step 1.5 model gate (gate still fires on cold starts where the assistant didn't pick the model). (2) Phase 4 "Recap is recap-only" promoted from soft prose to an enforced `>` callout in SPEC, with reinforcing one-liners in both `task` and `micro-task` SKILLs. Touches: `SPEC.md` (3 edits), `claude/skills/task/SKILL.md` (2 edits), `claude/skills/micro-task/SKILL.md` (2 edits), plus doc currency updates to `SPEC/versioning.md` (patch/minor examples shifted off the just-cut release per CORE-043 precedent) and `docs/MIGRATION.md` (example pin → v1.1.0). Adopters: paste-line update is the one user-visible behavior shift; pasting the old form still works (Step 1.5 mismatch branch handles it). Proposal 3 (non-task-commit suggestion pattern) intentionally deferred — see the FinTown-side feedback note for rationale; revisit if a second adopter independently surfaces the same friction. Scratch file `flowtron-upstream-proposals.md` deleted at closure (contents absorbed by this tasknote + the v1.1.0 tag message).
+Cut flowtron v1.1.0 — minor bump landing Project-14 CORE-098 review proposals 1+2. (1) SPEC §"Post-closure protocol" canonical copy-paste line is now `/clear then /model <opus|sonnet> then /task <NEXT-ID>`; assistants resolve `<opus|sonnet>` to the next task's PLAN-line `[model]` tag at hand-off, pre-empting the Step 1.5 model gate (gate still fires on cold starts where the assistant didn't pick the model). (2) Phase 4 "Recap is recap-only" promoted from soft prose to an enforced `>` callout in SPEC, with reinforcing one-liners in both `task` and `micro-task` SKILLs. Touches: `SPEC.md` (3 edits), `claude/skills/task/SKILL.md` (2 edits), `claude/skills/micro-task/SKILL.md` (2 edits), plus doc currency updates to `SPEC/versioning.md` (patch/minor examples shifted off the just-cut release per CORE-043 precedent) and `docs/MIGRATION.md` (example pin → v1.1.0). Adopters: paste-line update is the one user-visible behavior shift; pasting the old form still works (Step 1.5 mismatch branch handles it). Proposal 3 (non-task-commit suggestion pattern) intentionally deferred — see the Project-14-side feedback note for rationale; revisit if a second adopter independently surfaces the same friction. Scratch file `flowtron-upstream-proposals.md` deleted at closure (contents absorbed by this tasknote + the v1.1.0 tag message).
 
 **Archived:** 2026-05-07

@@ -107,7 +107,7 @@ _Starter context (filed 2026-10-09, commit `7e6740a5`) absorbed into Goal and th
 - Retire-and-record shape (CORE-390/571/572/573/603.x): delete the body, the stub, and the codex wrapper; sweep rosters; add a MIGRATION retired-skills row; check `git grep` residue.
 - No archived decision explains or defends `claude/commands/`; it is a legacy convention (CORE-057.2/072). CORE-154.3 locks the `claude/` dir name for adopter-symlink stability. That constrains directory renames only, not slugs.
 
-**Sibling callers.** `~/Code/natabula/.claude/skills/` has 21 references to `ft-new-project` / `ft-file-followup` / `ft-seed` / `ft-epic-discovery` (e.g. `natabula-adopt`). Per SPEC §"Cross-repo edit remit", those edits are filed as a natabula PLAN row, not made from here.
+**Sibling callers.** `~/code/project-20/.claude/skills/` has 21 references to `ft-new-project` / `ft-file-followup` / `ft-seed` / `ft-epic-discovery` (e.g. `project-20-adopt`). Per SPEC §"Cross-repo edit remit", those edits are filed as a project-20 PLAN row, not made from here.
 
 **Resolved scoping (AskUserQuestion, 2026-10-09).**
 
@@ -188,6 +188,6 @@ The skill surface for CORE-EPIC-769 is settled. Packaging stays the git submodul
 - **Docs verdict:** no change; contract edits are deferred to the children.
 - **`touches:` reconciliation:** declared 1 file and changed 1 (`.flaitron/PLAN.md`), excluding the own note.
 - **Maintainability:** six sequenced children, each one context window wide. The roster-file collisions are made explicit in the Fan-out section.
-- **Sibling hand-off:** natabula has 21 references to the renamed skills. Its PLAN row is filed by `.7`, not here.
+- **Sibling hand-off:** project-20 has 21 references to the renamed skills. Its PLAN row is filed by `.7`, not here.
 
 **Archived:** 2026-10-09

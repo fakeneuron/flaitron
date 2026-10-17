@@ -88,7 +88,7 @@ Skimmed `_project/tasknote/archive/core/` (110+ tasknotes); grep for `editorconf
 
 ### Adoption shape (locked at Phase 1 close)
 
-Repo-root `/Users/fakeneuron/Code/flowtron/.editorconfig` carrying:
+Repo-root `~/code/flowtron/.editorconfig` carrying:
 
 ```text
 root = true
@@ -110,7 +110,7 @@ Single `[*]` defaults block covers all current + likely-future file types (md/ts
 ## 🛠️ Phase 2: Execution
 
 - [x] **Pattern survey** — No prior `.editorconfig` in flowtron or any `~/code/` sibling project; the file is its own canonical pattern (editorconfig.org spec). Shape drawn from Phase 1 adoption-shape lock — codebase audit confirmed 2-space indent across all file types, zero markdown hard-break trailing-spaces, no `.yaml`/`.yml` standalone files. New shape justified: single file at repo root, single `[*]` defaults block covering all current + future file types, no language-specific overrides needed.
-- [x] Implemented the minimal solution — `/Users/fakeneuron/Code/flowtron/.editorconfig` (12 lines): `root = true` + `[*]` defaults block (charset, end_of_line, indent_style, indent_size, trim_trailing_whitespace, insert_final_newline) + `[*.md]` block with inheritance-codification comment.
+- [x] Implemented the minimal solution — `~/code/flowtron/.editorconfig` (12 lines): `root = true` + `[*]` defaults block (charset, end_of_line, indent_style, indent_size, trim_trailing_whitespace, insert_final_newline) + `[*.md]` block with inheritance-codification comment.
 - [x] Updated/added tests for non-trivial behavior — N/A (`.editorconfig` is a static config consumed by editors; no executable surface; no test fixture conventions in flowtron).
 
 **Implementation Notes:**
@@ -174,7 +174,7 @@ Length: 12 lines.
 
 ### Recap
 
-Added `/Users/fakeneuron/Code/flowtron/.editorconfig` (12 lines): `root = true` + `[*]` block (charset=utf-8, end_of_line=lf, indent_style=space, indent_size=2, trim_trailing_whitespace=true, insert_final_newline=true) + `[*.md]` block with inheritance-codification comment. Defends against editor-introduced drift (line endings, indent, trailing whitespace, final newline) across solo flowtron-self work and any future adopter-side forks. File dogfoods its own rules (LF, UTF-8, final newline, no trailing whitespace, ASCII content). Phase 1 audit confirmed zero markdown hard-break trailing-double-spaces across `SPEC.md` / `README.md` / `docs/*.md`, so the `trim_trailing_whitespace = true` rule is safe to apply universally without a `[*.md]` exception — the explicit `[*.md]` block codifies that convention with a one-line comment.
+Added `~/code/flowtron/.editorconfig` (12 lines): `root = true` + `[*]` block (charset=utf-8, end_of_line=lf, indent_style=space, indent_size=2, trim_trailing_whitespace=true, insert_final_newline=true) + `[*.md]` block with inheritance-codification comment. Defends against editor-introduced drift (line endings, indent, trailing whitespace, final newline) across solo flowtron-self work and any future adopter-side forks. File dogfoods its own rules (LF, UTF-8, final newline, no trailing whitespace, ASCII content). Phase 1 audit confirmed zero markdown hard-break trailing-double-spaces across `SPEC.md` / `README.md` / `docs/*.md`, so the `trim_trailing_whitespace = true` rule is safe to apply universally without a `[*.md]` exception — the explicit `[*.md]` block codifies that convention with a one-line comment.
 
 Indent rules were the one user-resolved clarification (AskUserQuestion 2026-05-18): included per user choice, codifying the de-facto 2-space convention uniformly observed across `.md` / `.ts` / `.tsx` / `.json` / `.css`. Out-of-sweep follow-up surfaced for the cohort audit [[CORE-099.7]]: whether `docs/CONVENTIONS.md` should add an `### EditorConfig` subsection for symmetry with its other adherence sections.
 

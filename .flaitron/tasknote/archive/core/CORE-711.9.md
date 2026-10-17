@@ -81,7 +81,7 @@ Every tracked file — text and image — is free of live `flowtron` references 
 
 **Image inventory** (not reachable by grep; viewed each): `LOGO.webp`, `viz/public/LOGO.webp`, `viz/public/favicon.png`, `brand/*.svg` carry no wordmark. **`.flaitron/screenshots/viz-board.png` — the README hero image — renders "Flowtron — flowtron", project chip `flowtron`, "flowtron v5.14.1", 622 tasks.** Live, user-facing, and stale; the README caption beside it says "flaitron's own PLAN.md".
 
-**Residual live-path gap.** CODEX-VERIFICATION's §Reproduce (L154-236) and §"Reproduce the fixture and prompts" are runnable recipes; their local clone path `/Users/fakeneuron/Code/flowtron` (L48, L173) stopped resolving at .5. Their `.flowtron/core` adopter paths are correct *at the pinned v5.33.0 SHA* the receipt reproduces.
+**Residual live-path gap.** CODEX-VERIFICATION's §Reproduce (L154-236) and §"Reproduce the fixture and prompts" are runnable recipes; their local clone path `~/code/flowtron` (L48, L173) stopped resolving at .5. Their `.flowtron/core` adopter paths are correct *at the pinned v5.33.0 SHA* the receipt reproduces.
 
 **Transition note today.** README §Version (L325-330) already carries the rename sentence + MIGRATION link, but there is no single anchored note, and VERSION-HISTORY L3 / PLATFORMS L152 restate it inline with no pointer. The fenced dated docs (CODEX-VERIFICATION, HARNESS-SURVEY) have no pointer at all.
 
@@ -111,7 +111,7 @@ Every tracked file — text and image — is free of live `flowtron` references 
 - `README.md`: tagline gains `Formerly flowtron — [renamed in v6.0.0](#formerly-flowtron).`; §Version's rename sentence moves under a new `### Formerly flowtron` (old repo + dir names, the hard cut, "pre-rename records keep the old name", MIGRATION link).
 - Pointers (one clause each, linking `../README.md#formerly-flowtron`): VERSION-HISTORY L3 (existing parenthetical linked, no new mention), HARNESS-SURVEY header, CODEX-VERIFICATION header (names that its reproduce steps use the pinned v5.33.0 checkout's paths — the operator's "pointer only" choice).
 - Not touched (sparing): PLATFORMS L152 parenthetical; MIGRATION v5.x heading already names the old dir.
-- `viz-board.png` re-captured: isolated workspace `<scratchpad>/viz-workspace/flaitron → ~/Code/flaitron`, `FLAITRON_VIZ_WORKSPACE=… npm --prefix viz run dev`, Playwright 1440×598, Board view, Completed expanded (List view was rejected — it auto-expands CORE-EPIC-711, whose open rows quote `flowtron` paths). Result: "Flaitron — flaitron", 1242 tasks, single project chip, 71,733 B (was 64 KB). Drafts kept outside the repo in `~/Code/_screenshots/flaitron/`. Server stopped, browser closed.
+- `viz-board.png` re-captured: isolated workspace `<scratchpad>/viz-workspace/flaitron → ~/code/flaitron`, `FLAITRON_VIZ_WORKSPACE=… npm --prefix viz run dev`, Playwright 1440×598, Board view, Completed expanded (List view was rejected — it auto-expands CORE-EPIC-711, whose open rows quote `flowtron` paths). Result: "Flaitron — flaitron", 1242 tasks, single project chip, 71,733 B (was 64 KB). Drafts kept outside the repo in `~/code/_screenshots/flaitron/`. Server stopped, browser closed.
 
 ## 🧪 Phase 3: Testing & Linting
 

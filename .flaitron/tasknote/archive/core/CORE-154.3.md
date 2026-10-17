@@ -77,7 +77,7 @@ Lock the structural pattern for flowtron's `claude/` wiring layer that supports 
 **Locked: option (a). Rationale (constituent-mapped):**
 
 - **Constitution principle 2 (markdown-only, zero scripts).** No new tool or rename can save anything here — option (a) honors zero-scripts by definition; option (b) sibling-restructure requires zero scripts but still mass-edits paths in 8+ files.
-- **Constitution principle 4 (low adopter cost).** Option (b) **breaks every existing adopter's symlinks** on next submodule bump because the relative paths `../../_project/flowtron/claude/commands/ft-task.md` hard-code the dir name. Adopters are InvisiPaw, fintown, photard (today) — three real users would have non-functional `/ft-task` until they re-ran the wiring step. **Hard constraint per [[CORE-154.1]] Constitution non-negotiables**: "Symlink wiring still works against the existing adopter wiring (no migration burden)." Option (b) is **ruled out** by this alone.
+- **Constitution principle 4 (low adopter cost).** Option (b) **breaks every existing adopter's symlinks** on next submodule bump because the relative paths `../../_project/flowtron/claude/commands/ft-task.md` hard-code the dir name. Adopters are Project-17, project-14, project-22 (today) — three real users would have non-functional `/ft-task` until they re-ran the wiring step. **Hard constraint per [[CORE-154.1]] Constitution non-negotiables**: "Symlink wiring still works against the existing adopter wiring (no migration burden)." Option (b) is **ruled out** by this alone.
 - **Constitution principle 5 (symmetry over special-casing).** Option (a) ships a *sibling-top-level convention* (`claude/` today; `codex/`, `grok/`, `cursor/` if/when contributors ship them) — symmetric. Option (b)'s `wiring/<platform>/` ALSO is symmetric — same symmetry achieved without the rename. The symmetry argument doesn't differentiate (a) vs (b); the adopter-cost argument does.
 - **Constitution principle 6 (no Claude-Code regression).** Option (a) is byte-identical for the Claude-Code experience — `/ft-*` commands resolve unchanged through the existing symlinks. Option (b) requires re-symlinking and a transition window.
 - **(c) Hybrid reduces to (a) post-[[CORE-154.2]].** (c)'s "single doc paragraph documenting the multi-platform convention" was the half-deliverable. But CORE-154.2 already shipped `docs/AGENT-NEUTRALITY.md` whose §Principle declares the contract/wiring split, and CORE-154.4 will ship `docs/PLATFORMS.md` for the full plug-in pattern. The only ungrounded piece is **forward-pointers from the two layout-describing surfaces** (`SPEC.md` line 53 + `README.md` line 108) so a reader of those layout descriptions knows where the platform-plug-in convention lives. That's the surgical delta this task ships.
@@ -115,7 +115,7 @@ All cited paths/lines verified at HEAD 2026-05-23:
 - `README.md:108` `claude/` bullet exists with current wording — confirmed
 - `docs/AGENT-NEUTRALITY.md:72-73` lists [[CORE-154.3]] forward-ref as "(forthcoming)" — confirmed at line 72-73 ("Document the wiring-layer structure or evaluate whether `claude/` should be renamed or relocated — see [[CORE-154.3]] (forthcoming).")
 - `claude/AGENTS-snippet.md` has 12 symlink commands at lines 31–42 — confirmed
-- `claude/` directory exists; no `codex/`, `grok/`, `cursor/`, or `wiring/` siblings — confirmed via `ls /Users/fakeneuron/Code/flowtron/`
+- `claude/` directory exists; no `codex/`, `grok/`, `cursor/`, or `wiring/` siblings — confirmed via `ls ~/code/flowtron/`
 - Adopter symlink dependency confirmed: `ln -s ../../_project/flowtron/claude/commands/ft-task.md .claude/commands/ft-task.md` (line 31 of AGENTS-snippet.md) — any `claude/` rename would break this for every existing adopter
 
 No drift.
@@ -204,7 +204,7 @@ Locked option (a) for flowtron's wiring-layer structure: `claude/` keeps its nam
 - **Zero structural changes ship in this task.** No directory rename, no new sibling dir, no symlink touch. The 12 adopter-wiring symlink commands in `claude/AGENTS-snippet.md` are byte-identical.
 - **Locator-stability grep** confirms +1 net hit (all in AGENT-NEUTRALITY.md's expanded bullet); 15 unchanged hits in `docs/MIGRATION.md`, 3 in `SPEC/epic.md`, 1 each in `SPEC/model.md` / `SECURITY.md` / `templates/tasknote-micro-template.md`. No factual locator broke.
 - **Decision rationale (Constitution-mapped):**
-  - **Principle 4 (low adopter cost) + non-negotiable on adopter-symlink stability** — option (b) sibling restructure would break every existing adopter (InvisiPaw / fintown / photard) on next submodule bump. Ruled out.
+  - **Principle 4 (low adopter cost) + non-negotiable on adopter-symlink stability** — option (b) sibling restructure would break every existing adopter (Project-17 / project-14 / project-22) on next submodule bump. Ruled out.
   - **Principle 5 (symmetry over special-casing)** — sibling-top-level convention achieves the same symmetry as (b) without the rename.
   - **Principle 6 (no Claude-Code regression)** — option (a) is byte-identical for the operator experience.
   - **(c) hybrid reduced to (a) post-[[CORE-154.2]]** — AGENT-NEUTRALITY.md §Principle already declares the contract/wiring split; the remaining structural delta is exactly the forward-pointers from the two layout-describing surfaces.

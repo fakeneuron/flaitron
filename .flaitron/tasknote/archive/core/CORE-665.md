@@ -325,7 +325,7 @@ mechanically clear rather than eyeballed:
 | `docs/PLATFORMS.md` | no change |
 | `claude/CAPABILITIES.md` | no change |
 | `docs/AGENT-COMPAT.md` | no change |
-| `docs/EXTERNAL-AGENTS.md` | no change — checked line by line, since the sweep set flags it for unattended-posture edits. Its four park claims (`:48`, `:65`, `:69`, `:71`) are phase-neutral ("Phase 1 and any partial Phase 2 are preserved") and read *more* accurately after the widening. No stable-surface row moved, renamed, or retired: the closed code set stays at eight, `drift` keeps its spelling, the resume path is unchanged — so no caller-side row to file in caobunga's PLAN |
+| `docs/EXTERNAL-AGENTS.md` | no change — checked line by line, since the sweep set flags it for unattended-posture edits. Its four park claims (`:48`, `:65`, `:69`, `:71`) are phase-neutral ("Phase 1 and any partial Phase 2 are preserved") and read *more* accurately after the widening. No stable-surface row moved, renamed, or retired: the closed code set stays at eight, `drift` keeps its spelling, the resume path is unchanged — so no caller-side row to file in project-07's PLAN |
 | `docs/WORKTREES.md` | no change |
 | `docs/VISION.md` | no change — no scope boundary moved; this removes a contradiction rather than adding a capability |
 | `docs/GLOSSARY.md` | **updated** — same `(mid-Phase-2 park)` gloss on the `blocked-by (YAML)` entry. The `blocked tasknote` entry ("parked awaiting a prerequisite") was already phase-neutral and stands |

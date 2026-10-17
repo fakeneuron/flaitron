@@ -15,7 +15,7 @@ touches:
 
 ## 🎯 Goal
 
-Add a hand-authored root `justfile` mapping `setup`/`dev`/`test`/`lint`/`typecheck`/`build` to `npm --prefix viz …`, so flowtron's `viz/`-only layout (no root manifest, outside natabula's auto-adapt subdir set) is no longer permanently `refused` by caobunga's suite discovery.
+Add a hand-authored root `justfile` mapping `setup`/`dev`/`test`/`lint`/`typecheck`/`build` to `npm --prefix viz …`, so flowtron's `viz/`-only layout (no root manifest, outside project-20's auto-adapt subdir set) is no longer permanently `refused` by project-07's suite discovery.
 
 ## ✅ Acceptance
 
@@ -26,10 +26,10 @@ Add a hand-authored root `justfile` mapping `setup`/`dev`/`test`/`lint`/`typeche
 
 ## 🧩 Subtasks
 
-- [ ] Author root `justfile` with header comment (per natabula's shipped `templates/justfile` style) noting this is a hand-authored, non-auto-adapting body for the `viz/`-only layout
+- [ ] Author root `justfile` with header comment (per project-20's shipped `templates/justfile` style) noting this is a hand-authored, non-auto-adapting body for the `viz/`-only layout
 - [ ] Add `default` (list recipes), `setup`, `dev`, `test`, `lint`, `typecheck`, `build` recipes, each a one-line `npm --prefix viz <script>` delegation
 - [ ] Run each recipe once to confirm it exits 0
-- [ ] Doc-drift sweep: confirm no `AI-referenced docs` entry needs updating (justfile is an additive convenience per natabula's "tendency, not a gate" convention — CLAUDE.md/AGENTS.md's canonical validation commands are unchanged)
+- [ ] Doc-drift sweep: confirm no `AI-referenced docs` entry needs updating (justfile is an additive convenience per project-20's "tendency, not a gate" convention — CLAUDE.md/AGENTS.md's canonical validation commands are unchanged)
 
 ## 🔗 Related
 
@@ -44,27 +44,27 @@ Add a hand-authored root `justfile` mapping `setup`/`dev`/`test`/`lint`/`typeche
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** PLAN.md line, `CLAUDE.md` §"Validation"/§"Dev Server", and `viz/package.json` all still match — no drift. `viz/` has no root manifest and sits outside natabula's `frontend`/`backend`/`landing`/`worker` auto-adapt set, confirmed by `natabula/docs/STACK-TENDENCIES.md` §"Non-standard repos hand-author bodies" (which names this exact task, CORE-637, as one of its fleet cases).
+  **Rationale:** PLAN.md line, `CLAUDE.md` §"Validation"/§"Dev Server", and `viz/package.json` all still match — no drift. `viz/` has no root manifest and sits outside project-20's `frontend`/`backend`/`landing`/`worker` auto-adapt set, confirmed by `project-20/docs/STACK-TENDENCIES.md` §"Non-standard repos hand-author bodies" (which names this exact task, CORE-637, as one of its fleet cases).
 
-- [x] Read relevant source files — `viz/package.json` (scripts: `dev`, `build`, `preview`, `test`, `typecheck`, `lint` — no `setup` script, so `setup` maps to `npm --prefix viz install`), `CLAUDE.md` §"Validation"/§"Dev Server" (canonical commands run from repo root with `--prefix viz`), `viz/README.md` (module-tier + no-Node-under-`src/ui/` rule, doesn't affect justfile shape), natabula's `templates/justfile` (shipped auto-adapt shape, for header-comment style and verb naming only — not reused verbatim since it doesn't cover a `viz/`-only layout).
+- [x] Read relevant source files — `viz/package.json` (scripts: `dev`, `build`, `preview`, `test`, `typecheck`, `lint` — no `setup` script, so `setup` maps to `npm --prefix viz install`), `CLAUDE.md` §"Validation"/§"Dev Server" (canonical commands run from repo root with `--prefix viz`), `viz/README.md` (module-tier + no-Node-under-`src/ui/` rule, doesn't affect justfile shape), project-20's `templates/justfile` (shipped auto-adapt shape, for header-comment style and verb naming only — not reused verbatim since it doesn't cover a `viz/`-only layout).
 
-- [x] **Best Practices Review** — single new root file, no existing abstraction to extend at the repo-root level; matched the six verb names and one-line-delegation shape natabula's own fleet uses for its other hand-authored cases (stockshock/delparte, pidlyse, email-manager, 3pnf) per `STACK-TENDENCIES.md` §"Non-standard repos hand-author bodies". No refactor implied.
+- [x] **Best Practices Review** — single new root file, no existing abstraction to extend at the repo-root level; matched the six verb names and one-line-delegation shape project-20's own fleet uses for its other hand-authored cases (project-27/project-09, project-23, project-10, project-01) per `STACK-TENDENCIES.md` §"Non-standard repos hand-author bodies". No refactor implied.
 
 - [x] **Archive skim** — `archive/core/` has no prior justfile-related tasknote (`ls` + name skim; no hits to grep for a nonexistent `justfile` path). No prior design decisions to reconcile.
 
-- [x] **Drift check** — none: PLAN.md line, `CLAUDE.md`, `viz/package.json` scripts, and the natabula spec section all agree on the shape.
+- [x] **Drift check** — none: PLAN.md line, `CLAUDE.md`, `viz/package.json` scripts, and the project-20 spec section all agree on the shape.
 
 - [x] Asked clarifying questions OR logged "No clarifications needed" with explicit assumptions
 
-  No clarifications needed. Assumptions: (1) only the six verbs named in the PLAN.md line are in scope — no `e2e`/`coverage`/`default`-beyond-list extras from natabula's fuller template; (2) `setup` delegates to `npm --prefix viz install` since `viz/package.json` has no `setup` script of its own; (3) this justfile is a flat, non-auto-adapting body (single stack, no subdir detection needed) matching the "non-standard repos hand-author bodies" convention, not the shipped auto-adapt template.
+  No clarifications needed. Assumptions: (1) only the six verbs named in the PLAN.md line are in scope — no `e2e`/`coverage`/`default`-beyond-list extras from project-20's fuller template; (2) `setup` delegates to `npm --prefix viz install` since `viz/package.json` has no `setup` script of its own; (3) this justfile is a flat, non-auto-adapting body (single stack, no subdir detection needed) matching the "non-standard repos hand-author bodies" convention, not the shipped auto-adapt template.
 
 - [x] Subtasks above populated with concrete, ordered steps, and YAML `touches:` declared with the paths this task expects to edit
 
-**Discovery Notes:** Confirmed via `natabula/docs/STACK-TENDENCIES.md` (sibling repo under `~/Code`, read-only per the standing exception) that this exact task is already named there as a fleet case: "a nested `viz/` visualizer outside the subdir set and with no root manifest (`flowtron` — every body `npm --prefix viz …`, filed as flowtron `CORE-637`)." No open design question remains — the shape is fully specified by the PLAN.md line plus that natabula section.
+**Discovery Notes:** Confirmed via `project-20/docs/STACK-TENDENCIES.md` (sibling repo under `~/code`, read-only per the standing exception) that this exact task is already named there as a fleet case: "a nested `viz/` visualizer outside the subdir set and with no root manifest (`flowtron` — every body `npm --prefix viz …`, filed as flowtron `CORE-637`)." No open design question remains — the shape is fully specified by the PLAN.md line plus that project-20 section.
 
 ## 🛠️ Phase 2: Execution
 
-- [x] **Pattern survey** — N/A framing: no in-repo justfile pattern to extend (this is flowtron's first); followed natabula's fleet convention for hand-authored non-auto-adapting bodies (keep verb names, adapt bodies) instead of inventing a new shape.
+- [x] **Pattern survey** — N/A framing: no in-repo justfile pattern to extend (this is flowtron's first); followed project-20's fleet convention for hand-authored non-auto-adapting bodies (keep verb names, adapt bodies) instead of inventing a new shape.
 
 - [x] **Minimal refactor gate** — N/A, no existing code touched; new standalone file only.
 
@@ -80,7 +80,7 @@ Add a hand-authored root `justfile` mapping `setup`/`dev`/`test`/`lint`/`typeche
 
 - [x] Ran lint/type-check on changed code — `just lint`, `just typecheck` (justfile itself has no linter; viz lint/typecheck untouched and still green)
 
-- [x] **Verification receipt** — no avoidable duplication/dead code/unexplained complexity (7 one-line recipes, natabula fleet shape); no public-surface growth beyond the new root `justfile`; no stale docs (doc-drift sweep below).
+- [x] **Verification receipt** — no avoidable duplication/dead code/unexplained complexity (7 one-line recipes, project-20 fleet shape); no public-surface growth beyond the new root `justfile`; no stale docs (doc-drift sweep below).
 
   - `test -f justfile` → 0
   - `just --list` → 0, lists exactly `default`/`build`/`dev`/`lint`/`setup`/`test`/`typecheck`
@@ -93,12 +93,12 @@ Add a hand-authored root `justfile` mapping `setup`/`dev`/`test`/`lint`/`typeche
 
 ## 🚀 Phase 4: Closure
 
-- [x] **Doc-drift sweep** — no change to any listed doc. The justfile is an additive convenience wrapper per natabula's "tendency, not a gate" convention (`STACK-TENDENCIES.md` §"Non-standard repos hand-author bodies"): the underlying `npm --prefix viz …` commands CLAUDE.md §"Validation"/§"Dev Server" and `viz/README.md` document remain the canonical, still-accurate commands. `README.md`, `AGENTS.md`, `SPEC.md`, `docs/MIGRATION.md`, the platform snippets, `docs/CONVENTIONS.md`, `CONTRIBUTING.md`, `SECURITY.md`, `docs/AGENT-NEUTRALITY.md`, `docs/PLATFORMS.md`, `claude/CAPABILITIES.md`, `docs/AGENT-COMPAT.md`, `docs/EXTERNAL-AGENTS.md`, `docs/WORKTREES.md` — none reference a root justfile or its absence, so none drift.
+- [x] **Doc-drift sweep** — no change to any listed doc. The justfile is an additive convenience wrapper per project-20's "tendency, not a gate" convention (`STACK-TENDENCIES.md` §"Non-standard repos hand-author bodies"): the underlying `npm --prefix viz …` commands CLAUDE.md §"Validation"/§"Dev Server" and `viz/README.md` document remain the canonical, still-accurate commands. `README.md`, `AGENTS.md`, `SPEC.md`, `docs/MIGRATION.md`, the platform snippets, `docs/CONVENTIONS.md`, `CONTRIBUTING.md`, `SECURITY.md`, `docs/AGENT-NEUTRALITY.md`, `docs/PLATFORMS.md`, `claude/CAPABILITIES.md`, `docs/AGENT-COMPAT.md`, `docs/EXTERNAL-AGENTS.md`, `docs/WORKTREES.md` — none reference a root justfile or its absence, so none drift.
 
 - [x] Closed
 
 - [x] **Evidence-based recap** drafted (below)
 
-**Final Summary:** Added root `justfile` (7 recipes: `default`/`setup`/`dev`/`test`/`lint`/`typecheck`/`build`, ~35 LOC) delegating to `npm --prefix viz …`, unblocking caobunga's suite discovery for flowtron's `viz/`-only layout (natabula NAT-304). No existing code touched — new standalone file only, so no refactor was needed or deferred. Verification: `just setup && just lint && just typecheck && just test && just build` all exit 0 (lint/typecheck clean, 568/568 viz tests passed, build succeeded). `touches:` reconciliation — declared `justfile`; `git diff --name-only` (untracked) shows `justfile` + this tasknote, matching. Doc-drift sweep found nothing to update (see above). Maintainability effect: gives flowtron the same `just <verb>` muscle-memory interface as the rest of the natabula fleet, with zero change to the underlying commands or CI.
+**Final Summary:** Added root `justfile` (7 recipes: `default`/`setup`/`dev`/`test`/`lint`/`typecheck`/`build`, ~35 LOC) delegating to `npm --prefix viz …`, unblocking project-07's suite discovery for flowtron's `viz/`-only layout (project-20 NAT-304). No existing code touched — new standalone file only, so no refactor was needed or deferred. Verification: `just setup && just lint && just typecheck && just test && just build` all exit 0 (lint/typecheck clean, 568/568 viz tests passed, build succeeded). `touches:` reconciliation — declared `justfile`; `git diff --name-only` (untracked) shows `justfile` + this tasknote, matching. Doc-drift sweep found nothing to update (see above). Maintainability effect: gives flowtron the same `just <verb>` muscle-memory interface as the rest of the project-20 fleet, with zero change to the underlying commands or CI.
 
 **Archived:** 2026-09-20

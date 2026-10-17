@@ -27,7 +27,7 @@ Scope the `CORE-EPIC-770` epic (`global-layer-alignment`) before any implementat
 
 ## 🧩 Subtasks
 
-- [x] Inventory shared design surface (global CLAUDE.md, `~/Code/AGENTS.md`, memory, natabula skills/docs/hook, flaitron contract touch points) — log in Discovery Notes
+- [x] Inventory shared design surface (global CLAUDE.md, `~/code/AGENTS.md`, memory, project-20 skills/docs/hook, flaitron contract touch points) — log in Discovery Notes
 - [x] Skim .flaitron/tasknote/archive/core/ for relevant precedents — log load-bearing findings in Discovery Notes
 - [x] Drift check on cited paths and concepts — flag any drift before re-interpreting the epic
 - [x] Surface open scoping questions via AskUserQuestion — record answers in a "Resolved scoping" table
@@ -58,21 +58,21 @@ Scope the `CORE-EPIC-770` epic (`global-layer-alignment`) before any implementat
   **Rationale:** The operator asked to check, before v7.0.0, that flaitron does not conflict with the global rules and skills. CORE-EPIC-769 just changed the skill surface: four renames and the retired `claude/commands/`. The global layer was never swept against it.
 
 - [x] Read relevant source files — read:
-  - `~/.claude/CLAUDE.md` and `~/Code/AGENTS.md` (both in session context)
+  - `~/.claude/CLAUDE.md` and `~/code/AGENTS.md` (both in session context)
   - all 7 flaitron-project memory files
-  - natabula skills, docs, and PLAN, via grep under the `~/Code` exception
+  - project-20 skills, docs, and PLAN, via grep under the `~/code` exception
   - flaitron's references to the global layer
 
   `~/.claude/settings.json` and `~/.claude/skills/` were approved by the operator but blocked by the NAT-195 hook (no root in `path-access-roots`), so they were not read.
 
-- [x] **Best Practices Review** — boundary: natabula `docs/CLAUDE-LAYERING.md` assigns ownership.
-  - Layers 1–2 (`~/.claude/CLAUDE.md`, `~/Code/AGENTS.md`) are hand-authored by the operator, and natabula and flaitron do not edit them. The one exception is natabula's Path Access hook pair (NAT-195).
-  - Layer 3 is natabula; layer 4 is flaitron.
-  - Fixes therefore route by owner: flaitron PLAN rows for flaitron, natabula PLAN rows for natabula (SPEC §"Cross-repo edit remit"), an operator-applied diff for layers 1–2, and direct agent edits for the agent-owned memory.
+- [x] **Best Practices Review** — boundary: project-20 `docs/CLAUDE-LAYERING.md` assigns ownership.
+  - Layers 1–2 (`~/.claude/CLAUDE.md`, `~/code/AGENTS.md`) are hand-authored by the operator, and project-20 and flaitron do not edit them. The one exception is project-20's Path Access hook pair (NAT-195).
+  - Layer 3 is project-20; layer 4 is flaitron.
+  - Fixes therefore route by owner: flaitron PLAN rows for flaitron, project-20 PLAN rows for project-20 (SPEC §"Cross-repo edit remit"), an operator-applied diff for layers 1–2, and direct agent edits for the agent-owned memory.
 
 - [x] **Archive skim** — `archive/core/` checked against the README table. CORE-769.1 Probe D and the CORE-769.3–.7 notes are the relevant precedent: the rename map, the NAT-391 hand-off, and the repeated Path Access block on relinking. No earlier tasknote audits the global layer.
 
-- [x] **Drift check** — flaitron's live files never cite `~/.claude/CLAUDE.md` or the global layer, so the contract does not depend on it. The direction of drift is global → flaitron. `~/Code` is not a git repo, so `~/Code/AGENTS.md` has no PLAN or commit trail. natabula is pinned at **v6.0.0**, one release behind v6.1.0.
+- [x] **Drift check** — flaitron's live files never cite `~/.claude/CLAUDE.md` or the global layer, so the contract does not depend on it. The direction of drift is global → flaitron. `~/code` is not a git repo, so `~/code/AGENTS.md` has no PLAN or commit trail. project-20 is pinned at **v6.0.0**, one release behind v6.1.0.
 
 - [x] Asked clarifying questions OR logged "No clarifications needed" with explicit assumptions — 4 asks via AskUserQuestion; see Resolved scoping
 
@@ -80,14 +80,14 @@ Scope the `CORE-EPIC-770` epic (`global-layer-alignment`) before any implementat
 
 **Discovery Notes:**
 
-**A — Global standards vs. the flaitron contract.** Layer 1 is `~/.claude/CLAUDE.md`; layer 2 is `~/Code/AGENTS.md`.
+**A — Global standards vs. the flaitron contract.** Layer 1 is `~/.claude/CLAUDE.md`; layer 2 is `~/code/AGENTS.md`.
 
 1. **Ask-first vs. flaitron's gates.** Layer 1 says: "For any non-trivial new task, start with … Ask me questions using AskUserQuestion before planning or coding. Then wait."
    - Flaitron does not always ask first: `/ft-task`'s Phase 1→2 gate is `default-skip`, and the closure commit is autonomous when the skip signals clear. `--fast` suppresses conditional gates, and `--unattended` runs with no operator at all.
    - Layer 1's own precedence line ("project … AGENTS.md take precedence where they conflict") resolves this inside adopters. The literal ask-first rule still reads as mandatory, though, and it competes with any flaitron skill invocation.
 2. **Commit authorization.** The harness default is "commit only when the user asks". Flaitron's skip-branch autonomous commit relies on skill invocation as the authorization, and neither layer 1 nor layer 2 says so. Push stays gated in both, so they agree there.
 3. **Model selection.** Layer 1 names only `[heavy]🧠` and `[light]🔧`. Flaitron's ladder is `[light]` / `[medium]🧩` / `[heavy]` / `[frontier]💎` / `[xheavy]🔭` (SPEC/model.md).
-4. **New-repo pointer.** Layer 1 points at `SPEC.md` and `docs/MIGRATION.md`. It names neither `/ft-adopt` (v7) nor natabula's `/natabula-adopt` front door.
+4. **New-repo pointer.** Layer 1 points at `SPEC.md` and `docs/MIGRATION.md`. It names neither `/ft-adopt` (v7) nor project-20's `/project-20-adopt` front door.
 5. **No conflict found** in the remaining rules:
    - screenshots (`👁️ CONFIRM` matches SPEC Phase 3)
    - one task per conversation (matches one tasknote per window)
@@ -103,15 +103,15 @@ Scope the `CORE-EPIC-770` epic (`global-layer-alignment`) before any implementat
 - `project_obsidian_positioning`, `feedback_no_cd_before_git`, `feedback_no_bulk_adopter_push`: use the "flowtron" name. Their substance holds.
 - The MEMORY.md index also says "flowtron".
 
-**C — natabula (layer 3; cross-repo remit, so findings are filed as natabula rows).**
+**C — project-20 (layer 3; cross-repo remit, so findings are filed as project-20 rows).**
 - NAT-391, filed by CORE-769.7, covers the four renames only.
 - **Not covered: the retired command stubs.**
-  - `natabula-init`'s precondition requires `.claude/commands/ft-task.md`. `/ft-adopt` in v7 no longer creates it, so `/natabula-init` stops on every v7-adopted repo, which is a hard break.
-  - `natabula-adopt`'s not-adopted detector and `docs/CLAUDE-LAYERING.md` (§Symlink paths and adoption step 2) also describe `.claude/commands/ft-*.md`.
+  - `project-20-init`'s precondition requires `.claude/commands/ft-task.md`. `/ft-adopt` in v7 no longer creates it, so `/project-20-init` stops on every v7-adopted repo, which is a hard break.
+  - `project-20-adopt`'s not-adopted detector and `docs/CLAUDE-LAYERING.md` (§Symlink paths and adoption step 2) also describe `.claude/commands/ft-*.md`.
 - **NAT-195 hook false positives** (`scripts/guard-path-access.sh`):
   - A relative `ln -s ../../claude/skills/<x>` target is read as a `..` climb from cwd, but symlink targets resolve from the link's directory. It blocked flaitron-self's relink in `.3`–`.6` and in this session. It will also block an agent running `/ft-update` Step 4 wiring in any adopter, the v7 swap included. The node fleet updater is not affected.
   - A grep regex containing a literal `~/.claude` string was read as a path, and so was a `sed -n '/CORE-EPIC-770/p'` address, during this note's own Phase 2. `.4`'s row names the `ln -s` case; these two ride along as evidence.
-- natabula's own pin (v6.0.0) needs the v7 bump. NAT-391 says to land it with that bump.
+- project-20's own pin (v6.0.0) needs the v7 bump. NAT-391 says to land it with that bump.
 
 **D — Not inspected.** `~/.claude/skills/` (which global links exist: `ft-adopt`/`ft-new-project`, `ft-audit-repo`, possibly retired slugs) and `~/.claude/settings.json`, both hook-blocked. The operator can list the first with `! ls -la ~/.claude/skills/`.
 
@@ -119,14 +119,14 @@ Scope the `CORE-EPIC-770` epic (`global-layer-alignment`) before any implementat
 
 | Question | Decision | Consequence |
 |---|---|---|
-| Children | 3, split by owner | `.2` memory (agent) · `.3` layer-1/2 diff (operator-applied or per-path approval) · `.4` natabula rows (cross-repo remit) |
+| Children | 3, split by owner | `.2` memory (agent) · `.3` layer-1/2 diff (operator-applied or per-path approval) · `.4` project-20 rows (cross-repo remit) |
 | Ask-first conflict | Carve-out in `~/.claude/CLAUDE.md` | When a flaitron skill drives the task, its gates decide when to ask; ask-first governs work outside a skill |
-| Commit authorization | Add to `~/Code/AGENTS.md` | Invoking a flaitron skill authorizes its closure commit; push always needs an explicit ask |
-| v7.0.0 release | Not blocked | Release once flaitron-self's local links are fixed; natabula's v7 bump waits on `.4`'s rows |
+| Commit authorization | Add to `~/code/AGENTS.md` | Invoking a flaitron skill authorizes its closure commit; push always needs an explicit ask |
+| v7.0.0 release | Not blocked | Release once flaitron-self's local links are fixed; project-20's v7 bump waits on `.4`'s rows |
 
-**Drafted children** (description word counts, `wc -w`): `.2` memory-refresh 35w · `.3` global-standards-diff 49w · `.4` natabula-v7-handoff 39w. All three touch disjoint files with different owners, so they are Parallel; `.N` is Synthesis.
+**Drafted children** (description word counts, `wc -w`): `.2` memory-refresh 35w · `.3` global-standards-diff 49w · `.4` project-20-v7-handoff 39w. All three touch disjoint files with different owners, so they are Parallel; `.N` is Synthesis.
 
-**Flaitron-side impact.** None found: flaitron's contract makes no claim about the global layer, and every conflict above is fixed in its owner's layer. On that evidence the epic does **not** block the v7.0.0 tag. Natabula's v7 bump, however, waits on C.
+**Flaitron-side impact.** None found: flaitron's contract makes no claim about the global layer, and every conflict above is fixed in its owner's layer. On that evidence the epic does **not** block the v7.0.0 tag. Project-20's v7 bump, however, waits on C.
 
 ## 🛠️ Phase 2: Execution
 
@@ -183,8 +183,8 @@ bash tools/drift-checks.sh         → 0
 
 The global-layer alignment epic is scoped. Flaitron v7 conflicts with nothing in the operator's global layer. The global layer is what drifted, so three children fix it, one per owner:
 - `.2` memory refresh (agent)
-- `.3` a drafted diff for `~/.claude/CLAUDE.md` and `~/Code/AGENTS.md`: an ask-first carve-out, commit authorization, the model ladder, and the new-repo pointer
-- `.4` natabula rows: `natabula-init` breaks on v7 adopters over the retired command stub, and the NAT-195 hook gives false positives on relative symlinks
+- `.3` a drafted diff for `~/.claude/CLAUDE.md` and `~/code/AGENTS.md`: an ask-first carve-out, commit authorization, the model ladder, and the new-repo pointer
+- `.4` project-20 rows: `project-20-init` breaks on v7 adopters over the retired command stub, and the NAT-195 hook gives false positives on relative symlinks
 
 The v7.0.0 release is not blocked.
 

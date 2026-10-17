@@ -54,7 +54,7 @@ Make `SPEC/unattended-candidacy.md` clause 6 admit a `.N` audit row only when ev
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** Clause 6 still reads "A `.N` audit row qualifies only when clauses 1–4 admit it" (`SPEC/unattended-candidacy.md:74-76`), so the reported failure (judedelparte JD-041.N marked with .2/.3 open) is reproducible from the text as written.
+  **Rationale:** Clause 6 still reads "A `.N` audit row qualifies only when clauses 1–4 admit it" (`SPEC/unattended-candidacy.md:74-76`), so the reported failure (project-18 JD-041.N marked with .2/.3 open) is reproducible from the text as written.
 
 - [x] Read relevant source files — `SPEC/unattended-candidacy.md`, `claude/skills/ft-seed/SKILL.md`, `codex/skills/ft-seed/SKILL.md` (thin pointer, no change), the candidacy mirrors in `ft-epic-discovery` / `ft-refactor` / `ft-file-followup`.
 

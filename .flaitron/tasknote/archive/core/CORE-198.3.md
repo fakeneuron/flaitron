@@ -57,7 +57,7 @@ Consolidate workspace-standards content from `~/code/CLAUDE.md` into `~/.claude/
   - `_project/tasknote/archive/core/CORE-198.1.md` — Discovery decisions (hybrid scope; no in-place flowtron contract edits; `.4` is independent)
   - `_project/tasknote/README.md` §"AI-referenced docs" — confirmed 9-entry doc set for Phase 4 sweep
 
-- [x] **Archive skim** — `_project/tasknote/archive/core/`; targeted grep for `~/.claude/CLAUDE.md` / `~/Code/CLAUDE.md` / `~/code/CLAUDE.md` hit 9 archives: [[CORE-008]] (InvisiPaw playbook), [[CORE-010]] (the flowtron-pointer add — already in 🔗 Related), [[CORE-011]] (TasknoteSystem deletion), [[CORE-037]] (token-cost audit), [[CORE-042.1]] / [[CORE-042.8]] (workflow rethink), [[CORE-132]] (idiosyncrasy comb), and the two epic siblings [[CORE-198.1]] / [[CORE-198.2]]. Nothing surfaces a load-bearing prior touch beyond what `.2`'s archive skim already consolidated. No new precedent.
+- [x] **Archive skim** — `_project/tasknote/archive/core/`; targeted grep for `~/.claude/CLAUDE.md` / `~/code/CLAUDE.md` / `~/code/CLAUDE.md` hit 9 archives: [[CORE-008]] (Project-17 playbook), [[CORE-010]] (the flowtron-pointer add — already in 🔗 Related), [[CORE-011]] (Project-28 deletion), [[CORE-037]] (token-cost audit), [[CORE-042.1]] / [[CORE-042.8]] (workflow rethink), [[CORE-132]] (idiosyncrasy comb), and the two epic siblings [[CORE-198.1]] / [[CORE-198.2]]. Nothing surfaces a load-bearing prior touch beyond what `.2`'s archive skim already consolidated. No new precedent.
 
 - [x] **Drift check** — all paths cited in `.2`'s findings table still valid at HEAD:
   - `~/.claude/CLAUDE.md` exists (44 lines, mtime 2026-05-17) ✓
@@ -75,7 +75,7 @@ Consolidate workspace-standards content from `~/code/CLAUDE.md` into `~/.claude/
 | # | Question | Resolution | Affects |
 |---|---|---|---|
 | 1 | Lift placement strategy | **Integrate where overlap exists, rest as new sections** — F13 bullets fold into existing §Core Principles / §Execution & Verification; F16 + workflow-philosophy neighbors fold into §Execution & Verification (already carries F2); F14 §Tech Stack Tendencies + F15 §Localhost Port Registry land as new discrete sections (no natural host) | Phase 2 edits land in 4 places: §Core Principles (+2 bullets) · §Execution & Verification (F2 bullet refined + 3 new bullets) · 2 new sections appended after §Model Selection · closing line (F3, drop `~/code/CLAUDE.md` reference) |
-| 2 | Retirement mechanism | **Delete `~/code/CLAUDE.md` outright** — matches the epic's stated goal (multi-agent setups don't depend on sub-folder CLAUDE.md discovery); a stub would preserve the very discovery surface the retirement eliminates | Phase 2 includes `rm /Users/fakeneuron/Code/CLAUDE.md` after the global file is rewritten |
+| 2 | Retirement mechanism | **Delete `~/code/CLAUDE.md` outright** — matches the epic's stated goal (multi-agent setups don't depend on sub-folder CLAUDE.md discovery); a stub would preserve the very discovery surface the retirement eliminates | Phase 2 includes `rm ~/code/CLAUDE.md` after the global file is rewritten |
 
 **Per-bullet lift mapping (F13 + F16 + neighbors):**
 
@@ -108,8 +108,8 @@ Consolidate workspace-standards content from `~/code/CLAUDE.md` into `~/.claude/
 
 - [x] **Pattern survey** — extended [[CORE-132]]'s execute-the-audit pattern, but inverted: where CORE-132 surfaced findings as discrete PLAN.md follow-up tickets (the recommendations-only audit shape), `.3` *consumes* findings as direct edits to the corpora `.2` classified. The cross-corpus user-side consolidation has no prior precedent in the archive — the closest analogue is the CORE-132 → CORE-133..137 cohort, which executed lifts in separate child tickets per finding. `.3` collapses 7 findings (F1 / F2 / F3 / F13 / F14 / F15 / F16) into one consolidation pass because they share an enabling condition (workspace retirement) and an output destination (single global file). Justification for the single-pass shape: edits are deterministic from `.2`'s table; user already gave explicit go via the structured ask; per-finding tickets would fragment a coherent merge.
 - [x] Implemented the minimal solution — two file-system operations:
-  1. **Write** `/Users/fakeneuron/.claude/CLAUDE.md` (full rewrite; 76 lines; +32 net lines vs. prior 44-line version)
-  2. **Remove** `/Users/fakeneuron/Code/CLAUDE.md` (deleted; ls confirms absence)
+  1. **Write** `~/.claude/CLAUDE.md` (full rewrite; 76 lines; +32 net lines vs. prior 44-line version)
+  2. **Remove** `~/code/CLAUDE.md` (deleted; ls confirms absence)
 - [x] Updated/added tests for non-trivial behavior — N/A (markdown content edits; verification gates run inline in Phase 3 below).
 
 **Implementation Notes:**
@@ -156,7 +156,7 @@ Consolidate workspace-standards content from `~/code/CLAUDE.md` into `~/.claude/
 
 1. **File-state check** — `~/.claude/CLAUDE.md` 76 lines (was 44); `~/code/CLAUDE.md` removed (`ls` returns "No such file or directory"). ✓
 2. **Section count** — 9 sections (was 7; +§Tech Stack Tendencies, +§Localhost Port Registry). ✓
-3. **No orphaned workspace-CLAUDE.md references** — `grep -nE '~/code/CLAUDE\.md|~/Code/CLAUDE\.md' ~/.claude/CLAUDE.md` returned zero hits. F3 cleanup verified. ✓
+3. **No orphaned workspace-CLAUDE.md references** — `grep -nE '~/code/CLAUDE\.md|~/code/CLAUDE\.md' ~/.claude/CLAUDE.md` returned zero hits. F3 cleanup verified. ✓
 4. **Top-to-bottom read** — global file still reads as "Personal Coding Standards (Global)": principle-flavored sections (Scope, Core, Surgical, Shell, Execution, Communication, Model) hold their existing flow; lifted content sits naturally either as same-section bullet additions (F13/F16) or tail sections (F14/F15) — title still fits since the lifted sections are coding-adjacent preferences and machine state, not workflow contract. ✓
 5. **Quote-style preservation** — Unicode smart quotes / curly apostrophes preserved character-for-character in both retained and lifted content ("improve", "future-proofing", "project's"); no spurious ASCII downgrades introduced. ✓
 6. **F1/F2/F3 within-user dup resolution** — verified by source disappearance (workspace file gone) + canonical-side preservation (global §Shell discipline intact; L35 refined F2 bullet present; L76 F3-cleaned closing line present). ✓

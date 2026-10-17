@@ -48,7 +48,7 @@ Delete flowtron's dead root `.claudeignore` (`SCRATCH.md`, which no longer exist
 
 - [x] **Best Practices Review** — N/A: single dead-file deletion, no code surface, no module boundary touched.
 
-- [x] **Archive skim** — `grep -l claudeignore archive/core/*.md` → `CORE-483.N`, `CORE-483.3` (screenshot-discipline epic; natabula-side `.claudeignore`/`.cursorignore` deposits, unrelated to this repo's root file), `CORE-632.3`, `CORE-632.N` (source of this follow-up). No prior tasknote touched flowtron-self's root `.claudeignore` other than the original filing (`CORE-029`, commit `a6e4f47`, per CORE-632.N's `git log -- .claudeignore`). No blocking decision found.
+- [x] **Archive skim** — `grep -l claudeignore archive/core/*.md` → `CORE-483.N`, `CORE-483.3` (screenshot-discipline epic; project-20-side `.claudeignore`/`.cursorignore` deposits, unrelated to this repo's root file), `CORE-632.3`, `CORE-632.N` (source of this follow-up). No prior tasknote touched flowtron-self's root `.claudeignore` other than the original filing (`CORE-029`, commit `a6e4f47`, per CORE-632.N's `git log -- .claudeignore`). No blocking decision found.
 
 - [x] **Drift check (HEAD, 2026-09-20).** `cat .claudeignore` → still exactly `SCRATCH.md` (unchanged since CORE-029). `git grep -n claudeignore -- . ':!.flowtron'` → exactly one hit, `docs/MIGRATION.md:60`, the "there is no `.claudeignore`" sentence — matches the sidequest's expected verification exactly. No SPEC contract touched; PLAN.md line matches the sidequest stub's description.
 

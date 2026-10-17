@@ -115,7 +115,7 @@ Cut flowtron v3.1.0 — minor bump shipping CORE-EPIC-099's open-source foundati
 - chore: CORE-097.4 — PLAN.md flip + file CORE-109
 - chore: CORE-097.7/8 — EPIC-097 audit + close
 - chore: CORE-099.7 — EPIC-099 audit
-- chore: CORE-100 — remove stale flowtron-nat-011 worktree
+- chore: CORE-100 — remove stale project-15 worktree
 
 ### Archive skim findings
 

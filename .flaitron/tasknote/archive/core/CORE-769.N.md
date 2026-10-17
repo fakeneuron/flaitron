@@ -71,7 +71,7 @@ Cohort inventory (all closed 2026-10-09):
 - **`.4` rename-open-epic** — `ft-epic-discovery` → `ft-open-epic` across 37 files. The `ln -s` blocks were re-sorted.
 - **`.5` rename-adopt** — `ft-new-project` → `ft-adopt` (still global-only) across 23 files. Covered the §7.1 exclusion list and regex, the PLATFORMS global column, and the MIGRATION §1.0 recipe.
 - **`.6` rename-seed-unattended** — `ft-seed` → `ft-seed-unattended` across 21 files.
-- **`.7` rename-migrate-mode** — the updater's `SKILL_RENAME` (v7.0.0 map) adds a link swap and command-link prune inside the bump's rollback window, and fixes the `--no-renames` blind spot in the new-skills note. `/ft-update` Step 4.6 now names replacements, MIGRATION gains a §"Upgrading to v7.0.0 (skill renames)" recipe, and natabula NAT-391 was filed (local commit `e6f66a6`, unpushed).
+- **`.7` rename-migrate-mode** — the updater's `SKILL_RENAME` (v7.0.0 map) adds a link swap and command-link prune inside the bump's rollback window, and fixes the `--no-renames` blind spot in the new-skills note. `/ft-update` Step 4.6 now names replacements, MIGRATION gains a §"Upgrading to v7.0.0 (skill renames)" recipe, and project-20 NAT-391 was filed (local commit `e6f66a6`, unpushed).
 
 ## 🛠️ Phase 2: Execution
 
@@ -105,7 +105,7 @@ Cohort inventory (all closed 2026-10-09):
 - **Operator hand-offs (not PLAN rows: local or release-owned).**
   1. flaitron-self's gitignored wiring still holds dangling `.claude/skills/{ft-file-followup,ft-epic-discovery,ft-new-project,ft-seed}` and the four matching `.agents/skills/` links. The relink was blocked by the Path Access hook, as it was for `.3`–`.6`. `/ft-release` §7.1's local self-wiring check will flag them until they are re-pointed.
   2. The global `~/.claude/skills/ft-new-project` → `ft-adopt` link (from `.5`). It is outside the repo and was not inspected.
-  3. Push natabula `e6f66a6` (NAT-391), which was left local and unpushed.
+  3. Push project-20 `e6f66a6` (NAT-391), which was left local and unpushed.
   4. At `/ft-release` v7.0.0, the tag's `Migration (BREAKING)` block should point at MIGRATION §"Upgrading to v7.0.0 (skill renames)" (from `.7`). `claude/CAPABILITIES.md`'s `v6.1.0` last-verified stamp is re-verified at the same cut.
 
 ## 🧪 Phase 3: Testing & Linting
@@ -170,7 +170,7 @@ The CORE-EPIC-769 audit found the skill-surface cohort coherent. The command wra
 - **Operator hand-offs:**
   - Re-point flaitron-self's local `.claude/skills` and `.agents/skills` links, which `/ft-release` §7.1 will flag.
   - Re-point the global `~/.claude/skills/ft-new-project` link.
-  - Push natabula NAT-391.
+  - Push project-20 NAT-391.
   - Write the v7.0.0 tag's BREAKING Migration block.
 
 **Archived:** 2026-10-09

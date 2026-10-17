@@ -75,9 +75,9 @@ No prior LICENSE-touching tasknotes (the repo has never had a LICENSE).
 
 ### Drift check (verified at HEAD)
 
-- No `LICENSE` / `LICENSE.md` / `LICENSE.txt` / `COPYING` at repo root — confirmed via `ls -la /Users/fakeneuron/Code/flowtron/LICENSE* /Users/fakeneuron/Code/flowtron/COPYING*` (no matches).
+- No `LICENSE` / `LICENSE.md` / `LICENSE.txt` / `COPYING` at repo root — confirmed via `ls -la ~/code/flowtron/LICENSE* ~/code/flowtron/COPYING*` (no matches).
 - `viz/package.json` has `"private": true` and no `license:` field — npm convention: `private: true` suppresses the missing-license warning for private packages, so no companion edit needed when LICENSE lands at repo root.
-- Git author identity in commits: `fakeneuron <judedelparte@gmail.com>` — single identity, no ambiguity for the copyright line.
+- Git author identity in commits: `fakeneuron <operator@example.com>` — single identity, no ambiguity for the copyright line.
 - Repo positioning claim ("submodule-adoptable across `~/code/`") cited in CORE-099.1 still present in `README.md` + `SPEC.md` + `docs/PHILOSOPHY.md`; the adoption-positioning gap CORE-099.2 closes is real and current.
 - [[CORE-099.1]] (Discovery) is closed and archived at `_project/tasknote/archive/core/CORE-099.1.md` — predecessor relationship valid; the per-axis findings table is the canonical input for this task.
 - Today's date: 2026-05-18 (flowtron started 2026-04-28 per [[CORE-001]]); copyright year = `2026` (single year; no range needed).

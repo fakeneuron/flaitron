@@ -5,13 +5,13 @@
 A lightweight, versioned, project-agnostic tasknote system for solo
 AI-assisted coding. One source of truth, consumed via git submodule by every
 project under `~/code/`. Replaces the disjointed per-project workflow files
-in fintown, InvisiPaw, and photard.
+those projects had each grown on their own.
 
 See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-- [ ] **CORE-801** [heavy] | public-privacy-scrub — This repo is public, and its tree and history still carry operator home paths and private project names, mostly in the `.flaitron/` dogfood but also in this PLAN's Vision. Audit the tree and history, then scrub the product paths. The operator rules on two things: rewrite history and force-push, or accept what is already published; and whether the `.flaitron/` dogfood stays public. Record the findings.
+(none)
 
 ## Medium
 
@@ -29,6 +29,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-801** [heavy] | public-privacy-scrub — Completed 2026-10-17.
 - [x] **CORE-800** [medium] | brand-chamber-reference — Completed 2026-10-17.
 - [x] **CORE-799** [medium]🧩 | prep-split-collisions — Completed 2026-10-15.
 - [x] **CORE-798** [heavy]🧠 | prep-guard-wording — Completed 2026-10-15.

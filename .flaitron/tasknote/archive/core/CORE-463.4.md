@@ -68,7 +68,7 @@ Stop `/ft-audit` silently degrading to generic output in the 18-of-24 repos runn
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** The motivating defect was verified live this session, not recalled from the `.1` note. `~/.claude/skills/ft-audit` is a symlink to `/Users/fakeneuron/Code/flowtron/claude/skills/ft-audit` — the unfilled bundled scaffold — so every repo without a local fork loads pass files whose rubric slots read `<rubric file 1>` / `<forker: what it defines>` and whose gates read `<lint command for your stack>`. Flowtron's own `.claude/skills/ft-audit` is the same symlink. The scope filed at `.1` is unchanged and no sibling child has landed since.
+  **Rationale:** The motivating defect was verified live this session, not recalled from the `.1` note. `~/.claude/skills/ft-audit` is a symlink to `~/code/flowtron/claude/skills/ft-audit` — the unfilled bundled scaffold — so every repo without a local fork loads pass files whose rubric slots read `<rubric file 1>` / `<forker: what it defines>` and whose gates read `<lint command for your stack>`. Flowtron's own `.claude/skills/ft-audit` is the same symlink. The scope filed at `.1` is unchanged and no sibling child has landed since.
 
 - [x] Read relevant source files — `claude/skills/ft-audit/SKILL.md` (all 8 sections), `claude/skills/ft-audit/passes/general.md` (representative placeholder shapes), `claude/skills/ft-update/SKILL.md` (Steps 0–5, esp. 4.5/4.6), `templates/audit-overlay-template.md`, `docs/MIGRATION.md` §1.2.1 incl. the pre-consolidation migration block.
 
@@ -179,7 +179,7 @@ Not triggered — the design choices resolved above stay inside this child's fil
 1. Detection was drafted as a **literal token list** taken from `passes/general.md`. Only `general` uses that wording; `backend` ships `<default backend glob>` / `<lint command, e.g. ruff check / golangci-lint run>`, `security` ships `<secret-scanner, …>`. The list matched 1 of 6 domains. Replaced with a **structural** rule — any `<…>` span in the pass file's §"Scope & rubric hints" block, or any `_(forker: …)_` note — which fires on 6/6 and stays correct for domains not yet written (notably `.2`'s `structure`).
 2. The gate whitelist was drafted as a fixed **lint · type-check · test · build** list. Four of six domains declare gates outside it (`security` scanners, `performance` profiler/load-test, `frontend` bundle-analyzer/a11y, `docs` markdown-lint/link-check), so the whitelist would have refused the gates those domains actually ask for. Inverted: **the loaded pass file declares which slots are wanted**, derivation only supplies candidates for declared slots, and safety moves to a **destructive-intent denylist** (deploy · publish · release · migrate · seed · reset · push). Same protection, correct across domains, and no maintenance when a domain is added.
 
-**Overlay exemption** — the negative test showed both filled forks in the fleet (`bidviz/audit-backend`, `marscharts/audit`) are thin overlays with no `passes/` sibling. They run the *bundled* pass files, which carry placeholders by design and are resolved one layer up by `## Deltas`. Without an exemption the bootstrap would have fired on every run of the fork style the docs recommend. Detection now subtracts anything the overlay's deltas supply, and an overlay that *does* reach §1.5 has its fork branch withheld (the fix is filling its deltas, not writing a second fork).
+**Overlay exemption** — the negative test showed both filled forks in the fleet (`project-05/audit-backend`, `project-19/audit`) are thin overlays with no `passes/` sibling. They run the *bundled* pass files, which carry placeholders by design and are resolved one layer up by `## Deltas`. Without an exemption the bootstrap would have fired on every run of the fork style the docs recommend. Detection now subtracts anything the overlay's deltas supply, and an overlay that *does* reach §1.5 has its fork branch withheld (the fix is filling its deltas, not writing a second fork).
 
 **Clobber protection in `/ft-update`** rests on one discriminator: a bundled pass file the fork lacks is *newly shipped* if it is absent from `git ls-tree <reconciled>`, and *deliberately deleted* if present there — §0 sanctions deleting pass files for surfaces a project doesn't have, and re-adding those on every bump would silently overturn that decision. Files present in both are never read, diffed, or written; that is where filled rubrics live. Changes to files the fork already has stay item 4's drift warning, not this item's.
 
@@ -214,10 +214,10 @@ The literal-token draft matched only `general.md` — 1/6. The structural rule m
 
 | Fork | shape | slots | notes | verdict |
 |---|---|---|---|---|
-| `bidviz/.claude/skills/audit-backend/` | thin overlay | 0 | 0 | no-op ✅ |
-| `marscharts/.claude/skills/audit/` | thin overlay | 0 | 0 | no-op ✅ |
+| `project-05/.claude/skills/audit-backend/` | thin overlay | 0 | 0 | no-op ✅ |
+| `project-19/.claude/skills/audit/` | thin overlay | 0 | 0 | no-op ✅ |
 
-Both are overlays, which is what surfaced the exemption gap. `bidviz`'s SKILL.md does carry two `<domain>` / `<placeholder>` angle spans, but as prose outside any scope/rubric block — the block-scoped rule correctly ignores them, confirming the scoping is load-bearing and not incidental.
+Both are overlays, which is what surfaced the exemption gap. `project-05`'s SKILL.md does carry two `<domain>` / `<placeholder>` angle spans, but as prose outside any scope/rubric block — the block-scoped rule correctly ignores them, confirming the scoping is load-bearing and not incidental.
 
 **Behaviour truth table after both fixes:**
 

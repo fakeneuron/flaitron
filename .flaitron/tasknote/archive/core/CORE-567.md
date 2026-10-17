@@ -55,7 +55,7 @@ Decide whether the `park-reason:` code table in `SPEC.md` §"Tasknote frontmatte
 ## 🔗 Related
 
 - [[CORE-565.2]] — lifecycle-value; filed this task after measuring the always-loaded cost of the table (~2,900 chars, needed only at a park)
-- [[CORE-565.3]] — caobunga-contract-fit; declared `park-reason:` a stable caller surface owned by section name, so "the pointer moves with it" (predecessor; `depends-on:`)
+- [[CORE-565.3]] — project-07-contract-fit; declared `park-reason:` a stable caller surface owned by section name, so "the pointer moves with it" (predecessor; `depends-on:`)
 - [[CORE-473.3]] — introduced the key; its own pattern survey named the `loop-*` module-homed precedent as the matching shape and placed the table in `SPEC.md` only because `.2` had already cited it there (`depends-on:`)
 - [[CORE-535.5]] — split `SPEC.md` (owns the code set) from `gates.md` (owns gate → behavior) and deleted the duplicate table; this task moves the code-set home, the split stands (`related-decision:`)
 
@@ -105,7 +105,7 @@ Nothing on the stay side survives contact with the load pattern. **Verdict: move
 
 **Blast radius (`grep -rn park-reason` outside the archive, 24 files):** only six carry a *home* citation for the code set — `SPEC.md`, `SPEC/blocked.md`, `SPEC/gates.md` (×2), `SPEC/procedures/ft-task.md` (`:66-67`), `claude/skills/ft-task/unattended-mode.md` (`:5`, `:27`), `docs/EXTERNAL-AGENTS.md` (`:67`, `:91`). The other 18 use the key or a specific code without naming where the set lives (`ft-task` / `ft-micro-task` / `ft-goal-task` SKILL.md, `unattended-close-epic.md`, `step-3c-resume-blocked.md`, `SPEC/loop.md`, `SPEC/purpose-blurb.md`, `claude/CAPABILITIES.md`, `docs/PLATFORMS.md`, the snippets, `ft-flowtron`). No codex/cursor/grok file cites the home. `docs/CONTEXT-BUDGET.md`'s lazy-module figures are a dated measurement, re-taken at release — not edited here.
 
-**No clarifications needed.** Assumptions asserted: (1) "one-line pointer" is read as one short paragraph — the frontmatter section must still name the key, its value shape, and omit-when-absent, or a reader enumerating valid keys misses it; (2) the moved text is moved verbatim, not rewritten — this is a where-it-lives task, and any fidelity trim is a separate decision; (3) the caller doc cites the new home the same way it cited the old one (by section name) — `caobunga`'s own contract doc is out of this repo's remit (`SPEC.md` §"Cross-repo edit remit") and is not read or edited; if it cites `SPEC.md` §"Tasknote frontmatter" for the code set, that is a wording refresh for a CBN row, noted in the recap.
+**No clarifications needed.** Assumptions asserted: (1) "one-line pointer" is read as one short paragraph — the frontmatter section must still name the key, its value shape, and omit-when-absent, or a reader enumerating valid keys misses it; (2) the moved text is moved verbatim, not rewritten — this is a where-it-lives task, and any fidelity trim is a separate decision; (3) the caller doc cites the new home the same way it cited the old one (by section name) — `project-07`'s own contract doc is out of this repo's remit (`SPEC.md` §"Cross-repo edit remit") and is not read or edited; if it cites `SPEC.md` §"Tasknote frontmatter" for the code set, that is a wording refresh for a CBN row, noted in the recap.
 
 ## 🛠️ Phase 2: Execution
 
@@ -185,6 +185,6 @@ Decided **move** and executed it: the `park-reason:` closed code set — eight c
 
 **Maintainability effect.** One fewer place where every lifecycle skill pays for a park it will not take; the eight codes now sit beside the "eight stop causes" sentence and the one caller-written code's own resume section, so a reader of a parked note gets the whole park contract from one file. The caller contract (`<code> — <prose>`, split on first ` — `, closed set) is byte-identical — only its address moved.
 
-**Out of remit, noted not done.** `caobunga`'s own contract doc may cite `SPEC.md` §"Tasknote frontmatter" for the code set; that is a wording refresh for a `CBN-` row in that repo's session (`SPEC.md` §"Cross-repo edit remit"), of the same kind [[CORE-565.3]] already queued as CBN-148. Not read, not edited from here.
+**Out of remit, noted not done.** `project-07`'s own contract doc may cite `SPEC.md` §"Tasknote frontmatter" for the code set; that is a wording refresh for a `CBN-` row in that repo's session (`SPEC.md` §"Cross-repo edit remit"), of the same kind [[CORE-565.3]] already queued as CBN-148. Not read, not edited from here.
 
 **Archived:** 2026-09-10

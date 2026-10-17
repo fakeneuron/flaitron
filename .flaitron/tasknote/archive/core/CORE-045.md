@@ -15,7 +15,7 @@ related-tasks: [CORE-044]
 
 Add a permanent §3.x subsection to `docs/MIGRATION.md` that captures the
 generalized pre-flight collision check + post-migration cleanup checklists
-distilled from fintown's CORE-098 and invisipaw's P43-1 migration tasknotes.
+distilled from project-14's CORE-098 and project-17's P43-1 migration tasknotes.
 
 ## ✅ Acceptance
 
@@ -39,7 +39,7 @@ distilled from fintown's CORE-098 and invisipaw's P43-1 migration tasknotes.
 
 ## 🔗 Related
 
-- [[CORE-044]] — new-project legacy detection (paired sibling; same lineage of fintown/invisipaw migration learnings)
+- [[CORE-044]] — new-project legacy detection (paired sibling; same lineage of project-14/project-17 migration learnings)
 - [[CORE-020]] — prior `/new-project` + MIGRATION.md update (last MIGRATION.md restructure of similar shape)
 - [[CORE-036]] — `## Completed` archive convention (referenced from §3.3 example block)
 
@@ -64,7 +64,7 @@ distilled from fintown's CORE-098 and invisipaw's P43-1 migration tasknotes.
 **Files in scope:**
 
 - `docs/MIGRATION.md` — the only file edited
-- Source material (read-only, NOT in this repo): `~/code/fintown/_project/tasknote/CORE-098.md` and `~/code/invisipaw/_project/tasknote/P43-1.md` — both still in their pre-execution state (status: Not Started). The Pre-Flight + Phase 3.5 sections in those files are the substance to generalize.
+- Source material (read-only, NOT in this repo): `~/code/project-14/_project/tasknote/CORE-098.md` and `~/code/project-17/_project/tasknote/P43-1.md` — both still in their pre-execution state (status: Not Started). The Pre-Flight + Phase 3.5 sections in those files are the substance to generalize.
 
 **Archive skim findings.** `_project/tasknote/archive/core/` greppped for `MIGRATION` + `pre-flight` + `cleanup`:
 
@@ -77,8 +77,8 @@ distilled from fintown's CORE-098 and invisipaw's P43-1 migration tasknotes.
 **Drift check.**
 
 - `docs/MIGRATION.md` §3 starts at line 169; sub-sections §3.1-§3.7 verified in place.
-- `~/code/fintown/_project/tasknote/CORE-098.md` exists with Pre-Flight P1-P10 (lines 37-48) + Phase 3.5 (lines 84-99). Status `Not Started` — content is the filed plan, not a post-execution log.
-- `~/code/invisipaw/_project/tasknote/P43-1.md` exists with Pre-Flight P1-P11 (lines 46-60) + Phase 3.5 (lines 96-114). Status `Not Started` — same shape.
+- `~/code/project-14/_project/tasknote/CORE-098.md` exists with Pre-Flight P1-P10 (lines 37-48) + Phase 3.5 (lines 84-99). Status `Not Started` — content is the filed plan, not a post-execution log.
+- `~/code/project-17/_project/tasknote/P43-1.md` exists with Pre-Flight P1-P11 (lines 46-60) + Phase 3.5 (lines 96-114). Status `Not Started` — same shape.
 - Inbound MIGRATION.md self-ref at line 259 (`track §3.1–§3.6`) is the only intra-doc number reference. Workspace-wide grep confirms no other `§3.[1-9]` references in flowtron's tree (md or otherwise).
 
 **Generalization scope** (from cross-comparing CORE-098 P1-P10 + P43-1 P1-P11):
@@ -134,6 +134,6 @@ New §3.1 carries an explicit "generic core; project-specific tells belong in th
 
 **Final Summary:**
 
-Generalized fintown CORE-098 + InvisiPaw P43-1's migration pre-flight (P1-P10/P11) and Phase 3.5 post-migration cleanup checklists into permanent `docs/MIGRATION.md` subsections §3.1 (Pre-flight collision check) and §3.8 (Post-migration cleanup). Existing §3.1-§3.7 (Freeze / Cross-walk / Populate / Finish-or-rewrap / Retire helpers / Update CLAUDE.md / Commit) renumbered in place to §3.2-§3.7 + §3.9, reading top-to-bottom in execution order. §2 (heavy path) gained a one-line cross-ref pointing at §3.1 — collision risks (`.claude/` symlinks, `_project/tasknote/README.md`, working-tree-clean) apply identically there. Inbound self-ref inside §3.9 extended from `§3.1–§3.6` to `§3.1–§3.8` (now covers pre-flight + cleanup). Project-specific items (credentials safety, live-trading runtime, project-local skills, orphan dirs) explicitly carved out via guardrail prose — they stay in adopter migration tasknotes, not in this generic checklist. Pairs with [[CORE-044]] which closed the upstream `/new-project` legacy detection on the same day. Doc-only edit; no SPEC, README, CLAUDE-snippet, template, or test changes.
+Generalized project-14 CORE-098 + Project-17 P43-1's migration pre-flight (P1-P10/P11) and Phase 3.5 post-migration cleanup checklists into permanent `docs/MIGRATION.md` subsections §3.1 (Pre-flight collision check) and §3.8 (Post-migration cleanup). Existing §3.1-§3.7 (Freeze / Cross-walk / Populate / Finish-or-rewrap / Retire helpers / Update CLAUDE.md / Commit) renumbered in place to §3.2-§3.7 + §3.9, reading top-to-bottom in execution order. §2 (heavy path) gained a one-line cross-ref pointing at §3.1 — collision risks (`.claude/` symlinks, `_project/tasknote/README.md`, working-tree-clean) apply identically there. Inbound self-ref inside §3.9 extended from `§3.1–§3.6` to `§3.1–§3.8` (now covers pre-flight + cleanup). Project-specific items (credentials safety, live-trading runtime, project-local skills, orphan dirs) explicitly carved out via guardrail prose — they stay in adopter migration tasknotes, not in this generic checklist. Pairs with [[CORE-044]] which closed the upstream `/new-project` legacy detection on the same day. Doc-only edit; no SPEC, README, CLAUDE-snippet, template, or test changes.
 
 **Archived:** 2026-05-07

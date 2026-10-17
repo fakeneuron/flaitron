@@ -8,7 +8,7 @@ related-tasks: [CORE-EPIC-711, CORE-711.1, CORE-711.5, CORE-711.N]
 touches:
   - .flaitron/PLAN.md
   - .flaitron/tasknote/CORE-711.8.md
-  - ../judedelparte/.flaitron/PLAN.md
+  - ../project-18/.flaitron/PLAN.md
 ---
 
 # CORE-711.8 | global + external refs
@@ -17,19 +17,19 @@ touches:
 
 ## 🎯 Goal
 
-Route the remaining external and global flaitron-rename references to their owning locations, preserving the deferred `~/fakeneuron/` work until that access root exists.
+Route the remaining external and global flaitron-rename references to their owning locations, preserving the deferred `~/operator/` work until that access root exists.
 
 ## ✅ Acceptance
 
-- [x] JD-030 routes the current judedelparte app-metadata rename and sibling-content references to its owner — `rg -n '\*\*JD-030\*\*' .flaitron/PLAN.md` in the target repository
+- [x] JD-030 routes the current project-18 app-metadata rename and sibling-content references to its owner — `rg -n '\*\*JD-030\*\*' .flaitron/PLAN.md` in the target repository
 - [x] CORE-713 records the named global configuration/doc references and guard-hook review as an operator handoff — `rg -n '\*\*CORE-713\*\*' .flaitron/PLAN.md`
-- [x] CORE-713 explicitly preserves the `~/fakeneuron/` scan until the operator adds its access root — `rg -n 'fakeneuron' .flaitron/PLAN.md`
+- [x] CORE-713 explicitly preserves the `~/operator/` scan until the operator adds its access root — `rg -n 'fakeneuron' .flaitron/PLAN.md`
 
 ## 🧩 Subtasks
 
-- [x] File the judedelparte-owned rename work in that repository's tracking system.
-- [x] Route the global Claude and `~/Code` configuration changes to the operator-owned configuration workflow.
-- [x] Preserve the `~/fakeneuron/` scan as a blocked follow-up until the access root exists.
+- [x] File the project-18-owned rename work in that repository's tracking system.
+- [x] Route the global Claude and `~/code` configuration changes to the operator-owned configuration workflow.
+- [x] Preserve the `~/operator/` scan as a blocked follow-up until the access root exists.
 
 ## 🔗 Related
 
@@ -55,7 +55,7 @@ Route the remaining external and global flaitron-rename references to their owni
 
 - [x] **Archive skim** — read CORE-711.1's source inventory and CORE-711.4's cross-repo boundary context; the former assigns these surfaces to this child and the latter confirms the post-rename state.
 
-- [x] **Drift check** — named paths exist except `~/fakeneuron/`; judedelparte's `flowtron.yml` and its sibling app content still contain the legacy name, while the named global docs/config contain the expected legacy references. The execution requested by the PLAN line conflicts with `SPEC/scope-boundaries.md`'s cross-repo remit.
+- [x] **Drift check** — named paths exist except `~/operator/`; project-18's `flowtron.yml` and its sibling app content still contain the legacy name, while the named global docs/config contain the expected legacy references. The execution requested by the PLAN line conflicts with `SPEC/scope-boundaries.md`'s cross-repo remit.
 
 - [x] Asked clarifying questions OR logged "No clarifications needed" with explicit assumptions — a Phase 1 re-scope gate is required: assume the target owners will choose their own tracking IDs and validation after approval.
 
@@ -64,8 +64,8 @@ Route the remaining external and global flaitron-rename references to their owni
 **Discovery Notes:**
 
 - Area lookup: `CORE-*` → `archive/core/`. The row is an epic implementation child; CORE-711.1 declares it sequential after CORE-711.5, which is completed.
-- `judedelparte/content/apps/flowtron.yml` still has the legacy ID, display name, summary, portal URL, and GitHub URL. Its sibling `caobunga.yml` and `natabula.yml` also use the old product name; CORE-711.1 additionally inventories the app icon, tests, and founder experience content.
-- `~/.claude/CLAUDE.md` lines 12 and 44, `~/.claude/settings.json` line 105, and `~/Code/CLAUDE.md` line 12 have legacy references. CORE-711.1 separately records the guard hook, whose contents need owner-side review. `~/fakeneuron/` remains absent.
+- `project-18/content/apps/flowtron.yml` still has the legacy ID, display name, summary, portal URL, and GitHub URL. Its sibling `project-07.yml` and `project-20.yml` also use the old product name; CORE-711.1 additionally inventories the app icon, tests, and founder experience content.
+- `~/.claude/CLAUDE.md` lines 12 and 44, `~/.claude/settings.json` line 105, and `~/code/CLAUDE.md` line 12 have legacy references. CORE-711.1 separately records the guard hook, whose contents need owner-side review. `~/operator/` remains absent.
 - This is not a merely mechanical implementation in flaitron: the deliverable must change from external edits to owner-side routing. No tasknote is present in this checkout for the foreign work, and no external writes were made.
 - Re-scope approved at the Phase 1→2 gate on 2026-10-04. The revised PLAN line and tasknote goal retain only routing work in this checkout.
 
@@ -81,8 +81,8 @@ Route the remaining external and global flaitron-rename references to their owni
 
 **Implementation Notes:**
 
-- Filed `JD-030` at the top of judedelparte's `## Medium`: app metadata, icon/tests, and public content references land in the owner repository.
-- Filed `CORE-713` in flaitron `## Medium` with `[handoff]`: the operator owns the `~/.claude`, `~/Code`, and guard-hook changes, while the row preserves the unavailable `~/fakeneuron/` scan.
+- Filed `JD-030` at the top of project-18's `## Medium`: app metadata, icon/tests, and public content references land in the owner repository.
+- Filed `CORE-713` in flaitron `## Medium` with `[handoff]`: the operator owns the `~/.claude`, `~/code`, and guard-hook changes, while the row preserves the unavailable `~/operator/` scan.
 - No path outside either PLAN file was changed.
 
 ## 🧪 Phase 3: Testing & Linting
@@ -101,8 +101,8 @@ Route the remaining external and global flaitron-rename references to their owni
 
 **Testing Notes:**
 
-- `git diff --check` → exit 0; `git -C ~/Code/judedelparte diff --check` → exit 0.
-- `rg -n '\*\*CORE-713\*\*' .flaitron/PLAN.md` → exit 0; `rg -n '\*\*JD-030\*\*' ~/Code/judedelparte/.flaitron/PLAN.md` → exit 0.
+- `git diff --check` → exit 0; `git -C ~/code/project-18 diff --check` → exit 0.
+- `rg -n '\*\*CORE-713\*\*' .flaitron/PLAN.md` → exit 0; `rg -n '\*\*JD-030\*\*' ~/code/project-18/.flaitron/PLAN.md` → exit 0.
 - External review: first pass found an unauthorized workflow-prose clause in JD-030; removed. Second pass found the stale tasknote restatement; removed. Final pass: `PASS` — no blockers or notes. The reviewer confirmed no app or global-config content changed.
 - Structural quality: `N/A` beyond concise PLAN rows; no code, public API, or behavior changed.
 
@@ -112,10 +112,10 @@ Route the remaining external and global flaitron-rename references to their owni
 
 - [x] Closed — every `## ✅ Acceptance` criterion ticked, YAML `status:` flipped to `completed`, PLAN.md line flipped to stub form `Completed 2026-10-04.` and retained beneath its active epic parent, then tasknote moved to `.flaitron/tasknote/archive/core/`.
 
-- [x] **Evidence-based recap** drafted — routing scope reconciles to the declared flaitron PLAN/tasknote plus judedelparte PLAN; no undeclared path changed. No refactor was needed; owner-specific rows prevent cross-repo edits from bypassing local workflow and validation.
+- [x] **Evidence-based recap** drafted — routing scope reconciles to the declared flaitron PLAN/tasknote plus project-18 PLAN; no undeclared path changed. No refactor was needed; owner-specific rows prevent cross-repo edits from bypassing local workflow and validation.
 
 - [x] **Learnings** — `N/A`: the existing cross-repo remit correctly directed the outcome.
 
-**Final Summary:** Routed the remaining rebrand work instead of editing it from flaitron: judedelparte now owns `JD-030` (committed as `88ccf5e`), while `CORE-713` records the operator-owned global configuration handoff and deferred `~/fakeneuron/` scan. The actual app/config surfaces remain unchanged in this cycle.
+**Final Summary:** Routed the remaining rebrand work instead of editing it from flaitron: project-18 now owns `JD-030` (committed as `88ccf5e`), while `CORE-713` records the operator-owned global configuration handoff and deferred `~/operator/` scan. The actual app/config surfaces remain unchanged in this cycle.
 
 **Archived:** 2026-10-04

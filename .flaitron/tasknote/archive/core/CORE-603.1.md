@@ -79,7 +79,7 @@ Scope the `CORE-EPIC-603` epic (`skill-roster-diet`) before any implementation c
 
 **Discovery Notes:**
 
-**Fleet usage survey (2026-09-17).** Tasknote files referencing each skill across the 21 adopter repos under `~/Code` (READMEs and the submodule excluded): ft-file-followup 493 / ft-close-epic 399 / ft-epic-discovery 295 / ft-task 239 / ft-audit 47 / ft-update 39 / ft-refactor 29 / ft-micro-task 16 / ft-audit-repo 15 / ft-new-project 15 / **ft-stats 7 (4 repos; only flowtron ever wrote `STATS.md`, and it is untracked)** / **ft-audit-context 5 (4 repos)** / **ft-flowtron 3 (3 repos)**. Always-on cost is the `description:` frontmatter alone — 9,606 bytes across 14 skills; the seven skills above 700 chars (ft-file-followup 1,328 · ft-task 1,313 · ft-audit 960 · ft-close-epic 804 · ft-refactor 760 · ft-micro-task 759 · ft-epic-discovery 714) carry 6,638 of them.
+**Fleet usage survey (2026-09-17).** Tasknote files referencing each skill across the 21 adopter repos under `~/code` (READMEs and the submodule excluded): ft-file-followup 493 / ft-close-epic 399 / ft-epic-discovery 295 / ft-task 239 / ft-audit 47 / ft-update 39 / ft-refactor 29 / ft-micro-task 16 / ft-audit-repo 15 / ft-new-project 15 / **ft-stats 7 (4 repos; only flowtron ever wrote `STATS.md`, and it is untracked)** / **ft-audit-context 5 (4 repos)** / **ft-flowtron 3 (3 repos)**. Always-on cost is the `description:` frontmatter alone — 9,606 bytes across 14 skills; the seven skills above 700 chars (ft-file-followup 1,328 · ft-task 1,313 · ft-audit 960 · ft-close-epic 804 · ft-refactor 760 · ft-micro-task 759 · ft-epic-discovery 714) carry 6,638 of them.
 
 **Shared design surface.**
 

@@ -78,7 +78,7 @@ Invariants:
 
 Out of scope:
 
-- Adopter personal context files (`CLAUDE.md`, natabula deposits) — that is `/ft-audit-context`, not this epic.
+- Adopter personal context files (`CLAUDE.md`, project-20 deposits) — that is `/ft-audit-context`, not this epic.
 - Visualizer / FE work.
 - New workflow features beyond restoring or clarifying existing process.
 - Wholesale reversal of [[CORE-EPIC-535]].

@@ -38,7 +38,7 @@ Stop a globally installed flaitron skill body (tracking flaitron's working tree)
 - [x] `/ft-update` gains a report-only agent-home shadow check that probes only flaitron slugs (never lists an agent home) and degrades to "not run" on a refused read — `grep -q '^## Step 4.7 — Agent-home shadow check' claude/skills/ft-update/SKILL.md`
 - [x] Context budgets hold — CI's `Context budget` step, run locally → exit 0
 - [x] Standing validation — `npm --prefix viz test`, `node --test tools/update-adopters.test.mjs` → exit 0
-- [x] The read-access script is filed in natabula, not written from here (SPEC §"Cross-repo edit remit") — `grep -q 'NAT-379' ../natabula/.flaitron/PLAN.md`
+- [x] The read-access script is filed in project-20, not written from here (SPEC §"Cross-repo edit remit") — `grep -q 'NAT-379' ../project-20/.flaitron/PLAN.md`
 - [x] The future global-skill conflict task is parked in flaitron — `grep -q 'global-skill-conflicts' .flaitron/PLAN.md`
 
 ## 🧩 Subtasks
@@ -46,7 +46,7 @@ Stop a globally installed flaitron skill body (tracking flaitron's working tree)
 - [x] Insert the guard paragraph after the Step 0 bail line in the seven bodies (scripted, identical text)
 - [x] Add the skill/pin guard paragraph to `docs/PLATFORMS.md` §"One canonical install path per project"
 - [x] Add `/ft-update` Step 4.7 (agent-home shadow check); fix its stale "global-symlink" Note
-- [x] File NAT-379 (grant-global-skill-read script) in natabula's PLAN.md; commit there
+- [x] File NAT-379 (grant-global-skill-read script) in project-20's PLAN.md; commit there
 - [x] Park the global-skill-conflict follow-up in flaitron (`/ft-file-followup --park`)
 - [x] Phase 3: budget step, viz tests, updater tests, external review
 
@@ -84,11 +84,11 @@ Stop a globally installed flaitron skill body (tracking flaitron's working tree)
 - **Why not a version guard.** Working-tree `SPEC.md:3` still reads `**Version:** v6.0.0` while carrying unreleased 724.4 fragments — a version compare passes exactly the failing case. A path-identity check (announced base directory inside vs outside the adopter project) catches released and unreleased drift with no extra read; the missing-file stop backs it on runtimes that announce no base directory.
 - **Why not "pinning" (resolve `<root>` from the body's own checkout).** Internally consistent, but it silently ignores the adopter's pin — the versioning promise the submodule exists for.
 - **Scope of bodies.** Seven Claude bodies carry the identical Step 0 layout block (`If neither matches, bail.`): ft-task, ft-micro-task, ft-file-followup, ft-epic-discovery, ft-close-epic, ft-refactor, ft-seed. `ft-update` resolves `<FT>` differently and is the remedy path, so it gets a report (Step 4.7) not a stop. `SPEC/procedures/ft-task.md` (Codex/Cursor/Grok) resolves everything relative to itself — self-consistent, out of scope. Codex wrappers read the Claude bodies, so they inherit the guard.
-- **Path access.** Agents here cannot read `~/.claude/skills/` (NAT-195 hook); `/ft-release` §7.1's machine-global parity check has logged "not run" every cut for the same reason (CORE-613, CORE-674). The hook honors `read <path>` lines in `~/.claude/path-access-roots`, operator-written only (`natabula/docs/CLAUDE-LAYERING.md`; `scripts/guard-path-access.sh` — `~/.claude/` is denied only absent a root).
+- **Path access.** Agents here cannot read `~/.claude/skills/` (NAT-195 hook); `/ft-release` §7.1's machine-global parity check has logged "not run" every cut for the same reason (CORE-613, CORE-674). The hook honors `read <path>` lines in `~/.claude/path-access-roots`, operator-written only (`project-20/docs/CLAUDE-LAYERING.md`; `scripts/guard-path-access.sh` — `~/.claude/` is denied only absent a root).
 - **Budgets.** `claude/skills/*/SKILL.md` 33,000 cap; largest touched is ft-epic-discovery at 29,997 — the ~760-byte guard fits (30,7xx after). `preamble.md` untouched.
 - **Archive skim.** `archive/core/` (confirmed against README table): CORE-439 set "repo-scoped wiring is canonical; agent home carries only global-only utilities"; CORE-724.4 introduced `preamble.md`; CORE-613/674 record the blocked `~/.claude/` scan. No prior guard attempt.
 - **Drift check.** PLAN line matches; cited 90ca1719 = CORE-724.4; v6.0.0 lacks `preamble.md` (verified). `/ft-update` Notes call it "global-symlink" — contradicts the PLATFORMS table (adopter subset); fixed here since Step 4.7 now reports exactly that install.
-- **Clarifications (operator, AskUserQuestion).** (1) Guard = path-identity + missing-file. (2) Operator wants flaitron sessions able to see global skills via a script, with a future task to ensure global skills don't conflict; (3) script home = `natabula/scripts/`. Per SPEC §"Cross-repo edit remit" the script is **filed** as NAT-379 in natabula (natabula pairs every script with a `*.test.sh`), not written from this cycle; the operator gets an interim one-liner. The conflict task is parked here as a CORE follow-up.
+- **Clarifications (operator, AskUserQuestion).** (1) Guard = path-identity + missing-file. (2) Operator wants flaitron sessions able to see global skills via a script, with a future task to ensure global skills don't conflict; (3) script home = `project-20/scripts/`. Per SPEC §"Cross-repo edit remit" the script is **filed** as NAT-379 in project-20 (project-20 pairs every script with a `*.test.sh`), not written from this cycle; the operator gets an interim one-liner. The conflict task is parked here as a CORE follow-up.
 
 ## 🛠️ Phase 2: Execution
 
@@ -107,7 +107,7 @@ Stop a globally installed flaitron skill body (tracking flaitron's working tree)
 - **Live demonstration.** The `/ft-file-followup --park` run inside this task loaded `~/.claude/skills/ft-file-followup`, and its body already showed the new guard. That proves agent-home installs track the working tree. It did not trip, because the guard is adopter-layout only.
 - **`/ft-update` Step 4.7** asks first (one AskUserQuestion naming the homes), then probes named flaitron slugs under five agent homes plus `~/.claude/commands/<slug>.md`. It never lists a home, since filenames are the user's, and degrades to "not run" on a decline or a refused read.
 - **Stale note fixed.** `/ft-update` §Notes said "Both are global-symlink" — contradicted the PLATFORMS adopter-subset row and would now contradict Step 4.7.
-- **Cross-repo.** natabula `7ddb59c` files NAT-379 (one PLAN line, Medium). flaitron `d9a4ec42` parks CORE-730.
+- **Cross-repo.** project-20 `7ddb59c` files NAT-379 (one PLAN line, Medium). flaitron `d9a4ec42` parks CORE-730.
 - **Refactor.** None.
 
 ## 🧪 Phase 3: Testing & Linting
@@ -134,7 +134,7 @@ Verification receipt (re-run after review pass 2 fixes; same results):
 - `grep -q '^## Step 4.7 — Agent-home shadow check' claude/skills/ft-update/SKILL.md` → 0
 - CI `Context budget` step, run locally → 0 (ft-epic-discovery 30,765 ≤ 33,000)
 - `npm --prefix viz test` → 0 (587 passed); `node --test tools/update-adopters.test.mjs` → 0
-- `grep -q 'NAT-379' ../natabula/.flaitron/PLAN.md` → 0 (natabula `7ddb59c`)
+- `grep -q 'NAT-379' ../project-20/.flaitron/PLAN.md` → 0 (project-20 `7ddb59c`)
 - `grep -q 'global-skill-conflicts' .flaitron/PLAN.md` → 0 (`d9a4ec42`)
 - All 16 CI `drift` steps run locally under CI's shell (`bash -e`, no pipefail) → 0. Under a stricter `-o pipefail` copy, Pair B/J/M failed on empty `grep -o`; that is a local-harness artifact, not a CI failure. New `Skill/pin guard parity` step negative-tested on a scratch copy with one body altered → 1, `GUARD DRIFT copies-per-variant: 1 6`
 - `git diff --check` → 0
@@ -187,7 +187,7 @@ Shipped a skill/pin guard. Every adopter-subset Claude body that resolves `<root
 - **`/ft-update`** gains Step 4.7: an ask-first, report-only agent-home shadow probe over named flaitron slugs. The recap carries its hits.
 - **CI** gains `Skill/pin guard parity` (one variant × the named seven).
 - **Docs:** PLATFORMS and MIGRATION document the mechanism and its limits.
-- **Cross-repo:** natabula NAT-379 (read-roots script, `7ddb59c`) and flaitron CORE-730 (global-skill-conflicts park, `d9a4ec42`) carry the agent-home access and audit work. CORE-730 also holds the review-deferred `--unattended` stop shape and the `ft-release` "global symlink" description.
+- **Cross-repo:** project-20 NAT-379 (read-roots script, `7ddb59c`) and flaitron CORE-730 (global-skill-conflicts park, `d9a4ec42`) carry the agent-home access and audit work. CORE-730 also holds the review-deferred `--unattended` stop shape and the `ft-release` "global symlink" description.
 
 Verification: acceptance greps, the CI budget step, all 17 CI drift steps (local, CI shell), viz 587/587, and the updater suite all → 0. Two `/code-review medium` passes: pass 1 had 4 blockers and 6 notes, all fixed or filed; pass 2 had 8 notes, 7 fixed and 1 filed. Refactors: none. Maintainability: one byte-identical paragraph, CI-guarded, in place of silent cross-version execution.
 

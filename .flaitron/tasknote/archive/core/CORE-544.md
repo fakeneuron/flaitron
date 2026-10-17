@@ -51,7 +51,7 @@ Replace the four drifted `path:NN` citations in `step-7.1-standing-checks.md` wi
 - [x] **Drift check** — confirmed by direct read:
   - `README.md:32-33` (the `~/code/flowtron` Quickstart clone/ln-s example) is now at lines 35-37 — task's claim matches.
   - `docs/MIGRATION.md:202-203` (the global-only `ln -s ~/code/flowtron/...` example) is now at lines 243-244 — task's claim matches.
-  - `codex/AGENTS-snippet.md:57` — the file no longer contains any `~/code/flowtron` / `~/Code` text at all; its symlink wiring now uses relative `../../.flowtron/core/...` targets. Citation is dead — task's claim matches.
+  - `codex/AGENTS-snippet.md:57` — the file no longer contains any `~/code/flowtron` / `~/code` text at all; its symlink wiring now uses relative `../../.flowtron/core/...` targets. Citation is dead — task's claim matches.
   - `README.md:22-23` (task-counter check) — the "Flowtron is built with flowtron: **N tasks** closed..." sentence now starts at line 23 (line 22 is blank), spanning 23-25. Task's claim matches.
   No divergence from the PLAN.md line or any SPEC contract.
 

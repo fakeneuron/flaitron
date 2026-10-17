@@ -70,7 +70,7 @@ Author the thin `/ft-worktree-start` skill + command pair that, from a main chec
 
 **Archive skim findings:**
 - `ls _project/tasknote/archive/core/` + targeted `grep -l "worktree" ...` (plus manual spot-checks on hits) performed.
-- Hits limited to: the 215 lineage (215.1, 215.2, 196 starter), historical cross-refs in 205.1/204 (just naming the epic/starter), and two unrelated stale mentions (CORE-113 "flowtron-nat-011 worktree" cleanup; CORE-007 "worktree-deleted" as git-status side-effect language — not git-worktree feature).
+- Hits limited to: the 215 lineage (215.1, 215.2, 196 starter), historical cross-refs in 205.1/204 (just naming the epic/starter), and two unrelated stale mentions (CORE-113 "project-15 worktree" cleanup; CORE-007 "worktree-deleted" as git-status side-effect language — not git-worktree feature).
 - Zero prior implementations, partial code, or conflicting conventions for `/ft-worktree-start`, the `~/code/*-worktrees/` layout, or `wt-` branches. Clean slate exactly as CORE-215.1 recorded ("No prior worktree mentions anywhere in archive/core/" for the convention itself).
 
 **Drift check:**

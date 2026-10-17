@@ -26,7 +26,7 @@ Closure" already documents the Recap and the post-closure protocol's
 copy-paste line, and §"🔄 Handoff (optional)" already documents mid-task
 resume state, but nothing states that operator-facing artifacts *must* land
 in one of those tasknote surfaces before archive rather than only ever
-appearing in the terminal. That silence is what caobunga CBN-120.2 F2
+appearing in the terminal. That silence is what project-07 CBN-120.2 F2
 surfaced: a verbatim hand-off (paste line / command / filing) was given to
 the operator in the terminal only, then lost once the session scrolled past
 it, because the tasknote never recorded it.
@@ -51,7 +51,7 @@ CBN-120.2 or a durability/persistence rule for operator-facing hand-offs;
 this is new ground. Reviewed sibling filings from the same batch
 (`CORE-529` deferred-handoff-filing-discipline, `CORE-530`
 preserve-bracket-tokens) for precedent: both are also PLAN.md-filed but
-unstarted, and both address different caobunga CBN-120.2 findings (F4 filing
+unstarted, and both address different project-07 CBN-120.2 findings (F4 filing
 discipline, F5 bracket-token loss) with no overlap on this task's F2 durability
 gap.
 
@@ -81,7 +81,7 @@ disambiguation, so no mirror is needed there.
 
 Added a **Handoff persistence** paragraph to `SPEC.md` §"🚀 Phase 4: Closure",
 immediately after the `> Recap is recap-only` callout. It closes the gap
-caobunga CBN-120.2 F2 surfaced: nothing previously required a verbatim
+project-07 CBN-120.2 F2 surfaced: nothing previously required a verbatim
 operator hand-off (a copy-paste line, a proposed commit message, a filing
 command) to land in the tasknote before archive, so one given only in the
 terminal was lost once the session scrolled past it. The new paragraph

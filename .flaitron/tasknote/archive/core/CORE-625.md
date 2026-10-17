@@ -46,10 +46,10 @@ Verify the gitleaks tarball's checksum against the release's `checksums.txt` bef
 
 - [x] Read relevant source files — read `.github/workflows/ci.yml`'s gitleaks step and SECURITY.md §"GitHub Actions CI" directly (small, well-scoped read; no probe needed for the primary files).
 
-- [x] **Best Practices Review** — this is a same-shape extension of the existing pinned-curl-fetch step (the shape itself was copied verbatim from natabula in CORE-578, per archive skim below): add a checksum download + `sha256sum --check` before the existing `tar` extraction. No new abstraction, no refactor — the step keeps its single responsibility (fetch + verify + extract + run).
+- [x] **Best Practices Review** — this is a same-shape extension of the existing pinned-curl-fetch step (the shape itself was copied verbatim from project-20 in CORE-578, per archive skim below): add a checksum download + `sha256sum --check` before the existing `tar` extraction. No new abstraction, no refactor — the step keeps its single responsibility (fetch + verify + extract + run).
 
 - [x] **Archive skim** — 7 hits for "gitleaks" under `archive/core/`, delegated to a probe (CORE-292, CORE-578, CORE-623, CORE-588, CORE-613, CORE-599, CORE-586). Load-bearing findings:
-  - CORE-578 originally wired the gitleaks step using a "pinned-curl-fetch shape" copied verbatim from natabula's own `ci.yml` (natabula is the canonical fleet source for this pattern); flowtron's `--config .gitleaks.toml` path differs only because flowtron deposits the config at repo root vs natabula's `configs/`.
+  - CORE-578 originally wired the gitleaks step using a "pinned-curl-fetch shape" copied verbatim from project-20's own `ci.yml` (project-20 is the canonical fleet source for this pattern); flowtron's `--config .gitleaks.toml` path differs only because flowtron deposits the config at repo root vs project-20's `configs/`.
   - CORE-578 documented the gitleaks *step's existence* in `docs/CONVENTIONS.md` §"GitHub Actions CI" (which also clarifies it sits outside the Pair H "passing validation commands" roster) — SECURITY.md was checked in that task's doc-drift sweep and got "no change" at the time, i.e. SECURITY.md's GHA section pre-dates gitleaks and doesn't mention it at all today.
   - CORE-623 confirms the CONVENTIONS.md placement and that the `validate` job's build step sits around line 30 as of that task (positional context only).
   - CORE-588/613/599/586 (release-bump tasknotes) and CORE-292 (a stray Bash-allowlist cleanup) have nothing load-bearing for this task.
@@ -65,7 +65,7 @@ Verify the gitleaks tarball's checksum against the release's `checksums.txt` bef
 
 ## 🛠️ Phase 2: Execution
 
-- [x] **Pattern survey** — extended the existing pinned-curl-fetch step in place (same shape CORE-578 copied from natabula); no new shape introduced.
+- [x] **Pattern survey** — extended the existing pinned-curl-fetch step in place (same shape CORE-578 copied from project-20); no new shape introduced.
 
 - [x] **Minimal refactor gate** — no refactor; added a checksum download + `sha256sum --check` line and a small `TARBALL` variable to avoid repeating the filename, kept everything else (the `gitleaks dir` invocation, env, config path) untouched.
 

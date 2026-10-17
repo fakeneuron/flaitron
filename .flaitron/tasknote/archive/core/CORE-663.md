@@ -60,7 +60,7 @@ overkill against what CORE-655…665 actually landed.
 
 - [x] **Best Practices Review** — N/A: doc-only append, no code or module boundary.
 
-- [x] **Archive skim** — `archive/core/` (confirmed against README table; 878 notes). `grep -l HARNESS-SURVEY` hits: CORE-655, 656, 658, 659, 661, 662. Read Final Summaries of those plus 657, 664, 665. Load-bearing: gap #1 evaluator → landed as Phase 3 External review (656); gap #2 push-memory → Phase 4 Learnings box (658); gap #3 ready view → FE-124 viz toggle; overkill #1 gate prose → 659 dropped two triggers, 660 parked (decay window 1 run deep); overkill #2 incident history → 657 De-scoped (already extracted; remainder load-bearing), headroom recovered via 664; overkill #4 budget cells → 662 (23,244 → 20,224); subtractive force → 661 audit pass 6; caobunga headings → 655.
+- [x] **Archive skim** — `archive/core/` (confirmed against README table; 878 notes). `grep -l HARNESS-SURVEY` hits: CORE-655, 656, 658, 659, 661, 662. Read Final Summaries of those plus 657, 664, 665. Load-bearing: gap #1 evaluator → landed as Phase 3 External review (656); gap #2 push-memory → Phase 4 Learnings box (658); gap #3 ready view → FE-124 viz toggle; overkill #1 gate prose → 659 dropped two triggers, 660 parked (decay window 1 run deep); overkill #2 incident history → 657 De-scoped (already extracted; remainder load-bearing), headroom recovered via 664; overkill #4 budget cells → 662 (23,244 → 20,224); subtractive force → 661 audit pass 6; project-07 headings → 655.
 
 - [x] **Drift check** — PLAN line cites `docs/HARNESS-SURVEY.md` §"Not examined" (present, line 81) and CORE-655…662 (all closed except 660, parked). No SPEC contract touched; doc's own header says passes append, not rewrite — plan conforms.
 

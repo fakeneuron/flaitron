@@ -100,7 +100,7 @@ Sharpen the SPEC threshold for when a PLAN.md long description must be promoted 
 
 **Implementation Notes:**
 
-**SPEC.md edits** (`/Users/fakeneuron/Code/flowtron/SPEC.md`):
+**SPEC.md edits** (`~/code/flowtron/SPEC.md`):
 
 1. **Version header** bumped v0.6.0 → v0.6.1 (line 3) — patch per CORE-037 prescription (clarification of an already-qualitative rule; no parser/schema/template change).
 2. **§"When to use a tasknote (and when not to)"** — added explicit threshold language to the existing parallel bullet blocks:

@@ -51,7 +51,7 @@ media and provenance checks; JSON syntax validation alone is insufficient.
 With a checkout of the tooling that supplies this contract, run:
 
 ```sh
-bash /path/to/natabula/scripts/validate-brand.sh . --revision <full-commit-sha>
+bash /path/to/operator-private/scripts/validate-brand.sh . --revision <full-commit-sha>
 ```
 
 The tool requires Git, uv and Python ≥3.11, and reads its pinned parser

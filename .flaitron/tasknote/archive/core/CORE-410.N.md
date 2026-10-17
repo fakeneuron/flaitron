@@ -76,13 +76,13 @@ Verify the completed `CORE-EPIC-410` (`wiring-parity-check`) cohort sits coheren
 
 - **`.2` parity-check** — the epic's substance. Added a fourth standing check to `/ft-release` §7.1 ("Standing self-wiring parity check", ~24 lines): a *blocking* local half (bidirectional exact-set diff of `.claude/{skills,commands}` `ft-*` against shipped `claude/{skills,commands}`, plus a broken-link scan) and an *advisory* global half (dangling scan + path-casing report over `~/.claude/`). Added the matching §7.4 advisory verdict bullet, and a 10-line policy paragraph to `docs/PLATFORMS.md` ("Flowtron's own checkout is not an adopter") so the local half asserts against written policy rather than its own assumption. Glob-free by design (zsh unmatched-glob abort — the [[CORE-409]] false-negative class).
 - **`.3` wire-ft-spec** — two symlinks: `.claude/skills/ft-spec → ../../claude/skills/ft-spec/` and `.claude/commands/ft-spec.md → ../../claude/commands/ft-spec.md`. Zero repo prose. Cleared the local half's two findings.
-- **`.4` prune-stale-globals** — machine state only, zero repo files: removed 9 dangling `~/.claude/` links, re-pointed 26 surviving links (23 `ft-*` + 4 `natabula-*`, minus 1 already correct) from `/Users/fakeneuron/code/` to the true on-disk `/Users/fakeneuron/Code/`. Cleared the global half.
+- **`.4` prune-stale-globals** — machine state only, zero repo files: removed 9 dangling `~/.claude/` links, re-pointed 26 surviving links (23 `ft-*` + 4 `project-20-*`, minus 1 already correct) from `~/code/` to the true on-disk `~/code/`. Cleared the global half.
 
 **Epic done-signal re-verified live at audit time (2026-08-08).** Ran `/ft-release` §7.1's self-wiring block verbatim, both halves, in zsh:
 
 - Local skills diff → empty, exit 0. Local commands diff → empty, exit 0. Local dangling scan → silent.
 - Global dangling scan → silent.
-- Global casing report → exactly **one** line: `23 /Users/fakeneuron/Code/flowtron`.
+- Global casing report → exactly **one** line: `23 ~/code/flowtron`.
 
 Both stated pass conditions met; the epic's end state has held a day past `.4`'s close with no maintenance. Also re-ran the sibling shipped-skill parity check (`claude/skills` vs `codex/skills`) — identical by slug. Counts: 18 shipped skills / 18 shipped commands / 18 local `ft-*` skill links / 18 local `ft-*` command links.
 
@@ -124,7 +124,7 @@ The local half's two `diff -u` commands compare `ls` output on both sides, and t
 
 **3. `.4`'s deliberate-lowercase decision is recorded only in its archive. NOT fixed; follow-up candidate.**
 
-`.4` normalized every global link to `/Users/fakeneuron/Code` while deliberately *leaving* the lowercase `~/code/flowtron` paths in `README.md:32-33`, `docs/MIGRATION.md:202-203`, and `codex/AGENTS-snippet.md:57` — correctly, because those are generic clone destinations for any reader, not this machine's path. Confirmed consistent across all three files. But the rationale lives only in `.4`'s Testing Notes. The operator who next sees §7.1's casing report flag drift has no reason to archive-skim `.4`, and the obvious remediation — grep for mixed casing, normalize the docs — would reverse a decision made deliberately. Worth one sentence in the §7.1 casing paragraph; again a judgment call for the operator.
+`.4` normalized every global link to `~/code` while deliberately *leaving* the lowercase `~/code/flowtron` paths in `README.md:32-33`, `docs/MIGRATION.md:202-203`, and `codex/AGENTS-snippet.md:57` — correctly, because those are generic clone destinations for any reader, not this machine's path. Confirmed consistent across all three files. But the rationale lives only in `.4`'s Testing Notes. The operator who next sees §7.1's casing report flag drift has no reason to archive-skim `.4`, and the obvious remediation — grep for mixed casing, normalize the docs — would reverse a decision made deliberately. Worth one sentence in the §7.1 casing paragraph; again a judgment call for the operator.
 
 **Checked and found coherent (no finding).**
 
@@ -134,7 +134,7 @@ The local half's two `diff -u` commands compare `ls` output on both sides, and t
 - **`docs/AGENT-NEUTRALITY.md`.** `.2` reasoned that its `docs/PLATFORMS.md` edit needs no ledger row because the ledger defers platform-wiring documentation to PLATFORMS.md. Re-read at HEAD: PLATFORMS.md still holds no row of its own and the deferral still reads as `.2` described. Conclusion stands.
 - **`docs/GLOSSARY.md:61`** names `/ft-sidequest` as a historical parenthetical ("filed via the retired `/ft-sidequest` skill before v5.15.0") — accurate, and already checked by `.4`.
 
-**Observed, deliberately not filed.** §7.1's `-name 'ft-*'` filter means the 4 `natabula-*` global links `.4` fixed have no standing detector and can silently re-drift. Correct as-is: policing another repo's links is outside flowtron's contract, and `.4`'s inclusion of them was a one-time operator-approved courtesy, not a scope expansion.
+**Observed, deliberately not filed.** §7.1's `-name 'ft-*'` filter means the 4 `project-20-*` global links `.4` fixed have no standing detector and can silently re-drift. Correct as-is: policing another repo's links is outside flowtron's contract, and `.4`'s inclusion of them was a one-time operator-approved courtesy, not a scope expansion.
 
 ## 🧪 Phase 3: Testing & Linting
 
@@ -164,7 +164,7 @@ The local half's two `diff -u` commands compare `ls` output on both sides, and t
 | local commands `diff -u` | empty, exit 0 | ✅ silent |
 | local dangling `find` | no output | ✅ silent |
 | global dangling `find` | no output | ✅ silent |
-| global casing `readlink \| uniq -c` | `23 /Users/fakeneuron/Code/flowtron` | ✅ exactly one line |
+| global casing `readlink \| uniq -c` | `23 ~/code/flowtron` | ✅ exactly one line |
 
 The epic's end state held for a day without maintenance. This is the check's first run by a session that did not build it, which is the useful signal — no operator knowledge was needed to get a clean result.
 
@@ -211,7 +211,7 @@ The epic's end state held for a day without maintenance. This is the check's fir
 
 The `CORE-EPIC-410` cohort holds together, and its central claim survives independent re-testing: `/ft-release` §7.1's self-wiring check, run verbatim by a session that did not build it, prints clean on both halves a day after `.4` closed. That is the epic's whole point — flowtron's installed surface is now verified by resolving symlinks rather than by comparing declaration files to each other, and the detector goes green without operator knowledge.
 
-Cohort inventory: `.2` built the check (a fourth `/ft-release` §7.1 standing block — blocking local half, advisory global half — plus the `docs/PLATFORMS.md` "not an adopter" policy it asserts against and a §7.4 verdict bullet); `.3` cleared the local finding with two `.claude/` `ft-spec` symlinks; `.4` cleared the global one by deleting 9 dangling `~/.claude/` links and re-pointing 26 to the true `Code` casing. Verification at audit time: all five §7.1 commands at their pass conditions (global casing exactly one line, `23 /Users/fakeneuron/Code/flowtron`), sibling shipped-skill parity identical at 18 slugs, and 18/18/18/18 across shipped and locally-wired skills and commands.
+Cohort inventory: `.2` built the check (a fourth `/ft-release` §7.1 standing block — blocking local half, advisory global half — plus the `docs/PLATFORMS.md` "not an adopter" policy it asserts against and a §7.4 verdict bullet); `.3` cleared the local finding with two `.claude/` `ft-spec` symlinks; `.4` cleared the global one by deleting 9 dangling `~/.claude/` links and re-pointing 26 to the true `Code` casing. Verification at audit time: all five §7.1 commands at their pass conditions (global casing exactly one line, `23 ~/code/flowtron`), sibling shipped-skill parity identical at 18 slugs, and 18/18/18/18 across shipped and locally-wired skills and commands.
 
 One inline fix landed — 1 file, 1 sentence. `claude/skills/ft-release/SKILL.md:350` told the operator that a `DANGLING` hit came from one of three folds "each stranding one," which is three; the check was built to report **nine**, measured in the same session that wrote the sentence. The `/ft-audit <domain>` fold stranded five, and `/ft-quality`'s retirement — a skill *and* a command — went unmentioned. `docs/MIGRATION.md` §"Skills retired so far" had all four right the whole time, so the cohort's own deliverable contradicted the authoritative table two files away. Now corrected to the measured 5 + 1 + 1 + 2 breakdown and pointed at that table, so the count has one home.
 

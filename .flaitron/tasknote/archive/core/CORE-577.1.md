@@ -92,7 +92,7 @@ Scope the `CORE-EPIC-577` epic (`unattended-candidacy`) before any implementatio
 - [[CORE-494]] minted the marker: deny-by-default, "flowtron itself never writes it", position after `[model]`, both footguns test-pinned; deliberately no viz chip ("adopter reader is the consumer"). The epic's non-goals match.
 - [[CORE-536]] made `[unattended]` imply `--fast` on an attended run with no flag — the adopter-without-orchestrator value the brief leans on. Confirmed at `SPEC/gates.md:322-329`.
 - [[CORE-551]] unattended filing authority: `/ft-file-followup --unattended` commits on the SPEC-imposed duty, not on a review. That is exactly why the posture must stay recommend-only here — there is no act to attach a marker to.
-- [[CORE-565.3]] ruled `[handoff]` out of contract (caobunga CBN-137 concurred); caobunga's reader consumes the marker at `selection.py:353-355`. Confirms the brief's `[handoff]` non-goal and that the consumer already exists.
+- [[CORE-565.3]] ruled `[handoff]` out of contract (project-07 CBN-137 concurred); project-07's reader consumes the marker at `selection.py:353-355`. Confirms the brief's `[handoff]` non-goal and that the consumer already exists.
 - [[CORE-570]] / [[CORE-573]] set the current writer roster (`/ft-starter-task` → `--starter`; `/ft-spec` gone).
 
 **Drift check:**

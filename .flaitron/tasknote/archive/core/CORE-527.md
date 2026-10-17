@@ -130,7 +130,7 @@ add (Phase 1 Re-scope; mid-Phase-2 park, optional) and one that removes: the
 its own clause (`step-3c-resume-blocked.md` step 4). Every removal path today
 is therefore driven by the *dependent*. Nothing is driven by the *blocker*. A
 blocker that closes while its dependents sit unstarted leaves clauses that
-assert a satisfied dependency indefinitely — the class caobunga CBN-120.2 F1
+assert a satisfied dependency indefinitely — the class project-07 CBN-120.2 F1
 observed.
 
 **Reuse, not new machinery — four caps this change must not breach.**

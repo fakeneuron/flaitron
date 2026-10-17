@@ -116,7 +116,7 @@ experiment's own control. The window was opened and read on the same day.
 16,077 bytes in three sections: §"Rationalizations" (22-row excuse/refutation
 table), §"Red Flags" (24 observer-symptom bullets), §"Refused carve-outs" (the
 CORE-495 Q1 / CORE-503 visual-baseline argument, recorded in full). Only a
-minority of rows cite a concrete motivating incident (InvisiPaw FE-64 on
+minority of rows cite a concrete motivating incident (Project-17 FE-64 on
 paper-complete; CORE-432.2 on next-move-before-SHA; CORE-495/503 on the
 carve-out; CORE-386/388 on the standing rule); the rest restate
 `gates.md` / `gate-postures.md` clauses in excuse form. That provenance split

@@ -112,7 +112,7 @@ Make YAML `touches:` a declared-scope contract — expected on code tasks by the
 
 **Budget headroom measured before writing** (`docs/CONTEXT-BUDGET.md` caps in parentheses): `SPEC.md` 51,566 (57,000) → 5,434 free · `SPEC/gates.md` 35,382 (40,000) → 4,618 · `ft-task` 29,355 (33,000) → 3,645 · `ft-goal-task` 27,140 (33,000) → 5,860 · `ft-micro-task` 19,654 (33,000) → 13,346. Unbudgeted by design: `SPEC/procedures/`, `templates/`, `docs/`. The pointer-not-copy siting is what keeps the two tight surfaces comfortable.
 
-**Not read, deliberately.** The PLAN line cites evidence in `natabula`'s `docs/QUALITY-STACK.md`. That is outside this checkout; `SPEC/scope-boundaries.md` §"Cross-repo edit remit" governs the edit direction and the operator's standing path rule governs the read. The routed PLAN line carries everything needed to execute.
+**Not read, deliberately.** The PLAN line cites evidence in `project-20`'s `docs/QUALITY-STACK.md`. That is outside this checkout; `SPEC/scope-boundaries.md` §"Cross-repo edit remit" governs the edit direction and the operator's standing path rule governs the read. The routed PLAN line carries everything needed to execute.
 
 ## 🛠️ Phase 2: Execution
 

@@ -66,7 +66,7 @@ Add ESLint to `viz/` (flat config, `@typescript-eslint/recommended`) plus a `lin
 - `_project/PLAN.md` — CORE-115 line at line 22 under `## Medium`; `[opus]` tag; pre-rescope shortname `ci-baseline-add`; description as filed bundled CI + ESLint + lint script
 - `viz/package.json` — confirmed scripts: `dev`, `build` (= `tsc --noEmit && vite build`), `preview`, `test` (= `vitest run`), `typecheck` (= `tsc --noEmit`); **no** `lint` script; dev deps include `typescript@^5.6.2`, no `eslint*` deps
 - `viz/` directory — `node_modules`, `dist`, `public`, `src`, `index.html`, `package.json`, `package-lock.json`, `postcss.config.cjs`, `tailwind.config.ts`, `tsconfig.json`, `vite.config.ts`; no `.eslintrc*`, no `eslint.config.js`
-- Repo root — `ls /Users/fakeneuron/Code/flowtron/.github` → no such directory; no GitHub Actions surface exists today
+- Repo root — `ls ~/code/flowtron/.github` → no such directory; no GitHub Actions surface exists today
 - `docs/CONVENTIONS.md` — declines: CHANGELOG.md, separate ADRs, release automation, pre-commit hooks. Pre-commit decline rationale ("Phase 3 validates inline... hooks would duplicate the check at commit time") generalizes to CI-on-push by parallel reasoning. ESLint not enumerated as adhered/declined.
 - `docs/PHILOSOPHY.md` §"Zero scripts" — "Every operation is `cp`, `mv`, or editing a markdown file... If a script feels needed, the answer is almost always 'no, that's the assistant's job.'" Applies to CI scripts by analogy.
 - `CONTRIBUTING.md` — solo-maintained framing: "Pull requests are rare and best preceded by an issue... A PR that lands without prior discussion may be closed without merge." Reinforces the [[CORE-099.1]] #15 decline rationale (no contributor base to validate from).

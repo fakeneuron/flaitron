@@ -16,13 +16,13 @@ related-tasks: []
 
 ## 🎯 Goal
 
-Update the `/new-project` skill and `docs/MIGRATION.md` to reflect the CORE-018 template format (YAML frontmatter + spec-on-top + log-below body shape), and optionally surface natabula as a higher-level opinionated setup option.
+Update the `/new-project` skill and `docs/MIGRATION.md` to reflect the CORE-018 template format (YAML frontmatter + spec-on-top + log-below body shape), and optionally surface project-20 as a higher-level opinionated setup option.
 
 ## ✅ Acceptance
 
 - [ ] `/new-project` skill accurately reflects the current template format
 - [ ] `docs/MIGRATION.md` accurately reflects the current template format
-- [ ] Natabula is mentioned (if in scope — see clarifying questions)
+- [ ] Project-20 is mentioned (if in scope — see clarifying questions)
 - [ ] No references to old template shape remain in either file
 
 ## 🧩 Subtasks
@@ -31,7 +31,7 @@ Update the `/new-project` skill and `docs/MIGRATION.md` to reflect the CORE-018 
 - [ ] Audit `docs/MIGRATION.md` §1.4–1.5 for gaps vs. current template format
 - [ ] Apply changes to SKILL.md
 - [ ] Apply changes to MIGRATION.md
-- [ ] (optional) Add natabula mention
+- [ ] (optional) Add project-20 mention
 
 ## 🔗 Related
 
@@ -45,7 +45,7 @@ Update the `/new-project` skill and `docs/MIGRATION.md` to reflect the CORE-018 
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** CORE-018 shipped the new tasknote template format (YAML frontmatter + spec-on-top + log-below). The `/new-project` skill and `docs/MIGRATION.md` predate that change. Audit found both files are procedurally correct but neither surfaces the new template shape to adopters; the natabula mention is still unaddressed.
+  **Rationale:** CORE-018 shipped the new tasknote template format (YAML frontmatter + spec-on-top + log-below). The `/new-project` skill and `docs/MIGRATION.md` predate that change. Audit found both files are procedurally correct but neither surfaces the new template shape to adopters; the project-20 mention is still unaddressed.
 
 - [x] Read relevant source files
   - `claude/skills/new-project/SKILL.md`
@@ -63,7 +63,7 @@ Update the `/new-project` skill and `docs/MIGRATION.md` to reflect the CORE-018 
 
   **Scope confirmed:**
   - Add a brief description of the YAML frontmatter + spec-on-top + log-below shape to `docs/MIGRATION.md` §1.5 and `claude/skills/new-project/SKILL.md` Step 6
-  - Add a natabula callout in `docs/MIGRATION.md` §1 intro (not in SKILL.md)
+  - Add a project-20 callout in `docs/MIGRATION.md` §1 intro (not in SKILL.md)
 
 - [x] Subtasks above populated with concrete, ordered steps
 
@@ -84,7 +84,7 @@ Drift check clean. No functional gaps in scope — this is a prose/description u
 **Implementation Notes:**
 
 Three changes:
-1. `docs/MIGRATION.md` §1 — added natabula blockquote callout immediately after the `## 1 — Fresh adoption` heading
+1. `docs/MIGRATION.md` §1 — added project-20 blockquote callout immediately after the `## 1 — Fresh adoption` heading
 2. `docs/MIGRATION.md` §1.5 — added paragraph describing the tasknote template shape after the existing "Edit the Pinned to:" instructions
 3. `claude/skills/new-project/SKILL.md` Step 6 — added paragraph describing the template shape after the existing edit-bullet list
 
@@ -110,6 +110,6 @@ Documentation-only task. Visual read-through confirmed prose is correct and plac
 
 **Final Summary:**
 
-Added natabula callout in `docs/MIGRATION.md` §1 and template-format descriptions in `docs/MIGRATION.md` §1.5 and `claude/skills/new-project/SKILL.md` Step 6. Prose-only changes; no procedural or functional modifications.
+Added project-20 callout in `docs/MIGRATION.md` §1 and template-format descriptions in `docs/MIGRATION.md` §1.5 and `claude/skills/new-project/SKILL.md` Step 6. Prose-only changes; no procedural or functional modifications.
 
 **Archived:** 2026-05-01

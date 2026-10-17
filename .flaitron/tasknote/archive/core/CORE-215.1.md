@@ -82,7 +82,7 @@ The original rich starter content (preserved in git at `6b9d374` and partially i
 
 ### Why this exists
 
-obra/superpowers ships a `using-git-worktrees` skill as one of its mandatory workflow stages. Flowtron currently has no convention for parallel epic-child work: every child queues serially even when independent. Adopters with parallel-friendly backlogs (e.g., fintown's BE-EPIC-3 wave has ~20 independent follow-up children, .6 through .30) pay a real cost in stash/branch-swap churn. A flowtron-level worktree convention + thin skill pair would let adopters pipeline independent children in isolated checkouts without that churn — workflow-orthogonal to the 4-phase contract.
+obra/superpowers ships a `using-git-worktrees` skill as one of its mandatory workflow stages. Flowtron currently has no convention for parallel epic-child work: every child queues serially even when independent. Adopters with parallel-friendly backlogs (e.g., project-14's BE-EPIC-3 wave has ~20 independent follow-up children, .6 through .30) pay a real cost in stash/branch-swap churn. A flowtron-level worktree convention + thin skill pair would let adopters pipeline independent children in isolated checkouts without that churn — workflow-orthogonal to the 4-phase contract.
 
 ### Solution shape
 

@@ -75,7 +75,7 @@ Add a standing release check that diffs flowtron's shipped `claude/skills/` + `c
 - Shipped: 18 skills under `claude/skills/`, 18 commands under `claude/commands/`. `codex/skills/` matches at 18 (existing parity check covers that axis).
 - Local `.claude/`: 17 skills + 17 commands. Missing exactly `ft-spec` on both — shipped 2026-07-12 (CORE-352.2), wired into the *adopter* snippet (`claude/AGENTS-snippet.md:59-60`) and into `/ft-new-project` Step 3, never into flowtron's own checkout. No dangling local entries.
 - Global `~/.claude/`: 9 dangling links — `ft-audit-{backend,docs,frontend,performance,security}`, `ft-debug`, `ft-quality`, `ft-sidequest` (skills) and `ft-quality.md` (command). All point at slugs retired into `/ft-audit <domain>` (CORE-389.2), `/ft-task --debug` (CORE-390), `/ft-file-followup --park` (CORE-391), and `/ft-quality`'s retirement (CORE-392).
-- Global link targets use mixed path casing: `/Users/fakeneuron/code/flowtron/…` on most, `/Users/fakeneuron/Code/flowtron/…` on `ft-sidequest` + `ft-update`. Both resolve on a case-insensitive macOS volume, so casing alone never dangles.
+- Global link targets use mixed path casing: `~/code/flowtron/…` on most, `~/code/flowtron/…` on `ft-sidequest` + `ft-update`. Both resolve on a case-insensitive macOS volume, so casing alone never dangles.
 
 **Archive skim.** [[CORE-349.5]] is the direct precedent — it split the old Claude/Codex check into a *shipped-skill parity* check and an *installed-surface policy* check, both as shell blocks in `/ft-release` §7.1 with the "fix inline as Critical/High before cutting the release" posture. Its stated design principle: keep flowtron's no-runtime-validator posture and encode shellable release-time checks in the standing release procedure. That is the shape to extend, not replace. [[CORE-329.2]] motivated the symlink-*count* check; [[CORE-352.2]]/[[CORE-352.3]] shipped `ft-spec` and wired it for adopters only.
 
@@ -158,7 +158,7 @@ The deliverable *is* executable shell, so it was tested by execution rather than
 - Local commands diff: one `-ft-spec.md` line, exit 1.
 - Local dangling scan: no output (correct — nothing local dangles).
 - Global dangling scan: exactly 9 lines with targets — `ft-audit-{backend,docs,frontend,performance,security}`, `ft-debug`, `ft-quality`, `ft-sidequest` (skills) and `ft-quality.md` (command).
-- Global casing report: two lines — `30 …/code/flowtron`, `2 …/Code/flowtron` (the two being `ft-sidequest` + `ft-update`), correctly flagging mixed casing.
+- Global casing report: two lines — `30 …/code/flowtron`, `2 …/code/flowtron` (the two being `ft-sidequest` + `ft-update`), correctly flagging mixed casing.
 
 Findings match the [[CORE-EPIC-410]] audit's independent count exactly, and each maps to a named cause: `ft-spec` to [[CORE-352.2]], and the dangling set to the `/ft-audit <domain>` fold ([[CORE-389.2]]), `/ft-task --debug` ([[CORE-390]]), `/ft-file-followup --park` ([[CORE-391]]), and `/ft-quality`'s retirement ([[CORE-392]]).
 

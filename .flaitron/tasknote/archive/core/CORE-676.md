@@ -35,7 +35,7 @@ Refresh the xAI row of the platform×model×effort calibration table so its curr
 
 ## 🔗 Related
 
-- [[CBN-254]] — caobunga pin refresh that first recorded `grok models` defaulting to `grok-4.7` (2026-09-24); related-decision, other repo
+- [[CBN-254]] — project-07 pin refresh that first recorded `grok models` defaulting to `grok-4.7` (2026-09-24); related-decision, other repo
 
 ---
 

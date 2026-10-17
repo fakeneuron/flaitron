@@ -47,13 +47,13 @@ Scope the `CORE-EPIC-301` epic (`plan-cohesion-blast-radius`) before any impleme
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** User explicitly invoked `/ft-epic-discovery` to bracket a recurring, cross-cutting correctness gap — newly filed tasks/decisions don't reconcile against existing downstream PLAN entries (the blastimage auth-vs-api drift). Multi-surface (SPEC contract + multiple filing skills + adopter docs) → epic scope, not single task.
+  **Rationale:** User explicitly invoked `/ft-epic-discovery` to bracket a recurring, cross-cutting correctness gap — newly filed tasks/decisions don't reconcile against existing downstream PLAN entries (the project-06 auth-vs-api drift). Multi-surface (SPEC contract + multiple filing skills + adopter docs) → epic scope, not single task.
 
 - [x] Read relevant source files — `claude/skills/ft-file-followup/SKILL.md`, `claude/skills/ft-starter-task/SKILL.md`, `claude/skills/ft-epic-discovery/SKILL.md` (this skill), `SPEC/tasknote-selection.md`, `SPEC/epic.md`, `.flowtron/tasknote/README.md`
 
 - [x] **Archive skim** — grepped `.flowtron/tasknote/archive/` for `blast.?radius|downstream.impact|plan.cohesion|reconcil` and `filing.discipline`. No prior tasknote codifies a downstream-impact/cohesion scan; closest precedents (CORE-040 filing-discipline, CORE-024 PLAN signal-extraction) govern line *length*, not cross-task *cohesion*. Greenfield contract.
 
-- [x] **Drift check** — all six filing skills + `SPEC/tasknote-selection.md` + `SPEC/epic.md` exist at HEAD. blastimage anecdote is an external adopter (no repo path) — motivating example only. No drift.
+- [x] **Drift check** — all six filing skills + `SPEC/tasknote-selection.md` + `SPEC/epic.md` exist at HEAD. project-06 anecdote is an external adopter (no repo path) — motivating example only. No drift.
 
 - [x] Asked clarifying questions — four scoping decisions resolved with the user (see Resolved scoping table)
 
@@ -64,7 +64,7 @@ Scope the `CORE-EPIC-301` epic (`plan-cohesion-blast-radius`) before any impleme
 **Shared design surface inventoried:**
 - **SPEC contract:** `SPEC/tasknote-selection.md` — already lazy-loaded by every filing skill (its loader line lists `/ft-task`, `/ft-starter-task`, `/ft-micro-task`, `/ft-file-followup`, `/ft-debug`, `/ft-epic-discovery`, `/ft-close-epic` …). A new §"Downstream-impact reconciliation" here incurs zero new lazy-load.
 - **Filing skills (write new PLAN lines, no downstream scan today):** `ft-file-followup` (Step 4 appends one line), `ft-starter-task` (Step 5 appends), `ft-epic-discovery` (Phase 2 files child cohort), plus the decision-driven path inside `ft-task` Phase 2.
-- **The gap:** every filer appends-and-stops. None enumerates *existing active PLAN entries* to check whether the new task/decision makes a downstream task stale, contradictory, or redundant. The blastimage case was decision-driven (a direction change), so the trigger surface is broader than new-task filing alone.
+- **The gap:** every filer appends-and-stops. None enumerates *existing active PLAN entries* to check whether the new task/decision makes a downstream task stale, contradictory, or redundant. The project-06 case was decision-driven (a direction change), so the trigger surface is broader than new-task filing alone.
 - **Adopter surface:** `claude/AGENTS-snippet.md`, `docs/MIGRATION.md`, glossary — propagate the new contract on next bump.
 
 **Resolved scoping:**
@@ -72,7 +72,7 @@ Scope the `CORE-EPIC-301` epic (`plan-cohesion-blast-radius`) before any impleme
 | Question | Resolution |
 |---|---|
 | Contract home | Section in `SPEC/tasknote-selection.md` (already loaded by all filers; zero new lazy-load) |
-| Trigger scope | Filing **and** mid-flow direction-changing decisions (covers the blastimage decision case) |
+| Trigger scope | Filing **and** mid-flow direction-changing decisions (covers the project-06 decision case) |
 | Scan rigor | Structured: enumerate impacted lines → classify → propose explicit reconcile actions (merge/nest/edit/delete/leave) → user-confirm gate |
 | Child split (.2–.5) | .2 SPEC contract · .3 wire ft-file-followup + ft-starter-task · .4 wire ft-epic-discovery + ft-task decision path · .5 docs+adopter sweep |
 | N / audit | N=6 unchanged; audit `.6` confirmed as-filed |

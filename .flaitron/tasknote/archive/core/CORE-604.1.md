@@ -150,7 +150,7 @@ Path-grep hit counts over `archive/core/` (2026-09-18): `SPEC/gates.md` 138 · `
 | New module name | `SPEC/gate-postures.md` — matches the contract's own "operator override" / "operator posture" vocabulary |
 | Flowtron's own `## Completed` rotation | Performed inside `.4` after the bound is lowered to 60, month blocks confirmed by the operator before the move |
 | `model.md` calibration table | Moves to `docs/PLATFORMS.md`; Haiku dropped (unused); tier ladder summarized in `SPEC.md` §"Model field" |
-| Host-side pruning + port registry | Outside this epic. Port registry filed as natabula `NAT-281` (`fdf09de`, local). Host profile edits await the operator's own read of the two settings files, which the path guard blocks for agents |
+| Host-side pruning + port registry | Outside this epic. Port registry filed as project-20 `NAT-281` (`fdf09de`, local). Host profile edits await the operator's own read of the two settings files, which the path guard blocks for agents |
 | Measurement point | Operator reads the 70k at `/ft-task` start, so host + flowtron; attribution in §A stands |
 
 ## 🛠️ Phase 2: Execution
@@ -216,7 +216,7 @@ material into `SPEC/gate-postures.md` (`.2`), trims the runner / command-stub /
 the `## Completed` rotation bound to 60 with the first rotation and a ledger
 sum line (`.4`). Expected band after the epic: flowtron ≈ 172k → ≈ 129k chars
 on a flagless self-host task (≈ 43k → ≈ 32k tokens), ≈ 116k once flowtron's own
-PLAN.md is rotated. Companion filings outside this repo: natabula `NAT-281`
+PLAN.md is rotated. Companion filings outside this repo: project-20 `NAT-281`
 (port registry out of the global CLAUDE.md, committed `fdf09de`, local).
 
 - Files: `.flowtron/PLAN.md` (+6 rows under `## High`, `.1` flipped to stub), this tasknote scaffolded → archived.

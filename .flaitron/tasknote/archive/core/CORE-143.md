@@ -39,7 +39,7 @@ Delete the stray circular symlink directory `claude/skills/ft-stats/ft-stats`, e
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** Artifact confirmed present — `ls -la` shows `claude/skills/ft-stats/ft-stats` is a symlink (created 2026-05-20) pointing to `/Users/fakeneuron/code/flowtron/claude/skills/ft-stats` (lowercase-`c` path alias of the parent dir). Git status confirms it is untracked. Circular reference; `rm -rf` is the correct fix.
+  **Rationale:** Artifact confirmed present — `ls -la` shows `claude/skills/ft-stats/ft-stats` is a symlink (created 2026-05-20) pointing to `~/code/flowtron/claude/skills/ft-stats` (lowercase-`c` path alias of the parent dir). Git status confirms it is untracked. Circular reference; `rm -rf` is the correct fix.
 
 - [x] Read relevant source files
 - [x] **Archive skim** — 12 archive hits for "ft-stats" in CORE-097.x, CORE-099.1, CORE-113, CORE-138, CORE-141, CORE-142. All are routine mentions of the skill name; none record an intentional creation of the symlink. No load-bearing prior decisions found.

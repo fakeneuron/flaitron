@@ -85,7 +85,7 @@ Make Phase 1 Discovery surface prior archived tasknotes touching the same files/
 
 - **Pattern survey:** the archive-skim bullet's closest neighbor in Phase 1 is "Drift check" — both are non-obvious steps requiring an inline explanatory clause AND a corresponding short paragraph below the checklist. Mirrored that shape exactly: bolded label + em-dash + intent/method clause + "before re-interpreting the task" tail. SKILL.md operationalization follows the cite-don't-restate norm established in CORE-038 (SPEC carries canonical bullet; SKILL.md adds thin imperatives). New shape is justified-by-extension, not invention.
 
-- **SPEC.md edits** (`/Users/fakeneuron/Code/flowtron/SPEC.md`):
+- **SPEC.md edits** (`~/code/flowtron/SPEC.md`):
   1. Version header bumped v0.6.2 → **v0.7.0** (minor — adds a new required template section per SPEC §"Versioning"; CORE-040 patch-bump rationale explicitly excluded template-touching changes).
   2. §"📝 Phase 1: Discovery" checklist gained a new bullet between "Read relevant source files" and "Drift check" — `**Archive skim** — surface prior decisions on the same files / area by skimming _project/tasknote/archive/<area>/ for tasknotes that touched the source paths in scope; log relevant findings in Discovery Notes before re-interpreting the task`.
   3. §"📝 Phase 1: Discovery" explanatory prose gained a matching paragraph between the Relevance Assessment and Drift check paragraphs — explains the why (prior tasknotes record load-bearing context: file rename trails, regression notes, design rationales, hardlink discoveries) and the cost/payoff curve (trivial when archive empty; scales as it matures).

@@ -40,7 +40,7 @@ Ratify `[handoff]` as the second canonical trailing token on PLAN.md task lines 
 - [x] `docs/EXTERNAL-AGENTS.md` §"Stable surfaces for callers": trailing-run row names two canonical members, a `[handoff]` row is added, and the "Out of contract" bullet excludes both — `grep -c '\[handoff\]' docs/EXTERNAL-AGENTS.md` ≥ 3
 - [x] `docs/VISION.md` §"What we won't accept" → "Abstractions without two-project precedent" records the bounded carve-out: a declared caller surface with one real out-of-repo consumer is admissible when it costs the standalone workflow nothing; `SPEC/scope-boundaries.md`'s terse mirror carries the same clause — `grep -q 'out-of-repo consumer' docs/VISION.md && grep -q 'out-of-repo consumer' SPEC/scope-boundaries.md`
 - [x] Candidacy *proposals* untouched — `git diff --stat` shows no edit to `claude/skills/ft-file-followup/`, `ft-epic-discovery/`, `ft-audit*/`, `ft-refactor/` and no edit to `SPEC/unattended-candidacy.md` §"Three postures" / §"Surfaces and mirrors"
-- [x] No adopter ID in contract prose — `grep -rn -i 'caobunga\|CBN-' SPEC.md SPEC docs claude README.md templates --exclude=VERSION-HISTORY.md` → no hits
+- [x] No adopter ID in contract prose — `grep -rn -i 'project-07\|CBN-' SPEC.md SPEC docs claude README.md templates --exclude=VERSION-HISTORY.md` → no hits
 - [x] Budgeted surfaces under cap — `wc -c SPEC.md` ≤ 57,000 · `wc -c claude/skills/ft-task/SKILL.md` ≤ 33,000
 - [x] Grammar-line mirrors agree — every literal `[!critical] [model] [unattended]` grammar line outside archives (`SPEC.md`, `templates/PLAN.md`, `viz/src/parser.ts`, `claude/skills/ft-task/SKILL.md`) reads `[!critical] [model] [unattended] [handoff]` — `grep -rn 'model\] \[unattended\] |' SPEC.md templates viz/src/parser.ts claude/skills/ft-task/SKILL.md` → no hits
 
@@ -61,7 +61,7 @@ Ratify `[handoff]` as the second canonical trailing token on PLAN.md task lines 
 
 ## 🔗 Related
 
-- [[CORE-EPIC-598]] — parent epic (flowtron-caobunga-concert)
+- [[CORE-EPIC-598]] — parent epic (flowtron-project-07-concert)
 - [[CORE-598.1]] — Discovery; §F Q2 resolved the `[handoff]` question and stated the VISION principle this task records
 - [[CORE-598.2]] — blocked-by: declared the caller-write boundary; its `docs/EXTERNAL-AGENTS.md` stable-surface rows are the table this task's `[handoff]` row joins
 - [[CORE-598.4]] — follow-up; the CBN rows cite the release carrying `.2` + `.3`
@@ -79,7 +79,7 @@ Ratify `[handoff]` as the second canonical trailing token on PLAN.md task lines 
   **Verdict:** Proceed
   **Rationale:** `.2` closed this morning, so the sequential predecessor is clear. The token is unratified at HEAD (`grep '\[handoff\]'` over SPEC / docs / viz → 0 hits outside this note), the one real consumer reads it today by name from the same trailing run flowtron already captures, and the operator settled the standalone-cost question in `.1` §F Q2. Nothing in the PLAN line has moved.
 
-- [x] Read relevant source files — `SPEC.md` §"Task-line format" (whole), `SPEC/plan-parser.md` (whole), `SPEC/unattended-candidacy.md` (whole), `SPEC/versioning.md` (bump classes), `SPEC/scope-boundaries.md:52`, `SPEC/procedures/ft-task.md:128-150`, `docs/EXTERNAL-AGENTS.md` (whole), `docs/VISION.md` (whole), `docs/GLOSSARY.md:75,143`, `docs/CONTEXT-BUDGET.md` (budgets table), `templates/PLAN.md:10-40`, `claude/skills/ft-task/SKILL.md:52`, `viz/src/parser.ts:1-145,365-414`, `viz/src/parser.test.ts:268-345`, `viz/src/ui/UnattendedChip.tsx`, `viz/src/ui/TaskRowInner.tsx:96-103`. Operator-approved this session, read-only: `~/Code/caobunga/docs/CONTRACT.md:1057-1061,1094` and `backend/caobunga/flowtron/grammar.py:20-45`.
+- [x] Read relevant source files — `SPEC.md` §"Task-line format" (whole), `SPEC/plan-parser.md` (whole), `SPEC/unattended-candidacy.md` (whole), `SPEC/versioning.md` (bump classes), `SPEC/scope-boundaries.md:52`, `SPEC/procedures/ft-task.md:128-150`, `docs/EXTERNAL-AGENTS.md` (whole), `docs/VISION.md` (whole), `docs/GLOSSARY.md:75,143`, `docs/CONTEXT-BUDGET.md` (budgets table), `templates/PLAN.md:10-40`, `claude/skills/ft-task/SKILL.md:52`, `viz/src/parser.ts:1-145,365-414`, `viz/src/parser.test.ts:268-345`, `viz/src/ui/UnattendedChip.tsx`, `viz/src/ui/TaskRowInner.tsx:96-103`. Operator-approved this session, read-only: `~/code/project-07/docs/CONTRACT.md:1057-1061,1094` and `backend/project-07/flowtron/grammar.py:20-45`.
 
 - [x] **Best Practices Review** — one code boundary: `viz/src/parser.ts` owns the grammar; UI and tests consume `Task`. The change extends the existing `TRAILING_TOKENS` membership pattern (CORE-494) — a second named marker constant and a second boolean, no regex move. `Task.handoff` is made **required** like `Task.unattended`, so fixtures gain one line each (CORE-494 needed eight; typecheck finds them). No refactor; a viz chip for the token is deferred (Notes §E).
 
@@ -87,7 +87,7 @@ Ratify `[handoff]` as the second canonical trailing token on PLAN.md task lines 
 
 - [x] **Drift check** — every path in the PLAN line resolves: `SPEC.md` §"Task-line format" (`:70-124`), `viz/src/parser.ts` capture (`:123,143,405`), candidacy clause 3 (`SPEC/unattended-candidacy.md:57-62`), stable-surface table (`docs/EXTERNAL-AGENTS.md:85-97`), `docs/VISION.md` two-project rule (`:36`). Cross-artifact: the plan contradicts no SPEC contract — `[unattended]`'s "flowtron never writes it" stays verbatim and `[handoff]` adopts the same rule; the stable-surface rows change *additively* (a second canonical member), which `SPEC/versioning.md` classes as **Minor** for the next release. Matches the PLAN line; no Re-scope.
 
-- [x] Asked clarifying questions — one AskUserQuestion round, three answers: (1) approve reading caobunga's `[handoff]` section + `grammar.py` this session → **yes** (read; semantics in Notes §A); (2) writer policy → **operator-seeded only, like `[unattended]`**; (3) a row carrying both tokens → **mis-authored, `[handoff]` wins** (parser captures both; readers deny operator-less dispatch). Assumptions carried: the grammar line lists both tokens even though at most one belongs on a row — the segment table says so; no runner behaviour changes (`[handoff]` implies nothing on an attended run); no viz chip in this task.
+- [x] Asked clarifying questions — one AskUserQuestion round, three answers: (1) approve reading project-07's `[handoff]` section + `grammar.py` this session → **yes** (read; semantics in Notes §A); (2) writer policy → **operator-seeded only, like `[unattended]`**; (3) a row carrying both tokens → **mis-authored, `[handoff]` wins** (parser captures both; readers deny operator-less dispatch). Assumptions carried: the grammar line lists both tokens even though at most one belongs on a row — the segment table says so; no runner behaviour changes (`[handoff]` implies nothing on an attended run); no viz chip in this task.
 
 - [x] Subtasks above populated with concrete, ordered steps, and YAML `touches:` declared with the paths this task expects to edit (omit only on a task with no file deliverable)
 
@@ -162,7 +162,7 @@ grep -q '\[handoff\]' SPEC/unattended-candidacy.md                             �
 grep -c '\[handoff\]' docs/EXTERNAL-AGENTS.md                                  → 3   (≥ 3)
 grep -q 'out-of-repo consumer' docs/VISION.md && … SPEC/scope-boundaries.md    → 0
 git diff --stat  (no filing-skill paths; candidacy diff = one hunk @@ -54,12)  → ok
-grep -rn -i 'caobunga\|CBN-' SPEC.md SPEC docs claude README.md templates …    → 1   (no hits — pass)
+grep -rn -i 'project-07\|CBN-' SPEC.md SPEC docs claude README.md templates …    → 1   (no hits — pass)
 wc -c SPEC.md → 53,007 ≤ 57,000 · claude/skills/ft-task/SKILL.md → 28,291 ≤ 33,000
 grep -rn 'model\] \[unattended\] |' SPEC.md templates viz/src/parser.ts claude/skills/ft-task/SKILL.md → 1 (no stale mirrors — pass)
 CI replay: context-budget step → 0 · Pair N step → 0 · trailing-whitespace grep → 1 (none)

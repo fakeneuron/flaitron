@@ -46,7 +46,7 @@ Reduce the growth and personal-machine specificity of `.claude/settings.local.js
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** The symptom is real and current: `.claude/settings.local.json` (the per-project personal surface) has grown to 46 explicit allow rules, many of them absolute-path hardcodes for this machine (`/Users/fakeneuron/Code/flowtron/`) and viz-specific (port 5120, `npm --prefix .../viz`). This directly contradicts the guidance we ship in SECURITY.md (post-CORE-214 polish): keep `.local` "tiny and high-signal only (or empty)" and prefer global + personal-base-layer + `defaultMode: "acceptEdits"` + periodic `/less-permission-prompts`. The finding was surfaced by a live `/ft-audit-context` Pass (d) run on 2026-05-29 and filed as Low priority follow-up. Self-hosting flowtron makes the tension visible; fixing it here both reduces our own context bloat and validates the documented pattern for adopters. No re-scope or de-scope needed; the filed scope is the right size.
+  **Rationale:** The symptom is real and current: `.claude/settings.local.json` (the per-project personal surface) has grown to 46 explicit allow rules, many of them absolute-path hardcodes for this machine (`~/code/flowtron/`) and viz-specific (port 5120, `npm --prefix .../viz`). This directly contradicts the guidance we ship in SECURITY.md (post-CORE-214 polish): keep `.local` "tiny and high-signal only (or empty)" and prefer global + personal-base-layer + `defaultMode: "acceptEdits"` + periodic `/less-permission-prompts`. The finding was surfaced by a live `/ft-audit-context` Pass (d) run on 2026-05-29 and filed as Low priority follow-up. Self-hosting flowtron makes the tension visible; fixing it here both reduces our own context bloat and validates the documented pattern for adopters. No re-scope or de-scope needed; the filed scope is the right size.
 
 - [x] Read relevant source files
 
@@ -78,7 +78,7 @@ Reduce the growth and personal-machine specificity of `.claude/settings.local.js
 **Relevance confirmed:** This is exactly the kind of Low-priority hygiene that keeps the "lean context" principle honest for the project that ships the principle.
 
 **Clarifying questions:** Asked via AskUserQuestion at Phase 1 close. User selected **"Aggressive prune + minimal curated set"** as the target shape:
-- Remove rules now covered by global `~/.claude/settings.json` or personal-base layer (e.g. natabula)
+- Remove rules now covered by global `~/.claude/settings.json` or personal-base layer (e.g. project-20)
 - Remove or deprecate rules made unnecessary by `defaultMode: "acceptEdits"` + periodic `/less-permission-prompts`
 - Keep only the irreducible flowtron-tree-specific surface (viz dev loop on 5120, tree-aware git -C ops that are hard to globalize, playwright MCP for this session, gh + specific flowtron git hygiene)
 - Accept that some absolute paths will remain for self-host convenience; the win is "high-signal only, not exhaustive" + stopping future growth.
@@ -103,7 +103,7 @@ Reduce the growth and personal-machine specificity of `.claude/settings.local.js
 **Implementation Notes:**
 
 **Pattern survey (completed in Phase 2 start):**
-- The authoritative pattern is the one we document and recently polished: SECURITY.md:45-51 "Recommended three-layer hygiene" (global `~/.claude/settings.json` + personal base layer e.g. natabula for reusable personal standards + per-project `.claude/settings.local.json` kept tiny/high-signal only). CORE-214 (2026-05-27) made this explicit with the "natabula" living example and foregrounded `defaultMode: "acceptEdits"` + periodic `/less-permission-prompts` as the alternative to growing allowlists.
+- The authoritative pattern is the one we document and recently polished: SECURITY.md:45-51 "Recommended three-layer hygiene" (global `~/.claude/settings.json` + personal base layer e.g. project-20 for reusable personal standards + per-project `.claude/settings.local.json` kept tiny/high-signal only). CORE-214 (2026-05-27) made this explicit with the "project-20" living example and foregrounded `defaultMode: "acceptEdits"` + periodic `/less-permission-prompts` as the alternative to growing allowlists.
 - User's own global `~/.claude/Claude.md` (Scope & Safety + Shell discipline + Localhost Port Registry) already embodies the "personal base layer" in practice: it declares the port registry (flowtron/viz at 5120 strict), the "never cd", "prefer absolute paths", "no cd in commands" rules, and the full list of project ports. These standards are intentionally global/personal, not duplicated per checkout.
 - No sibling patterns in the tree for "curated minimal allowlist" — prior .claude/ work (CORE-217/219) was about skill/command wiring (symlinks vs real files for audit family), not the permissions allow array. Earlier 154.x and 104/106 handled the initial creation and agent-neutrality reframing of .claude/ surfaces.
 - The existing 46 rules are the accumulated "what worked in the moment" without a pruning pass. The tension (documented ideal vs. self-host reality) has been tolerated because flowtron-self is the one place the full dev loop (viz strictPort 5120 + ft-* skill development + playwright MCP + archive hygiene commands) is exercised daily.

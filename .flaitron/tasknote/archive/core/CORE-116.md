@@ -172,7 +172,7 @@ The App-level `const loading = initialLoading || (activeProject !== null && data
 **Behavioral checks (verified via dev-server smoke run on :5120):**
 
 - Page load: header `Flowtron — flowtron`, 177 tasks · 1 in progress, 8 projects in selector, no console errors. ✓
-- Project switch flowtron→fintown: header flips to `Flowtron — fintown`, count drops to `116 tasks · 1 in progress · 4 starters`, localStorage `flowtron-viz-active-project` writes `fintown`, search resets to empty, no console errors. ✓ (Reset back to flowtron after smoke check.)
+- Project switch flowtron→project-14: header flips to `Flowtron — project-14`, count drops to `116 tasks · 1 in progress · 4 starters`, localStorage `flowtron-viz-active-project` writes `project-14`, search resets to empty, no console errors. ✓ (Reset back to flowtron after smoke check.)
 - The in-flight CORE-116 row renders with phase-2 indicator + 🟢 in-progress chip + 🧠 opus model chip — confirms `useProjectData` reads the active `_project/tasknote/CORE-116.md` correctly through the hook path.
 
 **Tests:** No new unit tests for the hooks (per Phase 1 decision — integration-only via App.test.tsx). All 154 existing tests pass unchanged.

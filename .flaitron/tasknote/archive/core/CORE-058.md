@@ -54,7 +54,7 @@ Blocking semantics: exit code 2 with stderr message → prompt is erased from co
 
 ### Active-model detection — workarounds explored
 
-1. **Transcript JSONL tail.** Each assistant entry has `message.model` (e.g. `"claude-opus-4-7"`). Verified by inspecting `~/.claude/projects/-Users-fakeneuron-Code-flowtron/8692c8e4-d867-4ba4-b71c-7a042ae86fd6.jsonl`. Schema is *undocumented* per Anthropic, so any hook depending on it ships fragility. Worse: the file is empty / brand-new immediately after `/clear`, which is exactly when the canonical post-closure flow fires `/task <NEXT-ID>`.
+1. **Transcript JSONL tail.** Each assistant entry has `message.model` (e.g. `"claude-opus-4-7"`). Verified by inspecting `~/.claude/projects/-home-flowtron/8692c8e4-d867-4ba4-b71c-7a042ae86fd6.jsonl`. Schema is *undocumented* per Anthropic, so any hook depending on it ships fragility. Worse: the file is empty / brand-new immediately after `/clear`, which is exactly when the canonical post-closure flow fires `/task <NEXT-ID>`.
 2. **Session state file.** None documented at `~/.claude/sessions/<session_id>.json` or equivalent. `/model` switches don't write transcript entries either (verified by grep across project transcripts).
 3. **Environment variables.** `$CLAUDE_CODE_SESSION_ID` is exported; `$ANTHROPIC_MODEL` is an *input* (CLI default), not a live value. No `$CLAUDE_MODEL` / `$CLAUDE_ACTIVE_MODEL` exists.
 4. **Settings.json `model`.** Top-level field is the session *default*, not the live value. `/model sonnet` mid-session does not modify the file. So a settings.json read sees the default, not the override — silent miss on the canonical 3-step flow whenever the user's `/model` switch differs from their default.

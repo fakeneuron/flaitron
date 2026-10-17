@@ -76,8 +76,8 @@ Verify the completed CORE-EPIC-783 (`unattended-prep`) cohort sits coherently in
 
 Cohort inventory:
 
-- **[[CORE-783.1]] unattended-prep discovery** — filed `.2` (45w) and `.3` (34w). Fan-out: Sequential `.3` after `.2`, Synthesis `.N`. Withdrew "seed is the only writer." Caobunga mirror left as a handoff. Commit `3777620b`.
-- **[[CORE-783.2]] candidacy-prep-boundary** — clause 3 is two layers. The keyword list is unchanged. A miss is not a semantic pass. An LLM filer and `/ft-prep-unattended` decline a person-shaped row. No visual keywords. `[handoff]` stays definitive. Caobunga row `CBN-361` filed in that repo (`07fe6cf0`); `selection.py` was not edited from this checkout. Commit `487e3a7a`.
+- **[[CORE-783.1]] unattended-prep discovery** — filed `.2` (45w) and `.3` (34w). Fan-out: Sequential `.3` after `.2`, Synthesis `.N`. Withdrew "seed is the only writer." Project-07 mirror left as a handoff. Commit `3777620b`.
+- **[[CORE-783.2]] candidacy-prep-boundary** — clause 3 is two layers. The keyword list is unchanged. A miss is not a semantic pass. An LLM filer and `/ft-prep-unattended` decline a person-shaped row. No visual keywords. `[handoff]` stays definitive. Project-07 row `CBN-361` filed in that repo (`07fe6cf0`); `selection.py` was not edited from this checkout. Commit `487e3a7a`.
 - **[[CORE-783.3]] prep-unattended-skill** — attended flagless `/ft-prep-unattended`. Taxonomy in §"Preparing declined rows". Filing message `chore: prep unattended — <N> rows`. Adopter-subset roster beside seed. Pin-guard is the seventh body. Commit `f6c6ccd9`.
 
 Regression greps at this HEAD still pass: clause 3 layers, the sentence absent from `claude/skills/`, the filing message, and the flagless skill body (`never writes [unattended]`, no `argument-hint:`). `wc -c claude/skills/ft-prep-unattended/SKILL.md` is 12,068, matching the ledger row [[CORE-783.3]] wrote. Drift checks `skill_name_invariant`, `shipped_skill_parity`, `skill_pin_guard_parity`, `pair_n`, `pair_o`, `pair_q`, and `context_budget` all returned ok.

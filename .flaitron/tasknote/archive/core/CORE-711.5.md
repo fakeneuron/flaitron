@@ -29,14 +29,14 @@ Rename the GitHub repo, origin, local folder, global `~/.claude` links and the C
 
 - [x] GitHub repo is `flaitron` and origin points at it — `git remote get-url origin | grep -q flaitron`
 - [x] No dangling `~/.claude` ft-* links remain — `find ~/.claude/skills ~/.claude/commands -maxdepth 1 -type l ! -exec test -e {} \; -print` prints nothing
-- [x] Live links resolve into `~/Code/flaitron` — `judgment` (13 links; checked by the find above plus a readlink listing)
-- [x] Claude project memory dir moved to the `-Users-fakeneuron-Code-flaitron` key — `test -d ~/.claude/projects/-Users-fakeneuron-Code-flaitron/memory`
+- [x] Live links resolve into `~/code/flaitron` — `judgment` (13 links; checked by the find above plus a readlink listing)
+- [x] Claude project memory dir moved to the `-home-flaitron` key — `test -d ~/.claude/projects/-home-flaitron/memory`
 
 ## 🧩 Subtasks
 
 - [x] `gh repo rename flaitron`; `git remote set-url origin`
 - [x] Re-point the 13 live global skill/command symlinks; remove the 10 dangling
-- [x] `mv ~/Code/flowtron ~/Code/flaitron` and move the project memory dir (last; ends this session's cwd)
+- [x] `mv ~/code/flowtron ~/code/flaitron` and move the project memory dir (last; ends this session's cwd)
 
 ## 🔗 Related
 
@@ -77,7 +77,7 @@ Rename the GitHub repo, origin, local folder, global `~/.claude` links and the C
 
 - [x] Updated/added tests for non-trivial behavior
 
-**Implementation Notes:** `gh repo rename flaitron --repo fakeneuron/flowtron`; `git remote set-url origin`. Operator temporarily added `~/.claude` to `path-access-roots` (removed after). Relinked 13 global skill/command symlinks into `~/Code/flaitron`; removed 10 dangling (skills: ft-audit-context, ft-flowtron, ft-goal-task, ft-starter-task, ft-stats, ft-worktree-end, ft-worktree-start; commands: ft-audit-context, ft-flowtron, ft-stats). Moved old `-Code-flowtron` project dir contents (transcripts + 8 memory files) into `-Code-flaitron`; removed the empty old dir.
+**Implementation Notes:** `gh repo rename flaitron --repo fakeneuron/flowtron`; `git remote set-url origin`. Operator temporarily added `~/.claude` to `path-access-roots` (removed after). Relinked 13 global skill/command symlinks into `~/code/flaitron`; removed 10 dangling (skills: ft-audit-context, ft-flowtron, ft-goal-task, ft-starter-task, ft-stats, ft-worktree-end, ft-worktree-start; commands: ft-audit-context, ft-flowtron, ft-stats). Moved old `-Code-flowtron` project dir contents (transcripts + 8 memory files) into `-Code-flaitron`; removed the empty old dir.
 
 ## 🧪 Phase 3: Testing & Linting
 
@@ -93,7 +93,7 @@ Rename the GitHub repo, origin, local folder, global `~/.claude` links and the C
 
 **Choosing a test strategy:** see SPEC.md §"🧪 Phase 3: Testing & Linting".
 
-**Testing Notes:** `git remote get-url origin | grep -q flaitron` → 0; dangling-link `find` → empty; `readlink` listing shows 13 links into `~/Code/flaitron`; `test -d ~/.claude/projects/-Users-fakeneuron-Code-flaitron/memory` → 0. External review N/A: no diff. Not pushed: local `main` is 2 commits ahead of the renamed remote.
+**Testing Notes:** `git remote get-url origin | grep -q flaitron` → 0; dangling-link `find` → empty; `readlink` listing shows 13 links into `~/code/flaitron`; `test -d ~/.claude/projects/-home-flaitron/memory` → 0. External review N/A: no diff. Not pushed: local `main` is 2 commits ahead of the renamed remote.
 
 ## 🚀 Phase 4: Closure
 

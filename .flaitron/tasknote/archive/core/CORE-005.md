@@ -25,19 +25,19 @@
 User decisions (locked via AskUserQuestion):
 
 - **PHILOSOPHY angle:** narrative essay in personal voice. The "why" — problems with prior workflows, what failed, what stuck, why markdown-over-JSON, why zero scripts. ~1–2 pages. Complements SPEC (which is a contract) rather than duplicating its principles list.
-- **MIGRATION scope:** both adoption-from-scratch AND migration-from-prior-system, in one doc. Section 1 = the photard-style fresh adoption (submodule + symlinks + CLAUDE.md block, already in `claude/CLAUDE-snippet.md`). Section 2 = the fintown-style migration (`plan.json` → `PLAN.md`, retire helper scripts, reconcile in-flight tasknotes).
+- **MIGRATION scope:** both adoption-from-scratch AND migration-from-prior-system, in one doc. Section 1 = the project-22-style fresh adoption (submodule + symlinks + CLAUDE.md block, already in `claude/CLAUDE-snippet.md`). Section 2 = the project-14-style migration (`plan.json` → `PLAN.md`, retire helper scripts, reconcile in-flight tasknotes).
 - **Worked example:** stay abstract. Per-project migrations live in their own tasknotes (CORE-007/008/009.x) and serve as the real-world records in archive.
 
 Implicit decisions:
 
-- Audience is the user (judedelparte) and any future reader of the public repo (CORE-006 pushes to GitHub). Voice = personal but legible to a stranger.
+- Audience is the user (project-18) and any future reader of the public repo (CORE-006 pushes to GitHub). Voice = personal but legible to a stranger.
 - Tone alignment: SPEC.md is terse and rule-stating; PHILOSOPHY can be looser and more reflective; MIGRATION is procedural ("do this, then this").
 - No duplication of CLAUDE-snippet.md content — MIGRATION should *reference* it for the symlink commands rather than copy them, so there's a single source of truth for the wiring.
 - No new doc structure, navigation, or index page. Just the two files.
 
 **Execution Steps:**
 
-1. Draft `docs/PHILOSOPHY.md` — narrative essay. Sections roughly: opening problem statement (drift across solo projects, three different workflows in fintown/InvisiPaw/photard), what didn't work (JSON plans, helper scripts, per-project drift), what stuck (markdown, 4-phase, relevance gate, model field), why those stuck, what flowtron deliberately rejects (CLI tool, validators, DB), and a closing "what comes next" pointer to SPEC. Personal voice, ~1–2 pages.
+1. Draft `docs/PHILOSOPHY.md` — narrative essay. Sections roughly: opening problem statement (drift across solo projects, three different workflows in project-14/Project-17/project-22), what didn't work (JSON plans, helper scripts, per-project drift), what stuck (markdown, 4-phase, relevance gate, model field), why those stuck, what flowtron deliberately rejects (CLI tool, validators, DB), and a closing "what comes next" pointer to SPEC. Personal voice, ~1–2 pages.
 2. Draft `docs/MIGRATION.md` — procedural. Two sections:
    - **§1 Fresh adoption** — pre-reqs, add submodule at `_project/flowtron/`, run symlink commands (reference `claude/CLAUDE-snippet.md`), paste the CLAUDE.md block, create `_project/PLAN.md` from `templates/PLAN.md`, create `_project/tasknote/README.md` from `templates/tasknote-README.md` (set pinned version), verify `/task` resolves.
    - **§2 Migrating from a prior workflow** — recognize the patterns (plan.json, helper scripts, per-project WORKFLOW.md), do §1 first, then convert plan.json → PLAN.md preserving archive references, reconcile in-flight tasknotes (decide: finish-as-is vs. rewrap into the new template), retire helper scripts (remove + update CLAUDE.md), update any project-side WORKFLOW.md / quick-reference docs to point at flowtron's SPEC.md.
@@ -56,7 +56,7 @@ Implicit decisions:
 
 Files written:
 
-- `docs/PHILOSOPHY.md` — narrative essay in personal voice. Sections: opening, The actual problem (drift across fintown/InvisiPaw/photard), What I tried first (TasknoteSystem reference folder), What stuck (PLAN.md, tasknotes, 4-phase rhythm, relevance gate, model field), The decisions that fall out (markdown over JSON, zero scripts, one task per context window, relevance before action, versioned and pinned), What flowtron deliberately is not, What's next. Cross-links to SPEC and MIGRATION at the close.
+- `docs/PHILOSOPHY.md` — narrative essay in personal voice. Sections: opening, The actual problem (drift across project-14/Project-17/project-22), What I tried first (Project-28 reference folder), What stuck (PLAN.md, tasknotes, 4-phase rhythm, relevance gate, model field), The decisions that fall out (markdown over JSON, zero scripts, one task per context window, relevance before action, versioned and pinned), What flowtron deliberately is not, What's next. Cross-links to SPEC and MIGRATION at the close.
 - `docs/MIGRATION.md` — procedural in two sections plus pinning and gotchas. §1 Fresh adoption: 7 sub-steps (submodule, symlinks, paste block, PLAN.md, tasknote-README, commit, verify) with explicit shell commands. §2 Migrating from a prior workflow: 6 sub-steps (convert plan.json, reconcile in-flight tasknotes, retire helper scripts, replace project-side workflow docs, update CLAUDE.md, commit as a tasknote). §3 Pinning and bumping. §4 Common gotchas. Defers to `claude/CLAUDE-snippet.md` for the canonical wiring snippet rather than duplicating it.
 
 Deliberate non-changes: SPEC.md, PLAN.md template, CLAUDE-snippet.md were not modified to add reverse cross-links. The task scope is two new docs; reverse links would be scope creep.
@@ -95,6 +95,6 @@ Verification in lieu of an automated suite:
 
 **Final Summary:**
 
-Wrote `docs/PHILOSOPHY.md` (narrative essay on the "why" — drift across fintown/InvisiPaw/photard, why JSON+scripts didn't stick, the principles that survived) and `docs/MIGRATION.md` (procedural guide with two paths: fresh adoption from scratch, and migrating from an existing plan.json + helper-script workflow, plus pinning/bumping and common gotchas). Both files live in `docs/`, cross-link to each other and to `../SPEC.md`, and defer to `claude/CLAUDE-snippet.md` for the canonical wiring snippet rather than duplicating it. Voice and scope locked via three AskUserQuestion calls in Phase 1.
+Wrote `docs/PHILOSOPHY.md` (narrative essay on the "why" — drift across project-14/Project-17/project-22, why JSON+scripts didn't stick, the principles that survived) and `docs/MIGRATION.md` (procedural guide with two paths: fresh adoption from scratch, and migrating from an existing plan.json + helper-script workflow, plus pinning/bumping and common gotchas). Both files live in `docs/`, cross-link to each other and to `../SPEC.md`, and defer to `claude/CLAUDE-snippet.md` for the canonical wiring snippet rather than duplicating it. Voice and scope locked via three AskUserQuestion calls in Phase 1.
 
 **Archived:** 2026-04-28

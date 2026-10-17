@@ -44,12 +44,12 @@ Give every shipped `ft-*` skill a keep / merge / demote verdict backed by archiv
 - [x] Seeded tasknote README says the archive folder is created when the first tasknote in that area lands — `grep -q 'first tasknote in that area lands' templates/tasknote-README.md`
 - [x] `/ft-flowtron` names the adopter-relative path for the adoption guide — `grep -q '.flowtron/core/docs/MIGRATION.md' claude/skills/ft-flowtron/SKILL.md`
 - [x] Snippet and SPEC rosters agree: Pair E row coverage and the standing installed-surface derivation both diff empty, and the info-screen row count equals the shipped count — the two `diff -u` blocks from `claude/skills/ft-release/step-7.1-mirror-pairs.md` §Pair E and `step-7.1-standing-checks.md` → exit 0, no output; `test $(ls claude/skills | grep -c '^ft-') -eq $(grep -c '^| \`/ft-' claude/skills/ft-flowtron/SKILL.md)`
-- [x] No adopter names or IDs in the contract surfaces this task edits — `grep -ci 'caobunga\|CBN-' SPEC/versioning.md claude/AGENTS-snippet.md templates/tasknote-README.md claude/skills/ft-update/SKILL.md` → 0
+- [x] No adopter names or IDs in the contract surfaces this task edits — `grep -ci 'project-07\|CBN-' SPEC/versioning.md claude/AGENTS-snippet.md templates/tasknote-README.md claude/skills/ft-update/SKILL.md` → 0
 - [x] Budgets and hygiene — `wc -c claude/skills/ft-update/SKILL.md` < 33,000; `git diff --check` → 0
 
 ## 🧩 Subtasks
 
-- [ ] Phase 1: measure the roster (sizes, ages, archive run signatures, caobunga uptake) — done, Discovery Notes §A–§B
+- [ ] Phase 1: measure the roster (sizes, ages, archive run signatures, project-07 uptake) — done, Discovery Notes §A–§B
 - [ ] Phase 1: walk README Quickstart → `/ft-new-project` → `docs/MIGRATION.md` §1 → first `/ft-task` → `/ft-flowtron`; record gaps — done, §C
 - [ ] Phase 2 (fixes, six): README + MIGRATION global-install `mkdir -p`; pin-location claim in `SPEC/versioning.md` + paste-block; `/ft-update` Step 4.5 dir-symlink test; template README archive-folder sentence; `/ft-flowtron` adopter path; `/ft-new-project` Step 6 stale README description
 - [ ] Phase 2 (filings, four): CORE-570 starter→followup merge · CORE-571 goal-task demote · CORE-572 worktree pair demote-to-doc · CORE-573 ft-spec demote-to-template — decision rows, with the downstream-impact scan (CORE-569 is stale against CORE-571) surfaced for confirm before writing
@@ -59,7 +59,7 @@ Give every shipped `ft-*` skill a keep / merge / demote verdict backed by archiv
 ## 🔗 Related
 
 - [[CORE-EPIC-565]] — parent epic (harness-value-review)
-- [[CORE-565.1]] — Discovery: Constitution #1/#2, Q2 (prose trims in-window; skill removals filed), Q7 (usage evidence = own archive + caobunga PLAN) bind this child
+- [[CORE-565.1]] — Discovery: Constitution #1/#2, Q2 (prose trims in-window; skill removals filed), Q7 (usage evidence = own archive + project-07 PLAN) bind this child
 - [[CORE-565.2]] — cost table (§A) this child reuses; hand-off: `/ft-file-followup` ↔ `/ft-starter-task` skill↔skill duplication is a roster question
 - [[CORE-565.3]] — blocked-by: Sequential predecessor (Fan-out); declared the caller-facing stable surfaces, which no verdict here touches (no probe path, template label, or grammar changes)
 - [[CORE-349.5]] — related-decision: the installed-surface check is derived from the snippet's `ln -s` block; no hand-maintained roster exists to drift
@@ -78,7 +78,7 @@ Give every shipped `ft-*` skill a keep / merge / demote verdict backed by archiv
   **Verdict:** Proceed
   **Rationale:** The roster has never been judged on use: every prior roster task (Pair E, the installed-surface check, CORE-510's paste-block trim) checked that the lists *agree*, not that the skills *earn their slot*. The measurement is decisive — five of the twelve adopter-wired skills have no real run in 880 archived notes and none in the one adopter with 185 closed rows — and the onboarding walk found two contract claims a new adopter would act on that nothing implements (the README-records-the-pin claim; the global `ln -s` into a directory the recipe never creates). Scope matches the PLAN line; the one drift (the "Pair K" label) is a misattribution, not a scope change.
 
-- [x] Read relevant source files — `README.md` (Quickstart, Sessions, Repo layout), `docs/MIGRATION.md` §1 in full, `claude/AGENTS-snippet.md`, `claude/skills/{ft-new-project,ft-flowtron,ft-file-followup,ft-starter-task}/SKILL.md`, `claude/skills/ft-update/SKILL.md` Step 4.5, `SPEC/layout.md` §"Skill namespace", `SPEC/versioning.md`, `SPEC/tasknote-selection.md` §routing, `docs/PLATFORMS.md` §"Installed-surface policy", `claude/skills/ft-release/step-7.1-{mirror-pairs,standing-checks}.md` (Pairs E, K; installed-surface derivation), `templates/{PLAN,tasknote-README}.md`, `docs/VISION.md` §"Who it's for". Two scratch scripts (usage signatures, roster checks) did the counting; their returns are §A–§B. caobunga (operator-approved this session, read-only): `.flowtron/` one level, `PLAN.md`, `sidequest/` one level, `.claude/skills/` one level.
+- [x] Read relevant source files — `README.md` (Quickstart, Sessions, Repo layout), `docs/MIGRATION.md` §1 in full, `claude/AGENTS-snippet.md`, `claude/skills/{ft-new-project,ft-flowtron,ft-file-followup,ft-starter-task}/SKILL.md`, `claude/skills/ft-update/SKILL.md` Step 4.5, `SPEC/layout.md` §"Skill namespace", `SPEC/versioning.md`, `SPEC/tasknote-selection.md` §routing, `docs/PLATFORMS.md` §"Installed-surface policy", `claude/skills/ft-release/step-7.1-{mirror-pairs,standing-checks}.md` (Pairs E, K; installed-surface derivation), `templates/{PLAN,tasknote-README}.md`, `docs/VISION.md` §"Who it's for". Two scratch scripts (usage signatures, roster checks) did the counting; their returns are §A–§B. project-07 (operator-approved this session, read-only): `.flowtron/` one level, `PLAN.md`, `sidequest/` one level, `.claude/skills/` one level.
 
 - [x] **Best Practices Review** — `N/A`: markdown docs, one adopter paste-block, three skill bodies; no code boundary. The structural rule in play is the one `docs/PLATFORMS.md` and `step-7.1-standing-checks.md` already enforce — rosters are derived from the snippet's `ln -s` block, never hand-maintained — and every edit here keeps that (no roster is restated; no symlink is added or removed).
 
@@ -86,7 +86,7 @@ Give every shipped `ft-*` skill a keep / merge / demote verdict backed by archiv
 
 - [x] **Drift check** — §E. One misattribution on the PLAN line (Pair K), one stale sibling assumption (`.1` said "nineteen skills" — still 19), and two contract claims that nothing implements (§C G2, G6). No SPEC contract is contradicted by any fix; the filings change nothing until their own tasks run.
 
-- [x] Asked clarifying questions — two (AskUserQuestion): caobunga read scope **approved** (`.flowtron/` one level + named files; `.claude/skills/` one level), evidence **not widened** beyond caobunga (Q7). Assumptions carried: (1) "demote-to-doc" means the procedure survives as a doc or template and the skill directory, command stub, Codex wrapper, and adopter symlinks go — a roster change, hence filed; (2) a skill younger than a month with at least one real run is "keep, young", not a demote candidate; (3) the six in-window fixes are prose corrections under Q2, none touching a `.3`-declared stable surface; (4) `/ft-flowtron`'s roster table is left to Pair E (it passes at HEAD) — no row is reworded here.
+- [x] Asked clarifying questions — two (AskUserQuestion): project-07 read scope **approved** (`.flowtron/` one level + named files; `.claude/skills/` one level), evidence **not widened** beyond project-07 (Q7). Assumptions carried: (1) "demote-to-doc" means the procedure survives as a doc or template and the skill directory, command stub, Codex wrapper, and adopter symlinks go — a roster change, hence filed; (2) a skill younger than a month with at least one real run is "keep, young", not a demote candidate; (3) the six in-window fixes are prose corrections under Q2, none touching a `.3`-declared stable surface; (4) `/ft-flowtron`'s roster table is left to Pair E (it passes at HEAD) — no row is reworded here.
 
 - [x] Subtasks above populated with concrete, ordered steps, and YAML `touches:` declared (nine paths)
 
@@ -104,13 +104,13 @@ Give every shipped `ft-*` skill a keep / merge / demote verdict backed by archiv
 | `## 🌳 Fan-out` / `🧭 Deep Pre-pass` / `*.N.md` | `/ft-epic-discovery` (+`--deep`) / `/ft-close-epic` | same |
 | `wt-` in any ref, reflog, or commit message | a worktree ever created | `git log --all`, `git reflog` |
 | `.flowtron/specs/`, `.flowtron/sidequest/`, `STATS.md` | `/ft-spec`, `--park`, `/ft-stats` writes | tree + `git log` |
-| adopter `PLAN.md`: `.1`/`.N` rows, `Filed with starter`, `[unattended]`, pin-bump rows, `sidequest/` | adopter uptake per skill | caobunga, 185 closed rows since 2026-08-19 |
+| adopter `PLAN.md`: `.1`/`.N` rows, `Filed with starter`, `[unattended]`, pin-bump rows, `sidequest/` | adopter uptake per skill | project-07, 185 closed rows since 2026-08-19 |
 
-Shipped-inventory facts (HEAD): 19 skill dirs, 19 command stubs, 19 Codex wrappers; adopter subset 12 (snippet `ln -s` block, 24 lines); caobunga wires exactly those 12 plus one local skill.
+Shipped-inventory facts (HEAD): 19 skill dirs, 19 command stubs, 19 Codex wrappers; adopter subset 12 (snippet `ln -s` block, 24 lines); project-07 wires exactly those 12 plus one local skill.
 
 ### B. Roster verdicts (19)
 
-| Skill | `SKILL.md` chars (dir) | Shipped | Real-run evidence, flowtron-self (880 notes) | caobunga (185 closed rows) | Verdict |
+| Skill | `SKILL.md` chars (dir) | Shipped | Real-run evidence, flowtron-self (880 notes) | project-07 (185 closed rows) | Verdict |
 |---|---|---|---|---|---|
 | `/ft-task` | 29,411 (115,822) | 2026-05-17 | the runner — 266 notes name it; every non-micro note is one | every row | **keep** |
 | `/ft-micro-task` | 20,689 | 2026-05-17 | **113** `## ✅ Recap` notes, last 2026-09-09 | invisible in PLAN (no stub marker) | **keep** — the fast path that is actually taken |
@@ -144,7 +144,7 @@ Totals: 14 keep (one with a fix, one young), 1 merge, 4 demote — every non-kee
 | G5 | Later: `/ft-update` bump | Step 4.5 says "regular file (not a symlink — `test ! -L <path>`)" for `.claude/skills/*/SKILL.md`. Every adopter skill *directory* is a symlink into the submodule; the `SKILL.md` reached through it is a regular file, so the test passes for all twelve wired skills and a literal reader classifies submodule-owned skills as local forks. Surfaced live on an adopter's third bump; not filed upstream (no hit for `test ! -L` under `.flowtron/`) | **fix** — test the directory too |
 | G6 | `docs/MIGRATION.md` §1.0 table, §1.2 roster prose, §1.6 staging, §1.7 verify | §1.0 lists the same five global utilities as `docs/PLATFORMS.md`; §1.2 names the same twelve adopter skills as the snippet; §1.6/§1.7 derive from the snippet. No drift | no change |
 | G7 | `/ft-flowtron` in an adopter | Version resolves from `.flowtron/core/SPEC.md` ✓; roster row count 19 = shipped 19 (Pair E passes at HEAD); "Adoption guide: `docs/MIGRATION.md`" and the Key-docs list give repo-root paths only — the Spec line already shows the adopter form | **fix** — add the adopter-relative path once |
-| G8 | Seeded `PLAN.md` grammar comment vs the adopter's copy | caobunga's copy predates the `[unattended]` grammar comment — templates are copied at adoption, not symlinked, and [[CORE-500]] already records that as a known optional reconcile | no change — by design |
+| G8 | Seeded `PLAN.md` grammar comment vs the adopter's copy | project-07's copy predates the `[unattended]` grammar comment — templates are copied at adoption, not symlinked, and [[CORE-500]] already records that as a known optional reconcile | no change — by design |
 
 ### D. Archive skim — load-bearing decisions
 
@@ -182,7 +182,7 @@ Totals: 14 keep (one with a fix, one young), 1 merge, 4 demote — every non-kee
 
 **Filings (four, decision rows — Q2).** [[CORE-570]] starter→followup merge (Medium), [[CORE-571]] goal-task demote (Medium), [[CORE-572]] worktree pair demote-to-doc (Medium), [[CORE-573]] ft-spec demote-to-template (Low). Each row carries its evidence line from §B so the deciding task needs no re-measurement. **Downstream-impact scan:** active entries are the 565 cohort and [[CORE-566]]–[[CORE-569]]. [[CORE-569]] (trim `/ft-goal-task`'s closure restatement) is **stale** against [[CORE-571]] (may demote the skill) → reconcile action **edit**: `Blocked by [[CORE-571]]` appended, operator-confirmed. [[CORE-566]]/[[CORE-567]]/[[CORE-568]] unaffected; [[CORE-572]] names its `--worktree` coupling to [[CORE-571]] in prose rather than a Blocked-by (the two decisions are independent; only the flag's fate is shared). Word counts after ` — `: 570 = 47 · 571 = 49 · 572 = 48 · 573 = 44 (all ≤ 50 target; each carries its evidence line).
 
-**Not done, on purpose.** No `/ft-flowtron` roster rows reworded (Pair E passes; the rows are release-guarded). No edit to `SPEC/layout.md` §"Skill namespace", `docs/PLATFORMS.md`, or the three platform snippets — the inventory is unchanged until a filed decision executes. No `docs/CONTEXT-BUDGET.md` edit (caps untouched). No template restructuring beyond the one sentence. No caobunga edit — the adopter's own `CBN-150` (stale pin pointer) closes on its next `/ft-update`, since the paste-block it copied is now correct upstream.
+**Not done, on purpose.** No `/ft-flowtron` roster rows reworded (Pair E passes; the rows are release-guarded). No edit to `SPEC/layout.md` §"Skill namespace", `docs/PLATFORMS.md`, or the three platform snippets — the inventory is unchanged until a filed decision executes. No `docs/CONTEXT-BUDGET.md` edit (caps untouched). No template restructuring beyond the one sentence. No project-07 edit — the adopter's own `CBN-150` (stale pin pointer) closes on its next `/ft-update`, since the paste-block it copied is now correct upstream.
 
 ## 🧪 Phase 3: Testing & Linting
 
@@ -218,7 +218,7 @@ grep -q '.flowtron/core/docs/MIGRATION.md' claude/skills/ft-flowtron/SKILL.md �
 Pair E row-coverage diff (step-7.1-mirror-pairs.md)                           → 0, empty
 installed-surface derivation diff (step-7.1-standing-checks.md)               → 0, empty
 test <shipped count> -eq <info-screen row count>                              → 0 (19 = 19)
-grep -ci 'caobunga\|CBN-' <4 edited contract surfaces>                        → 0 / 0 / 0 / 0
+grep -ci 'project-07\|CBN-' <4 edited contract surfaces>                        → 0 / 0 / 0 / 0
 wc -c ft-update · ft-flowtron · ft-new-project SKILL.md                       → 16,460 · 9,547 · 11,337 (glob cap 33,000)
 git diff --check                                                              → 0
 git diff | grep -cE 'API_KEY|SECRET|TOKEN|PASSWORD'                           → 0 (keyword clause clear)

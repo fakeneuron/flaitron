@@ -157,7 +157,7 @@ External review (`/code-review medium`, working-tree diff), graded against Accep
 2. **fixed** — the tasknote was mid-write when reviewed; Phase 3 notes and residue classification are now recorded.
 3. **declined** — CONTEXT-BUDGET ledger byte count: every row is a release-time re-measure (§7.1), same as `.3`–`.5`.
 4. **declined** — `-unattended` suffix vs the `--unattended` flag: the slug was settled with the operator in [[CORE-769.1]]; it names the marker, and the body already says attended-only. The guard line's `--unattended` clause is the shared Skill/pin guard text `skill_pin_guard_parity` holds byte-identical across skills.
-5. **handed off** — natabula's `natabula-adopt` calls `/ft-seed`: the natabula caller row is [[CORE-769.7]]'s filing per CORE-769.1 (cross-repo edit remit).
+5. **handed off** — project-20's `project-20-adopt` calls `/ft-seed`: the project-20 caller row is [[CORE-769.7]]'s filing per CORE-769.1 (cross-repo edit remit).
 6. **declined** — body heading `# seed-unattended`: matches the bare-stem style of `ft-file-task` (`# file-task`) and `ft-adopt` (`# adopt`); only `ft-open-epic` differs.
 7. **fixed** — MIGRATION L472 note now says the skill was renamed at v7.0.0.
 

@@ -39,7 +39,7 @@ Verify the completed `CORE-EPIC-770` (`global-layer-alignment`) cohort sits cohe
 - [[CORE-770.1]] — Discovery; filed `.2`–`.4`
 - [[CORE-770.2]] — memory-refresh
 - [[CORE-770.3]] — global-standards-diff
-- [[CORE-770.4]] — natabula-v7-handoff
+- [[CORE-770.4]] — project-20-v7-handoff
 
 ---
 
@@ -52,7 +52,7 @@ Verify the completed `CORE-EPIC-770` (`global-layer-alignment`) cohort sits cohe
   **Verdict:** Proceed
   **Rationale:** Operator invoked `/ft-close-epic CORE-770.N`. All four children (`.1`–`.4`) closed 2026-10-09, so this is a full-cohort audit and no early-audit decision was needed.
 
-- [x] Read relevant source files — the four archived child notes (`archive/core/CORE-770.1.md` … `.4.md`); `SPEC/epic.md`, `SPEC/post-closure.md`, `SPEC/plan-filing.md` §"Epic parent flip"; natabula `.flaitron/PLAN.md` rows NAT-391..393 and its git log; `feedback_no_premature_slash_commands.md` from the approved memory dir; `~/.claude/CLAUDE.md` and `~/Code/AGENTS.md` (in session context)
+- [x] Read relevant source files — the four archived child notes (`archive/core/CORE-770.1.md` … `.4.md`); `SPEC/epic.md`, `SPEC/post-closure.md`, `SPEC/plan-filing.md` §"Epic parent flip"; project-20 `.flaitron/PLAN.md` rows NAT-391..393 and its git log; `feedback_no_premature_slash_commands.md` from the approved memory dir; `~/.claude/CLAUDE.md` and `~/code/AGENTS.md` (in session context)
 
 - [x] **Best Practices Review** — `N/A`: verification pass; no code or module boundary
 
@@ -68,10 +68,10 @@ Verify the completed `CORE-EPIC-770` (`global-layer-alignment`) cohort sits cohe
 
 Cohort deliverables:
 
-- **`.1` global-layer-alignment discovery** — filed `.2`–`.4` split by owner: agent memory, operator layers 1–2, natabula rows. Concluded that flaitron's contract makes no claim about the global layer, and that v7.0.0 is not blocked.
+- **`.1` global-layer-alignment discovery** — filed `.2`–`.4` split by owner: agent memory, operator layers 1–2, project-20 rows. Concluded that flaitron's contract makes no claim about the global layer, and that v7.0.0 is not blocked.
 - **`.2` memory-refresh** — 7 memory files plus `MEMORY.md` moved to v7 names and paths, with the `post-closure.md` step 3 next-move shape. All of it is outside the repo; the receipt is an operator-run grep.
-- **`.3` global-standards-diff** — four bullets in `~/.claude/CLAUDE.md` / `~/Code/AGENTS.md`: the skill-gates carve-out, the five-rung ladder, the `/ft-adopt` + `/natabula-adopt` pointer, and closure-commit authorization. It also found one dangling `~/.claude/skills/ft-new-project` link and drafted the relink for the operator to run.
-- **`.4` natabula-v7-handoff** — NAT-392 (command-stub preconditions) and NAT-393 (NAT-195 false positives), filed in natabula commit `33452cb`, not pushed.
+- **`.3` global-standards-diff** — four bullets in `~/.claude/CLAUDE.md` / `~/code/AGENTS.md`: the skill-gates carve-out, the five-rung ladder, the `/ft-adopt` + `/project-20-adopt` pointer, and closure-commit authorization. It also found one dangling `~/.claude/skills/ft-new-project` link and drafted the relink for the operator to run.
+- **`.4` project-20-v7-handoff** — NAT-392 (command-stub preconditions) and NAT-393 (NAT-195 false positives), filed in project-20 commit `33452cb`, not pushed.
 
 ## 🛠️ Phase 2: Execution
 
@@ -90,10 +90,10 @@ Cohort deliverables:
 - `.3` deliverables are present in the session-context copies of both global files:
   - the carve-out bullet after ask-first
   - Model Selection naming `[light]`/`[medium]`/`[heavy]`/`[frontier]`/`[xheavy]`
-  - the new-repo pointer leading with `/ft-adopt` and naming `/natabula-adopt`
-  - the `~/Code/AGENTS.md` closure-commit-authorization bullet, with push still an explicit ask
+  - the new-repo pointer leading with `/ft-adopt` and naming `/project-20-adopt`
+  - the `~/code/AGENTS.md` closure-commit-authorization bullet, with push still an explicit ask
 - `.2` deliverables: the `MEMORY.md` index in session context uses only v7 names. A spot-read of `feedback_no_premature_slash_commands.md` shows `/ft-file-task`, `/ft-open-epic` and `👇 Run in this session:`, and the `SPEC/post-closure.md` anchors it cites still exist.
-- `.4` deliverables: natabula `.flaitron/PLAN.md` carries NAT-391, NAT-392 and NAT-393 as open `## High` rows. natabula HEAD is `33452cb`, the filing commit.
+- `.4` deliverables: project-20 `.flaitron/PLAN.md` carries NAT-391, NAT-392 and NAT-393 as open `## High` rows. project-20 HEAD is `33452cb`, the filing commit.
 
 **Coherence findings.**
 
@@ -103,7 +103,7 @@ Cohort deliverables:
   - `.3`'s dangling-link receipt tests `claude/skills/ft-new-project` in the repo rather than the `~/.claude/skills/` link itself. That is equivalent evidence, because the link's absolute target is the path tested.
 - **Not verifiable from here, and outside flaitron's remit:**
   - whether the operator ran `.3`'s relink (`~/.claude/skills/ft-new-project` → `ft-adopt`), since the NAT-195 hook blocks agent reads of `~/.claude/skills/`
-  - the natabula commit `33452cb`, which stays local until natabula's own session pushes it (no bulk pushes from flaitron)
+  - the project-20 commit `33452cb`, which stays local until project-20's own session pushes it (no bulk pushes from flaitron)
 
 **Misses filed:** none.
 
@@ -151,7 +151,7 @@ The global-layer-alignment cohort is coherent. Each of the four children landed 
 - **`touches:` reconciliation:** none declared. The diff is PLAN plus this note.
 - **Open outside flaitron:**
   - the operator's `~/.claude/skills/ft-new-project` relink (`.3`)
-  - natabula NAT-391..393 and its unpushed `33452cb`, which natabula's own sessions handle
+  - project-20 NAT-391..393 and its unpushed `33452cb`, which project-20's own sessions handle
 - **Maintainability:** no new surface.
 
 **Archived:** 2026-10-09

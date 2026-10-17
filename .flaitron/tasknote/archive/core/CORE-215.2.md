@@ -67,7 +67,7 @@ Author `docs/WORKTREES.md` documenting the conventions for isolated epic-child g
 **Archive skim findings (targeted on wiring precedents):**
 - Hits in CORE-186 (ft-audit-context global addition — established the exact 5 adopter surfaces that .5 will later touch for the new pair) and the full CORE-195.* cohort (sibling epic: identical Discovery→4-children+audit shape, "six → seven" language in MIGRATION §1.2 and AGENTS-snippet, same per-project bundle tier).
 - CORE-215.1 itself records the clean slate: "No prior worktree mentions anywhere in archive/core/."
-- Unrelated historical hits only in CORE-100 (stale `flowtron-nat-011` worktree cleanup) and CORE-007 (submodule bootstrap worktree side-effect) — no convention or naming precedent that conflicts with the locked decisions.
+- Unrelated historical hits only in CORE-100 (stale `project-15` worktree cleanup) and CORE-007 (submodule bootstrap worktree side-effect) — no convention or naming precedent that conflicts with the locked decisions.
 - No mentions of `docs/WORKTREES.md` or any worktree convention doc prior to this epic.
 
 **Drift check (vs. locked decisions in CORE-215.1 and starter seed):**

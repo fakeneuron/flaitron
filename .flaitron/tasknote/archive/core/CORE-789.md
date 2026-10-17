@@ -49,7 +49,7 @@ Make Codex-selected adoption/update establish and reconcile repo-scoped skills t
 - [[CORE-772]] — inline Claude self-host v7 repair; no tasknote was needed.
 - [[CORE-777]] — fleet updater preserves ignored-path choices; no forced staging.
 - [[CORE-677.2]] — prior Codex installation/discovery receipt and preservation rules.
-- Natabula NAT-416 owns existing fleet backfill; no adopter or agent-home repairs here.
+- Project-20 NAT-416 owns existing fleet backfill; no adopter or agent-home repairs here.
 
 ---
 
@@ -146,7 +146,7 @@ Make Codex-selected adoption/update establish and reconcile repo-scoped skills t
 - Refactor: one shared inline procedure prevents duplicate adoption/update repair logic. No installer executable, second roster, fleet scope expansion or compatibility stamp change. Custom conflicts remain explicit operator choices; tests do not prove interactive instruction adherence.
 - Scope reconciliation: declared 13 deliverable files, changed 13; no undeclared paths. CONTRIBUTING.md and docs/WORKTREES.md were added to touches during the required sweep. Tasknote/PLAN excluded.
 - Learnings: N/A — durable repo-first/pinned/exact-ownership principles already exist; their executable wiring now follows them.
-- Handoff: proposed commit `fix: CORE-789 Codex wiring bootstrap`. Natabula NAT-416 remains the already-filed fleet repair; no new deferred operator prerequisite. Release/adopter bumps remain separate deliberate motions.
+- Handoff: proposed commit `fix: CORE-789 Codex wiring bootstrap`. Project-20 NAT-416 remains the already-filed fleet repair; no new deferred operator prerequisite. Release/adopter bumps remain separate deliberate motions.
 
 ### Doc-drift sweep
 

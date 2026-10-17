@@ -52,7 +52,7 @@ Scope the `CORE-EPIC-482` epic (`model-tier-recalibration`) before any implement
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** Operator explicitly invoked `/ft-epic-discovery` with a formed brief: the tier vocabulary risks under-powered model picks by automated choosers (caobunga consumes the labels; caobunga itself is out of scope). Multi-surface contract work — genuine epic scope.
+  **Rationale:** Operator explicitly invoked `/ft-epic-discovery` with a formed brief: the tier vocabulary risks under-powered model picks by automated choosers (project-07 consumes the labels; project-07 itself is out of scope). Multi-surface contract work — genuine epic scope.
 
 - [x] Read relevant source files — SPEC/model.md (full), SPEC.md `[model]` column + cue glossary + post-closure protocol, SPEC/gates.md glyph tables, claude/skills/ft-task/step-1.5-model-edge.md
 
@@ -87,7 +87,7 @@ Scope the `CORE-EPIC-482` epic (`model-tier-recalibration`) before any implement
 | Fourth-tier token + glyph | **`[xheavy]`** with **🔭** (echoes vendor `xhigh` effort naming; 🔭 unused in cue vocabulary) |
 | Reasoning-effort handling | **Orthogonal + calibration table** — tiers stay task-load labels, effort stays session config, no variant tokens; add a maintained platform×model×effort tier-band reference table to SPEC/model.md, refreshed at releases |
 | Err-heavier bias strength | **Round-up default** — default `[medium]`; escalate freely to `[heavy]` on any ambiguity/design smell; `[light]` reserved for provably mechanical clear-diff work; explicit "when in doubt, round up" rule for automated choosers |
-| Caobunga | Out of scope — consumes whatever labeling flowtron publishes |
+| Project-07 | Out of scope — consumes whatever labeling flowtron publishes |
 
 ## 🛠️ Phase 2: Execution
 

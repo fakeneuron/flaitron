@@ -80,7 +80,7 @@ Contract: [`SPEC/plan-filing.md`](../SPEC/plan-filing.md)
   - [x] **CORE-711.3** [heavy]🧠 | update-adopters migrate mode — Completed 2026-10-03.
   - [x] **CORE-711.4** [heavy]🧠 | text sweep + self-host move — Completed 2026-10-03.
   - [x] **CORE-711.5** [light]🔧 | github + folder renames — Completed 2026-10-04.
-  - [x] **CORE-711.6** [light]🔧 | natabula handoff — Completed 2026-10-04.
+  - [x] **CORE-711.6** [light]🔧 | project-20 handoff — Completed 2026-10-04.
   - [x] **CORE-711.7** [heavy]🧠 | fleet wave — Completed 2026-10-04.
   - [x] **CORE-711.8** [light]🔧 | global + external routing — Completed 2026-10-04.
   - [x] **CORE-711.9** [medium]🧩 | full-repo flaitron sweep — Completed 2026-10-04.
@@ -204,7 +204,7 @@ Contract: [`SPEC/plan-filing.md`](../SPEC/plan-filing.md)
   - [x] **CORE-770.1** [frontier]💎 | global-layer-alignment discovery — Completed 2026-10-09.
   - [x] **CORE-770.2** [light]🔧 | memory-refresh — Completed 2026-10-09.
   - [x] **CORE-770.3** [medium]🧩 | global-standards-diff — Completed 2026-10-09.
-  - [x] **CORE-770.4** [light]🔧 | natabula-v7-handoff — Completed 2026-10-09.
+  - [x] **CORE-770.4** [light]🔧 | project-20-v7-handoff — Completed 2026-10-09.
   - [x] **CORE-770.N** [heavy]🧠 | global-layer-alignment audit — Completed 2026-10-09.
 
 ## Completed 2026-09
@@ -233,7 +233,7 @@ Contract: [`SPEC/plan-filing.md`](../SPEC/plan-filing.md)
 - [x] **CORE-EPIC-565** [heavy]🧠 | harness-value-review — Completed 2026-09-10.
   - [x] **CORE-565.1** [heavy]🧠 | harness-value-review discovery — Completed 2026-09-10.
   - [x] **CORE-565.2** [heavy]🧠 | lifecycle-value — Completed 2026-09-10.
-  - [x] **CORE-565.3** [heavy]🧠 | caobunga-contract-fit — Completed 2026-09-10.
+  - [x] **CORE-565.3** [heavy]🧠 | project-07-contract-fit — Completed 2026-09-10.
   - [x] **CORE-565.4** [heavy]🧠 | roster-onboarding-value — Completed 2026-09-10.
   - [x] **CORE-565.N** [heavy]🧠 | harness-value-review audit — Completed 2026-09-10.
 - [x] **CORE-561** [medium]🧩 | ft-audit-operator-action — Completed 2026-09-10.
@@ -289,7 +289,7 @@ Contract: [`SPEC/plan-filing.md`](../SPEC/plan-filing.md)
   - [x] **CORE-535.5** [heavy] | gate-logic-untangle — Completed 2026-09-07.
   - [x] **CORE-535.N** [heavy] | context-load-diet audit — Completed 2026-09-07.
 - [x] **CORE-534** [light]🔧 | adopter-filing-check — Completed 2026-09-06.
-- [x] **CORE-533** [medium]🧩 | narrow-caobunga-batch — Completed 2026-09-06.
+- [x] **CORE-533** [medium]🧩 | narrow-project-07-batch — Completed 2026-09-06.
 - [x] **CORE-532** [light]🔧 | neutrality-ledger-gates-count — Completed 2026-09-06.
 - [x] **CORE-530** [light]🔧 | preserve-bracket-tokens — Completed 2026-09-06.
 - [x] **CORE-529** [light]🔧 | deferred-handoff-filing-discipline — Completed 2026-09-06.
@@ -323,12 +323,12 @@ Contract: [`SPEC/plan-filing.md`](../SPEC/plan-filing.md)
 - [x] **CORE-602** [light]🔧 | viz-readme-startup-discovery — README.md §Visualizer now states project discovery and the latest-release tag resolve once at dev-server start (restart to pick up new/removed projects or a mid-session tag). Surfaced by audit 2026-09-14 (Finding #3, Low), fixed inline.
 - [x] **CORE-600** [light]🔧 [unattended] | layout-md-paths-contrast — Completed 2026-09-14.
 - [x] **CORE-599** [medium]🧩 | release v5.28.0 — Completed 2026-09-14.
-- [x] **CORE-EPIC-598** [heavy]🧠 | flowtron-caobunga-concert — Completed 2026-09-14.
-  - [x] **CORE-598.1** [heavy]🧠 | flowtron-caobunga-concert discovery — Completed 2026-09-14.
+- [x] **CORE-EPIC-598** [heavy]🧠 | flowtron-project-07-concert — Completed 2026-09-14.
+  - [x] **CORE-598.1** [heavy]🧠 | flowtron-project-07-concert discovery — Completed 2026-09-14.
   - [x] **CORE-598.2** [heavy]🧠 | caller-write-boundary-fixes — Completed 2026-09-14.
   - [x] **CORE-598.3** [heavy]🧠 | handoff-token-ratify — Completed 2026-09-14.
-  - [x] **CORE-598.4** [medium]🧩 | caobunga-handoff-rows — Completed 2026-09-14.
-  - [x] **CORE-598.N** [heavy]🧠 | flowtron-caobunga-concert audit — Completed 2026-09-14.
+  - [x] **CORE-598.4** [medium]🧩 | project-07-handoff-rows — Completed 2026-09-14.
+  - [x] **CORE-598.N** [heavy]🧠 | flowtron-project-07-concert audit — Completed 2026-09-14.
 - [x] **CORE-597** [light]🔧 | caobunga-status-file-home — Completed 2026-09-13.
 - [x] **CORE-596** [light]🔧 [unattended] | spec-paths-frontmatter-retire — Completed 2026-09-13.
 - [x] **CORE-595** [medium]🧩 [unattended] | tasknote-selection-split — Completed 2026-09-13.
@@ -349,7 +349,7 @@ Contract: [`SPEC/plan-filing.md`](../SPEC/plan-filing.md)
 - [x] **FE-115** [medium]🧩 [unattended] | watcher-error-listener — Completed 2026-09-12.
 - [x] **CORE-614** [medium]🧩 [unattended] | dogfood-receipt-shape — Completed 2026-09-19.
 - [x] **CORE-613** [medium]🧩 | release v5.29.0 — Completed 2026-09-19.
-- [x] **CORE-612** [light]🔧 | caobunga-commit-type — Completed 2026-09-19.
+- [x] **CORE-612** [light]🔧 | project-07-commit-type — Completed 2026-09-19.
 - [x] **CORE-EPIC-610** [heavy]🧠 | archive-closure-integrity — Completed 2026-09-19.
   - [x] **CORE-610.2** [medium]🧩 | archived-tasknote-integrity-check — Completed 2026-09-19.
   - [x] **CORE-610.3** [light]🔧 | closure-tick-through-executable — Completed 2026-09-19.
@@ -446,7 +446,7 @@ Contract: [`SPEC/plan-filing.md`](../SPEC/plan-filing.md)
 - [x] **CORE-653** [light] | security-spec-read-note — `SECURITY.md` §Visualizer names the one uncontained read: `.flowtron/core/SPEC.md` is followed through symlinks for its Version line only, nothing from it reaches the wire (`viz/src/workspace.ts`). Surfaced by audit 2026-09-21 (Finding #2, Low), fixed inline.
 - [x] **FE-123** [light] | viz-readme-build-command — `viz/README.md` §Commands lists `npm --prefix viz run build`, matching AGENTS.md §"Validation", CI, and the justfile. Surfaced by audit 2026-09-21 (Finding #3, Low), fixed inline.
 - [x] **CORE-EPIC-652** [heavy]🧠 | public-surface-decoupling — Completed 2026-09-21.
-  - [x] **CORE-652.2** [medium]🧩 | natabula-ref-inventory — Completed 2026-09-21.
+  - [x] **CORE-652.2** [medium]🧩 | project-20-ref-inventory — Completed 2026-09-21.
   - [x] **CORE-652.N** [light]🔧 | public-surface-decoupling audit — Completed 2026-09-21.
 - [x] **CORE-EPIC-651** [heavy]🧠 | gate-reliability — Completed 2026-09-21.
   - [x] **CORE-651.2** [light]🔧 [unattended] | pair-q-out-of-repo-skip — Completed 2026-09-21.
@@ -530,7 +530,7 @@ Contract: [`SPEC/plan-filing.md`](../SPEC/plan-filing.md)
 - [x] **CORE-EPIC-483** [medium] | screenshot-discipline — Completed 2026-08-27.
   - [x] **CORE-483.1** [medium] | screenshot-discipline discovery — Completed 2026-08-27.
   - [x] **CORE-483.2** [medium] | screenshot-policy-rewrite — Completed 2026-08-27.
-  - [x] **CORE-483.3** [light] | natabula-deposit-alignment — Completed 2026-08-27.
+  - [x] **CORE-483.3** [light] | project-20-deposit-alignment — Completed 2026-08-27.
   - [x] **CORE-483.4** [light] | screenshot-prune-sweep — Completed 2026-08-27.
   - [x] **CORE-483.N** [light] | screenshot-discipline audit — Completed 2026-08-27.
 - [x] **CORE-EPIC-482** [heavy] | model-tier-recalibration — Completed 2026-08-27.
@@ -1159,7 +1159,7 @@ Contract: [`SPEC/plan-filing.md`](../SPEC/plan-filing.md)
 - [x] **CORE-186** [opus] | ft-audit-context skill — Completed 2026-05-24.
 - [x] **CORE-184** [opus] | audit-next-move-flag — Completed 2026-05-24.
 - [x] **CORE-183** [opus] | phase1-2-gate-default-skip — Completed 2026-05-24.
-- [x] **CORE-182** [sonnet] | migration-md §3.3 cross-walk fintown leak — Completed 2026-05-24.
+- [x] **CORE-182** [sonnet] | migration-md §3.3 cross-walk project-14 leak — Completed 2026-05-24.
 - [x] **CORE-181** [sonnet] | conventions-pre-v3-breaking-claim — Completed 2026-05-24.
 - [x] **CORE-179** [sonnet] | conventions-changelog-examples — Completed 2026-05-24.
 - [x] **CORE-180** [sonnet] | readme-repo-layout-docs-summary — Completed 2026-05-24.
@@ -1209,10 +1209,10 @@ Contract: [`SPEC/plan-filing.md`](../SPEC/plan-filing.md)
 - [x] **CORE-141** [sonnet] | skill-prompts-model-tokens-generalize — Completed 2026-05-23.
 - [x] **CORE-140** [sonnet] | adopter-docs-tilde-code-assumption — Completed 2026-05-23.
 - [x] **CORE-137** [sonnet] | spec-wikilink-obsidian-attribution — Completed 2026-05-23.
-- [x] **CORE-136** [sonnet] | migration-plan-example-fintown-leak — Completed 2026-05-22.
+- [x] **CORE-136** [sonnet] | migration-plan-example-project-14-leak — Completed 2026-05-22.
 - [x] **CORE-135** [sonnet] | readme-viz-example-projectname — Completed 2026-05-22.
-- [x] **CORE-134** [sonnet] | spec-tasklinegrammar-invisipaw-leak — Completed 2026-05-22.
-- [x] **CORE-133** [sonnet] | spec-area-prefix-photard-leak — Completed 2026-05-22.
+- [x] **CORE-134** [sonnet] | spec-tasklinegrammar-project-17-leak — Completed 2026-05-22.
+- [x] **CORE-133** [sonnet] | spec-area-prefix-project-22-leak — Completed 2026-05-22.
 - [x] **CORE-139** [sonnet] | spec-clear-claude-specific — Completed 2026-05-22.
 - [x] **CORE-138** [opus] | spec-model-grammar-anthropic-lock — Completed 2026-05-22.
 - [x] **CORE-132** [opus] | user-idiosyncrasy comb — Completed 2026-05-22.
@@ -1247,7 +1247,7 @@ Contract: [`SPEC/plan-filing.md`](../SPEC/plan-filing.md)
 - [x] **CORE-EPIC-099** [opus] | external-conventions-survey — Completed 2026-05-18. Children CORE-099.1–.8 archived; closure consumed the subtask list per epic-close convention.
 - [x] **CORE-109** [opus] | spec-terse-pass — Completed 2026-05-18.
 - [x] **CORE-EPIC-097** [opus] | external-skill-survey — Completed 2026-05-18. Children CORE-097.1–.8 archived; closure consumed the subtask list per epic-close convention.
-- [x] **CORE-100** [opus] | flowtron-nat-011 investigation — Completed 2026-05-18.
+- [x] **CORE-100** [opus] | project-15 investigation — Completed 2026-05-18.
 - [x] **FE-038** [sonnet] | muted-footer contrast — Completed 2026-05-18.
 - [x] **FE-EPIC-033** [opus] | theme-system — Completed 2026-05-18. Children FE-033.1–.6 archived; closure consumed the subtask list per epic-close convention.
 - [x] **FE-034** [sonnet] | empty priority panels — Completed 2026-05-17.
@@ -1336,8 +1336,8 @@ Contract: [`SPEC/plan-filing.md`](../SPEC/plan-filing.md)
 - [x] **CORE-049** [opus] | workflow token audit — Completed 2026-05-08.
 - [x] **FE-002** [opus] | cross-project viz — Completed 2026-05-08.
 - [x] **CORE-048** [opus] | release v1.2.0 — Completed 2026-05-08.
-- [x] **CORE-016** [opus] | InvisiPaw migration (executed out-of-band) — Completed 2026-05-08. Done in InvisiPaw's own repo chat; flowtron now adopted there.
-- [x] **CORE-EPIC-009** [opus] | fintown migration (executed out-of-band) — Completed 2026-05-08. Done in fintown's own repo chat; flowtron now adopted there. Children CORE-009.1–.5 closed as part of the same migration.
+- [x] **CORE-016** [opus] | Project-17 migration (executed out-of-band) — Completed 2026-05-08. Done in Project-17's own repo chat; flowtron now adopted there.
+- [x] **CORE-EPIC-009** [opus] | project-14 migration (executed out-of-band) — Completed 2026-05-08. Done in project-14's own repo chat; flowtron now adopted there. Children CORE-009.1–.5 closed as part of the same migration.
 - [x] **CORE-047** [opus] | doc-set drift contract — Completed 2026-05-08.
 - [x] **FE-012** [opus] | viz inbound wikilink back-refs — Completed 2026-05-07.
 - [x] **CORE-046** [opus] | flowtron v1.1.0 — post-closure /model + recap-only — Completed 2026-05-07.
@@ -1388,16 +1388,16 @@ Contract: [`SPEC/plan-filing.md`](../SPEC/plan-filing.md)
 - [x] **CORE-020** | /ft-new-project + MIGRATION.md update — Completed 2026-05-01.
 - [x] **CORE-017** | tasknote frontmatter — Completed 2026-05-01.
 - [x] **CORE-018** | tasknote body shape — Completed 2026-05-01.
-- [x] **CORE-021** | natabula migration (de-scoped) — Completed 2026-05-01.
+- [x] **CORE-021** | project-20 migration (de-scoped) — Completed 2026-05-01.
 - [x] **CORE-022** | Working in Obsidian README section — Completed 2026-05-01.
 
 ## Completed 2026-04
 
 - [x] **FE-001** | viz/ Kanban v1 — Completed 2026-04-30.
-- [x] **CORE-007** | photard migration — Completed 2026-04-30.
-- [x] **CORE-008** | InvisiPaw migration playbook — Completed 2026-04-30.
-- [x] **CORE-010** | ~/Code/CLAUDE.md flowtron pointer — Completed 2026-04-30.
-- [x] **CORE-011** | delete TasknoteSystem/ — Completed 2026-04-30.
+- [x] **CORE-007** | project-22 migration — Completed 2026-04-30.
+- [x] **CORE-008** | Project-17 migration playbook — Completed 2026-04-30.
+- [x] **CORE-010** | ~/code/CLAUDE.md flowtron pointer — Completed 2026-04-30.
+- [x] **CORE-011** | delete Project-28/ — Completed 2026-04-30.
 - [x] **CORE-012** | /ft-new-project skill — Completed 2026-04-30.
 - [x] **CORE-013** | ghost CHANGELOG.md refs — Completed 2026-04-30.
 - [x] **CORE-014** | release v0.1.1 — Completed 2026-04-30.

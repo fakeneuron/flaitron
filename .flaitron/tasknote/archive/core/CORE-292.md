@@ -48,7 +48,7 @@ Remove one-time `ln -s` setup commands, version-pinned debugging one-liners, and
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** File confirmed at ~141 entries (after CORE-291's 152→140 prune). All three named categories are present: 6 `ln -s` natabula/ft-update symlink commands, 1 `Bash(cd *)`, and a large set of version-pinned `sed -n '<N>p'` + version-grep + echo exit-code debugging one-liners. Debt is real; task is correctly scoped.
+  **Rationale:** File confirmed at ~141 entries (after CORE-291's 152→140 prune). All three named categories are present: 6 `ln -s` project-20/ft-update symlink commands, 1 `Bash(cd *)`, and a large set of version-pinned `sed -n '<N>p'` + version-grep + echo exit-code debugging one-liners. Debt is real; task is correctly scoped.
 
 - [x] Read relevant source files
 
@@ -67,7 +67,7 @@ Remove one-time `ln -s` setup commands, version-pinned debugging one-liners, and
 - **CORE-214 (2026-05-27):** SECURITY.md hygiene only; did not touch the settings.local.json allowlist.
 - **Pattern:** Python parse→filter→re-emit (same as CORE-291 and CORE-220) to avoid malformed JSON. Whitelist approach (keep only high-signal entries) is safer than blacklist for this density.
 - **No clarifications needed.** Explicit assumptions:
-  - Keep: all 12 playwright MCP tools, abs-path viz npm/test entries, lsof/pkill 5120 variants, WebSearch, Skill(ft-task/ft-audit-docs), gh api *, git *, git add *, git commit *, npm audit *, gitleaks *, npm run *, npm *, curl 5120 health checks, pkill vitest/node.*viz, npx vitest *, Read(//tmp/**), Read(//Users/fakeneuron/Code/**), awk *.
+  - Keep: all 12 playwright MCP tools, abs-path viz npm/test entries, lsof/pkill 5120 variants, WebSearch, Skill(ft-task/ft-audit-docs), gh api *, git *, git add *, git commit *, npm audit *, gitleaks *, npm run *, npm *, curl 5120 health checks, pkill vitest/node.*viz, npx vitest *, Read(//tmp/**), Read(/~/code/**), awk *.
   - Remove: all `ln -s` entries, `Bash(cd *)`, all `sed -n '<N>p'` with hardcoded line numbers, all version-string greps, all `echo "exit $?"` / `echo "=COMMIT-EXIT=$?"` etc. patterns, `jobs -l`, all single-use awk/sort/grep/node/python3 debugging one-liners.
   - No test suite exists for a JSON config; validation = `python3 json.load` post-edit.
 
@@ -87,10 +87,10 @@ Discovery surfaced no significant deviation → skip 🛠️.
 
 **Before:** 140 entries (post CORE-291). **After:** 38 entries (73% reduction).
 
-Whitelist kept: 12 playwright MCP tools, abs-path viz npm/test, npx vitest/tsc, lsof/pkill/curl 5120 variants, WebSearch, Skill(ft-task/ft-audit-docs), gh api *, git add/commit/*, npm audit/run/*, gitleaks *, awk *, Read(//tmp/** and //Users/fakeneuron/Code/**).
+Whitelist kept: 12 playwright MCP tools, abs-path viz npm/test, npx vitest/tsc, lsof/pkill/curl 5120 variants, WebSearch, Skill(ft-task/ft-audit-docs), gh api *, git add/commit/*, npm audit/run/*, gitleaks *, awk *, Read(//tmp/** and /~/code/**).
 
 Removed categories:
-- **6 one-time `ln -s` setup commands** (natabula symlinks + ft-update global symlink)
+- **6 one-time `ln -s` setup commands** (project-20 symlinks + ft-update global symlink)
 - **1 blanket `Bash(cd *)` allow**
 - **17 `sed -n '<N>p'` line-specific debugging one-liners** (hardcoded line numbers tied to specific doc versions)
 - **2 version-pinned `grep -rn "4.2.0"`** and related version-string greps
@@ -119,7 +119,7 @@ No test suite for JSON config. JSON validated clean post-edit. All `ln -s` entri
 
 **Final Summary:**
 
-Pruned `.claude/settings.local.json` from 140 to 38 allow entries (73% reduction) by removing all three named categories — 6 one-time `ln -s` natabula/ft-update symlink commands, the blanket `Bash(cd *)`, and 17 version-pinned `sed -n '<N>p'` debugging one-liners — plus ~77 additional single-use debugging artifacts: echo exit-code patterns, GLOSSARY.md one-off greps, PLAN.md section extractors, single-use sort/pipe fragments, node/python3 one-liners, and other session-specific noise.
+Pruned `.claude/settings.local.json` from 140 to 38 allow entries (73% reduction) by removing all three named categories — 6 one-time `ln -s` project-20/ft-update symlink commands, the blanket `Bash(cd *)`, and 17 version-pinned `sed -n '<N>p'` debugging one-liners — plus ~77 additional single-use debugging artifacts: echo exit-code patterns, GLOSSARY.md one-off greps, PLAN.md section extractors, single-use sort/pipe fragments, node/python3 one-liners, and other session-specific noise.
 
 **Technical detail:** 1 file edited (`.claude/settings.local.json`, 140→38 entries, −102 rules). Python parse→filter→re-emit (whitelist approach). JSON validated clean. No other files touched; no frontend; no privileged-ops surface → autonomous commit expected.
 

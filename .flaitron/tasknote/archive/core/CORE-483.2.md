@@ -13,13 +13,13 @@ related-tasks: [CORE-EPIC-483, CORE-483.1]
 
 ## 🎯 Goal
 
-Rewrite the personal-layer screenshot policy so screenshots become an ephemeral agent-self-verification tool landing in absolute `~/Code/_screenshots/<project>/`, and retire the contradictory `/tmp/playwright-mcp` memory.
+Rewrite the personal-layer screenshot policy so screenshots become an ephemeral agent-self-verification tool landing in absolute `~/code/_screenshots/<project>/`, and retire the contradictory `/tmp/playwright-mcp` memory.
 
 ## ✅ Acceptance
 
 - [x] Global `~/.claude/CLAUDE.md` Playwright-screenshot rule rewritten: trigger is agent self-verification of rendered UI (or explicit operator ask) only — never routine per-task evidence — and `👁️ CONFIRM` is named as the acceptance mechanism
-- [x] The same rule names the destination as absolute `~/Code/_screenshots/<project>/<name>.png`; `.flowtron/screenshots/` no longer appears as a global instruction
-- [x] `~/.claude.json` playwright MCP `--output-dir` repointed off `/tmp/playwright-mcp` to the literal absolute path `/Users/fakeneuron/Code/_screenshots` (JSON args are not shell-expanded, so no `~`), verified by re-grep after the write
+- [x] The same rule names the destination as absolute `~/code/_screenshots/<project>/<name>.png`; `.flowtron/screenshots/` no longer appears as a global instruction
+- [x] `~/.claude.json` playwright MCP `--output-dir` repointed off `/tmp/playwright-mcp` to the literal absolute path `~/code/_screenshots` (JSON args are not shell-expanded, so no `~`), verified by re-grep after the write
 - [x] Memory `feedback_playwright_artifact_paths.md` rewritten in place to the new trigger + destination (no duplicate memory file), and its `MEMORY.md` index hook updated to match
 - [x] Flowtron stays silent: no flowtron contract doc gains a screenshot rule, and the tracked `.flowtron/screenshots/viz-board.png` README asset ([[CORE-383]]) is untouched
 - [x] Phase 4 doc-drift sweep run across all 17 `.flowtron/tasknote/README.md` §"AI-referenced docs" entries
@@ -28,9 +28,9 @@ Rewrite the personal-layer screenshot policy so screenshots become an ephemeral 
 
 - [x] Draft the replacement `~/.claude/CLAUDE.md` bullet — trigger clause + absolute destination + `👁️ CONFIRM` pointer, matching the surrounding "Tech Stack Tendencies" bullet style
 - [x] Edit `~/.claude/CLAUDE.md:54` in place (surgical single-bullet replacement; touch nothing adjacent)
-- [x] Edit `~/.claude.json` playwright `args` `--output-dir` value → `/Users/fakeneuron/Code/_screenshots`; re-grep to confirm the write persisted (live config, app-owned)
+- [x] Edit `~/.claude.json` playwright `args` `--output-dir` value → `~/code/_screenshots`; re-grep to confirm the write persisted (live config, app-owned)
 - [x] Rewrite the memory body + `description:` frontmatter to the new policy; update the one-line `MEMORY.md` index hook
-- [x] Re-grep the whole global layer (`~/.claude/`, `~/Code/CLAUDE.md`) for surviving `/tmp/playwright-mcp` or `.flowtron/screenshots` instructions
+- [x] Re-grep the whole global layer (`~/.claude/`, `~/code/CLAUDE.md`) for surviving `/tmp/playwright-mcp` or `.flowtron/screenshots` instructions
 - [x] Phase 3: re-read all three edited surfaces; confirm no flowtron-repo file changed beyond the tasknote/PLAN, and `README.md:21` viz-board reference is intact
 - [x] Phase 4: doc-drift sweep (17 entries), flip the `.2` PLAN line to stub form keeping 2-space nesting under the active parent, archive the tasknote, commit
 
@@ -68,15 +68,15 @@ Rewrite the personal-layer screenshot policy so screenshots become an ephemeral 
 
 | Surface | Current state | Target |
 |---|---|---|
-| `~/.claude/CLAUDE.md:54` | *"Playwright screenshots (`browser_take_screenshot`) must always be saved to `.flowtron/screenshots/<name>.png` — never a bare filename at the project root. Create the directory first if it doesn't exist."* | Trigger clause (self-verification only) + absolute `~/Code/_screenshots/<project>/` + `👁️ CONFIRM` pointer |
-| `~/.claude.json:3892` | `"--output-dir", "/tmp/playwright-mcp"` | `"/Users/fakeneuron/Code/_screenshots"` |
+| `~/.claude/CLAUDE.md:54` | *"Playwright screenshots (`browser_take_screenshot`) must always be saved to `.flowtron/screenshots/<name>.png` — never a bare filename at the project root. Create the directory first if it doesn't exist."* | Trigger clause (self-verification only) + absolute `~/code/_screenshots/<project>/` + `👁️ CONFIRM` pointer |
+| `~/.claude.json:3892` | `"--output-dir", "/tmp/playwright-mcp"` | `"~/code/_screenshots"` |
 | memory `feedback_playwright_artifact_paths.md` (117d old) + `MEMORY.md:5` | prescribes `/tmp/playwright-mcp/` | rewritten in place to the new policy |
 
-**Drift finding 1 — no tilde expansion in MCP args.** The `args` array in `~/.claude.json` is passed to `npx` as an argv vector; no shell is involved, so a `~/Code/_screenshots` value would be taken literally as a relative directory named `~`. The existing `/tmp/playwright-mcp` value is already absolute, confirming the convention. The JSON gets the fully-expanded `/Users/fakeneuron/Code/_screenshots`; the human-facing `CLAUDE.md` rule keeps the readable `~/Code/_screenshots/<project>/` form.
+**Drift finding 1 — no tilde expansion in MCP args.** The `args` array in `~/.claude.json` is passed to `npx` as an argv vector; no shell is involved, so a `~/code/_screenshots` value would be taken literally as a relative directory named `~`. The existing `/tmp/playwright-mcp` value is already absolute, confirming the convention. The JSON gets the fully-expanded `~/code/_screenshots`; the human-facing `CLAUDE.md` rule keeps the readable `~/code/_screenshots/<project>/` form.
 
 **Drift finding 2 — `~/.claude.json` is app-owned and live.** `mtime` was 17:23 today, i.e. Claude Code rewrites this file during a session. An external edit can in principle be clobbered by a later flush. Mitigation: write it, immediately re-grep to confirm persistence (Acceptance criterion 3), and note in the recap that the MCP server only picks up the new `--output-dir` on the next session start.
 
-**Drift finding 3 — `~/Code/_screenshots/` does not exist yet.** Correct per the epic split: creating it is explicitly [[CORE-483.4]]'s first step. `@playwright/mcp` creates its `--output-dir` on demand, so the repoint is safe in the interim. Not pulled forward.
+**Drift finding 3 — `~/code/_screenshots/` does not exist yet.** Correct per the epic split: creating it is explicitly [[CORE-483.4]]'s first step. `@playwright/mcp` creates its `--output-dir` on demand, so the repoint is safe in the interim. Not pulled forward.
 
 **Archive skim findings.**
 
@@ -85,13 +85,13 @@ Rewrite the personal-layer screenshot policy so screenshots become an ephemeral 
 
 **Flowtron-silence check (verifies the `.3` resolution holds from this side).** `grep -rn screenshots` over the flowtron repo, archive excluded, returns four files: `README.md:21` (the CORE-383 asset), `claude/skills/ft-task/step-4-debug-mode.md:18` (lists "log lines, screenshots, stack traces" as debug evidence — no path, no mandate), `.flowtron/PLAN.md` (this epic), and this tasknote. Flowtron's `.gitignore` carries no screenshot entry, consistent with tracking `viz-board.png`. **Flowtron mandates nothing today and gains nothing here** — confirmed, no flowtron edit in scope.
 
-**Global-layer completeness.** `~/fakeneuron/CLAUDE.md` does not exist; `~/Code/CLAUDE.md` covers git workflow only. `~/.claude/settings.json` references playwright tool *names* and a `pkill -f playwright-mcp` hook (process cleanup, unaffected by an output path). `~/.claude/skills/clean-stray/SKILL.md` matches `playwright-mcp` as a *process* pattern, not a path. So `~/.claude/CLAUDE.md:54` is the sole global instruction surface.
+**Global-layer completeness.** `~/operator/CLAUDE.md` does not exist; `~/code/CLAUDE.md` covers git workflow only. `~/.claude/settings.json` references playwright tool *names* and a `pkill -f playwright-mcp` hook (process cleanup, unaffected by an output path). `~/.claude/skills/clean-stray/SKILL.md` matches `playwright-mcp` as a *process* pattern, not a path. So `~/.claude/CLAUDE.md:54` is the sole global instruction surface.
 
 **Explicit assumptions (no clarifications needed):**
 
 1. **Memory is rewritten, not deleted.** Its anti-pattern half — never let a bare relative `filename` drop debris in the repo cwd — is still correct and still worth carrying; only the destination changed. Memory guidance says update the existing file rather than create a duplicate.
 2. **Closure commits PLAN + archive only.** All three deliverables live outside any git repo (`~/.claude` is not a working tree). This is the shape [[CORE-483.1]] already recorded and the operator accepted ("the epic's edits land in personal-layer files … by design"), so the paper-complete guard's workflow-only carve-out applies; the tasknote's verification evidence is the durable record.
-3. **`.flowtron/screenshots/` survives as an adopter-side gitignored safety net**, documented in natabula by [[CORE-483.3]] — the global rule simply stops naming it.
+3. **`.flowtron/screenshots/` survives as an adopter-side gitignored safety net**, documented in project-20 by [[CORE-483.3]] — the global rule simply stops naming it.
 
 ## 🛠️ Phase 2: Execution
 
@@ -107,11 +107,11 @@ Rewrite the personal-layer screenshot policy so screenshots become an ephemeral 
 
 Three edits, all outside any git repo:
 
-1. **`~/.claude/CLAUDE.md:54`** — one bullet replaced. Old text mandated `.flowtron/screenshots/<name>.png` unconditionally. New text leads with the *trigger* (`agent self-verification tool, not evidence`; only for checking rendered UI of a just-made change, or on explicit ask), names `👁️ CONFIRM` against the live view as the acceptance mechanism, then gives the destination as absolute `~/Code/_screenshots/<project>/<name>.png` with both prohibitions kept (no bare filename → repo cwd; never inside a project repo). Generalized `Playwright screenshots` → `Screenshots (browser_take_screenshot, any browser MCP)` so the rule also binds `claude-in-chrome`, which did not exist when the old rule was written.
-2. **`~/.claude.json:3892`** — playwright MCP `--output-dir`: `/tmp/playwright-mcp` → `/Users/fakeneuron/Code/_screenshots`. Fully expanded per drift finding 1. Line numbers and the surrounding `mcpServers.playwright` block are otherwise byte-identical.
+1. **`~/.claude/CLAUDE.md:54`** — one bullet replaced. Old text mandated `.flowtron/screenshots/<name>.png` unconditionally. New text leads with the *trigger* (`agent self-verification tool, not evidence`; only for checking rendered UI of a just-made change, or on explicit ask), names `👁️ CONFIRM` against the live view as the acceptance mechanism, then gives the destination as absolute `~/code/_screenshots/<project>/<name>.png` with both prohibitions kept (no bare filename → repo cwd; never inside a project repo). Generalized `Playwright screenshots` → `Screenshots (browser_take_screenshot, any browser MCP)` so the rule also binds `claude-in-chrome`, which did not exist when the old rule was written.
+2. **`~/.claude.json:3892`** — playwright MCP `--output-dir`: `/tmp/playwright-mcp` → `~/code/_screenshots`. Fully expanded per drift finding 1. Line numbers and the surrounding `mcpServers.playwright` block are otherwise byte-identical.
 3. **memory `feedback_playwright_artifact_paths.md` + `MEMORY.md:5`** — rewritten in place (no new file, no duplicate). The still-valid half survives (a bare relative `filename` resolves to the repo cwd and leaves debris in `git status`); the destination and the trigger are new; the **Why:** now cites the CORE-EPIC-483 evidence (~300MB across ~20 repos, 68+ archived tasknotes citing paths git never preserved) and `SPEC.md` §Phase 3. The `.flowtron/screenshots/` mention that survives in **How to apply:** is deliberate and correctly framed — an adopter-side gitignored safety net for tools that ignore the setting, explicitly "never write there deliberately" — which is the [[CORE-483.3]] framing, not the retired global instruction. One carve-out preserved: the [[CORE-383]] tracked README hero shot.
 
-Nothing was pulled forward from [[CORE-483.3]] (natabula deposit wording) or [[CORE-483.4]] (create `~/Code/_screenshots/`, prune adopters).
+Nothing was pulled forward from [[CORE-483.3]] (project-20 deposit wording) or [[CORE-483.4]] (create `~/code/_screenshots/`, prune adopters).
 
 ## 🧪 Phase 3: Testing & Linting
 
@@ -138,8 +138,8 @@ Nothing was pulled forward from [[CORE-483.3]] (natabula deposit wording) or [[C
 | Check | Result |
 |---|---|
 | `sed -n '53,56p' ~/.claude/CLAUDE.md` | New bullet in place at :54; neighbours (:53 MCP servers, :55 defer-to-project) byte-unchanged |
-| `grep -A1 '"--output-dir"' ~/.claude.json` | `:3892 "/Users/fakeneuron/Code/_screenshots"` — the write **persisted** through the live app's own flushes (drift finding 2 mitigated) |
-| `grep -rn "tmp/playwright-mcp\|flowtron/screenshots"` over `~/.claude/CLAUDE.md`, `~/Code/CLAUDE.md`, memory dir | One hit only: the memory's deliberate adopter-safety-net clause. **Zero** surviving `/tmp/playwright-mcp` instructions anywhere in the global layer |
+| `grep -A1 '"--output-dir"' ~/.claude.json` | `:3892 "~/code/_screenshots"` — the write **persisted** through the live app's own flushes (drift finding 2 mitigated) |
+| `grep -rn "tmp/playwright-mcp\|flowtron/screenshots"` over `~/.claude/CLAUDE.md`, `~/code/CLAUDE.md`, memory dir | One hit only: the memory's deliberate adopter-safety-net clause. **Zero** surviving `/tmp/playwright-mcp` instructions anywhere in the global layer |
 | `git status --porcelain` | `?? .flowtron/tasknote/CORE-483.2.md` only — no personal-layer edit leaked into the repo |
 | `README.md:21` + `ls .flowtron/screenshots/viz-board.png` | Reference intact; asset intact (64507 bytes, Jul 31) — [[CORE-383]] carve-out untouched |
 
@@ -157,9 +157,9 @@ Nothing was pulled forward from [[CORE-483.3]] (natabula deposit wording) or [[C
 
 Retired the keep-every-screenshot habit at its source. The global `~/.claude/CLAUDE.md` rule that unconditionally mandated `.flowtron/screenshots/<name>.png` now leads with a *trigger* instead of a path: screenshots are an agent self-verification tool, taken only to check the rendered UI of a just-made change or on explicit ask, with `👁️ CONFIRM` against the operator's live view named as the acceptance mechanism — the contract `SPEC.md` §Phase 3 already carried but the personal layer was overriding.
 
-Three surfaces changed, none in a git repo: `~/.claude/CLAUDE.md:54` (one bullet, rewritten and generalized from "Playwright screenshots" to any browser MCP so it binds `claude-in-chrome` too); `~/.claude.json:3892` (playwright MCP `--output-dir`: `/tmp/playwright-mcp` → `/Users/fakeneuron/Code/_screenshots`, fully expanded because MCP `args` are an argv vector with no shell to expand `~`); and the 117-day-old memory `feedback_playwright_artifact_paths.md`, rewritten in place — its still-correct anti-pattern half kept, its stale `/tmp` destination replaced, its **Why:** rebuilt on the epic's own evidence.
+Three surfaces changed, none in a git repo: `~/.claude/CLAUDE.md:54` (one bullet, rewritten and generalized from "Playwright screenshots" to any browser MCP so it binds `claude-in-chrome` too); `~/.claude.json:3892` (playwright MCP `--output-dir`: `/tmp/playwright-mcp` → `~/code/_screenshots`, fully expanded because MCP `args` are an argv vector with no shell to expand `~`); and the 117-day-old memory `feedback_playwright_artifact_paths.md`, rewritten in place — its still-correct anti-pattern half kept, its stale `/tmp` destination replaced, its **Why:** rebuilt on the epic's own evidence.
 
-Verification: each surface re-read after writing; the `~/.claude.json` edit confirmed to have **persisted** through the live app's flushes; a global-layer grep leaves **zero** surviving `/tmp/playwright-mcp` instructions; `git status` shows the personal-layer edits left no trace in the repo; [[CORE-383]]'s tracked `viz-board.png` hero shot verified intact. Refactors: none — three single-surface replacements, nothing adjacent touched. Documentation verdict: 17/17 "no change", flowtron silent by design. Deferred: the repointed `--output-dir` binds on the next session start (not runtime-verifiable here), and `~/Code/_screenshots/` is created by [[CORE-483.4]] — `@playwright/mcp` makes its output dir on demand, so the gap is safe.
+Verification: each surface re-read after writing; the `~/.claude.json` edit confirmed to have **persisted** through the live app's flushes; a global-layer grep leaves **zero** surviving `/tmp/playwright-mcp` instructions; `git status` shows the personal-layer edits left no trace in the repo; [[CORE-383]]'s tracked `viz-board.png` hero shot verified intact. Refactors: none — three single-surface replacements, nothing adjacent touched. Documentation verdict: 17/17 "no change", flowtron silent by design. Deferred: the repointed `--output-dir` binds on the next session start (not runtime-verifiable here), and `~/code/_screenshots/` is created by [[CORE-483.4]] — `@playwright/mcp` makes its output dir on demand, so the gap is safe.
 
 Maintainability effect: the instruction that manufactured ~300MB of gitignored PNGs across ~20 repos and 68+ archived tasknotes citing paths git never preserved is gone, and the two personal-layer surfaces that contradicted each other for 117 days now agree. Unblocks [[CORE-483.3]] and [[CORE-483.4]], which the Fan-out declares Sequential after this child.
 

@@ -40,7 +40,7 @@ Update the "Model Selection" line and surrounding guidance in the user's global 
   **Rationale:** Exact match to the filed scope (global `~/.claude/Claude.md` Model Selection update + spot-check of SPEC/templates). Continues the mechanical hygiene pattern from siblings .2/.3/.7 (terminology locked in .1; emission generators cleaned). The global surface was explicitly called out in .1 inventory but deferred to this dedicated child. Retag to [grok] at Step 1.5 was operator choice for this session; does not change the light mechanical character of the doc edit. No scope growth or cross-cutting concerns.
 
 - [x] Read relevant source files
-  - Target: full `/Users/fakeneuron/.claude/Claude.md` (75 lines; Model Selection is exactly the single bullet at :44 using "Opus" / "Sonnet")
+  - Target: full `~/.claude/Claude.md` (75 lines; Model Selection is exactly the single bullet at :44 using "Opus" / "Sonnet")
   - `SPEC/model.md` (agent-aware practical guidance + Grok [light] notes, post-207)
   - `SPEC.md` §"Post-closure protocol" (the copy-paste example) + §"Model field" + §"When to use..."
   - `templates/tasknote-template.md` + `templates/PLAN.md` (placeholder [opus] examples only)
@@ -61,7 +61,7 @@ Update the "Model Selection" line and surrounding guidance in the user's global 
 **Discovery Notes:**
 
 **Source inventory (2026-05-26):**
-- Global target `/Users/fakeneuron/.claude/Claude.md:44` still carries the pre-epic specific-model guidance ("Default to Opus... prefer Sonnet..."). This is the primary (and only) live user-facing Model Selection rule the operator sees on every session start via the context briefing. Updating it is the core deliverable of this child.
+- Global target `~/.claude/Claude.md:44` still carries the pre-epic specific-model guidance ("Default to Opus... prefer Sonnet..."). This is the primary (and only) live user-facing Model Selection rule the operator sees on every session start via the context briefing. Updating it is the core deliverable of this child.
 - SPEC/templates spot-check:
   - `SPEC.md:523` still shows the old example: `/clear then /model <opus|sonnet> then /<next-skill> <args>` inside the documented "Offer the copy-paste line" step. This is now a stale example (skills no longer emit it post-208.2/7), but it is in a contract doc, not a generator. Left for .5 verify or light touch if .4 broadens.
   - `templates/PLAN.md` uses `[opus]` only as illustrative placeholder in the example task-line grammar (fine; specific names remain valid per SPEC/model.md).
@@ -90,7 +90,7 @@ Update the "Model Selection" line and surrounding guidance in the user's global 
   - Global `~/.claude/Claude.md` itself follows a consistent short-bullet format under ### headings (no cross-refs, no tables in that section). The update is a 1:1 mechanical swap of the recommendation sentence.
   - No justification needed for "new shape" — this is pure vocabulary alignment on a config surface.
 - [x] Implemented the minimal solution
-  - Performed the exact targeted replacement in `/Users/fakeneuron/.claude/Claude.md:44` (the live global the user loads on every session).
+  - Performed the exact targeted replacement in `~/.claude/Claude.md:44` (the live global the user loads on every session).
   - Old: "Default to Opus for design/multi-file/ambiguity; prefer Sonnet for mechanical work with a clear diff in mind."
   - New: "Default to [heavy]🧠 for design/multi-file/ambiguity; prefer [light]🔧 for mechanical work with a clear diff in mind."
   - This directly fulfills the PLAN one-liner for .4 and the epic goal for the global CLAUDE.md leg. The "specific models remain valid" clause stays in SPEC/model.md (the canonical contract); the global now uses the primary-label form the epic standardized.
@@ -138,6 +138,6 @@ Update the "Model Selection" line and surrounding guidance in the user's global 
 
 Updated the operator's global `~/.claude/Claude.md` Model Selection guidance (and spot-checked SPEC/templates) to the agent-agnostic `[heavy]🧠` / `[light]🔧` + "design vs mechanical" form, completing the global CLAUDE.md leg of CORE-EPIC-208 with user visual sign-off.
 
-Technical: 1-line surgical replace in `/Users/fakeneuron/.claude/Claude.md:44` (Opus/Sonnet → primary labels + emojis); 75-line file read + grep confirmed clean; spot-check of SPEC (523 example stale, noted) + templates (harmless placeholders only); 👁️ visual passed ("Looks good — proceed"); Phase 1 skipped 🛠️ (no deviation); [light]→[grok] retag at 1.5 per gate choice; doc-drift all "no change" on the 9 AI-referenced docs (global edit outside set). 0 LOC in repo sources; workflow artifacts only (this tasknote + PLAN retag). Verification: exact post-edit read + user confirmation.
+Technical: 1-line surgical replace in `~/.claude/Claude.md:44` (Opus/Sonnet → primary labels + emojis); 75-line file read + grep confirmed clean; spot-check of SPEC (523 example stale, noted) + templates (harmless placeholders only); 👁️ visual passed ("Looks good — proceed"); Phase 1 skipped 🛠️ (no deviation); [light]→[grok] retag at 1.5 per gate choice; doc-drift all "no change" on the 9 AI-referenced docs (global edit outside set). 0 LOC in repo sources; workflow artifacts only (this tasknote + PLAN retag). Verification: exact post-edit read + user confirmation.
 
 **Archived:** 2026-05-26

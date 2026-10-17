@@ -66,7 +66,7 @@ Scope the `CORE-EPIC-463` epic (`refactor-and-structure-audit`) before any imple
   **Verdict:** Proceed
   **Rationale:** Operator invoked `/ft-epic-discovery` after surfacing three linked concerns — no refactor skill exists, `/ft-audit` feels like "mostly re-running tests", and no pass covers stray scripts. Investigation confirmed all three as genuine gaps with a shared root (see below). Multi-child scope; not a single-task filing.
 
-- [x] Read relevant source files — `claude/skills/ft-audit/SKILL.md` + all six `passes/*.md`; `claude/skills/ft-audit-repo/SKILL.md`; `claude/skills/ft-new-project/SKILL.md` Step 3; filled adopter forks at `bidviz/.claude/skills/audit-backend/` and `marscharts/.claude/skills/audit/`.
+- [x] Read relevant source files — `claude/skills/ft-audit/SKILL.md` + all six `passes/*.md`; `claude/skills/ft-audit-repo/SKILL.md`; `claude/skills/ft-new-project/SKILL.md` Step 3; filled adopter forks at `project-05/.claude/skills/audit-backend/` and `project-19/.claude/skills/audit/`.
 
 - [x] **Best Practices Review** — N/A for this Discovery: deliverable is PLAN.md child lines, no code surface touched. Responsibility boundaries between the two new skills were resolved as a scoping question instead (see "Resolved scoping").
 
@@ -82,7 +82,7 @@ Scope the `CORE-EPIC-463` epic (`refactor-and-structure-audit`) before any imple
 
 ### Root-cause finding (motivating the epic)
 
-The operator's "`/ft-audit` is mostly re-running the tests" is a real symptom with a cause one layer below the skill design. `~/.claude/skills/ft-audit` is a **symlink to flowtron's unfilled scaffold** — every rubric slot reads `<forker: set this>` and every gate reads `<lint command for your stack>`. Only **6 of 24** repos under `~/code` carry a filled fork (`adppro`, `bananapeel`, `bidviz`, `marscharts`, `siteguy`, `InvisiPaw`); the filled ones are genuinely strong (bidviz names real sacred invariants and `uv run pyright` gates, 0 placeholders remaining). In the other **18 repos** the auditor loads placeholder rubrics, cannot ground findings in project contracts, and the only concrete grounded move left is the test suite.
+The operator's "`/ft-audit` is mostly re-running the tests" is a real symptom with a cause one layer below the skill design. `~/.claude/skills/ft-audit` is a **symlink to flowtron's unfilled scaffold** — every rubric slot reads `<forker: set this>` and every gate reads `<lint command for your stack>`. Only **6 of 24** repos under `~/code` carry a filled fork (`project-02`, `project-04`, `project-05`, `project-19`, `project-26`, `Project-17`); the filled ones are genuinely strong (project-05 names real sacred invariants and `uv run pyright` gates, 0 placeholders remaining). In the other **18 repos** the auditor loads placeholder rubrics, cannot ground findings in project contracts, and the only concrete grounded move left is the test suite.
 
 Corroborated by PLAN.md itself: nearly every recent `Surfaced by audit-*` ticket is doc drift or a Low nit (`readme-task-counter`, `glossary-entry-count`, `platforms-model-hint-drift`) — a proofreader, not a structural reviewer.
 
@@ -125,7 +125,7 @@ Three tiers exist today: **symlinked** (11 stack-neutral drivers), **forked** (`
 | Safety contract | **Strict** — characterization tests pin behavior before restructuring; refactor commits behavior-preserving and never mixed with feature change. Encoded as acceptance criteria on the filed children, not executed by the skill |
 | Unfilled-scaffold problem | **In scope** — make `/ft-audit` self-filling (detect placeholders, auto-derive gates from `package.json` / `pyproject.toml` / CI config, offer fork+fill inline) |
 | Stray scripts | **A pass inside the new `structure` domain** |
-| Where the skill lives | **flowtron** (layer 2, bundled). Global `ft-*` skills are already symlinks into flowtron; natabula is the layer-3 personal-config deposit layer |
+| Where the skill lives | **flowtron** (layer 2, bundled). Global `ft-*` skills are already symlinks into flowtron; project-20 is the layer-3 personal-config deposit layer |
 | `/ft-refactor` install tier | **Symlinked**, like `/ft-task` and `/ft-spec` (22 → 24 symlinks) |
 | Existing-fork propagation | Teach **`/ft-update`** to detect a local `ft-audit` fork missing newly-shipped pass files and offer to add them without clobbering filled rubrics — folded into `.4` |
 | Area / priority / model / M | **CORE** · **Medium** · **`[heavy]🧠`** · **M=4** |
@@ -220,7 +220,7 @@ Markdown mental-pass on the `CORE-EPIC-463` block:
 
 Filed `CORE-EPIC-463` (`refactor-and-structure-audit`) and closed its `.1` Discovery, scoping four implementation children.
 
-The Discovery's load-bearing finding was diagnostic rather than architectural: the operator's report that `/ft-audit` is "mostly re-running the tests" traces not to the skill's design — which is substantive, with six domain pass-libraries, capped findings, severity guides, and an anti-rationalization table — but to its **install state**. `~/.claude/skills/ft-audit` symlinks flowtron's unfilled scaffold, so in the 18 of 24 `~/code` repos without a filled fork, every rubric slot reads `<forker: set this>` and every gate reads `<lint command for your stack>`. With no project contracts to audit against, the test suite is the only grounded move left. The six filled forks (notably `bidviz/.claude/skills/audit-backend/`, 0 placeholders remaining) confirm the design works when filled — making this a distribution defect, not a design defect. That reframing produced `.4`, which was not in the original brief.
+The Discovery's load-bearing finding was diagnostic rather than architectural: the operator's report that `/ft-audit` is "mostly re-running the tests" traces not to the skill's design — which is substantive, with six domain pass-libraries, capped findings, severity guides, and an anti-rationalization table — but to its **install state**. `~/.claude/skills/ft-audit` symlinks flowtron's unfilled scaffold, so in the 18 of 24 `~/code` repos without a filled fork, every rubric slot reads `<forker: set this>` and every gate reads `<lint command for your stack>`. With no project contracts to audit against, the test suite is the only grounded move left. The six filled forks (notably `project-05/.claude/skills/audit-backend/`, 0 placeholders remaining) confirm the design works when filled — making this a distribution defect, not a design defect. That reframing produced `.4`, which was not in the original brief.
 
 Two genuine capability gaps were confirmed absent across flowtron's 18 bundled skills, 35 global skills, and every adopter fork: no refactor skill of any kind, and no structural audit domain (`general`'s Hygiene and Orphans passes graze dead code and long functions but never reach duplication clusters, coupling, abstraction drift, or stray scripts).
 

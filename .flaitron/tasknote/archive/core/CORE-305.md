@@ -93,7 +93,7 @@ The `unverified` rows are noted-not-gated — skip.
 Additive cohort, **no required project-side edits**:
 
 1. **Fable in the model vocabulary (CORE-303).** `SPEC/model.md` tier calibration now names `fable` as a heavy-tier concrete token (Anthropic's tier above opus); downstream `[model]`-tag matching and `/ft-stats` bucketing recognize it. Consumed via submodule pin; no adopter edits.
-2. **De-anchored copy-paste glyph templates (CORE-304).** All 8 post-closure hand-off templates now state the candidate-glyph mapping before the example and use a `<glyph>`/`${GLYPH}` placeholder instead of a literal 🔧 — fixes the observed misfire where a `[opus]🧠` next task got a 🔧 label line (bananapeel BP-2410.6). Behavioral prompt fix, consumed via pin on `/ft-update`; no adopter edits.
+2. **De-anchored copy-paste glyph templates (CORE-304).** All 8 post-closure hand-off templates now state the candidate-glyph mapping before the example and use a `<glyph>`/`${GLYPH}` placeholder instead of a literal 🔧 — fixes the observed misfire where a `[opus]🧠` next task got a 🔧 label line (project-04 BP-2410.6). Behavioral prompt fix, consumed via pin on `/ft-update`; no adopter edits.
 
 ## 🛠️ Phase 2: Execution
 

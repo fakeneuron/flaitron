@@ -56,7 +56,7 @@ Build the maintained platform×model×effort calibration table in SPEC/model.md 
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** First implementation child of CORE-EPIC-482, filed one session ago by the `.1` Discovery with an operator-resolved scoping table; nothing has moved since. The table closes the real gap that automated choosers (caobunga) have no calibration reference for tier-band picks.
+  **Rationale:** First implementation child of CORE-EPIC-482, filed one session ago by the `.1` Discovery with an operator-resolved scoping table; nothing has moved since. The table closes the real gap that automated choosers (project-07) have no calibration reference for tier-band picks.
 
 - [x] Read relevant source files — SPEC/model.md (full), claude/skills/ft-task/step-1.5-model-edge.md (full), SPEC.md `[model]` column + grammar examples (lines ~184, ~218, ~292–293)
 

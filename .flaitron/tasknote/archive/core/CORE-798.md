@@ -72,9 +72,9 @@ Tighten `SPEC/unattended-candidacy.md` §"Preparing declined rows" so a pin clea
 
 **Discovery Notes:**
 
-G1 evidence (CORE-797): marscharts FE-486.5 — `npm run test:e2e` exists, but no spec decides the inset look. email-manager CORE-EPIC-2.3 and fakeneuron-nas NAS-13 — `migration` trips on a path (`migrations/0001`, `docs/MIGRATION.md`); rewording would clear clause 3 with no person removed.
+G1 evidence (CORE-797): project-19 FE-486.5 — `npm run test:e2e` exists, but no spec decides the inset look. project-10 CORE-EPIC-2.3 and project-11 NAS-13 — `migration` trips on a path (`migrations/0001`, `docs/MIGRATION.md`); rewording would clear clause 3 with no person removed.
 
-G2 evidence: AL-017 (a pass1.tsv edit that depends on a Scholar authorship answer), AL-022, NAS-11.8 (chmod before InvisiPaw's runbook edit), NAS-15.
+G2 evidence: AL-017 (a pass1.tsv edit that depends on a Scholar authorship answer), AL-022, NAS-11.8 (chmod before Project-17's runbook edit), NAS-15.
 
 Discovery surfaced no significant deviation → skip 🛠️.
 
@@ -94,7 +94,7 @@ Discovery surfaced no significant deviation → skip 🛠️.
 
 **Implementation Notes:**
 
-- **Pin.** A pin may rewrite the words behind a clause-3 decline only when those words stand for a check a test can make: a look or a manual check, with or without a cue. That scoping keeps credentials, deploy, and the rest with the Stay bullet. The pin must also name an existing command that *decides* the check, meaning it tests that result itself and not a nearby one. Two rewrites are not pins: a generic runner that only exists (G1, marscharts FE-486.5), and rewording a keyword that trips on a path or a name (G1, email-manager CORE-EPIC-2.3, NAS-13). A generic-runner row falls to split or stay. A path-tripped row has no person act to split off, so the Stay bullet holds it, and its reason names the path for a hand edit. That stay reason sits in the Stay bullet with the others.
+- **Pin.** A pin may rewrite the words behind a clause-3 decline only when those words stand for a check a test can make: a look or a manual check, with or without a cue. That scoping keeps credentials, deploy, and the rest with the Stay bullet. The pin must also name an existing command that *decides* the check, meaning it tests that result itself and not a nearby one. Two rewrites are not pins: a generic runner that only exists (G1, project-19 FE-486.5), and rewording a keyword that trips on a path or a name (G1, project-10 CORE-EPIC-2.3, NAS-13). A generic-runner row falls to split or stay. A path-tripped row has no person act to split off, so the Stay bullet holds it, and its reason names the path for a hand edit. That stay reason sits in the Stay bullet with the others.
 - **Split.** The mechanical row never uses the person act's result: an answer, a value, or a state the act leaves behind. Its test is "correct before, after, or without the act", which also covers ordering (G2: AL-017, NAS-11.8). A slice that fails has not "separated cleanly", which ties the bullet to the preference line, and the row stays.
 - The wording avoids "wait for", because CORE-797 G3 notes that clause 6 already sequences an epic's mechanical `.k` after its remainder. That ordering belongs to CORE-799, and this bullet is about substance.
 

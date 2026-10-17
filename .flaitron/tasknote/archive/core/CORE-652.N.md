@@ -48,7 +48,7 @@ Verify the completed `CORE-EPIC-652` (`public-surface-decoupling`) cohort sits c
 ## 🔗 Related
 
 - [[CORE-EPIC-652]] — parent epic (public-surface-decoupling); Discovery supplied by audit-repo 2026-09-21, no `.1` child
-- [[CORE-652.2]] — sole implementation child (natabula-ref-inventory), closed 2026-09-21
+- [[CORE-652.2]] — sole implementation child (project-20-ref-inventory), closed 2026-09-21
 
 ---
 
@@ -75,13 +75,13 @@ Verify the completed `CORE-EPIC-652` (`public-surface-decoupling`) cohort sits c
 
 **Discovery Notes:**
 
-**Cohort inventory (from `archive/core/CORE-652.2.md`):** 14 files, comment/prose only, commit `4181ae63`. 22 inventory lines resolved — 17 reworded to stand alone (the 7 `NAT-*` → `archive/natabula/` example sites became `OPS-*` → `archive/operations/`: `SPEC.md`, `SPEC/procedures/ft-task.md`, three skill bodies, `.flowtron/tasknote/README.md`, `templates/tasknote-README.md`; plus `ci.yml` comment, `SPEC/scope-boundaries.md` CORE-483.3 exception, `docs/CONVENTIONS.md` gitleaks provenance, `.gitleaks.toml` body) and 5 retained as labelled `operator-private` pointers (`brand/BRAND.md:18`, `brand/README.md:21`, `justfile:2,8`, `.gitleaks.toml:2,61`). Label convention: the literal phrase `operator-private` on the same line as any retained path, so `grep -v operator-private` proves coverage. Operator-chosen trade-off recorded: `.gitleaks.toml` comments now diverge from the fleet baseline (rules byte-identical).
+**Cohort inventory (from `archive/core/CORE-652.2.md`):** 14 files, comment/prose only, commit `4181ae63`. 22 inventory lines resolved — 17 reworded to stand alone (the 7 `NAT-*` → `archive/project-20/` example sites became `OPS-*` → `archive/operations/`: `SPEC.md`, `SPEC/procedures/ft-task.md`, three skill bodies, `.flowtron/tasknote/README.md`, `templates/tasknote-README.md`; plus `ci.yml` comment, `SPEC/scope-boundaries.md` CORE-483.3 exception, `docs/CONVENTIONS.md` gitleaks provenance, `.gitleaks.toml` body) and 5 retained as labelled `operator-private` pointers (`brand/BRAND.md:18`, `brand/README.md:21`, `justfile:2,8`, `.gitleaks.toml:2,61`). Label convention: the literal phrase `operator-private` on the same line as any retained path, so `grep -v operator-private` proves coverage. Operator-chosen trade-off recorded: `.gitleaks.toml` comments now diverge from the fleet baseline (rules byte-identical).
 
 **Archive skim:** self-referential — the only cohort child is itself the archive entry. Non-cohort history the child already cited (`CORE-578` gitleaks deposit, `CORE-637` justfile, `CORE-643` brand kit, `CORE-483.3` scope precedent) re-read for context only; none contradicts the `.2` rewording.
 
 **Drift check (against HEAD `4181ae63`):** all 14 `touches:` paths exist; the child's Testing Notes commands re-run and reproduce (see Implementation Notes). `SPEC/epic.md` lifecycle honoured — `.2` stayed nested under the active parent. PLAN.md `CORE-652.N` line reads `[light]🔧 | public-surface-decoupling audit` — shortname present, no bare `| audit` placeholder to replace.
 
-**Clarifications:** No clarifications needed. Assumptions: (1) the epic's scope is pointers into the private `~/Code/natabula` layer, so historical project names (`fintown`, `InvisiPaw`, `photard`) in `docs/PHILOSOPHY.md`, the PLAN.md Vision blurb, `SPEC/gate-discipline.md`, and viz test fixtures are origin-story / fixture text, not private-layer coupling — out of scope, no follow-up; (2) `~/code/flowtron` clone paths in `README.md` / `docs/MIGRATION.md` are the public install location, not a private pointer.
+**Clarifications:** No clarifications needed. Assumptions: (1) the epic's scope is pointers into the private `~/code/project-20` layer, so historical project names (`project-14`, `Project-17`, `project-22`) in `docs/PHILOSOPHY.md`, the PLAN.md Vision blurb, `SPEC/gate-discipline.md`, and viz test fixtures are origin-story / fixture text, not private-layer coupling — out of scope, no follow-up; (2) `~/code/flowtron` clone paths in `README.md` / `docs/MIGRATION.md` are the public install location, not a private pointer.
 
 ## 🛠️ Phase 2: Execution
 
@@ -96,15 +96,15 @@ Verify the completed `CORE-EPIC-652` (`public-surface-decoupling`) cohort sits c
 **Implementation Notes:**
 
 **Cohort children inventoried:**
-- `CORE-652.2` natabula-ref-inventory — 14 files reworded/labelled; see Discovery Notes for the split.
+- `CORE-652.2` project-20-ref-inventory — 14 files reworded/labelled; see Discovery Notes for the split.
 
 **Coherence findings — no inconsistencies surfaced:**
-- Inventory grep re-run at HEAD: `git grep -n -i natabula -- . ':!.flowtron/tasknote/archive' ':!.flowtron/PLAN-ARCHIVE.md' ':!.flowtron/PLAN.md' ':!.flowtron/tasknote/CORE-652.N.md' | grep -v operator-private` → empty. Every surviving mention is on an `operator-private` line.
+- Inventory grep re-run at HEAD: `git grep -n -i project-20 -- . ':!.flowtron/tasknote/archive' ':!.flowtron/PLAN-ARCHIVE.md' ':!.flowtron/PLAN.md' ':!.flowtron/tasknote/CORE-652.N.md' | grep -v operator-private` → empty. Every surviving mention is on an `operator-private` line.
 - `git grep -n 'operator-private' -- . ':!.flowtron'` → 8 lines / 6 files, matching the child's receipt exactly. Label placement is consistent: the three sites that keep a literal path (`.gitleaks.toml:2`, `brand/BRAND.md:18`, `brand/README.md:21`, `justfile:8`) carry the label on the same line; the path-less sites (`justfile:2`, `SPEC/scope-boundaries.md:19`, `docs/CONVENTIONS.md:54`, `.gitleaks.toml:61`) use it adjectivally. Parenthetical-vs-adjective variance is stylistic, not contractual — the grep contract is the literal phrase, which all 8 honour.
 - The two brand-kit sites use the identical sentence shape (`Standard (operator-private): … §"Brand kit" — this … self-contained contract`) — style parity holds.
 - `OPS-*` → `archive/operations/` example: 7 sites, all present; `.flowtron/tasknote/README.md:38` and `templates/tasknote-README.md:62` (live copy vs template) say the same thing; the three skill-body Area bullets are md5-identical (`415ebe36…`).
 - `.gitleaks.toml` header and `ci.yml` comment tell the same story (deposited copy, read in place, CORE-578) — no contradictory cross-ref. `docs/CONVENTIONS.md:54` and `AGENTS.md:112` agree on the scan's additive-to-roster status.
-- `grep -c -i -E 'marscharts|invisipaw|bidviz|bananapeel|polymarket' .gitleaks.toml` → 0.
+- `grep -c -i -E 'project-19|project-17|project-05|project-04|polymarket' .gitleaks.toml` → 0.
 - Budgets: `SPEC.md` 47,833 ≤ 53,000; `SPEC/procedures/ft-task.md` 35,935 ≤ 38,000; skill bodies 28,105 / 21,321 / 26,179 ≤ 33,000.
 
 **Inline fixes applied:** none.
@@ -125,12 +125,12 @@ Verify the completed `CORE-EPIC-652` (`public-surface-decoupling`) cohort sits c
 
 **Testing Notes:**
 
-- `git grep -n -i natabula -- . ':!.flowtron/tasknote/archive' ':!.flowtron/PLAN-ARCHIVE.md' ':!.flowtron/PLAN.md' ':!.flowtron/tasknote/CORE-652.N.md' | grep -v operator-private` → exit 1 (no output = pass)
-- `grep -c -i -E 'marscharts|invisipaw|bidviz|bananapeel|polymarket' .gitleaks.toml` → `0`, exit 0
+- `git grep -n -i project-20 -- . ':!.flowtron/tasknote/archive' ':!.flowtron/PLAN-ARCHIVE.md' ':!.flowtron/PLAN.md' ':!.flowtron/tasknote/CORE-652.N.md' | grep -v operator-private` → exit 1 (no output = pass)
+- `grep -c -i -E 'project-19|project-17|project-05|project-04|polymarket' .gitleaks.toml` → `0`, exit 0
 - `git grep -n 'operator-private' -- . ':!.flowtron'` → 8 lines, exit 0
 - Area-bullet md5 across three skill bodies → identical, exit 0
 - `wc -c` budgets → all under cap, exit 0
-- Cross-read of the 18 `AI-referenced docs` entries for `gitleaks|justfile|brand|fleet|~/Code/|operator-private|design-standards|stack-tendencies` → only public clone paths and release-tarball verification prose; no stale provenance claim.
+- Cross-read of the 18 `AI-referenced docs` entries for `gitleaks|justfile|brand|fleet|~/code/|operator-private|design-standards|stack-tendencies` → only public clone paths and release-tarball verification prose; no stale provenance claim.
 - Structural: no code changed; nothing to check for duplication or dead code.
 
 ## 🚀 Phase 4: Closure

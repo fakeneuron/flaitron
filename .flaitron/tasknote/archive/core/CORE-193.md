@@ -89,7 +89,7 @@ Grouped by adopter-facing area:
 - feat: CORE-138 — generalize PLAN.md [model] grammar lock
 - feat: CORE-140 — soften ~/code/ workspace assumption in adopter-facing prose
 - feat: CORE-141 — generalize opus|sonnet hardcodes in SKILL prompts to recommended-set framing
-- feat: CORE-133/134/135/136 — replace project-specific examples (photard, InvisiPaw, fintown) with stack-neutral wording
+- feat: CORE-133/134/135/136 — replace project-specific examples (project-22, Project-17, project-14) with stack-neutral wording
 
 **New skills + behavior changes:**
 - feat: CORE-186 — new `/ft-audit-context` bundled skill (additive; standard symlink for adoption)

@@ -43,7 +43,7 @@ Make `## Completed` rotation hard to skip at post-closure: every closer prints t
 
 ## 🔗 Related
 
-- CBN-358 F2 (caobunga) — pidlyse's grok close left 61 `## Completed` rows, and caobunga's own CBN-352–357 closes left 63, both without rotating. The SPEC already required the move. No upstream row had been filed.
+- CBN-358 F2 (project-07) — project-23's grok close left 61 `## Completed` rows, and project-07's own CBN-352–357 closes left 63, both without rotating. The SPEC already required the move. No upstream row had been filed.
 
 ---
 
@@ -62,7 +62,7 @@ Make `## Completed` rotation hard to skip at post-closure: every closer prints t
 
 - [x] **Archive skim** — `archive/core/` holds the rotation's own introduction (v7.0.0, CORE-779) and the pre-move grep gate, which is the pattern this task copies: a step agents were skipping became a command plus a line they must print. No superseded claim.
 
-- [x] **Drift check** — The 60/40 bound, the legal skips (linked worktree, uncommitted edits to either file), and the release awk all match HEAD. Caobunga's 61 and 63 counts are that trial's record, not this repo's plan (this plan held 38 checked rows before this close).
+- [x] **Drift check** — The 60/40 bound, the legal skips (linked worktree, uncommitted edits to either file), and the release awk all match HEAD. Project-07's 61 and 63 counts are that trial's record, not this repo's plan (this plan held 38 checked rows before this close).
 
 - [x] Asked clarifying questions — No clarifications needed. Assumption: the operator's "make post-closure step 2 harder to skip" means a receipt the closer must print, using the count command that already exists, not a new script and not a CI failure on adopter plans.
 
@@ -70,7 +70,7 @@ Make `## Completed` rotation hard to skip at post-closure: every closer prints t
 
 **Discovery Notes:**
 
-Grok on pidlyse reads `SPEC/procedures/ft-task.md`, whose step 6 lists what post-closure "owns" and omitted rotation. Claude's skill bullets do the same under "run step 2 as written." `/ft-release` already prints a count, but only as an advisory line at release time, after the skipped closes have landed.
+Grok on project-23 reads `SPEC/procedures/ft-task.md`, whose step 6 lists what post-closure "owns" and omitted rotation. Claude's skill bullets do the same under "run step 2 as written." `/ft-release` already prints a count, but only as an advisory line at release time, after the skipped closes have landed.
 
 ## 🛠️ Phase 2: Execution
 

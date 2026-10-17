@@ -8,7 +8,7 @@ related-tasks: [CORE-EPIC-770, CORE-770.1]
 # Optional planning keys — omit when absent (SPEC.md §Tasknote frontmatter).
 # Omitted means undeclared, not "touches nothing" / "safe with everyone".
 touches:
-  - ~/.claude/projects/-Users-fakeneuron-Code-flaitron/memory/ (outside the repo; agent-owned memory)
+  - ~/.claude/projects/-home-flaitron/memory/ (outside the repo; agent-owned memory)
 parallel-safe-with:
   - CORE-770.3
   - CORE-770.4
@@ -62,7 +62,7 @@ Bring the seven flaitron-project memory files and their MEMORY.md index in line 
 
 - [x] **Drift check** — PLAN line matches `.1`'s Discovery Notes §B. One drift against that list: `.1` says `/ft-epic-discovery` and `/ft-file-followup` are "renamed"; the roster confirms the current names are `/ft-open-epic` and `/ft-file-task`.
 
-- [x] Asked clarifying questions OR logged "No clarifications needed" with explicit assumptions — one ask, the memory-path approval (granted for `/Users/fakeneuron/.claude/projects/-Users-fakeneuron-Code-flaitron/memory/`). Assumptions below.
+- [x] Asked clarifying questions OR logged "No clarifications needed" with explicit assumptions — one ask, the memory-path approval (granted for `~/.claude/projects/-home-flaitron/memory/`). Assumptions below.
 
 - [x] Subtasks above populated with ordered steps; YAML `touches:` declared (omit only with no file deliverable)
 

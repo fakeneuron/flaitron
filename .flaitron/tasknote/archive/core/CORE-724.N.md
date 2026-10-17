@@ -83,7 +83,7 @@ Cohort inventory (all closed 2026-10-07):
 - **.3 lazy-module-trim** — 14 `SPEC/` modules −16,551; `SPEC/gate-discipline.md` → `docs/GATE-DISCIPLINE.md`, `SPEC/purpose-blurb.md` → `SPEC/cue-vocabulary.md` §"🎯 Purpose blurb"; tasknote-selection gets a budget row; Fan-out single-homed.
 - **.4 skill-body-dedupe** — 12 skill/SOP files + new `claude/skills/ft-task/preamble.md` 258,037 → 241,291; filing motion, candidacy mirrors, post-closure and Phase 4 re-listings cut to pointers; month-block line fixed; filed [[CORE-725]].
 - **.5 adopter-surface-trim** — paste-block fence −43%, template −29%, MIGRATION −16%; §1.2.2 → CONTRIBUTING, v4/v5 recipes → new `docs/UPGRADING.md`; visualizer runbook single-homed in README; KEEP IN SYNC guards named, not line-pinned.
-- **.6 personal-conventions-out** — natabula / caobunga / machine paths / `~/code` prose / personal viz fixtures removed; 📡 `NAS` → `REMOTE`.
+- **.6 personal-conventions-out** — project-20 / project-07 / machine paths / `~/code` prose / personal viz fixtures removed; 📡 `NAS` → `REMOTE`.
 - **.7 decay-window-batch** — ft-audit §7/§8, gate-discipline new-row rule, DRY/SRP imperative, ~15/~30-min heuristics dropped; window opened at `504f160f`; [[CORE-727]] holds the restore bar.
 
 Drift check: all cohort-cited paths resolve at HEAD `7b5cf399`; CI drift job 15/15 green before any audit edit.
@@ -102,7 +102,7 @@ Drift check: all cohort-cited paths resolve at HEAD `7b5cf399`; CI drift job 15/
 
 Checks run (all at HEAD `7b5cf399`, excluding archive / PLAN / PLAN-ARCHIVE / VERSION-HISTORY):
 
-- **Retired-surface grep** — `gate-discipline.md`, `purpose-blurb`, `month-block`, `Rationalizations` / `Red Flags`, `since the window`, `Standing rule`, `<MODEL_EDGE>`, MIGRATION `1.2.2` / `Upgrading from v`, `DRY` / `SRP`, `~15/30 min`, `NAS`, natabula, caobunga, fintown/invisipaw, machine paths. Remaining hits are all legitimate: CONTEXT-BUDGET ledger history (left for `/ft-release` by .2–.5), HARNESS-SURVEY:62 (dated survey, outside the sweep set), the plan-parser fixture's month-block *archive heading* grammar, GATE-DISCIPLINE's kept main tables, PHILOSOPHY's origin story.
+- **Retired-surface grep** — `gate-discipline.md`, `purpose-blurb`, `month-block`, `Rationalizations` / `Red Flags`, `since the window`, `Standing rule`, `<MODEL_EDGE>`, MIGRATION `1.2.2` / `Upgrading from v`, `DRY` / `SRP`, `~15/30 min`, `NAS`, project-20, project-07, project-14/project-17, machine paths. Remaining hits are all legitimate: CONTEXT-BUDGET ledger history (left for `/ft-release` by .2–.5), HARNESS-SURVEY:62 (dated survey, outside the sweep set), the plan-parser fixture's month-block *archive heading* grammar, GATE-DISCIPLINE's kept main tables, PHILOSOPHY's origin story.
 - **Dangling-path scan** — every `SPEC/`, `docs/`, `templates/`, `claude/skills/` `.md` path cited outside history resolves, except adopter-rubric placeholders (`docs/THREAT-MODEL.md` etc.), a ci.yml `SPEC/x.md` example, and a Completed CORE-657 row.
 - **Cross-child coherence** — Pattern-survey wording agrees across SPEC.md (canonical long form), template (.5's short imperative, .7's DRY/SRP clause gone), SOP and skills; 📡 `REMOTE` consistent across cue-vocabulary, gates.md, AGENT-COMPAT, DOGFOOD; no `minutes` routing heuristic survives (.7) in SPEC, skills, snippet, README; ft-audit has no reference to its deleted §7/§8; EXTERNAL-AGENTS stable template labels (`**Final Summary:**
 
@@ -115,7 +115,7 @@ Audited the seven-child `context-diet` cohort. The children's work holds togethe
 - **`touches:` reconciliation:** declared `AGENTS.md`, changed `AGENTS.md`; plus this note and `.flaitron/PLAN.md` (closure flip).`, `**Archived:**`, `**Verdict:**`, phase headings) all survive .5's template trim; SPEC.md cites only extant modules.
 - **Inline fix** — `AGENTS.md:58-64` (also CLAUDE.md via symlink) still listed "gate discipline" and "the purpose blurb" among `SPEC/` modules after .3 retired both; README's roster had been repaired but this one was missed. Dropped both names (the blurb now lives under "the operator-cue vocabulary", already listed). −1 line.
 - **Follow-up candidate** — `/ft-file-followup` for the `claude/AGENTS-snippet.md` §"Bumping" ↔ `docs/MIGRATION.md` §"Pinning and bumping" overlap: .5 deferred it as out of its row's scope but never filed it.
-- **Not misses** — the CONTEXT-BUDGET Ledger re-measure (incl. the "—" preamble row) is already the next `/ft-release` refresh's job; the `.git/info/exclude` caobunga line in other checkouts is operator-local (.6 recorded it).
+- **Not misses** — the CONTEXT-BUDGET Ledger re-measure (incl. the "—" preamble row) is already the next `/ft-release` refresh's job; the `.git/info/exclude` project-07 line in other checkouts is operator-local (.6 recorded it).
 
 ## 🧪 Phase 3: Testing & Linting
 

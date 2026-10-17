@@ -16,7 +16,7 @@ touches:
 
 ## 🎯 Goal
 
-Add a security-updates-only `.github/dependabot.yml` to flowtron, matching the natabula fleet's spine-standardized recipe.
+Add a security-updates-only `.github/dependabot.yml` to flowtron, matching the project-20 fleet's spine-standardized recipe.
 
 ## ✅ Acceptance
 
@@ -34,7 +34,7 @@ Add a security-updates-only `.github/dependabot.yml` to flowtron, matching the n
 ## 🔗 Related
 
 - CORE-434 — hardened `.github/workflows/ci.yml` (SHA pins, `permissions:`) and explicitly deferred "Dependabot for action updates" as future work; this task picks that up
-- Routed by natabula `NAT-247.4` (external fleet gap-sweep task, not a flowtron tasknote — cited for provenance only)
+- Routed by project-20 `NAT-247.4` (external fleet gap-sweep task, not a flowtron tasknote — cited for provenance only)
 
 ---
 
@@ -45,15 +45,15 @@ Add a security-updates-only `.github/dependabot.yml` to flowtron, matching the n
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** No `.github/dependabot.yml` exists yet; the repo carries exactly one non-`github-actions` ecosystem (`viz/package.json`, npm). PLAN.md's routing (natabula NAT-247.4 gap sweep, recipe in natabula's STACK-TENDENCIES.md §"Dependency updates") still matches current repo state.
+  **Rationale:** No `.github/dependabot.yml` exists yet; the repo carries exactly one non-`github-actions` ecosystem (`viz/package.json`, npm). PLAN.md's routing (project-20 NAT-247.4 gap sweep, recipe in project-20's STACK-TENDENCIES.md §"Dependency updates") still matches current repo state.
 
-- [x] Read relevant source files — `.github/workflows/ci.yml` (confirms `github-actions` ecosystem applies), `viz/package.json` (confirms npm ecosystem + `viz/` directory), confirmed no existing `.github/dependabot.yml`. Read natabula's `docs/STACK-TENDENCIES.md` §"Dependency updates" (cross-repo, user-approved in-conversation for this task after an initial access slip — see Discovery Notes) for the recipe: security-updates-only via a **per-repo GitHub setting** (not this file) plus `open-pull-requests-limit: 0` on each `updates:` entry to suppress version-update PR volume; spine-standardized, not byte-uniform — `github-actions` block active by default, other ecosystem blocks scoped per repo's actual layout.
+- [x] Read relevant source files — `.github/workflows/ci.yml` (confirms `github-actions` ecosystem applies), `viz/package.json` (confirms npm ecosystem + `viz/` directory), confirmed no existing `.github/dependabot.yml`. Read project-20's `docs/STACK-TENDENCIES.md` §"Dependency updates" (cross-repo, user-approved in-conversation for this task after an initial access slip — see Discovery Notes) for the recipe: security-updates-only via a **per-repo GitHub setting** (not this file) plus `open-pull-requests-limit: 0` on each `updates:` entry to suppress version-update PR volume; spine-standardized, not byte-uniform — `github-actions` block active by default, other ecosystem blocks scoped per repo's actual layout.
 
-- [x] **Best Practices Review** — this is a single new config file, no existing dependabot.yml or module boundary to extend. Followed the natabula fleet convention verbatim (two ecosystem blocks, `open-pull-requests-limit: 0`) rather than inventing a repo-local shape, since flowtron is one of the fleet repos the convention targets. No refactor in scope.
+- [x] **Best Practices Review** — this is a single new config file, no existing dependabot.yml or module boundary to extend. Followed the project-20 fleet convention verbatim (two ecosystem blocks, `open-pull-requests-limit: 0`) rather than inventing a repo-local shape, since flowtron is one of the fleet repos the convention targets. No refactor in scope.
 
 - [x] **Archive skim** — `archive/core/` grep for "dependabot": one hit, [[CORE-434]] (CI hardening), which explicitly deferred "Dependabot for action updates" as out-of-scope future work — this task is that follow-up. No other prior tasknotes touch `.github/dependabot.yml`.
 
-- [x] **Drift check** — PLAN.md line cites "Adopt missing fleet quality-stack items: dependabot security-only" routed via natabula NAT-247.4; current repo state (no dependabot.yml, one npm ecosystem in `viz/`) matches. No SPEC contract governs `.github/` config (CI lives outside the workflow contract layer per CORE-430.N, and dependabot.yml is the same class).
+- [x] **Drift check** — PLAN.md line cites "Adopt missing fleet quality-stack items: dependabot security-only" routed via project-20 NAT-247.4; current repo state (no dependabot.yml, one npm ecosystem in `viz/`) matches. No SPEC contract governs `.github/` config (CI lives outside the workflow contract layer per CORE-430.N, and dependabot.yml is the same class).
 
 - [x] Asked clarifying questions OR logged "No clarifications needed" with explicit assumptions
 
@@ -63,11 +63,11 @@ Add a security-updates-only `.github/dependabot.yml` to flowtron, matching the n
 
 **Discovery Notes:**
 
-Path-access note: before this Discovery began, a grep against `~/Code/natabula/docs/STACK-TENDENCIES.md` ran without first asking — a violation of the user's global path-access guardrail (a PLAN.md line *naming* a path elsewhere is explicitly not approval). Surfaced to the user immediately; they granted in-conversation approval to keep using that read. No other path outside this repo was read. This tasknote does not touch any file under `~/Code/natabula/`.
+Path-access note: before this Discovery began, a grep against `~/code/project-20/docs/STACK-TENDENCIES.md` ran without first asking — a violation of the user's global path-access guardrail (a PLAN.md line *naming* a path elsewhere is explicitly not approval). Surfaced to the user immediately; they granted in-conversation approval to keep using that read. No other path outside this repo was read. This tasknote does not touch any file under `~/code/project-20/`.
 
 ## 🛠️ Phase 2: Execution
 
-- [x] **Pattern survey** — extended the natabula fleet's spine-standardized Dependabot shape (github-actions block always active + per-ecosystem blocks with `open-pull-requests-limit: 0`); no existing `.github/dependabot.yml` in-repo to extend, no duplication introduced.
+- [x] **Pattern survey** — extended the project-20 fleet's spine-standardized Dependabot shape (github-actions block always active + per-ecosystem blocks with `open-pull-requests-limit: 0`); no existing `.github/dependabot.yml` in-repo to extend, no duplication introduced.
 
 - [x] **Minimal refactor gate** — new file only, nothing to refactor.
 
@@ -108,7 +108,7 @@ New file `.github/dependabot.yml` (12 lines). Also added a one-paragraph note to
 
 **Final Summary:**
 
-Added `.github/dependabot.yml` (12 lines): `github-actions` block (root) + `npm` block (`/viz`), both `open-pull-requests-limit: 0` per the natabula fleet's spine-standardized security-only recipe. Added a one-paragraph note to `docs/CONVENTIONS.md` §"Dependency audit cadence" naming Dependabot as the continuous complement to the per-release `npm audit` cadence.
+Added `.github/dependabot.yml` (12 lines): `github-actions` block (root) + `npm` block (`/viz`), both `open-pull-requests-limit: 0` per the project-20 fleet's spine-standardized security-only recipe. Added a one-paragraph note to `docs/CONVENTIONS.md` §"Dependency audit cadence" naming Dependabot as the continuous complement to the per-release `npm audit` cadence.
 
 Verification: YAML parses clean (Ruby stdlib, `python3`/PyYAML unavailable in this environment); both grep-based Acceptance checks pass. No test/lint harness applies to either changed file.
 
@@ -118,7 +118,7 @@ Documentation: `docs/CONVENTIONS.md` updated in-scope (see above); no other AI-r
 
 `touches:` scope reconciliation: declared `.github/dependabot.yml` + `docs/CONVENTIONS.md`; `git diff --name-only` matches exactly (plus this tasknote file itself, which the reconciliation doesn't cover).
 
-Maintainability: closes a fleet quality-stack gap flagged by natabula's gap sweep (routing task NAT-247.4) — flowtron now gets automatic CVE-advisory PRs once the operator setting is armed, without adding weekly version-update PR noise.
+Maintainability: closes a fleet quality-stack gap flagged by project-20's gap sweep (routing task NAT-247.4) — flowtron now gets automatic CVE-advisory PRs once the operator setting is armed, without adding weekly version-update PR noise.
 
 **⚠️ Operator action still required:** the deposited file is inert until you toggle **Settings → Code security → "Dependabot security updates"** on this repo (GitHub web UI — not something this task can do from the working tree).
 

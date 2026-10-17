@@ -19,7 +19,7 @@ touches:
 
 ## 🎯 Goal
 
-Bring `.github/workflows/ci.yml` onto the Natabula CI spine — action floor (checkout v5 / setup-node v6) kept as immutable SHA pins, bare `pull_request:` trigger, and `ci-${{ github.ref }}` cancel-in-progress concurrency — without changing any job or step.
+Bring `.github/workflows/ci.yml` onto the Project-20 CI spine — action floor (checkout v5 / setup-node v6) kept as immutable SHA pins, bare `pull_request:` trigger, and `ci-${{ github.ref }}` cancel-in-progress concurrency — without changing any job or step.
 
 ## ✅ Acceptance
 
@@ -52,24 +52,24 @@ Bring `.github/workflows/ci.yml` onto the Natabula CI spine — action floor (ch
 - [x] **Relevance Assessment**
 
   **Verdict:** Proceed
-  **Rationale:** Natabula `docs/FLEET-CI.md` spine sweep (2026-10-05) shows flaitron as the only `ci.yml` row with `pr:main`, no concurrency, and checkout/setup-node at v4.4.0 — every other node repo is at checkout v5 · node v6 · `ci-ref · cancel`. Gap is real and current.
+  **Rationale:** Project-20 `docs/FLEET-CI.md` spine sweep (2026-10-05) shows flaitron as the only `ci.yml` row with `pr:main`, no concurrency, and checkout/setup-node at v4.4.0 — every other node repo is at checkout v5 · node v6 · `ci-ref · cancel`. Gap is real and current.
 
-- [x] Read relevant source files — `.github/workflows/ci.yml`, `.github/dependabot.yml`, `docs/CONVENTIONS.md` §"GitHub Actions CI", `SECURITY.md` §"GitHub Actions CI", natabula `docs/STACK-TENDENCIES.md` §"Continuous integration", natabula `docs/FLEET-CI.md`, natabula `.github/workflows/ci.yml`
+- [x] Read relevant source files — `.github/workflows/ci.yml`, `.github/dependabot.yml`, `docs/CONVENTIONS.md` §"GitHub Actions CI", `SECURITY.md` §"GitHub Actions CI", project-20 `docs/STACK-TENDENCIES.md` §"Continuous integration", project-20 `docs/FLEET-CI.md`, project-20 `.github/workflows/ci.yml`
 
-- [x] **Best Practices Review** — N/A for module boundaries (config-only). Spine keys copied in natabula's canonical form (`ci-${{ github.ref }}`, `cancel-in-progress: true`) rather than a local variant, per STACK-TENDENCIES "One canonical form — don't invent per-repo variants". No refactor.
+- [x] **Best Practices Review** — N/A for module boundaries (config-only). Spine keys copied in project-20's canonical form (`ci-${{ github.ref }}`, `cancel-in-progress: true`) rather than a local variant, per STACK-TENDENCIES "One canonical form — don't invent per-repo variants". No refactor.
 
 - [x] **Archive skim** — `archive/core/` confirmed against README table (`CORE-*` → `archive/core/`). Hits: CORE-434 (SHA pins + `permissions:`; deferred Dependabot), CORE-581 (Dependabot github-actions, security-only), CORE-625 (gitleaks checksum + SECURITY.md compromise-path enumeration), CORE-639.2 (matrix; confirmed only job-level keys changed so Pair H held). Load-bearing: Pair H extracts `^      - run: ` lines — this change touches none; SECURITY.md enumerates SHA pinning as a mitigation, so the pin comment text there must stay accurate.
 
 - [x] **Drift check** — PLAN line cites 46a94bd1 state; current HEAD still has checkout/setup-node v4.4.0 SHAs (lines 20, 25, 85), `pull_request: branches: [main]`, no `concurrency:`. Matches. No SPEC contract governs CI action versions; CONVENTIONS/SECURITY restate the trigger shape ("push and pull request to `main`") and need updating in-task.
 
-- [x] No clarifications needed (--fast). Assumptions: "declared Natabula floor" = STACK-TENDENCIES `actions/checkout@v5`, `actions/setup-node@v6`; pinned at the latest release within each floor major (checkout v5.1.0 `fbc6f399…`, setup-node v6.5.0 `24997072…`, resolved via `gh api …/matching-refs/tags`), not a higher major. `cache: npm` stays explicit, so setup-node v6's auto-cache change is moot.
+- [x] No clarifications needed (--fast). Assumptions: "declared Project-20 floor" = STACK-TENDENCIES `actions/checkout@v5`, `actions/setup-node@v6`; pinned at the latest release within each floor major (checkout v5.1.0 `fbc6f399…`, setup-node v6.5.0 `24997072…`, resolved via `gh api …/matching-refs/tags`), not a higher major. `cache: npm` stays explicit, so setup-node v6's auto-cache change is moot.
 
 - [x] Subtasks above populated with concrete, ordered steps, and YAML `touches:` declared
 
 **Discovery Notes:**
 
 - FLEET-CI.md spine row for flaitron: `push:main · pr:main | checkout v4.4.0 (sha) · node v4.4.0 (sha) | npm-path | — | …`.
-- STACK-TENDENCIES: "Stricter SHA-pinning is a security posture and may *exceed* the floor (e.g. marscharts)" — SHA pins retained.
+- STACK-TENDENCIES: "Stricter SHA-pinning is a security posture and may *exceed* the floor (e.g. project-19)" — SHA pins retained.
 - Phase 1→2: Discovery surfaced no significant deviation → skip 🛠️.
 
 ## 🛠️ Phase 2: Execution
@@ -84,7 +84,7 @@ Bring `.github/workflows/ci.yml` onto the Natabula CI spine — action floor (ch
 
 **Implementation Notes:**
 
-- Pattern: natabula's own `ci.yml` header (`pull_request:` bare + `concurrency: group: ci-${{ github.ref }} / cancel-in-progress: true`) copied verbatim in shape; SHA-pin + `# vX.Y.Z` comment convention kept from CORE-434.
+- Pattern: project-20's own `ci.yml` header (`pull_request:` bare + `concurrency: group: ci-${{ github.ref }} / cancel-in-progress: true`) copied verbatim in shape; SHA-pin + `# vX.Y.Z` comment convention kept from CORE-434.
 - `ci.yml`: 3 `uses:` refs swapped, `branches: [main]` removed from `pull_request:`, 4-line `concurrency:` block added between `on:` and `permissions:`. No `- run:` line touched → Pair H unaffected.
 - `docs/CONVENTIONS.md` §"GitHub Actions CI": trigger clause rewritten + concurrency group named. `SECURITY.md` §"GitHub Actions CI": trigger clause rewritten; "`@v4` tags" example → "major tags like `@v5`" so it no longer reads as the pinned version.
 - No refactor.
@@ -122,7 +122,7 @@ Quality: no duplication or dead config; public surface unchanged; code-facing do
 
 **External review** (`/code-review medium`, working-tree diff only):
 
-1. `cancel-in-progress: true` also cancels superseded `main` pushes, leaving the earlier commit with a `cancelled` run — **note**, no change: the PLAN line and the canonical natabula spine mandate the cancelling `ci-ref` form; surfaced to the operator as a fleet-level trade-off (PR-only cancel would be `${{ github.event_name == 'pull_request' }}`).
+1. `cancel-in-progress: true` also cancels superseded `main` pushes, leaving the earlier commit with a `cancelled` run — **note**, no change: the PLAN line and the canonical project-20 spine mandate the cancelling `ci-ref` form; surfaced to the operator as a fleet-level trade-off (PR-only cancel would be `${{ github.event_name == 'pull_request' }}`).
 2. `step-7.1-standing-checks.md:209` "on every push and pull request" — **blocker** vs Acceptance #4 → fixed (Phase 2 re-entered).
 3. `docs/CONTEXT-BUDGET.md:322` same phrase — **blocker** → fixed.
 4. `docs/CONVENTIONS.md:56` "on every push" — **blocker** → fixed.
@@ -143,6 +143,6 @@ Phase 3 re-run after fixes: roster 7/7 → 0; all 15 `drift` steps → 0; widene
 
 **Final Summary:**
 
-Aligned `.github/workflows/ci.yml` with the Natabula CI spine: `actions/checkout` → v5.1.0 (`fbc6f399…`, ×2) and `actions/setup-node` → v6.5.0 (`24997072…`), SHA-pinned with version comments; `pull_request:` now bare; top-level `concurrency: {group: ci-${{ github.ref }}, cancel-in-progress: true}`. Jobs/steps byte-identical apart from `uses:` refs (js-yaml diff → 0). Trigger restatements fixed in `docs/CONVENTIONS.md` (×2), `SECURITY.md` (+ wider-PR-surface clause), `docs/CONTEXT-BUDGET.md`, and `claude/skills/ft-release/step-7.1-standing-checks.md`. 6 files, ~+21/−12. Verification: roster 7/7 green, 15/15 drift steps green. `touches:` reconciliation: initially declared ci.yml, CONVENTIONS.md, SECURITY.md; CONTEXT-BUDGET.md and step-7.1-standing-checks.md were added mid-task from External review findings and declared before closure — no undeclared paths. Maintainability: flaitron's FLEET-CI spine row now reads like its siblings (`push:main · pr`, `checkout v5.1.0 (sha) · node v6.5.0 (sha)`, `ci-ref · cancel`), so it drops out of fleet drift reports. Open trade-off (not changed): cancelling concurrency also cancels superseded `main` pushes.
+Aligned `.github/workflows/ci.yml` with the Project-20 CI spine: `actions/checkout` → v5.1.0 (`fbc6f399…`, ×2) and `actions/setup-node` → v6.5.0 (`24997072…`), SHA-pinned with version comments; `pull_request:` now bare; top-level `concurrency: {group: ci-${{ github.ref }}, cancel-in-progress: true}`. Jobs/steps byte-identical apart from `uses:` refs (js-yaml diff → 0). Trigger restatements fixed in `docs/CONVENTIONS.md` (×2), `SECURITY.md` (+ wider-PR-surface clause), `docs/CONTEXT-BUDGET.md`, and `claude/skills/ft-release/step-7.1-standing-checks.md`. 6 files, ~+21/−12. Verification: roster 7/7 green, 15/15 drift steps green. `touches:` reconciliation: initially declared ci.yml, CONVENTIONS.md, SECURITY.md; CONTEXT-BUDGET.md and step-7.1-standing-checks.md were added mid-task from External review findings and declared before closure — no undeclared paths. Maintainability: flaitron's FLEET-CI spine row now reads like its siblings (`push:main · pr`, `checkout v5.1.0 (sha) · node v6.5.0 (sha)`, `ci-ref · cancel`), so it drops out of fleet drift reports. Open trade-off (not changed): cancelling concurrency also cancels superseded `main` pushes.
 
 **Archived:** 2026-10-06

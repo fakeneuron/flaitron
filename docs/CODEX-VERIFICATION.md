@@ -922,4 +922,4 @@ fixtures do not prove an agent obeys every adoption/update instruction.
 This is representative **runtime discovery** evidence, separate from static
 link assertions. It does not establish interactive-selector behavior,
 end-to-end tasknote execution, all-fleet coverage, or a new compatibility or
-dogfood stamp. Natabula NAT-416 retains existing-fleet repair ownership.
+dogfood stamp. The operator-private fleet layer retains existing-fleet repair ownership.

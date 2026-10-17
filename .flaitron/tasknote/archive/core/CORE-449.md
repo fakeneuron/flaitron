@@ -170,7 +170,7 @@ Themes:
 | Shipped-skill parity (claude ↔ codex inventories) | clean |
 | Installed-surface policy (adopter subset exact; forbidden slugs absent) | clean |
 | Local self-wiring (`.claude/` ↔ shipped; no dangling / non-symlink) | clean |
-| Global wiring (advisory) | clean — 23 links, one path casing (`/Users/fakeneuron/Code/flowtron`), no dangling |
+| Global wiring (advisory) | clean — 23 links, one path casing (`~/code/flowtron`), no dangling |
 | README task-counter | absorbed — 677→689, as-of 2026-08-18 |
 | Mirror pairs A–H | clean |
 

@@ -126,7 +126,7 @@ Filed as [[CORE-735.4]] `[medium]` under the epic, before `.N`:
 - Check the four `AGENTS-snippet.md` fence paragraphs and `tools/update-adopters.mjs`. Its checkout respects an existing sparse config, so the open question is only whether it should also apply one.
 - State the git floor.
 
-Out of flaitron's remit: natabula deposits the dogfood-archive fence files (`/natabula-layer-drift` "dogfood-archive fence"). Whether those deposits change is natabula's call once `.4` ships.
+Out of flaitron's remit: project-20 deposits the dogfood-archive fence files (`/project-20-layer-drift` "dogfood-archive fence"). Whether those deposits change is project-20's call once `.4` ships.
 
 ### Downstream-impact scan
 

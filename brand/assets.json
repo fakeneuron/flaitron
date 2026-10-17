@@ -98,6 +98,31 @@
         "source_paths": [],
         "note_path": "brand/PROMPTS.md"
       }
+    },
+    {
+      "id": "chamber-growth",
+      "path": "brand/chamber-growth.jpg",
+      "role": "visual-reference",
+      "media_type": "image/jpeg",
+      "dimensions": {
+        "width": 1280,
+        "height": 720
+      },
+      "variant": "default",
+      "background": "dark",
+      "audience": "public",
+      "review": {
+        "state": "approved",
+        "updated_on": "2026-10-17",
+        "evidence_paths": [
+          "brand/PROMPTS.md"
+        ]
+      },
+      "provenance": {
+        "origin": "generated",
+        "source_paths": [],
+        "note_path": "brand/PROMPTS.md"
+      }
     }
   ],
   "public_metadata": {

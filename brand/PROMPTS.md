@@ -77,10 +77,27 @@ does not fill this gap.
 - size: 1280×720 JPEG. Exact 16:9. The shipped file is the model's output, not a crop and not an upscale.
 - Chamber style: the operator's cinematic portals. A fleshy ribbed tunnel around a round aperture, a ring of green bioluminescent cells, and a digital chamber in the opening: cyan holographic schematics, wireframe, and interface light. Those stills stay with the operator. They are the style reference, not a cropped asset.
 - Source mark: the essence of the original 705×705 `LOGO.png` from commit `9c43b1425a88c39d3e5577322f9a878cfbb7423a` (CORE-329.3): a wave-formed gear and a screen-headed rider, drawn as scan light rather than a copied badge. `LOGO.webp` is the committed 96×96 copy of that mark. The raster was not an image input. `brand/logo.svg` is the later simplified redraw and is not this still's source. The manifest `source_paths` is empty because no in-repo file was placed in the frame.
-- Method: the digital portal stills were the only image inputs. The prompt carried the mark as a loose hologram inside that digital chamber. The shipped pixels are that 2026-10-16 generation. A later growth-scaffold pass was written over the file and then set aside on 2026-10-17, when the person chose this digital chamber. No crop and no upscale.
+- Method: the digital portal stills were the only image inputs. The prompt carried the mark as a loose hologram inside that digital chamber. The shipped pixels are that 2026-10-16 generation. No crop and no upscale. The person also kept a second still, `brand/chamber-growth.jpg`, for a different use. It does not replace this file.
 - Prompt: A wide cinematic view from inside a fleshy ribbed organic tunnel, looking through a round portal. The chamber inside the aperture is digital, like these references: cyan holographic schematics, wireframe panels, and glowing interface marks floating in the circle. That hologram carries a loose impression of a wave-formed gear and a small screen-headed rider, drawn as scan lines and glass circuitry. A thick ring of green bioluminescent cells crowns the fleshy rim, and the organic tunnel widens into a 16:9 frame.
 - This file is not `promo-16x9.webp`. Fakeneuron owns tunnel architecture, creatures, camera, lighting, keyframes, video, and card composition.
 - Asset review starts at `draft` on 2026-10-15. The person confirmed these pixels on 2026-10-17. Review is `approved`. That confirm is producer taste. It is not export approval.
+- Use: the mark inside the chamber. Fakeneuron's demand profile asks for this asset id. It is not assigned to card layout, video, or a crop.
+
+## chamber-growth
+
+- origin: generated
+- date: 2026-10-17
+- model: Grok 4.7 Imagine
+- path: `brand/chamber-growth.jpg`
+- role: `visual-reference`
+- size: 1280×720 JPEG. Exact 16:9. The shipped file is the model's output, not a crop and not an upscale.
+- Chamber style: the same dark ribbed tunnel and green bioluminescent cell ring as `chamber-reference`. The image input was blastimage's shipped chamber still, used for that tunnel and ring only.
+- Hologram: an idea growing into an actuated project. A seed of light rises into a spare tree, the upper growth hardens into a small built scaffold, and the roots sit in older rings of memory. One node is the living task. This still does not depict the gear or the rider.
+- Source mark: no in-repo file was placed in the frame. The manifest `source_paths` is empty. `brand/logo.svg` and `LOGO.webp` are not this still's source.
+- Method: one `image_edit` pass. The prompt carried the growth. No crop and no upscale.
+- Prompt: Keep the dark ribbed organic tunnel, the round portal, and the thick crown of green bioluminescent cells. Inside the aperture, one idea grows into a project: a small bright seed of light low in the circle rises into a spare silver-green tree, and the upper branches harden into a few joined beams, a small built scaffold. Darker roots beneath the seed read as older rings of memory. One node near the crown glows brighter, the living task. Pale mist, luminous and quiet, in the same wide 16:9 frame.
+- This file is not `promo-16x9.webp` and it is not `chamber-reference`. Fakeneuron owns tunnel architecture, creatures, camera, lighting, keyframes, video, and card composition.
+- The person confirmed these pixels on 2026-10-17. Review is `approved`. That confirm is producer taste. It is not export approval. No consumer is assigned to this asset yet.
 
 ## Review and boundaries
 

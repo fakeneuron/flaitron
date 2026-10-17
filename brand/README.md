@@ -19,7 +19,9 @@ Only `BRAND.md` and this README are deposited by kit setup; assets and
 `PROMPTS.md` are producer-owned additions. This kit has the two SVG marks
 and provenance notes; `promo-16x9.webp` is explicitly absent (3/4).
 `brand/chamber-reference.jpg` is an extra uncounted visual reference, not
-that missing promo.
+that missing promo. `brand/chamber-growth.jpg` is a second uncounted
+visual reference, the same chamber with a different hologram. Neither
+file fills the absent promo.
 Presence of the
 four counted files is reported (never enforced) by an operator-side drift
 tool. This README is the self-contained contract.
@@ -29,9 +31,10 @@ tool. This README is the self-contained contract.
 `assets.json` is an optional, uncounted producer declaration. This kit opts
 in with one allocated UUID v4, the public display name, `copy_source` pointing
 to BRAND, committed evidence paths for its three fields, and records for the
-symbol, the favicon, and `chamber-reference`. Schema v2 is the review-object
-form. The project UUID and the two mark IDs are unchanged.
-`chamber-reference` does not fill the absent promo. Copy stays in `BRAND.md`.
+symbol, the favicon, `chamber-reference`, and `chamber-growth`. Schema v2
+is the review-object form. The project UUID and the two mark IDs are unchanged.
+`chamber-reference` is the robot and cog. `chamber-growth` is the seed
+becoming a built project. Neither fills the absent promo. Copy stays in `BRAND.md`.
 Keep the project UUID
 across renames, moves and remote changes; a distinct fork/product needs a new
 UUID. Keep asset IDs stable while they identify the same marks.

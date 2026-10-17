@@ -18,27 +18,32 @@ file.
 Only `BRAND.md` and this README are deposited by kit setup; assets and
 `PROMPTS.md` are producer-owned additions. This kit has the two SVG marks
 and provenance notes; `promo-16x9.webp` is explicitly absent (3/4).
+`brand/chamber-reference.jpg` is an extra uncounted visual reference, not
+that missing promo.
 Presence of the
 four counted files is reported (never enforced) by an operator-side drift
 tool. This README is the self-contained contract.
 
-## Manifest v1
+## Manifest v2
 
 `assets.json` is an optional, uncounted producer declaration. This kit opts
 in with one allocated UUID v4, the public display name, `copy_source` pointing
 to BRAND, committed evidence paths for its three fields, and records for the
-existing symbol and favicon. Copy stays in `BRAND.md`. Keep the project UUID
+symbol, the favicon, and `chamber-reference`. Schema v2 is the review-object
+form. The project UUID and the two mark IDs are unchanged.
+`chamber-reference` does not fill the absent promo. Copy stays in `BRAND.md`.
+Keep the project UUID
 across renames, moves and remote changes; a distinct fork/product needs a new
 UUID. Keep asset IDs stable while they identify the same marks.
 
-Each record declares actual role, SVG viewBox dimensions, variant, background,
+Each record declares actual role, dimensions (an SVG viewBox, or raster pixels), variant, background,
 audience, producer review and provenance. `PROMPTS.md` explains the source
 chain and honest unknowns. Optional product-state declarations and public
 URLs are omitted here; omission means unknown. Paths/evidence and detailed
 provenance are internal, not implicitly public export content.
 
 Validation must read committed bytes at one resolved producer revision.
-The v1 validator uses the asset schema plus committed-path, strict BRAND-copy,
+The validator accepts manifest v1 and v2. This file is v2. It uses the asset schema plus committed-path, strict BRAND-copy,
 media and provenance checks; JSON syntax validation alone is insufficient.
 With a checkout of the tooling that supplies this contract, run:
 

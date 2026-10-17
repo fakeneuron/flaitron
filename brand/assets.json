@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "project_id": "a7118fc2-2807-4b01-b316-80d562dfe195",
   "display_name": "Flaitron",
   "copy_source": "brand/BRAND.md",
@@ -30,7 +30,13 @@
       "variant": "default",
       "background": "transparent",
       "audience": "public",
-      "review": "approved",
+      "review": {
+        "state": "approved",
+        "updated_on": "2026-09-21",
+        "evidence_paths": [
+          ".flaitron/tasknote/archive/core/CORE-643.md"
+        ]
+      },
       "provenance": {
         "origin": "authored",
         "source_paths": [
@@ -52,13 +58,44 @@
       "variant": "default",
       "background": "transparent",
       "audience": "public",
-      "review": "approved",
+      "review": {
+        "state": "approved",
+        "updated_on": "2026-09-21",
+        "evidence_paths": [
+          ".flaitron/tasknote/archive/core/CORE-643.md"
+        ]
+      },
       "provenance": {
         "origin": "authored",
         "source_paths": [
           "LOGO.webp",
           ".flaitron/tasknote/archive/core/CORE-643.md"
         ],
+        "note_path": "brand/PROMPTS.md"
+      }
+    },
+    {
+      "id": "chamber-reference",
+      "path": "brand/chamber-reference.jpg",
+      "role": "visual-reference",
+      "media_type": "image/jpeg",
+      "dimensions": {
+        "width": 1280,
+        "height": 720
+      },
+      "variant": "default",
+      "background": "dark",
+      "audience": "public",
+      "review": {
+        "state": "approved",
+        "updated_on": "2026-10-17",
+        "evidence_paths": [
+          "brand/PROMPTS.md"
+        ]
+      },
+      "provenance": {
+        "origin": "generated",
+        "source_paths": [],
         "note_path": "brand/PROMPTS.md"
       }
     }

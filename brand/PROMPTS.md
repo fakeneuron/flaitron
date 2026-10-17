@@ -64,7 +64,23 @@ prompt is reconstructed or attributed to that image.
 `promo-16x9.webp` remains absent. CORE-643 found no real 1600×900 producer
 hero, and CORE-788 adds none. The two identity SVGs do not satisfy landscape
 card, promo or social-image demand. No absent asset record or placeholder is
-declared in the manifest.
+declared in the manifest. `chamber-reference` below is a different asset and
+does not fill this gap.
+
+## chamber-reference
+
+- origin: generated
+- date: 2026-10-16
+- model: Grok 4.7 Imagine
+- path: `brand/chamber-reference.jpg`
+- role: `visual-reference`
+- size: 1280×720 JPEG. Exact 16:9. The shipped file is the model's output, not a crop and not an upscale.
+- Chamber style: the operator's cinematic portals. A fleshy ribbed tunnel around a round aperture, a ring of green bioluminescent cells, and a digital chamber in the opening: cyan holographic schematics, wireframe, and interface light. Those stills stay with the operator. They are the style reference, not a cropped asset.
+- Source mark: the essence of the original 705×705 `LOGO.png` from commit `9c43b1425a88c39d3e5577322f9a878cfbb7423a` (CORE-329.3): a wave-formed gear and a screen-headed rider, drawn as scan light rather than a copied badge. `LOGO.webp` is the committed 96×96 copy of that mark. The raster was not an image input. `brand/logo.svg` is the later simplified redraw and is not this still's source. The manifest `source_paths` is empty because no in-repo file was placed in the frame.
+- Method: the digital portal stills were the only image inputs. The prompt carried the mark as a loose hologram inside that digital chamber. The shipped pixels are that 2026-10-16 generation. A later growth-scaffold pass was written over the file and then set aside on 2026-10-17, when the person chose this digital chamber. No crop and no upscale.
+- Prompt: A wide cinematic view from inside a fleshy ribbed organic tunnel, looking through a round portal. The chamber inside the aperture is digital, like these references: cyan holographic schematics, wireframe panels, and glowing interface marks floating in the circle. That hologram carries a loose impression of a wave-formed gear and a small screen-headed rider, drawn as scan lines and glass circuitry. A thick ring of green bioluminescent cells crowns the fleshy rim, and the organic tunnel widens into a 16:9 frame.
+- This file is not `promo-16x9.webp`. Fakeneuron owns tunnel architecture, creatures, camera, lighting, keyframes, video, and card composition.
+- Asset review starts at `draft` on 2026-10-15. The person confirmed these pixels on 2026-10-17. Review is `approved`. That confirm is producer taste. It is not export approval.
 
 ## Review and boundaries
 

@@ -65,7 +65,7 @@ filing new ones, and `/ft-prep-unattended`, which rewrites declined rows and may
 append a mechanical row plus a starter, commit their writes under the same contract. Filing approval *is* commit authorization: the operator
 already confirmed at the review gate (follow-up / starter), by passing the park
 flag (park mode), at `/ft-audit`'s
-write-step confirmation (tickets plus any inline fixes), at `/ft-audit-repo`'s
+write-step confirmation (tickets, inline fixes and decisions-file writes), at `/ft-audit-repo`'s
 plan confirmation, at `/ft-refactor`'s plan-review confirmation, at
 `/ft-open-epic`'s ID confirmation, at `/ft-seed-unattended`'s review gate, or at
 `/ft-prep-unattended`'s review gate, and a second commit-go ask buys nothing.
@@ -86,6 +86,7 @@ Message shape, one per filing motion:
 | `/ft-file-task --park` | `chore: file <ID> park — <shortname>` |
 | `/ft-file-task --starter` | `chore: file <ID> starter — <shortname>` |
 | `/ft-audit` | `chore: audit file tickets — <domain>` |
+| `/ft-audit` (decisions-file changes only) | `chore: audit record decisions — <domain>` |
 | `/ft-audit-repo` | `chore: audit-repo file epics — <count> milestones` |
 | `/ft-refactor` | `chore: file <AREA>-EPIC-<N> refactor plan — <shortname>` |
 | `/ft-open-epic` | `chore: file <AREA>-EPIC-<N> — <shortname>` |
@@ -97,15 +98,17 @@ Rules:
 - **Explicit pathspecs only.** Stage the filing's own paths by name —
   `.flaitron/PLAN.md`, plus `.flaitron/tasknote/<ID>.md` (starter) or
   `.flaitron/sidequest/<ID>.md` (park), plus each inline-fix source path
-  (`/ft-audit` §5 trivial-fix carve-out). **Never** `git commit -a`,
-  `git add .`, or `git add -A`. A follow-up is routinely filed from *inside*
-  an active `/ft-task`, where the working tree legitimately carries the parent
-  task's unfinished edits; a greedy stage would commit them under a `chore: file`
-  message.
-- **Pre-check, then commit accumulated filings or skip.** Two readings,
-  taken immediately before the filing's *first write*, not at ID pre-flight.
-  Every filing motion pauses for the operator between those points, and the
-  tree can gain PLAN.md edits while it waits.
+  (`/ft-audit` §5 trivial-fix carve-out) and each
+  `.flaitron/audit-decisions/<domain>.md` it wrote (`/ft-audit` §5 step 3).
+  **Never** `git commit -a`, `git add .`, or `git add -A`. A follow-up is
+  routinely filed from *inside* an active `/ft-task`, where the working tree
+  legitimately carries the parent task's unfinished edits; a greedy stage would
+  commit them under a `chore: file` message.
+- **Pre-check, then commit accumulated filings or skip.** Two readings
+  (`/ft-audit` adjusts them, below), taken immediately before the filing's
+  *first write*, not at ID pre-flight. Every filing motion pauses for the
+  operator between those points, and the tree can gain PLAN.md edits while it
+  waits.
 
   1. **Index.** `git diff --cached --quiet` must exit 0. Non-zero → do not
      commit. The commit publishes the *whole* index, so a closure that has
@@ -127,6 +130,9 @@ Rules:
        a closure stub rewrite — → do not commit. Do not split the diff and do
        not rewrite the foreign lines. Say so in one line and leave the filing
        for the surrounding commit.
+
+  `/ft-audit` adjusts these readings for its decisions files — its §5 step 2
+  owns the rule.
 
   A task row is an added line whose body matches
   `^[[:space:]]*- \[[ x]\] \*\*[A-Z]+-(EPIC-)?[0-9]+(\.[0-9N]+)?\*\*`.
@@ -151,7 +157,8 @@ Rules:
   edits fail the line test, which is why each pre-check runs before its write;
   post-stage accepts them or it undoes the rows the pre-check allowed). A
   starter or sidequest file this motion created is recognized, and so is a
-  mechanical row `/ft-prep-unattended` appended. Anything else
+  mechanical row `/ft-prep-unattended` appended, and so is each
+  decisions-file line `/ft-audit` wrote or removed. Anything else
   is unrecognized, whether it sits in its own hunk or beside a recognized
   line. **An unrecognized change → do not commit:** `git restore --staged`
   every path this filing staged, then take the skip branch above — one line

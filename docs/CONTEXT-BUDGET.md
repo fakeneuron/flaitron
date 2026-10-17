@@ -300,7 +300,7 @@ moved bytes widen the core's headroom.
 ### Skill bodies (`SKILL.md` only)
 
 ft-release 35,869 · ft-open-epic 32,860 · ft-task 26,380 · ft-file-task
-25,165 · ft-close-epic 25,150 · ft-update 23,084 · ft-audit 18,398 ·
+25,165 · ft-close-epic 25,150 · ft-audit 23,409 · ft-update 23,084 ·
 ft-refactor 16,344 · ft-adopt 15,199 · ft-seed-unattended
 12,487 · ft-prep-unattended 12,068 · ft-audit-repo 11,616.
 

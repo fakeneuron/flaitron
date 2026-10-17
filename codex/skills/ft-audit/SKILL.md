@@ -1,6 +1,6 @@
 ---
 name: ft-audit
-description: Run the Flaitron parameterized audit workflow from Codex — `ft-audit <domain> [scope]` (general/backend/frontend/security/performance/docs/structure/context). Use for any audit/review/harden request matching one of these domains.
+description: Run the Flaitron parameterized audit workflow from Codex — `ft-audit <domain> [scope]` (general/backend/frontend/security/performance/docs/structure/context). Writes tickets to `.flaitron/PLAN.md` and records declined findings in `.flaitron/audit-decisions/`. Use for any audit/review/harden request matching one of these domains.
 ---
 
 # ft-audit - Codex wrapper

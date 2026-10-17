@@ -56,6 +56,11 @@ value applies to every domain this overlay covers.
 - **Per-pass examples** (concrete stack anti-patterns to add under each pass): `<e.g. Pydantic v2 idioms, no blocking I/O in async handlers, response_model on every endpoint>`
 - **Extra hard rules** (appended project-specific rules): `<e.g. "data integrity > convenience"; or "—" if none>`
 
+Settled findings — by-design calls, accepted won't-fix tradeoffs — do **not**
+belong in this block. They live in `.flaitron/audit-decisions/`, one file per
+domain, which the scaffold reads before its passes and appends to at its write
+step (scaffold §1 step 5, §5 step 3).
+
 ---
 
 > **Forker:** replace every `<…>` placeholder above and the `<stack>` tokens in

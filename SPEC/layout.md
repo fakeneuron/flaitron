@@ -18,6 +18,7 @@ After adopting flaitron, a project looks like:
 │   │   └── archive/<area>/         # completed tasknotes by area
 │   ├── specs/                      # optional; hand-copied spec-template.md drafts
 │   ├── sidequest/                  # optional; /ft-file-task --park stubs
+│   ├── audit-decisions/            # optional; settled /ft-audit findings, <domain>.md
 │   └── core/                       # git submodule pinned to a flaitron version
 └── ...
 ```

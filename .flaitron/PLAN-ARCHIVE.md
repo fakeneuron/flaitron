@@ -185,6 +185,27 @@ Contract: [`SPEC/plan-filing.md`](../SPEC/plan-filing.md)
 - [x] **CORE-764** [light]🔧 | layout-plan-archive — `SPEC/layout.md` adopter tree lists the optional `PLAN-ARCHIVE.md`. Surfaced by audit-docs 2026-10-08 (Finding #23, Low), fixed inline.
 - [x] **CORE-763** [light]🔧 | candidacy-pair-n-owner — `SPEC/unattended-candidacy.md` says Pair N checks the literal and a labeled mirror and Pair Q resolves the label. Surfaced by audit-docs 2026-10-08 (Finding #22, Low), fixed inline.
 - [x] **CORE-762** [light]🔧 | gate-discipline-scope — `docs/GATE-DISCIPLINE.md` scope sentence names all three homes — `SPEC/gates.md`, `SPEC/gate-postures.md`, `SPEC/cue-vocabulary.md`. Surfaced by audit-docs 2026-10-08 (Finding #21, Low), fixed inline.
+- [x] **CORE-EPIC-776** [heavy]🧠 | closure-contract-coherence — Completed 2026-10-10.
+  - [x] **CORE-776.2** [light]🔧 [unattended] | micro-recap-no-wait — Completed 2026-10-10.
+  - [x] **CORE-776.3** [light]🔧 [unattended] | refactor-fast-label — Completed 2026-10-10.
+  - [x] **CORE-776.4** [light]🔧 [unattended] | epic-second-audit — Completed 2026-10-10.
+  - [x] **CORE-776.5** [frontier]💎 | micro-unattended-review — Completed 2026-10-10.
+  - [x] **CORE-776.6** [heavy]🧠 | id-allocation-home — Completed 2026-10-10.
+  - [x] **CORE-776.N** [heavy]🧠 | closure-contract-coherence audit — Completed 2026-10-10.
+- [x] **CORE-777** [medium] | ignored-skill-link-paths — Completed 2026-10-10.
+- [x] **CORE-EPIC-775** [medium]🧩 | v7-bump-safety — Completed 2026-10-10.
+  - [x] **CORE-775.2** [medium]🧩 [unattended] | bump-rollback-staging — Completed 2026-10-10.
+  - [x] **CORE-775.3** [light]🔧 [unattended] | migrate-staging-guards — Completed 2026-10-10.
+  - [x] **CORE-775.N** [medium]🧩 | v7-bump-safety audit — Completed 2026-10-10.
+- [x] **CORE-773** [light]🔧 [unattended] | single-model-decay-window — Completed 2026-10-10.
+- [x] **CORE-771** [light]🔧 [unattended] | roster-flag-guard — Completed 2026-10-10.
+- [x] **CORE-772** [light]🔧 | skill-wiring-v7 — Re-wired gitignored `.claude/skills/` after CORE-769's renames: removed four dangling links (`ft-epic-discovery`, `ft-file-followup`, `ft-new-project`, `ft-seed`) and linked `ft-adopt`, `ft-file-task`, `ft-open-epic`, `ft-seed-unattended`. Surfaced by audit-context 2026-10-10 (Finding #2, Medium), fixed inline.
+- [x] **CORE-EPIC-770** [heavy]🧠 | global-layer-alignment — Completed 2026-10-09.
+  - [x] **CORE-770.1** [frontier]💎 | global-layer-alignment discovery — Completed 2026-10-09.
+  - [x] **CORE-770.2** [light]🔧 | memory-refresh — Completed 2026-10-09.
+  - [x] **CORE-770.3** [medium]🧩 | global-standards-diff — Completed 2026-10-09.
+  - [x] **CORE-770.4** [light]🔧 | natabula-v7-handoff — Completed 2026-10-09.
+  - [x] **CORE-770.N** [heavy]🧠 | global-layer-alignment audit — Completed 2026-10-09.
 
 ## Completed 2026-09
 

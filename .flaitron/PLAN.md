@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-(none)
+- [ ] **CORE-802** [heavy] | audit-decisions-file — Give `/ft-audit` memory between runs: an adopter-owned `.flaitron/audit-decisions/<domain>.md` that each run reads before its passes, suppressing settled findings, and appends declined by-design/won't-fix findings to at the write step. Update overlay template, MIGRATION, layout. Filed with starter at `.flaitron/tasknote/CORE-802.md`.
 
 ## Low
 

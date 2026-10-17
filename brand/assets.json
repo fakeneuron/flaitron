@@ -141,6 +141,14 @@
     "source_visibility": {
       "value": "public",
       "evidence_paths": []
+    },
+    "homepage_url": {
+      "value": "https://fakeneuron.com/flaitron",
+      "evidence_paths": []
+    },
+    "source_url": {
+      "value": "https://github.com/fakeneuron/flaitron",
+      "evidence_paths": []
     }
   }
 }

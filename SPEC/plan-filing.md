@@ -13,7 +13,7 @@ section carries when it has no rows at all.
 
 Every motion that mints a new top-level ID — `/ft-file-task` (all modes),
 `/ft-audit`, `/ft-audit-repo`, `/ft-refactor`, `/ft-open-epic`,
-`/ft-prep-unattended` (a standalone split), and
+`/ft-seed-unattended` and `/ft-prep-unattended` (each on a standalone split), and
 `/ft-release`'s fallback release row — takes its number here. Each skill keeps only what is its own: whether the number is
 suggested for review or auto-allocated, and what a collision does.
 
@@ -60,9 +60,8 @@ lifecycle step 5).
 The filing motions — `/ft-file-task` (default flow), its `--park`
 and `--starter` modes, `/ft-audit`, `/ft-audit-repo`, `/ft-refactor`, and
 `/ft-open-epic` (its Step 4 rows, before `.1` is scaffolded) — **commit their own
-filing** at hand-off, and `/ft-seed-unattended`, which edits existing rows rather than
-filing new ones, and `/ft-prep-unattended`, which rewrites declined rows and may
-insert a mechanical row plus a starter, commit their writes under the same contract. Filing approval *is* commit authorization: the operator
+filing** at hand-off, and `/ft-seed-unattended` and `/ft-prep-unattended`, which edit existing rows and may
+insert a mechanical row plus a starter ([`SPEC/unattended-candidacy.md`](unattended-candidacy.md) §"Seeding an existing plan"), commit their writes under the same contract. Filing approval *is* commit authorization: the operator
 already confirmed at the review gate (follow-up / starter), by passing the park
 flag (park mode), at `/ft-audit`'s
 write-step confirmation (tickets, inline fixes and decisions-file writes), at `/ft-audit-repo`'s
@@ -153,11 +152,11 @@ Rules:
   pass the accumulated-filings test above. A changed line this motion wrote
   is recognized: the appended PLAN row, any confirmed reconcile edit, each
   named inline fix, `/ft-seed-unattended`'s ` [unattended]` insertions, and
-  `/ft-prep-unattended`'s description rewrites on confirmed source rows (those
+  `/ft-seed-unattended`'s and `/ft-prep-unattended`'s description rewrites on confirmed source rows — one line carrying both when a kept pin keeps its token item (those
   edits fail the line test, which is why each pre-check runs before its write;
   post-stage accepts them or it undoes the rows the pre-check allowed). A
   starter or sidequest file this motion created is recognized, and so is a
-  mechanical row `/ft-prep-unattended` inserted, and so is each
+  mechanical row `/ft-seed-unattended` or `/ft-prep-unattended` inserted (token included when its item was kept), and so is each
   decisions-file line `/ft-audit` wrote or removed. Anything else
   is unrecognized, whether it sits in its own hunk or beside a recognized
   line. **An unrecognized change → do not commit:** `git restore --staged`

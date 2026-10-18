@@ -37,9 +37,9 @@ confirm gate it already has — the operator's confirmation is the act, and the
 token is written only on confirmed rows. Under `--fast` / `--unattended` there
 is no act, so the filer emits an `unattended-candidates:` line and writes no
 token. Rows filed before or without that proposal are seeded in bulk through
-`/ft-seed-unattended` — one attended walk, one gate, the same predicate. A
-declined row is prepared, never marked, by `/ft-prep-unattended` — one
-attended walk, one gate, no token
-([`SPEC/unattended-candidacy.md`](unattended-candidacy.md) §"Preparing declined rows"). Predicate,
+`/ft-seed-unattended` — one attended walk, one gate, the same predicate. The
+same walk prepares a declined row — a pin or a split — and marks the result
+only when the predicate admits it
+([`SPEC/unattended-candidacy.md`](unattended-candidacy.md) §"Seeding an existing plan"). Predicate,
 postures, persistence, bulk seeding, declined-row prep, and the per-surface mirror table:
 [`SPEC/unattended-candidacy.md`](unattended-candidacy.md).

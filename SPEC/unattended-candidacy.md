@@ -1,6 +1,6 @@
 # `[unattended]` candidacy
 
-> Lazy-loaded SPEC module. Read by a filing surface at its write step — the moment it is about to write a `- [ ]` row into `PLAN.md` — by `/ft-seed-unattended` before it walks an existing plan, by `/ft-prep-unattended` before it classifies declined rows, and by a runner whose closure discharged a deferred step through `/ft-file-task --unattended`. Not needed to run a task. See `SPEC.md` for the always-loaded core spec.
+> Lazy-loaded SPEC module. Read by a filing surface at its write step — the moment it is about to write a `- [ ]` row into `PLAN.md` — by `/ft-seed-unattended` before it walks an existing plan, and by a runner whose closure discharged a deferred step through `/ft-file-task --unattended`. Not needed to run a task. See `SPEC.md` for the always-loaded core spec.
 
 The `[unattended]` marker ([`SPEC/task-line-segments.md`](task-line-segments.md)) is
 scarce for an accidental reason: nothing in the filing flow ever asks whether
@@ -64,7 +64,7 @@ row is **not** a candidate.
    *deploy*, *migration*. Two layers. That list is the mechanical screen,
    and it stays that list: do not add visual or raster keywords to close a
    miss. A keyword miss is not a semantic pass. An LLM filer and
-   `/ft-prep-unattended` decline a row that reads as needing a person even
+   `/ft-seed-unattended` decline a row that reads as needing a person even
    when no keyword trips. Candidacy never proposes
    `[handoff]` itself; like `[unattended]`, it is written only by the operator.
 4. **No `Blocked by` clause of any form** — `Blocked by [[ID]]`, bare `Blocked
@@ -139,34 +139,61 @@ branch.
 
 Candidacy fires at the write step, so a row filed before this module existed,
 or by hand, was never proposed and stays unmarked until someone edits the
-line. `/ft-seed-unattended` is the bulk path for those rows: an **attended, flagless**
-walk of every open row in the four active `PLAN.md` sections that applies the
-predicate above to each row *as it stands in the file* — the existing line is
-the drafted line — and shows every candidate, token in place, inside **one**
-prose review gate. The operator's reply is the act; the token is written only
-on the rows the reply keeps, after `[model]` with every other byte verbatim,
-and the write commits under [`SPEC/plan-filing.md`](plan-filing.md)
-§"Filing commits".
+line. `/ft-seed-unattended` is the bulk path for those rows, and for the rows
+the predicate declines: an **attended, flagless** walk of every open row in
+the four active `PLAN.md` sections that applies the predicate above to each
+row *as it stands in the file* — the existing line is the drafted line — and
+brings the whole walk to **one** prose review gate. Two classes are skipped
+before the predicate runs and reported as counts — a row already carrying the
+token, wherever it sits (a mis-positioned one is also named, below), and a
+`[handoff]` row (clause 3). The gate lists three things, in this order:
+
+- **Marks.** Every row the predicate admits, shown as it stands with the
+  token in place.
+- **Preparations.** Every declined row a pin or a split
+  (§"Preparing declined rows" below) rewrites, shown as the bytes the write
+  will produce, each followed by a **dependent token
+  item** when the predicate admits the resulting row as drafted — the pinned
+  row, or a split's mechanical row — shown with the token in place. A
+  preparation whose result the predicate still declines — a pin on a
+  `[heavy]` row (clause 1), a `.k` whose predecessor is open and not a
+  candidate (clause 6) — carries no item and names that clause instead, and
+  the write leaves that row unmarked.
+- **Stays.** Every other declined row, with the first clause it failed and,
+  where §"Preparing declined rows" asks for one, the reason: the path a
+  keyword tripped on, the note or stub the ID collides with, the missing
+  `.N`.
+
+The gate opens when it holds a mark or a preparation; a walk with neither
+reports the counts and the stays and stops — no gate, no commit. The
+operator's reply is the act, and the write covers only what the reply
+keeps: the token after `[model]` on each kept mark and each kept token item —
+every other byte verbatim to the file on a mark, to the drafted bytes on an
+item; the rewritten line of each kept pin; the remainder, the mechanical row,
+and the starter of each kept split. A token
+item depends on its preparation: dropping the preparation drops the item with
+it; dropping the item keeps the preparation and leaves the row unmarked, for
+a later walk to offer as a mark when the predicate then admits it. Clause 6
+reads the plan itself, and a kept
+token item counts as a candidate in the same walk — when it settles a
+dependent, and in the re-read in §"Three postures", which drops every kept
+row leaning on a dropped mark or a dropped item. The whole write — tokens, rewrites, mechanical
+rows, starters — commits as one filing commit under
+[`SPEC/plan-filing.md`](plan-filing.md) §"Filing commits".
 
 Nothing in §"Recommend, never write" bends for it. The skill accepts neither
 `--fast` nor `--unattended` — remove its gate and it is a report, which the
 filers already emit as `unattended-candidates:` — so it never writes a token
-nobody confirmed and never emits that line. It seeds and never repairs: a row
-already carrying the token is skipped wherever the token sits, a `[handoff]`
-row is skipped under clause 3, and a mis-positioned marker is named in the
-report for a hand edit, not rewritten. Clause 6 reads the plan itself: a
-`.k` child's stem predecessor, and each sibling an audit row waits on, must be
-`- [x]` or a candidate in the same walk — so a declined chain head declines
-the chain, and an audit resolves last. A second run never re-offers what the
-first seeded; an open sibling the first run marked does not settle a
-dependent, which stays declined until that sibling closes.
+nobody confirmed and never emits that line. It never writes `[handoff]`,
+which no filer proposes. It seeds and never repairs: a mis-positioned marker
+is named in the report for a hand edit, not rewritten, and a row's other
+defects — a `[handoff]` that reads stale, a `Blocked by` that has since
+cleared — are left as they stand. A second run never
+re-offers what the first seeded; an open sibling the first run marked does
+not settle a dependent, which stays declined until that sibling closes.
+Existing filers keep their own gates.
 
-## Preparing declined rows
-
-`/ft-prep-unattended` is the attended, flagless walk of open rows the
-candidacy predicate **declines**. `/ft-seed-unattended` marks rows the
-predicate admits. This section does not. Rows already carrying
-`[unattended]`, `[handoff]` rows, and candidates are not proposed.
+### Preparing declined rows
 
 Prefer a pin when one fact removes the person. Prefer a split when a
 factual slice separates cleanly and the rest still needs a person.
@@ -215,12 +242,13 @@ Otherwise stay. Each declined row is one class:
   stays as well: the skill does not overwrite a note or orphan a stub. So
   does a split whose drafted mechanical row still trips clauses 1–5.
 
-The confirm writes the rewritten lines, the mechanical row, and the
-starter. It never writes `[unattended]` or `[handoff]`. A later
-`/ft-seed-unattended` marks a row the predicate then admits. Existing
-filers keep their own gates. The skill accepts neither `--fast` nor
-`--unattended`, so it never emits `unattended-candidates:`. The write
-commits under [`SPEC/plan-filing.md`](plan-filing.md) §"Filing commits".
+A pin or a split is a preparation at the gate above; a stay is listed with
+its clause. A split's mechanical `.k` takes the next number after the highest
+numeric sibling, so under clause 6 it waits on that sibling — the remainder
+itself when the source was the highest — and a later walk reads it the same
+way. The default errs toward a false negative, as the predicate does: the
+slice is still safe to ship first, and the walk after that sibling closes
+offers the mark.
 
 ## Persistence
 
@@ -273,8 +301,7 @@ fails that check.
 | `/ft-refactor` | Step 5 | Step 4 structured-ask review; own `--fast` → emit only | [[CORE-577.5]] |
 | `/ft-audit-repo` §6 | milestone write | write-confirm structured ask | [[CORE-577.6]] |
 | `/ft-task` · `/ft-close-epic` | — | not filers; carry the §"Persistence" hook only | [[CORE-577.4]] |
-| `/ft-seed-unattended` | Step 4 (existing rows, bulk) | Step 3 prose review — the skill's only gate; no flags, attended only (§"Seeding an existing plan") | [[CORE-619]] |
-| `/ft-prep-unattended` | Step 4 (declined rows) | Step 3 prose review — the skill's only gate; no flags, attended only; never writes the token (§"Preparing declined rows") | [[CORE-783.3]] |
+| `/ft-seed-unattended` | Step 4 (existing rows, bulk — marks, pins, splits) | Step 3 prose review — the skill's only gate; no flags, attended only (§"Seeding an existing plan") | [[CORE-619]] · [[CORE-EPIC-812]] |
 
 Adopter forks of `ft-audit` (`.claude/skills/audit/`) pick the mirror up only
 through `/ft-update`'s fork refresh; until then a fork files as before —

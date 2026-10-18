@@ -29,6 +29,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-809** [medium]🧩 | release v7.2.0 — Completed 2026-10-18.
 - [x] **CORE-803** [light]🔧 [unattended] | release-ci-line — Completed 2026-10-18.
 - [x] **CORE-804** [light] | brand-doc-sync — Add `brand/` to the AGENTS.md and README.md repo layouts; describe `public_metadata` in brand/README.md; repoint the overlay frontend rubric from brand/BRAND.md to the PROMPTS.md mark palettes; fix the PROMPTS.md chamber review date and scope its review-and-boundaries paragraph to the marks. Surfaced by audit-docs 2026-10-17 (Findings #3, #4, #5, #20, #23, Medium/Low), fixed inline.
 - [x] **CORE-805** [light] | contract-mirror-gaps — Align ft-refactor's `--fast` description with its body; widen SPEC.md §"Who reviews" to the task's own diff; document fenced-code exclusion in SPEC/plan-parser.md; add /ft-refactor to Pair C's starter-template writers; narrow plan-filing's carve-out cite to /ft-audit; note the audit-decisions handoff in ft-audit-repo §5; add /ft-prep-unattended to SPEC/model.md's consulted-by list; note context's six passes in the overlay template. Surfaced by audit-docs 2026-10-17 (Findings #2, #6, #7, #8, #9, #10 + two capped Lows, Medium/Low), fixed inline.

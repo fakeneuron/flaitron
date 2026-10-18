@@ -59,6 +59,10 @@ not to)".
 - `README.md` — top-level project overview and entry point.
 - `SECURITY.md` — security policy and vulnerability reporting.
 - `CONTRIBUTING.md` — contributor guide: maintenance model, filing issues, PR process, local skill wiring.
+- `LICENSE` — MIT.
+- `LOGO.webp` — README header image.
+- `.editorconfig` — editor formatting rules (§"Editing Rules" below).
+- `.gitleaks.toml` — gitleaks config for CI's secret scan.
 - `.github/` — GitHub-specific config (CI workflow: `workflows/ci.yml`; Dependabot security-update config: `dependabot.yml`).
 - `justfile` — `just` recipes (`setup`/`dev`/`test`/`lint`/`typecheck`/`build`) that delegate to the `viz/` npm scripts; §"Validation" below stays the roster of record.
 - `SPEC.md` — canonical workflow contract.

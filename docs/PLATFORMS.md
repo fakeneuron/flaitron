@@ -32,7 +32,7 @@ wiring but don't *depend* on it for contract semantics).
 
 | Platform | How it consumes flaitron | What ships in this repo |
 |---|---|---|
-| **Claude Code** | Wiring layer + contract layer. Five tasknote skills (`/ft-task` — which carries debug mode behind `--debug`, loop mode behind `--loop`, and micro mode behind `--micro` — `/ft-file-task` (which carries park mode behind `--park` and starter mode behind `--starter`), `/ft-open-epic`, `/ft-close-epic`, `/ft-refactor`) drive the SPEC's 4-phase workflow inline; the parameterized `/ft-audit <domain>` skill runs the 5-pass recipe over eight domains and `/ft-audit-repo` runs the first-contact holistic recipe; standalone skills `/ft-adopt`, `/ft-release`, `/ft-prep-unattended`, `/ft-seed-unattended`, `/ft-update` follow their own recipes. | `claude/` — `AGENTS-snippet.md` + `skills/*/SKILL.md` (+ lazy fragments). Adopter installs follow the subset policy below and the executable commands in `claude/AGENTS-snippet.md` §"One-time symlink wiring". |
+| **Claude Code** | Wiring layer + contract layer. Five tasknote skills (`/ft-task` — which carries debug mode behind `--debug`, loop mode behind `--loop`, and micro mode behind `--micro` — `/ft-file-task` (which carries park mode behind `--park` and starter mode behind `--starter`), `/ft-open-epic`, `/ft-close-epic`, `/ft-refactor`) drive the SPEC's 4-phase workflow inline; the parameterized `/ft-audit <domain>` skill runs its pass recipe (five passes per domain, six for `context`) over eight domains and `/ft-audit-repo` runs the first-contact holistic recipe; standalone skills `/ft-adopt`, `/ft-release`, `/ft-prep-unattended`, `/ft-seed-unattended`, `/ft-update` follow their own recipes. | `claude/` — `AGENTS-snippet.md` + `skills/*/SKILL.md` (+ lazy fragments). Adopter installs follow the subset policy below and the executable commands in `claude/AGENTS-snippet.md` §"One-time symlink wiring". |
 | **Codex CLI** | Wiring layer + contract layer. Codex consumes the same `AGENTS.md` paste-block, then exposes the adopter subset as repo-scoped skills. `ft-task` routes through the agent-neutral SOP; the other shipped wrappers route to the canonical skill bodies with Codex primitive translation. Those bodies' trailing operator flags come with them — see §"Non-Claude capability triggers". | `codex/` — `AGENTS-snippet.md` + `skills/*/SKILL.md` wrappers, plus the retained `procedures/ft-task.md` pointer. Adopter installs follow the subset policy below and the executable commands in `codex/AGENTS-snippet.md`; Codex invocation is via `/skills` or `$ft-task` / `$ft-update`, not arbitrary custom `/ft-*` CLI commands. |
 | **Cursor** | Wiring layer + contract layer (thin). Cursor reads `AGENTS.md` and discovers skills from `.cursor/skills/`, `.agents/skills/`, and `.claude/skills/` (compat). No Cursor-specific skill wrappers ship — adopters wire the canonical `claude/skills/` bodies. | `cursor/` — `AGENTS-snippet.md` + `procedures/ft-task.md` pointer only. If the project is already wired for Claude Code, it is already wired for Cursor; Cursor-only projects follow the `.cursor/skills/` block in `cursor/AGENTS-snippet.md`. |
 | **Grok Build** | Wiring layer + contract layer (thin, Cursor-shaped). Grok reads `AGENTS.md` and discovers skills from `.grok/skills/` (native), `.claude/skills/` (Claude compat, default on), `.cursor/skills/` (Cursor compat, default on), and `.agents/skills/` at each tier. No Grok-specific skill wrappers ship — adopters reuse the canonical `claude/skills/` bodies already wired for Claude, Codex, or Cursor. Those bodies' trailing operator flags come with them — see §"Non-Claude capability triggers". | `grok/` — `AGENTS-snippet.md` + `procedures/ft-task.md` pointer only. If the project is already wired for Claude Code, Codex, or Cursor, it is already wired for Grok; Grok-only projects follow the `.grok/skills/` block in `grok/AGENTS-snippet.md`. For Grok Build adoption specifics, see §"Grok Build adoption notes" below. |
@@ -515,7 +515,7 @@ that platform's routing. Do not add per-flag rows back (CORE-734.6)._
 
 First-use verification 2026-06-01 (CORE-257). /ft-task skill invocation, model gate (with retag), AskUserQuestion render, and cue emissions (✅ marker + post-closure expectations) exercised under Grok. Structured ask support observed (see trigger table note). Matrix currency lives in docs/AGENT-COMPAT.md.
 
-**Last verified:** `v7.1.0 · 2026-10-15 (dogfooded)`
+**Last verified:** `v7.2.0 · 2026-10-18 (dogfooded)`
 
 ### Codex CLI
 
@@ -549,7 +549,7 @@ shipped `codex/skills/` wrappers — desk research under Claude Code, not a
 standalone Codex verification session. CORE-734.6 later folded the flag rows,
 by then seven, into the one skill-body-flags row above.
 
-**Last verified:** `v7.1.0 · 2026-10-15 (dogfooded)`
+**Last verified:** `v7.2.0 · 2026-10-18 (dogfooded)`
 
 ### Cursor
 
@@ -572,7 +572,7 @@ Cursor-only projects (see §"Worked example: Cursor" and
 
 First-use verification 2026-08-12 ([[CORE-438.5]]): `/ft-task` under Cursor (Grok 4.5) ran DOGFOOD.md's three steps (contract comprehension at `v5.16.0`, full cue-render vocabulary, Phase-1 drive on CORE-438.N with clean Step-3 write boundary). Skill dispatch via `.claude/skills/` compat, Task subagent tool, modes, and `/model`+`/clear` cues confirmed; structured ask confirmed earlier under Cursor in [[CORE-438.1]]. Matrix currency lives in docs/AGENT-COMPAT.md.
 
-**Last verified:** `v7.1.0 · 2026-10-15 (dogfooded)`
+**Last verified:** `v7.2.0 · 2026-10-18 (dogfooded)`
 
 ### Gemini CLI (stub)
 

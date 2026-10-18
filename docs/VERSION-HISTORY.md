@@ -22,6 +22,14 @@ unless correcting a factual error.
 
 ---
 
+## v7.2.0 — /ft-audit settled decisions, tighter /ft-prep-unattended guards
+
+- /ft-audit reads adopter-owned `.flaitron/audit-decisions/<domain>.md` before its passes and holds back findings that match a settled by-design or won't-fix entry, naming each in the Summary. An entry reopens on its Revisit-if, after 6 months, or when the cited code changes.
+- Its write step asks by-design / won't-fix / not-now for each dropped finding and appends the first two.
+- /ft-prep-unattended's pin and split guards are tightened, and two split collisions now settle as stay.
+
+Also: SECURITY.md names the decisions file in its threat model; the external review is scoped to the task's own diff.
+
 ## v7.1.0 — /ft-prep-unattended, no-ask filing priority, Codex wiring repair
 
 - /ft-prep-unattended joins /ft-seed-unattended: an attended walk that pins a fact or splits a mechanical row from an attended remainder for rows the [unattended] predicate declines. It never writes the marker.

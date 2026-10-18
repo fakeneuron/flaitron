@@ -22,7 +22,8 @@ Flaitron's bundled execution surfaces — Claude Code skills
 Codex skill wrappers under `codex/skills/`, and Cursor / Grok thin wiring
 under `cursor/` and `grok/` (snippet + procedure pointer; skills are the
 canonical `claude/skills/` bodies) — read content the user authored:
-tasknotes, `PLAN.md`, `SPEC.md`. In an adopter project, "the user" may
+tasknotes, `PLAN.md`, `SPEC.md`, and `/ft-audit`'s
+`.flaitron/audit-decisions/*.md`. In an adopter project, "the user" may
 include contributors who open pull requests. The threat model below applies
 to any AI assistant reading the same files; runtime-specific mitigations
 name `.claude/`, `.agents/skills/`, `.cursor/skills/`, and `.grok/skills/`
@@ -41,6 +42,10 @@ the runtime's tool allowlist is.
 - Review contributor PRs that touch `.flaitron/` content with the same care
   you would give to a code change. The body of a tasknote is executable
   context, even though it is plain markdown.
+- Treat a contributor PR that adds or edits a `.flaitron/audit-decisions/*.md`
+  entry as a policy change: each entry holds back a matching `/ft-audit`
+  finding in every domain. Each run's Summary names the entries it held back
+  ("Settled, not re-reported") — read that line for entries you did not write.
 - Treat the first run of a skill against contributor-authored content as a
   judgment call, not a routine action.
 
@@ -122,7 +127,7 @@ invocations will execute.
 
 **Adopter mitigations.**
 
-- Pin to annotated release tags (e.g. `v7.1.0`), not to `main` or to an
+- Pin to annotated release tags (e.g. `v7.2.0`), not to `main` or to an
   unreviewed commit on `main`. Release tags are reviewed deliberately;
   `main` is a moving target.
 - Review the diff between your pinned commit and the new tag before

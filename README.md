@@ -21,8 +21,8 @@ actually review. No scripts, daemons, databases, or schemas to maintain.
 
 ![The flaitron visualizer showing flaitron's own PLAN.md — open tasks by priority, phase-progress dots, and the completed archive](.flaitron/screenshots/viz-board.png)
 
-Flaitron is built with flaitron: **1193 tasks** closed through this exact
-workflow between 2026-04-28 and 2026-10-15 (as of 2026-10-15) — each one with
+Flaitron is built with flaitron: **1201 tasks** closed through this exact
+workflow between 2026-04-28 and 2026-10-18 (as of 2026-10-18) — each one with
 a tasknote preserved in [`.flaitron/tasknote/archive/`](.flaitron/tasknote/archive/).
 Count and date range are recomputed each release by `/ft-release` §7.1's
 "Standing README task-counter check" (one archived tasknote per closed task,
@@ -313,6 +313,11 @@ runtime lives in the runner; the contract lives in flaitron.
 - `CONTRIBUTING.md` — solo-maintenance model; issue and PR guidance; maintainer skill wiring
 - `SECURITY.md` — threat model and vulnerability reporting
 - `LICENSE` — MIT
+- `LOGO.webp` — the header image above
+- `.editorconfig` — editor formatting rules (UTF-8, LF, 2-space indent)
+- `.gitleaks.toml` — gitleaks config for CI's secret scan
+- `.github/` — CI workflow (`workflows/ci.yml`) and Dependabot config
+- `justfile` — `just` recipes that delegate to the `viz/` npm scripts
 - pre-v0.1.0 source preserved in git tag `legacy-pre-v0.1.0`
 
 ## Version

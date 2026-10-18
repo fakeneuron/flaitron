@@ -9,7 +9,7 @@ You are preparing open rows of a project's existing `.flaitron/PLAN.md` that
 the `[unattended]` candidacy predicate declines. `/ft-seed-unattended` marks
 rows the predicate already admits. This skill does the other walk: one pass,
 one gate, and a write that covers only what the operator confirmed. It is a
-**thin procedural skill**. It edits PLAN.md rows, may append a mechanical row,
+**thin procedural skill**. It edits PLAN.md rows, may insert a mechanical row,
 and may file a starter for an attended remainder. It does **not** scaffold a
 tasknote for itself. The skill takes **no arguments and no flags**.
 
@@ -98,13 +98,14 @@ Draft the bytes Step 4 will write. No draft contains `[unattended]` or
     is multi-step and well-scoped (`SPEC/model.md` §"Model field"). No other
     tier. Description is only the factual slice, ≤50 words, same thresholds.
     Shortname ≤30 characters. A standalone source takes the next top-level ID
-    from `SPEC/plan-filing.md` §"ID allocation", and is inserted immediately
-    after its source row. An epic-child source does not take a new top-level
-    ID: the mechanical row is the next `.<k>` after the highest numeric
-    sibling already on disk, before `.N`, inserted 2-space nested under the
-    parent immediately before that `.N` row. Several splits allocate in
-    order, each counting IDs already on disk and rows drafted ahead in this
-    walk.
+    from `SPEC/plan-filing.md` §"ID allocation", and is inserted on the line
+    immediately after its source row, with no blank line between, even when
+    the source is its section's last row. An epic-child source does not take
+    a new top-level ID: the mechanical row is the next `.<k>` after the
+    highest numeric sibling already on disk, before `.N`, inserted 2-space
+    nested under the parent immediately before that `.N` row. Several splits
+    allocate in order, each counting IDs already on disk and rows drafted
+    ahead in this walk.
   - **Starter.** When the remainder is not understandable from its line,
     copy `<root>templates/tasknote-starter-template.md` to
     `.flaitron/tasknote/<source-ID>.md`, `status: starter`, `created:` today,
@@ -168,7 +169,7 @@ In one continuous motion, after the reply:
    Omit the starter `git add` when this motion created none.
 
    **Post-stage verification.** Recognized hunks: a description rewrite on a
-   confirmed source row, an appended mechanical row, a starter file this
+   confirmed source row, an inserted mechanical row, a starter file this
    motion created, and the accumulated filings the pre-check recorded (their
    IDs go in the body line that section names). Anything else →
    `git restore --staged` on every path this motion staged, skip the commit,

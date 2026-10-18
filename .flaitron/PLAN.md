@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-810** [medium]🧩 | prep-split-deploy-safety — `SPEC/unattended-candidacy.md` §"Preparing declined rows": a split's mechanical row must also be safe to ship without the person act (bananapeel BP-2576 dropped Resend before domain onboarding). Also: `/ft-prep-unattended` inserted a section's-last-row split after a blank line, not immediately after its source.
+(none)
 
 ## Low
 
@@ -29,6 +29,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-810** [medium]🧩 | prep-split-deploy-safety — Completed 2026-10-18.
 - [x] **CORE-809** [medium]🧩 | release v7.2.0 — Completed 2026-10-18.
 - [x] **CORE-803** [light]🔧 [unattended] | release-ci-line — Completed 2026-10-18.
 - [x] **CORE-804** [light] | brand-doc-sync — Add `brand/` to the AGENTS.md and README.md repo layouts; describe `public_metadata` in brand/README.md; repoint the overlay frontend rubric from brand/BRAND.md to the PROMPTS.md mark palettes; fix the PROMPTS.md chamber review date and scope its review-and-boundaries paragraph to the marks. Surfaced by audit-docs 2026-10-17 (Findings #3, #4, #5, #20, #23, Medium/Low), fixed inline.

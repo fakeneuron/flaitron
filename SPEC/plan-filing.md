@@ -62,7 +62,7 @@ and `--starter` modes, `/ft-audit`, `/ft-audit-repo`, `/ft-refactor`, and
 `/ft-open-epic` (its Step 4 rows, before `.1` is scaffolded) — **commit their own
 filing** at hand-off, and `/ft-seed-unattended`, which edits existing rows rather than
 filing new ones, and `/ft-prep-unattended`, which rewrites declined rows and may
-append a mechanical row plus a starter, commit their writes under the same contract. Filing approval *is* commit authorization: the operator
+insert a mechanical row plus a starter, commit their writes under the same contract. Filing approval *is* commit authorization: the operator
 already confirmed at the review gate (follow-up / starter), by passing the park
 flag (park mode), at `/ft-audit`'s
 write-step confirmation (tickets, inline fixes and decisions-file writes), at `/ft-audit-repo`'s
@@ -157,7 +157,7 @@ Rules:
   edits fail the line test, which is why each pre-check runs before its write;
   post-stage accepts them or it undoes the rows the pre-check allowed). A
   starter or sidequest file this motion created is recognized, and so is a
-  mechanical row `/ft-prep-unattended` appended, and so is each
+  mechanical row `/ft-prep-unattended` inserted, and so is each
   decisions-file line `/ft-audit` wrote or removed. Anything else
   is unrecognized, whether it sits in its own hunk or beside a recognized
   line. **An unrecognized change → do not commit:** `git restore --staged`

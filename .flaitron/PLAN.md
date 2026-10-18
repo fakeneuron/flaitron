@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-(none)
+- [ ] **CORE-810** [medium]🧩 | prep-split-deploy-safety — `SPEC/unattended-candidacy.md` §"Preparing declined rows": a split's mechanical row must also be safe to ship without the person act (bananapeel BP-2576 dropped Resend before domain onboarding). Also: `/ft-prep-unattended` inserted a section's-last-row split after a blank line, not immediately after its source.
 
 ## Low
 

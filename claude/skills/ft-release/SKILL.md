@@ -219,8 +219,8 @@ Every reported run must be `completed` + `success`. Read the result as:
 **Scope: the commit this release builds on, not the release commit** — the
 latter does not exist until §7.5, so its run is only observable after the push.
 Deliberately not a wait-loop inside the cut: what failed at v5.25.0 was an
-*inherited* red `main`, which this step catches. Carry the post-push run into
-the §7.4 closure review as one line, flag-don't-block.
+*inherited* red `main`, which this step catches. The release commit's own run
+is read after the push, in Step 8, as one line, flag-don't-block.
 
 ### 6.2 — Dependency audit (release cadence)
 
@@ -377,6 +377,15 @@ The post-closure protocol is canonical in `SPEC/post-closure.md` — **Read it n
   On push-go No, drop "published release" from the marker and append a one-line manual follow-up reminder under it (e.g., `Manual push pending: ▶️ RUN: \`git push origin <branch>\` then \`git push origin vA.B.C\`, then \`gh release create vA.B.C --latest --title "<title>" --notes "<notes>"\`.`).
 
 - **Rotation** — post-closure step 2's `## Completed` rotation runs here as for any closer, after §7.5's operations land and before the 🏁 marker. Print `Completed rotation: <N> rows (bound 60)` even when the section is under the bound; the §7.4 advisory line is the pre-commit backstop, not this receipt. Over 60, rotate in this response or name the legal skip. When the move runs, append `· rotated <M> rows in <sha>` to the marker (`<M>` is rows moved; `<N>` on the receipt is the count after). Its `chore:` commit is not part of the pushed release — it stays local and rides the next push.
+
+- **Release-commit CI line (flag-don't-block)** — on push-go Yes, once §7.5's push has landed, print one `CI:` line directly under the marker. §6.1's scope note defers the release commit's own run to here: the commit does not exist until §7.5, so the §7.4 gate has no run to carry.
+
+  ```sh
+  gh run list --commit "<release-sha>" --json workflowName,status,conclusion \
+    --jq '[.[] | "\(.workflowName) \(if .conclusion == "" then .status else .conclusion end)"] | join(" · ")'
+  ```
+
+  `<release-sha>` is the §7.5 commit the marker names. A run still `in_progress` / `queued` reads as such, never as a pass; empty output, `gh` missing, or `gh` unauthenticated prints `CI: no runs reported` / `CI: not checked (<reason>)` rather than omitting the line. A `failure` / `cancelled` / `timed_out` is reported, not gated — the tag is already pushed — and the 🏁 marker still emits; name the red run and offer a fix commit as the next move. On push-go No, print `CI: not pushed`.
 
 - **Suggest-next-move + copy-paste line** — follow in the same response as the 🏁 marker. Candidates carry `[model]` inline per option (`**<TASK-ID>** [model] | shortname — one-sentence "why now"`). The next move is typically the next pending child in the cohort that filed this release, or `/ft-file-task` for any drift surfaced during the cut.
 

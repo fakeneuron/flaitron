@@ -21,7 +21,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 
 
-- [ ] **CORE-803** [light]🔧 [unattended] | release-ci-line — Move ft-release §6.1's post-push CI report out of the §7.4 📦 gate (it runs before §7.5's push) into Step 8 beside the 🏁 marker, as one flag-don't-block `gh run list --commit <release-sha>` line; re-run drift-checks and the ft-release budget rows. Surfaced by audit-docs 2026-10-17 (Finding #1, Medium).
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
 
 ## Future Opportunities
@@ -30,6 +29,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-803** [light]🔧 [unattended] | release-ci-line — Completed 2026-10-18.
 - [x] **CORE-804** [light] | brand-doc-sync — Add `brand/` to the AGENTS.md and README.md repo layouts; describe `public_metadata` in brand/README.md; repoint the overlay frontend rubric from brand/BRAND.md to the PROMPTS.md mark palettes; fix the PROMPTS.md chamber review date and scope its review-and-boundaries paragraph to the marks. Surfaced by audit-docs 2026-10-17 (Findings #3, #4, #5, #20, #23, Medium/Low), fixed inline.
 - [x] **CORE-805** [light] | contract-mirror-gaps — Align ft-refactor's `--fast` description with its body; widen SPEC.md §"Who reviews" to the task's own diff; document fenced-code exclusion in SPEC/plan-parser.md; add /ft-refactor to Pair C's starter-template writers; narrow plan-filing's carve-out cite to /ft-audit; note the audit-decisions handoff in ft-audit-repo §5; add /ft-prep-unattended to SPEC/model.md's consulted-by list; note context's six passes in the overlay template. Surfaced by audit-docs 2026-10-17 (Findings #2, #6, #7, #8, #9, #10 + two capped Lows, Medium/Low), fixed inline.
 - [x] **CORE-806** [light] | stale-cross-refs — Retarget EXTERNAL-AGENTS's park-conversion pointer to SPEC/gate-postures.md, MIGRATION §3.4→§1.5, ft-open-epic's `SPEC/epic.md` line-11 cites to §"Epic lifecycle", GATE-DISCIPLINE's post-closure cite to SPEC/post-closure.md, and DOGFOOD's stamp source; name the `.flaitron/core/.flaitron/` line in the codex/cursor/grok snippets. Surfaced by audit-docs 2026-10-17 (Findings #11–#15 + one capped Low, Medium/Low), fixed inline.

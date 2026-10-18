@@ -22,7 +22,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
-- [ ] **CORE-811** [light]🔧 [unattended] | prep-draft-self-screen — Require /ft-prep-unattended's drafted mechanical row to pass the candidacy predicate itself (SPEC/unattended-candidacy.md §"Preparing declined rows" + ft-prep-unattended Step 2): a back-link naming the source row's ID tripped clause 3 on that ID, so the next seed declined the split (bidviz, 2026-10-18).
 
 ## Future Opportunities
 
@@ -30,6 +29,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-811** [light]🔧 [unattended] | prep-draft-self-screen — Completed 2026-10-18.
 - [x] **CORE-810** [medium]🧩 | prep-split-deploy-safety — Completed 2026-10-18.
 - [x] **CORE-809** [medium]🧩 | release v7.2.0 — Completed 2026-10-18.
 - [x] **CORE-803** [light]🔧 [unattended] | release-ci-line — Completed 2026-10-18.

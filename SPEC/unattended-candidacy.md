@@ -193,9 +193,14 @@ Otherwise stay. Each declined row is one class:
   lands, and it never requires anything the act provides. Dropping a
   live provider before the act onboards its successor fails, even
   when the code is correct. A slice that fails either test has not
-  separated cleanly, and the row stays. The source row becomes the
-  remainder. File a starter for the remainder when its line alone does
-  not say what to do.
+  separated cleanly, and the row stays. The drafted mechanical row
+  also passes clauses 1–5 as drafted — the exact line, its own ID and
+  any mention of the source ID included, since an ID such as `DEPLOY-12`
+  trips clause 3 on its prefix. A mention of the source is optional, so
+  one that trips is left out. A row that still trips (its own ID, a
+  path, the slice's words) has not separated cleanly, and the row
+  stays. The source row becomes the remainder. File a starter for the
+  remainder when its line alone does not say what to do.
 - **Stay.** Taste, credentials, deploy, and a true look stay declined — a
   true look is a result someone must see, where no existing test command
   decides it. So does a row whose whole text is the person act, a row
@@ -207,7 +212,8 @@ Otherwise stay. Each declined row is one class:
   insert before, so the new `.k` would land after a legacy numeric audit or
   take the slot an unfiled one needs. A source ID that already has a
   tasknote, active or archived, or a `.flaitron/sidequest/<ID>.md` stub,
-  stays as well: the skill does not overwrite a note or orphan a stub.
+  stays as well: the skill does not overwrite a note or orphan a stub. So
+  does a split whose drafted mechanical row still trips clauses 1–5.
 
 The confirm writes the rewritten lines, the mechanical row, and the
 starter. It never writes `[unattended]` or `[handoff]`. A later

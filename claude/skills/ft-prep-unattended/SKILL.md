@@ -106,6 +106,12 @@ Draft the bytes Step 4 will write. No draft contains `[unattended]` or
     nested under the parent immediately before that `.N` row. Several splits
     allocate in order, each counting IDs already on disk and rows drafted
     ahead in this walk.
+  - **Screen.** Once the mechanical row's ID and placement are fixed, screen
+    that row — not the remainder: clauses 1–5 over the exact bytes Step 3
+    will show (§"Preparing declined rows"). Leave out a mention of the source
+    ID that trips, and re-screen. A trip that remains turns the whole split
+    into `stay`: drop the remainder rewrite, draft no starter, and name the
+    word and the clause.
   - **Starter.** When the remainder is not understandable from its line,
     copy `<root>templates/tasknote-starter-template.md` to
     `.flaitron/tasknote/<source-ID>.md`, `status: starter`, `created:` today,

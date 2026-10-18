@@ -18,7 +18,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 - [ ] **CORE-EPIC-812** [heavy] | seed-prep-merge — Fold `/ft-prep-unattended` into `/ft-seed-unattended`: one attended walk, one prose gate (marks; pins and splits, each with a dependent token item; stays), one filing commit. Drop the never-writes-the-token rule and retire the prep slug in a minor, on the `ft-debug` fold precedent. The natabula mirror is a handoff.
   - [x] **CORE-812.1** [frontier] | seed-prep-merge discovery — Completed 2026-10-18.
   - [x] **CORE-812.2** [frontier] | seed-prep-contract — Completed 2026-10-18.
-  - [ ] **CORE-812.3** [heavy] | seed-absorbs-prep — Fold prep's classification into claude/skills/ft-seed-unattended/SKILL.md per the CORE-812.2 contract: one walk, one Step 3 gate, one filing commit covering marks, rewrites, mechanical rows, and starters. Mirror the Codex wrapper. Leave the prep body in place for CORE-812.4. Re-measure the seed row in docs/CONTEXT-BUDGET.md.
+  - [x] **CORE-812.3** [heavy] | seed-absorbs-prep — Completed 2026-10-18.
   - [ ] **CORE-812.4** [medium] | retire-prep-slug — Delete both ft-prep-unattended bodies and drop the slug from the four snippets, tools/drift-checks.sh, SPEC/layout.md, SPEC/plan-filing.md, SPEC/model.md, roster docs, and Pair O prose. Add the retired-table row. Decide whether tools/update-adopters.mjs prunes the link. File a natabula handoff for its AGENTS.md mirror.
   - [ ] **CORE-812.N** [heavy] | seed-prep-merge audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
 

@@ -310,10 +310,12 @@ moved bytes widen the core's headroom.
 
 ft-release 36,893 · ft-open-epic 32,882 · ft-task 26,380 · ft-file-task
 25,165 · ft-close-epic 25,150 · ft-audit 23,409 · ft-update 23,084 ·
-ft-refactor 16,343 · ft-adopt 15,199 · ft-seed-unattended
-12,487 · ft-prep-unattended 12,334 · ft-audit-repo 11,813. Re-measured
+ft-seed-unattended 22,345 · ft-refactor 16,343 · ft-adopt 15,199 ·
+ft-prep-unattended 12,334 · ft-audit-repo 11,813. Re-measured
 2026-10-18 at v7.2.0 ([[CORE-809]]); the largest move is ft-release +1,024
-(the Step 8 CI line, [[CORE-803]]).
+(the Step 8 CI line, [[CORE-803]]). ft-seed-unattended re-measured the same
+day at [[CORE-812.3]], +9,858 from 12,487: it absorbed ft-prep-unattended's
+pin / split drafting into its own walk ([[CORE-EPIC-812]]).
 
 `ft-goal-task`, `ft-spec`, `ft-starter-task`, `ft-worktree-start`, and
 `ft-worktree-end` were retired at v5.27.0 (CORE-570/571/572/573), folded into

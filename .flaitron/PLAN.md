@@ -19,7 +19,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [x] **CORE-812.1** [frontier] | seed-prep-merge discovery — Completed 2026-10-18.
   - [x] **CORE-812.2** [frontier] | seed-prep-contract — Completed 2026-10-18.
   - [x] **CORE-812.3** [heavy] | seed-absorbs-prep — Completed 2026-10-18.
-  - [ ] **CORE-812.4** [medium] | retire-prep-slug — Delete both ft-prep-unattended bodies and drop the slug from the four snippets, tools/drift-checks.sh, SPEC/layout.md, SPEC/plan-filing.md, SPEC/model.md, roster docs, and Pair O prose. Add the retired-table row. Decide whether tools/update-adopters.mjs prunes the link. File a natabula handoff for its AGENTS.md mirror.
+  - [x] **CORE-812.4** [medium] | retire-prep-slug — Completed 2026-10-18.
   - [ ] **CORE-812.N** [heavy] | seed-prep-merge audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
 
 ## Low

@@ -44,7 +44,7 @@ const CASES = {
   },
   skill_pin_guard_parity: {
     seed: () => edit('claude/skills/ft-seed-unattended/SKILL.md', (s) => s.replace('**Skill/pin guard.** ', '**Skill/pin guard.** zz ')),
-    finding: /^GUARD DRIFT {2}copies-per-variant: (1 6|6 1) /m, // one copy seeded off the other six
+    finding: /^GUARD DRIFT {2}copies-per-variant: (1 5|5 1) /m, // one copy seeded off the other five
   },
   context_budget: {
     // The first non-glob Budgets row drops to a 1-byte budget.

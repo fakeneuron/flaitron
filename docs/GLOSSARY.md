@@ -4,7 +4,7 @@
 
 Adopted from the GSD-Pi `CONTEXT.md` glossary pattern (the "mega-doc" slice that survived the one-task-per-window filter during CORE-EPIC-194 Discovery). See [CORE-194.1](../.flaitron/tasknote/archive/core/CORE-194.1.md) for the extraction rationale and term-cohort decisions.
 
-Alphabetized. 74 entries. Maintained via epic children and audits.
+Alphabetized. 73 entries. Maintained via epic children and audits.
 
 ---
 
@@ -64,11 +64,9 @@ Alphabetized. 74 entries. Maintained via epic children and audits.
 
 **follow-up** — A lightweight mid-flow task filed via `/ft-file-task`; produces a one-line PLAN.md entry plus a short context paragraph delivered conversationally. Below the normal tasknote threshold.
 
-**`/ft-prep-unattended`** — The attended **declined-row prep utility**: walks every open row of an existing `.flaitron/PLAN.md` that the candidacy predicate declines, and inside one prose review gate may pin a fact, split a mechanical row from an attended remainder, and file a starter when the remainder needs one. Never writes `[unattended]`. No flags. `/ft-seed-unattended` stays the marker walk. See SPEC/unattended-candidacy.md §"Preparing declined rows".
-
 **`/ft-refactor`** — The refactor **depth planner that files**: takes one named target, runs a read-only survey (dependencies, seams, test coverage, blast radius), surfaces a sequenced behavior-preserving plan for operator review, then files a parent epic + implementation children from `.2` + a `.N` audit, each child a starter seeded with characterization-test and behavior-preservation acceptance. Never edits source — children execute via `/ft-task`. Its epics carry no `.1` Discovery (the run *is* the discovery). Depth counterpart to `/ft-audit structure`'s **breadth sweep**; contrast a hand-drafted spec (`templates/spec-template.md`; plans, never files) and `/ft-open-epic` (files, then drives a generic Discovery).
 
-**`/ft-seed-unattended`** — The attended **bulk-seeding utility** for `[unattended]`: walks every open row of an existing `.flaitron/PLAN.md` with the `SPEC/unattended-candidacy.md` predicate, shows the candidates with the token in place inside one prose review gate, writes the token only on the rows the operator keeps, and commits the write under §"Filing commits". No flags — remove the gate and it is a report the filers already emit. Skips rows already marked and `[handoff]` rows; seeds, never repairs. The bulk counterpart to the per-row candidacy each filer proposes at its write step. See SPEC/unattended-candidacy.md §"Seeding an existing plan".
+**`/ft-seed-unattended`** — The attended **bulk-seeding utility** for `[unattended]`: walks every open row of an existing `.flaitron/PLAN.md` with the `SPEC/unattended-candidacy.md` predicate, marks the rows it admits and prepares the rows it declines (a factual pin, or a split into a mechanical row plus an attended remainder, with a starter when the remainder needs one), shows marks, preparations, and stays inside one prose review gate, writes only what the operator keeps, and commits the write under §"Filing commits". A prepared row the predicate then admits carries a dependent token item. No flags — the gate is the skill: without it the marks are a report the filers already emit, and the preparations have no confirm to land on. Skips rows already marked and `[handoff]` rows; seeds, never repairs. Absorbed the retired `/ft-prep-unattended` ([[CORE-EPIC-812]]). The bulk counterpart to the per-row candidacy each filer proposes at its write step. See SPEC/unattended-candidacy.md §"Seeding an existing plan".
 
 **`/ft-update`** — The adopter-side command that bumps a project's pinned flaitron submodule to the latest released tag: shows current→target + changelog, moves the pin, re-wires newly shipped symlinks, runs a smoke check. Consumer-side counterpart to `/ft-release`. Adopter-only (bails in flaitron-self); takes no arguments. See docs/MIGRATION.md.
 
@@ -148,7 +146,7 @@ Alphabetized. 74 entries. Maintained via epic children and audits.
 
 **touches** — Tasknote frontmatter array of path/glob strings naming the files this task expects to edit: its **declared scope**. Filled at Phase 1 on any task with file deliverables, reconciled against `git diff --name-only` in the Phase 4 recap as a recorded fact, never a gate. Omit-when-absent in shape (no validator) but omitted only when the task has no file deliverable. Distinct from a starter's `### Files to touch` prose survey. See SPEC §"Tasknote frontmatter".
 
-**[unattended]** — Optional task-level opt-in marker in the task-line grammar, sitting AFTER `[model]`; declares a row safe to dispatch with no operator present, the row-scoped counterpart to the `--unattended` invocation posture. Flaitron never writes it itself — seeding is an operator act, per row at a filer's confirm gate or in bulk via `/ft-seed-unattended`. `/ft-prep-unattended` rewrites declined rows and never writes the marker. Operator-less callers deny by default on an unmarked row. On an attended `/ft-task` invocation with no flag, it implies `--fast` only, never the `--unattended` posture. See SPEC/task-line-segments.md and SPEC/unattended-candidacy.md.
+**[unattended]** — Optional task-level opt-in marker in the task-line grammar, sitting AFTER `[model]`; declares a row safe to dispatch with no operator present, the row-scoped counterpart to the `--unattended` invocation posture. Flaitron never writes it itself — seeding is an operator act, per row at a filer's confirm gate or in bulk via `/ft-seed-unattended`. Operator-less callers deny by default on an unmarked row. On an attended `/ft-task` invocation with no flag, it implies `--fast` only, never the `--unattended` posture. See SPEC/task-line-segments.md and SPEC/unattended-candidacy.md.
 
 **VISION.md** — The outward-facing identity document (who it's for, principles recap including Extension-first, "what we won't accept", why this exists). Lazy-loaded; cross-linked with the SPEC PR-archetypes subsection. Companion to PHILOSOPHY.md (history). See docs/VISION.md.
 
@@ -158,6 +156,6 @@ Alphabetized. 74 entries. Maintained via epic children and audits.
 
 ---
 
-**Maintenance.** This file is the survivor slice of the GSD-Pi `CONTEXT.md` pattern (see CORE-194.1). It is deliberately lazy-loaded and must never be added to the AI-referenced docs list. New terms are introduced only by epic children or audit follow-ups that also update the authoritative SPEC anchors. Last significant update: CORE-783.3 (2026-10-13) — added the `/ft-prep-unattended` entry.
+**Maintenance.** This file is the survivor slice of the GSD-Pi `CONTEXT.md` pattern (see CORE-194.1). It is deliberately lazy-loaded and must never be added to the AI-referenced docs list. New terms are introduced only by epic children or audit follow-ups that also update the authoritative SPEC anchors. Last significant update: CORE-812.4 (2026-10-18) — folded the `/ft-prep-unattended` entry into `/ft-seed-unattended`.
 
 See [SPEC.md](../SPEC.md) for the contract and [.flaitron/PLAN.md](../.flaitron/PLAN.md) for the current epic context.

@@ -1,6 +1,6 @@
 # PLAN.md filing
 
-> Lazy-loaded SPEC module. Loaded before a new row is written, by every motion that mints its ID (§"ID allocation"), and at the two moments a PLAN.md row changes hands with git: by the filing motions (`/ft-file-task` and its `--park` / `--starter` modes, `/ft-audit`, `/ft-audit-repo`, `/ft-refactor`, `/ft-open-epic` at Step 4), `/ft-seed-unattended`, and `/ft-prep-unattended` when they commit their own write, and by every closing runner (`/ft-task`, `/ft-open-epic`, `/ft-close-epic`, `/ft-release`) at the Phase 4 stub flip — plus the visualizer as a `## Completed` history consumer. See `SPEC.md` for the always-loaded core spec, and the sibling [`SPEC/tasknote-selection.md`](tasknote-selection.md) for the use/skip thresholds, the filing-discipline word budget, and the downstream-impact reconciliation scan that decide *what* to file.
+> Lazy-loaded SPEC module. Loaded before a new row is written, by every motion that mints its ID (§"ID allocation"), and at the two moments a PLAN.md row changes hands with git: by the filing motions (`/ft-file-task` and its `--park` / `--starter` modes, `/ft-audit`, `/ft-audit-repo`, `/ft-refactor`, `/ft-open-epic` at Step 4) and `/ft-seed-unattended` when they commit their own write, and by every closing runner (`/ft-task`, `/ft-open-epic`, `/ft-close-epic`, `/ft-release`) at the Phase 4 stub flip — plus the visualizer as a `## Completed` history consumer. See `SPEC.md` for the always-loaded core spec, and the sibling [`SPEC/tasknote-selection.md`](tasknote-selection.md) for the use/skip thresholds, the filing-discipline word budget, and the downstream-impact reconciliation scan that decide *what* to file.
 
 One subject — a PLAN.md row's life: §"ID allocation" (the number a new row
 takes before it is written), §"Filing commits" (how a filing lands in git),
@@ -13,7 +13,7 @@ section carries when it has no rows at all.
 
 Every motion that mints a new top-level ID — `/ft-file-task` (all modes),
 `/ft-audit`, `/ft-audit-repo`, `/ft-refactor`, `/ft-open-epic`,
-`/ft-seed-unattended` and `/ft-prep-unattended` (each on a standalone split), and
+`/ft-seed-unattended` (on a standalone split), and
 `/ft-release`'s fallback release row — takes its number here. Each skill keeps only what is its own: whether the number is
 suggested for review or auto-allocated, and what a collision does.
 
@@ -60,14 +60,14 @@ lifecycle step 5).
 The filing motions — `/ft-file-task` (default flow), its `--park`
 and `--starter` modes, `/ft-audit`, `/ft-audit-repo`, `/ft-refactor`, and
 `/ft-open-epic` (its Step 4 rows, before `.1` is scaffolded) — **commit their own
-filing** at hand-off, and `/ft-seed-unattended` and `/ft-prep-unattended`, which edit existing rows and may
-insert a mechanical row plus a starter ([`SPEC/unattended-candidacy.md`](unattended-candidacy.md) §"Seeding an existing plan"), commit their writes under the same contract. Filing approval *is* commit authorization: the operator
+filing** at hand-off, and `/ft-seed-unattended`, which edits existing rows and may
+insert a mechanical row plus a starter ([`SPEC/unattended-candidacy.md`](unattended-candidacy.md) §"Seeding an existing plan"), commits its writes under the same contract. Filing approval *is* commit authorization: the operator
 already confirmed at the review gate (follow-up / starter), by passing the park
 flag (park mode), at `/ft-audit`'s
 write-step confirmation (tickets, inline fixes and decisions-file writes), at `/ft-audit-repo`'s
 plan confirmation, at `/ft-refactor`'s plan-review confirmation, at
-`/ft-open-epic`'s ID confirmation, at `/ft-seed-unattended`'s review gate, or at
-`/ft-prep-unattended`'s review gate, and a second commit-go ask buys nothing.
+`/ft-open-epic`'s ID confirmation, or at `/ft-seed-unattended`'s review gate,
+and a second commit-go ask buys nothing.
 Deliberately exempt: rows a closure files as its own deliverable (an epic
 `.1`'s children) ride that closure commit, and `/ft-release`'s optional
 release row rides the release commit. Left uncommitted, a filing carries into the next session
@@ -90,7 +90,6 @@ Message shape, one per filing motion:
 | `/ft-refactor` | `chore: file <AREA>-EPIC-<N> refactor plan — <shortname>` |
 | `/ft-open-epic` | `chore: file <AREA>-EPIC-<N> — <shortname>` |
 | `/ft-seed-unattended` | `chore: seed [unattended] — <N> rows` |
-| `/ft-prep-unattended` | `chore: prep unattended — <N> rows` |
 
 Rules:
 
@@ -152,11 +151,11 @@ Rules:
   pass the accumulated-filings test above. A changed line this motion wrote
   is recognized: the appended PLAN row, any confirmed reconcile edit, each
   named inline fix, `/ft-seed-unattended`'s ` [unattended]` insertions, and
-  `/ft-seed-unattended`'s and `/ft-prep-unattended`'s description rewrites on confirmed source rows — one line carrying both when a kept pin keeps its token item (those
+  `/ft-seed-unattended`'s description rewrites on confirmed source rows — one line carrying both when a kept pin keeps its token item (those
   edits fail the line test, which is why each pre-check runs before its write;
   post-stage accepts them or it undoes the rows the pre-check allowed). A
   starter or sidequest file this motion created is recognized, and so is a
-  mechanical row `/ft-seed-unattended` or `/ft-prep-unattended` inserted (token included when its item was kept), and so is each
+  mechanical row `/ft-seed-unattended` inserted (token included when its item was kept), and so is each
   decisions-file line `/ft-audit` wrote or removed. Anything else
   is unrecognized, whether it sits in its own hunk or beside a recognized
   line. **An unrecognized change → do not commit:** `git restore --staged`
@@ -218,8 +217,7 @@ found, but confirms and applies no edit — a run with no operator never perform
 the operator's motion.
 
 **Execution skills keep their commit-go gate.** This section governs the seven
-filing motions above, `/ft-seed-unattended`'s write, and `/ft-prep-unattended`'s
-write, and nothing else. `/ft-task`,
+filing motions above and `/ft-seed-unattended`'s write, and nothing else. `/ft-task`,
 `/ft-open-epic` past its Step 4 filing, `/ft-close-epic`, `/ft-release`,
 `/ft-adopt`, and `/ft-update` are unchanged: their commits
 land deliverables or cut releases, and it is the 📦 conditional skip rule

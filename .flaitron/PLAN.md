@@ -15,7 +15,9 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-(none)
+- [ ] **CORE-EPIC-812** [heavy] | seed-prep-merge — Fold `/ft-prep-unattended` into `/ft-seed-unattended`: one attended walk, one prose gate (marks, pins/splits with the token in place, stays), one filing commit. Retire the prep slug (v8.0.0) and drop the never-writes-the-token rule (filed via /ft-open-epic; refined at .1 closure).
+  - [ ] **CORE-812.1** [frontier] | seed-prep-merge discovery — Scope shared design and file children .2..4 per SPEC/epic.md.
+  - [ ] **CORE-812.N** [heavy] | seed-prep-merge audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
 
 ## Low
 

@@ -41,8 +41,9 @@ UUID. Keep asset IDs stable while they identify the same marks.
 
 Each record declares actual role, dimensions (an SVG viewBox, or raster pixels), variant, background,
 audience, producer review and provenance. `PROMPTS.md` explains the source
-chain and honest unknowns. Optional product-state declarations and public
-URLs are omitted here; omission means unknown. Paths/evidence and detailed
+chain and honest unknowns. `public_metadata` declares product state (listed,
+stable, available, public source) and the homepage and source URLs; other
+optional declarations are omitted, and omission means unknown. Paths/evidence and detailed
 provenance are internal, not implicitly public export content.
 
 Validation must read committed bytes at one resolved producer revision.

@@ -50,7 +50,7 @@ approved bump. No checkout is needed for wiring repair.
 The submodule also brings flaitron's own tasknote archive at
 `.flaitron/core/.flaitron/` (~16 MB, ~1,200 files) — flaitron's history, not
 this project's context. Sparse-checkout drops it from the working tree; as the
-fallback, keep it out of search tooling with that line in a root `.ignore`. The
+fallback, keep it out of search tooling with a `.flaitron/core/.flaitron/` line in a root `.ignore`. The
 sparse line and the per-tool list are in `../docs/MIGRATION.md` §1.1.
 
 Use `/skills` in Codex or type `$ft-task` / `$ft-update` / another wired

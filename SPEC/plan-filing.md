@@ -255,7 +255,7 @@ cohort to `## Completed` atomically (§"Epic parent flip"). Never strand an
 individual child as a top-level Completed row.
 
 **Exception — inline audit fixes.** A trivial fix applied inline by an
-audit skill (the `/ft-audit*` §5 trivial-fix carve-out: skip-the-tasknote-sized
+audit skill (the `/ft-audit` §5 trivial-fix carve-out: skip-the-tasknote-sized
 patches done at audit time instead of filed as a `## Low` ticket) has no
 tasknote and no archive file, so its `## Completed` line **retains** a
 short self-contained description plus `Surfaced by <audit-label>

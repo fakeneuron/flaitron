@@ -302,7 +302,8 @@ moved bytes widen the core's headroom.
 ft-release 35,869 · ft-open-epic 32,860 · ft-task 26,380 · ft-file-task
 25,165 · ft-close-epic 25,150 · ft-audit 23,409 · ft-update 23,084 ·
 ft-refactor 16,344 · ft-adopt 15,199 · ft-seed-unattended
-12,487 · ft-prep-unattended 12,068 · ft-audit-repo 11,616.
+12,487 · ft-prep-unattended 12,068 · ft-audit-repo 11,616. ft-audit alone
+was re-measured at [[CORE-802]] (2026-10-17); the rest are v7.1.0 figures.
 
 `ft-goal-task`, `ft-spec`, `ft-starter-task`, `ft-worktree-start`, and
 `ft-worktree-end` were retired at v5.27.0 (CORE-570/571/572/573), folded into
@@ -332,9 +333,9 @@ which is why it carries its own §"Budgets" row.
 
 ### Large reference docs
 
-`docs/PLATFORMS.md` 59,973 · `docs/MIGRATION.md` 67,201 (measured
-2026-10-15 at [[CORE-793]]; 67,894 and 62,249 on 2026-09-22 at
-[[CORE-670.4]]). Up from 21,497 and 33,194 on 2026-06-01, so neither has ever
+`docs/PLATFORMS.md` 60,198 · `docs/MIGRATION.md` 68,908 (measured
+2026-10-17 at [[CORE-807]]; 59,973 and 67,201 on 2026-10-15 at [[CORE-793]];
+67,894 and 62,249 on 2026-09-22 at [[CORE-670.4]]). Up from 21,497 and 33,194 on 2026-06-01, so neither has ever
 had a ratchet.
 
 [[CORE-670.4]] **exempted** both rather than budgeting them. A budget here
@@ -352,8 +353,9 @@ growing large enough that a runner reads the whole file to find it.
 A doc earns a §"Budgets" row when a runner starts reading it in full, meaning
 a skill or procedure step that names `docs/X.md` without a section. Until then,
 watch the sections instead. The largest ones readers cite today are PLATFORMS
-§"Non-Claude capability triggers" at 34,235 and MIGRATION §1.2.1 at 11,992
-(ft-adopt cites §1 by subsection). When a cited section outgrows its
+§"Non-Claude capability triggers" at 19,781 and MIGRATION §1.2.1 at 15,605
+(measured 2026-10-17 at [[CORE-807]]; 34,235 and 11,992 at [[CORE-670.4]];
+ft-adopt cites §1 by subsection). When a cited section outgrows its
 reader, split the section rather than cap the file. These figures are
 hand-refreshed, outside the `/ft-release` §7.1 ledger block (whose `wc -c`
 commands do not reach them), and a jump between readings means checking which

@@ -60,8 +60,8 @@ checked out at. Commit the symlinks (`git add .cursor/`).
 The submodule also brings flaitron's own tasknote archive at
 `.flaitron/core/.flaitron/` (~16 MB, ~1,200 files) — flaitron's history, not
 this project's context. Sparse-checkout drops it from the working tree; as the
-fallback, keep it out of indexing and AI access with that line in a root
-`.cursorignore`. The sparse line and the per-tool list are in
+fallback, keep it out of indexing and AI access with a `.flaitron/core/.flaitron/`
+line in a root `.cursorignore`. The sparse line and the per-tool list are in
 `../docs/MIGRATION.md` §1.1.
 
 A Cursor skill auto-exposes as `/<skill-name>`, so `/ft-task <TASK-ID>` works

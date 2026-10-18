@@ -55,7 +55,7 @@ Cluster the map facts and sweep findings into **3–5 themes** — patterns, not
 
 ## 5. Delegation — recommend focused audits
 
-Based on what the map revealed, recommend which `/ft-audit <domain>` runs deserve a full pass — do **not** run them here. Domains are `general` · `backend` · `frontend` · `security` · `performance` · `docs` · `structure` · `context`. For each recommendation: domain, scope glob, and the map/sweep observation that triggers it. Skip domains the map gives no reason to run. (In adopter context the audit scaffold is forked under an unprefixed local name per `docs/MIGRATION.md` §1.2.1 — recommend whichever name resolves locally, e.g. `/audit backend src/api/**`.)
+Based on what the map revealed, recommend which `/ft-audit <domain>` runs deserve a full pass — do **not** run them here. Domains are `general` · `backend` · `frontend` · `security` · `performance` · `docs` · `structure` · `context`. For each recommendation: domain, scope glob, and the map/sweep observation that triggers it. Skip domains the map gives no reason to run. (In adopter context the audit scaffold is forked under an unprefixed local name per `docs/MIGRATION.md` §1.2.1 — recommend whichever name resolves locally, e.g. `/audit backend src/api/**`.) A theme's **Won't-fix tradeoff** is not recorded in `.flaitron/audit-decisions/` — this skill writes only PLAN.md — so when a focused run raises it, decline it there as won't-fix to settle it.
 
 ## 6. Required closing sections + PLAN.md write
 

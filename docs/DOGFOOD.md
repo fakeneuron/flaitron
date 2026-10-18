@@ -200,5 +200,5 @@ hand before this was made report-only).
 - [`SPEC/cue-vocabulary.md`](../SPEC/cue-vocabulary.md) §"Operator-cue vocabulary" —
   the authoritative source for the Step 2 cue vocabulary
 - [`docs/PLATFORMS.md`](PLATFORMS.md) — per-agent structural notes;
-  per-agent footers receive stamp updates from Step 3 for Grok/Codex/Cursor
+  per-agent footers receive stamp updates from the §"Reporting the result" receipt for Grok/Codex/Cursor
 - [[CORE-269]] — the task that produced this document

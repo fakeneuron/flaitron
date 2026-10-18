@@ -205,8 +205,8 @@ unchanged — it never blocked, so there is nothing to convert.
 **Epic IDs.** If the ID is `<AREA>-EPIC-<N>` or `<AREA>-<N>.<sub>`, read
 [`SPEC/epic.md`](../epic.md) for the lifecycle — the parent line is not
 checked off until all children close; a `.1` child is typically epic-level
-Discovery (deliverable = the filed child list), and the highest-numbered
-child is typically an Audit.
+Discovery (deliverable = the filed child list), and the terminal `.N`
+child, when present, is the Audit.
 
 ### 3 — Open or scaffold the tasknote
 

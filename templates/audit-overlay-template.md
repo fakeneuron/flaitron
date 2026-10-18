@@ -40,7 +40,7 @@ invocation resolves to `general`.
 ## Deltas
 
 These fill the bundled scaffold's §0-forker-checklist surface. Every fillable
-slot lives in the pass files — the §"Scope & rubric hints" / §"The 5 passes" /
+slot lives in the pass files — the §"Scope & rubric hints" / §"The 5 passes" (6 for `context`) /
 §"Severity guide" / §"Specialist additions" placeholders resolve to the values
 here; everything else (the dispatcher's §1 resolution steps, pass order, capped
 findings, finding format, closing sections, write-to-PLAN step, hard rules) is

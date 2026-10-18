@@ -429,8 +429,8 @@ disposition:
   the runner's discretion. A note never reopens a phase.
 
 **Who reviews.** The one property that matters is *not the author*. Claude Code
-runs `/code-review medium` over the working tree; other runners brief a read-only
-sub-agent with
+runs `/code-review medium` over this task's own diff — the working tree plus
+any commits this run made; other runners brief a read-only sub-agent with
 [`templates/subagent-probe-template.md`](templates/subagent-probe-template.md)
 §"Variant — review probe". Weighing the findings stays the parent's job either
 way — a reviewer that has not read the tasknote will raise what Discovery

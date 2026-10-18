@@ -307,6 +307,7 @@ runtime lives in the runner; the contract lives in flaitron.
 - `grok/` — Grok thin wiring (`AGENTS-snippet.md` + `procedures/ft-task.md` pointer; no skill wrappers — adopters wire canonical `claude/skills/` bodies)
 - `docs/` — philosophy, vision, glossary, migration, upgrading, conventions, version history, agent-neutrality, platforms, agent-compat, dogfood, worktrees, gate-discipline, external-agents, harness-survey, codex-verification, and context-budget docs
 - `.flaitron/` — flaitron's own roadmap and tasknotes (self-hosted)
+- `brand/` — public identity kit (blurb, marks, chamber references, `assets.json` manifest, prompt provenance; contract in `brand/README.md`)
 - `viz/` — Vite/React visualizer (priority-grouped list + optional board mode)
 - `tools/` — operator-side fleet scripts (`update-adopters.mjs`, the singular CLI carve-out — see `SPEC/scope-boundaries.md` §"What flaitron does NOT provide" — plus its portable `update-adopters.test.mjs` suite), and `drift-checks.sh`, the shell of the CI `drift` job and the `/ft-release` §7.1 pair walk, plus its `drift-checks.test.mjs` self-test
 - `CONTRIBUTING.md` — solo-maintenance model; issue and PR guidance; maintainer skill wiring

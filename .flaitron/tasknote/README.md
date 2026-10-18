@@ -77,8 +77,8 @@ CORE-194.1 Q3's correct lazy-loading decision (settled by CORE-491).
 sweep set, excluded on both counts, so the distinction above does not arise for
 them. **Their exclusion is a volume decision, not a laziness one** — the
 paragraph above severs lazy-loading from sweep membership, so it cannot also be
-the reason these are excluded. The two trees run ~5,500 lines against a
-~4,200-line sweep set, and walking them at every closure would roughly double a
+the reason these are excluded. The two trees run ~5,800 lines against a
+~4,300-line sweep set, and walking them at every closure would roughly double a
 per-task step Core Principle #3 exists to keep small.
 
 Eight `docs/` files are likewise outside the set, each for a reason the sweep

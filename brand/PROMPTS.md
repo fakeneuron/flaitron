@@ -80,7 +80,7 @@ does not fill this gap.
 - Method: the digital portal stills were the only image inputs. The prompt carried the mark as a loose hologram inside that digital chamber. The shipped pixels are that 2026-10-16 generation. No crop and no upscale. The person also kept a second still, `brand/chamber-growth.jpg`, for a different use. It does not replace this file.
 - Prompt: A wide cinematic view from inside a fleshy ribbed organic tunnel, looking through a round portal. The chamber inside the aperture is digital, like these references: cyan holographic schematics, wireframe panels, and glowing interface marks floating in the circle. That hologram carries a loose impression of a wave-formed gear and a small screen-headed rider, drawn as scan lines and glass circuitry. A thick ring of green bioluminescent cells crowns the fleshy rim, and the organic tunnel widens into a 16:9 frame.
 - This file is not `promo-16x9.webp`. Fakeneuron owns tunnel architecture, creatures, camera, lighting, keyframes, video, and card composition.
-- Asset review starts at `draft` on 2026-10-15. The person confirmed these pixels on 2026-10-17. Review is `approved`. That confirm is producer taste. It is not export approval.
+- Asset review starts at `draft` on 2026-10-16. The person confirmed these pixels on 2026-10-17. Review is `approved`. That confirm is producer taste. It is not export approval.
 - Use: the mark inside the chamber. Fakeneuron's demand profile asks for this asset id. It is not assigned to card layout, video, or a crop.
 
 ## chamber-growth
@@ -101,10 +101,12 @@ does not fill this gap.
 
 ## Review and boundaries
 
-`audience: public` describes the existing public-facing identity marks.
-`review: approved` carries CORE-643's documented producer taste approval;
-CORE-788 does not claim a new visual review. Both declarations are separate
-from operator approval of exact public bundle bytes and revisions.
+For `symbol` and `favicon`, `audience: public` describes the existing
+public-facing identity marks, and `review: approved` carries CORE-643's
+documented producer taste approval; CORE-788 does not claim a new visual
+review. The two chamber records carry the 2026-10-17 producer confirm
+recorded in their own sections. All these declarations are separate from
+operator approval of exact public bundle bytes and revisions.
 
 This file and the manifest's source/copy evidence are internal provenance,
 not implicitly approved export content. No public bundle, approval record,

@@ -44,7 +44,7 @@ of a gate changed in the window, so it stays dropped.
 | "The change is frontend, but the tests are green and it *probably* looks fine unattended." | There is no gating-vs-corroborating split on 👁️ — the trigger is the emission condition. If you judged the change needs a look, park; if it needs no look, the Phase 3 box is `N/A` and no ask exists to convert. "Probably fine" is the third judgment call this conversion deleted on purpose. | [`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"Park conversions"; §"Refused carve-outs" below |
 | "The visual baseline passes byte-identical — that is a recorded human approval **replayed**, not a guess like the row above." | Sharper, and still refused. Both premises fail here: flaitron defines no baseline and cannot tell a golden a human approved from one `--update-snapshots` minted with nobody looking — and this posture *is* the declaration that nobody is present to attest which it was. Then "does it cover the surface I changed?" is the gating-vs-corroborating split renamed, judged by you about your own diff. Where output provably did not change, the box is already `N/A` and there is no ask to convert; the carve-out bites only where the baseline is not evidence. | §"Refused carve-outs" below; [`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"Park conversions" |
 | "That ✋ was *probably* advisory — keep going." | "Probably" is the doubt the ✋ split is biased against, the same asymmetry as the destructive-action predicate: an over-park costs one resume, an under-park closes a task whose prerequisite was never performed. | [`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"`--unattended` operator posture" → "Park conversions" |
-| "Recap is done, so I can suggest next-move while waiting for commit-go." | Next-move and the copy-paste line are **post-SHA**. The fire-branch turn emits 📦 and waits; 🏁 / next-move / copy-paste land only after a deliverable-covering SHA. Motivating case: CORE-432.2 (micro closed + next-task cue with uncommitted App/PLAN dirt). | [`SPEC/gates.md`](../SPEC/gates.md) §"Conditional skip rule" → On fire; [`SPEC.md`](../SPEC.md) §"Post-closure protocol" step 2 |
+| "Recap is done, so I can suggest next-move while waiting for commit-go." | Next-move and the copy-paste line are **post-SHA**. The fire-branch turn emits 📦 and waits; 🏁 / next-move / copy-paste land only after a deliverable-covering SHA. Motivating case: CORE-432.2 (micro closed + next-task cue with uncommitted App/PLAN dirt). | [`SPEC/gates.md`](../SPEC/gates.md) §"Conditional skip rule" → On fire; [`SPEC/post-closure.md`](../SPEC/post-closure.md) step 2 |
 
 ## Red Flags
 
@@ -88,7 +88,7 @@ finding to report or a box to tick.
 - A signal you are treating as cleared was cleared by something you **read**
   rather than something you **computed**.
 - You are writing a park whose reason a caller could not tell apart from the
-  other four stop causes.
+  other stop causes in `SPEC/blocked.md` §"Park reason".
 - An `--unattended` run is scaffolding a tasknote into a working tree the
   foreign-dirt gate just reported as dirty.
 - You are constructing an argument for why `--unattended` covers a gate the

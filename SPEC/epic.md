@@ -23,7 +23,7 @@ list filed in PLAN.md.
 the audit is the terminal child, filed as the reserved suffix `<AREA>-<N>.N`.
 Both are normal subtasks — same grammar, same 4-phase tasknote, same model
 rules. `.N` is **grammar-legal and permanently valid** (parser accepts
-`\.(?:\d+|N)` in the subtask slot), so the audit child never needs renaming
+`\.(?:\d+[a-z]?|N)` in the subtask slot), so the audit child never needs renaming
 to a sequential number at epic-close time. When an epic grows, new
 implementation children insert *before* `.N` (`.2`, `.3`, …); `.N` always
 remains the last child. An audit child already renamed to a concrete number

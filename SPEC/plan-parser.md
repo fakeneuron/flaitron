@@ -109,6 +109,11 @@ diagnostics. This lets a grammar-reference example carrying a literal
 `**TASK-ID**` placeholder live in a comment block (see `templates/PLAN.md`)
 without polluting the task list.
 
+**Fenced code is ignored.** Lines inside a ```` ``` ```` or `~~~` fenced
+block — task-shaped rows and `##` headings alike — are neither parsed nor
+surfaced as diagnostics, and a fenced heading does not change the current
+section (fixtures FX-420–FX-424 in `SPEC/fixtures/plan/exclusions.md`).
+
 **Legacy label lines (excluded, not tolerated).** Some adopter PLAN.md files
 predate flaitron entirely and carry completed historical records whose bold
 token was never an `<AREA>-NNN` ID (`**P1**`, `**flowtron v5.2.0 bump**`).

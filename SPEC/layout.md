@@ -13,7 +13,7 @@ After adopting flaitron, a project looks like:
 │   ├── PLAN.md                     # project-owned roadmap (this format)
 │   ├── PLAN-ARCHIVE.md             # optional; rotated ## Completed rows (closed only)
 │   ├── tasknote/
-│   │   ├── README.md               # one-line pointer + project-specific notes
+│   │   ├── README.md               # area prefixes, archive-layout table, AI-referenced docs
 │   │   ├── BE-014.md               # active tasknotes
 │   │   └── archive/<area>/         # completed tasknotes by area
 │   ├── specs/                      # optional; hand-copied spec-template.md drafts

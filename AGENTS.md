@@ -74,6 +74,9 @@ not to)".
   the tracked body of flaitron-self's `/audit` thin overlay, which
   `.claude/skills/audit` symlinks to (`.claude/` is wholly gitignored, so the
   overlay's deltas would be unversionable there — `SPEC/layout.md`).
+- `brand/` — public identity kit (`BRAND.md` blurb, marks, `chamber-*.jpg`
+  references, `assets.json` manifest, `PROMPTS.md` provenance); contract in
+  `brand/README.md`.
 - `claude/` — Claude Code wiring: skills and the historical
   source for the agent-neutral adopter snippet.
 - `codex/` — Codex CLI skill wrappers and wiring notes.

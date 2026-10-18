@@ -15,12 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-EPIC-812** [heavy] | seed-prep-merge — Fold `/ft-prep-unattended` into `/ft-seed-unattended`: one attended walk, one prose gate (marks; pins and splits, each with a dependent token item; stays), one filing commit. Drop the never-writes-the-token rule and retire the prep slug in a minor, on the `ft-debug` fold precedent. The natabula mirror is a handoff.
-  - [x] **CORE-812.1** [frontier] | seed-prep-merge discovery — Completed 2026-10-18.
-  - [x] **CORE-812.2** [frontier] | seed-prep-contract — Completed 2026-10-18.
-  - [x] **CORE-812.3** [heavy] | seed-absorbs-prep — Completed 2026-10-18.
-  - [x] **CORE-812.4** [medium] | retire-prep-slug — Completed 2026-10-18.
-  - [ ] **CORE-812.N** [heavy] | seed-prep-merge audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
+(none)
 
 ## Low
 
@@ -34,6 +29,12 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-EPIC-812** [heavy] | seed-prep-merge — Completed 2026-10-18.
+  - [x] **CORE-812.1** [frontier] | seed-prep-merge discovery — Completed 2026-10-18.
+  - [x] **CORE-812.2** [frontier] | seed-prep-contract — Completed 2026-10-18.
+  - [x] **CORE-812.3** [heavy] | seed-absorbs-prep — Completed 2026-10-18.
+  - [x] **CORE-812.4** [medium] | retire-prep-slug — Completed 2026-10-18.
+  - [x] **CORE-812.N** [heavy] | seed-prep-merge audit — Completed 2026-10-18.
 - [x] **CORE-811** [light]🔧 [unattended] | prep-draft-self-screen — Completed 2026-10-18.
 - [x] **CORE-810** [medium]🧩 | prep-split-deploy-safety — Completed 2026-10-18.
 - [x] **CORE-809** [medium]🧩 | release v7.2.0 — Completed 2026-10-18.

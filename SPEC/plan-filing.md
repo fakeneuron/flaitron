@@ -61,7 +61,7 @@ The filing motions — `/ft-file-task` (default flow), its `--park`
 and `--starter` modes, `/ft-audit`, `/ft-audit-repo`, `/ft-refactor`, and
 `/ft-open-epic` (its Step 4 rows, before `.1` is scaffolded) — **commit their own
 filing** at hand-off, and `/ft-seed-unattended`, which edits existing rows and may
-insert a mechanical row plus a starter ([`SPEC/unattended-candidacy.md`](unattended-candidacy.md) §"Seeding an existing plan"), commits its writes under the same contract. Filing approval *is* commit authorization: the operator
+insert a mechanical row, with a starter when the remainder needs one ([`SPEC/unattended-candidacy.md`](unattended-candidacy.md) §"Seeding an existing plan"), commits its writes under the same contract. Filing approval *is* commit authorization: the operator
 already confirmed at the review gate (follow-up / starter), by passing the park
 flag (park mode), at `/ft-audit`'s
 write-step confirmation (tickets, inline fixes and decisions-file writes), at `/ft-audit-repo`'s

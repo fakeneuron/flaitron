@@ -21,7 +21,7 @@ actually review. No scripts, daemons, databases, or schemas to maintain.
 
 ![The flaitron visualizer showing flaitron's own PLAN.md — open tasks by priority, phase-progress dots, and the completed archive](.flaitron/screenshots/viz-board.png)
 
-Flaitron is built with flaitron: **1201 tasks** closed through this exact
+Flaitron is built with flaitron: **1209 tasks** closed through this exact
 workflow between 2026-04-28 and 2026-10-18 (as of 2026-10-18) — each one with
 a tasknote preserved in [`.flaitron/tasknote/archive/`](.flaitron/tasknote/archive/).
 Count and date range are recomputed each release by `/ft-release` §7.1's
@@ -73,7 +73,7 @@ serves it; Grok-only projects follow [`grok/AGENTS-snippet.md`](grok/AGENTS-snip
   is for, the principles (recap of SPEC), and the PR/suggestion archetypes
   flaitron deliberately rejects
 - [docs/GLOSSARY.md](docs/GLOSSARY.md) — alphabetized one-line definitions for
-  74 load-bearing terms, phases, markers, and grammar elements (lazy-loaded
+  73 load-bearing terms, phases, markers, and grammar elements (lazy-loaded
   pointer to SPEC anchors)
 - [docs/MIGRATION.md](docs/MIGRATION.md) — adoption guide for fresh projects
   and migration from a prior workflow system

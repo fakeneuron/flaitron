@@ -29,6 +29,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-813** [medium]🧩 | release v7.3.0 — Completed 2026-10-18.
 - [x] **CORE-EPIC-812** [heavy] | seed-prep-merge — Completed 2026-10-18.
   - [x] **CORE-812.1** [frontier] | seed-prep-merge discovery — Completed 2026-10-18.
   - [x] **CORE-812.2** [frontier] | seed-prep-contract — Completed 2026-10-18.

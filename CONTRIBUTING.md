@@ -47,7 +47,8 @@ mkdir -p .claude/skills
 ln -sfn ../../.flaitron/audit-overlay/ .claude/skills/audit
 
 # A checkout wired before v7.0.0 also has dangling .claude/commands/ stub links and
-# renamed-slug links (v7.0.0); inventory them before a verified cleanup
+# renamed-slug links (v7.0.0), and one wired at v7.1.0–v7.2.0 a dangling
+# ft-prep-unattended link (v7.3.0); inventory them before a verified cleanup
 find .claude/commands .claude/skills -maxdepth 1 -type l ! -exec test -e {} \; -print 2>/dev/null
 ```
 
@@ -59,7 +60,8 @@ Codex maintainers wire the same way, from the parallel wrapper inventory:
 mkdir -p .agents/skills
 (cd .agents/skills && ln -s ../../codex/skills/* .)
 
-# A checkout wired before v7.0.0 may have dangling renamed-slug links
+# A checkout wired before v7.0.0 may have dangling renamed-slug links, and one
+# wired at v7.1.0–v7.2.0 a dangling ft-prep-unattended link (v7.3.0)
 find .agents/skills -maxdepth 1 -type l ! -exec test -e {} \; -print
 ```
 

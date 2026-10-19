@@ -171,9 +171,10 @@ repo-scoped install path, not another global one.
 
 ## The symmetric plug-in pattern
 
-When a contributor ships wiring for a new platform (`codex`, `grok`,
-`cursor`, …), it lands as a **sibling top-level directory** at the
-repo root, named after the platform:
+When a contributor ships wiring for a new platform (`aider`, `amp`, …
+— `codex`, `grok`, and `cursor` already did), it lands as a
+**sibling top-level directory** at the repo root, named after the
+platform:
 
 ```text
 flaitron/
@@ -194,7 +195,7 @@ Constitution; v6.0.0's one-time prefix rename is migrated by
 
 - **Directory name**: lowercase platform identifier, matching how the
   platform is conventionally referenced — `claude` (Claude Code),
-  `codex` (OpenAI Codex CLI), `grok` (grok-cli), `cursor` (Cursor IDE),
+  `codex` (OpenAI Codex CLI), `grok` (Grok Build), `cursor` (Cursor IDE),
   `aider` (Aider), `amp` (Sourcegraph Amp).
 - **Skill prefix**: the `ft-` namespace stays reserved across platforms
   per `SPEC/layout.md` §"Skill namespace". A platform's skill bundle uses the same
@@ -515,7 +516,7 @@ that platform's routing. Do not add per-flag rows back (CORE-734.6)._
 
 First-use verification 2026-06-01 (CORE-257). /ft-task skill invocation, model gate (with retag), AskUserQuestion render, and cue emissions (✅ marker + post-closure expectations) exercised under Grok. Structured ask support observed (see trigger table note). Matrix currency lives in docs/AGENT-COMPAT.md.
 
-**Last verified:** `v7.2.0 · 2026-10-18 (dogfooded)`
+**Last verified:** `v7.3.0 · 2026-10-18 (dogfooded)`
 
 ### Codex CLI
 
@@ -549,7 +550,7 @@ shipped `codex/skills/` wrappers — desk research under Claude Code, not a
 standalone Codex verification session. CORE-734.6 later folded the flag rows,
 by then seven, into the one skill-body-flags row above.
 
-**Last verified:** `v7.2.0 · 2026-10-18 (dogfooded)`
+**Last verified:** `v7.3.0 · 2026-10-18 (dogfooded)`
 
 ### Cursor
 
@@ -572,7 +573,7 @@ Cursor-only projects (see §"Worked example: Cursor" and
 
 First-use verification 2026-08-12 ([[CORE-438.5]]): `/ft-task` under Cursor (Grok 4.5) ran DOGFOOD.md's three steps (contract comprehension at `v5.16.0`, full cue-render vocabulary, Phase-1 drive on CORE-438.N with clean Step-3 write boundary). Skill dispatch via `.claude/skills/` compat, Task subagent tool, modes, and `/model`+`/clear` cues confirmed; structured ask confirmed earlier under Cursor in [[CORE-438.1]]. Matrix currency lives in docs/AGENT-COMPAT.md.
 
-**Last verified:** `v7.2.0 · 2026-10-18 (dogfooded)`
+**Last verified:** `v7.2.0 · 2026-10-18 (dogfooded; skipped @ v7.3.0)`
 
 ### Gemini CLI (stub)
 
@@ -624,7 +625,7 @@ This doc does **not**:
   stability) beyond the v6.0.0 rename move and the v7.0.0 skill-rename
   link swap (`tools/update-adopters.mjs` migrate mode).
 - Adopt any specific platform's conventions (Codex CLI's command
-  shape, grok-cli's skill format, Cursor's MCP semantics, …) — those
+  shape, Grok Build's skill format, Cursor's MCP semantics, …) — those
   are external; this doc is the *pattern*, not the per-platform
   content.
 

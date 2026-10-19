@@ -94,7 +94,7 @@ submodule, so the wired skill bodies move only when the project deliberately
 bumps flaitron. Existing symlinks do not need rewiring on a normal version bump;
 newly shipped adopter-subset skills may need new symlinks, which `/ft-update`
 adds. It also adds missing subset links at the current pin, even on a
-same-version, offline, or declined-bump run. A bump that renames or retires a skill (v7.0.0) leaves dangling links, which `/ft-update` reports (Step 4.6) — `docs/MIGRATION.md` §"Upgrading to v7.0.0 (skill renames)".
+same-version, offline, or declined-bump run. A bump that renames or retires a skill (v7.0.0, v7.3.0) leaves dangling links, which `/ft-update` reports (Step 4.6) — `docs/MIGRATION.md` §"Retired skills leave dangling symlinks".
 
 Do **not** glob the skill inventory into an agent home (`~/.grok/skills/`,
 `~/.agents/skills/`, `~/.cursor/skills/`, or `~/.claude/skills/`). Project

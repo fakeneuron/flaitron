@@ -22,6 +22,14 @@ unless correcting a factual error.
 
 ---
 
+## v7.3.0 — /ft-prep-unattended folds into /ft-seed-unattended
+
+- /ft-seed-unattended runs one attended walk: marks admitted rows and prepares declined ones (pin, or split with a starter when needed) behind one gate and one commit
+- /ft-prep-unattended retired with no alias; Codex links prune automatically, /ft-update reports the rest
+- Split guard tightened: the mechanical slice must be safe to ship before the act, and the drafted row is self-screened against the predicate
+
+Also: snippet bump notes repointed to the retired-skills section; agent-neutrality ledger and capability-coverage catch-up.
+
 ## v7.2.0 — /ft-audit settled decisions, tighter /ft-prep-unattended guards
 
 - /ft-audit reads adopter-owned `.flaitron/audit-decisions/<domain>.md` before its passes and holds back findings that match a settled by-design or won't-fix entry, naming each in the Summary. An entry reopens on its Revisit-if, after 6 months, or when the cited code changes.

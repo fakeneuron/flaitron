@@ -15,12 +15,12 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-EPIC-815** [medium] | moderate-tier-rename — Rename the `[medium]`🧩 model tier to `[moderate]`🧩 so the ladder (light · moderate · heavy · frontier · xheavy) shares no word with priority (High · Medium · Low). `[medium]` stays a read-only legacy alias, and a sed step in the release tag migrates open adopter rows (minor release). Vendor effort `medium` is unchanged. Natabula and the global CLAUDE.md are hand-offs.
+- [ ] **CORE-EPIC-815** [moderate] | moderate-tier-rename — Rename the `[medium]`🧩 model tier to `[moderate]`🧩 so the ladder (light · moderate · heavy · frontier · xheavy) shares no word with priority (High · Medium · Low). `[medium]` stays a read-only legacy alias, and a sed step in the release tag migrates open adopter rows (minor release). Vendor effort `medium` is unchanged. Natabula and the global CLAUDE.md are hand-offs.
   - [x] **CORE-815.1** [medium] | moderate-tier-rename discovery — Completed 2026-10-20.
   - [x] **CORE-815.2** [heavy] | moderate-tier-contract — Completed 2026-10-20.
   - [x] **CORE-815.3** [light] | moderate-tier-viz — Completed 2026-10-20.
-  - [ ] **CORE-815.4** [medium] | moderate-tier-sweep — Sweep remaining tier prose to `moderate` across claude/skills, docs (the PLATFORMS Tier column and band cells, AGENT-NEUTRALITY, CODEX-VERIFICATION, GLOSSARY, DOGFOOD, AGENT-COMPAT), claude/CAPABILITIES.md, templates/PLAN.md and flaitron's open PLAN rows. Vendor effort `medium`, VERSION-HISTORY and archives are unchanged.
-  - [ ] **CORE-815.N** [medium] | moderate-tier-rename audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line), plus a grep that no live tier-meaning `[medium]` remains outside the alias rule, archives and vendor effort. The recap hands off natabula (`format-seed-plan.sh`, docs) and the operator's global CLAUDE.md. Filed with the reserved terminal `.N` suffix.
+  - [x] **CORE-815.4** [moderate] | moderate-tier-sweep — Completed 2026-10-20.
+  - [ ] **CORE-815.N** [moderate] | moderate-tier-rename audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line), plus a grep that no live tier-meaning `[medium]` remains outside the alias rule, archives, vendor effort, provenance notes and the dated CODEX-VERIFICATION receipt (kept by CORE-815.4). The recap hands off natabula (`format-seed-plan.sh`, docs) and the operator's global CLAUDE.md. Filed with the reserved terminal `.N` suffix.
 
 ## Low
 

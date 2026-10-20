@@ -126,7 +126,7 @@ Draft the bytes Step 4 will write. No draft contains `[handoff]`.
     stays within `SPEC/tasknote-selection.md` §"PLAN.md filing-discipline
     thresholds" (≤50 words).
   - **Mechanical row.** A new `- [ ]` line in the source row's priority
-    section. `[light]🔧` when the slice is a clear diff, `[medium]🧩` when it
+    section. `[light]🔧` when the slice is a clear diff, `[moderate]🧩` when it
     is multi-step and well-scoped (`SPEC/model.md` §"Model field"). No other
     tier. Description is only the factual slice, ≤50 words, same thresholds.
     Shortname ≤30 characters. A standalone source takes the next top-level ID
@@ -193,7 +193,7 @@ Surface the walk in one message, then stop and wait. The shape:
 
    ```text
    1. - [ ] **CORE-581** [light]🔧 [unattended] | shortname — …
-   2. - [ ] **CORE-582.3** [medium]🧩 [unattended] | shortname — …   ← after CORE-582.2 (candidate in this pass)
+   2. - [ ] **CORE-582.3** [moderate]🧩 [unattended] | shortname — …   ← after CORE-582.2 (candidate in this pass)
    3. pin   - [ ] **CORE-590** [light]🔧 | shortname — … `npm test -- foo`
             item: - [ ] **CORE-590** [light]🔧 [unattended] | shortname — …
    4. split - [ ] **CORE-591** [heavy] | shortname — … (remainder)

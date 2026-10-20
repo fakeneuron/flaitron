@@ -14,7 +14,7 @@ Task-line grammar (see .flaitron/core/SPEC.md §"Task-line format"):
 
 All of `[!critical]`, `[model]` (see `SPEC/model.md` §"Model field" and its
 "Practical guidance and agent-aware defaults" subsection for examples,
-realistic defaults such as mid-tier models like Grok/Sonnet often `[medium]`
+realistic defaults such as mid-tier models like Grok/Sonnet often `[moderate]`
 (or `[light]` for mechanical work), and the full agent-aware notes; any short
 token is valid), `[unattended]`, `[handoff]`, and `| shortname` are optional.
 Canonical ordering: `[!critical]` BEFORE `[model]`, the two trailing markers
@@ -38,7 +38,7 @@ re-asking at scaffold time.
 Illustrative entries (replace TASK-ID with a real <AREA>-<N> id when filing):
 
   - [ ] **TASK-ID** [!critical] [heavy] | shortname — Optional `[!critical]` flag floats this row to the top of High.
-  - [ ] **TASK-ID** [medium] | shortname — One-line description of a moderate, multi-step but well-scoped task.
+  - [ ] **TASK-ID** [moderate] | shortname — One-line description of a moderate, multi-step but well-scoped task.
   - [ ] **TASK-ID** [light] | shortname — One-line description of a mechanical, clear-diff task.
   - [x] **TASK-ID** [light] | shortname — Completed YYYY-MM-DD.
 

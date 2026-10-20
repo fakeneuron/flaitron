@@ -75,7 +75,7 @@ authoritative cross-agent fallback; note any glyph that fails to render.
 
 **Next-task cues**
 - 🔧 LIGHT (mechanical)
-- 🧩 MEDIUM (moderate)
+- 🧩 MODERATE
 - 🧠 HEAVY (design)
 - 💎 FRONTIER (high-stakes — trigger-reached)
 - 🔭 XHEAVY (exploratory — manual-only)

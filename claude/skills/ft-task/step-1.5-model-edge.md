@@ -6,7 +6,7 @@
 
 ## Mismatch — PLAN.md concrete `[model]` differs from the active model
 
-Fires only when the tag is a **concrete** model name (`opus`/`sonnet`/`grok`/…) and the active model is a *different* concrete model. A **category** tag (`[xheavy]`/`[frontier]`/`[heavy]`/`[medium]`/`[light]`) never reaches this branch — it either proceeds (tier met or exceeded) or routes to "Category under-tier" below.
+Fires only when the tag is a **concrete** model name (`opus`/`sonnet`/`grok`/…) and the active model is a *different* concrete model. A **category** tag (`[xheavy]`/`[frontier]`/`[heavy]`/`[moderate]` (legacy `[medium]`)/`[light]`) never reaches this branch — it either proceeds (tier met or exceeded) or routes to "Category under-tier" below.
 
 STOP. Surface the mismatch and offer two paths via AskUserQuestion:
 
@@ -17,7 +17,7 @@ Do not silently override.
 
 ## Category under-tier — PLAN.md tag outranks the active model's tier
 
-The active model's tier is *below* the category tag (e.g. a `[heavy]` task with the active model reading as medium-tier like grok, or light-tier like haiku; a `[frontier]` task on opus; or a `[medium]` task on a light-tier model). This is a soft advisory, **not** a STOP. Emit a one-line ⚠️ inline note, then proceed to Step 2:
+The active model's tier is *below* the category tag (e.g. a `[heavy]` task with the active model reading as moderate-tier like grok, or light-tier like haiku; a `[frontier]` task on opus; or a `[moderate]` task on a light-tier model). This is a soft advisory, **not** a STOP. Emit a one-line ⚠️ inline note, then proceed to Step 2:
 
 > ⚠️ Active model reads below the tagged tier (this task is tagged `[frontier]`). Consider switching to Fable @ high (change model and/or effort, then re-invoke), or retag the PLAN.md line if the lighter model is the deliberate choice. Proceeding as-is.
 
@@ -29,4 +29,4 @@ An **`[xheavy]` tag always lands here** — the manual-only exploratory rung sit
 
 ## Legacy entry — PLAN.md `[model]` is absent (no `[model]` on the line)
 
-Ask the user via AskUserQuestion to choose a model token. Recommended primary labels: `[heavy]` for design / multi-file / ambiguous work; `[medium]` for moderate, multi-step but well-scoped work (the round-up default — when in doubt, round up); `[light]` only for provably mechanical work with a clear diff in mind; `[frontier]` only when a `SPEC/model.md` §"When to choose `[frontier]`" trigger matches (round-up never reaches it). Do not offer `[xheavy]` as an option — the manual-only exploratory rung is a deliberate operator filing, never a default pick (`SPEC/model.md` §"Practical guidance"). You may use any short token per SPEC §"Model field" — the dated roster by tier, the cross-provider mapping (including where `gpt-5` sub-families land), and how effort settings shift a band are all in `docs/PLATFORMS.md` §"Platform×model×effort calibration table" (Read it for this branch; `SPEC/model.md` keeps no copy); this file carries no copy of its own. Project-specific names are equally valid. Use the bare family name: context-window and effort variants do not get their own token (see `SPEC/model.md` §"Effort axis"). Then write `[<chosen>]` into the PLAN.md line in place (insert immediately after `**TASK-ID**`), then proceed to Step 2. The next time `<SKILL>` runs against this line, no question is asked.
+Ask the user via AskUserQuestion to choose a model token. Recommended primary labels: `[heavy]` for design / multi-file / ambiguous work; `[moderate]` for moderate, multi-step but well-scoped work (the round-up default — when in doubt, round up); `[light]` only for provably mechanical work with a clear diff in mind; `[frontier]` only when a `SPEC/model.md` §"When to choose `[frontier]`" trigger matches (round-up never reaches it). Do not offer `[xheavy]` as an option — the manual-only exploratory rung is a deliberate operator filing, never a default pick (`SPEC/model.md` §"Practical guidance"). You may use any short token per SPEC §"Model field" — the dated roster by tier, the cross-provider mapping (including where `gpt-5` sub-families land), and how effort settings shift a band are all in `docs/PLATFORMS.md` §"Platform×model×effort calibration table" (Read it for this branch; `SPEC/model.md` keeps no copy); this file carries no copy of its own. Project-specific names are equally valid. Use the bare family name: context-window and effort variants do not get their own token (see `SPEC/model.md` §"Effort axis"). Then write `[<chosen>]` into the PLAN.md line in place (insert immediately after `**TASK-ID**`), then proceed to Step 2. The next time `<SKILL>` runs against this line, no question is asked.

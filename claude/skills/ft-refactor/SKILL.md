@@ -110,7 +110,7 @@ one `/ft-task` cycle. Sequencing doctrine:
 - **M is the step count.** Children file as `.2..(M+1)`; the reserved `.N`
   audit closes the epic (verifies the completed refactor sits well in the
   codebase and the suite pins held). Propose per-child model tags
-  (`[heavy]🧠` / `[medium]🧩` / `[light]🔧` per `SPEC/model.md`;
+  (`[heavy]🧠` / `[moderate]🧩` / `[light]🔧` per `SPEC/model.md`;
   `[frontier]💎` only on a §"When to choose `[frontier]`" trigger; never
   `[xheavy]` — manual-only, an automated proposer never self-assigns it), an
   area prefix, a parent shortname, and a priority — the AI proposes, the

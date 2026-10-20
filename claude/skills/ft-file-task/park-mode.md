@@ -64,7 +64,7 @@ From conversation context + remaining `args` text after flag/ID stripping:
    session was (active task + step, or the in-flight user goal).
 5. **Parent** — YAML `parent:` = active task ID when one exists; else leave empty.
 6. **Priority** — from flag or your Step P2 read; set YAML `priority:` and
-   `pickup:` per the table above. Default model `[light]`; `[medium]` only when
+   `pickup:` per the table above. Default model `[light]`; `[moderate]` only when
    the idea clearly needs design judgment. Add `[!critical]` on the PLAN line
    only for High with explicit urgency.
 

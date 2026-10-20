@@ -87,11 +87,11 @@ describe('parsePlan', () => {
 
   // Adopter near-miss IDs — lettered subtask suffix + nested decimals.
   it('parses a lettered subtask id (`FE-310.3a`)', () => {
-    const md = `## High\n\n- [ ] **FE-310.3a** [medium] | lettered — adopter subtask suffix.\n`;
+    const md = `## High\n\n- [ ] **FE-310.3a** [moderate] | lettered — adopter subtask suffix.\n`;
     const t = parsePlan(md)[0];
     expect(t).toMatchObject({
       id: 'FE-310.3a',
-      model: 'medium',
+      model: 'moderate',
       shortname: 'lettered',
       description: 'adopter subtask suffix',
     });
@@ -240,9 +240,9 @@ describe('parsePlan', () => {
 
   // Grammar tolerances for real PLAN.md decorations.
   it('parses a model-suggestion glyph after [model] with no space', () => {
-    const md = `## High\n\n- [ ] **FE-066** [medium]🧠 | glyph tol — long desc\n`;
+    const md = `## High\n\n- [ ] **FE-066** [moderate]🧠 | glyph tol — long desc\n`;
     const t = parsePlan(md)[0];
-    expect(t).toMatchObject({ id: 'FE-066', model: 'medium', shortname: 'glyph tol' });
+    expect(t).toMatchObject({ id: 'FE-066', model: 'moderate', shortname: 'glyph tol' });
     expect(t.description).toBe('long desc');
   });
 
@@ -254,9 +254,9 @@ describe('parsePlan', () => {
   });
 
   it('parses a suggestion glyph directly before the long description (no shortname)', () => {
-    const md = `## Completed\n\n- [x] **FE-064** [medium]🧠 — Completed 2026-07-02.\n`;
+    const md = `## Completed\n\n- [x] **FE-064** [moderate]🧠 — Completed 2026-07-02.\n`;
     const t = parsePlan(md)[0];
-    expect(t).toMatchObject({ id: 'FE-064', model: 'medium', completed: true, completedDate: '2026-07-02' });
+    expect(t).toMatchObject({ id: 'FE-064', model: 'moderate', completed: true, completedDate: '2026-07-02' });
     expect(t.shortname).toBeUndefined();
   });
 
@@ -270,9 +270,9 @@ describe('parsePlan', () => {
 
   // `[unattended]` is canonical grammar, not a dropped tolerance.
   it('captures [unattended] after [model] into Task.unattended', () => {
-    const md = `## High\n\n- [ ] **CORE-494** [medium] [unattended] | marker — desc\n`;
+    const md = `## High\n\n- [ ] **CORE-494** [moderate] [unattended] | marker — desc\n`;
     const t = parsePlan(md)[0];
-    expect(t).toMatchObject({ id: 'CORE-494', model: 'medium', unattended: true });
+    expect(t).toMatchObject({ id: 'CORE-494', model: 'moderate', unattended: true });
     expect(t.shortname).toBe('marker');
     expect(t.description).toBe('desc');
   });
@@ -297,9 +297,9 @@ describe('parsePlan', () => {
   });
 
   it('captures [unattended] after a space-separated glyph', () => {
-    const md = `## High\n\n- [ ] **CORE-502** [medium] 🧩 [unattended] | spaced glyph — desc\n`;
+    const md = `## High\n\n- [ ] **CORE-502** [moderate] 🧩 [unattended] | spaced glyph — desc\n`;
     const t = parsePlan(md)[0];
-    expect(t).toMatchObject({ id: 'CORE-502', model: 'medium', unattended: true });
+    expect(t).toMatchObject({ id: 'CORE-502', model: 'moderate', unattended: true });
     expect(t.shortname).toBe('spaced glyph');
   });
 
@@ -322,8 +322,8 @@ describe('parsePlan', () => {
     const md = [
       '## High',
       '',
-      '- [ ] **CORE-001** [medium] [unattended] | control — parses',
-      '- [ ] **CORE-002** [medium] [!unattended] | footgun — does not',
+      '- [ ] **CORE-001** [moderate] [unattended] | control — parses',
+      '- [ ] **CORE-002** [moderate] [!unattended] | footgun — does not',
     ].join('\n');
     const { tasks, unparsed } = parsePlanWithDiagnostics(md);
     expect(tasks.map((t) => t.id)).toEqual(['CORE-001']);
@@ -349,9 +349,9 @@ describe('parsePlan', () => {
   // run — the operator's declaration that the row stops for a human act. Same
   // capture shape as `[unattended]`, same two footguns.
   it('captures [handoff] after [model] into Task.handoff', () => {
-    const md = `## High\n\n- [ ] **CORE-598** [medium] [handoff] | marker — desc\n`;
+    const md = `## High\n\n- [ ] **CORE-598** [moderate] [handoff] | marker — desc\n`;
     const t = parsePlan(md)[0];
-    expect(t).toMatchObject({ id: 'CORE-598', model: 'medium', handoff: true, unattended: false });
+    expect(t).toMatchObject({ id: 'CORE-598', model: 'moderate', handoff: true, unattended: false });
     expect(t.shortname).toBe('marker');
   });
 
@@ -376,8 +376,8 @@ describe('parsePlan', () => {
     const md = [
       '## High',
       '',
-      '- [ ] **CORE-001** [medium] [handoff] | control — parses',
-      '- [ ] **CORE-002** [medium] [!handoff] | footgun — does not',
+      '- [ ] **CORE-001** [moderate] [handoff] | control — parses',
+      '- [ ] **CORE-002** [moderate] [!handoff] | footgun — does not',
     ].join('\n');
     const { tasks, unparsed } = parsePlanWithDiagnostics(md);
     expect(tasks.map((t) => t.id)).toEqual(['CORE-001']);
@@ -416,10 +416,17 @@ describe('parsePlan', () => {
     expect(t.relatedTasks).toEqual(['FE-001']);
   });
 
-  it('parses a [medium] suggestion glyph (🧩)', () => {
-    const md = `## High\n\n- [ ] **CORE-353** [medium]🧩 | medium glyph — long desc\n`;
+  it('parses a [moderate] suggestion glyph (🧩)', () => {
+    const md = `## High\n\n- [ ] **CORE-353** [moderate]🧩 | moderate glyph — long desc\n`;
     const t = parsePlan(md)[0];
-    expect(t).toMatchObject({ id: 'CORE-353', model: 'medium', shortname: 'medium glyph' });
+    expect(t).toMatchObject({ id: 'CORE-353', model: 'moderate', shortname: 'moderate glyph' });
+    expect(t.description).toBe('long desc');
+  });
+
+  it('parses the legacy [medium] alias with its 🧩 glyph, stored as written', () => {
+    const md = `## High\n\n- [ ] **CORE-353** [medium]🧩 | legacy alias — long desc\n`;
+    const t = parsePlan(md)[0];
+    expect(t).toMatchObject({ id: 'CORE-353', model: 'medium', shortname: 'legacy alias' });
     expect(t.description).toBe('long desc');
   });
 
@@ -466,7 +473,7 @@ describe('parsePlan', () => {
     const md = [
       '## High',
       '',
-      '- [ ] **FE-066** [medium]🧠 | glyph — real row',
+      '- [ ] **FE-066** [moderate]🧠 | glyph — real row',
       '- [ ] ⏸ **CORE-042** [fable] [light]🔧 | parked — stacked + leading glyph',
     ].join('\n');
     const { tasks, unparsed } = parsePlanWithDiagnostics(md);
@@ -587,10 +594,10 @@ describe('parsePlan', () => {
   });
 
   it('parses [!critical] after a model-suggestion glyph', () => {
-    const md = `## High\n\n- [ ] **FE-100** [medium]🧩 [!critical] | hotfix — After glyph.\n`;
+    const md = `## High\n\n- [ ] **FE-100** [moderate]🧩 [!critical] | hotfix — After glyph.\n`;
     const t = parsePlan(md)[0];
     expect(t.critical).toBe(true);
-    expect(t.model).toBe('medium');
+    expect(t.model).toBe('moderate');
     expect(t.shortname).toBe('hotfix');
   });
 
@@ -689,7 +696,7 @@ describe('rotated `## Completed <YYYY-MM>` history', () => {
   it('scopes diagnostics to PLAN.md — archive line numbers never leak into them', () => {
     const plan = `## High
 
-- [ ] *FE-064* [medium] | bad-bold — single-asterisk ID fails
+- [ ] *FE-064* [moderate] | bad-bold — single-asterisk ID fails
 `;
     const archive = `## Completed 2026-07
 
@@ -702,7 +709,7 @@ describe('rotated `## Completed <YYYY-MM>` history', () => {
     const { tasks, unparsed, nearMissHeadings } = parsePlanWithDiagnostics(plan, archive);
     expect(tasks.map((t) => t.id)).toEqual(['CORE-400']);
     expect(unparsed).toEqual([
-      { line: 3, text: '- [ ] *FE-064* [medium] | bad-bold — single-asterisk ID fails' },
+      { line: 3, text: '- [ ] *FE-064* [moderate] | bad-bold — single-asterisk ID fails' },
     ]);
     expect(nearMissHeadings).toEqual([]);
   });
@@ -722,13 +729,13 @@ describe('parsePlanWithDiagnostics', () => {
     const md = `## High
 
 - [ ] **CORE-001** — parses fine
-- [ ] *FE-064* [medium] | bad-bold — single-asterisk ID fails
+- [ ] *FE-064* [moderate] | bad-bold — single-asterisk ID fails
 - [x] **fe-065** — lowercase ID fails
 `;
     const { tasks, unparsed } = parsePlanWithDiagnostics(md);
     expect(tasks.map((t) => t.id)).toEqual(['CORE-001']);
     expect(unparsed).toEqual([
-      { line: 4, text: '- [ ] *FE-064* [medium] | bad-bold — single-asterisk ID fails' },
+      { line: 4, text: '- [ ] *FE-064* [moderate] | bad-bold — single-asterisk ID fails' },
       { line: 5, text: '- [x] **fe-065** — lowercase ID fails' },
     ]);
   });
@@ -773,7 +780,7 @@ describe('parsePlanWithDiagnostics', () => {
   it('does not flag lettered or nested-decimal ids as unparsed', () => {
     const md = `## High
 
-- [ ] **FE-310.3a** [medium] | lettered — adopter subtask
+- [ ] **FE-310.3a** [moderate] | lettered — adopter subtask
 - [ ] **FE-067.2.1** [light] | nested — adopter nested decimal
 `;
     const { tasks, unparsed } = parsePlanWithDiagnostics(md);
@@ -900,12 +907,12 @@ All segments optional.
   it('still flags a completed legacy-shaped line carrying a [model] segment as unparsed', () => {
     const md = `## Completed
 
-- [x] **P1** [medium] — a model segment means this isn't the bare legacy shape
+- [x] **P1** [moderate] — a model segment means this isn't the bare legacy shape
 `;
     const { tasks, unparsed } = parsePlanWithDiagnostics(md);
     expect(tasks).toEqual([]);
     expect(unparsed).toEqual([
-      { line: 3, text: '- [x] **P1** [medium] — a model segment means this isn\'t the bare legacy shape' },
+      { line: 3, text: '- [x] **P1** [moderate] — a model segment means this isn\'t the bare legacy shape' },
     ]);
   });
 
@@ -945,7 +952,7 @@ All segments optional.
     const md = `## High
 
 \`\`\`markdown
-- [ ] *FE-064* [medium] | bad-bold — malformed, but only an example
+- [ ] *FE-064* [moderate] | bad-bold — malformed, but only an example
 \`\`\`
 `;
     const { tasks, unparsed } = parsePlanWithDiagnostics(md);

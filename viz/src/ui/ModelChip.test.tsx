@@ -18,7 +18,7 @@ describe('ModelChip — 🧠 heavy-model glyph', () => {
     expect(screen.getByText('🧠')).toBeInTheDocument();
   });
 
-  it.each(['sonnet', 'grok', 'haiku', 'medium', 'light'])(
+  it.each(['sonnet', 'grok', 'haiku', 'moderate', 'medium', 'light'])(
     'renders nothing for %s',
     (model) => {
       render(<ModelChip model={model} />);

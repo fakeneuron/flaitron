@@ -7,9 +7,10 @@ export type Priority =
   | 'Future Opportunities'
   | 'Completed';
 
-// Category labels: 'light' | 'medium' | 'heavy', plus chooser-assignable
+// Category labels: 'light' | 'moderate' | 'heavy', plus chooser-assignable
 // 'frontier' and manual-only 'xheavy' (SPEC §"Task-line format" +
-// SPEC/model.md). Concrete model names (e.g. 'fable', 'opus', 'sonnet',
+// SPEC/model.md). A legacy 'medium' token is a read-only alias of 'moderate'
+// and is stored as written. Concrete model names (e.g. 'fable', 'opus', 'sonnet',
 // 'haiku', 'grok', 'gpt-5', 'gemini-pro') are valid precision tokens; the
 // TASK_LINE regex accepts any short lowercase token matching [a-z][\w.-]*.
 export type TaskModel = string;
@@ -78,8 +79,8 @@ const COMPLETED_MONTH_HEADING = /^Completed\s+\d{4}-\d{2}$/;
 //   1. STATUS_GLYPH — leading status glyph between the checkbox and the ID
 //      (`- [ ] ⏸ **ID**`) — the nav-header chip set 🟢/⏸/✅/⚪/🌱.
 //   2. SUGGESTION_GLYPH — a model-suggestion glyph after `[model]`
-//      (`[medium]🧠` / `[medium] 🔧` / `[medium]🧩` / `[frontier]💎` /
-//      `[medium]🔭`, space-optional) — decorative, redundant with the model
+//      (`[moderate]🧠` / `[moderate] 🔧` / `[moderate]🧩` / `[frontier]💎` /
+//      `[moderate]🔭`, space-optional) — decorative, redundant with the model
 //      tier, dropped.
 //      Emitted in TWO slots, straddling TRAILING_TOKENS, so the glyph is
 //      accepted on either side of the trailing-token run:

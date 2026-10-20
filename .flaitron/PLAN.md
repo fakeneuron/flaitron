@@ -15,6 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
+- [ ] **CORE-818** [heavy]🧠 | micro-default — Known work with no design question starts as --micro, including a small multi-file change. Unknown scope, a tradeoff, --loop, and --debug stay full. Re-scope still promotes. Flip the doubt-default in SPEC/tasknote-selection.md.
 
 ## Low
 

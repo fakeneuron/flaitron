@@ -38,7 +38,7 @@ After a tasknote is archived, run the three-step protocol (commit / mark landed,
 
    ```markdown
    - **<TASK-ID>** [heavy]🧠 | shortname — one-sentence "why now" (design) · Opus @ high
-   - **<TASK-ID>** [moderate]🧩 | shortname — one-sentence "why now" (moderate) · Sonnet @ high
+   - **<TASK-ID>** [moderate]🧩 | shortname — one-sentence "why now" (moderate) · Opus @ medium
    ```
 
    **Re-read PLAN.md now** (fresh Read tool call — do not rely on the Step 1 cached parse; the Completed section grows long and stale-context suggestions are a known error mode). For each candidate you intend to name, verify its task line is `- [ ]` (unchecked) and lives in an open section (`## High`, `## Medium`, `## Low`, or `## Future Opportunities`), **not** under `## Completed`. Drop any candidate that fails this check before surfacing it.

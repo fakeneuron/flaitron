@@ -434,54 +434,69 @@ workflow rules.
 
 ### Tier × platform map
 
-**As of 2026-10-08:**
+**As of 2026-10-20** ([[CORE-816]]):
 
 | Tier | Claude Code | Codex | Grok Build |
 |---|---|---|---|
-| `[light]`🔧 | Sonnet @ medium–high | Sol @ medium–high (alt Luna @ high) | Grok @ medium–high |
-| `[moderate]`🧩 | Sonnet @ high (alt Opus @ medium) | Sol @ high (alt Astra @ medium) | Grok @ high |
-| `[heavy]`🧠 | Opus @ high | Astra @ high | Grok @ xhigh |
-| `[frontier]`💎 | Fable @ high–xhigh | Astra @ xhigh | ⚠️ Grok @ xhigh — no frontier model |
+| `[light]`🔧 | Sonnet @ high | Sol @ medium (alt Luna @ high) | Grok @ medium |
+| `[moderate]`🧩 | Opus @ medium (alt Sonnet @ high) | Sol @ medium | Grok @ high |
+| `[heavy]`🧠 | Opus @ high | Sol @ high | Grok @ xhigh |
+| `[frontier]`💎 | Fable @ high–xhigh | Astra @ high–xhigh | ⚠️ Grok @ xhigh — no frontier model |
 | `[xheavy]`🔭 | manual-only | manual-only | manual-only |
 
-Cells name only `medium`, `high`, or `xhigh`, and each reaches its model's
-vendor default or start setting. On a range, the pick is the vendor default,
-read from §"Family roster" below (`SPEC/model.md` §"Effort recommendations").
-Each primary reaches its
-tier through its model's roster band or a roster effort shift (`Grok @ xhigh`
-≈ heavy, `Astra @ xhigh` ≈ frontier), with one exception besides the ⚠️ Grok
-gap: `[light]` names a moderate-band model (Sonnet, Sol, Grok), because no
-light-band model has a verified roster row here (Luna is the Codex
-alternate). [[CORE-814]] moved Claude `[moderate]` (then `[medium]`) from Opus to
-Sonnet so the cell matches its band. As a result, on Claude Code and Grok
-Build `[light]` and `[moderate]` print the same pick (`Sonnet @ high`,
-`Grok @ high`): the effort floor stops `[light]` dropping below the vendor
-default, and the difference between the two tiers lies in the task, not in
-the session. **⚠️ Grok has no frontier-band
-model:** Grok 4.7 is xAI's top model, so `[frontier]` work on Grok Build runs
-at the heavy-band cell and lands the gate's under-tier advisory — suggest
-switching to Claude Code (Fable) or Codex (Astra @ xhigh). Advice, never a
-block. Codex/Grok cells verified 2026-10-08 against `learn.chatgpt.com/docs/models`
-(Astra starts at Light, Luna at High, Sol at the client default) and
+Cells name only `medium`, `high`, or `xhigh`. On a range, the printed pick
+follows `SPEC/model.md` §"Effort recommendations" → "Printing a cell", with
+vendor defaults read from §"Family roster" below. The map carries a
+**quality-first bias**: each cell but the ⚠️ Grok `[frontier]` one reaches its
+tier through its model's roster band or a roster effort shift (`Sol @ high` ≈
+heavy, `Astra @ high` ≈ frontier, `Grok @ medium` ≈ moderate, `Grok @ xhigh` ≈
+heavy), and where the operator judges a band-matched pick to sit on the cusp of
+errors, the cell takes the heavier configuration. `[light]` names a
+moderate-band configuration on every platform, because light-band models
+(Haiku, Luna) stay off primary picks. Claude `[moderate]` runs on Opus 5.5 at
+its `medium` default, a band above the task. That reverses
+[[CORE-814]]'s band-matched `Sonnet @ high`. Effort below the vendor default
+is allowed only where a roster effort shift still places the configuration at
+or above the tier, as `Grok @ medium` does for `[light]`. Claude Code and Grok
+Build print a distinct pick per tier. Codex `[light]` and `[moderate]` both
+print `Sol @ medium`. GPT-6 has no model between Luna and Sol, and
+`[moderate]` stays band-matched at Sol's default: the operator does not judge
+it on the cusp, since OpenAI ranks Sol near Astra, though the roster still
+bands Sol `moderate` at its default. The difference between the two tiers lies
+in the task, not in the session. GPT-5.6 Terra, the prior generation's middle
+tier, is not named: GPT-6.1 Sol outscores it at a lower price, and OpenAI
+keeps it only during the GPT-6 rollout. **Haiku is off the map.** No tier
+pick names it, and an operator who wants it files an explicit concrete
+`haiku` tag for the lightest or micro work. Luna, its Codex counterpart,
+appears only as the `[light]` alternate, never as a primary pick.
+**⚠️ Grok has no frontier-band model:** Grok 4.7 is xAI's top model, so
+`[frontier]` work on Grok Build runs at the heavy-band cell and lands the
+gate's under-tier advisory — suggest switching to Claude Code (Fable) or
+Codex (Astra @ high). Advice, never a block. Vendor facts verified 2026-10-20
+against `platform.claude.com/docs/en/build-with-claude/effort` (Opus 5.5
+default `medium`, Sonnet 5.5 default `high`), `learn.chatgpt.com/docs/models`
+(Astra starts at Light, Luna at High, Sol at the client default; "GPT-6.1 Sol
+offers near-Astra performance at a lower cost than Astra"), and
 `docs.x.ai/docs/guides/reasoning` + `docs.x.ai/docs/models` (grok-4.7 default
-`high`; no model above it); Claude Code cells carry the family roster's
-2026-10-02 verification. `[xheavy]` names no cell: the rung is
+`high`; no model above it). The `sol@high`, `astra@medium` / `astra@high`
+and `grok@medium` shifts are operator-calibrated ([[CORE-816]]), not vendor
+statements. `[xheavy]` names no cell: the rung is
 operator-filed and never chooser-assigned (`SPEC/model.md`
 §"Category-vs-concrete matching", "The `xheavy` rung is manual-only") —
 operators typically run it on Fable @ xhigh.
 
 ### Family roster
 
-**As of 2026-10-02** (full table; 2026-10-08 per [[CORE-741.3]]: `fable` re-banded frontier per [[CORE-741.2]], the `gpt-5` / `codex` Astra equivalences, and the Codex Ultra fact):
+**As of 2026-10-02** (full table; 2026-10-08 per [[CORE-741.3]]: `fable` re-banded frontier per [[CORE-741.2]], the `gpt-5` / `codex` Astra equivalences, and the Codex Ultra fact; 2026-10-20 per [[CORE-816]]: Sol and Astra effort shifts moved down and `grok@medium` added by operator calibration (OpenAI ranks Sol near Astra), Astra's Light start noted, GPT-5.6 Terra noted, default-effort bands unchanged):
 
 | Platform | Token | Current roster (top of family) | Effort ladder | Band at default effort | Effort-shifted equivalences |
 |---|---|---|---|---|---|
 | Anthropic | `fable` | Fable 5.1 (`mythos` 5.1 limited-access sibling; Fable 5 prior) | `low`/`medium`/`high`/`xhigh`/`max` (default `high`; `xhigh`/`max` is the step-up for the hardest agentic work) | frontier | frontier at the default; `fable@xhigh` is the step-up for the hardest frontier work |
 | Anthropic | `opus` | Opus 5.5 (Opus 5 prior; 4.8 / 4.7 supported) | `low`/`medium`/`high`/`xhigh`/`max` (default `medium`; Opus 5 and earlier default `high`) | heavy | `opus@low` ≈ moderate-band throughput work |
 | Anthropic | `sonnet` | Sonnet 5.5 (Sonnet 5 prior) | `low`/`medium`/`high`/`xhigh`/`max` (default `high`) | moderate | `sonnet@xhigh`–`@max` ≈ heavy-band |
-| OpenAI | `gpt-5` | GPT-6 Astra flagship · GPT-6.1 Sol workhorse (+ Luna) | `low`/`medium`/`high`/`xhigh`/`max` (Sol default `medium`; Astra and Sol have no `none`) | heavy (Astra) · moderate (Sol) · light (Luna) | `astra@xhigh` ≈ frontier-band (no model above it); `sol@xhigh`–`@max` ≈ heavy-band |
-| OpenAI | `codex` | GPT-6 Astra in Codex (GPT-5.3 Codex prior) | `low`/`medium`/`high`/`xhigh`/`max` (app Light = `low`; no `minimal`; the app also offers Ultra, which fans out to subagents) | moderate at Astra's recommended Light or Sol's `medium` default | Astra `@high` ≈ heavy-band; Astra `@xhigh` ≈ frontier-band (no model above it); Sol `@xhigh`–`@max` ≈ heavy-band |
-| xAI | `grok` | Grok 4.7 (default; `grok-4.7-build-fast` fast sibling) | `low`/`medium`/`high`/`xhigh` (default `high`; `xhigh` since 4.6, earlier 4.x treat it as `high`) | moderate | `grok@xhigh` ≈ heavy-band |
+| OpenAI | `gpt-5` | GPT-6 Astra flagship · GPT-6.1 Sol workhorse (+ Luna; GPT-5.6 Sol / Terra / Luna prior, available during the GPT-6 rollout) | `low`/`medium`/`high`/`xhigh`/`max` (Sol default `medium`; Astra starts at Light = `low`; Astra and Sol have no `none`) | heavy (Astra) · moderate (Sol) · light (Luna) | `astra@high`–`@xhigh` ≈ frontier-band (no model above it); `sol@high`–`@max` ≈ heavy-band (both operator-calibrated, [[CORE-816]]; OpenAI ranks Sol near Astra) |
+| OpenAI | `codex` | GPT-6 Astra in Codex (GPT-5.3 Codex prior) | `low`/`medium`/`high`/`xhigh`/`max` (app Light = `low`; no `minimal`; the app also offers Ultra, which fans out to subagents) | moderate at Astra's recommended Light or Sol's `medium` default | Astra `@medium` ≈ heavy-band; Astra `@high`–`@xhigh` ≈ frontier-band (no model above it); Sol `@high`–`@max` ≈ heavy-band (all operator-calibrated, [[CORE-816]]; OpenAI ranks Sol near Astra) |
+| xAI | `grok` | Grok 4.7 (default; `grok-4.7-build-fast` fast sibling) | `low`/`medium`/`high`/`xhigh` (default `high`; `xhigh` since 4.6, earlier 4.x treat it as `high`) | moderate | `grok@medium` ≈ moderate-band (operator-calibrated, [[CORE-816]]); `grok@xhigh` ≈ heavy-band |
 | Google | `gemini-pro` | Gemini 3.1 Pro preview (Deep Think mode above it) | `thinking_level` `low`/`medium`/`high` (default `high`) | heavy | `gemini-pro@low` ≈ moderate-band |
 | Google | `gemini-flash` | Gemini 3.8 Flash (3.7 prior; Flash-Lite below) | `thinking_level` `low`/`medium`/`high` (default `medium`) | moderate (Flash) · light (Flash-Lite) | `gemini-flash@high` ≈ upper moderate-band |
 
@@ -539,7 +554,7 @@ than by skill.
 
 | Trigger | Syntax | What it controls in flaitron | When to reach for it |
 |---|---|---|---|
-| **Effort / thinking level** | A `reasoning_effort` parameter — `low` / `medium` / `high` / `xhigh` / `max` on GPT-6 Astra and GPT-6.1 Sol (neither has `none`; Luna still does). The app labels `low` as Light. Codex's model page says start Astra at Light and Luna at High; Sol's API default is `medium`. The old CLI `minimal` rung maps to `low`. | Maps to the `[heavy]` / `[moderate]` / `[light]` / `[frontier]` PLAN-line tokens through the Codex column of §"Tier × platform map" (`[frontier]` = Astra @ xhigh). Heavier reasoning suits Discovery-heavy or cross-cutting tasknotes; lighter suits mechanical edits. | Match the running effort level to the task's `[model]` token. Switch before invoking the skill if the task's `[model]` differs from the current session's effort setting. |
+| **Effort / thinking level** | A `reasoning_effort` parameter — `low` / `medium` / `high` / `xhigh` / `max` on GPT-6 Astra and GPT-6.1 Sol (neither has `none`; Luna still does). The app labels `low` as Light. Codex's model page says start Astra at Light and Luna at High; Sol's API default is `medium`. The old CLI `minimal` rung maps to `low`. | Maps to the `[heavy]` / `[moderate]` / `[light]` / `[frontier]` PLAN-line tokens through the Codex column of §"Tier × platform map" (`[frontier]` = Astra @ high–xhigh). Heavier reasoning suits Discovery-heavy or cross-cutting tasknotes; lighter suits mechanical edits. | Match the running effort level to the task's `[model]` token. Switch before invoking the skill if the task's `[model]` differs from the current session's effort setting. |
 | **Skill invocation** | Use `/skills` in Codex or mention `$ft-task`, `$ft-update`, etc. after wiring the Codex adopter subset under `.agents/skills/` | Exposes the adopter-facing Flaitron workflows as Codex-native skills while preserving the same exported names as Claude | Use for normal Flaitron operations in Codex. Do not expect arbitrary custom `/ft-*` CLI commands; Codex's documented custom workflow primitive is skills. |
 | **Skill-body flags** | Trailing tokens on the skill invocation, same spelling as Claude Code; each wrapper's frontmatter names the flags it takes. Codex is the one non-Claude platform that ships its own wrappers, so a flag takes one of two routes. **SOP-first:** `ft-task`'s wrapper reads `SPEC/procedures/ft-task.md`, which names its flags as neutral primitives; its Step 0 loads the canonical `step-0-flags.md` when trailing tokens are present, and the canonical whole skill stays a fallback for uncovered edges. **Direct:** every other wrapper (`ft-close-epic`, `ft-file-task`, `ft-open-epic`, and `ft-refactor` among them) delegates to its canonical body, so the flag's lazy fragment resolves relative to that body with no SOP hop. | Every operator flag in [`../claude/CAPABILITIES.md`](../claude/CAPABILITIES.md#the-triggers) §"The triggers", which owns each flag's semantics, composition rules, and gate effects; they are not restated here. | As that file's row for the flag says. This platform adds no flag of its own and drops none. A platform-native control a flag leans on, such as `--deep`'s structured asks, follows this table's own row for it. |
 | **Model / session switch** | In-session `/model` changes the active model mid-session (`learn.chatgpt.com/docs/developer-commands`). Orthogonal to the effort ladder in the first row — Codex exposes reasoning depth and model choice separately. | Ensures the task runs at its assigned `[heavy]` / `[moderate]` / `[light]` / `[frontier]` depth (Step 1.5 gate). The post-closure candidate list signals the target via the `[heavy]`🧠 / `[moderate]`🧩 / `[light]`🔧 / `[frontier]`💎 / `[xheavy]`🔭 emoji label and the Codex column's `model @ effort` pick, never a literal `/model` command. | Before starting a task whose `[model]` differs from the current session's model. |

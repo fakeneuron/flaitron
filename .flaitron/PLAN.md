@@ -15,7 +15,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-816** [heavy] | quality-first-calibration — Re-calibrate the tier × platform map with a quality-first bias: Claude `[moderate]` back to Opus @ medium (`[light]` Sonnet @ high, `[heavy]` Opus @ high), Haiku off the ladder, and the Codex, Grok and Gemini cells re-checked the same way. No new sub-light tier. Filed with starter at `.flaitron/tasknote/CORE-816.md`.
 
 ## Low
 
@@ -29,6 +28,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-816** [heavy] | quality-first-calibration — Completed 2026-10-20.
 - [x] **CORE-EPIC-815** [moderate] | moderate-tier-rename — Completed 2026-10-20.
   - [x] **CORE-815.1** [medium] | moderate-tier-rename discovery — Completed 2026-10-20.
   - [x] **CORE-815.2** [heavy] | moderate-tier-contract — Completed 2026-10-20.

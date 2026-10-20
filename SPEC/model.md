@@ -102,17 +102,17 @@ releases. Calibration baseline:
 
 - **`frontier`** — each vendor's top-of-roster model, the step above the
   workhorse flagship: `fable` (with its limited-access `mythos` sibling) and
-  peers; a flagship with no model above it earns a `frontier` verdict at
-  `xhigh` only where `docs/PLATFORMS.md` bands it so — OpenAI's Astra does,
-  Grok 4.7 does not (its `xhigh` stays heavy-band), and `opus` cannot, since
-  `fable` sits above it. A platform
+  peers; a flagship with no model above it earns a `frontier` verdict at a
+  raised effort only where `docs/PLATFORMS.md` bands it so — OpenAI's Astra
+  does (from `high`), Grok 4.7 does not (its `xhigh` stays heavy-band), and
+  `opus` cannot, since `fable` sits above it. A platform
   with no frontier-band configuration lands the ⚠️ under-tier advisory on
   `[frontier]` work, and the map names the switch (§"Effort recommendations"
   below).
 - **`heavy`** — deep-reasoning, large/long-context models at their default
   (unadjusted) effort setting: `opus` and peers; a `moderate`-tier
-  model dialed up to its highest effort setting can also earn a `heavy`
-  verdict — see §"Effort axis" below.
+  model dialed up past its default effort can also earn a `heavy` verdict
+  where `docs/PLATFORMS.md` bands it so — see §"Effort axis" below.
 - **`moderate`** — capable mid-tier models that handle multi-step, well-scoped work
   reliably without the deep-reasoning / large-context profile that defines
   `heavy`: `sonnet`, `grok`, `codex` at its own recommended default effort, and
@@ -186,15 +186,22 @@ map owns the dated cells (vendor rosters move; the rule does not).
   `xhigh`. Never `low` — it trades reliability for tokens — and never `max`,
   which spends past the point of reliability gain. Vendor ladders may list
   more settings; the map records them as facts, not picks.
-- **Reliability floor, no second round-up.** Every map cell's effort
-  reaches the vendor's default or goes above it, because a re-run after a
-  wrong answer costs more than the effort it saved. The round-up default
+- **Quality-first floor, no second round-up.** Every map cell but a ⚠️ one
+  reaches its tier's band through its model's roster band or a roster effort
+  shift. Where the operator judges a band-matched pick to sit on the cusp of
+  errors, the cell takes the heavier configuration instead, because a re-run
+  after a wrong answer costs more than the effort it saved. So a cell may name
+  a configuration a band above its tier (`Opus @ medium` for Claude
+  `[moderate]`). Effort below the vendor default is allowed only where a
+  roster effort shift places the configuration at or above the tier
+  (`Grok @ medium` for `[light]`), and a shift that is operator-calibrated
+  rather than vendor-stated says so in the roster. The round-up default
   (§"Practical guidance and agent-aware defaults") already carries that bias
-  at the tier, so effort does not round up again. A single-value cell's
-  effort is part of how the cell reaches its tier (`Opus @ high` for
-  `[heavy]`), and it prints as written. Within a range, the pick is the
-  vendor default. The rest of the range is headroom an operator reaches for
-  deliberately, never a chooser's response to doubt.
+  at the tier, so a chooser does not round effort up again. A single-value
+  cell's effort is part of how the cell reaches its tier (`Opus @ high` for
+  `[heavy]`), and it prints as written. Within a range, the pick follows
+  "Printing a cell" below. The rest of the range is headroom an operator
+  reaches for deliberately, never a chooser's response to doubt.
 - **No frontier model on the platform.** The map flags the gap with ⚠️ and
   names the nearest cell plus a platform switch — advice, never a block.
 - **Printing a cell.** A suggestion prints one pick from the active

@@ -1,8 +1,8 @@
 # Fixture — decorative tolerances and adopter near-misses
 
-Shapes `SPEC/plan-parser.md` tolerates without capturing (status glyph,
-suggestion glyph, stacked `[model]`), the swapped `[!critical]` order, the
-lettered / nested-decimal ID near-misses, and the legacy `## Critical` heading.
+Shapes `SPEC/plan-parser.md` tolerates without capturing (status glyph, suggestion
+glyph, stacked `[model]`), the swapped `[!critical]` order, the lettered / nested-decimal
+ID near-misses, the legacy `## Critical` heading, and the legacy `[medium]` tier token.
 
 ## Critical
 
@@ -12,12 +12,12 @@ lettered / nested-decimal ID near-misses, and the legacy `## Critical` heading.
 ## High
 
 - [ ] 🟢 **FX-110** [heavy] | status glyph — In-progress chip between the checkbox and the ID.
-- [ ] ⏸ **FX-111** [medium] | blocked chip
+- [ ] ⏸ **FX-111** [moderate] | blocked chip
 - [ ] ⚪ **FX-112** [light] | not-started chip — Blocked by [[FX-110]].
 - [ ] 🌱 **FX-113** [light] | starter chip
 - [ ] **FX-120** [heavy]🧠 | glyph no space — Suggestion glyph directly after the model.
 - [ ] **FX-121** [light] 🔧 | glyph with space — Suggestion glyph after a space.
-- [ ] **FX-122** [medium]🧩 | medium glyph
+- [ ] **FX-122** [moderate]🧩 | moderate glyph
 - [ ] **FX-123** [xheavy]🔭 | xheavy glyph
 - [ ] **FX-124** [light]🔧 — Glyph directly before the long description, no shortname.
 - [ ] **FX-130** [fable] [light] | stacked models — First token is the model; the rest are dropped.
@@ -35,4 +35,4 @@ lettered / nested-decimal ID near-misses, and the legacy `## Critical` heading.
 ## Completed
 
 - [x] ✅ **FX-160** [light] | closed with chip — Completed 2026-09-05.
-- [x] **FX-161** [medium]🧩 | closed with glyph — Completed 2026-09-06.
+- [x] **FX-161** [medium]🧩 | closed legacy alias with glyph — Completed 2026-09-06.

@@ -1,5 +1,5 @@
 {
-  "describes": "Decorative tolerances from SPEC/plan-parser.md — status glyph, suggestion glyph (all five), stacked `[model]`, `[!critical]` after `[model]` — plus lettered / nested-decimal IDs and the legacy `## Critical` heading.",
+  "describes": "Decorative tolerances from SPEC/plan-parser.md — status glyph, suggestion glyph (all five), stacked `[model]`, `[!critical]` after `[model]` — plus lettered / nested-decimal IDs, the legacy `## Critical` heading, and the legacy `[medium]` tier token (stored as written).",
   "tasks": [
     {
       "line": 9,
@@ -57,7 +57,7 @@
       "critical": false,
       "unattended": false,
       "handoff": false,
-      "model": "medium",
+      "model": "moderate",
       "shortname": "blocked chip",
       "descriptionRaw": null,
       "description": "",
@@ -139,8 +139,8 @@
       "critical": false,
       "unattended": false,
       "handoff": false,
-      "model": "medium",
-      "shortname": "medium glyph",
+      "model": "moderate",
+      "shortname": "moderate glyph",
       "descriptionRaw": null,
       "description": "",
       "completedDate": null,
@@ -380,7 +380,7 @@
       "unattended": false,
       "handoff": false,
       "model": "medium",
-      "shortname": "closed with glyph",
+      "shortname": "closed legacy alias with glyph",
       "descriptionRaw": "Completed 2026-09-06.",
       "description": "",
       "completedDate": "2026-09-06",

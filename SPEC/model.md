@@ -7,7 +7,7 @@ of §"Task-line format". PLAN.md is the source of truth. The token is a short
 identifier representing the cognitive load of the task.
 
 Flaitron's recommended primary labels are `[heavy]` (design, multi-file,
-high ambiguity, or exploratory work), `[medium]` (multi-step, well-scoped),
+high ambiguity, or exploratory work), `[moderate]` (multi-step, well-scoped),
 and `[light]` (mechanical, well-scoped, clear-diff implementation). A fourth,
 **chooser-assignable** rung — `[frontier]`, glyph 💎 — sits above `heavy` for
 work where a wrong answer costs more than tokens; it is reached by trigger,
@@ -21,7 +21,7 @@ The visualizer parser accepts any short lowercase token (`[a-z][\w.-]*`).
 
 `/ft-task` reads the model BEFORE scaffolding (see `claude/skills/ft-task/preamble.md`
 §"Model gate", run at its Step 1.5). The gate matches a **concrete** tag (`opus`/`sonnet`/`grok`/…) by exact
-identity and a **category** tag (`[xheavy]`/`[frontier]`/`[heavy]`/`[medium]`/`[light]`) by *tier* — see
+identity and a **category** tag (`[xheavy]`/`[frontier]`/`[heavy]`/`[moderate]` (legacy `[medium]`)/`[light]`) by *tier* — see
 §"Category-vs-concrete matching" below:
 
 - Tag satisfied — concrete tag equals the active model, OR category tag whose
@@ -33,7 +33,7 @@ identity and a **category** tag (`[xheavy]`/`[frontier]`/`[heavy]`/`[medium]`/`[
   (`[unattended]`, a stacked `[model]` tolerance) verbatim from the original
   line (`SPEC.md` §"Task-line format").
 - Category tag tagged heavier than the active model's tier (e.g. `[heavy]` on a
-  lower-tier model such as `grok` (medium) or `haiku` (light)) → emit a ⚠️ inline
+  lower-tier model such as `grok` (moderate) or `haiku` (light)) → emit a ⚠️ inline
   advisory note and proceed; the operator decides whether to escalate or keep the
   lighter model. Never a silent block.
 - PLAN.md line has no `[model]` (legacy entry) → ask the user via a
@@ -52,12 +52,29 @@ depending on whether the tag is a **category** label or a **concrete** name.
 exact identity. The operator filed a specific assignment, so a different concrete
 active model is a hard mismatch (block + offer switch-or-retag).
 
-**Category tag** (`[xheavy]` / `[frontier]` / `[heavy]` / `[medium]` / `[light]`) — matched by
+**Category tag** (`[xheavy]` / `[frontier]` / `[heavy]` / `[moderate]` (legacy `[medium]`) / `[light]`) — matched by
 **tier**, not string. Tiers form an ordered ladder:
 
 ```text
-light  <  medium  <  heavy  <  frontier  <  xheavy
+light  <  moderate  <  heavy  <  frontier  <  xheavy
 ```
+
+**Legacy `[medium]` alias.** `[moderate]` was once named `[medium]`, and it
+was renamed so the ladder shares no word with the `## Medium` priority
+heading. A `[medium]` token stays valid for good and reads exactly as
+`[moderate]`: the gate matches it by tier, `[unattended]` candidacy
+clause 1 admits it, and it buckets to 🧩. The alias is **read-only**.
+Every writer (a filing skill, a retag, an automated chooser) emits
+`[moderate]`, and the parser stores whichever token is written. Migrating
+an adopter's open rows is optional cleanup, run from the project root:
+
+```sh
+sed -E -i.bak '/^[[:space:]]*-[[:space:]]+\[ \][[:space:]]/s/^([^*]*\*\*[^*]+\*\*([[:space:]]+\[!critical\])?)[[:space:]]+\[medium\]/\1 [moderate]/' .flaitron/PLAN.md && rm .flaitron/PLAN.md.bak
+```
+
+It rewrites only the `[model]` token of open (`- [ ]`) rows, and any
+trailing 🧩 glyph stays. Closed rows, `PLAN-ARCHIVE.md`, and archived
+tasknotes are history and keep `[medium]`.
 
 **The `xheavy` rung is manual-only.** `[xheavy]` marks open-ended exploratory
 work — multi-session research, greenfield architecture, high-uncertainty
@@ -93,15 +110,15 @@ releases. Calibration baseline:
   `[frontier]` work, and the map names the switch (§"Effort recommendations"
   below).
 - **`heavy`** — deep-reasoning, large/long-context models at their default
-  (unadjusted) effort setting: `opus` and peers; a `medium`-tier
+  (unadjusted) effort setting: `opus` and peers; a `moderate`-tier
   model dialed up to its highest effort setting can also earn a `heavy`
   verdict — see §"Effort axis" below.
-- **`medium`** — capable mid-tier models that handle multi-step, well-scoped work
+- **`moderate`** — capable mid-tier models that handle multi-step, well-scoped work
   reliably without the deep-reasoning / large-context profile that defines
   `heavy`: `sonnet`, `grok`, `codex` at its own recommended default effort, and
-  peers. A medium-tier model comfortably covers both `[light]` and `[medium]`
+  peers. A moderate-tier model comfortably covers both `[light]` and `[moderate]`
   task work; it gets the ⚠️ under-tier note only on a `[heavy]`-or-above task. `sonnet`
-  sits at the top of this rung but stays `medium` deliberately: the ladder
+  sits at the top of this rung but stays `moderate` deliberately: the ladder
   labels the *task's* cognitive load, not the model's benchmark position, so a
   `[heavy]` task on `sonnet` still earns the advisory and the operator still
   makes the call.
@@ -113,7 +130,7 @@ The match compares the active model's tier against the tag's tier:
 | Active vs. tag tier | Gate action |
 |---|---|
 | equal (`[light]` on light-tier, `[heavy]` on heavy-tier) | proceed silently |
-| active **heavier** than tag (`[light]` on a heavy- or medium-tier model) | proceed — overkill is harmless, no flag |
+| active **heavier** than tag (`[light]` on a heavy- or moderate-tier model) | proceed — overkill is harmless, no flag |
 | active **lighter** than tag (`[heavy]` on a lower-tier model, e.g. `grok`; `[frontier]` on `opus`) | ⚠️ inline advisory note, then proceed — operator decides whether to escalate; **not** a block |
 | tag is `[xheavy]` (any active model) | **always** the ⚠️ inline advisory — no roster model bands at `xheavy` by default, so the tag is above every active tier; note-then-proceed, expected rather than exceptional (see "The `xheavy` rung is manual-only" above) |
 
@@ -201,7 +218,7 @@ The labels exist to let the operator (and the agent) match the *cognitive shape*
 of the work to the model's "thinking budget" for that turn. They are
 observations from real usage, not rigid policy — with one standing bias:
 
-**The round-up default.** `[medium]` is the default tag for a new filing.
+**The round-up default.** `[moderate]` is the default tag for a new filing.
 Escalate freely to `[heavy]` on any ambiguity or design smell; reserve
 `[light]` for work that is **provably mechanical** — a clear diff already in
 mind, no judgment calls left. **When in doubt, round up.** This rule binds
@@ -217,14 +234,14 @@ doubt alone never reaches `[frontier]` (its triggers do) nor `[xheavy]`
   or assertions, doc patches, config tweaks, simple bug fixes with obvious
   root cause.
 
-**Typical `[medium]` work** (the default — the common middle of flaitron development):
+**Typical `[moderate]` work** (the default — the common middle of flaitron development):
 
 - Multi-step but well-scoped changes with a clear shape: a feature spanning two
   or three known files, a refactor with a discoverable pattern, a bug fix whose
   root cause needs a little tracing. More than a clear-diff mechanical edit, but
   not deep cross-module synthesis or high-ambiguity design.
 - Capable mid-tier models (`sonnet`, `grok`) sit here and cover both `[light]`
-  and `[medium]` task work comfortably.
+  and `[moderate]` task work comfortably.
 
 **When to choose `[heavy]`** (even on agents that otherwise favor light):
 
@@ -269,7 +286,7 @@ doubt alone never reaches `[frontier]` (its triggers do) nor `[xheavy]`
 - *Pin a JWT verifier* → `[heavy]`. Bounded hardening whose rejection tests
   catch the silent failure. Only "assess removing the legacy fallback" is
   hard to unwind, so it goes in its own row.
-- *API origin topology* → `[medium]`. The row already states the decision,
+- *API origin topology* → `[moderate]`. The row already states the decision,
   and what remains is recipe prose plus one wording edit. It matched
   "architecture" by topic alone.
 
@@ -287,7 +304,7 @@ under the `docs/PLATFORMS.md` calibration table. Match the label to the *actual 
 Discovery, and resolve residual uncertainty toward the heavier tag — up to
 `[heavy]` (the round-up default above).
 
-The primary labels `[heavy]` / `[medium]` / `[light]` (plus a triggered
+The primary labels `[heavy]` / `[moderate]` / `[light]` (plus a triggered
 `[frontier]`) are the recommended starting vocabulary for new filers and for
 keeping PLAN.md scannable. Specific names are the precision escape hatch when you have a strong observed preference
 for a particular agent on a particular class of task.
@@ -303,10 +320,10 @@ deliberate retag rather than a silent tier match. A concrete token fails
 ## Tier ladder vs. the next-move suggestion glyph
 
 The five-rung tier ladder governs the **Step 1.5 gate**. The **next-move
-suggestion glyph** (🔧 `LIGHT` / 🧩 `MEDIUM` / 🧠 `HEAVY` / 💎 `FRONTIER` /
+suggestion glyph** (🔧 `LIGHT` / 🧩 `MODERATE` / 🧠 `HEAVY` / 💎 `FRONTIER` /
 🔭 `XHEAVY`) in the post-closure protocol
 ([`SPEC/post-closure.md`](post-closure.md) step 2) **mirrors that ladder 1:1**:
-`[light]`→🔧, `[medium]`→🧩, `[heavy]`→🧠, `[frontier]`→💎, `[xheavy]`→🔭.
+`[light]`→🔧, `[moderate]` (legacy `[medium]`)→🧩, `[heavy]`→🧠, `[frontier]`→💎, `[xheavy]`→🔭.
 Concrete `[model]` tokens bucket to their inherent tier's glyph (e.g.
 `sonnet`/`grok`→🧩, `opus`→🧠, `fable`→💎, `haiku`→🔧) — no concrete token
 buckets to 🔭, since no roster model is inherently `xheavy`-band

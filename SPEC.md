@@ -722,11 +722,12 @@ token names the task's cognitive load on a five-rung ladder, matched by
 tier against the active model at `/ft-task`'s Step 1.5 gate:
 
 ```text
-light  <  medium  <  heavy  <  frontier  <  xheavy
+light  <  moderate  <  heavy  <  frontier  <  xheavy
 ```
 
 - **`light`** — provably mechanical, clear diff in mind.
-- **`medium`** — multi-step, well-scoped; the round-up default for a new filing.
+- **`moderate`** — multi-step, well-scoped; the round-up default for a new
+  filing. Legacy `[medium]` reads as `[moderate]` (a read-only alias).
 - **`heavy`** — design, multi-file, high ambiguity, or cross-module synthesis.
 - **`frontier`** — trigger-reached high-stakes work (contract/architecture
   design or high blast radius, each only while the decision is still open and

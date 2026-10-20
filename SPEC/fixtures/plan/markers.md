@@ -7,7 +7,7 @@ sides of the trailing-token run, and the two mis-authoring footguns
 ## High
 
 - [ ] **FX-200** [light] [unattended] | unattended — Operator marked this row safe to drain unattended.
-- [ ] **FX-201** [medium] [handoff] | handoff — Stops for a human act; never dispatched headless.
+- [ ] **FX-201** [moderate] [handoff] | handoff — Stops for a human act; never dispatched headless.
 - [ ] **FX-202** [light] [unattended] [handoff] | both markers — Mis-authored pair; a reader honours handoff.
 - [ ] **FX-203** [light] [handoff] [unattended] | both reversed
 - [ ] **FX-204** [xheavy]🔭 [unattended] | glyph then marker — Glyph between the model and the marker.

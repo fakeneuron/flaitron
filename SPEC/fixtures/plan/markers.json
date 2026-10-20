@@ -25,7 +25,7 @@
       "critical": false,
       "unattended": false,
       "handoff": true,
-      "model": "medium",
+      "model": "moderate",
       "shortname": "handoff",
       "descriptionRaw": "Stops for a human act; never dispatched headless.",
       "description": "Stops for a human act; never dispatched headless",

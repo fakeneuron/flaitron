@@ -13,7 +13,7 @@ this file.
 
 ## Completed 2026-07
 
-- [x] **FX-510** [medium] | july row — Completed 2026-07-15.
+- [x] **FX-510** [moderate] | july row — Completed 2026-07-15.
 
 ## Completed 2026-7
 

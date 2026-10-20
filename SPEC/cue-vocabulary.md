@@ -50,7 +50,7 @@ deliberate:
 
 | Glyph | Layer 1 (cue) | Layer 2 / 3 |
 |---|---|---|
-| 🧩 | `MEDIUM` next-task | `## 🧩 Subtasks` heading · `[medium]` tier |
+| 🧩 | `MODERATE` next-task | `## 🧩 Subtasks` heading · `[moderate]` tier |
 | 🛠️ | Phase 1→2 banner | `## 🛠️ Phase 2` heading |
 | ✅ | phase / closure-complete marker | `## ✅ Acceptance` heading · `✅ Completed` chip |
 | 🟢 | `GO` commit-ask | `🟢 In progress` chip |
@@ -249,15 +249,15 @@ glyphs and label text.
 | Cue | Glyph | Label | Shape |
 |---|---|---|---|
 | Light next-task | 🔧 | `LIGHT` (mechanical) | Next-move suggestion + copy-paste line |
-| Medium next-task | 🧩 | `MEDIUM` (moderate) | Next-move suggestion + copy-paste line |
+| Moderate next-task | 🧩 | `MODERATE` | Next-move suggestion + copy-paste line |
 | Heavy next-task | 🧠 | `HEAVY` (design) | Next-move suggestion + copy-paste line |
 | Frontier next-task | 💎 | `FRONTIER` (high-stakes — trigger-reached) | Next-move suggestion + copy-paste line |
 | Xheavy next-task | 🔭 | `XHEAVY` (exploratory — manual-only) | Next-move suggestion + copy-paste line |
 | In-session next-task | 👇 | `HERE` (run here — do not clear) | Copy-paste label line, context-dependent skills only |
 
 The bare 🔧/🧩/🧠/💎/🔭 glyphs are the emitted form in next-move suggestions; the
-optional `LIGHT`/`MEDIUM`/`HEAVY`/`FRONTIER`/`XHEAVY` labels are the non-render fallback.
-The five **mirror the model tier ladder 1:1** (`[light]`→🔧, `[medium]`→🧩,
+optional `LIGHT`/`MODERATE`/`HEAVY`/`FRONTIER`/`XHEAVY` labels are the non-render fallback.
+The five **mirror the model tier ladder 1:1** (`[light]`→🔧, `[moderate]`→🧩,
 `[heavy]`→🧠, `[frontier]`→💎, `[xheavy]`→🔭; concrete tokens bucket to their inherent tier — see
 [`SPEC/model.md` §"Tier ladder vs. the next-move suggestion glyph"](model.md)).
 A 🔭 candidate is rare by design — `[xheavy]` is an operator-only filing, never

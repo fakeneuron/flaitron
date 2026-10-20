@@ -9,6 +9,12 @@ filing each row under `## High` with an explicit `[!critical]` flag. Adopters
 on older flaitron versions don't lose rows when they bump; migration of the
 PLAN.md heading itself is optional cleanup.
 
+**Legacy `[medium]` tier token.** The `[moderate]` rung was once named
+`[medium]`. The parser stores the token as written (`model: 'medium'`), and
+readers treat it as `[moderate]`: the gate, `[unattended]` candidacy, and
+glyph bucketing. The rule and the optional open-row sed live in
+[`SPEC/model.md`](model.md) §"Category-vs-concrete matching".
+
 Adopting projects' visualizers parse the task line per `viz/src/parser.ts`
 (canonical reference); the tolerances below describe what that parser accepts.
 
@@ -27,8 +33,8 @@ additionally accepts three real-board decorations without parsing them into
 `Task` fields — they are dropped, not stored:
 
 - **Model-suggestion glyph after `[model]`** — a `🧠` (heavy) / `🔧` (light) /
-  `🧩` (medium) / `💎` (frontier) / `🔭` (xheavy) glyph appended to the model token
-  (`[medium]🧩`, space-optional), mirroring the next-move suggestion label.
+  `🧩` (moderate) / `💎` (frontier) / `🔭` (xheavy) glyph appended to the model token
+  (`[moderate]🧩`, space-optional), mirroring the next-move suggestion label.
   Redundant with the model tier; ignored. It is accepted on **either side** of
   the trailing bracket-token run below, so a row carrying both a glyph and
   `[unattended]` parses whichever order it was written in

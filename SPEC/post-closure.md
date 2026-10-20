@@ -34,11 +34,11 @@ After a tasknote is archived, run the three-step protocol (commit / mark landed,
    <1-2 sentence plain-English description of what was accomplished in this commit>
    ```
 
-   Then surface candidates with the emoji primary label inline per option — `[heavy]🧠`, `[medium]🧩`, `[light]🔧`, `[frontier]💎`, or (rare — manual-only filings) `[xheavy]🔭`, never the bare `[model]` token — followed by "design / moderate / mechanical / high-stakes / exploratory" prose and shortname. Concrete tokens bucket to their inherent tier ([`SPEC/model.md` §"Tier ladder vs. the next-move suggestion glyph"](model.md)). End each candidate with `· <model @ effort>` — the active platform's pick for its tier, per [`SPEC/model.md` §"Effort recommendations"](model.md) → "Printing a cell"; omit it where that rule prints no pick:
+   Then surface candidates with the emoji primary label inline per option — `[heavy]🧠`, `[moderate]🧩`, `[light]🔧`, `[frontier]💎`, or (rare — manual-only filings) `[xheavy]🔭`, never the bare `[model]` token (legacy `[medium]` prints `[moderate]🧩`) — followed by "design / moderate / mechanical / high-stakes / exploratory" prose and shortname. Concrete tokens bucket to their inherent tier ([`SPEC/model.md` §"Tier ladder vs. the next-move suggestion glyph"](model.md)). End each candidate with `· <model @ effort>` — the active platform's pick for its tier, per [`SPEC/model.md` §"Effort recommendations"](model.md) → "Printing a cell"; omit it where that rule prints no pick:
 
    ```markdown
    - **<TASK-ID>** [heavy]🧠 | shortname — one-sentence "why now" (design) · Opus @ high
-   - **<TASK-ID>** [medium]🧩 | shortname — one-sentence "why now" (moderate) · Sonnet @ high
+   - **<TASK-ID>** [moderate]🧩 | shortname — one-sentence "why now" (moderate) · Sonnet @ high
    ```
 
    **Re-read PLAN.md now** (fresh Read tool call — do not rely on the Step 1 cached parse; the Completed section grows long and stale-context suggestions are a known error mode). For each candidate you intend to name, verify its task line is `- [ ]` (unchecked) and lives in an open section (`## High`, `## Medium`, `## Low`, or `## Future Opportunities`), **not** under `## Completed`. Drop any candidate that fails this check before surfacing it.

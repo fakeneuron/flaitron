@@ -49,9 +49,10 @@ undecided, which is the status quo, while a false positive is exactly what
 the operator's confirm exists to catch — so when a clause is uncertain, the
 row is **not** a candidate.
 
-1. **`[model]` is `[light]` or `[medium]`.** `[heavy]` and a missing tag both
-   fail. Heavy work is design or ambiguity work, and a row with no model
-   declared has not been scoped enough to be dispatched blind.
+1. **`[model]` is `[light]` or `[moderate]`** (legacy `[medium]` included).
+   `[heavy]` and a missing tag both fail. Heavy work is design or ambiguity
+   work, and a row with no model declared has not been scoped enough to be
+   dispatched blind.
 2. **Not `[!critical]`.** The urgency flag exists to pull an operator's eye to
    the row, which is the opposite of "safe with nobody present."
 3. **No operator hand-off signal.** A `[handoff]` marker on the drafted row
@@ -82,7 +83,7 @@ row is **not** a candidate.
    row (or a legacy numeric audit child) waits on every other child of its
    parent, `.1` included — an audit runs after every child, so an unsettled
    sibling would park it on drift (`/ft-close-epic` accepts `--unattended`, so
-   an audit tagged `[light]` or `[medium]` is otherwise coherent).
+   an audit tagged `[light]` or `[moderate]` is otherwise coherent).
 
 Three filers carry their own carve-outs on top: `/ft-audit`'s trivial-fix rows
 (written and closed in one motion — nothing to dispatch), `/ft-open-epic`
@@ -211,7 +212,7 @@ Otherwise stay. Each declined row is one class:
   Playwright spec, or a keyword to clause 3, and it does not change
   `[model]`.
 - **Split.** A mechanical row plus an attended remainder. The mechanical
-  row is new, `[light]` or `[medium]`, and describes only the factual
+  row is new, `[light]` or `[moderate]`, and describes only the factual
   slice. It never uses the person act's result — an answer, a value, or a
   state the act leaves behind — so it is correct before, after, or
   without the act. It is also safe to ship before the act: shipped

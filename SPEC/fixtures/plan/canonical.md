@@ -22,12 +22,12 @@ line here is ignored without a diagnostic:
 - [ ] **FX-EPIC-011** [heavy] | epic parent — Children nest by ID convention.
   - [ ] **FX-011.1** [heavy] | discovery child — Indented two spaces beneath the parent.
   - [ ] **FX-011.2** [light] | implementation child — Blocked by [[FX-011.1]].
-  - [ ] **FX-011.N** [medium] | audit child
+  - [ ] **FX-011.N** [moderate] | audit child
 
 ## Medium
 
-- [ ] **FX-020** [medium] | hyphen dash - A plain hyphen before the long description also parses.
-- [ ] **FX-021** [medium] | trailing period — Sentence ends with a period.
+- [ ] **FX-020** [moderate] | hyphen dash - A plain hyphen before the long description also parses.
+- [ ] **FX-021** [moderate] | trailing period — Sentence ends with a period.
 
 ## Low
 

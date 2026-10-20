@@ -22,6 +22,14 @@ unless correcting a factual error.
 
 ---
 
+## v7.4.0 — [medium] tier renamed [moderate]; quality-first model routing
+
+- The middle model tier is [moderate]; [medium] stays a permanent read-only alias, with an optional open-row sed in SPEC/model.md
+- Quality-first tier × platform map: Claude Code light / moderate / heavy → Sonnet @ high / Opus @ medium / Opus @ high; Haiku off the map unless tagged
+- [frontier] triggers narrowed to decisions still open and hard to unwind; printed cells take the vendor-default effort
+
+Also: all four dogfooded agents re-verified at v7.4.0.
+
 ## v7.3.0 — /ft-prep-unattended folds into /ft-seed-unattended
 
 - /ft-seed-unattended runs one attended walk: marks admitted rows and prepares declined ones (pin, or split with a starter when needed) behind one gate and one commit

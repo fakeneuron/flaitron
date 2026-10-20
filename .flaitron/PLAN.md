@@ -28,6 +28,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-817** [moderate]🧩 | release v7.4.0 — Completed 2026-10-20.
 - [x] **CORE-816** [heavy] | quality-first-calibration — Completed 2026-10-20.
 - [x] **CORE-EPIC-815** [moderate] | moderate-tier-rename — Completed 2026-10-20.
   - [x] **CORE-815.1** [medium] | moderate-tier-rename discovery — Completed 2026-10-20.

@@ -16,6 +16,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Medium
 
 - [ ] **CORE-818** [heavy]🧠 | micro-default — Known work with no design question starts as --micro, including a small multi-file change. Unknown scope, a tradeoff, --loop, and --debug stay full. Re-scope still promotes. Flip the doubt-default in SPEC/tasknote-selection.md.
+- [ ] **CORE-819** [moderate]🧩 [unattended] | plan-only-subjects — A closure whose diff is only PLAN.md and a tasknote uses chore, including a scope task whose deliverable is the child list. Subject rule in the closure contract.
 
 ## Low
 

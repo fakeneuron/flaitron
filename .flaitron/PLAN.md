@@ -21,6 +21,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [x] **CORE-815.3** [light] | moderate-tier-viz — Completed 2026-10-20.
   - [x] **CORE-815.4** [moderate] | moderate-tier-sweep — Completed 2026-10-20.
   - [ ] **CORE-815.N** [moderate] | moderate-tier-rename audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line), plus a grep that no live tier-meaning `[medium]` remains outside the alias rule, archives, vendor effort, provenance notes and the dated CODEX-VERIFICATION receipt (kept by CORE-815.4). The recap hands off natabula (`format-seed-plan.sh`, docs) and the operator's global CLAUDE.md. Filed with the reserved terminal `.N` suffix.
+- [ ] **CORE-816** [heavy] | quality-first-calibration — Re-calibrate the tier × platform map with a quality-first bias: Claude `[moderate]` back to Opus @ medium (`[light]` Sonnet @ high, `[heavy]` Opus @ high), Haiku off the ladder, and the Codex, Grok and Gemini cells re-checked the same way. No new sub-light tier. Filed with starter at `.flaitron/tasknote/CORE-816.md`.
 
 ## Low
 

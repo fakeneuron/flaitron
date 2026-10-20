@@ -729,8 +729,8 @@ light  <  medium  <  heavy  <  frontier  <  xheavy
 - **`medium`** — multi-step, well-scoped; the round-up default for a new filing.
 - **`heavy`** — design, multi-file, high ambiguity, or cross-module synthesis.
 - **`frontier`** — trigger-reached high-stakes work (contract/architecture
-  design, high blast radius, heavy-epic Discovery, deep research); round-up
-  stops below it.
+  design or high blast radius, each only while the decision is still open and
+  hard to unwind; heavy-epic Discovery; deep research); round-up stops below it.
 - **`xheavy`** — manual-only exploratory work; automated choosers cap at `frontier`.
 
 A concrete name (`opus`, `sonnet`, `grok`, …) matches by exact identity

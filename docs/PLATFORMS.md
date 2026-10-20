@@ -439,14 +439,25 @@ workflow rules.
 | Tier | Claude Code | Codex | Grok Build |
 |---|---|---|---|
 | `[light]`🔧 | Sonnet @ medium–high | Sol @ medium–high (alt Luna @ high) | Grok @ medium–high |
-| `[medium]`🧩 | Opus @ medium (alt Sonnet @ high) | Sol @ high (alt Astra @ medium) | Grok @ high |
+| `[medium]`🧩 | Sonnet @ high (alt Opus @ medium) | Sol @ high (alt Astra @ medium) | Grok @ high |
 | `[heavy]`🧠 | Opus @ high | Astra @ high | Grok @ xhigh |
 | `[frontier]`💎 | Fable @ high–xhigh | Astra @ xhigh | ⚠️ Grok @ xhigh — no frontier model |
 | `[xheavy]`🔭 | manual-only | manual-only | manual-only |
 
 Cells name only `medium`, `high`, or `xhigh`, and each reaches its model's
-vendor default or start setting; on a range, take the upper end when in doubt
-(`SPEC/model.md` §"Effort recommendations"). **⚠️ Grok has no frontier-band
+vendor default or start setting. On a range, the pick is the vendor default,
+read from §"Family roster" below (`SPEC/model.md` §"Effort recommendations").
+Each primary reaches its
+tier through its model's roster band or a roster effort shift (`Grok @ xhigh`
+≈ heavy, `Astra @ xhigh` ≈ frontier), with one exception besides the ⚠️ Grok
+gap: `[light]` names a medium-band model (Sonnet, Sol, Grok), because no
+light-band model has a verified roster row here (Luna is the Codex
+alternate). [[CORE-814]] moved Claude `[medium]` from Opus to
+Sonnet so the cell matches its band. As a result, on Claude Code and Grok
+Build `[light]` and `[medium]` print the same pick (`Sonnet @ high`,
+`Grok @ high`): the effort floor stops `[light]` dropping below the vendor
+default, and the difference between the two tiers lies in the task, not in
+the session. **⚠️ Grok has no frontier-band
 model:** Grok 4.7 is xAI's top model, so `[frontier]` work on Grok Build runs
 at the heavy-band cell and lands the gate's under-tier advisory — suggest
 switching to Claude Code (Fable) or Codex (Astra @ xhigh). Advice, never a

@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-814** [heavy] | model-routing-calibration — Audit chooser over-escalation: qualify SPEC/model.md §"When to choose `[frontier]`" by decision-left-open and hard-to-unwind, not topic; revisit docs/PLATFORMS.md map cells sitting a rung above roster bands and upper-end effort printing; validate against NAT-444, BP-2581, BE-102. Filed with starter at `.flaitron/tasknote/CORE-814.md`.
+(none)
 
 ## Low
 
@@ -29,6 +29,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-814** [heavy] | model-routing-calibration — Completed 2026-10-20.
 - [x] **CORE-813** [medium]🧩 | release v7.3.0 — Completed 2026-10-18.
 - [x] **CORE-EPIC-812** [heavy] | seed-prep-merge — Completed 2026-10-18.
   - [x] **CORE-812.1** [frontier] | seed-prep-merge discovery — Completed 2026-10-18.

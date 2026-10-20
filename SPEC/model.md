@@ -169,18 +169,23 @@ map owns the dated cells (vendor rosters move; the rule does not).
   `xhigh`. Never `low` — it trades reliability for tokens — and never `max`,
   which spends past the point of reliability gain. Vendor ladders may list
   more settings; the map records them as facts, not picks.
-- **Reliability over tokens.** Every map cell's effort reaches the vendor's
-  default or above it (a range such as `medium–high` qualifies when its top
-  does), and where a cell gives a range, the upper end is the pick when in
-  doubt. A re-run after a wrong answer costs more than the effort it saved.
-  The round-up default (§"Practical guidance and agent-aware defaults")
-  picks the tier; this bias picks the effort within it.
+- **Reliability floor, no second round-up.** Every map cell's effort
+  reaches the vendor's default or goes above it, because a re-run after a
+  wrong answer costs more than the effort it saved. The round-up default
+  (§"Practical guidance and agent-aware defaults") already carries that bias
+  at the tier, so effort does not round up again. A single-value cell's
+  effort is part of how the cell reaches its tier (`Opus @ high` for
+  `[heavy]`), and it prints as written. Within a range, the pick is the
+  vendor default. The rest of the range is headroom an operator reaches for
+  deliberately, never a chooser's response to doubt.
 - **No frontier model on the platform.** The map flags the gap with ⚠️ and
   names the nearest cell plus a platform switch — advice, never a block.
 - **Printing a cell.** A suggestion prints one pick from the active
-  platform's cell: the primary model at the top of any effort range — a
-  one-line pick cannot weigh doubt, so it always takes the upper end — with
-  any `(alt …)` dropped (`Fable @ high–xhigh` → `Fable @ xhigh`). A ⚠️ cell
+  platform's cell: the primary model at the vendor default when the effort
+  range contains it, otherwise at the range's lower end, with any `(alt …)`
+  dropped (`Fable @ high–xhigh` → `Fable @ high`, Fable's default). Vendor
+  defaults are in the effort-ladder column of `docs/PLATFORMS.md`
+  §"Family roster", not in the map cells. A ⚠️ cell
   prints as `⚠️ <model @ effort>` (`⚠️ Grok @ xhigh`), its trailing note
   dropped; the platform switch the map names under the table goes in prose
   where a switch is offered, never inside the pick. No cell, no pick:
@@ -237,15 +242,36 @@ doubt alone never reaches `[frontier]` (its triggers do) nor `[xheavy]`
 - **Contract or architecture design** — a change to a workflow contract, a
   public interface, a data model, or a system's shape.
 - **High blast radius** — security, data migration, release, or fleet-wide
-  edits, where a wrong answer is expensive to unwind.
+  edits.
 - **Heavy-epic Discovery** — the `.1` Discovery of a `[heavy]`-or-above epic,
   whose scoping every child inherits.
 - **Deep research and investigation** — a task whose deliverable *is* the
   finding (a root cause, a vendor or prior-art survey). Research that only
   informs an implementation stays `[heavy]`; open-ended multi-session
   research is `[xheavy]`.
-- Not a trigger: a failed attempt alone, or ordinary design work — those stay
-  `[heavy]`, as do audits by default.
+- The two topic triggers above (contract or architecture design, high blast
+  radius) fire only when **both** hold: the decision is **still open** at
+  filing, **and** a wrong answer is **hard to unwind**. A row that already
+  states its decision leaves execution, not design. If the hard-to-unwind
+  judgment can be split into its own row, split it rather than escalate the
+  whole row.
+- Not a trigger: a failed attempt alone, a topic match alone, or ordinary
+  design work. Grade those on the rungs below: ordinary design work and
+  audits default to `[heavy]`, and a row whose decision is already stated
+  can land lower.
+
+**Worked cases** (three rows one chooser filed all-`[frontier]`):
+
+- *Auth-provider migration scoping* → `[frontier]`. Security plus a
+  credential/ID migration with cutover and rollback, and its scoping files
+  the sequenced work. The decision is open and a wrong one is costly to
+  reverse.
+- *Pin a JWT verifier* → `[heavy]`. Bounded hardening whose rejection tests
+  catch the silent failure. Only "assess removing the legacy fallback" is
+  hard to unwind, so it goes in its own row.
+- *API origin topology* → `[medium]`. The row already states the decision,
+  and what remains is recipe prose plus one wording edit. It matched
+  "architecture" by topic alone.
 
 **When to choose `[xheavy]`** (manual-only — never a default):
 

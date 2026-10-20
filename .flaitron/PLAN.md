@@ -15,7 +15,9 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-(none)
+- [ ] **CORE-EPIC-815** [medium] | moderate-tier-rename — Rename the `[medium]`🧩 model tier to `[moderate]`🧩 so the ladder (light · moderate · heavy · frontier · xheavy) shares no word with priority (High · Medium · Low); vendor effort levels (`low`/`medium`/`high`) stay untouched (filed via /ft-open-epic; refined at .1 closure).
+  - [ ] **CORE-815.1** [medium] | moderate-tier-rename discovery — Scope shared design and file children .2..4 per SPEC/epic.md.
+  - [ ] **CORE-815.N** [medium] | moderate-tier-rename audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
 
 ## Low
 

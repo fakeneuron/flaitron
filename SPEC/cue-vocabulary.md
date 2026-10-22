@@ -254,6 +254,7 @@ glyphs and label text.
 | Frontier next-task | 💎 | `FRONTIER` (high-stakes — trigger-reached) | Next-move suggestion + copy-paste line |
 | Xheavy next-task | 🔭 | `XHEAVY` (exploratory — manual-only) | Next-move suggestion + copy-paste line |
 | In-session next-task | 👇 | `HERE` (run here — do not clear) | Copy-paste label line, context-dependent skills only |
+| Empty plan | 📭 | `EMPTY` (no open rows left) | Terminal next-move line, in place of candidates + copy-paste line |
 
 The bare 🔧/🧩/🧠/💎/🔭 glyphs are the emitted form in next-move suggestions; the
 optional `LIGHT`/`MODERATE`/`HEAVY`/`FRONTIER`/`XHEAVY` labels are the non-render fallback.
@@ -271,3 +272,10 @@ next-skill is context-dependent (`/ft-file-task` in any mode /
 `/ft-open-epic` — clearing the session destroys the context they draw on).
 It signals *where* to run, not task weight: the 🔧/🧩/🧠/💎/🔭 model signal stays on
 the candidate line just printed above.
+
+📭 (`EMPTY`) marks the post-closure **PLAN exhausted (terminal)** form
+([`SPEC/post-closure.md`](post-closure.md) step 2): no open-section row
+survives the fresh re-read. It prints once, as
+`📭 EMPTY — PLAN.md holds no open work.`, and replaces the candidate list and
+the copy-paste line. It is a state marker — no reply, no gate — and stays
+plain, not bold: the emphasized shape is for obligation-bearing asks.

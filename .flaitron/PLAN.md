@@ -22,7 +22,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
-- [ ] **CORE-820** [moderate]🧩 | empty-plan-emoji — Add a cue glyph for an empty PLAN.md (no open rows under High/Medium/Low/Future Opportunities). Pick the emoji, define where it prints (post-closure next-move tail when nothing is left to suggest; viz empty state?), and register it in SPEC/cue-vocabulary.md.
 
 ## Future Opportunities
 
@@ -30,6 +29,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-820** [moderate]🧩 | empty-plan-emoji — Completed 2026-10-22.
 - [x] **CORE-822** [moderate]🧩 | visual-receipts-vs-park — Completed 2026-10-22.
 - [x] **CORE-819** [moderate]🧩 [unattended] | plan-only-subjects — Completed 2026-10-22.
 - [x] **CORE-818** [heavy]🧠 | micro-default — Completed 2026-10-22.

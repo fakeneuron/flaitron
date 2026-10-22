@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-819** [moderate]🧩 [unattended] | plan-only-subjects — A closure whose diff is only PLAN.md and a tasknote uses chore, including a scope task whose deliverable is the child list. Subject rule in the closure contract.
+(none)
 
 ## Low
 
@@ -29,6 +29,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-819** [moderate]🧩 [unattended] | plan-only-subjects — Completed 2026-10-22.
 - [x] **CORE-818** [heavy]🧠 | micro-default — Completed 2026-10-22.
 - [x] **CORE-817** [moderate]🧩 | release v7.4.0 — Completed 2026-10-20.
 - [x] **CORE-816** [heavy] | quality-first-calibration — Completed 2026-10-20.

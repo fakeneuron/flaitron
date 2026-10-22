@@ -12,7 +12,7 @@ After a tasknote is archived, run the three-step protocol (commit / mark landed,
 
    - **Closure review** — per-entry doc-drift verdicts, new PLAN.md stub-form line (plus the parent flip and cohort move when the pre-step ran), archive path.
    - **Recap (work summary)** — 1-2 sentence plain-English lede, then technical detail (file paths / LOC / key decisions + optional verification ask) per [`SPEC.md` §"🚀 Phase 4: Closure"](../SPEC.md).
-   - **Proposed commit message** — `feat: <TASK-ID> — <title>` (or `fix:` / `docs:` / `chore:`). Multiple recently-closed tasknotes may bundle into one commit.
+   - **Proposed commit message** — `feat: <TASK-ID> — <title>` (or `fix:` / `docs:` / `chore:`). A diff of only `.flaitron/` files (PLAN.md, tasknotes) takes `chore:`, a `.1` closing on its child list included — no feature ships. Multiple recently-closed tasknotes may bundle into one commit.
 
    The commit-go prompt carries a `🟢` prefix (e.g., `🟢 Reply commit / go to land.`). Accepted replies are the closed set in [`SPEC/cue-vocabulary.md` §"Accepted gate replies"](cue-vocabulary.md) (`commit` / `go` / `yes` and the explicit commit verbs named there); `okay` / `looks good` are not members. Skill-level extensions (e.g., `/ft-release` push-go) ride inside this bundle; the commit-go is the single approval authorizing recap + closure + bundled prompts + commit.
 

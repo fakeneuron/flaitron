@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-821** [heavy]🧠 | fable-effort-split — Today [frontier] is Fable @ high–xhigh and [heavy] is Opus @ high; Fable @ medium has no cell. Compare Fable @ medium vs Opus @ high on quality/cost/latency and decide whether it earns a band in docs/PLATFORMS.md, displaces Opus @ high, or the split adds nothing.
+(none)
 
 ## Low
 
@@ -29,6 +29,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-821** [heavy]🧠 | fable-effort-split — Completed 2026-10-22.
 - [x] **CORE-820** [moderate]🧩 | empty-plan-emoji — Completed 2026-10-22.
 - [x] **CORE-822** [moderate]🧩 | visual-receipts-vs-park — Completed 2026-10-22.
 - [x] **CORE-819** [moderate]🧩 [unattended] | plan-only-subjects — Completed 2026-10-22.

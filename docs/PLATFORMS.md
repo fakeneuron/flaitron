@@ -434,7 +434,7 @@ workflow rules.
 
 ### Tier × platform map
 
-**As of 2026-10-20** ([[CORE-816]]):
+**As of 2026-10-20** ([[CORE-816]]; 2026-10-22 per [[CORE-821]]: the Fable @ medium no-cell note, cells unchanged):
 
 | Tier | Claude Code | Codex | Grok Build |
 |---|---|---|---|
@@ -469,6 +469,20 @@ keeps it only during the GPT-6 rollout. **Haiku is off the map.** No tier
 pick names it, and an operator who wants it files an explicit concrete
 `haiku` tag for the lightest or micro work. Luna, its Codex counterpart,
 appears only as the `[light]` alternate, never as a primary pick.
+
+**Fable @ medium has no cell** ([[CORE-821]]). In Anthropic's internal
+agentic-coding run, Fable 5.1 @ medium scored 84.2% at $2.68 per attempt,
+against Opus 5.5 @ medium's 86.6% at $0.84. Opus's own effort sweep on a
+SWE-bench Pro subset puts `high` above `medium` (95.3% vs 92.8% solved). No
+published run pits Fable @ medium against Opus @ high directly. Chained
+across those two benchmarks, Fable @ medium sits below `[heavy]`'s pick, not
+between `[heavy]` and `[frontier]`, and it cannot displace Opus @ high. These
+are directional vendor runs, verified 2026-10-22 against
+`platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence`.
+The verdict covers only Fable below its default. The `[frontier]` cell is
+reached by its triggers (`SPEC/model.md` §"When to choose `[frontier]`"), and
+this note does not re-weigh it.
+
 **⚠️ Grok has no frontier-band model:** Grok 4.7 is xAI's top model, so
 `[frontier]` work on Grok Build runs at the heavy-band cell and lands the
 gate's under-tier advisory — suggest switching to Claude Code (Fable) or

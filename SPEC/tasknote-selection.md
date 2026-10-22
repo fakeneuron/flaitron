@@ -80,7 +80,7 @@ compose) when context must persist beyond a stub.
 
 **File a micro-tasknote (`/ft-task <ID> --micro`) when:**
 
-- The task is above the skip threshold, single-file or near it, with no design tradeoffs worth multiple subtasks — you still want the relevance / drift / archive-skim / pattern-survey contracts
+- The task is above the skip threshold, its scope is known, and it carries no design question — a small multi-file change included. This is the default tier for known work.
 
 A micro-tasknote keeps the spec on top (🎯 Goal / ✅ Acceptance / 🧩 Subtasks)
 and replaces the four phase checklists with one `## ⚡ Notes` log of
@@ -90,9 +90,13 @@ bold-prefix lines; the phases, gates, and closure are `/ft-task`'s own. A
 
 **Skip the micro-tasknote (use plain `/ft-task` instead) when:**
 
-- The task touches multiple files or has design tradeoffs
-- The 4-phase log would carry useful state downstream
-- You're unsure — default to `/ft-task`. The Discovery phase pays for itself.
+- The scope is unknown, or the task carries a design tradeoff worth recording
+- The run needs `--loop` or `--debug` (`--micro` refuses both)
+
+When in doubt whether known work fits micro, start micro: Discovery's
+`Re-scope` verdict promotes it to the full tasknote in place. Unknown scope
+still starts full — its Discovery phase pays for itself. This is a routing
+default, not runner auto-select: the operator still passes `--micro`.
 
 **Run a tasknote in debug mode (`/ft-task <ID> --debug`) when:**
 
@@ -107,8 +111,6 @@ cadence lives in the `step-4-debug-mode.md` fragment the flag loads.
 **Skip debug mode (use a plain `/ft-task` run) when:**
 
 - The work is feature-shaped, the root cause is already known, or the bug is trivial
-
-When in doubt, write the full tasknote. The 4-phase ceremony pays for itself.
 
 ## PLAN.md filing-discipline thresholds
 

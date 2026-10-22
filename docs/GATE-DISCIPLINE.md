@@ -43,6 +43,7 @@ of a gate changed in the window, so it stays dropped.
 | "`--fast` suppresses 👁️, and `--unattended` is a superset — so 👁️ is suppressed here too." | The superset is over `--fast`'s **autonomy**, not its delegations. 📦 force-skip and 🛠️ no-op *remove a pause*; 👁️ suppression *hands the visual check to the operator who is standing there* — and this posture's entire premise is that nobody is. Inheriting it drops the obligation instead of transferring it. The ask converts to a `visual-confirm` park. | [`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"`--unattended` operator posture" → "What is inherited, and what is not" |
 | "The change is frontend, but the tests are green and it *probably* looks fine unattended." | There is no gating-vs-corroborating split on 👁️ — the trigger is the emission condition. If you judged the change needs a look, park; if it needs no look, the Phase 3 box is `N/A` and no ask exists to convert. "Probably fine" is the third judgment call this conversion deleted on purpose. | [`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"Park conversions"; §"Refused carve-outs" below |
 | "The visual baseline passes byte-identical — that is a recorded human approval **replayed**, not a guess like the row above." | Sharper, and still refused. Both premises fail here: flaitron defines no baseline and cannot tell a golden a human approved from one `--update-snapshots` minted with nobody looking — and this posture *is* the declaration that nobody is present to attest which it was. Then "does it cover the surface I changed?" is the gating-vs-corroborating split renamed, judged by you about your own diff. Where output provably did not change, the box is already `N/A` and there is no ask to convert; the carve-out bites only where the baseline is not evidence. | §"Refused carve-outs" below; [`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"Park conversions" |
+| "The agent read a screenshot of every changed state against a stated check and recorded `found: pass` receipts — that is evidence, not a baseline and not a guess." | The third form, with the same two defects. The premise is self-graded: the context that wrote the diff chose the checks, read the capture, and wrote the pass, and this posture is the declaration that nobody is present to attest to that reading. Then "do my checks cover what I changed?" is the gating-vs-corroborating split renamed, judged by you about your own diff. Receipts make the operator's look *short*; they do not replace it. Recorded beneath the `visual-confirm` park, they make the resume one look. | §"Refused carve-outs" below; [`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"Park conversions" |
 | "That ✋ was *probably* advisory — keep going." | "Probably" is the doubt the ✋ split is biased against, the same asymmetry as the destructive-action predicate: an over-park costs one resume, an under-park closes a task whose prerequisite was never performed. | [`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"`--unattended` operator posture" → "Park conversions" |
 | "Recap is done, so I can suggest next-move while waiting for commit-go." | Next-move and the copy-paste line are **post-SHA**. The fire-branch turn emits 📦 and waits; 🏁 / next-move / copy-paste land only after a deliverable-covering SHA. Motivating case: CORE-432.2 (micro closed + next-task cue with uncommitted App/PLAN dirt). | [`SPEC/gates.md`](../SPEC/gates.md) §"Conditional skip rule" → On fire; [`SPEC/post-closure.md`](../SPEC/post-closure.md) step 2 |
 
@@ -103,12 +104,14 @@ finding to report or a box to tick.
 - You are citing a green visual-regression suite as the reason a 👁️ park is
   unnecessary, and the load-bearing step is your own judgment that the
   baseline covers what you changed.
+- You are citing your own screenshot receipts — captures you chose, read, and
+  marked `pass` — as the reason a 👁️ park is unnecessary.
 
 ## Refused carve-outs
 
-One argument on this surface has been raised twice and refused twice. It is
-recorded here in full so the next raise finds the answer rather than
-re-litigating it; [`SPEC/gate-postures.md`](../SPEC/gate-postures.md)
+One argument on this surface has been raised three times, in three forms,
+and refused each time. It is recorded here in full so the next raise finds
+the answer rather than re-litigating it; [`SPEC/gate-postures.md`](../SPEC/gate-postures.md)
 §"Park conversions" points here from the decision point.
 
 **"The visual baseline passes byte-identical, so the `--unattended` 👁️ → park
@@ -135,3 +138,35 @@ declined by the operator, on the ground that a second judgment surface would
 mint exactly the "the tests probably cover it" excuse §"Rationalizations"
 exists to close. CORE-503 raised the sharper baseline form and was refused on
 the grounds above.
+
+**"The agent reviewed a screenshot of every changed state against a stated
+check and recorded the finding, so the park should carve out for a change
+whose receipts all pass."** This is the form an adopter's evidence rule
+produces — a tiered rule that says which changes need a person and which an
+agent's own captures can settle — and it is the strongest of the three,
+because the capture was read, the check was named, and the finding is written
+down where the next reader can see it. It still does not carve out, on the
+same two grounds.
+
+**The premise is self-graded.** A baseline at least came from somewhere else;
+here the context that wrote the diff also chose the checks, read the image,
+and wrote `pass`. That is what every other Phase 3 input is too, and
+[`SPEC.md`](../SPEC.md) §"🧪 Phase 3" already declines to trust it alone —
+which is why the external review exists; and the external review grades the
+diff against Acceptance, not the rendered result against taste. Under
+`--unattended` nobody is present to attest that the agent's reading was right.
+
+**And "do my checks cover what I changed?" is the same split again**, one
+step earlier still: tier placement is the agent's judgment about its own
+diff, and an evidence rule's "park on doubt" clause is weaker than what this
+conversion already does — it parks on every emitted ask, doubt or none. What
+such a rule *does* buy is real and
+untouched by the refusal: the receipts recorded beneath the park make the
+resume one look instead of a re-run, and on an attended run they are what a
+present operator reviews when `--fast` or an `[unattended]` row marker
+suppresses the ask. The rule decides how short the look is; it never decides
+that nobody looks.
+
+Provenance: raised as the third form from an adopter's tiered visual-evidence
+rule and refused at CORE-822 (2026-10-22), with the carve-out recorded here so
+the rule's own text could point at the answer.

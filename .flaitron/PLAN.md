@@ -30,6 +30,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-822** [moderate]🧩 | visual-receipts-vs-park — Completed 2026-10-22.
 - [x] **CORE-819** [moderate]🧩 [unattended] | plan-only-subjects — Completed 2026-10-22.
 - [x] **CORE-818** [heavy]🧠 | micro-default — Completed 2026-10-22.
 - [x] **CORE-817** [moderate]🧩 | release v7.4.0 — Completed 2026-10-20.

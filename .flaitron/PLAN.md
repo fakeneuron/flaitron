@@ -29,6 +29,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-823** [light] | settings-flowtron-paths — Removed two dead `npm --prefix …/Code/flowtron/viz` allow rules from gitignored `.claude/settings.local.json`; the path is gone since the v6.0.0 rename and `Bash(npm *)` already covers the live one. Surfaced by audit-context 2026-10-23 (Finding #1, Low), fixed inline.
 - [x] **CORE-821** [heavy]🧠 | fable-effort-split — Completed 2026-10-22.
 - [x] **CORE-820** [moderate]🧩 | empty-plan-emoji — Completed 2026-10-22.
 - [x] **CORE-822** [moderate]🧩 | visual-receipts-vs-park — Completed 2026-10-22.

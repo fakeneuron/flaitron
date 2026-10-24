@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-(none)
+- [ ] **FE-129** [light]🔧 [unattended] | viz-audit-advisories — Bump viz lockfile past the 2026-10-20/21 advisories (vite 8.2.2→8.3.5, @vitest/mocker 5.0.1→5.0.5, undici 8.11.2→8.12.3 via jsdom 30.1.3, zod ≥4.6.6) with `npm --prefix viz audit fix` (no `--force`); done when `npm --prefix viz audit` reports 0 and lint/typecheck/test/build pass. Surfaced by audit-security 2026-10-24 (Finding #2, Medium)
 
 ## Low
 
@@ -29,6 +29,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **FE-130** [light] | devapi-host-comment — Rewrote the `isLoopbackAddress` comment in `viz/src/devApi.ts` to credit FE-128's `server.host` pin instead of claiming the config sets none. Surfaced by audit-security 2026-10-24 (Finding #1, Low), fixed inline.
 - [x] **CORE-823** [light] | settings-flowtron-paths — Removed two dead `npm --prefix …/Code/flowtron/viz` allow rules from gitignored `.claude/settings.local.json`; the path is gone since the v6.0.0 rename and `Bash(npm *)` already covers the live one. Surfaced by audit-context 2026-10-23 (Finding #1, Low), fixed inline.
 - [x] **CORE-821** [heavy]🧠 | fable-effort-split — Completed 2026-10-22.
 - [x] **CORE-820** [moderate]🧩 | empty-plan-emoji — Completed 2026-10-22.

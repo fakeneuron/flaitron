@@ -41,9 +41,9 @@ function methodGuard(req: IncomingMessage, res: ServerResponse): boolean {
   return false;
 }
 
-// vite.config.ts sets no `server.host`, so the bind is Vite's default and a
-// `vite --host` run would put the port on the network; `allowedHosts` only
-// filters the Host header, which any remote client can set. Checking the peer
+// vite.config.ts pins the bind to `localhost` from a plugin `config` hook, but
+// the API does not lean on that one line: `allowedHosts` only filters the Host
+// header, which any remote client can set. Checking the peer
 // address keeps the API loopback-only whatever the bind. Node reports IPv4
 // peers on a dual-stack socket as `::ffff:127.x.x.x`. An absent address (the
 // socket is already gone) fails closed.

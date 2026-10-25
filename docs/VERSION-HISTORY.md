@@ -22,6 +22,14 @@ unless correcting a factual error.
 
 ---
 
+## v7.5.0 — --micro becomes the default route for known work
+
+- Known work with no design question, small multi-file included, routes to /ft-task --micro; Re-scope promotes it when it grows
+- Closures that touch only .flaitron/ workflow files commit as chore:, a .1 scope closure included
+- PLAN exhausted gets its own cue: 📭 EMPTY replaces the candidate list
+
+Also: Fable @ medium gets no ladder cell; a third refused --unattended park carve-out; viz advisories cleared; all four dogfooded agents re-verified at v7.5.0.
+
 ## v7.4.0 — [medium] tier renamed [moderate]; quality-first model routing
 
 - The middle model tier is [moderate]; [medium] stays a permanent read-only alias, with an optional open-row sed in SPEC/model.md

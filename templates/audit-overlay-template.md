@@ -37,6 +37,10 @@ Domain tokens are `general` (default) · `backend` · `frontend` · `security` �
 `performance` · `docs` · `structure` · `context`. Invoked as `/audit-<stack> <domain> [scope]`; a bare
 invocation resolves to `general`.
 
+`context` is not a domain to list or omit: its pass file carries no forker
+slots, so `/audit-<stack> context` always runs, whatever the list above says.
+Never describe it as "not configured".
+
 ## Deltas
 
 These fill the bundled scaffold's §0-forker-checklist surface. Every fillable

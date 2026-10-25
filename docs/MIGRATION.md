@@ -113,7 +113,7 @@ Flaitron ships one stack-neutral audit scaffold at `.flaitron/core/claude/skills
 | `structure` | Cross-file structural health (breadth sweep; depth via `/ft-refactor`) | Duplication clusters · Coupling & boundaries · Abstraction drift · God-files · Stray scripts |
 | `context` | AI-coding context surfaces (`CLAUDE.md`, `AGENTS.md`, `.claude/{commands,skills}`); no forker placeholders, so it runs unforked | Context bloat · Paste-block redundancy · `ft-*` namespace · Lean-context drift · Tooling & orphans · Contract decay (flaitron-self only) |
 
-Invoke as `/ft-audit backend src/api/**` or bare `/ft-audit` (→ `general`, default scope). A first token that isn't a domain name (a path, `last-commit`, `staged`) resolves to `general` with the whole argument string as scope.
+Invoke your fork as `/audit backend src/api/**` or bare `/audit` (→ `general`, default scope); unforked, the same grammar runs as `/ft-audit …`. A first token that isn't a domain name (a path, `last-commit`, `staged`) resolves to `general` with the whole argument string as scope.
 
 **First contact: `/ft-audit-repo` (the family's other member — no fork).** Before
 picking a focused domain on a repo you (or your agent) don't know yet, run the
@@ -327,7 +327,7 @@ Running the task runner against a real entry in your `.flaitron/PLAN.md` should 
 
 If any skill doesn't appear, the symlinks are likely wrong — check that each `readlink .claude/skills/<name>` resolves under the submodule.
 
-**Recommended follow-up.** Audit the context surfaces now: run `/ft-audit context` (your fork's name — e.g. `/audit context` — per §1.2.1; before a fork exists, ask your agent to run `.flaitron/core/claude/skills/ft-audit/SKILL.md` with `context` as the domain — the pass file carries no forker placeholders, so it runs unforked). The `context` domain scans the project's `CLAUDE.md`, `AGENTS.md`, and `.claude/{commands,skills}` for context bloat, redundancy with the freshly-pasted `AGENTS.md` block, `ft-*` namespace conflicts, lean-context drift, and tooling/orphans; findings land as PLAN tickets on the usual write-step confirmation. Catches first-day context-surface issues before they ossify.
+**Recommended follow-up.** Audit the context surfaces now: run `/audit context` (your fork's name per §1.2.1, or `/ft-audit context` unforked; before a fork exists, ask your agent to run `.flaitron/core/claude/skills/ft-audit/SKILL.md` with `context` as the domain — the pass file carries no forker placeholders, so it runs unforked). The `context` domain scans the project's `CLAUDE.md`, `AGENTS.md`, and `.claude/{commands,skills}` for context bloat, redundancy with the freshly-pasted `AGENTS.md` block, `ft-*` namespace conflicts, lean-context drift, and tooling/orphans; findings land as PLAN tickets on the usual write-step confirmation. Catches first-day context-surface issues before they ossify.
 
 ---
 
@@ -482,7 +482,7 @@ After §3.2–§3.7 land and `/ft-task` shows in the slash menu, sweep for resid
   ```
 
   Confirm every slug it prints appears in your agent's roster (v1.0+ additions; symlinks added in §1.2; `/ft-refactor` added in CORE-463.5; `/ft-seed-unattended` added in CORE-619 as `ft-seed`, renamed at v7.0.0; `/ft-prep-unattended` added in CORE-783.3 (v7.1.0) and folded into `/ft-seed-unattended` at v7.3.0; the worktree pair retired in CORE-572 and `/ft-spec` in CORE-573 — see the retired-skills table below).
-- **Context-surface audit.** Run `/ft-audit context` now (your fork's name, e.g. `/audit context`; unforked, ask your agent to run `.flaitron/core/claude/skills/ft-audit/SKILL.md` with `context` as the domain) — migrations frequently carry over context bloat from the legacy era (stale `CLAUDE.md` workflow tutorials, project-local skills that now shadow `ft-*` namespace, AGENTS.md content redundant with the freshly-pasted block). Findings land as PLAN tickets on the write-step confirmation.
+- **Context-surface audit.** Run `/audit context` now (your fork's name, or `/ft-audit context` unforked; ask your agent to run `.flaitron/core/claude/skills/ft-audit/SKILL.md` with `context` as the domain) — migrations frequently carry over context bloat from the legacy era (stale `CLAUDE.md` workflow tutorials, project-local skills that now shadow `ft-*` namespace, AGENTS.md content redundant with the freshly-pasted block). Findings land as PLAN tickets on the write-step confirmation.
 - **Final pin verification.** `git -C .flaitron/core describe --tags` shows the pinned version recorded at the start (e.g., `v7.5.0`). A mismatch means the submodule drifted off the pin during migration.
 - **Cleanup commit.** Bundle the decisions above into a single follow-up commit (`chore: <ID> post-migration cleanup`) OR fold into the §3.9 closure commit if scope is small.
 

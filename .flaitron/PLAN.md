@@ -19,10 +19,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Low
 
-
-
-- [ ] **CORE-825** [light]🔧 | audit-context-always-runs — `templates/audit-overlay-template.md` §"Domains": state that `context` carries no forker slots and always runs through `/audit`, whatever the domain list says. Adopter overlays copied the template's subset pattern and now call `context` "not configured … trips the bootstrap" (bananapeel, bidviz, InvisiPaw, siteguy), which is untrue: `passes/context.md` runs unforked, and bananapeel's `/audit context` ran fine on 2026-10-25. Also make adopter-facing `/ft-audit <domain>` mentions (`docs/MIGRATION.md` L103/330/485) lead with the fork name `/audit`: an adopter asked for `/ft-audit context` and was told it wasn't wired. Overlay wording in the four repos is corrected after the next release, by each repo's own session (check first whether `/ft-update`'s audit-fork refresh reaches the Domains prose).
-
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
 
 ## Future Opportunities
@@ -31,6 +27,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-825** [light]🔧 | audit-context-always-runs — Completed 2026-10-25.
 - [x] **CORE-824** [moderate]🧩 | release v7.5.0 — Completed 2026-10-25.
 - [x] **FE-129** [light]🔧 [unattended] | viz-audit-advisories — Completed 2026-10-24.
 - [x] **FE-130** [light] | devapi-host-comment — Rewrote the `isLoopbackAddress` comment in `viz/src/devApi.ts` to credit FE-128's `server.host` pin instead of claiming the config sets none. Surfaced by audit-security 2026-10-24 (Finding #1, Low), fixed inline.

@@ -24,6 +24,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 - [ ] **FE-132** [light]🔧 [unattended] | theme-init-parity — Pin viz/public/theme-init.js to viz/src/ui/theme.ts readPreference() with a test over new-key / legacy-key / none × system dark/light, loading the script via Vite `?raw` (not node:fs — the src/ui/** lint ban covers tests). Surfaced by audit-structure 2026-10-25 (Finding #1, Low).
 - [ ] **CORE-828** [light]🔧 [unattended] | just-check — Add a `check` recipe to the justfile running all eight AGENTS.md §"Validation" commands plus `bash tools/drift-checks.sh`; update the justfile header and AGENTS.md §"Repo Layout" justfile bullet. Surfaced by audit-structure 2026-10-25 (Finding #5, Low).
 - [ ] **CORE-829** [moderate]🧩 | release-dir-headroom — `claude/skills/ft-release/**` measures 111,077 against its 113,000 cap (headroom 1,923), short of one working unit (4,000–5,300). Extract or trim before the next pair-sized edit fails context_budget. Surfaced by CORE-826.
+- [ ] **FE-133** [light]🔧 | dynamic-import-tier-gate — Extend viz's SHARED_PURE gates so dynamic import() is restricted the same way as static import: node:* and non-allow-list relative paths from src/ui and shared-pure. Core no-restricted-imports does not visit ImportExpression. Surfaced by FE-131 review.
 
 ## Future Opportunities
 

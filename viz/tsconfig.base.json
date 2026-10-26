@@ -1,0 +1,31 @@
+// Shared compilerOptions for the two tier projects, which extend this file.
+// It owns no files: each tier names its own. Root tsconfig.json references
+// the tiers. `lib` (with DOM) and `types` (node) are both defaults that a
+// tier overrides one of — browser drops `types`, node drops the DOM lib —
+// so no project gets both. See FE-142.
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    // Lets `tsc -b` skip an unchanged tier; each tier puts its
+    // tsBuildInfoFile under node_modules/.tmp/.
+    "incremental": true,
+    // Relative imports in vite.config.ts's module graph carry explicit `.ts`
+    // extensions so Vite's `configLoader: 'native'` (Node type-stripping, the
+    // planned default in a future major) can load the config. Requires noEmit.
+    // See FE-090.3. UI modules keep bare specifiers — they are bundled, not
+    // loaded natively.
+    "allowImportingTsExtensions": true,
+    "allowJs": false,
+    "strict": true,
+    "types": ["node"]
+  }
+}

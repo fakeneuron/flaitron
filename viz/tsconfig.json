@@ -1,30 +1,16 @@
-// Base config and the editor project. Node and DOM types both apply, and
-// `include` stays the whole tree so the editor sees every file. Tier
-// projects extend these compilerOptions. `npm run typecheck` and
-// `npm run build` do not pass this path to tsc. src/sharedPure.test.ts
-// fails if a file here is in neither tier project or in both.
+// Solution root: owns no files and references the two tier projects. The
+// editor (tsserver) follows `references` to open each file under the tier
+// that owns it. `npm run typecheck` (`tsc -b`) also checks a shared-pure
+// module a Node module imports under the Node tier, which the editor does
+// not. A file in no tier gets tsserver's non-strict inferred project. The
+// tiers stay non-composite: viz's tiers import across
+// each other on purpose, which composite projects reject (TS6307).
+// src/sharedPure.test.ts fails if a viz source file is in neither tier
+// project or in both. See FE-142.
 {
-  "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "skipLibCheck": true,
-    "jsx": "react-jsx",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    // Relative imports in vite.config.ts's module graph carry explicit `.ts`
-    // extensions so Vite's `configLoader: 'native'` (Node type-stripping, the
-    // planned default in a future major) can load the config. Requires noEmit.
-    // See FE-090.3. UI modules keep bare specifiers — they are bundled, not
-    // loaded natively.
-    "allowImportingTsExtensions": true,
-    "allowJs": false,
-    "strict": true,
-    "types": ["node"]
-  },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts", "vite.config.ts"],
-  "exclude": ["node_modules", "dist"]
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.browser.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
 }

@@ -79,10 +79,13 @@ The shared-pure tests and `src/test/fixtures.ts` sit in the browser tier,
 except `parser.test.ts`, which reads SPEC fixtures through `node:fs` and is
 checked in the Node tier.
 `src/sharedPure.test.ts` keeps both configs in step with `SHARED_PURE`.
-`tsconfig.json` is the editor project and the base the tier projects extend.
-`typecheck` and `build` do not pass that path to `tsc`.
-`src/sharedPure.test.ts` fails when a root file is in neither tier project
-or in both.
+`tsconfig.json` is a solution root: it owns no files and references the
+two tier projects, which extend `tsconfig.base.json`. `typecheck` runs
+`tsc -b` over it, and the editor follows the same references, so it checks
+each file against the tier that owns it. The tiers are not composite, because they
+import across each other on purpose.
+`src/sharedPure.test.ts` fails when a viz source file is in neither tier
+project or in both.
 
 ### Dependency direction
 

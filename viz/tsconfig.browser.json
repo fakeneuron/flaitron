@@ -2,12 +2,12 @@
   // Browser tier: src/ui and the SHARED_PURE modules (and their tests, except
   // parser.test.ts, which reads fixtures from disk and sits in the Node tier),
   // typechecked without Node's ambient types (`process`, `Buffer`, `NodeJS.*`).
-  // The root config keeps `"types": ["node"]` for the Node-only modules and
-  // vite.config.ts. The include list mirrors eslint.config.js `SHARED_PURE`;
-  // the tier test in src/sharedPure.test.ts keeps the two in step. See FE-136
-  // and FE-139.
-  "extends": "./tsconfig.json",
+  // tsconfig.base.json keeps `"types": ["node"]` for the Node tier. The
+  // include list mirrors eslint.config.js `SHARED_PURE`; the tier test in
+  // src/sharedPure.test.ts keeps the two in step. See FE-136 and FE-139.
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.browser.tsbuildinfo",
     "types": []
   },
   "include": [

@@ -11,8 +11,9 @@
   // A shared-pure module that a Node module imports (sseChange, tasknote,
   // fence) is still checked here, through that import. See FE-138 and
   // FE-139; the browser tier is FE-136.
-  "extends": "./tsconfig.json",
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
     "lib": ["ES2020"],
     "jsx": "preserve"
   },

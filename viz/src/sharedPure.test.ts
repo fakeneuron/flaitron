@@ -149,13 +149,24 @@ describe('SHARED_PURE', () => {
     expect([...parsed.fileNames].sort()).toEqual([...nodeOnly, join(vizRoot, 'vite.config.ts')].sort());
   });
 
-  it('pins an empty root remainder: every tsconfig.json file is in exactly one tier', () => {
-    const root = parseTsconfig('tsconfig.json').fileNames;
+  it('pins the solution root: it owns no files, and every viz source file is in exactly one tier', () => {
+    const root = parseTsconfig('tsconfig.json');
+    expect(root.fileNames).toEqual([]);
+    expect(root.projectReferences?.map((ref) => ref.path).sort()).toEqual([
+      join(vizRoot, 'tsconfig.browser.json'),
+      join(vizRoot, 'tsconfig.node.json'),
+    ]);
+
+    // The tree walk replaces a root include: `tsc -b` skips a file in no tier.
+    const topLevel = readdirSync(vizRoot)
+      .filter((name) => /\.tsx?$/.test(name))
+      .map((name) => join(vizRoot, name));
+    const sources = [...ts.sys.readDirectory(srcDir, ['.ts', '.tsx']), ...topLevel];
     const browser = new Set(parseTsconfig('tsconfig.browser.json').fileNames);
     const node = new Set(parseTsconfig('tsconfig.node.json').fileNames);
 
-    const remainder = root.filter((file) => !browser.has(file) && !node.has(file));
-    const overlap = root.filter((file) => browser.has(file) && node.has(file));
+    const remainder = sources.filter((file) => !browser.has(file) && !node.has(file));
+    const overlap = sources.filter((file) => browser.has(file) && node.has(file));
     expect(remainder).toEqual([]);
     expect(overlap).toEqual([]);
   });

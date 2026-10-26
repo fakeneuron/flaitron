@@ -11,9 +11,7 @@ awk '/^### 1\.6 Commit$/,/^### 1\.7 /' docs/MIGRATION.md | grep -n '\.claude/ski
 awk '/^## Step 7 /,/^## Step 9 /' claude/skills/ft-adopt/SKILL.md | grep -n '\.claude/skills/ft-'
 ```
 
-Both must produce no output and exit 1. A hit means someone re-introduced a hand-maintained roster copy into a surface that is supposed to derive one — the CORE-329.2 drift class, which stayed alive for a year because the fix was "keep four counts equal" rather than "stop counting". Fix by restoring the derivation (`grep '^ln -s' … | awk '{print $NF}'`), not by re-syncing the list — fix inline as Critical/High before cutting the release.
-
-This check **replaces** the standing symlink-wiring *count* check that shipped at CORE-329.2 and was retired at CORE-465 as vacuous: with the consumers deriving, the counts cannot disagree.
+Both must produce no output and exit 1. A hit means someone re-introduced a hand-maintained roster copy into a surface that is supposed to derive one — the CORE-329.2 drift class, which stayed alive for a year because the fix was "keep four counts equal" rather than "stop counting". Fix by restoring the derivation (`grep '^ln -s' … | awk '{print $NF}'`), not by re-syncing the list — fix inline as Critical/High before cutting the release. Do not reinstate a symlink-wiring *count* check: CORE-465 retired it as vacuous once the consumers derive.
 
 **Standing shipped-skill parity check.** Independently of the subroutine findings, compare the exported skill inventories with the function CI runs:
 
@@ -56,7 +54,7 @@ All four `diff` commands must produce no output and exit 0. A `-` line is a poli
 
 The anchored `grep` prefixes are load-bearing: `codex/AGENTS-snippet.md` carries a second `ln -s` block (the maintainer hot-reload glob `codex/skills/*`), and an unanchored match would drag `*` into the set.
 
-**Why this shape.** The predecessor hardcoded an eleven-slug expected list and repeated it across five `diff`s plus five forbidden-install `grep`s. It went stale the day `/ft-refactor` shipped (CORE-463.5 wired the skill across sixteen surfaces and all four snippets; the gate's own list was not one of them), so every one of its diffs was failing against `main` when CORE-465 found it — a roster gate that had itself drifted out of the roster. Deriving both halves removes the class: the only way to fail now is a genuine policy or wiring divergence. Fix any finding inline as Critical/High before cutting the release.
+**Why this shape.** Do not re-hardcode the expected slug list: the predecessor did, and it went stale the day `/ft-refactor` shipped (CORE-463.5; found by CORE-465). Deriving both halves means only a genuine policy or wiring divergence fails. Fix any finding inline as Critical/High before cutting the release.
 
 **Standing self-wiring parity check.** The checks above all compare one *declaration* to another — `claude/AGENTS-snippet.md` and its three derived platform snippets, plus the shipped `claude/skills/` listing. None resolves a symlink, so a slug correctly declared everywhere can still be unwired and unrunnable in flaitron's own checkout: `/ft-spec` shipped at CORE-352.2, passed all three, and sat missing from `.claude/` for a month. This check reads the filesystem instead.
 
@@ -208,22 +206,12 @@ The doc is deliberately absent from
 says why), so this check is the *only* thing that keeps those numbers honest —
 skipping the refresh silently retires the ledger.
 
-**Why the refresh commands are wider than the budget one.** They were the same
-command until [[CORE-539]]. It measured `SPEC.md`, `SPEC/gates.md`, and the skill
-bodies — exactly the budgeted set, which is right for the budget comparison but
-reached only 21 of the ledger's then-46 rows. "Refresh the ledger from that
-output" therefore covered under half of it, and the remaining rows decayed with
-no cut able to catch them: measured at HEAD against a ledger stamped the *same
-day*, `.flaitron/tasknote/README.md` was +290, `templates/PLAN.md` +65, and the
-`ft-task` whole-directory total +1,777. Do not re-narrow these back into one
-command — the two halves have different jobs. Widening what the budget gate
-*blocks on* is a separate decision and belongs in `docs/CONTEXT-BUDGET.md`
-§"Budgets", not here.
+**Why the refresh commands are wider than the budget one.** The budget command
+measures only the budgeted set, a minority of the ledger; when the two were one
+command it reached 21 of 46 rows, and the rest decayed unseen ([[CORE-539]]). Do not re-narrow
+them. Widening what the budget gate *blocks on* belongs in
+`docs/CONTEXT-BUDGET.md` §"Budgets", not here.
 
-**Why this check exists.** [[CORE-EPIC-223]] split `SPEC.md` at ~40,000 chars,
-verified the result with `wc -c` in its Phase 3, and wrote the number into no
-contract. Three months later `SPEC.md` had passed 77,000 — the split had no ratchet, and
-[[CORE-508]] later confirmed no byte cap was documented anywhere in the repo. This
-is that ratchet. It clears the [[CORE-487]] bar for a new standing check: a byte
-count is *derivable*, not a prose paraphrase, so it cannot cry wolf the way the
-citation guard [[CORE-492]] declined would have.
+**Why this check exists.** It is the byte-count ratchet `docs/CONTEXT-BUDGET.md`
+§"Why byte budgets" describes; a byte count is *derivable*, so it clears the
+[[CORE-487]] bar for a standing check.

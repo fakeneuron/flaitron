@@ -19,7 +19,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Low
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
-- [ ] **CORE-829** [moderate]🧩 | release-dir-headroom — `claude/skills/ft-release/**` measures 111,077 against its 113,000 cap (headroom 1,923), short of one working unit (4,000–5,300). Extract or trim before the next pair-sized edit fails context_budget. Surfaced by CORE-826.
 - [ ] **FE-133** [light]🔧 | dynamic-import-tier-gate — Extend viz's SHARED_PURE gates so dynamic import() is restricted the same way as static import: node:* and non-allow-list relative paths from src/ui and shared-pure. Core no-restricted-imports does not visit ImportExpression. Surfaced by FE-131 review.
 - [ ] **CORE-830** [light]🔧 | check-cmd-drift — Add a drift check that the justfile `check` recipe stays equal to the eight AGENTS.md §"Validation" commands plus `bash tools/drift-checks.sh`. Surfaced by CORE-828 review.
 - [ ] **CORE-831** [light]🔧 | unattended-just-check — Name `just check` in the --unattended full-validation examples when that recipe exists, so a literal reading still runs build, the tools commands, and drift-checks. Surfaced by CORE-828 review.
@@ -30,6 +29,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-829** [moderate]🧩 | release-dir-headroom — Completed 2026-10-26.
 - [x] **CORE-827** [heavy]🧠 | updater-retire-migrations — Completed 2026-10-26.
 - [x] **FE-132** [light]🔧 [unattended] | theme-init-parity — Completed 2026-10-25.
 - [x] **CORE-828** [light]🔧 [unattended] | just-check — Completed 2026-10-25.

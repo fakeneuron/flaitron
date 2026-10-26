@@ -64,6 +64,10 @@ same patterns, because core `no-restricted-imports` does not visit
 `ImportExpression`. A dynamic specifier that is not a static string is an
 error, so a computed path cannot skip the gate. The same local rule checks
 `import('…')` in type position (`typeof import('…')`, `import('…').Name`).
+A `/// <reference types="…" />` directive is an error in `src/ui/` and
+shared-pure files, for any package (`vite/client` included).
+Node ambient types are still global there through `tsconfig.json`
+`"types": ["node"]` until that is split per tier.
 
 ### Dependency direction
 

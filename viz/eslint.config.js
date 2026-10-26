@@ -167,6 +167,9 @@ function tierImportRules(patterns, nonStaticMessage) {
         patterns,
         { nonStaticMessage },
       ],
+      // `/// <reference types="node" />` pulls in Node ambient types with no
+      // import node. The recommended `prefer-import` default lets it through.
+      '@typescript-eslint/triple-slash-reference': ['error', { types: 'never' }],
     },
   };
 }

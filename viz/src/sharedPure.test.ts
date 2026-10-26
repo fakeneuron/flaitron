@@ -24,6 +24,7 @@ const eslint = new ESLint({
 const TIER_RULES = new Set([
   'no-restricted-imports',
   'flaitron/no-restricted-import-expressions',
+  '@typescript-eslint/triple-slash-reference',
 ]);
 
 async function restricted(code: string, filePath: string): Promise<string[]> {
@@ -140,6 +141,15 @@ describe('SHARED_PURE', () => {
     // A backtick type specifier is checked like the value form, not a crash.
     expect(await restricted('export type T = typeof import(`../devApi`);\n', ui)).toHaveLength(1);
     expect(await restricted('export type T = typeof import(`../parser`);\n', ui)).toEqual([]);
+
+    // A triple-slash types directive brings in ambient types with no import node.
+    const nodeTypes = '/// <reference types="node" />\nexport type T = NodeJS.Process;\n';
+    const tripleSlash = ['Do not use a triple slash reference for node, use `import` style instead.'];
+    expect(await restricted(nodeTypes, ui)).toEqual(tripleSlash);
+    expect(await restricted(nodeTypes, join(vizRoot, 'src/ui/probe.d.ts'))).toEqual(tripleSlash);
+    expect(await restricted(nodeTypes, uiTest)).toEqual(tripleSlash);
+    expect(await restricted(nodeTypes, pure)).toEqual(tripleSlash);
+    expect(await restricted(nodeTypes, join(vizRoot, 'src/devApi.ts'))).toEqual([]);
 
     const live = join(vizRoot, 'src/ui/TaskDetailPanel.tsx');
     expect(await restricted(readFileSync(live, 'utf8'), live)).toEqual([]);

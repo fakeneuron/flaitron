@@ -52,7 +52,10 @@ shared-pure `./` imports: a shared-pure file may import only another
 `tasknote-parse` is off the list on purpose. It is Node-only even though it
 has no direct `node:` import, and `src/sharedPure.test.ts` names it as that
 exception. UI tests may also import `../test/fixtures`. That helper is
-not a tier and is not on `SHARED_PURE`.
+not a tier and is not on `SHARED_PURE`. They may also import
+`../../public/theme-init.js?raw`, so `theme-init.test.ts` can pin the
+pre-render script to `readPreference()` without a `node:fs` read (FE-132).
+Production UI stays on the allow-list alone.
 
 Both gates are eslint `no-restricted-imports` rules derived from
 `SHARED_PURE`, not a hand-maintained Node-only deny-list.

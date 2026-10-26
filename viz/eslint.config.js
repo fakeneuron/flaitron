@@ -23,8 +23,11 @@ const SHARED_PURE_NAME = SHARED_PURE.join('|');
 // Parent import, including a redundant `./` prefix (`./../devApi`). Optional
 // fixture alternative is test files only — production UI cannot import it.
 function uiParentImport(allowFixtures) {
+  // Tests may also import the pre-render script as source (FE-132). The
+  // second `../` is required so `../public/…` (under src/) stays banned.
+  const themeInitRaw = '(?:\\.\\./)public/theme-init\\.js\\?raw$';
   const allowed = allowFixtures
-    ? `(?:${SHARED_PURE_NAME})(?:\\.ts)?$|test/fixtures(?:\\.ts)?$`
+    ? `(?:${SHARED_PURE_NAME})(?:\\.ts)?$|test/fixtures(?:\\.ts)?$|${themeInitRaw}`
     : `(?:${SHARED_PURE_NAME})(?:\\.ts)?$`;
   return `^(?:\\./)*\\.\\./(?!${allowed}).+`;
 }

@@ -72,6 +72,10 @@ describe('SHARED_PURE', () => {
 
     expect(await restricted("import '../test/fixtures';\n", uiTest)).toEqual([]);
     expect(await restricted("import '../test/fixtures.ts';\n", uiTest)).toEqual([]);
+    expect(await restricted("import '../../public/theme-init.js?raw';\n", uiTest)).toEqual([]);
+    expect(await restricted("import '../../public/theme-init.js';\n", uiTest)).toHaveLength(1);
+    expect(await restricted("import '../../public/theme-init.js?raw';\n", ui)).toHaveLength(1);
+    expect(await restricted("import 'node:fs';\n", uiTest)).toHaveLength(1);
     expect(await restricted("import '../devApi';\n", uiTest)).toHaveLength(1);
 
     expect(await restricted("import './storage';\n", pure)).toEqual([]);

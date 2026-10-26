@@ -393,12 +393,11 @@ time (Step 6).
 - **Phase 3: Testing & Linting** — [`SPEC.md` §"🧪 Phase 3"](../../SPEC.md).
   Run targeted tests + lint/type-check on changed code (full suite only for
   broad/cross-cutting changes). **Under unattended mode** run the repo's full
-  validation set instead — `just check`
-  when the justfile defines that recipe, else `just test` / `just lint` /
-  `just typecheck` for each of those the justfile defines, else its
-  `AGENTS.md` or `CLAUDE.md` validation commands, else its CI workflow's
-  steps — never the targeted
-  default; a red the
+  validation set instead — when the justfile defines any of `check` /
+  `test` / `lint` / `typecheck`, `just check` if defined plus each other
+  one it defines that `check` does not reach (`just --show check`), else
+  `AGENTS.md`/`CLAUDE.md` commands, else CI steps — never the
+  targeted default; a red the
   diff caused returns to Phase 2, and a red the run cannot make green parks
   `input-needed` rather than closing over it
   ([`SPEC/gate-postures.md` §"What `--unattended` never relaxes"](../gate-postures.md)).

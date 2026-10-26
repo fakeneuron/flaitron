@@ -19,7 +19,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Low
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
-- [ ] **CORE-832** [moderate]🧩 | narrow-just-check — An unattended runner treats any justfile `check` recipe as the full validation set. Decide whether a narrower `check` should fall through to the three-recipe list. Surfaced by CORE-831 review.
 - [ ] **FE-134** [moderate]🧩 | type-query-import-gate — Gate TypeScript type-query import('…') (TSImportType) with the same SHARED_PURE patterns as static import and dynamic import(). Core no-restricted-imports and FE-133's ImportExpression rule both skip it. No live use in viz/src today. Surfaced by FE-133 review.
 
 ## Future Opportunities
@@ -28,6 +27,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-832** [moderate]🧩 | narrow-just-check — Completed 2026-10-26.
 - [x] **FE-133** [light]🔧 [unattended] | dynamic-import-tier-gate — Completed 2026-10-26.
 - [x] **CORE-831** [light]🔧 [unattended] | unattended-just-check — Completed 2026-10-26.
 - [x] **CORE-830** [light]🔧 | check-cmd-drift — Completed 2026-10-26.

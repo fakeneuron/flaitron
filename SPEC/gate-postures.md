@@ -272,12 +272,18 @@ unnoticed paper-complete is the failure the guard was written for.
 changed behavior and reserves the full suite for broad or cross-cutting
 changes — guidance, because an operator reviews the commit and can
 second-guess the "is this change broad?" call. Under `--unattended` nobody
-does, so Phase 3 runs the repo's **full validation set** — `just check`
-when the justfile defines that recipe, else `just test` / `just lint` /
-`just typecheck` for each of those the justfile defines, else the
-validation commands its `AGENTS.md` or `CLAUDE.md` names, else the steps
-its CI workflow runs — never the targeted default, and the receipt
-records each command.
+does, so Phase 3 runs the repo's **full validation set** — when the
+justfile defines any of `check` / `test` / `lint` / `typecheck`,
+`just check` if defined plus each other one it defines that `check` does
+not reach (`just --show check`, followed through its dependencies), else
+the validation commands its `AGENTS.md` or `CLAUDE.md` names, else the
+steps its CI workflow runs — never the targeted default, and the receipt
+records each command. A `check` that skips one of those three is narrower
+than the repo's own recipes, so the run adds what it skips rather than
+trusting the name. `check` reaches a recipe only by naming it as a
+dependency, at any depth, or as `just <name>` in a body — a similar raw
+command does not count — and with no `check` every one of the three the
+justfile defines runs.
 A red result is Phase 2 evidence, not a closure question: a
 failure the diff caused returns the run to Phase 2; one the run cannot make
 green parks `input-needed` rather than closing over it — whether a red the

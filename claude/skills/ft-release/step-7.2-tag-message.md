@@ -25,7 +25,7 @@ Migration:
 
 Group commits by area where natural (e.g., `viz/`, `SPEC contract`, `Doc currency`). Skip chore/internal commits in the Changes block — the block is adopter-facing, not exhaustive history. Surface the draft to the user for review/edit. Common adjustments: regrouping the Changes block, rewording the Migration block, adding/removing entries.
 
-**Sentinel check (before surfacing for user review):** if the adopter-impact classification concluded no required edits, confirm the first non-empty body line under `Migration:` in the drafted message starts with `No required project-side edits` (exact casing; `update-adopters.mjs:migrationBearingTags` uses `startsWith` on this sentinel). If it doesn't, fix it before presenting the draft — a mismatch silently flags the entire adopter fleet as migration-bearing.
+**Sentinel check (before surfacing for user review):** if the adopter-impact classification concluded no required edits, confirm the first non-empty body line under `Migration:` in the drafted message starts with `No required project-side edits` (write it in this exact casing; `update-adopters.mjs:migrationBearingTags` matches the sentinel with a case-insensitive `startsWith`). If it doesn't, fix it before presenting the draft — a mismatch silently flags the entire adopter fleet as migration-bearing.
 
 Lock the tag message when the user approves. Save it for use in step 7.5.
 

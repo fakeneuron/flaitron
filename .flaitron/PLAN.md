@@ -15,7 +15,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-827** [heavy]🧠 | updater-retire-migrations — Remove tools/update-adopters.mjs's completed one-shot migrations (v6 `.flowtron/` rename: applyMigrate, PRE_RENAME_*, legacy discovery, rename helpers; v7 SKILL_RENAME link swap: skillLinkPlan…formatLinksNote) with their tests and header prose, ~400 of 1,440 lines; every ~/Code adopter pins ≥ v7.4.0. Update SECURITY.md, docs/MIGRATION.md, docs/PLATFORMS.md, ft-update SKILL.md, step-7.2-tag-message.md. Surfaced by audit-structure 2026-10-25 (Finding #4, Medium).
 
 ## Low
 
@@ -31,6 +30,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-827** [heavy]🧠 | updater-retire-migrations — Completed 2026-10-26.
 - [x] **FE-132** [light]🔧 [unattended] | theme-init-parity — Completed 2026-10-25.
 - [x] **CORE-828** [light]🔧 [unattended] | just-check — Completed 2026-10-25.
 - [x] **FE-131** [moderate]🧩 [unattended] | viz-tier-lint — Completed 2026-10-25.

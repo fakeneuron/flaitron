@@ -187,11 +187,7 @@ reviewed as one. Do not add repository secrets to this workflow.
 `~/code`, not workflow machinery inside a project. It batches the bump
 half of the `/ft-update` recipe (not its per-platform wiring repair) across
 every discovered adopter: bump the pinned
-`.flaitron/core` submodule to the latest release and commit — or, for an
-adopter still on the pre-rename `.flowtron/core` layout, move it to
-`.flaitron/` and bump in the same commit (`applyMigrate`); either path, on a
-range crossing v7.0.0, also re-wires the adopter's tracked skill links in that
-same commit (`applySkillLinkPlan`) — run manually
+`.flaitron/core` submodule to the latest release and commit — run manually
 by the maintainer (never on a schedule or in CI). Its execution surface
 differs from the rest of this document: it walks a filesystem tree, shells
 out to `git` across many repos, and can commit inside them.
@@ -208,25 +204,20 @@ out to `git` across many repos, and can commit inside them.
   (`parseSemverTag`) and re-validated when supplied via the
   `FLAITRON_UPDATE_LATEST` test-seam env var. A malformed or
   unexpected tag string is rejected rather than passed through.
-- **Canonical-SHA cross-check on checkout.** `applyBump` and `applyMigrate`
-  share `checkoutVerified`, which doesn't trust the
+- **Canonical-SHA cross-check on checkout.** `applyBump` calls
+  `checkoutVerified`, which doesn't trust the
   checked-out submodule's own claim of its version — after checkout it
   re-reads SPEC.md's Version line and separately verifies
   the checked-out commit SHA matches the canonical SHA for that tag as
   resolved in `FLAITRON_REPO`, not the adopter's own clone
   (`verifyPinnedSha`). A moved tag ref or a divergent adopter
   remote fails closed instead of committing a mismatched pin.
-- **Local-commits-never-push.** `applyBump` and `applyMigrate` run `git add` + `git commit`,
+- **Local-commits-never-push.** `applyBump` runs `git add` + `git commit`,
   and the only other network call is `fetch --tags` — there is no
   `git push` anywhere in the script. Every bump commit stays local until
   the operator reviews and pushes it themselves, per repo.
-- **Bump and migrate commits pass `--no-verify`.** The bump commit is a
-  pathspec commit touching only the `.flaitron/core` gitlink plus, on a range
-  crossing v7.0.0, the skill-link paths it swapped or pruned; the migrate
-  commit carries only what the migration staged (the directory move,
-  `.gitmodules`, re-pointed symlinks, rewritten `.gitignore` rules, the
-  gitlink, and — on a range crossing v7.0.0 — the skill-link paths it swapped or
-  pruned), after verifying the index held nothing else. `--no-verify` skips only
+- **Bump commits pass `--no-verify`.** The bump commit is a
+  pathspec commit touching only the `.flaitron/core` gitlink. `--no-verify` skips only
   `pre-commit`/`commit-msg` — the hooks that could run arbitrary adopter-authored
   code — as a side effect of an unattended fleet sweep; `prepare-commit-msg`/
   `post-commit` still run.
@@ -236,11 +227,7 @@ out to `git` across many repos, and can commit inside them.
 - **Deliberate symlink-following write footprint under the workspace
   root.** `discoverAdopters` follows symlinked directories
   when enumerating the workspace root, and `applyBump` writes into whatever
-  `.flaitron/core` resolves to for each discovered adopter (`applyMigrate`
-  additionally writes the adopter's `.flowtron/` → `.flaitron/` move, its
-  `.git/config`, and `.git/modules/`; on a range crossing v7.0.0 both also
-  unlink and re-create tracked symlinks under the adopter's skill-link
-  directories and remove its `.claude/commands/` links) — unlike the viz
+  `.flaitron/core` resolves to for each discovered adopter — unlike the viz
   dev server's `discoverProjects` (see "Visualizer" below), there is no
   post-resolution containment check pinning writes inside the workspace
   root. This is a deliberate scope difference, not an oversight: the fleet

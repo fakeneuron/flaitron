@@ -20,6 +20,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
 - [ ] **FE-135** [moderate]🧩 | triple-slash-types-gate — Gate `/// <reference types="node" />` in src/ui and SHARED_PURE files; it brings in Node ambient types with no import node, unseen by both tier rules. Surfaced by FE-134 review.
+- [ ] **FE-136** [moderate]🧩 | per-tier-node-types — viz tsconfig `types: ["node"]` makes Node ambient types global in src/ui and SHARED_PURE; split a Node-free tier tsconfig into `typecheck`. Surfaced by FE-135.
 
 ## Future Opportunities
 

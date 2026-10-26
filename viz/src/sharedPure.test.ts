@@ -1,4 +1,5 @@
 import { readdirSync, readFileSync } from 'node:fs';
+import { builtinModules } from 'node:module';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ESLint } from 'eslint';
@@ -102,6 +103,16 @@ describe('SHARED_PURE', () => {
     await expectGate("import '../test/../devApi';\n", ui, true);
     await expectGate("import '../test/fixtures';\n", ui, true);
     await expectGate("import 'node:fs';\n", ui, true);
+    // A bare builtin is Node too; a look-alike sibling or package is not.
+    await expectGate("import 'fs';\n", ui, true);
+    await expectGate("import 'path';\n", ui, true);
+    await expectGate("import 'fs/promises';\n", ui, true);
+    await expectGate("import './fs';\n", ui, false);
+    await expectGate("import 'fs-extra';\n", ui, false);
+    await expectGate("import 'react';\n", ui, false);
+    for (const name of builtinModules.filter((builtin) => !builtin.startsWith('node:'))) {
+      await expectGate(`import '${name}';\n`, ui, true);
+    }
 
     await expectGate("import '../test/fixtures';\n", uiTest, false);
     await expectGate("import '../test/fixtures.ts';\n", uiTest, false);
@@ -109,6 +120,7 @@ describe('SHARED_PURE', () => {
     await expectGate("import '../../public/theme-init.js';\n", uiTest, true);
     await expectGate("import '../../public/theme-init.js?raw';\n", ui, true);
     await expectGate("import 'node:fs';\n", uiTest, true);
+    await expectGate("import 'fs';\n", uiTest, true);
     await expectGate("import '../devApi';\n", uiTest, true);
 
     await expectGate("import './storage';\n", pure, false);
@@ -119,6 +131,9 @@ describe('SHARED_PURE', () => {
     await expectGate("import '../src/devApi.ts';\n", pure, true);
     await expectGate("import '../ui/App';\n", pure, true);
     await expectGate("import 'node:fs';\n", pure, true);
+    await expectGate("import 'fs';\n", pure, true);
+    await expectGate("import 'fs/promises';\n", pure, true);
+    await expectGate("import 'fs-extra';\n", pure, false);
 
     // A static template literal is still a static specifier. A computed one is not on the allow-list.
     expect(await restricted('import(`../parser`);\n', ui)).toEqual([]);

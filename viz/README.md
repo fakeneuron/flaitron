@@ -43,7 +43,11 @@ table: a tier may import from tiers below it, never above.
 
 ### Hard rule: no Node imports under `src/ui/`
 
-Files under `src/ui/` **must not** import `node:*` builtins. A `../` import
+Files under `src/ui/` **must not** import Node builtins, whether written
+`node:fs` or as the bare name (`fs`, `fs/promises`). Shared-pure modules
+carry the same ban. The bare names come from the running Node's
+`builtinModules`, so a browser polyfill package named like a builtin
+(`buffer`, `events`) is banned too. A `../` import
 may name only a module on the `SHARED_PURE` allow-list in `eslint.config.js`
 (bare name or `.ts`). Sibling UI modules stay `./…`. The same const gates
 shared-pure `./` imports: a shared-pure file may import only another

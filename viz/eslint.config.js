@@ -2,7 +2,7 @@ import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import globals from 'globals';
 import reactHooks from 'eslint-plugin-react-hooks';
-import { createRequire } from 'node:module';
+import { builtinModules, createRequire } from 'node:module';
 
 // Same matcher core `no-restricted-imports` uses for `group` patterns.
 // A direct devDependency: eslint's copy is not a dependency this file may import.
@@ -43,8 +43,18 @@ function uiParentImport(allowFixtures) {
 const SHARED_PURE_RELATIVE =
   `^(?!(?:\\./)*(?:${SHARED_PURE_NAME})(?:\\.ts)?$)(?:\\./|\\.\\./).+`;
 
+// A bare builtin (`'fs'`, `'fs/promises'`) resolves to Node just like `node:fs`.
+// `group` is gitignore-style, so the leading `/` anchors each name to the whole
+// specifier; unanchored, `fs` would also ban a sibling `./fs`.
+const NODE_BUILTIN_GROUP = [
+  'node:*',
+  ...builtinModules
+    .filter((name) => !name.startsWith('node:'))
+    .map((name) => `/${name}`),
+];
+
 const UI_NODE_IMPORT = {
-  group: ['node:*'],
+  group: NODE_BUILTIN_GROUP,
   message:
     'src/ui/ must not import Node builtins — see README.md §"Hard rule: no Node imports under src/ui/".',
 };
@@ -222,7 +232,7 @@ export default tseslint.config(
     ...tierImportRules(
       [
         {
-          group: ['node:*'],
+          group: NODE_BUILTIN_GROUP,
           message:
             'Shared-pure modules must not import Node builtins — see README.md §"Architecture — three tiers".',
         },

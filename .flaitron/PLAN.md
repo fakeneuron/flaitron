@@ -19,7 +19,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Low
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
-- [ ] **FE-141** [light]🔧 [unattended] | build-runs-typecheck — Set viz `"build": "npm run typecheck && vite build"`, matching natabula's Vite template; FE-140 left a bare `vite build`, so a local build no longer typechecks. Update any viz README or receipt line that quotes the script.
 - [ ] **FE-142** [moderate]🧩 | solution-root-tsconfig — Evaluate natabula's solution-root tsconfig layout for viz: root `files: []` + `references` to the browser/node tiers, `typecheck` = `tsc -b`. Check editor coverage and whether the tier test's root-remainder bookkeeping shrinks; adopt, or record the decline. Surfaced after FE-140.
 - [ ] **FE-143** [light]🔧 | dedupe-check-typecheck — just check and CI run typecheck, then build. FE-141 made build run typecheck too, so both paths typecheck twice. Drop the standalone typecheck step from just check and the CI workflow, or record why the second pass stays.
 
@@ -29,6 +28,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **FE-141** [light]🔧 [unattended] | build-runs-typecheck — Completed 2026-10-26.
 - [x] **CORE-833** [light]🔧 [unattended] | dirty-tree-cue — Completed 2026-10-26.
 - [x] **FE-140** [moderate]🧩 [unattended] | root-pass-remainder — Completed 2026-10-26.
 - [x] **FE-139** [moderate]🧩 | shared-pure-tests-tier — Completed 2026-10-26.

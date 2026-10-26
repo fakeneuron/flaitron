@@ -743,6 +743,46 @@ fi
 [ -z "$bad" ] || exit 1
 }
 
+# Pair T — justfile `check` recipe ↔ AGENTS.md §"Validation"
+pair_t() {
+# CORE-830. CORE-828's `check` recipe restates the eight Validation
+# commands plus `bash tools/drift-checks.sh`, and pair_h binds AGENTS.md
+# only to ci.yml, so the recipe was a second copy nothing compared. The
+# roster read is a copy of pair_h's (widen one, widen the other); the ninth
+# command is a literal because AGENTS.md carries it as prose. `check` lists its four viz commands as dependency recipes
+# (`test typecheck lint build`), so the awk expands each dependency to its
+# body lines, in the order listed, before `check`'s own lines. Plain awk,
+# not `just --dump`: the CI `drift` job's runner is checkout-only. Recipe
+# parameters and `@`/`-` line prefixes are not parsed — none exist, and a
+# reshaped recipe shows up as CHECK DRIFT, not as a silent pass.
+ssot=$(awk '/^## Validation$/,/^## Dev Server$/' AGENTS.md | grep -E '^(npm --prefix viz |node --)' || true)
+[ -n "$ssot" ] || { echo "VACUOUS pair_t  no Validation roster read from AGENTS.md"; exit 1; }
+recipe=$(awk '
+  /^[A-Za-z_][A-Za-z0-9_-]*:/ {
+    cur = $0; sub(/:.*/, "", cur)
+    deps[cur] = $0; sub(/^[^:]*:[ \t]*/, "", deps[cur])
+    next
+  }
+  /^[^ \t#]/ { cur = ""; next }
+  /^[ \t]+[^ \t]/ && cur != "" {
+    l = $0; sub(/^[ \t]+/, "", l)
+    if (l ~ /^#/) next
+    body[cur] = body[cur] l "\n"
+  }
+  END {
+    n = split(deps["check"], d, " ")
+    for (i = 1; i <= n; i++) printf "%s", body[d[i]]
+    printf "%s", body["check"]
+  }' justfile)
+[ -n "$recipe" ] || { echo "VACUOUS pair_t  no check recipe read from justfile"; exit 1; }
+want=$(printf '%s\nbash tools/drift-checks.sh\n' "$ssot")
+if [ "$recipe" != "$want" ]; then
+  echo "CHECK DRIFT  justfile check recipe vs AGENTS.md Validation + drift-checks"
+  diff -u <(printf '%s\n' "$want") <(printf '%s\n' "$recipe") || true
+  exit 1
+fi
+}
+
 self=$(CDPATH='' cd -- "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")
 cd "$(dirname "$self")/.." || exit 2
 

@@ -7,7 +7,8 @@
 # Server" and viz/README.md already document running from the repo root
 # (CORE-637). `check` runs the four viz validation recipes, then the four
 # `tools/` commands in that same §"Validation", then `bash tools/drift-checks.sh`
-# (CORE-828).
+# (CORE-828); drift-checks' `pair_t` fails if that list stops matching
+# (CORE-830).
 #
 # Prerequisite: `just` (one-time `brew install just`). Run `just` with no
 # args to list recipes.

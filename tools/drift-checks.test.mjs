@@ -146,6 +146,11 @@ const CASES = {
     )),
     finding: /^-.*--zz-drift/m,
   },
+  pair_t: {
+    // Drops one `tools/` line from the recipe body; AGENTS.md stays put.
+    seed: () => edit('justfile', (s) => s.replace('    node --check tools/update-adopters.mjs\n', '')),
+    finding: [/^CHECK DRIFT /m, /^-node --check tools\/update-adopters\.mjs$/m],
+  },
 };
 
 describe('drift-checks.sh self-test', () => {

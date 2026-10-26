@@ -317,7 +317,7 @@ runtime lives in the runner; the contract lives in flaitron.
 - `.editorconfig` — editor formatting rules (UTF-8, LF, 2-space indent)
 - `.gitleaks.toml` — gitleaks config for CI's secret scan
 - `.github/` — CI workflow (`workflows/ci.yml`) and Dependabot config
-- `justfile` — `just` recipes that delegate to the `viz/` npm scripts
+- `justfile` — `just` recipes; viz verbs delegate to the `viz/` npm scripts, and `check` runs validation plus drift checks
 - pre-v0.1.0 source preserved in git tag `legacy-pre-v0.1.0`
 
 ## Version

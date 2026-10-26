@@ -66,7 +66,7 @@ not to)".
 - `.editorconfig` — editor formatting rules (§"Editing Rules" below).
 - `.gitleaks.toml` — gitleaks config for CI's secret scan.
 - `.github/` — GitHub-specific config (CI workflow: `workflows/ci.yml`; Dependabot security-update config: `dependabot.yml`).
-- `justfile` — `just` recipes (`setup`/`dev`/`test`/`lint`/`typecheck`/`build`) that delegate to the `viz/` npm scripts; §"Validation" below stays the roster of record.
+- `justfile` — `just` recipes (`setup`/`dev`/`test`/`lint`/`typecheck`/`build`/`check`). Viz verbs delegate to the `viz/` npm scripts; `check` runs the eight §"Validation" commands below plus `bash tools/drift-checks.sh`. §"Validation" stays the roster of record.
 - `SPEC.md` — canonical workflow contract.
 - `SPEC/` — lazy modules for epics, starter tasks, blocked tasks, model
   routing, gate machinery, flag postures, the operator-cue vocabulary,

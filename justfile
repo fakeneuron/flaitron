@@ -2,9 +2,12 @@
 # operator-private fleet template. flaitron's only stack is the `viz/`
 # visualizer: no root `package.json`/`pyproject.toml`, and `viz/` sits outside
 # the `frontend`/`backend`/`landing`/`worker` subdir set that template detects.
-# Every recipe below delegates to `npm --prefix viz …`, matching the commands
-# CLAUDE.md §"Validation"/§"Dev Server" and viz/README.md already document
-# running from the repo root (CORE-637).
+# The viz recipes (`setup`/`dev`/`test`/`lint`/`typecheck`/`build`) delegate to
+# `npm --prefix viz …`, matching the commands CLAUDE.md §"Validation"/§"Dev
+# Server" and viz/README.md already document running from the repo root
+# (CORE-637). `check` runs the four viz validation recipes, then the four
+# `tools/` commands in that same §"Validation", then `bash tools/drift-checks.sh`
+# (CORE-828).
 #
 # Prerequisite: `just` (one-time `brew install just`). Run `just` with no
 # args to list recipes.
@@ -36,3 +39,11 @@ typecheck:
 # build viz
 build:
     npm --prefix viz run build
+
+# run AGENTS.md §"Validation" plus drift checks
+check: test typecheck lint build
+    node --test tools/update-adopters.test.mjs
+    node --check tools/update-adopters.test.mjs
+    node --check tools/update-adopters.mjs
+    node --test tools/drift-checks.test.mjs
+    bash tools/drift-checks.sh

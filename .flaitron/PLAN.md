@@ -26,6 +26,8 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-834** [light] | updater-comment-pointer — Fixed "workspaceRoot comment below" → "above" in tools/update-adopters.mjs:358. Surfaced by audit 2026-10-26 (Finding #2, Low), fixed inline.
+- [x] **FE-144** [light] | parser-comment-placement — Moved scanDocument's header comment off resolveHeadingLine in viz/src/parser.ts. Surfaced by audit 2026-10-26 (Finding #1, Low), fixed inline.
 - [x] **FE-143** [light]🔧 | dedupe-check-typecheck — Completed 2026-10-26.
 - [x] **FE-142** [moderate]🧩 | solution-root-tsconfig — Completed 2026-10-26.
 - [x] **FE-141** [light]🔧 [unattended] | build-runs-typecheck — Completed 2026-10-26.

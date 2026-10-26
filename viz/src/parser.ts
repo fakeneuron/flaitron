@@ -339,9 +339,6 @@ function blankHtmlComments(markdown: string): string {
   return markdown.replace(/<!--[\s\S]*?-->/g, (m) => m.replace(/[^\n]/g, ' '));
 }
 
-// One document's worth of scanning. Private because the two documents a board
-// reads are not interchangeable: only `PLAN.md`'s diagnostics reach the caller
-// (see parsePlanWithDiagnostics).
 // A heading line's effect on scan state: which priority (if any) subsequent
 // lines file under, whether the legacy `## Critical` section is active, and
 // the near-miss match (if the heading looks like a typo'd priority).
@@ -418,6 +415,9 @@ function parseTaskLine(
   };
 }
 
+// One document's worth of scanning. Private because the two documents a board
+// reads are not interchangeable: only `PLAN.md`'s diagnostics reach the caller
+// (see parsePlanWithDiagnostics).
 function scanDocument(markdown: string): PlanParseResult {
   const lines = blankHtmlComments(markdown).split(/\r?\n/);
   const inFence = fenceMask(lines);

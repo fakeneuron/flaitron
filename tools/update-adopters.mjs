@@ -355,7 +355,7 @@ export async function gitlinkDrift(repo, latest) {
 // constant (this script only ever bumps flaitron adopters), while viz's
 // takes an explicit repoDir because it discovers adopter projects at
 // arbitrary paths. Same-name-different-signature is deliberate, not a slip —
-// see the workspaceRoot comment below for the precedent.
+// see the workspaceRoot comment above for the precedent.
 export async function latestReleaseTag() {
   const stdout = await git(FLAITRON_REPO, 'tag', '--sort=-v:refname');
   return stdout.split('\n').map((l) => l.trim()).find((l) => parseSemverTag(l)) ?? null;

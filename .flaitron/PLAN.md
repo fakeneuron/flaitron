@@ -21,6 +21,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
 - [ ] **FE-133** [light]🔧 [unattended] | dynamic-import-tier-gate — Extend viz's SHARED_PURE gates so dynamic import() is restricted the same way as static import: node:* and non-allow-list relative paths from src/ui and shared-pure. Core no-restricted-imports does not visit ImportExpression. Surfaced by FE-131 review.
 - [ ] **CORE-831** [light]🔧 [unattended] | unattended-just-check — Name `just check` in the --unattended full-validation examples when that recipe exists, so a literal reading still runs build, the tools commands, and drift-checks. Surfaced by CORE-828 review.
+- [ ] **CORE-832** [moderate]🧩 | narrow-just-check — An unattended runner treats any justfile `check` recipe as the full validation set. Decide whether a narrower `check` should fall through to the three-recipe list. Surfaced by CORE-831 review.
 
 ## Future Opportunities
 

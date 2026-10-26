@@ -61,6 +61,7 @@ authoritative cross-agent fallback; note any glyph that fails to render.
 - 📡 REMOTE
 - 💻 TERM
 - ✋ ACTION
+- 🚧 DIRTY
 
 **Inline asks**
 - 🟢 GO
@@ -80,6 +81,7 @@ authoritative cross-agent fallback; note any glyph that fails to render.
 - 💎 FRONTIER (high-stakes — trigger-reached)
 - 🔭 XHEAVY (exploratory — manual-only)
 - 👇 HERE (run here — do not clear)
+- 📭 EMPTY (no open rows left)
 
 Log: `Cue-render check complete. [Note any non-rendering glyphs and
 confirm the UPPERCASE label fallback is legible.]`

@@ -92,7 +92,7 @@ file work that belongs in another repo there, and do not edit it from this
 cycle. The single documented exception (CORE-483.3) is not a precedent.
 Canonical contract: [`SPEC/scope-boundaries.md` §"Cross-repo edit remit"](../scope-boundaries.md).
 
-The **operator-cue vocabulary** (🛠️ 📦 🟢 👁️ 🏁 ✅ 🔧 🧩 🧠 💎 🔭 👇 🗄️ ▶️ 📡 💻 ✋ 🔍 and
+The **operator-cue vocabulary** (🛠️ 📦 🟢 👁️ 🏁 ✅ 🔧 🧩 🧠 💎 🔭 👇 📭 🗄️ ▶️ 📡 💻 ✋ 🔍 🚧 and
 their UPPERCASE labels) is contract-layer, not Claude-specific — emit it
 **verbatim**. The glyph is the fast-scan signal; the UPPERCASE label is the
 fallback if your surface strips emoji. Full vocabulary:
@@ -215,14 +215,13 @@ resume writes, run `git status --porcelain` unless already run at entry in
 Step 2. This ID's own `.flaitron/tasknote/<TASK-ID>.md`, when it exists
 (any status but a deletion or rename), is not foreign dirt —
 the in-flight refusal runs first and the branch below routes it. If foreign
-dirt exists: **STOP**, surface
-the dirt list, and ask the operator to commit / stash / discard themselves,
-then re-invoke. Do not auto-clean. Full contract:
+dirt exists: emit `🚧 DIRTY — commit, stash, or discard first:` then
+the dirt list, and stop. Do not auto-clean. Full contract:
 [`SPEC.md` §"Paper-complete guard"](../../SPEC.md). **Unattended mode does not
 relax this**, and it does not park here either: writing a new tasknote into a
 tree the guard has just refused to touch makes that file its own foreign dirt
-on the next invocation. Report the dirt machine-readably and terminate without
-writing — likewise for the archived / in-flight collisions below, where a
+on the next invocation. Emit `DIRTY`, then the `⏸` foreign-dirt line.
+Write nothing — likewise for the archived / in-flight collisions below, where a
 tasknote for this ID already exists and there is nothing new to park. In
 unattended mode only, a literal `.N` audit ID also terminates without writing
 when its parent `<AREA>-EPIC-<N>` is missing or closed (`no-parent` /

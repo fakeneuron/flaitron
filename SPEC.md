@@ -628,9 +628,11 @@ At **skill entry**, before scaffold / promote / execute writes (and before
 blocked-resume continues), run `git status --porcelain` (or
 equivalent). If the working tree is **non-empty**:
 
-- **STOP.** Do not scaffold, promote, or resume.
-- Surface the dirt list and ask the operator to commit, stash, or discard
-  **themselves** — then re-invoke the skill.
+- Emit `🚧 DIRTY — commit, stash, or discard first:` and then the dirt
+  list ([`SPEC/cue-vocabulary.md`](SPEC/cue-vocabulary.md)). Do not scaffold,
+  promote, or resume.
+- The operator commits, stashes, or discards **themselves**, then re-invokes
+  the skill.
 - No assistant-driven stash/clean/commit of foreign dirt.
 
 For `/ft-task`, the task's own existing

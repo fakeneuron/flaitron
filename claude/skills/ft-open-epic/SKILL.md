@@ -33,7 +33,7 @@ After resolving paths, Read `<SPEC_DIR>/epic.md` for the canonical lifecycle bef
 ## Step 1 — Pre-flight
 
 - `.flaitron/PLAN.md` must exist (cwd is a flaitron-adopting project or flaitron itself).
-- **Foreign-dirt gate (paper-complete guard).** Before PLAN writes / scaffold, run `git status --porcelain`. If non-empty: **STOP**, surface the dirt list, ask the operator to commit / stash / discard themselves, then re-invoke. Do not auto-clean. See SPEC §"Paper-complete guard".
+- **Foreign-dirt gate (paper-complete guard).** Before PLAN writes / scaffold, run `git status --porcelain`. If non-empty: emit `🚧 DIRTY — commit, stash, or discard first:` then the dirt list, and stop. Do not auto-clean. See SPEC §"Paper-complete guard".
 - The conversation should already have surfaced enough context to motivate filing an epic: a problem worth bracketing with Discovery + Audit subtasks, not a single-task scope. If the conversation has only surfaced a single-task scope, surface to the user: "This looks like single-task scope rather than an epic — recommend `/ft-file-task [ID] --starter` or a one-line PLAN.md filing instead." Do not proceed unless the user confirms epic scope.
 
 ## Step 1.5 — Parse `$ARGUMENTS`

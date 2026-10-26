@@ -134,6 +134,16 @@ shape".
 | Remote-host command | 📡 | `REMOTE` | The operator should run a command on a remote host (not the agent shell, not the local TTY) | `📡 REMOTE: \`docker compose pull && docker compose up -d\` on the server` |
 | TTY-command | 💻 | `TERM` | The operator should paste a command into their own TTY (not the agent shell, not a remote host) | `💻 TERM: paste \`ssh server\` into your TTY` |
 | User-action | ✋ | `ACTION` | The operator must perform a manual, non-command action (paste a secret, click a link, approve out-of-band) | `✋ ACTION: paste your API key into \`.env\` before continuing` |
+| Dirty tree | 🚧 | `DIRTY` | A skill's foreign-dirt gate finds a non-empty working tree | `🚧 DIRTY — commit, stash, or discard first:` then the porcelain lines |
+
+🚧 (`DIRTY`) is the foreign-dirt gate's stop
+([`SPEC.md`](../SPEC.md) §"Paper-complete guard"). Emit the marker, then the
+`git status --porcelain` lines, and do not scaffold, stash, clean, or commit.
+The operator fixes the tree and re-invokes. It is an inline prefix, not a
+banner, and it takes no reply token. `--fast` does not suppress it. Under
+`--unattended` the same marker and path list come first; the caller-facing
+line `⏸ --unattended stop — foreign-dirt:` follows and stays the
+machine-readable stop. The two-banner cap is untouched.
 
 Command destination is the split among ▶️ / 📡 / 💻: ▶️ RUN is the
 generic/workspace default; 📡 REMOTE and 💻 TERM fire only when the command

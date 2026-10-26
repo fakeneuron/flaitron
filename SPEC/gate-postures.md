@@ -239,8 +239,9 @@ the stop is *about*:
   promote or resume routing survives.
 - **Foreign-dirt gate — terminate, write nothing.** Writing a new
   untracked file into a tree the guard has just refused to touch makes
-  that file its own foreign dirt on the next invocation. Report the dirt
-  and stop.
+  that file its own foreign dirt on the next invocation. Emit
+  `🚧 DIRTY — commit, stash, or discard first:`, then the paths, then
+  `⏸ --unattended stop — foreign-dirt:`, and write nothing.
 - **`## Completed` status gate and archive collision — terminate, write
   nothing.** Both mean a tasknote for this ID already exists; there is
   nothing new to park, and scaffolding one would duplicate it.
@@ -261,8 +262,9 @@ the stop is *about*:
 ### What `--unattended` never relaxes
 
 [`SPEC.md`](../SPEC.md) §"Paper-complete guard" holds in full — all three
-parts, with no unattended variant. The foreign-dirt gate may report the dirt
-machine-readably but never stash, clean, or commit it; deliverables, PLAN
+parts, with no unattended variant. The foreign-dirt gate emits `DIRTY` and
+the paths, then its machine-readable stop, and never stashes, cleans, or
+commits; deliverables, PLAN
 flip, and archive move still land in one atomic commit or not at all; and no
 operator watching is a reason to hold 🏁 harder, not to relax it — an
 unnoticed paper-complete is the failure the guard was written for.

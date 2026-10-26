@@ -70,13 +70,16 @@ Six gates convert from *ask and wait* to *park and stop*. The seventh row is the
 The pre-flight checks and the Step 1.5 model gate run before this run has written a tasknote (the skill/pin guard, last below, is the one stop that can also fire later), so a "park" there may have nothing to park — or may find a note it must not touch. Split by what the stop is *about*:
 
 - **Concrete-model mismatch — scaffold, then park.** A task-level assignment problem, and the tree is known clean (the foreign-dirt gate already passed). Skip the AskUserQuestion two-path offer. **Create the note only when none exists** — neither a tasknote nor a `.flaitron/sidequest/<TASK-ID>.md` stub — then write the tasknote (from the template the run's flags select — the micro template under `--micro`) with `status: blocked` and `park-reason: model-mismatch — PLAN.md tags [<tag>], active model is <model>`, and halt. The caller gets the same readable stop surface it gets everywhere else. An existing `starter` or `blocked` note or a sidequest stub is **left untouched** — terminate and write nothing, in the `⏸ --unattended stop — model-mismatch: …` shape, naming the existing starter note, blocked note, or sidequest stub, so its promote or resume routing survives and the stub is retired by the attended promotion that reads it. Do **not** retag the PLAN.md line autonomously.
-- **Foreign-dirt gate — terminate, write nothing.** Writing a new untracked file into a tree the paper-complete guard has just refused to touch makes that file its own foreign dirt on the next invocation — a self-blocking loop. Report the dirt and stop:
+- **Foreign-dirt gate — terminate, write nothing.** Writing a new untracked file into a tree the paper-complete guard has just refused to touch makes that file its own foreign dirt on the next invocation — a self-blocking loop. Emit the marker, then the paths, then the caller-facing line, and stop:
 
   ```markdown
+  🚧 DIRTY — commit, stash, or discard first:
+  <one porcelain path per line>
+
   ⏸ --unattended stop — foreign-dirt: <N> uncommitted path(s). No tasknote written; commit, stash, or discard, then re-invoke.
   ```
 
-  List the paths. Never stash, clean, or commit them.
+  Never stash, clean, or commit them. Write nothing.
 - **`## Completed` status gate and archive collision — terminate, write nothing.** Both mean a tasknote for this ID already exists; there is nothing new to park, and scaffolding one would duplicate it. Same `⏸ --unattended stop — <cause>: …` shape.
 - **Open-siblings audit — terminate, write nothing.** A `.N` audit ID runs after every other child of its epic (`SPEC/unattended-candidacy.md` clause 6), and a run while one is open would park on drift. That parked note then dirties the tree for the next dispatch. At its hook in `preamble.md` §"Pre-flight", find the parent `<AREA>-EPIC-<N>` and every `<AREA>-<N>.<sub>` row anywhere in PLAN.md (nested or not). If any such row other than this `.N` is `- [ ]`, stop with `⏸ --unattended stop — open-siblings: <open child IDs>. No tasknote written.` A parent line that is missing, `- [x]`, or under `## Completed` stops the same way, with cause `no-parent` or `parent-closed`. This is `/ft-close-epic`'s Step 2 bail, read at run time like that one. Unlike CORE-736's admission-time clause-6 gate, it therefore also catches siblings filed or dispatched after `.N` was marked. A legacy numeric audit is not detected here and stays unguarded at run time — a runner cannot tell it from the last implementation child.
 - **An existing in-flight tasknote** (`status:` `not-started` / `in-progress` / `completed`, or unrecognized) — the runner refuses this in Pre-flight, ahead of the model gate, and recommends continuing conversationally. Unchanged; report it in the same stop shape and write nothing.
@@ -86,7 +89,7 @@ The pre-flight checks and the Step 1.5 model gate run before this run has writte
 
 `SPEC.md` §"Paper-complete guard" holds in full — all three parts, with no unattended variant:
 
-1. **Foreign-dirt gate.** Report the dirt machine-readably; never stash, clean, or commit it.
+1. **Foreign-dirt gate.** Emit `DIRTY` and the paths, then the machine-readable stop; never stash, clean, or commit, and write nothing.
 2. **Atomic single-commit closure.** Deliverables + PLAN flip + archive move land together or not at all.
 3. **🏁 only with a deliverable-covering SHA.** Verify with `git show --name-only`; never invent a SHA. No operator watching is a reason to hold this line harder, not to relax it.
 

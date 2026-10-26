@@ -16,15 +16,15 @@ The posture's contract is [`SPEC/gate-postures.md`](../../../SPEC/gate-postures.
 
 ## Steps 1-2 — Pre-scaffold stops
 
-The **foreign-dirt gate is not relaxed** — it terminates and writes nothing, in the machine-readable stop shape below. Never stash, clean, or commit foreign dirt.
+The **foreign-dirt gate is not relaxed** — emit `🚧 DIRTY — commit, stash, or discard first:` and the path list, then the machine-readable stop below, and write nothing. Never stash, clean, or commit foreign dirt.
 
-**Pre-scaffold stops under `--unattended`.** Every bail in Steps 1-2 fires *before* the audit tasknote exists, so there is nothing to park — and scaffolding one to hold a stop would either duplicate an existing note or become its own foreign dirt on the next invocation (`<UNATTENDED>` §"Pre-scaffold stops"). Each terminates and **writes nothing**, in one shape (the skill/pin guard's `skill-pin-mismatch`, emitted by the guard paragraph itself, is the exception noted below):
+**Pre-scaffold stops under `--unattended`.** Every bail in Steps 1-2 fires *before* the audit tasknote exists, so there is nothing to park — and scaffolding one to hold a stop would either duplicate an existing note or become its own foreign dirt on the next invocation (`<UNATTENDED>` §"Pre-scaffold stops"). Each terminates and **writes nothing**. `foreign-dirt` emits the DIRTY marker and the path list first, and its `⏸` line does not repeat those paths. Every other bail uses one shape (the skill/pin guard's `skill-pin-mismatch`, emitted by the guard paragraph itself, is the other exception):
 
 ```markdown
 ⏸ --unattended stop — <cause>: <one line>. No tasknote written.
 ```
 
-`<cause>` is one of `foreign-dirt` · `in-flight` (any live audit note, whatever its status) · `archived` · `no-parent` · `parent-closed` · `audit-position` · `open-siblings`, plus `skill-pin-mismatch` (the skill/pin guard, which may also fire after a write; it names what was written instead of `No tasknote written.`, per `<UNATTENDED>` §"Pre-scaffold stops"). List the specifics (dirty paths, the correct audit ID, the open child IDs) so the caller can act without a transcript. Never stash, clean, or commit foreign dirt.
+`<cause>` is one of `foreign-dirt` · `in-flight` (any live audit note, whatever its status) · `archived` · `no-parent` · `parent-closed` · `audit-position` · `open-siblings`, plus `skill-pin-mismatch` (the skill/pin guard, which may also fire after a write; it names what was written instead of `No tasknote written.`, per `<UNATTENDED>` §"Pre-scaffold stops"). List the specifics other than porcelain paths (those sit under the DIRTY marker) — the correct audit ID, the open child IDs — so the caller can act without a transcript. Never stash, clean, or commit foreign dirt.
 
 **Open-siblings ask (Step 2).** Take the default-No bail deterministically — do not ask. An early audit over a partial cohort is a scope judgment, and the ask's own default is already "bail". Stop with `⏸ --unattended stop — open-siblings: …`, naming the open child IDs.
 

@@ -25,6 +25,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 - [ ] **CORE-829** [moderate]🧩 | release-dir-headroom — `claude/skills/ft-release/**` measures 111,077 against its 113,000 cap (headroom 1,923), short of one working unit (4,000–5,300). Extract or trim before the next pair-sized edit fails context_budget. Surfaced by CORE-826.
 - [ ] **FE-133** [light]🔧 | dynamic-import-tier-gate — Extend viz's SHARED_PURE gates so dynamic import() is restricted the same way as static import: node:* and non-allow-list relative paths from src/ui and shared-pure. Core no-restricted-imports does not visit ImportExpression. Surfaced by FE-131 review.
 - [ ] **CORE-830** [light]🔧 | check-cmd-drift — Add a drift check that the justfile `check` recipe stays equal to the eight AGENTS.md §"Validation" commands plus `bash tools/drift-checks.sh`. Surfaced by CORE-828 review.
+- [ ] **CORE-831** [light]🔧 | unattended-just-check — Name `just check` in the --unattended full-validation examples when that recipe exists, so a literal reading still runs build, the tools commands, and drift-checks. Surfaced by CORE-828 review.
 
 ## Future Opportunities
 

@@ -32,6 +32,9 @@ jobs:
           cache-dependency-path: viz/package-lock.json
       - run: npm --prefix viz ci
       - run: npm --prefix viz test
+      # Stays standalone although `build` runs `typecheck` too (FE-141): the
+      # repeat is a warm `tsc -b` (~0.2s), and a type error fails a step named
+      # for it. AGENTS.md §"Validation" lists it as its own command (FE-143).
       - run: npm --prefix viz run typecheck
       - run: npm --prefix viz run lint
       - run: npm --prefix viz run build

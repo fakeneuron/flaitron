@@ -8,7 +8,9 @@
 # (CORE-637). `check` runs the four viz validation recipes, then the four
 # `tools/` commands in that same §"Validation", then `bash tools/drift-checks.sh`
 # (CORE-828); drift-checks' `pair_t` fails if that list stops matching
-# (CORE-830).
+# (CORE-830). `check` keeps its standalone `typecheck` although `build` runs
+# `typecheck` too (FE-141): the repeat is a warm `tsc -b` (~0.2s, incremental
+# buildinfo), and §"Validation" lists `typecheck` as its own command (FE-143).
 #
 # Prerequisite: `just` (one-time `brew install just`). Run `just` with no
 # args to list recipes.

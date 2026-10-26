@@ -19,7 +19,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Low
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
-- [ ] **FE-143** [light]🔧 | dedupe-check-typecheck — just check and CI run typecheck, then build. FE-141 made build run typecheck too, so both paths typecheck twice. Drop the standalone typecheck step from just check and the CI workflow, or record why the second pass stays.
 
 ## Future Opportunities
 
@@ -27,6 +26,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **FE-143** [light]🔧 | dedupe-check-typecheck — Completed 2026-10-26.
 - [x] **FE-142** [moderate]🧩 | solution-root-tsconfig — Completed 2026-10-26.
 - [x] **FE-141** [light]🔧 [unattended] | build-runs-typecheck — Completed 2026-10-26.
 - [x] **CORE-833** [light]🔧 [unattended] | dirty-tree-cue — Completed 2026-10-26.

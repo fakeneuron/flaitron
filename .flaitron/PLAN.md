@@ -16,7 +16,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Medium
 
 - [ ] **CORE-835** [heavy]🧠 | candidacy-rendered-surface — Clause 3 judges row text, but `--unattended` parks on every 👁️ emission (gate-postures §"Park conversions"), so a marked row whose work changes a rendered surface parks by construction. Add one semantic sentence, not a keyword: such work reads as needing a person; align Pin, since no test decides that 👁️. Evidence: 31 of 80 caobunga fleet parks were `visual-confirm`; 3 of the latest 7 were semantic-layer seed marks.
-- [ ] **CORE-836** [heavy]🧠 | epic-filing-entry — `/ft-open-epic` files and drives `.1` in one motion, so a `.1` tagged `[frontier]` still runs on the filing session's model. Explore a file-only `/ft-file-epic`, `/ft-file-task --epic`, or a stricter `/ft-open-epic` model gate before `.1` starts; settle naming and the file/drive split.
+- [ ] **CORE-836** [frontier]💎 | epic-filing-entry — `/ft-open-epic` files and drives `.1` in one motion, so a `.1` tagged `[frontier]` still runs on the filing session's model. Explore a file-only `/ft-file-epic`, `/ft-file-task --epic`, or a stricter `/ft-open-epic` model gate before `.1` starts; settle naming and the file/drive split.
 
 ## Low
 

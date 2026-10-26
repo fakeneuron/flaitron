@@ -1,3 +1,8 @@
+// Base config and the editor project. Node and DOM types both apply, and
+// `include` stays the whole tree so the editor sees every file. Tier
+// projects extend these compilerOptions. `npm run typecheck` and
+// `npm run build` do not pass this path to tsc. src/sharedPure.test.ts
+// fails if a file here is in neither tier project or in both.
 {
   "compilerOptions": {
     "target": "ES2020",

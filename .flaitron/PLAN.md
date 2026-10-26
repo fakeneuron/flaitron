@@ -19,7 +19,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Low
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
-- [ ] **FE-140** [moderate]🧩 [unattended] | root-pass-remainder — Root `tsc --noEmit` (typecheck and build scripts) rechecks every tier-owned viz file with Node and DOM types both applying. Narrow it to the files in no tier (e.g. a remainder config) while root tsconfig.json keeps editor coverage; the tier test pins the remainder. Surfaced by FE-139 review.
 
 ## Future Opportunities
 
@@ -27,6 +26,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **FE-140** [moderate]🧩 [unattended] | root-pass-remainder — Completed 2026-10-26.
 - [x] **FE-139** [moderate]🧩 | shared-pure-tests-tier — Completed 2026-10-26.
 - [x] **FE-138** [moderate]🧩 | node-tier-no-dom — Completed 2026-10-26.
 - [x] **FE-136** [moderate]🧩 | per-tier-node-types — Completed 2026-10-26.

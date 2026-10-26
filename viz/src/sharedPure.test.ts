@@ -149,6 +149,17 @@ describe('SHARED_PURE', () => {
     expect([...parsed.fileNames].sort()).toEqual([...nodeOnly, join(vizRoot, 'vite.config.ts')].sort());
   });
 
+  it('pins an empty root remainder: every tsconfig.json file is in exactly one tier', () => {
+    const root = parseTsconfig('tsconfig.json').fileNames;
+    const browser = new Set(parseTsconfig('tsconfig.browser.json').fileNames);
+    const node = new Set(parseTsconfig('tsconfig.node.json').fileNames);
+
+    const remainder = root.filter((file) => !browser.has(file) && !node.has(file));
+    const overlap = root.filter((file) => browser.has(file) && node.has(file));
+    expect(remainder).toEqual([]);
+    expect(overlap).toEqual([]);
+  });
+
   it('gates src/ui ../ imports and shared-pure relative imports through the allow-list', async () => {
     const ui = join(vizRoot, 'src/ui/probe.tsx');
     const uiTest = join(vizRoot, 'src/ui/probe.test.tsx');

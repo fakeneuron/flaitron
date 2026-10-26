@@ -632,6 +632,117 @@ done
 [ -z "$bad" ] || exit 1
 }
 
+# Pair S — AGENTS.md ↔ claude/AGENTS-snippet.md KEEP IN SYNC trio
+pair_s() {
+# CORE-826. Three comparisons, and only these three. The self-host
+# guide hard-wraps; the adopter paste block is one line per bullet and
+# prefixes contract paths with `.flaitron/core/`. Collapse whitespace,
+# strip that prefix, then the `/ft-task` flags bullet and the sentence
+# that begins "Do not skip phases once" must be byte-equal. Peer slugs
+# — the self-host bullet containing `peer skills:`, and on the adopter
+# side the `Start a task with` bullet plus the `Peer skills:` bullet —
+# must be the same set once the checkout-specific version-bump skill is
+# dropped (`ft-release` vs `ft-update`). Both slug reads keep wrapped
+# continuation lines, so a hard-wrap cannot drop a slug. The `[model]`
+# bullet stays a comment guard only: CORE-516 kept it the same concept,
+# not the same bytes. The flags bullet's HTML comment follows inside the
+# list item, so the read stops at `<!--` and never compares the guard text.
+bad=
+[ -f AGENTS.md ] && [ -f claude/AGENTS-snippet.md ] || { echo "VACUOUS pair_s  source file missing"; exit 1; }
+
+  # Indented so the column-0 dispatcher does not treat these as checks.
+  flags_of() {
+    awk '
+      BEGIN {on=0}
+      {
+        if (on) {
+          if ($0 ~ /^[[:space:]]*<!--/) exit
+          if ($0 ~ /^- /) exit
+          print
+        } else if ($0 ~ /^- `\/ft-task` flags:/) {
+          on=1
+          print
+        }
+      }
+    ' "$1" | tr '\n' ' ' | sed -E 's/[[:space:]]+/ /g; s/^ //; s/ $//; s#\.flaitron/core/##g'
+  }
+
+  skip_of() {
+    { tr '\n' ' ' < "$1"; printf '\n'; } | sed -nE 's/[[:space:]]+/ /g; s#\.flaitron/core/##g; s/.*(Do not skip phases once.*not to\)"\.).*/\1/p'
+  }
+
+  slugs_of() {
+    # $2 is the version-bump slug this side is allowed to name alone.
+    # A new bullet or an HTML comment ends the span; a start line opens
+    # another, so wrapped continuations stay and later bullets still match.
+    if [ "$2" = ft-release ]; then
+      awk '
+        BEGIN {on=0}
+        {
+          if (on) {
+            if ($0 ~ /^[[:space:]]*<!--/) { on=0; next }
+            if ($0 ~ /^- /) on=0
+          }
+          if (!on && $0 ~ /peer skills:/) on=1
+          if (on) print
+        }
+      ' "$1"
+    else
+      awk '
+        BEGIN {on=0}
+        {
+          if (on) {
+            if ($0 ~ /^[[:space:]]*<!--/) { on=0; next }
+            if ($0 ~ /^- /) on=0
+          }
+          if (!on && ($0 ~ /^- Start a task with / || $0 ~ /^- Peer skills:/)) on=1
+          if (on) print
+        }
+      ' "$1"
+    fi | grep -oE '/ft-[a-z0-9-]+' || true
+  }
+
+flags_a=$(flags_of AGENTS.md)
+flags_s=$(flags_of claude/AGENTS-snippet.md)
+if [ -z "$flags_a" ] || [ -z "$flags_s" ]; then
+  [ -n "$flags_a" ] || echo "NO FLAGS LINE  AGENTS.md"
+  [ -n "$flags_s" ] || echo "NO FLAGS LINE  claude/AGENTS-snippet.md"
+  bad=1
+elif [ "$flags_a" != "$flags_s" ]; then
+  echo "FLAGS DRIFT"
+  diff -u <(printf '%s\n' "$flags_a") <(printf '%s\n' "$flags_s") || true
+  bad=1
+fi
+
+skip_a=$(skip_of AGENTS.md)
+skip_s=$(skip_of claude/AGENTS-snippet.md)
+if [ -z "$skip_a" ] || [ -z "$skip_s" ]; then
+  [ -n "$skip_a" ] || echo "NO SKIP SENTENCE  AGENTS.md"
+  [ -n "$skip_s" ] || echo "NO SKIP SENTENCE  claude/AGENTS-snippet.md"
+  bad=1
+elif [ "$skip_a" != "$skip_s" ]; then
+  echo "SKIP DRIFT"
+  diff -u <(printf '%s\n' "$skip_a") <(printf '%s\n' "$skip_s") || true
+  bad=1
+fi
+
+slugs_a=$(slugs_of AGENTS.md ft-release | sed 's#^/##' | grep -vx 'ft-release' || true)
+slugs_s=$(slugs_of claude/AGENTS-snippet.md ft-update | sed 's#^/##' | grep -vx 'ft-update' || true)
+slugs_a=$(printf '%s\n' "$slugs_a" | sed '/^$/d' | sort -u)
+slugs_s=$(printf '%s\n' "$slugs_s" | sed '/^$/d' | sort -u)
+if [ -z "$slugs_a" ] || [ -z "$slugs_s" ]; then
+  [ -n "$slugs_a" ] || echo "NO PEER SLUGS  AGENTS.md"
+  [ -n "$slugs_s" ] || echo "NO PEER SLUGS  claude/AGENTS-snippet.md"
+  bad=1
+elif ! diff -q <(printf '%s\n' "$slugs_a") <(printf '%s\n' "$slugs_s") >/dev/null; then
+  echo "SLUG DRIFT"
+  diff -u <(printf '%s\n' "$slugs_a") <(printf '%s\n' "$slugs_s") || true
+  bad=1
+fi
+
+[ -z "$bad" ] || exit 1
+}
+
 self=$(CDPATH='' cd -- "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")
 cd "$(dirname "$self")/.." || exit 2
 

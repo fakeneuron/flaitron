@@ -38,7 +38,9 @@ in `SPEC.md`; read it before starting non-trivial work.
        4. Version-bump skills are checkout-specific: this self-host guide names
           `/ft-release`; the adopter paste-block names `/ft-update`.
        5. The path-convention bullets are described in both files in slightly
-          different prose; editing one requires checking the other. -->
+          different prose; editing one requires checking the other.
+       6. `pair_s` (tools/drift-checks.sh) checks the flags line, the
+          do-not-skip sentence, and the peer-skill slugs. -->
 <!-- KEEP IN SYNC (CORE-516): mirrors the `[model]` bullet in claude/AGENTS-snippet.md's paste-block (guard: the KEEP IN SYNC comment above that fence) — same `[model]` concept, same SPEC/model.md pointer. Editing one requires checking the other. -->
 - Each PLAN.md task line carries a `[model]` segment naming the model tier or name the task should run on end-to-end; on mismatch, surface it before continuing. Contract: `SPEC/model.md` §"Model field".
 - Four bundled skills are utility-only, not part of the tasknote lifecycle

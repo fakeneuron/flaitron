@@ -9,7 +9,8 @@ Paste the block below into your project's `AGENTS.md`, then run the symlink comm
 <!-- KEEP IN SYNC with AGENTS.md §Workflow. All three guards sit outside the fence so adopters never paste them; editing one side requires checking the other.
 1. Peer-skill roster: names-only on both surfaces, with the `/ft-task` flags line beside it; adding/removing a tasknote-family skill or `/ft-task` flag edits both. Richer detail (stubs, gates) lives in SPEC/tasknote-selection.md and SPEC/gates.md — since CORE-510 the block names skills and points there, so keep new detail out of the fence. Version-bump skills are checkout-specific: this block names `/ft-update`, the self-host AGENTS.md names `/ft-release`. The pairing also covers the Plans/tasknotes/archive path bullets — same layout, slightly different prose.
 2. (CORE-519) The "Do not skip phases" sentence — same claim, same SPEC/tasknote-selection.md pointer.
-3. (CORE-516) The `[model]` bullet — same concept, same SPEC/model.md pointer. -->
+3. (CORE-516) The `[model]` bullet — same concept, same SPEC/model.md pointer.
+4. `pair_s` (tools/drift-checks.sh) checks guard 1's flags line and peer-skill slugs, and guard 2's sentence. The `[model]` bullet stays a comment guard. -->
 
 ```markdown
 ## Workflow

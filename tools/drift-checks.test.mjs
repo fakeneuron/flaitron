@@ -137,6 +137,15 @@ const CASES = {
     seed: () => edit('.flaitron/PLAN-ARCHIVE.md', (s) => `${s}- [x] **ZZ-1** Completed 2026-01-01.\n`),
     finding: /^NO SHORTNAME {2}\.flaitron\/PLAN-ARCHIVE\.md :: - \[x\] \*\*ZZ-1\*\* Completed 2026-01-01\.$/m,
   },
+  pair_s: {
+    // The flags bullet is hard-wrapped in AGENTS.md and one line in the
+    // paste block. The seed changes the normalized text, not the wrap.
+    seed: () => edit('AGENTS.md', (s) => s.replace(
+      'take `--unattended` too.',
+      'take `--unattended` too. --zz-drift',
+    )),
+    finding: /^-.*--zz-drift/m,
+  },
 };
 
 describe('drift-checks.sh self-test', () => {

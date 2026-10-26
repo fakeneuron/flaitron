@@ -275,8 +275,8 @@ If the sweep reports zero findings, or the only findings were Critical / High an
   completed-rotation (advisory backstop) · viz-majors-outdated (advisory) · context
   budget (`docs/CONTEXT-BUDGET.md`; also refreshes that doc's ledger in this
   cut).
-- `claude/skills/ft-release/step-7.1-mirror-pairs.md` — the Pair A–R
-  mirror-pair catalogue, opening with the local runner for the ten pairs
+- `claude/skills/ft-release/step-7.1-mirror-pairs.md` — the Pair A–S
+  mirror-pair catalogue, opening with the local runner for the eleven pairs
   whose shell lives in `tools/drift-checks.sh` (plus the skill-name
   invariant).
 

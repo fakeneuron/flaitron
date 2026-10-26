@@ -15,6 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
+- [ ] **CORE-835** [heavy]🧠 | candidacy-rendered-surface — Clause 3 judges row text, but `--unattended` parks on every 👁️ emission (gate-postures §"Park conversions"), so a marked row whose work changes a rendered surface parks by construction. Add one semantic sentence, not a keyword: such work reads as needing a person; align Pin, since no test decides that 👁️. Evidence: 31 of 80 caobunga fleet parks were `visual-confirm`; 3 of the latest 7 were semantic-layer seed marks.
 
 ## Low
 

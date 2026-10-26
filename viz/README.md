@@ -57,8 +57,12 @@ not a tier and is not on `SHARED_PURE`. They may also import
 pre-render script to `readPreference()` without a `node:fs` read (FE-132).
 Production UI stays on the allow-list alone.
 
-Both gates are eslint `no-restricted-imports` rules derived from
-`SHARED_PURE`, not a hand-maintained Node-only deny-list.
+Both gates are eslint rules derived from `SHARED_PURE`, not a
+hand-maintained Node-only deny-list. Static import and export declarations
+use `no-restricted-imports`. Dynamic `import()` uses a local rule with the
+same patterns, because core `no-restricted-imports` does not visit
+`ImportExpression`. A dynamic specifier that is not a static string is an
+error, so a computed path cannot skip the gate.
 
 ### Dependency direction
 

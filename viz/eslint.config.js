@@ -2,6 +2,12 @@ import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import globals from 'globals';
 import reactHooks from 'eslint-plugin-react-hooks';
+import { createRequire } from 'node:module';
+
+// Same matcher core `no-restricted-imports` uses for `group` patterns.
+// A direct devDependency: eslint's copy is not a dependency this file may import.
+const require = createRequire(import.meta.url);
+const ignore = require('ignore');
 
 // Shared-pure tier: viz/src/<name>.ts modules with no `node:` import.
 // `tasknote-parse` is absent on purpose — Node-only despite no direct
@@ -52,6 +58,113 @@ function uiParentPattern(allowFixtures) {
   };
 }
 
+// Core `no-restricted-imports` visits ImportDeclaration / export declarations
+// only. `import()` is an ImportExpression, so the same pattern objects are
+// applied here or a dynamic specifier bypasses the tier gate.
+function staticSpecifier(node) {
+  if (node.type === 'Literal' && typeof node.value === 'string') {
+    return node.value;
+  }
+  if (node.type === 'TemplateLiteral' && node.expressions.length === 0) {
+    const cooked = node.quasis.map((quasi) => quasi.value.cooked);
+    if (cooked.every((part) => typeof part === 'string')) {
+      return cooked.join('');
+    }
+  }
+  return null;
+}
+
+function compileImportPatterns(patterns) {
+  return patterns.map((pattern) => {
+    if (typeof pattern.regex === 'string') {
+      const regex = new RegExp(pattern.regex, pattern.caseSensitive ? 'u' : 'iu');
+      return { test: (source) => regex.test(source), message: pattern.message };
+    }
+    const matcher = ignore({
+      allowRelativePaths: true,
+      ignorecase: !pattern.caseSensitive,
+    }).add(pattern.group);
+    return { test: (source) => matcher.ignores(source), message: pattern.message };
+  });
+}
+
+const flaitronPlugin = {
+  meta: { name: 'flaitron' },
+  rules: {
+    'no-restricted-import-expressions': {
+      meta: {
+        type: 'problem',
+        schema: [
+          {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                group: { type: 'array', items: { type: 'string' } },
+                regex: { type: 'string' },
+                message: { type: 'string' },
+                caseSensitive: { type: 'boolean' },
+              },
+              additionalProperties: false,
+            },
+          },
+          {
+            type: 'object',
+            properties: { nonStaticMessage: { type: 'string' } },
+            required: ['nonStaticMessage'],
+            additionalProperties: false,
+          },
+        ],
+        messages: {
+          restricted: '{{message}}',
+          nonStatic: '{{message}}',
+        },
+      },
+      create(context) {
+        const compiled = compileImportPatterns(context.options[0] ?? []);
+        const nonStaticMessage = context.options[1].nonStaticMessage;
+        return {
+          ImportExpression(node) {
+            const specifier = staticSpecifier(node.source);
+            if (specifier === null) {
+              context.report({
+                node: node.source,
+                messageId: 'nonStatic',
+                data: { message: nonStaticMessage },
+              });
+              return;
+            }
+            const source = specifier.trim();
+            for (const pattern of compiled) {
+              if (pattern.test(source)) {
+                context.report({
+                  node: node.source,
+                  messageId: 'restricted',
+                  data: { message: pattern.message },
+                });
+              }
+            }
+          },
+        };
+      },
+    },
+  },
+};
+
+function tierImportRules(patterns, nonStaticMessage) {
+  return {
+    plugins: { flaitron: flaitronPlugin },
+    rules: {
+      'no-restricted-imports': ['error', { patterns }],
+      'flaitron/no-restricted-import-expressions': [
+        'error',
+        patterns,
+        { nonStaticMessage },
+      ],
+    },
+  };
+}
+
 export default tseslint.config(
   { ignores: ['dist/**', 'public/**', 'node_modules/**'] },
   js.configs.recommended,
@@ -80,46 +193,38 @@ export default tseslint.config(
     // Test files are a separate block so only they may import the fixture helper.
     files: ['src/ui/**/*.{ts,tsx}'],
     ignores: ['src/ui/**/*.test.{ts,tsx}'],
-    rules: {
-      'no-restricted-imports': [
-        'error',
-        { patterns: [UI_NODE_IMPORT, uiParentPattern(false)] },
-      ],
-    },
+    ...tierImportRules(
+      [UI_NODE_IMPORT, uiParentPattern(false)],
+      'Dynamic import() specifiers must be a static string so the SHARED_PURE gate can check them — see README.md §"Hard rule: no Node imports under src/ui/".',
+    ),
   },
   {
     // UI tests. Same gates, plus the one non-tier helper they already import.
     files: ['src/ui/**/*.test.{ts,tsx}'],
-    rules: {
-      'no-restricted-imports': [
-        'error',
-        { patterns: [UI_NODE_IMPORT, uiParentPattern(true)] },
-      ],
-    },
+    ...tierImportRules(
+      [UI_NODE_IMPORT, uiParentPattern(true)],
+      'Dynamic import() specifiers must be a static string so the SHARED_PURE gate can check them — see README.md §"Hard rule: no Node imports under src/ui/".',
+    ),
   },
   {
     // Shared-pure modules are the SHARED_PURE allow-list. They stay
     // Node-free, and a relative import may name only another allow-list module.
     files: SHARED_PURE_FILES,
-    rules: {
-      'no-restricted-imports': [
-        'error',
+    ...tierImportRules(
+      [
         {
-          patterns: [
-            {
-              group: ['node:*'],
-              message:
-                'Shared-pure modules must not import Node builtins — see README.md §"Architecture — three tiers".',
-            },
-            {
-              regex: SHARED_PURE_RELATIVE,
-              caseSensitive: true,
-              message:
-                'Shared-pure modules may import only other SHARED_PURE modules via ./ — see README.md §"Architecture — three tiers".',
-            },
-          ],
+          group: ['node:*'],
+          message:
+            'Shared-pure modules must not import Node builtins — see README.md §"Architecture — three tiers".',
+        },
+        {
+          regex: SHARED_PURE_RELATIVE,
+          caseSensitive: true,
+          message:
+            'Shared-pure modules may import only other SHARED_PURE modules via ./ — see README.md §"Architecture — three tiers".',
         },
       ],
-    },
+      'Dynamic import() specifiers must be a static string so the SHARED_PURE gate can check them — see README.md §"Architecture — three tiers".',
+    ),
   },
 );

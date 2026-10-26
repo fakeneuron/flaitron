@@ -17,6 +17,15 @@ const vizRoot = dirname(srcDir);
 // The one viz/src/*.ts module with no `node:` import that is still Node-only.
 const NAMED_EXCEPTION = 'tasknote-parse';
 const NODE_IMPORT = /['"]node:/;
+// The one shared-pure test that reads files through node:, so it is
+// typechecked in the Node tier rather than the browser tier.
+const NODE_TIER_TEST = 'parser.test.ts';
+
+// Top-level viz/src/*.ts in the browser tier: each shared-pure module and its
+// test, but NODE_TIER_TEST. Every other top-level .ts is in the Node tier.
+function inBrowserTier(file: string): boolean {
+  return file !== NODE_TIER_TEST && SHARED_PURE.includes(file.replace(/(\.test)?\.ts$/, ''));
+}
 
 const eslint = new ESLint({
   cwd: vizRoot,
@@ -98,7 +107,7 @@ describe('SHARED_PURE', () => {
     }
   });
 
-  it('typechecks exactly src/ui, main.tsx, and SHARED_PURE in the Node-free browser tsconfig', () => {
+  it('typechecks exactly src/ui, main.tsx, the test helpers, and SHARED_PURE with its tests in the Node-free browser tsconfig', () => {
     const parsed = parseTsconfig('tsconfig.browser.json');
     expect(parsed.options.types).toEqual([]);
 
@@ -108,11 +117,23 @@ describe('SHARED_PURE', () => {
       expect(files, `ui/${name}`).toContain(join(srcDir, 'ui', name));
     }
     expect(files).toContain(join(srcDir, 'main.tsx'));
+    for (const name of readdirSync(join(srcDir, 'test')).filter((name) => /\.tsx?$/.test(name))) {
+      expect(files, `test/${name}`).toContain(join(srcDir, 'test', name));
+    }
 
+    const topLevelTs = readdirSync(srcDir).filter((name) => name.endsWith('.ts'));
+    // NODE_TIER_TEST stays the exception only while it is the shared-pure test with a node: import.
+    for (const name of topLevelTs.filter((name) => name.endsWith('.test.ts'))) {
+      if (SHARED_PURE.includes(name.slice(0, -'.test.ts'.length))) {
+        const hasNode = NODE_IMPORT.test(readFileSync(join(srcDir, name), 'utf8'));
+        expect(hasNode, name).toBe(name === NODE_TIER_TEST);
+      }
+    }
+    const sharedPure = topLevelTs.filter(inBrowserTier);
     const topLevel = parsed.fileNames
       .filter((file) => dirname(file) === srcDir && file.endsWith('.ts'))
-      .map((file) => file.slice(srcDir.length + 1, -'.ts'.length));
-    expect(topLevel.sort()).toEqual([...SHARED_PURE].sort());
+      .map((file) => file.slice(srcDir.length + 1));
+    expect(topLevel.sort()).toEqual(sharedPure.sort());
   });
 
   it('typechecks exactly the Node-only src/*.ts and vite.config.ts in the DOM-free node tsconfig', () => {
@@ -122,10 +143,8 @@ describe('SHARED_PURE', () => {
     // react-jsx would import react/jsx-runtime, whose globals declare HTMLElement.
     expect(parsed.options.jsx).toBe(ts.JsxEmit.Preserve);
 
-    // A shared-pure module's test is excluded with it.
-    const allowed = new Set(SHARED_PURE);
     const nodeOnly = readdirSync(srcDir)
-      .filter((name) => name.endsWith('.ts') && !allowed.has(name.replace(/(\.test)?\.ts$/, '')))
+      .filter((name) => name.endsWith('.ts') && !inBrowserTier(name))
       .map((name) => join(srcDir, name));
     expect([...parsed.fileNames].sort()).toEqual([...nodeOnly, join(vizRoot, 'vite.config.ts')].sort());
   });

@@ -75,6 +75,9 @@ through `tsconfig.browser.json`, which drops Node's ambient types, so
 `process`, `Buffer`, and `NodeJS.*` fail there. The mirror config,
 `tsconfig.node.json`, checks the Node-only modules and `vite.config.ts`
 without the DOM lib, so `window` and `document` fail there.
+The shared-pure tests and `src/test/fixtures.ts` sit in the browser tier,
+except `parser.test.ts`, which reads SPEC fixtures through `node:fs` and is
+checked in the Node tier.
 `src/sharedPure.test.ts` keeps both configs in step with `SHARED_PURE`.
 
 ### Dependency direction

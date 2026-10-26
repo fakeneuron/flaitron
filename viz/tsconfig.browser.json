@@ -1,9 +1,11 @@
 {
-  // Browser tier: src/ui and the SHARED_PURE modules, typechecked without
-  // Node's ambient types (`process`, `Buffer`, `NodeJS.*`). The root config
-  // keeps `"types": ["node"]` for the Node-only modules and vite.config.ts.
-  // The include list mirrors eslint.config.js `SHARED_PURE`; the tier test in
-  // src/sharedPure.test.ts keeps the two in step. See FE-136.
+  // Browser tier: src/ui and the SHARED_PURE modules (and their tests, except
+  // parser.test.ts, which reads fixtures from disk and sits in the Node tier),
+  // typechecked without Node's ambient types (`process`, `Buffer`, `NodeJS.*`).
+  // The root config keeps `"types": ["node"]` for the Node-only modules and
+  // vite.config.ts. The include list mirrors eslint.config.js `SHARED_PURE`;
+  // the tier test in src/sharedPure.test.ts keeps the two in step. See FE-136
+  // and FE-139.
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "types": []
@@ -14,13 +16,19 @@
     "src/main.tsx",
     // jsdom test setup; carries the jest-dom matcher types for UI tests.
     "src/test/setup.ts",
+    // Shared UI test helper; renders App.
+    "src/test/fixtures.ts",
     "src/parser.ts",
     "src/tasknote.ts",
+    "src/tasknote.test.ts",
     "src/fence.ts",
     "src/sseChange.ts",
+    "src/sseChange.test.ts",
     "src/storage.ts",
     "src/viewMode.ts",
+    "src/viewMode.test.ts",
     "src/visibilityPrefs.ts",
+    "src/visibilityPrefs.test.ts",
     "src/projectStorage.ts"
   ]
 }

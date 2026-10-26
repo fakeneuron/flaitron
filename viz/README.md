@@ -38,18 +38,24 @@ table: a tier may import from tiers below it, never above.
 | Tier | Where | Role |
 |---|---|---|
 | **Browser UI** | `src/ui/` | React components, hooks, and browser-view selectors. |
-| **Shared pure** | `src/*.ts` with no `node:` imports | Parsing (`parser`, `tasknote`) plus other Node-free shared modules (`fence`, `sseChange`, `storage`, `viewMode`, `visibilityPrefs`, `projectStorage`). Usable from the browser bundle and, where relevant, from the Node plugin. |
-| **Node-only dev API** | `src/*.ts` with `node:` imports + `vite.config.ts` | Filesystem scan, contained tasknote reads (`tasknote-parse` frontmatter parse), archive cache, watchers, `/api/*` handlers, origin guard. Hosted only by the Vite plugin — never shipped to the browser. |
+| **Shared pure** | `src/*.ts` on `SHARED_PURE` in `eslint.config.js` | Parsing (`parser`, `tasknote`) plus other Node-free shared modules (`fence`, `sseChange`, `storage`, `viewMode`, `visibilityPrefs`, `projectStorage`). Usable from the browser bundle and, where relevant, from the Node plugin. |
+| **Node-only dev API** | other `src/*.ts` + `vite.config.ts` | Filesystem scan, contained tasknote reads (`tasknote-parse` frontmatter parse), archive cache, watchers, `/api/*` handlers, origin guard. Hosted only by the Vite plugin — never shipped to the browser. |
 
 ### Hard rule: no Node imports under `src/ui/`
 
-Files under `src/ui/` **must not** import `node:*` builtins or any Node-only
-tier module (`devApi`, `workspace`, `fsSafe`, `tasknoteRead`, `tasknote-parse`,
-`archiveCache`, `flaitronWatch`, `watchSet`, `originGuard`, `apiResponse`). They import shared pure modules via
-`../…` and sibling UI modules via `./…` only.
+Files under `src/ui/` **must not** import `node:*` builtins. A `../` import
+may name only a module on the `SHARED_PURE` allow-list in `eslint.config.js`
+(bare name or `.ts`). Sibling UI modules stay `./…`. The same const gates
+shared-pure `./` imports: a shared-pure file may import only another
+`SHARED_PURE` module.
 
-This is enforced by an eslint `no-restricted-imports` rule scoped to
-`src/ui/**` (`eslint.config.js`), not just an import-graph convention.
+`tasknote-parse` is off the list on purpose. It is Node-only even though it
+has no direct `node:` import, and `src/sharedPure.test.ts` names it as that
+exception. UI tests may also import `../test/fixtures`. That helper is
+not a tier and is not on `SHARED_PURE`.
+
+Both gates are eslint `no-restricted-imports` rules derived from
+`SHARED_PURE`, not a hand-maintained Node-only deny-list.
 
 ### Dependency direction
 

@@ -15,7 +15,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **FE-131** [moderate]🧩 [unattended] | viz-tier-lint — Replace viz/eslint.config.js's hand-listed Node-only deny-list with one `SHARED_PURE` allow-list const gating `src/ui/** → ../` and shared-pure `→ ./` (the README-declared direction nothing enforces), plus a vitest test classifying every `viz/src/*.ts` tier by `node:` import against it (`tasknote-parse` a named exception); point viz/README.md §"Hard rule" at the const. Surfaced by audit-structure 2026-10-25 (Finding #2, Medium).
 - [ ] **CORE-827** [heavy]🧠 | updater-retire-migrations — Remove tools/update-adopters.mjs's completed one-shot migrations (v6 `.flowtron/` rename: applyMigrate, PRE_RENAME_*, legacy discovery, rename helpers; v7 SKILL_RENAME link swap: skillLinkPlan…formatLinksNote) with their tests and header prose, ~400 of 1,440 lines; every ~/Code adopter pins ≥ v7.4.0. Update SECURITY.md, docs/MIGRATION.md, docs/PLATFORMS.md, ft-update SKILL.md, step-7.2-tag-message.md. Surfaced by audit-structure 2026-10-25 (Finding #4, Medium).
 
 ## Low
@@ -32,6 +31,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **FE-131** [moderate]🧩 [unattended] | viz-tier-lint — Completed 2026-10-25.
 - [x] **CORE-826** [moderate]🧩 [unattended] | agents-snippet-drift-pair — Completed 2026-10-25.
 - [x] **CORE-825** [light]🔧 | audit-context-always-runs — Completed 2026-10-25.
 - [x] **CORE-824** [moderate]🧩 | release v7.5.0 — Completed 2026-10-25.

@@ -3,6 +3,7 @@ import { builtinModules } from 'node:module';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ESLint } from 'eslint';
+import ts from 'typescript';
 import { describe, expect, it } from 'vitest';
 // eslint.config.js is plain JS; tsconfig allowJs is false, so the import has no types.
 // @ts-expect-error TS7016 — named export is the SHARED_PURE allow-list.
@@ -85,6 +86,27 @@ describe('SHARED_PURE', () => {
     for (const name of SHARED_PURE) {
       expect(files, name).toContain(`${name}.ts`);
     }
+  });
+
+  it('typechecks exactly src/ui, main.tsx, and SHARED_PURE in the Node-free browser tsconfig', () => {
+    const path = join(vizRoot, 'tsconfig.browser.json');
+    const { config, error } = ts.readConfigFile(path, ts.sys.readFile);
+    expect(error).toBeUndefined();
+    const parsed = ts.parseJsonConfigFileContent(config, ts.sys, vizRoot, undefined, path);
+    expect(parsed.errors).toEqual([]);
+    expect(parsed.options.types).toEqual([]);
+
+    const files = new Set(parsed.fileNames);
+    const ui = readdirSync(join(srcDir, 'ui')).filter((name) => /\.tsx?$/.test(name));
+    for (const name of ui) {
+      expect(files, `ui/${name}`).toContain(join(srcDir, 'ui', name));
+    }
+    expect(files).toContain(join(srcDir, 'main.tsx'));
+
+    const topLevel = parsed.fileNames
+      .filter((file) => dirname(file) === srcDir && file.endsWith('.ts'))
+      .map((file) => file.slice(srcDir.length + 1, -'.ts'.length));
+    expect(topLevel.sort()).toEqual([...SHARED_PURE].sort());
   });
 
   it('gates src/ui ../ imports and shared-pure relative imports through the allow-list', async () => {

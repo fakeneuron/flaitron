@@ -70,8 +70,10 @@ error, so a computed path cannot skip the gate. The same local rule checks
 `import('…')` in type position (`typeof import('…')`, `import('…').Name`).
 A `/// <reference types="…" />` directive is an error in `src/ui/` and
 shared-pure files, for any package (`vite/client` included).
-Node ambient types are still global there through `tsconfig.json`
-`"types": ["node"]` until that is split per tier.
+`npm run typecheck` also checks `src/ui/` and the shared-pure files
+through `tsconfig.browser.json`, which drops Node's ambient types, so
+`process`, `Buffer`, and `NodeJS.*` fail there; `src/sharedPure.test.ts`
+keeps its include list in step with `SHARED_PURE`.
 
 ### Dependency direction
 

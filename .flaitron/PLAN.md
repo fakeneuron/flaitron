@@ -19,7 +19,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Low
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
-- [ ] **FE-138** [moderate]🧩 | node-tier-no-dom — viz root tsconfig still gives the Node-only modules (devApi, fsSafe, workspace, …) and vite.config.ts lib DOM, so `window`/`document` typecheck there. Split a Node-tier config without DOM that excludes the FE-136 browser files. Surfaced by FE-136 review.
 
 ## Future Opportunities
 
@@ -27,6 +26,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **FE-138** [moderate]🧩 | node-tier-no-dom — Completed 2026-10-26.
 - [x] **FE-136** [moderate]🧩 | per-tier-node-types — Completed 2026-10-26.
 - [x] **FE-137** [light]🔧 | bare-builtin-tier-gate — Completed 2026-10-26.
 - [x] **FE-135** [moderate]🧩 | triple-slash-types-gate — Completed 2026-10-26.

@@ -1,0 +1,33 @@
+{
+  // Node tier: the Node-only modules (and their tests) plus vite.config.ts,
+  // typechecked without the DOM lib so `window` and `document` fail there.
+  // Node's own types (`URL`, `fetch`, …) still come from `"types": ["node"]`.
+  // `jsx: preserve` drops the inherited react-jsx runtime import, which would
+  // load @types/react's global HTMLElement stubs. The exclude list mirrors
+  // eslint.config.js `SHARED_PURE` (each module, and its test where one
+  // exists); the tier test in src/sharedPure.test.ts keeps the two in step.
+  // A shared-pure module that a Node module imports (sseChange, tasknote,
+  // fence) is still checked here, through that import. See FE-138; the
+  // browser tier is FE-136.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "lib": ["ES2020"],
+    "jsx": "preserve"
+  },
+  "include": ["src/*.ts", "vite.config.ts"],
+  "exclude": [
+    "src/parser.ts",
+    "src/parser.test.ts",
+    "src/tasknote.ts",
+    "src/tasknote.test.ts",
+    "src/fence.ts",
+    "src/sseChange.ts",
+    "src/sseChange.test.ts",
+    "src/storage.ts",
+    "src/viewMode.ts",
+    "src/viewMode.test.ts",
+    "src/visibilityPrefs.ts",
+    "src/visibilityPrefs.test.ts",
+    "src/projectStorage.ts"
+  ]
+}

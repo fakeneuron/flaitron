@@ -38,6 +38,16 @@ async function restricted(code: string, filePath: string): Promise<string[]> {
     .map((message) => message.message);
 }
 
+// Resolves `extends` and include/exclude globs the way tsc does.
+function parseTsconfig(name: string): ts.ParsedCommandLine {
+  const path = join(vizRoot, name);
+  const { config, error } = ts.readConfigFile(path, ts.sys.readFile);
+  expect(error).toBeUndefined();
+  const parsed = ts.parseJsonConfigFileContent(config, ts.sys, vizRoot, undefined, path);
+  expect(parsed.errors).toEqual([]);
+  return parsed;
+}
+
 // `import '../parser';`, `import('../parser');`, and
 // `typeof import('../parser')` must take the same gate.
 function specifierOf(snippet: string): string {
@@ -89,11 +99,7 @@ describe('SHARED_PURE', () => {
   });
 
   it('typechecks exactly src/ui, main.tsx, and SHARED_PURE in the Node-free browser tsconfig', () => {
-    const path = join(vizRoot, 'tsconfig.browser.json');
-    const { config, error } = ts.readConfigFile(path, ts.sys.readFile);
-    expect(error).toBeUndefined();
-    const parsed = ts.parseJsonConfigFileContent(config, ts.sys, vizRoot, undefined, path);
-    expect(parsed.errors).toEqual([]);
+    const parsed = parseTsconfig('tsconfig.browser.json');
     expect(parsed.options.types).toEqual([]);
 
     const files = new Set(parsed.fileNames);
@@ -107,6 +113,21 @@ describe('SHARED_PURE', () => {
       .filter((file) => dirname(file) === srcDir && file.endsWith('.ts'))
       .map((file) => file.slice(srcDir.length + 1, -'.ts'.length));
     expect(topLevel.sort()).toEqual([...SHARED_PURE].sort());
+  });
+
+  it('typechecks exactly the Node-only src/*.ts and vite.config.ts in the DOM-free node tsconfig', () => {
+    const parsed = parseTsconfig('tsconfig.node.json');
+    expect(parsed.options.types).toEqual(['node']);
+    expect(parsed.options.lib?.filter((lib) => /dom/i.test(lib))).toEqual([]);
+    // react-jsx would import react/jsx-runtime, whose globals declare HTMLElement.
+    expect(parsed.options.jsx).toBe(ts.JsxEmit.Preserve);
+
+    // A shared-pure module's test is excluded with it.
+    const allowed = new Set(SHARED_PURE);
+    const nodeOnly = readdirSync(srcDir)
+      .filter((name) => name.endsWith('.ts') && !allowed.has(name.replace(/(\.test)?\.ts$/, '')))
+      .map((name) => join(srcDir, name));
+    expect([...parsed.fileNames].sort()).toEqual([...nodeOnly, join(vizRoot, 'vite.config.ts')].sort());
   });
 
   it('gates src/ui ../ imports and shared-pure relative imports through the allow-list', async () => {

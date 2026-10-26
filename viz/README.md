@@ -72,8 +72,10 @@ A `/// <reference types="…" />` directive is an error in `src/ui/` and
 shared-pure files, for any package (`vite/client` included).
 `npm run typecheck` also checks `src/ui/` and the shared-pure files
 through `tsconfig.browser.json`, which drops Node's ambient types, so
-`process`, `Buffer`, and `NodeJS.*` fail there; `src/sharedPure.test.ts`
-keeps its include list in step with `SHARED_PURE`.
+`process`, `Buffer`, and `NodeJS.*` fail there. The mirror config,
+`tsconfig.node.json`, checks the Node-only modules and `vite.config.ts`
+without the DOM lib, so `window` and `document` fail there.
+`src/sharedPure.test.ts` keeps both configs in step with `SHARED_PURE`.
 
 ### Dependency direction
 

@@ -59,8 +59,9 @@ function uiParentPattern(allowFixtures) {
 }
 
 // Core `no-restricted-imports` visits ImportDeclaration / export declarations
-// only. `import()` is an ImportExpression, so the same pattern objects are
-// applied here or a dynamic specifier bypasses the tier gate.
+// only. `import()` is an ImportExpression and a type-position `import('…')` is
+// a TSImportType, so the same pattern objects are applied here or either
+// specifier bypasses the tier gate.
 function staticSpecifier(node) {
   if (node.type === 'Literal' && typeof node.value === 'string') {
     return node.value;
@@ -123,28 +124,33 @@ const flaitronPlugin = {
       create(context) {
         const compiled = compileImportPatterns(context.options[0] ?? []);
         const nonStaticMessage = context.options[1].nonStaticMessage;
-        return {
-          ImportExpression(node) {
-            const specifier = staticSpecifier(node.source);
-            if (specifier === null) {
+        function checkSource(node) {
+          const specifier = staticSpecifier(node.source);
+          if (specifier === null) {
+            context.report({
+              node: node.source,
+              messageId: 'nonStatic',
+              data: { message: nonStaticMessage },
+            });
+            return;
+          }
+          const source = specifier.trim();
+          for (const pattern of compiled) {
+            if (pattern.test(source)) {
               context.report({
                 node: node.source,
-                messageId: 'nonStatic',
-                data: { message: nonStaticMessage },
+                messageId: 'restricted',
+                data: { message: pattern.message },
               });
-              return;
             }
-            const source = specifier.trim();
-            for (const pattern of compiled) {
-              if (pattern.test(source)) {
-                context.report({
-                  node: node.source,
-                  messageId: 'restricted',
-                  data: { message: pattern.message },
-                });
-              }
-            }
-          },
+          }
+        }
+        return {
+          ImportExpression: checkSource,
+          // Type-position `import('…')` (`typeof import('x')`, `import('x').T`).
+          // TS allows only a string literal here, but the parser still hands a
+          // backtick specifier over as a TemplateLiteral.
+          TSImportType: checkSource,
         };
       },
     },

@@ -62,7 +62,8 @@ hand-maintained Node-only deny-list. Static import and export declarations
 use `no-restricted-imports`. Dynamic `import()` uses a local rule with the
 same patterns, because core `no-restricted-imports` does not visit
 `ImportExpression`. A dynamic specifier that is not a static string is an
-error, so a computed path cannot skip the gate.
+error, so a computed path cannot skip the gate. The same local rule checks
+`import('…')` in type position (`typeof import('…')`, `import('…').Name`).
 
 ### Dependency direction
 

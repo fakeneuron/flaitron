@@ -35,17 +35,24 @@ async function restricted(code: string, filePath: string): Promise<string[]> {
     .map((message) => message.message);
 }
 
-// `import '../parser';` and `import('../parser');` must take the same gate.
-function dynamicOf(snippet: string): string {
+// `import '../parser';`, `import('../parser');`, and
+// `typeof import('../parser')` must take the same gate.
+function specifierOf(snippet: string): string {
   const match = snippet.match(/^import (['"][^'"]+['"]);\n$/);
   if (!match) {
     throw new Error(`not a static import fixture: ${snippet}`);
   }
-  return `import(${match[1]});\n`;
+  return match[1];
 }
 
 async function expectGate(snippet: string, filePath: string, banned: boolean): Promise<void> {
-  for (const form of [snippet, dynamicOf(snippet)]) {
+  const specifier = specifierOf(snippet);
+  const forms = [
+    snippet,
+    `import(${specifier});\n`,
+    `export type T = typeof import(${specifier});\n`,
+  ];
+  for (const form of forms) {
     const messages = await restricted(form, filePath);
     if (banned) {
       expect(messages, form).toHaveLength(1);
@@ -124,6 +131,15 @@ describe('SHARED_PURE', () => {
       'Dynamic import() specifiers must be a static string so the SHARED_PURE gate can check them — see README.md §"Architecture — three tiers".',
     ]);
     expect(await restricted("import('./' + 'devApi');\n", uiTest)).toHaveLength(1);
+
+    // A qualified type import without `typeof` is the same TSImportType node.
+    expect(await restricted("export type T = import('../devApi').Api;\n", ui)).toHaveLength(1);
+    expect(await restricted("export type T = import('../parser').Api;\n", ui)).toEqual([]);
+    expect(await restricted("export type T = import('node:fs').Stats;\n", uiTest)).toHaveLength(1);
+    expect(await restricted("export type T = import('./devApi').Api;\n", pure)).toHaveLength(1);
+    // A backtick type specifier is checked like the value form, not a crash.
+    expect(await restricted('export type T = typeof import(`../devApi`);\n', ui)).toHaveLength(1);
+    expect(await restricted('export type T = typeof import(`../parser`);\n', ui)).toEqual([]);
 
     const live = join(vizRoot, 'src/ui/TaskDetailPanel.tsx');
     expect(await restricted(readFileSync(live, 'utf8'), live)).toEqual([]);

@@ -19,6 +19,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Low
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
+- [ ] **FE-139** [moderate]🧩 | shared-pure-tests-tier — Shared-pure tests (tasknote, sseChange, viewMode, visibilityPrefs, parser) and src/test/fixtures.ts sit in neither tier tsconfig, so Node and DOM types both apply. Move them into tsconfig.browser.json and widen the tier test; parser.test.ts imports node: and needs its own call. Surfaced by FE-138.
 
 ## Future Opportunities
 

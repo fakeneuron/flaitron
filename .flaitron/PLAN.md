@@ -20,7 +20,8 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Low
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
-- [ ] **FE-148** [moderate]🧩 | active-parse-visibility — Stop silently dropping unparsable *active* tasknotes: `readTasknoteDir` reports `{ id, reason }` for the active dir only (archive reads stay silent, per the legacy write-once rationale), `/api/active` exposes them without ever returning a 500, and the board shows them alongside its existing parse diagnostics. Extend `devApi.test.ts` "tolerates a malformed tasknote" to assert the report. Surfaced by audit 2026-10-27 (Finding #2, Medium).
+- [ ] **FE-148** [moderate]🧩 | active-parse-visibility — Surface the unparsable active tasknotes FE-150 collects: `/api/active` exposes them without ever returning a 500, and the board shows them alongside its existing parse diagnostics. Surfaced by audit 2026-10-27 (Finding #2, Medium).
+- [ ] **FE-150** [moderate]🧩 [unattended] | active-parse-report — `readTasknoteDir` reports `{ id, reason }` for each unparsable tasknote in the active dir only (archive reads stay silent); `/api/active`'s response body unchanged. Extend `devApi.test.ts` "tolerates a malformed tasknote" to assert the report.
 
 ## Future Opportunities
 

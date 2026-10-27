@@ -54,7 +54,7 @@ Alphabetized. 73 entries. Maintained via epic children and audits.
 
 **epic Audit (.N)** — The closing subtask of an epic; verifies the completed work sits well in the codebase, runs the cumulative doc-drift sweep across AI-referenced docs, records findings even when clean. Executed via `/ft-close-epic`.
 
-**epic Discovery (.1)** — The opening subtask of an epic; surveys the shared surface, resolves scope questions, and files the concrete child task list in PLAN.md. Deliverable is the filed children (not code). When M>1, may carry optional `## 🌳 Fan-out`. Executed via `/ft-open-epic`.
+**epic Discovery (.1)** — The opening subtask of an epic; surveys the shared surface, resolves scope questions, and files the concrete child task list in PLAN.md. Deliverable is the filed children (not code). When M>1, may carry optional `## 🌳 Fan-out`. Executed via `/ft-open-epic`, or resumed on the right model as `/ft-open-epic <AREA>-<N>.1` after its model gate stops.
 
 **Execution (Phase 2)** — The implementation phase: mandatory pattern survey of neighboring code first, then minimal targeted change + tests on changed files only. See SPEC §"🛠️ Phase 2: Execution".
 

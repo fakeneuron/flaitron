@@ -16,7 +16,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Medium
 
 - [ ] **CORE-835** [heavy]🧠 | candidacy-rendered-surface — Clause 3 judges row text, but `--unattended` parks on every 👁️ emission (gate-postures §"Park conversions"), so a marked row whose work changes a rendered surface parks by construction. Add one semantic sentence, not a keyword: such work reads as needing a person; align Pin, since no test decides that 👁️. Evidence: 31 of 80 caobunga fleet parks were `visual-confirm`; 3 of the latest 7 were semantic-layer seed marks.
-- [ ] **CORE-837** [heavy]🧠 | open-epic-model-seam — Add a Step 4.5 model gate to `/ft-open-epic` after the filing commit: an under-tier `.1` tag STOPs with switch-or-proceed (tag kept), resumed via `/ft-open-epic <AREA>-<N>.1 [--deep]` recovering inputs from the filed rows. Gate + resume in a lazy fragment; trim SKILL.md to pay. Design in [[CORE-836]] Implementation Notes.
 
 ## Low
 
@@ -28,6 +27,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-837** [heavy]🧠 | open-epic-model-seam — Completed 2026-10-26.
 - [x] **CORE-836** [frontier]💎 | epic-filing-entry — Completed 2026-10-26.
 - [x] **CORE-834** [light] | updater-comment-pointer — Fixed "workspaceRoot comment below" → "above" in tools/update-adopters.mjs:358. Surfaced by audit 2026-10-26 (Finding #2, Low), fixed inline.
 - [x] **FE-144** [light] | parser-comment-placement — Moved scanDocument's header comment off resolveHeadingLine in viz/src/parser.ts. Surfaced by audit 2026-10-26 (Finding #1, Low), fixed inline.

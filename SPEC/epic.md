@@ -35,7 +35,8 @@ stays valid — both forms parse.
    subtask at the end. Implementation children may be empty at filing — the
    Discovery subtask populates them.
 2. **Run Discovery** via `/ft-open-epic` (which also files the epic in
-   step 1) or `/ft-task <ID>.1` if filed manually. Deliverable: filed child
+   step 1, and resumes a filed `.1` as `/ft-open-epic <AREA>-<N>.1` after
+   its model gate stops) or `/ft-task <ID>.1` if filed manually. Deliverable: filed child
    entries in PLAN.md, not code.
 3. **Run children** in order, normal flow. That serial default
    stands. Parallel execution of *independent* children is

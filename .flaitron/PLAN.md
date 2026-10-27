@@ -16,7 +16,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Medium
 
 - [ ] **CORE-835** [heavy]🧠 | candidacy-rendered-surface — Clause 3 judges row text, but `--unattended` parks on every 👁️ emission (gate-postures §"Park conversions"), so a marked row whose work changes a rendered surface parks by construction. Add one semantic sentence, not a keyword: such work reads as needing a person; align Pin, since no test decides that 👁️. Evidence: 31 of 80 caobunga fleet parks were `visual-confirm`; 3 of the latest 7 were semantic-layer seed marks.
-- [ ] **CORE-836** [frontier]💎 | epic-filing-entry — `/ft-open-epic` files and drives `.1` in one motion, so a `.1` tagged `[frontier]` still runs on the filing session's model. Explore a file-only `/ft-file-epic`, `/ft-file-task --epic`, or a stricter `/ft-open-epic` model gate before `.1` starts; settle naming and the file/drive split.
+- [ ] **CORE-837** [heavy]🧠 | open-epic-model-seam — Add a Step 4.5 model gate to `/ft-open-epic` after the filing commit: an under-tier `.1` tag STOPs with switch-or-proceed (tag kept), resumed via `/ft-open-epic <AREA>-<N>.1 [--deep]` recovering inputs from the filed rows. Gate + resume in a lazy fragment; trim SKILL.md to pay. Design in [[CORE-836]] Implementation Notes.
 
 ## Low
 
@@ -28,6 +28,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-836** [frontier]💎 | epic-filing-entry — Completed 2026-10-26.
 - [x] **CORE-834** [light] | updater-comment-pointer — Fixed "workspaceRoot comment below" → "above" in tools/update-adopters.mjs:358. Surfaced by audit 2026-10-26 (Finding #2, Low), fixed inline.
 - [x] **FE-144** [light] | parser-comment-placement — Moved scanDocument's header comment off resolveHeadingLine in viz/src/parser.ts. Surfaced by audit 2026-10-26 (Finding #1, Low), fixed inline.
 - [x] **FE-143** [light]🔧 | dedupe-check-typecheck — Completed 2026-10-26.

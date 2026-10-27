@@ -1,6 +1,6 @@
 ---
 name: ft-task
-description: Start a flaitron tasknote for a normal-sized, multi-step, or design-tradeoff-bearing task and drive it through the SPEC's 4-phase workflow. With `--debug` (`-d`), runs hypothesis-first for bugs. With `--loop`, iterates Phase 2/3 until a machine-checkable check passes. With `--micro`, records a micro-sized task in one ⚡ Notes log instead of four phase checklists. With `--fast` (`-f`), suppresses conditional gates. With `--unattended`, runs operator-less, parking at gates instead of asking.
+description: Start a flaitron tasknote for a normal-sized, multi-step, or design-tradeoff-bearing task and drive it through the SPEC's 4-phase workflow. With `--debug` (`-d`), runs hypothesis-first for bugs. With `--loop`, iterates Phase 2/3 until a machine-checkable check passes. With `--micro`, records the default route for known work in one ⚡ Notes log instead of four phase checklists. With `--fast` (`-f`), suppresses conditional gates. With `--unattended`, runs operator-less, parking at gates instead of asking.
 argument-hint: <TASK-ID> [--debug | -d] [--loop] [--micro] [--fast | -f] [--unattended]
 ---
 

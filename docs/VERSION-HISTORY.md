@@ -22,6 +22,15 @@ unless correcting a factual error.
 
 ---
 
+## v8.0.0 — active tasknotes stay visible when they fail to parse
+
+- GET /api/active returns { tasknotes, unparsable } instead of a bare array. The bundled board reads the new shape. A custom client reads .tasknotes.
+- Viz typecheck is split into a browser tier and a DOM-free node tier, with the solution tsconfig and the tier import gates.
+- /ft-open-epic stops after filing when the discovery child is under-tier, and resumes with /ft-open-epic <AREA>-<N>.1.
+- [unattended] declines a row whose described work changes a rendered surface.
+
+Also: /ft-update drops the finished v6 rename and v7 link-swap; a dirty tree stops with the DIRTY cue; just check is bound to the validation roster.
+
 ## v7.5.0 — --micro becomes the default route for known work
 
 - Known work with no design question, small multi-file included, routes to /ft-task --micro; Re-scope promotes it when it grows

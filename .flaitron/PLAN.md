@@ -27,6 +27,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-841** [moderate]🧩 | release v8.0.0 — Completed 2026-10-27.
 - [x] **FE-148** [moderate]🧩 | active-parse-visibility — Completed 2026-10-27.
 - [x] **FE-149** [light] | degraded-banner-copy — Completed 2026-10-27.
 - [x] **FE-150** [moderate]🧩 [unattended] | active-parse-report — Completed 2026-10-27.

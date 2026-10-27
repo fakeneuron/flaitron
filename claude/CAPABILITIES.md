@@ -74,7 +74,7 @@ ledger's §"Out of scope for this ledger", alongside `claude/AGENTS-snippet.md`.
 
 ## Last verified
 
-`v7.5.0 · 2026-10-25 (dogfooded)`. See [`../docs/AGENT-COMPAT.md`](../docs/AGENT-COMPAT.md) §"Reading the cells" for the full `last-verified` format and update obligation.
+`v7.5.0 · 2026-10-25 (dogfooded; skipped @ v8.0.0)`. See [`../docs/AGENT-COMPAT.md`](../docs/AGENT-COMPAT.md) §"Reading the cells" for the full `last-verified` format and update obligation.
 
 ## Related
 

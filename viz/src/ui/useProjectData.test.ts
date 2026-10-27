@@ -642,4 +642,43 @@ describe('useProjectData — per-scope error', () => {
     await refreshAndSettle(hook, ['plan']);
     expect(hook.result.current.error).toBe('Tasknote list failed: HTTP 500');
   });
+
+  it('commits the healthy slices when another scope fails in the same load', async () => {
+    const hook = mountFailing(new Set(['/api/active']));
+    await waitFor(() => expect(hook.result.current.error).toBe('Tasknote list failed: HTTP 500'));
+
+    expect(hook.result.current.tasks.map((t) => t.id)).toEqual(['FE-1']);
+  });
+
+  it('clears standing load errors on reset()', async () => {
+    const hook = mountFailing(new Set(['/api/plan']));
+    await waitFor(() => expect(hook.result.current.error).toBe('PLAN.md fetch failed: HTTP 500'));
+
+    act(() => hook.result.current.reset());
+    expect(hook.result.current.error).toBeNull();
+  });
+
+  it('drops a failure from a project the hook has already switched away from', async () => {
+    let rejectP1!: (e: Error) => void;
+    // Every p1 fetch hangs on one shared promise, so a single rejection fails
+    // the whole load after the switch.
+    const hung = new Promise<never>((_, reject) => {
+      rejectP1 = reject;
+    });
+    vi.stubGlobal('fetch', vi.fn(() => hung));
+
+    // Switch to no project at all: no newer load stamps a seq, so only the
+    // activeProjectRef guard stands between p1's failure and the error state.
+    const { result, rerender } = renderHook(
+      ({ p }: { p: string | null }) => useProjectData(p),
+      { initialProps: { p: 'p1' as string | null } },
+    );
+    rerender({ p: null });
+
+    await act(async () => {
+      rejectP1(new Error('network down'));
+      await new Promise((r) => setTimeout(r, 0));
+    });
+    expect(result.current.error).toBeNull();
+  });
 });

@@ -109,15 +109,16 @@ export function useProjectData(activeProject: string | null): {
         if (archiveRes && !archiveRes.ok) {
           failures.push(['archive', `Archive list failed: HTTP ${archiveRes.status}`]);
         }
-        if (failures.length > 0) throw new ScopeLoadError(failures);
-        const md = planRes ? await planRes.text() : null;
+        // A failed scope must not hold back the healthy ones: their bodies are
+        // read and committed below, and the collected failures are thrown after.
+        const md = planRes?.ok ? await planRes.text() : null;
         // Rotated `## Completed` history. Unlike the three above this one never
         // throws: the endpoint already answers an absent archive with an empty
         // body, and a board that PLAN.md alone can render must not be taken down
         // by supplementary history.
         const archiveMd = planArchiveRes?.ok ? await planArchiveRes.text() : '';
-        const active = activeRes ? ((await activeRes.json()) as Tasknote[]) : null;
-        const archived = archiveRes ? ((await archiveRes.json()) as Tasknote[]) : null;
+        const active = activeRes?.ok ? ((await activeRes.json()) as Tasknote[]) : null;
+        const archived = archiveRes?.ok ? ((await archiveRes.json()) as Tasknote[]) : null;
         if (activeProjectRef.current !== project) return;
         if (md !== null && stillLatest('plan')) {
           const parsed = parsePlanWithDiagnostics(md, archiveMd);
@@ -131,7 +132,11 @@ export function useProjectData(activeProject: string | null): {
         if (archived !== null && stillLatest('archive')) {
           setArchivedById(new Map(archived.map((t) => [t.id, t])));
         }
+        if (failures.length > 0) throw new ScopeLoadError(failures);
       } catch (e) {
+        // Same project guard as the success path: an error from a project the
+        // user has already left must not surface on the one they switched to.
+        if (activeProjectRef.current !== project) return;
         const message = (e as Error).message;
         const failures: readonly [ChangeScope, string][] =
           e instanceof ScopeLoadError ? e.failures : [...want].map((scope) => [scope, message]);
@@ -256,6 +261,7 @@ export function useProjectData(activeProject: string | null): {
     setNearMissHeadings([]);
     setActiveById(new Map());
     setArchivedById(new Map());
+    setErrors(NO_ERRORS);
     setLoading(true);
   }, []);
 

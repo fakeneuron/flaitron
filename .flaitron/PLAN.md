@@ -18,7 +18,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Low
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
-- [ ] **FE-146** [light]🔧 | project-data-error-hygiene — useProjectData follow-ups: commit healthy scope slices when another scope's fetch fails; clear errors in reset() and guard load()'s catch on activeProjectRef. Surfaced by FE-145 review.
 
 ## Future Opportunities
 
@@ -26,6 +25,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **FE-146** [light]🔧 | project-data-error-hygiene — Completed 2026-10-27.
 - [x] **CORE-838** [light]🔧 [unattended] | micro-default-wording — Completed 2026-10-27.
 - [x] **CORE-839** [light] | audit-overlay-reconcile — Re-reconciled `.flaitron/audit-overlay/SKILL.md` against `ft-audit` at v7.5.0 (CORE-802 decisions file, CORE-815.4 `[moderate]`: both inherited, no delta needed): `flaitron-reconciled:` v7.0.0 → v7.5.0, and the gates line's `ci.yml:33-41` range replaced by a step-level citation. Surfaced by audit-docs 2026-10-27 (Finding #2, Medium; Finding #3, Low), fixed inline.
 - [x] **CORE-840** [light] | retire-superseded-spec — Removed `.flaitron/specs/spec-to-work-handoff.md` (superseded 2026-09-12, no inbound links, cited the retired `/ft-epic-discovery` seven times); history stays in git. Surfaced by audit-docs 2026-10-27 (Finding #4, Low), fixed inline.

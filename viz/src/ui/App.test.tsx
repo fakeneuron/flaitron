@@ -425,12 +425,19 @@ describe('App — load() partial failure on project switch', () => {
 
   it('clears stale rows when the new project /api/archive fails', async () => {
     const user = userEvent.setup();
+    // acme answers with its own plan, so a surviving CORE-100 can only be the
+    // previous project's stale row, while ACME-1 shows its healthy slice
+    // committing despite the failed archive.
     renderApp({
       plan,
       active,
       projects: ['flaitron', 'acme'],
       perProject: {
-        acme: { fail: { archive: 500 } },
+        acme: {
+          plan: '## High\n\n- [ ] **ACME-1** | two — Task two\n',
+          active: [],
+          fail: { archive: 500 },
+        },
       },
     });
 
@@ -445,6 +452,7 @@ describe('App — load() partial failure on project switch', () => {
       expect(screen.getByText(/Archive list failed: HTTP 500/)).toBeInTheDocument(),
     );
 
+    expect(await screen.findByText('ACME-1')).toBeInTheDocument();
     expect(screen.queryByText('CORE-100')).not.toBeInTheDocument();
   });
 });

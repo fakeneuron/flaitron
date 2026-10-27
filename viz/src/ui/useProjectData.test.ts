@@ -551,3 +551,95 @@ describe('useProjectData — rotated PLAN-ARCHIVE.md', () => {
     expect(hook.result.current.error).toBeNull();
   });
 });
+
+// The load error is tracked per scope: a refresh clears only the errors of the
+// scopes it re-fetched, so a scoped refresh cannot wipe a still-current error
+// that belongs to a scope it never touched.
+describe('useProjectData — per-scope error', () => {
+  const mountFailing = (failing: Set<string>) => {
+    const fetchMock = vi.fn((url: string) => {
+      const route = url.split('?')[0]!;
+      if (failing.has(route)) return Promise.resolve({ ok: false, status: 500 });
+      if (routeIs(url, '/api/plan')) return Promise.resolve(planRes(planWith('FE-1')));
+      if (routeIs(url, '/api/plan-archive')) return Promise.resolve(planRes(''));
+      return Promise.resolve(jsonRes([]));
+    });
+    vi.stubGlobal('fetch', fetchMock);
+    return renderHook(() => useProjectData('p1'));
+  };
+
+  const refreshAndSettle = async (
+    hook: ReturnType<typeof mountFailing>,
+    scopes?: Parameters<ReturnType<typeof mountFailing>['result']['current']['refresh']>[0],
+  ) => {
+    await act(async () => {
+      hook.result.current.refresh(scopes);
+      await new Promise((r) => setTimeout(r, 0));
+    });
+  };
+
+  it('keeps a PLAN.md error across a successful active-scoped refresh', async () => {
+    const failing = new Set(['/api/plan']);
+    const hook = mountFailing(failing);
+    await waitFor(() => expect(hook.result.current.error).toBe('PLAN.md fetch failed: HTTP 500'));
+
+    await refreshAndSettle(hook, ['active']);
+    expect(hook.result.current.error).toBe('PLAN.md fetch failed: HTTP 500');
+  });
+
+  it('keeps a tasknote-list error across a successful plan-scoped refresh', async () => {
+    const failing = new Set(['/api/active']);
+    const hook = mountFailing(failing);
+    await waitFor(() => expect(hook.result.current.error).toBe('Tasknote list failed: HTTP 500'));
+
+    await refreshAndSettle(hook, ['plan']);
+    expect(hook.result.current.error).toBe('Tasknote list failed: HTTP 500');
+  });
+
+  it('clears a scope\'s own error when that scope refreshes successfully', async () => {
+    const failing = new Set(['/api/plan']);
+    const hook = mountFailing(failing);
+    await waitFor(() => expect(hook.result.current.error).toBe('PLAN.md fetch failed: HTTP 500'));
+
+    failing.clear();
+    await refreshAndSettle(hook, ['plan']);
+    expect(hook.result.current.error).toBeNull();
+  });
+
+  it('clears every scope\'s error on an unscoped refresh', async () => {
+    const failing = new Set(['/api/plan']);
+    const hook = mountFailing(failing);
+    await waitFor(() => expect(hook.result.current.error).not.toBeNull());
+
+    failing.clear();
+    await refreshAndSettle(hook);
+    expect(hook.result.current.error).toBeNull();
+  });
+
+  it('exposes the first standing error in plan, active, archive order', async () => {
+    const failing = new Set(['/api/active']);
+    const hook = mountFailing(failing);
+    await waitFor(() => expect(hook.result.current.error).toBe('Tasknote list failed: HTTP 500'));
+
+    // An archive-scoped failure lands beside the active one; active still wins.
+    failing.add('/api/archive');
+    await refreshAndSettle(hook, ['archive']);
+    expect(hook.result.current.error).toBe('Tasknote list failed: HTTP 500');
+
+    // Once active recovers, the archive error surfaces.
+    failing.delete('/api/active');
+    await refreshAndSettle(hook, ['active']);
+    expect(hook.result.current.error).toBe('Archive list failed: HTTP 500');
+  });
+
+  it('keeps both errors when two scopes fail in the same load', async () => {
+    const failing = new Set(['/api/plan', '/api/active']);
+    const hook = mountFailing(failing);
+    await waitFor(() => expect(hook.result.current.error).toBe('PLAN.md fetch failed: HTTP 500'));
+
+    // Plan recovers; the active failure from that same first load still stands.
+    failing.delete('/api/plan');
+    await refreshAndSettle(hook, ['plan']);
+    expect(hook.result.current.error).toBe('Tasknote list failed: HTTP 500');
+  });
+});

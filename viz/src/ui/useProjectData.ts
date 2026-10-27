@@ -13,6 +13,19 @@ import { ALL_CHANGE_SCOPES, parseChangeData, type ChangeScope } from '../sseChan
 export const LIVE_RECOVERY_MS = 5000;
 
 type ScopeSeqs = Record<ChangeScope, number>;
+type ScopeErrors = Record<ChangeScope, string | null>;
+
+const NO_ERRORS: ScopeErrors = { plan: null, active: null, archive: null };
+
+// Fetch failures attributable to scopes, every failing one rather than just the
+// first, so two scopes failing in the same load each keep their own error.
+// Anything else thrown inside a load (a network rejection, a malformed body)
+// cannot be pinned to a scope, so it lands on every scope that load requested.
+class ScopeLoadError extends Error {
+  constructor(readonly failures: readonly [ChangeScope, string][]) {
+    super(failures[0]![1]);
+  }
+}
 
 export function useProjectData(activeProject: string | null): {
   tasks: Task[];
@@ -35,7 +48,10 @@ export function useProjectData(activeProject: string | null): {
   const [activeById, setActiveById] = useState<Map<string, Tasknote>>(new Map());
   const [archivedById, setArchivedById] = useState<Map<string, Tasknote>>(new Map());
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // Per scope, for the same reason the load seqs are: a scoped refresh must
+  // clear only the errors of the scopes it re-fetched, not one belonging to
+  // a scope it never touched.
+  const [errors, setErrors] = useState<ScopeErrors>(NO_ERRORS);
   const [liveDisconnected, setLiveDisconnected] = useState(false);
   const activeProjectRef = useRef<string | null>(null);
   activeProjectRef.current = activeProject;
@@ -61,11 +77,15 @@ export function useProjectData(activeProject: string | null): {
       const seqs = {} as ScopeSeqs;
       for (const scope of want) seqs[scope] = ++loadSeqRef.current[scope];
       // A slice is still ours to commit while nothing newer has been stamped
-      // for it. `some` for the shared error/loading writes: the load is stale
-      // only once every scope it asked for has been superseded.
+      // for it. `some` for the shared loading write: the load is stale only
+      // once every scope it asked for has been superseded.
       const stillLatest = (scope: ChangeScope) => loadSeqRef.current[scope] === seqs[scope];
       const anyStillLatest = () => [...want].some(stillLatest);
-      setError(null);
+      setErrors((prev) => {
+        const next = { ...prev };
+        for (const scope of want) next[scope] = null;
+        return next;
+      });
       if (showSkeleton) setLoading(true);
       try {
         const q = `?project=${encodeURIComponent(project)}`;
@@ -79,13 +99,17 @@ export function useProjectData(activeProject: string | null): {
           want.has('active') ? fetch(`/api/active${q}`) : undefined,
           want.has('archive') ? fetch(`/api/archive${q}`) : undefined,
         ]);
-        if (planRes && !planRes.ok) throw new Error(`PLAN.md fetch failed: HTTP ${planRes.status}`);
+        const failures: [ChangeScope, string][] = [];
+        if (planRes && !planRes.ok) {
+          failures.push(['plan', `PLAN.md fetch failed: HTTP ${planRes.status}`]);
+        }
         if (activeRes && !activeRes.ok) {
-          throw new Error(`Tasknote list failed: HTTP ${activeRes.status}`);
+          failures.push(['active', `Tasknote list failed: HTTP ${activeRes.status}`]);
         }
         if (archiveRes && !archiveRes.ok) {
-          throw new Error(`Archive list failed: HTTP ${archiveRes.status}`);
+          failures.push(['archive', `Archive list failed: HTTP ${archiveRes.status}`]);
         }
+        if (failures.length > 0) throw new ScopeLoadError(failures);
         const md = planRes ? await planRes.text() : null;
         // Rotated `## Completed` history. Unlike the three above this one never
         // throws: the endpoint already answers an absent archive with an empty
@@ -108,7 +132,17 @@ export function useProjectData(activeProject: string | null): {
           setArchivedById(new Map(archived.map((t) => [t.id, t])));
         }
       } catch (e) {
-        if (anyStillLatest()) setError((e as Error).message);
+        const message = (e as Error).message;
+        const failures: readonly [ChangeScope, string][] =
+          e instanceof ScopeLoadError ? e.failures : [...want].map((scope) => [scope, message]);
+        const current = failures.filter(([scope]) => stillLatest(scope));
+        if (current.length > 0) {
+          setErrors((prev) => {
+            const next = { ...prev };
+            for (const [scope, msg] of current) next[scope] = msg;
+            return next;
+          });
+        }
       } finally {
         // Only the load that raised the skeleton lowers it. A scoped refresh can
         // now outrun an in-flight initial load, and clearing the flag from there
@@ -211,6 +245,10 @@ export function useProjectData(activeProject: string | null): {
       es?.close();
     };
   }, [refresh]);
+
+  // The first standing error in scope order, so one banner string still
+  // serves callers that only render a single message.
+  const error = ALL_CHANGE_SCOPES.map((scope) => errors[scope]).find((e) => e !== null) ?? null;
 
   const reset = useCallback(() => {
     setTasks([]);

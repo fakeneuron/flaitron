@@ -44,6 +44,16 @@ export interface Tasknote {
   closureDrift: ClosureDrift | null;
 }
 
+export interface UnparsableTasknote {
+  id: string;
+  reason: string;
+}
+
+export interface ActiveTasknotesResponse {
+  tasknotes: Tasknote[];
+  unparsable: UnparsableTasknote[];
+}
+
 export const STARTER_SUBSECTION_KEYS: StarterSubsectionKey[] = [
   'whyExists',
   'solutionShape',

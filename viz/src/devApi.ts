@@ -4,6 +4,7 @@ import { endPlain } from './apiResponse.ts';
 import { originGuard } from './originGuard.ts';
 import { realpathWithin, safeRealpath } from './fsSafe.ts';
 import { readTasknoteDir } from './tasknoteRead.ts';
+import type { UnparsableTasknote } from './tasknote.ts';
 import type { ProjectDescriptor } from './workspace.ts';
 import type { ArchiveCache } from './archiveCache.ts';
 import type { WatchDegradation } from './flaitronWatch.ts';
@@ -231,14 +232,15 @@ export function createActiveHandler(
       const realRoot = await safeRealpath(project.root);
       if (realRoot === null) {
         res.setHeader('Content-Type', 'application/json');
-        res.end('[]');
+        res.end('{"tasknotes":[],"unparsable":[]}');
         return;
       }
+      const unparsable: UnparsableTasknote[] = [];
       const tasknotes = await readTasknoteDir(realRoot, project.tasknoteDir, (tasknote) => {
-        console.error('[devApi] Failed to parse tasknote:', tasknote);
+        unparsable.push(tasknote);
       });
       res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify(tasknotes));
+      res.end(JSON.stringify({ tasknotes, unparsable }));
     } catch (e) {
       console.error(`[devApi] Failed to list tasknotes: ${(e as Error).message}`);
       endPlain(res, 500, 'Failed to list tasknotes');

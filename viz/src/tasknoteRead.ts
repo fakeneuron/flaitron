@@ -2,12 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { parseTasknote } from './tasknote-parse.ts';
 import { realpathWithin, safeReaddir } from './fsSafe.ts';
-import type { Tasknote } from './tasknote.ts';
-
-export interface UnparsableTasknote {
-  id: string;
-  reason: string;
-}
+import type { Tasknote, UnparsableTasknote } from './tasknote.ts';
 
 // Read every `*.md` tasknote directly inside `dir`. Shared by
 // `devApi.createActiveHandler` (the active `.flaitron/tasknote/` dir) and
@@ -24,13 +19,13 @@ export interface UnparsableTasknote {
 // Callers resolve the root and handle its `null` themselves because TypeScript
 // cannot narrow a captured `string | null` inside the `files.map` closure.
 //
-// Two silent per-file drops, both deliberate, neither fatal to the listing:
+// Two per-file drops, both deliberate, neither fatal to the listing:
 //   * resolves outside the project root — no user action possible;
 //   * unreadable or malformed — legacy archived tasknotes may carry malformed
 //     YAML frontmatter (write-once policy in SPEC.md) and a TOCTOU delete
-//     between readdir and readFile is routine during live editing. Per-file
-//     warnings would be a wall of noise on every `npm run dev` for anyone with
-//     old adopter checkouts.
+//     between readdir and readFile is routine during live editing. Archive
+//     callers omit the optional reporter to avoid a wall of warnings for old
+//     adopter checkouts; the active endpoint collects those failures for UI.
 //
 // The parsed note records the pre-realpath `path`, matching what callers show
 // the operator; the resolved path is used only to read the bytes.

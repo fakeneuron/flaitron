@@ -5,7 +5,7 @@ import {
   type UnparsedLine,
   type NearMissHeading,
 } from '../parser';
-import { type Tasknote } from '../tasknote';
+import { type ActiveTasknotesResponse, type Tasknote, type UnparsableTasknote } from '../tasknote';
 import {
   ALL_CHANGE_SCOPES,
   parseChangeData,
@@ -36,6 +36,7 @@ export function useProjectData(activeProject: string | null): {
   tasks: Task[];
   unparsed: UnparsedLine[];
   nearMissHeadings: NearMissHeading[];
+  unparsableTasknotes: UnparsableTasknote[];
   tasknotesById: Map<string, Tasknote>;
   loading: boolean;
   error: string | null;
@@ -47,6 +48,7 @@ export function useProjectData(activeProject: string | null): {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [unparsed, setUnparsed] = useState<UnparsedLine[]>([]);
   const [nearMissHeadings, setNearMissHeadings] = useState<NearMissHeading[]>([]);
+  const [unparsableTasknotes, setUnparsableTasknotes] = useState<UnparsableTasknote[]>([]);
   // Held as two slices rather than one merged map so a scope-targeted refetch
   // can replace just its own half. A merged map updated in place could not
   // express deletion: a tasknote that vanished from /api/active would linger
@@ -126,7 +128,9 @@ export function useProjectData(activeProject: string | null): {
         // body, and a board that PLAN.md alone can render must not be taken down
         // by supplementary history.
         const archiveMd = planArchiveRes?.ok ? await planArchiveRes.text() : '';
-        const active = activeRes?.ok ? ((await activeRes.json()) as Tasknote[]) : null;
+        const active = activeRes?.ok
+          ? ((await activeRes.json()) as ActiveTasknotesResponse | Tasknote[])
+          : null;
         const archived = archiveRes?.ok ? ((await archiveRes.json()) as Tasknote[]) : null;
         if (activeProjectRef.current !== project) return;
         if (md !== null && stillLatest('plan')) {
@@ -136,7 +140,10 @@ export function useProjectData(activeProject: string | null): {
           setNearMissHeadings(parsed.nearMissHeadings);
         }
         if (active !== null && stillLatest('active')) {
-          setActiveById(new Map(active.map((t) => [t.id, t])));
+          // Older dev servers can still answer with the former bare array.
+          const tasknotes = Array.isArray(active) ? active : active.tasknotes;
+          setActiveById(new Map(tasknotes.map((t) => [t.id, t])));
+          setUnparsableTasknotes(Array.isArray(active) ? [] : active.unparsable);
         }
         if (archived !== null && stillLatest('archive')) {
           setArchivedById(new Map(archived.map((t) => [t.id, t])));
@@ -283,6 +290,7 @@ export function useProjectData(activeProject: string | null): {
     setTasks([]);
     setUnparsed([]);
     setNearMissHeadings([]);
+    setUnparsableTasknotes([]);
     setActiveById(new Map());
     setArchivedById(new Map());
     setErrors(NO_ERRORS);
@@ -301,6 +309,7 @@ export function useProjectData(activeProject: string | null): {
     tasks,
     unparsed,
     nearMissHeadings,
+    unparsableTasknotes,
     tasknotesById,
     loading,
     error,

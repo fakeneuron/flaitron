@@ -63,6 +63,7 @@ export const App: React.FC = () => {
     tasks,
     unparsed,
     nearMissHeadings,
+    unparsableTasknotes,
     tasknotesById,
     loading: dataLoading,
     error: dataError,
@@ -221,6 +222,7 @@ export const App: React.FC = () => {
         inProgress={inProgress}
         starterCount={starterCount}
         unparsedCount={unparsed.length}
+        unparsableTasknoteCount={unparsableTasknotes.length}
         duplicateEpicCount={duplicateEpics.length}
         nearMissHeadingCount={nearMissHeadings.length}
         liveDisconnected={liveDisconnected}
@@ -272,6 +274,20 @@ export const App: React.FC = () => {
             <li key={u.line}>
               L{u.line}: {u.text}
             </li>
+          ))}
+        </DiagnosticBanner>
+      )}
+
+      {!loading && unparsableTasknotes.length > 0 && (
+        <DiagnosticBanner
+          message={diagnosticMessage(
+            unparsableTasknotes.length,
+            '1 active tasknote failed to parse:',
+            (n) => `${n} active tasknotes failed to parse:`,
+          )}
+        >
+          {unparsableTasknotes.map((note) => (
+            <li key={note.id}>{note.id}: {note.reason}</li>
           ))}
         </DiagnosticBanner>
       )}

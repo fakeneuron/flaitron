@@ -680,8 +680,9 @@ created: 2026-05-18
     expect(state.headers['content-security-policy']).toBe(
       "default-src 'none'; frame-ancestors 'none'",
     );
-    const parsed = JSON.parse(state.body) as Array<{ id: string }>;
-    expect(parsed.map((t) => t.id)).toEqual(['CORE-999']);
+    const parsed = JSON.parse(state.body) as { tasknotes: Array<{ id: string }>; unparsable: unknown[] };
+    expect(parsed.tasknotes.map((t) => t.id)).toEqual(['CORE-999']);
+    expect(parsed.unparsable).toEqual([]);
   });
 
   it('tolerates a malformed tasknote and returns the rest', async () => {
@@ -703,17 +704,15 @@ created: 2026-05-18
       headers: { origin: ALLOWED_ORIGIN },
     });
     const { res, state } = makeRes();
-    const logged = vi.spyOn(console, 'error').mockImplementation(() => {});
-
     await handler(req, res);
 
     expect(state.statusCode).toBe(200);
-    const parsed = JSON.parse(state.body) as Array<{ id: string }>;
-    expect(parsed.map((t) => t.id)).toEqual(['CORE-999']);
-    expect(logged).toHaveBeenCalledWith('[devApi] Failed to parse tasknote:', {
+    const parsed = JSON.parse(state.body) as { tasknotes: Array<{ id: string }>; unparsable: Array<{ id: string; reason: string }> };
+    expect(parsed.tasknotes.map((t) => t.id)).toEqual(['CORE-999']);
+    expect(parsed.unparsable).toEqual([{
       id: 'CORE-998',
       reason: expect.any(String),
-    });
+    }]);
   });
 
   it('drops tasknotes that resolve outside the project root', async () => {
@@ -751,7 +750,7 @@ created: 2026-08-21
     await handler(req, res);
 
     expect(state.statusCode).toBe(200);
-    expect(JSON.parse(state.body)).toEqual([]);
+    expect(JSON.parse(state.body)).toEqual({ tasknotes: [], unparsable: [] });
   });
 
   it('still lists tasknotes under a symlinked project root', async () => {
@@ -787,8 +786,9 @@ created: 2026-08-21
 
     await handler(req, res);
 
-    const parsed = JSON.parse(state.body) as Array<{ id: string }>;
-    expect(parsed.map((t) => t.id)).toEqual(['CORE-999']);
+    const parsed = JSON.parse(state.body) as { tasknotes: Array<{ id: string }>; unparsable: unknown[] };
+    expect(parsed.tasknotes.map((t) => t.id)).toEqual(['CORE-999']);
+    expect(parsed.unparsable).toEqual([]);
   });
 });
 

@@ -17,6 +17,7 @@ interface AppHeaderProps {
   inProgress: number;
   starterCount: number;
   unparsedCount: number;
+  unparsableTasknoteCount: number;
   duplicateEpicCount: number;
   nearMissHeadingCount: number;
   liveDisconnected: boolean;
@@ -42,6 +43,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
   inProgress,
   starterCount,
   unparsedCount,
+  unparsableTasknoteCount,
   duplicateEpicCount,
   nearMissHeadingCount,
   liveDisconnected,
@@ -75,6 +77,9 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                 ? ` · flaitron ${projectVersions[activeProject ?? '']}`
                 : null}
               {unparsedCount > 0 && <HeaderBadge>⚠ {unparsedCount} unparsed</HeaderBadge>}
+              {unparsableTasknoteCount > 0 && (
+                <HeaderBadge>⚠ {unparsableTasknoteCount} unparsable tasknote{unparsableTasknoteCount === 1 ? '' : 's'}</HeaderBadge>
+              )}
               {duplicateEpicCount > 0 && (
                 <HeaderBadge>
                   ⚠ {duplicateEpicCount} duplicate epic{duplicateEpicCount === 1 ? '' : 's'}

@@ -64,6 +64,9 @@ describe('useProjectData — same-project load race', () => {
       return gates.get(gen)!.then(() => {
         if (routeIs(url, '/api/plan')) return planRes(planTextByGen.get(gen) ?? '');
         if (routeIs(url, '/api/plan-archive')) return planRes('');
+        if (routeIs(url, '/api/active')) {
+          return jsonRes({ tasknotes: [], unparsable: [{ id: `FE-${gen}`, reason: 'bad YAML' }] });
+        }
         return jsonRes([]);
       });
     });
@@ -93,6 +96,7 @@ describe('useProjectData — same-project load race', () => {
       await new Promise((r) => setTimeout(r, 0));
     });
     await waitFor(() => expect(result.current.tasks[0]?.id).toBe('FE-3'));
+    expect(result.current.unparsableTasknotes[0]?.id).toBe('FE-3');
 
     await act(async () => {
       releases.get(2)!();
@@ -101,6 +105,7 @@ describe('useProjectData — same-project load race', () => {
 
     // The stale gen-2 response must NOT overwrite the newer gen-3 data.
     expect(result.current.tasks[0]?.id).toBe('FE-3');
+    expect(result.current.unparsableTasknotes[0]?.id).toBe('FE-3');
   });
 });
 
@@ -548,6 +553,31 @@ describe('useProjectData — scoped refetch', () => {
     await waitFor(() =>
       expect([...hook.result.current.tasknotesById.keys()]).toEqual(['FE-Z']),
     );
+  });
+
+  it('replaces active parse diagnostics on a scoped refresh and clears them on reset', async () => {
+    let unparsable = [{ id: 'FE-BAD', reason: 'bad YAML' }];
+    const fetchMock = vi.fn((url: string) => {
+      if (routeIs(url, '/api/plan')) return Promise.resolve(planRes(planWith('FE-1')));
+      if (routeIs(url, '/api/plan-archive')) return Promise.resolve(planRes(''));
+      if (routeIs(url, '/api/active')) {
+        return Promise.resolve(jsonRes({ tasknotes: [], unparsable }));
+      }
+      return Promise.resolve(jsonRes([]));
+    });
+    vi.stubGlobal('fetch', fetchMock);
+    const hook = renderHook(() => useProjectData('p1'));
+    await waitFor(() => expect(hook.result.current.unparsableTasknotes).toEqual(unparsable));
+
+    unparsable = [];
+    await emitAndSettle('{"project":"p1","scopes":["active"]}');
+    await waitFor(() => expect(hook.result.current.unparsableTasknotes).toEqual([]));
+
+    unparsable = [{ id: 'FE-NEW', reason: 'unreadable' }];
+    await emitAndSettle('{"project":"p1","scopes":["active"]}');
+    await waitFor(() => expect(hook.result.current.unparsableTasknotes).toEqual(unparsable));
+    act(() => hook.result.current.reset());
+    expect(hook.result.current.unparsableTasknotes).toEqual([]);
   });
 
   // One counter would be safe only if every load were complete. With partial

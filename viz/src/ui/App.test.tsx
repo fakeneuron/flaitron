@@ -1104,6 +1104,20 @@ describe('App — unparsed-line diagnostics', () => {
   });
 });
 
+describe('App — unparsable active tasknotes', () => {
+  it('shows the ID and parse reason beside PLAN diagnostics', async () => {
+    renderApp({
+      plan: '## High\n\n- [ ] *CORE-101* | broken — Bad PLAN row.\n',
+      unparsable: [{ id: 'CORE-102', reason: 'bad YAML frontmatter' }],
+    });
+
+    expect(await screen.findByText(/1 active tasknote failed to parse/)).toBeInTheDocument();
+    expect(screen.getByText('CORE-102: bad YAML frontmatter')).toBeInTheDocument();
+    expect(screen.getByText(/1 line in PLAN\.md looks like a task/)).toBeInTheDocument();
+    expect(screen.getByText(/1 unparsable tasknote/)).toBeInTheDocument();
+  });
+});
+
 describe('App — duplicate-epic diagnostics', () => {
   const plan = `## Medium
 

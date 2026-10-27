@@ -2,11 +2,12 @@ import { render, type RenderResult } from '@testing-library/react';
 import React from 'react';
 import { vi } from 'vitest';
 import { App } from '../ui/App';
-import { emptyStarterSubsections, type Tasknote } from '../tasknote';
+import { emptyStarterSubsections, type Tasknote, type UnparsableTasknote } from '../tasknote';
 
 interface ProjectFetchOverride {
   plan?: string;
   active?: Tasknote[];
+  unparsable?: UnparsableTasknote[];
   archive?: Tasknote[];
   fail?: { plan?: number; active?: number; archive?: number };
 }
@@ -14,6 +15,7 @@ interface ProjectFetchOverride {
 interface FetchSeed {
   plan: string;
   active?: Tasknote[];
+  unparsable?: UnparsableTasknote[];
   archive?: Tasknote[];
   projects?: string[];
   projectVersions?: Record<string, string | null>;
@@ -78,7 +80,10 @@ function seedFetch(seed: FetchSeed): void {
     }
     if (url.pathname.endsWith('/api/active')) {
       if (fail.active) return new Response('active failed', { status: fail.active });
-      return new Response(JSON.stringify(override.active ?? defaultActive), {
+      return new Response(JSON.stringify({
+        tasknotes: override.active ?? defaultActive,
+        unparsable: override.unparsable ?? seed.unparsable ?? [],
+      }), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
       });

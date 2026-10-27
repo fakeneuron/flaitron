@@ -10,6 +10,10 @@ export type ChangeScope = 'plan' | 'active' | 'archive';
 
 export const ALL_CHANGE_SCOPES: readonly ChangeScope[] = ['plan', 'active', 'archive'];
 
+// Sticky "the server's file watcher died" event. Shared so the frame the server
+// writes and the listener the client registers cannot drift apart.
+export const SSE_DEGRADED_EVENT = 'degraded';
+
 function isChangeScope(value: unknown): value is ChangeScope {
   return value === 'plan' || value === 'active' || value === 'archive';
 }

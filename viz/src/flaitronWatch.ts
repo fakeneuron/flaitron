@@ -2,7 +2,7 @@ import type { Stats } from 'node:fs';
 import type { ServerResponse } from 'node:http';
 import { dirname } from 'node:path';
 import type { ArchiveCache } from './archiveCache.ts';
-import { formatChangePayload, type ChangeScope } from './sseChange.ts';
+import { formatChangePayload, SSE_DEGRADED_EVENT, type ChangeScope } from './sseChange.ts';
 import { projectForActiveTasknote, projectForPath } from './watchSet.ts';
 import type { ProjectDescriptor } from './workspace.ts';
 
@@ -204,20 +204,53 @@ export function createHeartbeat(sseClients: Set<ServerResponse>, ms: number): He
   };
 }
 
+const DEGRADED_FRAME = `event: ${SSE_DEGRADED_EVENT}\ndata: {}\n\n`;
+
+export interface WatchDegradation {
+  mark(): void;
+  replay(res: ServerResponse): void;
+}
+
+/**
+ * Sticky "watching is degraded" state for the SSE stream. A watcher fault is
+ * not recoverable short of a dev-server restart, so the first `mark()` tells
+ * every connected client once and every later client is told on connect via
+ * `replay` — otherwise a tab opened after the fault would show live updates
+ * over a board that no longer moves.
+ */
+export function createWatchDegradation(sseClients: Set<ServerResponse>): WatchDegradation {
+  let degraded = false;
+  return {
+    mark() {
+      if (degraded) return;
+      degraded = true;
+      for (const res of sseClients) res.write(DEGRADED_FRAME);
+    },
+    replay(res) {
+      if (degraded) res.write(DEGRADED_FRAME);
+    },
+  };
+}
+
 /**
  * `'error'` listener for a chokidar watcher. chokidar never forwards `'error'`
  * to the `'all'` listener (`emitWithAll` skips it), and `FSWatcher` is an
  * `EventEmitter` — so with no listener an EMFILE / EPERM / EBUSY fault throws
- * out of the event loop and takes the dev server down with it. Logging is the
- * whole degrade path: the watcher keeps whatever handles it did open, and a
- * dev-server restart is the recovery.
+ * out of the event loop and takes the dev server down with it. The watcher
+ * keeps whatever handles it did open, and a dev-server restart is the
+ * recovery; until then the fault is logged and `degradation` tells the
+ * clients to stop trusting the live stream.
  */
-export function createOnWatchError(label: string): (error: unknown) => void {
+export function createOnWatchError(
+  label: string,
+  degradation: Pick<WatchDegradation, 'mark'>,
+): (error: unknown) => void {
   return (error) => {
     const code = (error as { code?: unknown } | null)?.code;
     const message = error instanceof Error ? error.message : String(error);
     const where = typeof code === 'string' ? `${label} watcher error (${code})` : `${label} watcher error`;
     console.error(`[flaitronWatch] ${where}: ${message} — watching degraded until the dev server restarts`);
+    degradation.mark();
   };
 }
 

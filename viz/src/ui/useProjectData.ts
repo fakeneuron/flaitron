@@ -6,7 +6,12 @@ import {
   type NearMissHeading,
 } from '../parser';
 import { type Tasknote } from '../tasknote';
-import { ALL_CHANGE_SCOPES, parseChangeData, type ChangeScope } from '../sseChange';
+import {
+  ALL_CHANGE_SCOPES,
+  parseChangeData,
+  SSE_DEGRADED_EVENT,
+  type ChangeScope,
+} from '../sseChange';
 
 // Cadence for both halves of the degraded mode: how often the board re-polls
 // while live updates are down, and how often a CLOSED stream is retried.
@@ -221,6 +226,15 @@ export function useProjectData(activeProject: string | null): {
       startRecovery();
     };
 
+    const onDegraded = () => {
+      // The server's file watcher died: the stream stays open but no `change`
+      // will ever arrive, so treat live updates as off and poll. Recovery only
+      // reconnects a CLOSED stream, so this open one is left alone. A restarted
+      // dev server comes back healthy, and its 'open' clears the state.
+      setLiveDisconnected(true);
+      startRecovery();
+    };
+
     const connect = () => {
       if (disposed) return;
       es?.close();
@@ -228,6 +242,7 @@ export function useProjectData(activeProject: string | null): {
       es.addEventListener('change', onChange);
       es.addEventListener('open', onOpen);
       es.addEventListener('error', onError);
+      es.addEventListener(SSE_DEGRADED_EVENT, onDegraded);
     };
 
     function startRecovery(): void {

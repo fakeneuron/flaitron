@@ -267,6 +267,55 @@ describe('useProjectData — SSE branches', () => {
     }
   });
 
+  it('treats a "degraded" event as live-updates-off: flags, polls, and keeps the open stream', async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    try {
+      const { hook, fetchMock } = mountWithLivePlan();
+      await waitFor(() => expect(hook.result.current.tasks[0]?.id).toBe('FE-1'));
+
+      // The server's watcher died; the stream itself is healthy and OPEN.
+      latestES().readyState = 1;
+      await act(async () => {
+        latestES().emit('degraded', '{}');
+        await new Promise((r) => setTimeout(r, 0));
+      });
+      expect(hook.result.current.liveDisconnected).toBe(true);
+
+      const callsAfterDegraded = fetchMock.mock.calls.length;
+      currentPlan = planWith('FE-2');
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(LIVE_RECOVERY_MS * 2);
+      });
+
+      expect(fetchMock.mock.calls.length).toBeGreaterThan(callsAfterDegraded);
+      await waitFor(() => expect(hook.result.current.tasks[0]?.id).toBe('FE-2'));
+      // No reconnect while the stream is open.
+      expect(esRegistry().length).toBe(1);
+      expect(hook.result.current.liveDisconnected).toBe(true);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('stays live-updates-off across a reconnect to a still-degraded server', async () => {
+    const { hook } = mountWithLivePlan();
+    await waitFor(() => expect(hook.result.current.tasks[0]?.id).toBe('FE-1'));
+
+    await act(async () => {
+      latestES().emit('degraded', '{}');
+      latestES().emit('error');
+      await new Promise((r) => setTimeout(r, 0));
+    });
+    // The server replays its sticky state right after the reconnect's open frame.
+    await act(async () => {
+      latestES().emit('open');
+      latestES().emit('degraded', '{}');
+      await new Promise((r) => setTimeout(r, 0));
+    });
+
+    expect(hook.result.current.liveDisconnected).toBe(true);
+  });
+
   it('ignores a change attributed to a different project', async () => {
     const { hook, fetchMock } = mountWithLivePlan();
     await waitFor(() => expect(hook.result.current.tasks[0]?.id).toBe('FE-1'));

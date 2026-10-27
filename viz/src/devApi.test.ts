@@ -916,6 +916,20 @@ describe('createEventsHandler', () => {
     expect(sseClients.has(res)).toBe(false);
   });
 
+  it('replays sticky degradation after the open frame', () => {
+    const sseClients = new Set<ServerResponse>();
+    const replay = vi.fn((r: ServerResponse) => {
+      r.write('event: degraded\ndata: {}\n\n');
+    });
+    const handler = createEventsHandler(sseClients, { replay });
+    const { res, state } = makeRes();
+
+    handler(makeReq({ headers: { origin: ALLOWED_ORIGIN } }), res);
+
+    expect(replay).toHaveBeenCalledWith(res);
+    expect(state.chunks).toEqual(['event: open\ndata: {}\n\n', 'event: degraded\ndata: {}\n\n']);
+  });
+
   it('returns a typed 503 once the client cap is reached', () => {
     const sseClients = new Set<ServerResponse>();
     const handler = createEventsHandler(sseClients);

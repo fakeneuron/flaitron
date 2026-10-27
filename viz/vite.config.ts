@@ -27,6 +27,7 @@ import {
   createHeartbeat,
   createOnWatchError,
   createOnWatchEvent,
+  createWatchDegradation,
   hotWatchOptions,
   SSE_DEBOUNCE_MS,
   SSE_HEARTBEAT_MS,
@@ -66,6 +67,7 @@ function flaitronApi(): Plugin {
   const archiveCache = createArchiveCache();
   const changeBroadcaster = createChangeBroadcaster({ sseClients, debounceMs: SSE_DEBOUNCE_MS });
   const heartbeat = createHeartbeat(sseClients, SSE_HEARTBEAT_MS);
+  const watchDegradation = createWatchDegradation(sseClients);
 
   return {
     name: 'flaitron-api',
@@ -95,13 +97,13 @@ function flaitronApi(): Plugin {
           // reliably fire inside symlinked project roots.
           hotWatcher = chokidar.watch(roots, hotWatchOptions(discovered));
           hotWatcher.on('all', onWatchEvent);
-          hotWatcher.on('error', createOnWatchError('hot'));
+          hotWatcher.on('error', createOnWatchError('hot', watchDegradation));
 
           // Archives are write-once and fleet-scale (~thousands of files). Native
           // watch is cheap here; polling them at 200ms would waste CPU at this scale.
           archiveWatcher = chokidar.watch(roots, archiveWatchOptions(discovered));
           archiveWatcher.on('all', onWatchEvent);
-          archiveWatcher.on('error', createOnWatchError('archive'));
+          archiveWatcher.on('error', createOnWatchError('archive', watchDegradation));
         }
 
         heartbeat.start();
@@ -116,7 +118,7 @@ function flaitronApi(): Plugin {
           sseClients.clear();
         });
 
-        server.middlewares.use('/api/events', createEventsHandler(sseClients));
+        server.middlewares.use('/api/events', createEventsHandler(sseClients, watchDegradation));
       }
 
       server.middlewares.use('/api/projects', createProjectsHandler(projects, latestRelease));

@@ -12,6 +12,7 @@ import {
   createHeartbeat,
   createOnWatchError,
   createOnWatchEvent,
+  createWatchDegradation,
   hotWatchOptions,
   ignoreOutsideArchiveReach,
   ignoreOutsideHotReach,
@@ -460,7 +461,7 @@ describe('createOnWatchEvent survives a one-shot iterator', () => {
 describe('createOnWatchError', () => {
   it('logs the label, errno code, and message to stderr without throwing', () => {
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    const onError = createOnWatchError('hot');
+    const onError = createOnWatchError('hot', { mark() {} });
     const err = Object.assign(new Error('too many open files'), { code: 'EMFILE' });
 
     expect(() => onError(err)).not.toThrow();
@@ -473,7 +474,7 @@ describe('createOnWatchError', () => {
 
   it('omits the code segment for a plain Error', () => {
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    createOnWatchError('archive')(new Error('boom'));
+    createOnWatchError('archive', { mark() {} })(new Error('boom'));
 
     expect(spy.mock.calls[0]?.[0]).toBe(
       '[flaitronWatch] archive watcher error: boom — watching degraded until the dev server restarts',
@@ -483,7 +484,7 @@ describe('createOnWatchError', () => {
 
   it('stringifies a non-Error payload', () => {
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    const onError = createOnWatchError('hot');
+    const onError = createOnWatchError('hot', { mark() {} });
 
     expect(() => onError('EBUSY')).not.toThrow();
     expect(() => onError(null)).not.toThrow();
@@ -492,6 +493,57 @@ describe('createOnWatchError', () => {
       '[flaitronWatch] hot watcher error: null — watching degraded until the dev server restarts',
     ]);
     spy.mockRestore();
+  });
+
+  it('marks the stream degraded on every fault', () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const mark = vi.fn();
+    const onError = createOnWatchError('hot', { mark });
+
+    onError(new Error('boom'));
+    onError(new Error('again'));
+
+    expect(mark).toHaveBeenCalledTimes(2);
+  });
+});
+
+// A watcher fault leaves the SSE stream open but silent, so the client must be
+// told explicitly — once, and again for any tab that connects afterwards.
+describe('createWatchDegradation', () => {
+  const FRAME = 'event: degraded\ndata: {}\n\n';
+
+  it('broadcasts one degraded frame to connected clients, however often it is marked', () => {
+    const sseClients = new Set<ServerResponse>();
+    const first = makeRes();
+    const second = makeRes();
+    sseClients.add(first.res);
+    sseClients.add(second.res);
+    const degradation = createWatchDegradation(sseClients);
+
+    degradation.mark();
+    degradation.mark();
+
+    expect(first.state.chunks).toEqual([FRAME]);
+    expect(second.state.chunks).toEqual([FRAME]);
+  });
+
+  it('replays the frame to a client connecting after the fault', () => {
+    const degradation = createWatchDegradation(new Set());
+    degradation.mark();
+    const late = makeRes();
+
+    degradation.replay(late.res);
+
+    expect(late.state.chunks).toEqual([FRAME]);
+  });
+
+  it('replays nothing while watching is healthy', () => {
+    const degradation = createWatchDegradation(new Set());
+    const { res, state } = makeRes();
+
+    degradation.replay(res);
+
+    expect(state.chunks).toEqual([]);
   });
 });
 

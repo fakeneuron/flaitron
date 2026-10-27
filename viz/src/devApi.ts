@@ -6,6 +6,7 @@ import { realpathWithin, safeRealpath } from './fsSafe.ts';
 import { readTasknoteDir } from './tasknoteRead.ts';
 import type { ProjectDescriptor } from './workspace.ts';
 import type { ArchiveCache } from './archiveCache.ts';
+import type { WatchDegradation } from './flaitronWatch.ts';
 
 type Handler = (req: IncomingMessage, res: ServerResponse) => void;
 type AsyncHandler = (req: IncomingMessage, res: ServerResponse) => Promise<void>;
@@ -266,7 +267,12 @@ export function createArchiveHandler(
 
 const MAX_SSE_CLIENTS = 10;
 
-export function createEventsHandler(sseClients: Set<ServerResponse>): AsyncHandler {
+// `degradation.replay` writes any sticky server state (a dead watcher) a
+// client connecting now would otherwise never hear about.
+export function createEventsHandler(
+  sseClients: Set<ServerResponse>,
+  degradation?: Pick<WatchDegradation, 'replay'>,
+): AsyncHandler {
   return guarded((req, res) => {
     if (sseClients.size >= MAX_SSE_CLIENTS) {
       endPlain(res, 503, 'SSE capacity full');
@@ -283,6 +289,7 @@ export function createEventsHandler(sseClients: Set<ServerResponse>): AsyncHandl
     }
     res.flushHeaders?.();
     res.write('event: open\ndata: {}\n\n');
+    degradation?.replay(res);
     sseClients.add(res);
     req.on('close', () => {
       sseClients.delete(res);

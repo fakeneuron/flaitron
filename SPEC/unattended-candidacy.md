@@ -66,7 +66,11 @@ row is **not** a candidate.
    and it stays that list: do not add visual or raster keywords to close a
    miss. A keyword miss is not a semantic pass. An LLM filer and
    `/ft-seed-unattended` decline a row that reads as needing a person even
-   when no keyword trips. Candidacy never proposes
+   when no keyword trips. A row whose described work changes a rendered
+   surface reads that way: its Phase 3 👁️ ask is a person's look, and
+   `--unattended` parks on every one
+   ([`SPEC/gate-postures.md`](gate-postures.md) §"Park conversions").
+   Candidacy never proposes
    `[handoff]` itself; like `[unattended]`, it is written only by the operator.
 4. **No `Blocked by` clause of any form** — `Blocked by [[ID]]`, bare `Blocked
    by`, or a `blocked-by:` echo. A blocked row is by construction waiting on
@@ -206,9 +210,12 @@ Otherwise stay. Each declined row is one class:
   phrase that reads as one — only when it names an existing test command
   that decides that check. A generic runner that merely exists (`npm run
   test:e2e` with no spec for that result) does not, so the row is a split
-  or a stay. Rewording a keyword that trips on a path or a name removes
-  no person, so the skill does not do it. A pin leaves no other clause-3
-  trip on the row, or it is not a pin. The pin does not add a test, a
+  or a stay. No test decides the Phase 3 👁️ on work that changes a
+  rendered surface (clause 3) — an `--unattended` run asks it whatever
+  passes — so that row is never a pin. Rewording a keyword that trips on
+  a path or a name removes no person, so the skill does not do it. A pin
+  leaves no other clause-3 trip on the row, or it is not a pin. The pin
+  does not add a test, a
   Playwright spec, or a keyword to clause 3, and it does not change
   `[model]`.
 - **Split.** A mechanical row plus an attended remainder. The mechanical
@@ -231,9 +238,10 @@ Otherwise stay. Each declined row is one class:
   remainder when its line alone does not say what to do.
 - **Stay.** Taste, credentials, deploy, and a true look stay declined — a
   true look is a result someone must see, where no existing test command
-  decides it. So does a row whose whole text is the person act, a row
-  whose clause-3 keyword trips only on a path or a name
-  (`migrations/0001`, `docs/MIGRATION.md` — the reason names the path,
+  decides it, and a rendered-surface change always is one. So does a row
+  whose whole text is the person act, a row whose clause-3 keyword trips
+  only on a path or a name (`migrations/0001`, `docs/MIGRATION.md` — the
+  reason names the path,
   for a hand edit), a `[!critical]` row, an epic parent, a `.1` Discovery
   row, a `.N` audit row, and a row clause 4 still blocks. A split of an
   epic child whose parent has no `.N` row stays too: there is no `.N` to

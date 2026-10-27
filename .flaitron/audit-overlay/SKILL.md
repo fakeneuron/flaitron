@@ -1,7 +1,7 @@
 ---
 name: audit
 description: flaitron-self audit — thin overlay over flaitron's bundled `ft-audit` (runs its passes by reference, applies the project deltas below). Forked from flaitron's audit-overlay template; see `docs/MIGRATION.md` §1.2.1 (recipe) and `CONTRIBUTING.md` (this file's flaitron-self home).
-flaitron-reconciled: v7.0.0
+flaitron-reconciled: v7.5.0
 flaitron-tracks: ft-audit
 ---
 
@@ -68,7 +68,7 @@ every domain this overlay covers that does not override it.
   - `security:` `SECURITY.md` — §"Threat model" (prompt injection through user-authored markdown) and §"Visualizer (`viz/`) dev-server scope" (the localhost-only, single-user boundary); `.gitleaks.toml` (secret-scan config); `.github/dependabot.yml` (update policy: `/viz` npm and Actions, open-PR limit 0).
   - `performance:` none declared — no perf budget, SLO, or benchmark baseline exists. Per the pass file, surface that first; the build's chunk-size table (gate below) is the only recorded number.
   - `structure:` `AGENTS.md` §"Repo Layout" (where each concern lives), `viz/README.md` §"Architecture — three tiers" (layer order), `SPEC/layout.md` (skill namespace and module layout).
-- **Verification gates** (run before passes): `npm --prefix viz run lint` · `npm --prefix viz run typecheck` · `npm --prefix viz test` · `node --test tools/update-adopters.test.mjs` · `node --test tools/drift-checks.test.mjs` (sources: `.github/workflows/ci.yml:33-41`, `viz/package.json` scripts, `justfile`)
+- **Verification gates** (run before passes): `npm --prefix viz run lint` · `npm --prefix viz run typecheck` · `npm --prefix viz test` · `node --test tools/update-adopters.test.mjs` · `node --test tools/drift-checks.test.mjs` (sources: the `validate` job's `- run:` steps in `.github/workflows/ci.yml`, `viz/package.json` scripts, `justfile`)
   - `docs:` `bash tools/drift-checks.sh pair_q final_newline context_budget` — the CI `drift` job's doc checks run locally (Pair Q section-citation resolver, final-newline, context budget). No markdown linter and no link checker is configured: there is no root `package.json`, `viz/package.json` declares no markdown script (`remark-gfm` / `react-markdown` are visualizer runtime deps, not linters), the `justfile` has no docs recipe, and `.github/workflows/ci.yml` configures neither — inventing one is barred by `scaffold-bootstrap.md` §3. A failing check here is reported per unkeyed hard rule (b)'s exception; hard rule (c) below covers why a passing one's coverage is not this audit's to re-report.
   - `frontend:` `npm --prefix viz run build` · `npm --prefix viz run lint` · `npm --prefix viz run typecheck` · `npm --prefix viz test`. No bundle analyzer or a11y checker is configured, so those two slots are skipped, not invented.
   - `security:` `gitleaks dir . --config .gitleaks.toml --no-banner --redact` (the CI `validate` job's invocation; needs a local `gitleaks`) · `npm --prefix viz audit` — devDependencies included on purpose: `vite` and `chokidar` *are* the dev server, the only runtime that ships here. No SAST is configured.

@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-(none)
+- [ ] **CORE-838** [light]🔧 [unattended] | micro-default-wording — Align the `--micro` routing prose with the v7.5.0 default-route contract (`SPEC/tasknote-selection.md` §"When to use a tasknote (and when not to)"): the `description:` of `claude/skills/ft-task/SKILL.md` and `codex/skills/ft-task/SKILL.md` ("micro-sized task"), `claude/skills/ft-task/micro-mode.md` line 3, and `claude/skills/ft-file-task/SKILL.md` lines 222/251 ("for a one-shot"); keep every `--flag` token so Pair B/M still bind, then run `bash tools/drift-checks.sh pair_b pair_m context_budget`. Surfaced by audit-docs 2026-10-27 (Finding #1, Medium).
 
 ## Low
 
@@ -28,6 +28,8 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-839** [light] | audit-overlay-reconcile — Re-reconciled `.flaitron/audit-overlay/SKILL.md` against `ft-audit` at v7.5.0 (CORE-802 decisions file, CORE-815.4 `[moderate]`: both inherited, no delta needed): `flaitron-reconciled:` v7.0.0 → v7.5.0, and the gates line's `ci.yml:33-41` range replaced by a step-level citation. Surfaced by audit-docs 2026-10-27 (Finding #2, Medium; Finding #3, Low), fixed inline.
+- [x] **CORE-840** [light] | retire-superseded-spec — Removed `.flaitron/specs/spec-to-work-handoff.md` (superseded 2026-09-12, no inbound links, cited the retired `/ft-epic-discovery` seven times); history stays in git. Surfaced by audit-docs 2026-10-27 (Finding #4, Low), fixed inline.
 - [x] **FE-145** [light]🔧 | scoped-error-clear — Completed 2026-10-27.
 - [x] **CORE-835** [heavy]🧠 | candidacy-rendered-surface — Completed 2026-10-26.
 - [x] **CORE-837** [heavy]🧠 | open-epic-model-seam — Completed 2026-10-26.

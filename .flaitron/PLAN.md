@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **FE-149** [light] | degraded-banner-copy — Degraded-watcher banner says "retrying the live connection" but only a dev-server restart recovers; expose `degraded` from `useProjectData` and give it its own copy.
+(none)
 
 ## Low
 
@@ -28,6 +28,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **FE-149** [light] | degraded-banner-copy — Completed 2026-10-27.
 - [x] **FE-150** [moderate]🧩 [unattended] | active-parse-report — Completed 2026-10-27.
 - [x] **FE-147** [moderate]🧩 | watch-degraded-signal — Completed 2026-10-27.
 - [x] **FE-146** [light]🔧 | project-data-error-hygiene — Completed 2026-10-27.

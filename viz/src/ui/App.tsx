@@ -67,6 +67,7 @@ export const App: React.FC = () => {
     loading: dataLoading,
     error: dataError,
     liveDisconnected,
+    degraded,
     refresh,
     reset,
   } = useProjectData(activeProject);
@@ -245,8 +246,17 @@ export const App: React.FC = () => {
           role="status"
           className="mx-4 mt-3 rounded border border-amber-300 bg-amber-50 p-3 text-base text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-200"
         >
-          ⚠ Live updates disconnected — showing polled data (every{' '}
-          {Math.round(LIVE_RECOVERY_MS / 1000)}s) and retrying the live connection.
+          {degraded ? (
+            <>
+              ⚠ File watcher stopped — restart the dev server. Showing polled data (every{' '}
+              {Math.round(LIVE_RECOVERY_MS / 1000)}s) meanwhile.
+            </>
+          ) : (
+            <>
+              ⚠ Live updates disconnected — showing polled data (every{' '}
+              {Math.round(LIVE_RECOVERY_MS / 1000)}s) and retrying the live connection.
+            </>
+          )}
         </div>
       )}
 

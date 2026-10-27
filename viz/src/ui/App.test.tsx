@@ -1223,6 +1223,22 @@ describe('App — SSE disconnect visibility', () => {
     expect(screen.queryByText(/live updates off/)).not.toBeInTheDocument();
     expect(screen.queryByText(/Live updates disconnected/)).not.toBeInTheDocument();
   });
+
+  it('shows the restart-the-dev-server banner, not the retry copy, when the watcher is degraded', async () => {
+    renderApp({ plan });
+    await waitFor(() => expect(screen.getByText('CORE-100')).toBeInTheDocument());
+
+    const instances = esRegistry();
+    const es = instances[instances.length - 1]!;
+    await act(async () => {
+      es.emit('degraded');
+      await new Promise((r) => setTimeout(r, 0));
+    });
+
+    expect(screen.getByText(/live updates off/)).toBeInTheDocument();
+    expect(screen.getByText(/File watcher stopped — restart the dev server/)).toBeInTheDocument();
+    expect(screen.queryByText(/retrying the live connection/)).not.toBeInTheDocument();
+  });
 });
 
 describe('App — completed-bucket grouping', () => {

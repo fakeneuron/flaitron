@@ -280,6 +280,7 @@ describe('useProjectData — SSE branches', () => {
         await new Promise((r) => setTimeout(r, 0));
       });
       expect(hook.result.current.liveDisconnected).toBe(true);
+      expect(hook.result.current.degraded).toBe(true);
 
       const callsAfterDegraded = fetchMock.mock.calls.length;
       currentPlan = planWith('FE-2');
@@ -314,6 +315,40 @@ describe('useProjectData — SSE branches', () => {
     });
 
     expect(hook.result.current.liveDisconnected).toBe(true);
+    expect(hook.result.current.degraded).toBe(true);
+  });
+
+  it('is not degraded on a plain drop, and a drop clears a prior degraded', async () => {
+    const { hook } = mountWithLivePlan();
+    await waitFor(() => expect(hook.result.current.tasks[0]?.id).toBe('FE-1'));
+    expect(hook.result.current.degraded).toBe(false);
+
+    await act(async () => {
+      latestES().emit('error');
+      await new Promise((r) => setTimeout(r, 0));
+    });
+    expect(hook.result.current.liveDisconnected).toBe(true);
+    expect(hook.result.current.degraded).toBe(false);
+
+    await act(async () => {
+      latestES().emit('degraded', '{}');
+      await new Promise((r) => setTimeout(r, 0));
+    });
+    expect(hook.result.current.degraded).toBe(true);
+
+    await act(async () => {
+      latestES().emit('error');
+      await new Promise((r) => setTimeout(r, 0));
+    });
+    expect(hook.result.current.liveDisconnected).toBe(true);
+    expect(hook.result.current.degraded).toBe(false);
+
+    await act(async () => {
+      latestES().emit('open');
+      await new Promise((r) => setTimeout(r, 0));
+    });
+    expect(hook.result.current.liveDisconnected).toBe(false);
+    expect(hook.result.current.degraded).toBe(false);
   });
 
   it('ignores a change attributed to a different project', async () => {

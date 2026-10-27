@@ -40,6 +40,7 @@ export function useProjectData(activeProject: string | null): {
   loading: boolean;
   error: string | null;
   liveDisconnected: boolean;
+  degraded: boolean;
   refresh: (scopes?: readonly ChangeScope[]) => void;
   reset: () => void;
 } {
@@ -58,6 +59,9 @@ export function useProjectData(activeProject: string | null): {
   // a scope it never touched.
   const [errors, setErrors] = useState<ScopeErrors>(NO_ERRORS);
   const [liveDisconnected, setLiveDisconnected] = useState(false);
+  // Subset of liveDisconnected: the stream is open but the server's watcher is
+  // dead, so nothing is retrying and only a dev-server restart recovers.
+  const [degraded, setDegraded] = useState(false);
   const activeProjectRef = useRef<string | null>(null);
   activeProjectRef.current = activeProject;
   // Monotonic load counters, one per scope: two rapid refreshes on the same
@@ -204,6 +208,7 @@ export function useProjectData(activeProject: string | null): {
     const onOpen = () => {
       stopRecovery();
       setLiveDisconnected(false);
+      setDegraded(false);
       // On reconnect after a drop, reconcile changes missed during the gap.
       // The first connect has no prior drop, so no redundant initial refresh.
       // Deliberately unscoped: what fired during the gap is unknowable.
@@ -223,6 +228,9 @@ export function useProjectData(activeProject: string | null): {
       // state, and poll until live updates come back.
       droppedSinceOpen = true;
       setLiveDisconnected(true);
+      // The stream is being retried (or reconnected), so it is no longer the
+      // open-but-watcherless shape; a still-degraded server replays its event.
+      setDegraded(false);
       startRecovery();
     };
 
@@ -232,6 +240,7 @@ export function useProjectData(activeProject: string | null): {
       // reconnects a CLOSED stream, so this open one is left alone. A restarted
       // dev server comes back healthy, and its 'open' clears the state.
       setLiveDisconnected(true);
+      setDegraded(true);
       startRecovery();
     };
 
@@ -296,6 +305,7 @@ export function useProjectData(activeProject: string | null): {
     loading,
     error,
     liveDisconnected,
+    degraded,
     refresh,
     reset,
   };

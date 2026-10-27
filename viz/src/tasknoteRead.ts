@@ -4,6 +4,11 @@ import { parseTasknote } from './tasknote-parse.ts';
 import { realpathWithin, safeReaddir } from './fsSafe.ts';
 import type { Tasknote } from './tasknote.ts';
 
+export interface UnparsableTasknote {
+  id: string;
+  reason: string;
+}
+
 // Read every `*.md` tasknote directly inside `dir`. Shared by
 // `devApi.createActiveHandler` (the active `.flaitron/tasknote/` dir) and
 // `archiveCache.readArchive` (one archive area dir per call): both need the
@@ -32,6 +37,7 @@ import type { Tasknote } from './tasknote.ts';
 export async function readTasknoteDir(
   realBase: string,
   dir: string,
+  reportUnparsable?: (tasknote: UnparsableTasknote) => void,
 ): Promise<Tasknote[]> {
   const entries = await safeReaddir(dir);
   const files = entries.filter((e) => e.isFile() && e.name.endsWith('.md'));
@@ -44,7 +50,11 @@ export async function readTasknoteDir(
       try {
         const text = await readFile(realPath, 'utf8');
         return parseTasknote(id, path, text);
-      } catch {
+      } catch (e) {
+        reportUnparsable?.({
+          id,
+          reason: e instanceof Error ? e.message : String(e),
+        });
         return null;
       }
     }),

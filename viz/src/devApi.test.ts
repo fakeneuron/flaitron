@@ -703,12 +703,17 @@ created: 2026-05-18
       headers: { origin: ALLOWED_ORIGIN },
     });
     const { res, state } = makeRes();
+    const logged = vi.spyOn(console, 'error').mockImplementation(() => {});
 
     await handler(req, res);
 
     expect(state.statusCode).toBe(200);
     const parsed = JSON.parse(state.body) as Array<{ id: string }>;
     expect(parsed.map((t) => t.id)).toEqual(['CORE-999']);
+    expect(logged).toHaveBeenCalledWith('[devApi] Failed to parse tasknote:', {
+      id: 'CORE-998',
+      reason: expect.any(String),
+    });
   });
 
   it('drops tasknotes that resolve outside the project root', async () => {

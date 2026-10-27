@@ -234,7 +234,9 @@ export function createActiveHandler(
         res.end('[]');
         return;
       }
-      const tasknotes = await readTasknoteDir(realRoot, project.tasknoteDir);
+      const tasknotes = await readTasknoteDir(realRoot, project.tasknoteDir, (tasknote) => {
+        console.error('[devApi] Failed to parse tasknote:', tasknote);
+      });
       res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify(tasknotes));
     } catch (e) {

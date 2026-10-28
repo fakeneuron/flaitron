@@ -11,7 +11,8 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-(none)
+
+- [ ] **CORE-842** [moderate] | github-secret-controls — NAT-471 read public fakeneuron/flaitron repository scanning and push protection as disabled on 2026-10-28. Recheck metadata; with ordinary operator authorization enable the free eligible repository controls and verify both statuses. Preserve gitleaks; no alert-value reads, visibility changes or paid upgrades.
 
 ## Medium
 

@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-(none)
+- [ ] **CORE-843** [moderate]🧩 [unattended] | unattended-park-commit — Park recipe commits its own park when the parked tasknote is the run's only uncommitted change: stage it alone, `chore: park <ID> — <code>`; commit nothing if anything else is dirty. Stops the untracked note tripping the next dispatch's foreign-dirt gate (CBN-443, CBN-252).
 
 ## Low
 

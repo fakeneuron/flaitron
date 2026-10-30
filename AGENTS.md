@@ -28,8 +28,9 @@ in `SPEC.md`; read it before starting non-trivial work.
   <!-- KEEP IN SYNC — guards the roster above AND the path-convention bullets
        (Plans / tasknotes / archive locations) further up this section. Mirror: the KEEP
        IN SYNC comment above claude/AGENTS-snippet.md's paste-block fence.
-       1. The skill roster is names-only; flags live on the `/ft-task` flags
-          line beside it, mirrored in claude/AGENTS-snippet.md's paste-block.
+       1. The skill roster carries names plus arguments and per-skill flags,
+          no stubs or gate detail; `/ft-task` flags live on the flags line
+          beside it, mirrored in claude/AGENTS-snippet.md's paste-block.
        2. Richer detail (stubs, gates) lives in SPEC/tasknote-selection.md and
           SPEC/gates.md — not in claude/AGENTS-snippet.md's paste-block, which
           since CORE-510 names the skills and points there.

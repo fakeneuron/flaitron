@@ -507,6 +507,8 @@ To bump:
    ```
 3. Commit. The parent repo's submodule pointer (the SHA recorded for `.flaitron/core`) changes; `.gitmodules` itself only changes if the URL or branch field changes.
 
+A bump is a project-side task (e.g., `CORE-XXX: Bump flaitron to vX.Y.Z`) but needs no tasknote — `/ft-update` runs it as is; wrap it in a PLAN line or `/ft-task <ID> --micro` when you want it tracked (`SPEC/versioning.md`). Don't bump in passing.
+
 Correct existing symlinks follow the submodule pin. `/ft-update` selects the invocation platform unless the operator chooses another, creates an absent selected root, and maintains already-present surfaces. It repairs the current pin before checking for a newer tag, and again after an approved checkout. Same-version, offline or declined-bump repair leaves the submodule HEAD and index gitlink unchanged, stages only changed wiring paths, and offers a repair commit when needed. Codex's [inline reconciliation](../codex/reconcile-skills.md) reads the pinned roster, preserves custom destinations, and stops on conflicts; other unselected absent platforms are not installed. Two exceptions: a release that **retires** a skill (see the note below), and v6.0.0's `.flowtron/` → `.flaitron/` rename, which re-points every symlink ([UPGRADING.md](UPGRADING.md) §"Upgrading an existing adopter from v5.x" step 4).
 
 #### Retired skills leave dangling symlinks
@@ -567,8 +569,6 @@ done
 ```
 
 Then stage the link dirs that exist (`git add -A .claude .agents ...`). Re-paste the `AGENTS.md` block from the bumped snippet, and sweep the remaining prose the links don't cover. To list it: `git grep -nE '(^|[^-a-z])(ft-file-followup|ft-epic-discovery|ft-new-project|ft-seed|ft-micro-task)([^-a-z]|$)' -- ':!.flaitron/tasknote/archive' ':!.flaitron/PLAN-ARCHIVE.md'`. Agent-home links (a global `ft-new-project`) and an audit fork's copied command file are covered by their rows above.
-
-A bump is itself a project-side task (e.g., `CORE-XXX: Bump flaitron to vX.Y.Z`), with a tasknote and the usual 4-phase flow. Don't bump in passing.
 
 For sweeping **non-breaking** releases across the whole workspace at once, flaitron's checkout ships `tools/update-adopters.mjs` (dry-run by default; see `SPEC/scope-boundaries.md` §"What flaitron does NOT provide" for the carve-out). It skips any repo whose release range carries real migration steps — or a tag whose notes it can't classify, which it treats as migration-bearing rather than assume safe — and flags ranges that shipped new Claude, Codex, Cursor, or Grok skill symlinks — those still go through the per-project flow above (or `/ft-update`). It discovers only `.flaitron/core` adopters; the v6.0.0 move ([UPGRADING.md](UPGRADING.md)) and the v7.0.0 link swap (§"Upgrading to v7.0.0 (skill renames)") are by hand. The updater's checkout keeps an existing §1.1 sparse-checkout but does not apply one, so a re-cloned adopter it bumps stays full until the next `/ft-update` or a hand re-run; the §1.1 fence covers that window.
 

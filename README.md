@@ -335,7 +335,8 @@ number counts breaking changes from the May 2026 rapid-iteration period
 (v1.0.0 → v5.0.0 in 25 days), not project maturity — the contract was
 break-free from v5.0.0 (2026-06-01) until v6.0.0, the one-time rename below,
 and v7.0.0, the hard-cut skill renames ([`docs/MIGRATION.md`](docs/MIGRATION.md)
-§"Upgrading to v7.0.0 (skill renames)"). Minor releases that retire or fold a
+§"Upgrading to v7.0.0 (skill renames)"), and v8.0.0, the visualizer's
+`GET /api/active` response-shape change (no workflow-contract edit). Minor releases that retire or fold a
 skill change only the wiring layer, not the contract; `/ft-update` reports the
 dangling links they leave ([`docs/MIGRATION.md`](docs/MIGRATION.md) §"Retired
 skills leave dangling symlinks").

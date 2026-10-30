@@ -32,10 +32,10 @@ The **foreign-dirt gate is not relaxed** — emit `🚧 DIRTY — commit, stash,
 
 **Clarifying questions.** Skip the AskUserQuestion call and write `No clarifications needed (--unattended)` with the explicit assumptions — unless the ambiguity genuinely blocks the audit, which is the exit-gate park below.
 
-**Clarifications-surfaced branch of the Phase 1→2 exit gate.** The branch has no operator to fire at: **park** instead of banner, per the four-write recipe in `<UNATTENDED>` §"The park recipe" — `status: blocked`, chip → `⏸ Blocked`, `park-reason: input-needed — <the clarification>`, then stop. The audit tasknote exists by now (Step 3 scaffolded it), so the standard recipe applies unchanged; a `Re-scope` / `De-scope` verdict parks as `drift` instead. Do not run Phases 2-4, and do not touch PLAN.md.
+**Clarifications-surfaced branch of the Phase 1→2 exit gate.** The branch has no operator to fire at: **park** instead of banner, per `<UNATTENDED>` §"The park recipe" — the three writes, then the lone-park commit, then the marker. `status: blocked`, chip → `⏸ Blocked`, `park-reason: input-needed — <the clarification>`. The audit tasknote exists by now (Step 3 scaffolded it), so the standard recipe applies unchanged; a `Re-scope` / `De-scope` verdict parks as `drift` instead. Do not run Phases 2-4, and do not touch PLAN.md.
 
 ## Step 9 — Post-closure protocol
 
 The 📦 gate is force-skipped, with no operator to wait on: autonomous commit, parent flip included when every child is `[x]`.
 
-**A destructive action never reaches Step 9.** If an audit's inline fix would touch a privileged-ops path (🗄️/▶️/📡/💻), that escalation surfaces during Step 5 Phase 2, and under `--unattended` it parks there — `park-reason: destructive — …`, per `<UNATTENDED>` §"Conversion map" — before Step 7 flips anything or the note is archived. Do not carry such a fix into closure and rely on the 📦 gate to catch it: the gate is force-skipped here, and the park is the stop.
+**A destructive action never reaches Step 9.** If an audit's inline fix would touch a privileged-ops path (🗄️/▶️/📡/💻), that escalation surfaces during Step 5 Phase 2, and under `--unattended` it parks there — `park-reason: destructive — …`, then the lone-park commit, per `<UNATTENDED>` §"The park recipe" — before Step 7 flips anything or the note is archived. Do not carry such a fix into closure and rely on the 📦 gate to catch it: the gate is force-skipped here, and the park is the stop.

@@ -208,6 +208,14 @@ entered from a gate rather than from a hard dependency:
 - **Stop.** Do not run Phase 3 or Phase 4. The tasknote stays at
   `.flaitron/tasknote/<TASK-ID>.md`, the PLAN.md line stays unchecked, and
   Phase 1 plus any partial Phase 2 work is preserved verbatim.
+- **Commit the lone park.** When `.flaitron/tasknote/<TASK-ID>.md` is the
+  working tree's only uncommitted path, commit that path alone before the
+  stop. Subject `chore: park <TASK-ID> — <code>`, never push, no 🏁. Any
+  other uncommitted path, and the commit is skipped. The note stays open
+  and PLAN.md stays unchecked either way. Commands live in
+  `claude/skills/ft-task/unattended-mode.md` §"The park recipe". Not a
+  filing commit, and not the 📦 closure (`plan-filing.md` §"Filing commits").
+  An attended park does not run it.
 
 Resume is unchanged: re-running the skill against the parked tasknote
 takes [`SPEC/blocked.md`](blocked.md)'s normal resume path, with an
@@ -233,7 +241,7 @@ the stop is *about*:
   assignment problem, and the tree is known clean (the foreign-dirt gate
   already passed). Create the note only when none exists — neither a
   tasknote nor a sidequest stub — writing it with `status: blocked` and
-  the reason, then halt, so the caller gets the same readable stop surface
+  the reason, then the lone-park commit, then halt, so the caller gets the same readable stop surface
   it gets everywhere else. An existing starter or blocked note, or a
   sidequest stub, is left untouched — terminate and write nothing, so its
   promote or resume routing survives.
@@ -264,7 +272,7 @@ the stop is *about*:
 [`SPEC.md`](../SPEC.md) §"Paper-complete guard" holds in full — all three
 parts, with no unattended variant. The foreign-dirt gate emits `DIRTY` and
 the paths, then its machine-readable stop, and never stashes, cleans, or
-commits; deliverables, PLAN
+commits that dirt; deliverables, PLAN
 flip, and archive move still land in one atomic commit or not at all; and no
 operator watching is a reason to hold 🏁 harder, not to relax it — an
 unnoticed paper-complete is the failure the guard was written for.

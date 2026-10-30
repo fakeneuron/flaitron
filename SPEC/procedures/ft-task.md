@@ -63,11 +63,11 @@ never a replacement for any of them.
 **Parking, in one paragraph.** Under unattended mode a converted gate flips the
 tasknote's YAML `status:` to `blocked`, flips the nav chip to `⏸ Blocked`,
 writes `park-reason: <code> — <one line>` from the closed set in
-[`SPEC/blocked.md` §"Park reason"](../blocked.md) (a YAML plain scalar: no
-`: ` or ` #` in the prose, no trailing `:` — rephrase rather than quote), and
-**stops** — no Phase 3,
-no Phase 4, PLAN.md line unchanged, Phase 1 and any partial Phase 2 work
-preserved verbatim. A park never performs the operator's own motion (it does
+[`SPEC/blocked.md` §"Park reason"](../blocked.md), and
+**stops** — no Phase 3 or 4, PLAN.md line unchanged. When that note is the
+only uncommitted path, commit it alone (`chore: park <ID> — <code>`); any
+other path, commit nothing. See `claude/skills/ft-task/unattended-mode.md` §"The park recipe". Phase 1 and partial Phase 2 stay.
+A park never performs the operator's own motion (it does
 not make a verdict's PLAN edit, delete a tasknote, or re-file a task); it
 records what the resuming operator should do. A park *is* a stop:
 unattended mode removes **pauses**, never **proof** — all three parts of
@@ -77,8 +77,7 @@ variant, and so does
 closure with nobody present still files each deferred real-world operator step
 as its own unchecked PLAN.md row rather than leaving it as prose (Claude Code
 exposes the filing motion as `/ft-file-task --unattended`; the concept is
-platform-neutral, the flag syntax is not). The duty binds *harder* here, since
-whatever the run could not do falls to the absent operator. The filing's
+platform-neutral, the flag syntax is not). The filing's
 `unattended-candidates:` report line is copied into the closing tasknote's
 Final Summary before the archive move
 ([`SPEC/unattended-candidacy.md` §"Persistence"](../unattended-candidacy.md)) —
@@ -197,9 +196,9 @@ heavy thinking on the wrong model — heavy work should not run on an
 under-tier model silently. **Under unattended mode** there is no operator to
 surface a concrete mismatch to: first pass those Step 3 checks, then park with
 `status: blocked` and `park-reason: model-mismatch — …`. Create a note only
-when neither a tasknote nor a sidequest stub exists; leave an existing
-starter/blocked note or stub untouched (write nothing). Halt rather than
-asking or retagging the PLAN line yourself. The soft under-tier advisory is
+when neither a tasknote nor a sidequest stub exists, then the lone-park
+commit; leave an existing starter/blocked note or stub untouched (write
+nothing). Halt rather than asking or retagging the PLAN line yourself. The soft under-tier advisory is
 unchanged — it never blocked, so there is nothing to convert.
 
 **Epic IDs.** If the ID is `<AREA>-EPIC-<N>` or `<AREA>-<N>.<sub>`, read
@@ -366,9 +365,10 @@ time (Step 6).
   boundary; record the reason and defer unrelated cleanup. Add targeted tests
   for non-trivial behavior. If a hard dependency surfaces mid-execution,
   **park** the tasknote per [`SPEC/blocked.md`](../blocked.md) and stop.
-  Under **unattended mode** a destructive-action escalation (🗄️/▶️/📡/💻) and a
-  ✋ `ACTION` that is a **prerequisite** for continuing park the same way, with
-  `park-reason: destructive — …` / `prerequisite — …`; an *advisory* ✋ is
+  Under **unattended mode** that stop runs the lone-park commit, and a
+  destructive-action escalation (🗄️/▶️/📡/💻) or prerequisite ✋ `ACTION`
+  parks the same way: `park-reason: destructive — …` /
+  `prerequisite — …`; an *advisory* ✋ is
   recorded and the run continues. The prerequisite/advisory split is biased
   conservative — park on doubt, since an over-park costs one resume and an
   under-park reaches closure with the prerequisite never performed.
@@ -424,7 +424,7 @@ time (Step 6).
   out of it. Under autonomous mode,
   suppress the 👁️ ask but still run lint/type-check. **Under unattended mode**
   do not suppress it: there is no operator to hand the check to, so the ask
-  parks the tasknote with `park-reason: visual-confirm — …` and the run stops.
+  parks the tasknote with `park-reason: visual-confirm — …`, runs the lone-park commit, and stops.
   **Under debug mode**, the fragment's repro
   re-verify runs **even under autonomous mode**; a still-failing repro returns
   to Phase 2, not closure.

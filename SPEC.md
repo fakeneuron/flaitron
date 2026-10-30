@@ -642,6 +642,10 @@ and routes it. `/ft-task` refuses an in-flight note, promotes a starter, and
 resumes a blocked note (an uncommitted `--unattended` model-mismatch park
 included). `/ft-close-epic` runs the same
 check ahead of the gate and refuses its audit note at any status.
+An `--unattended` park whose note is the tree's only
+uncommitted path commits that note alone
+(`SPEC/gate-postures.md` §"What a park is"). That commit is the note the
+run just wrote, not foreign dirt and not a closure.
 
 Same-conversation continue after a start-only skill already opened the
 tasknote is out of band (those skills refuse re-entry on in-flight notes).

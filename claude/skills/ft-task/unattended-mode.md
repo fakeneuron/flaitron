@@ -16,26 +16,33 @@
 
 On top of that, it adds **exactly one behavior**: where `--fast` still lets a gate fire, `--unattended` **parks the tasknote** instead of firing a banner into an empty session. A conversion *removes* a banner and never adds one. Mint no new cue glyph; the CORE-065 two-banner cap is untouched.
 
+The park that conversion writes is committed when the note is the tree's only uncommitted path (§"The park recipe"). Any other dirt, and the commit is skipped.
+
 Flaitron ships no orchestrator, scheduler, or session daemon. This posture is the contract an orchestrator reports to — contract in flaitron, runtime in the caller.
 
 ## The park recipe
 
-Every conversion below performs the same four writes, then stops:
+Every conversion below performs the same three writes, then the lone-park commit, then the marker, and stops:
 
 1. Flip the tasknote's YAML `status:` to `blocked`.
 2. Flip the nav-header chip from `🟢 In progress` to `⏸ Blocked`.
 3. Write `park-reason: <code> — <one-line prose>` into the frontmatter, where `<code>` comes from the closed set in `SPEC/blocked.md` §"Park reason". A caller splits on the first ` — ` to read the code and never parses the prose, so put the classification in the code and the detail in the prose. The value is a YAML plain scalar — one line, unquoted, **no `: ` and no ` #` in the prose, no trailing `:`** — rephrase rather than quote (same section, "The value is a YAML plain scalar").
-4. Emit one inline marker and **stop**:
+4. **Lone-park commit.** Run `git status --porcelain`.
+   - **Only the note.** Every line's path is `.flaitron/tasknote/<TASK-ID>.md`, and no line is anything else (a rename arrow, a second path, a dirty submodule). Then `git add -- .flaitron/tasknote/<TASK-ID>.md` — explicit pathspec only, never `git add .`, `git add -A`, or `git commit -a`. Read `git diff --cached --name-only` with **no pathspec**. It must list exactly that one path. Anything else → `git restore --staged -- .flaitron/tasknote/<TASK-ID>.md` and take the skip below. Do not unstage a path this step did not add. On a clean read, `git commit` with subject `chore: park <TASK-ID> — <code>` and no body. No pathspec on the commit: it publishes the index just read (`SPEC/plan-filing.md` §"Filing commits" — a pathspec commit bypasses that read). Never push. Never `--no-verify`. No 🏁 — PLAN.md stays unchecked, the note stays at `.flaitron/tasknote/<TASK-ID>.md`, and `status` stays `blocked`. Not a closure, and not a filing commit. Confirm `git show --name-only --pretty=format: HEAD` names only that path, and report `committed <sha>`.
+   - **Skip.** Any other porcelain path, empty porcelain, an index the read rejected, or a failed commit: commit nothing and report `left uncommitted`. Do not retry and do not amend. Pre-scaffold stops write nothing, so they never reach this step. An attended park does not run it, and neither does a caller-written `interrupted` note (`docs/EXTERNAL-AGENTS.md` step 6).
+5. Emit one inline marker and **stop**:
 
    ```markdown
-   ⏸ --unattended park — <code>: <one line>. Tasknote parked at `.flaitron/tasknote/<TASK-ID>.md`; PLAN.md line unchanged.
+   ⏸ --unattended park — <code>: <one line>. Tasknote parked at `.flaitron/tasknote/<TASK-ID>.md`; PLAN.md line unchanged. committed <sha> or left uncommitted
    ```
 
    `⏸` is the pre-existing nav chip, not a new cue glyph.
 
 **Stop means stop.** Do not run Phase 3 or Phase 4. The tasknote stays at `.flaitron/tasknote/<TASK-ID>.md`, the PLAN.md line stays unchecked, and Phase 1 plus any partial Phase 2 work is preserved verbatim.
 
-**A park never performs the operator's motion.** The drift park does not make the verdict's PLAN.md edit and does not delete the tasknote. Record what the operator should do on resume in the `park-reason:` prose or the tasknote body — the resuming operator takes it under a real gate.
+**A park never performs the operator's motion.** The lone-park commit publishes the note this recipe already wrote. It does not make the verdict's PLAN.md edit, delete the tasknote, or flip Completed. Record what the operator should do on resume in the `park-reason:` prose or the tasknote body — the resuming operator takes it under a real gate.
+
+**Why only when alone.** Any other path is Phase 2 work or a concurrent edit. Committing it under a park subject publishes unfinished work. Committing the note and leaving the rest still trips the next dispatch's foreign-dirt gate, and splits one park across two states. The failure this closes is a clean run whose only leftover is the untracked note.
 
 **Resume is unchanged.** Re-invoking `<SKILL> <TASK-ID>` against the parked tasknote takes `SPEC/blocked.md`'s normal resume path: drift-check the parked work, flip `status:` back to `in-progress`, flip the chip back to `🟢 In progress`, **remove `park-reason:`**, and continue — at Phase 2, or at Phase 1 for a `model-mismatch` park, which was written before Phase 1 ran (`step-3c-resume-blocked.md`). A micro-shaped park resumes in micro mode whether or not `--micro` is passed (`micro-mode.md` §"Step 2").
 
@@ -63,13 +70,13 @@ Six gates convert from *ask and wait* to *park and stop*. The seventh row is the
 
 **`drift` vs `dependency`.** The code names what *stopped* the run, not what motivated it. A `Re-scope` verdict parks as `drift` even when a dependency drove the verdict — and even though `--fast` alone would have downgraded it to an inline notice; that downgrade is a delegation the posture does not inherit.
 
-**`--loop`'s loop body.** Its destructive-action carve-out (`step-5-loop-mode.md` §"Step 5") already parks without an operator, by construction. Under `--unattended` it gains one obligation: write `park-reason: destructive — …` alongside the `## 🔁 Iterations` entry, so a caller reading the file alone can classify the stop. The `loop-max` **soft stop** is *not* a conversion — it hands back to the operator with the tasknote intact and unparked, exactly as `SPEC/loop.md` specifies.
+**`--loop`'s loop body.** Its destructive-action carve-out (`step-5-loop-mode.md` §"Step 5") already parks without an operator, by construction. Under `--unattended` it writes `park-reason: destructive — …` alongside the `## 🔁 Iterations` entry, so a caller reading the file alone can classify the stop, and runs the lone-park commit before the stop. The `loop-max` **soft stop** is *not* a conversion — it hands back to the operator with the tasknote intact and unparked, exactly as `SPEC/loop.md` specifies.
 
 ## Pre-scaffold stops
 
 The pre-flight checks and the Step 1.5 model gate run before this run has written a tasknote (the skill/pin guard, last below, is the one stop that can also fire later), so a "park" there may have nothing to park — or may find a note it must not touch. Split by what the stop is *about*:
 
-- **Concrete-model mismatch — scaffold, then park.** A task-level assignment problem, and the tree is known clean (the foreign-dirt gate already passed). Skip the AskUserQuestion two-path offer. **Create the note only when none exists** — neither a tasknote nor a `.flaitron/sidequest/<TASK-ID>.md` stub — then write the tasknote (from the template the run's flags select — the micro template under `--micro`) with `status: blocked` and `park-reason: model-mismatch — PLAN.md tags [<tag>], active model is <model>`, and halt. The caller gets the same readable stop surface it gets everywhere else. An existing `starter` or `blocked` note or a sidequest stub is **left untouched** — terminate and write nothing, in the `⏸ --unattended stop — model-mismatch: …` shape, naming the existing starter note, blocked note, or sidequest stub, so its promote or resume routing survives and the stub is retired by the attended promotion that reads it. Do **not** retag the PLAN.md line autonomously.
+- **Concrete-model mismatch — scaffold, then park.** A task-level assignment problem, and the tree is known clean (the foreign-dirt gate already passed). Skip the AskUserQuestion two-path offer. **Create the note only when none exists** — neither a tasknote nor a `.flaitron/sidequest/<TASK-ID>.md` stub — then write the tasknote (from the template the run's flags select — the micro template under `--micro`) with `status: blocked` and `park-reason: model-mismatch — PLAN.md tags [<tag>], active model is <model>`, then the lone-park commit and the park marker, and halt. The caller gets the same readable stop surface it gets everywhere else. An existing `starter` or `blocked` note or a sidequest stub is **left untouched** — terminate and write nothing, in the `⏸ --unattended stop — model-mismatch: …` shape, naming the existing starter note, blocked note, or sidequest stub, so its promote or resume routing survives and the stub is retired by the attended promotion that reads it. Do **not** retag the PLAN.md line autonomously.
 - **Foreign-dirt gate — terminate, write nothing.** Writing a new untracked file into a tree the paper-complete guard has just refused to touch makes that file its own foreign dirt on the next invocation — a self-blocking loop. Emit the marker, then the paths, then the caller-facing line, and stop:
 
   ```markdown
@@ -89,13 +96,13 @@ The pre-flight checks and the Step 1.5 model gate run before this run has writte
 
 `SPEC.md` §"Paper-complete guard" holds in full — all three parts, with no unattended variant:
 
-1. **Foreign-dirt gate.** Emit `DIRTY` and the paths, then the machine-readable stop; never stash, clean, or commit, and write nothing.
+1. **Foreign-dirt gate.** Emit `DIRTY` and the paths, then the machine-readable stop; never stash, clean, or commit that dirt, and write nothing. The lone-park commit is not this commit.
 2. **Atomic single-commit closure.** Deliverables + PLAN flip + archive move land together or not at all.
 3. **🏁 only with a deliverable-covering SHA.** Verify with `git show --name-only`; never invent a SHA. No operator watching is a reason to hold this line harder, not to relax it.
 
-Nor does it keep **Phase 3's targeted default**. Run the repo's **full validation set**, never the targeted default: when the justfile defines any of `check` / `test` / `lint` / `typecheck`, `just check` if defined plus each other one it defines that `check` does not reach (`just --show check`, followed through its dependencies), else the validation commands the repo's `AGENTS.md` / `CLAUDE.md` names, else the steps its CI workflow runs — in that discovery order, and record each as `command → exit code` in the receipt exactly as the targeted commands would be. A red is Phase 2 evidence, not a closure question: a failure this diff caused sends the run back to Phase 2; a red the run cannot make green parks with `park-reason: input-needed — full suite red on <first failing command>, not caused by this diff, needs an operator to decide whether closure may proceed` (rephrase so the prose carries no `: `), never a close over it. A repo with no validation set records `N/A — no validation set declared`. `--fast` alone and the `[unattended]` row marker keep the attended targeted default. Contract: `SPEC/gate-postures.md` §"What `--unattended` never relaxes".
+Nor does it keep **Phase 3's targeted default**. Run the repo's **full validation set**, never the targeted default: when the justfile defines any of `check` / `test` / `lint` / `typecheck`, `just check` if defined plus each other one it defines that `check` does not reach (`just --show check`, followed through its dependencies), else the validation commands the repo's `AGENTS.md` / `CLAUDE.md` names, else the steps its CI workflow runs — in that discovery order, and record each as `command → exit code` in the receipt exactly as the targeted commands would be. A red is Phase 2 evidence, not a closure question: a failure this diff caused sends the run back to Phase 2; a red the run cannot make green parks with `park-reason: input-needed — full suite red on <first failing command>, not caused by this diff, needs an operator to decide whether closure may proceed` (rephrase so the prose carries no `: `), then the lone-park commit, never a close over it. A repo with no validation set records `N/A — no validation set declared`. `--fast` alone and the `[unattended]` row marker keep the attended targeted default. Contract: `SPEC/gate-postures.md` §"What `--unattended` never relaxes".
 
-Nor does it relax **Phase 3's External review**. `/ft-task` runs it as its `SKILL.md` Phase 3 says, scoped to this run's own diff; a blocker the run cannot fix parks `park-reason: input-needed — <the blocker>` rather than closing over it. Contract: `SPEC/gate-postures.md` §"What `--unattended` never relaxes".
+Nor does it relax **Phase 3's External review**. `/ft-task` runs it as its `SKILL.md` Phase 3 says, scoped to this run's own diff; a blocker the run cannot fix parks `park-reason: input-needed — <the blocker>` and runs the lone-park commit rather than closing over it. Contract: `SPEC/gate-postures.md` §"What `--unattended` never relaxes".
 
 Nor does it relax the **downstream-impact reconciliation** user-confirm, which guards plan correctness rather than pacing: with no operator to confirm, a direction-changing decision that reaches beyond the current task is a `Re-scope`, and `Re-scope` parks as `drift`.
 
@@ -111,7 +118,8 @@ The epic-close skill accepts the flag on its own terms (`SPEC/gate-postures.md`
 - **The park recipe** — used once, at its Step 4 Phase 1→2 exit gate. It runs
   the `default-fire-on-clarifications` flavor, so a clarification it cannot
   answer parks as `input-needed`; a `Re-scope` / `De-scope` verdict parks as
-  `drift`. The audit tasknote exists by then, so all four writes apply.
+  `drift`. The audit tasknote exists by then, so the park recipe applies,
+  lone-park commit included.
 - **The pre-scaffold stop shape** — every Step 1-2 bail terminates and writes
   nothing, including the open-siblings ask (whose own default is already
   "bail", so it is taken deterministically rather than asked).

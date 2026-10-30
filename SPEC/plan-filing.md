@@ -222,7 +222,9 @@ filing motions above and `/ft-seed-unattended`'s write, and nothing else. `/ft-t
 `/ft-adopt`, and `/ft-update` are unchanged: their commits
 land deliverables or cut releases, and it is the 📦 conditional skip rule
 (`SPEC/gates.md`) — not this section — that decides when they commit
-autonomously.
+autonomously. One commit sits outside both: a lone park of the tasknote
+when it is the tree's only uncommitted path (`SPEC/gate-postures.md`
+§"What a park is"). It publishes no deliverable and flips no row.
 
 ## `## Completed` archive convention
 

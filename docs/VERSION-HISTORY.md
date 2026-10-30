@@ -22,6 +22,13 @@ unless correcting a factual error.
 
 ---
 
+## v8.1.0 — an unattended park commits its lone tasknote
+
+- An --unattended park whose tasknote is the only uncommitted path commits it alone (`chore: park <ID> — <code>`, never pushed), so the next dispatch's foreign-dirt gate no longer stops on it. Other dirt leaves the park uncommitted; attended parks never auto-commit.
+- docs/EXTERNAL-AGENTS.md records that a parked ending may carry that one local commit.
+
+Also: bump wording aligned with SPEC/versioning.md (no tasknote by default); README names v8.0.0 among breaking majors; the neutrality ledger registers the park-recipe path facts; Claude, Grok and Codex re-verified at v8.1.0.
+
 ## v8.0.0 — active tasknotes stay visible when they fail to parse
 
 - GET /api/active returns { tasknotes, unparsable } instead of a bare array. The bundled board reads the new shape. A custom client reads .tasknotes.

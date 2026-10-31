@@ -6,6 +6,9 @@ install data from the **adopter's current pin**. An older pin need not contain
 this procedure. Run from the project root, setting `FT_DIR` to the relative
 submodule path resolved by the caller (default `.flaitron/core`). This block
 does not fetch, checkout, stage, access agent homes, or wire other platforms.
+It is POSIX sh that also runs unchanged when an agent's login shell is bash
+or zsh: rosters are split from a command substitution, never from an unquoted
+variable, which zsh does not split.
 
 The literal `ln -s` roster in `<FT>/codex/AGENTS-snippet.md` remains derived
 from Claude's canonical snippet. No second roster lives here. Retirement
@@ -30,17 +33,18 @@ report-only under update Step 4.6. A name alone never proves ownership.
       printf 'CONFLICT skill root: %s\n' "$ft_root"; exit 1
     fi
   done
-  ft_slugs=$(awk '/^ln -s / && $NF ~ /^\.agents\/skills\/ft-[a-z-]+$/ {sub(/^.*\//, "", $NF); print $NF}' "$ft_snippet")
+  ft_slugs=$(awk '/^ln -s / && match($NF, /^\.agents\/skills\/ft-[a-z-]+$/) {sub(/^.*\//, "", $NF); print $NF}' "$ft_snippet")
   [ -n "$ft_slugs" ] || { printf 'CONFLICT empty pinned Codex roster\n'; exit 1; }
   # Check the whole source set before making any links.
-  for ft_slug in $ft_slugs; do
+  # Iterate via $(printf …): zsh never word-splits a bare $var.
+  for ft_slug in $(printf '%s\n' "$ft_slugs"); do
     [ -f "$ft_dir/codex/skills/$ft_slug/SKILL.md" ] || {
       printf 'CONFLICT missing pinned body: %s\n' "$ft_slug"; exit 1;
     }
   done
   mkdir -p .agents/skills || exit 1
   ft_failed=0
-  for ft_slug in $ft_slugs; do
+  for ft_slug in $(printf '%s\n' "$ft_slugs"); do
     ft_link=".agents/skills/$ft_slug"
     ft_target="../../$ft_dir/codex/skills/$ft_slug"
     if [ -L "$ft_link" ] && [ "$(readlink "$ft_link")" = "$ft_target" ]; then
@@ -57,7 +61,7 @@ report-only under update Step 4.6. A name alone never proves ownership.
     in_table && /^##+ / {exit}
     in_table && /^\| `ft-[a-z-]+` \|/ {split($0, cells, "`"); print cells[2]}
   ' "$ft_migration")
-  for ft_slug in $ft_retired; do
+  for ft_slug in $(printf '%s\n' "$ft_retired"); do
     ft_link=".agents/skills/$ft_slug"
     # A pin that still ships an old name is not a retirement at this pin.
     if [ -e "$ft_dir/codex/skills/$ft_slug" ] || [ -L "$ft_dir/codex/skills/$ft_slug" ]; then continue; fi

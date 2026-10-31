@@ -931,9 +931,11 @@ describe('pinned Codex wiring procedure', () => {
     return { repo, core, pinPath };
   }
 
-  async function reconcile(f) {
+  async function reconcile(f, shell = 'sh') {
     try {
-      const { stdout } = await execFileAsync('sh', ['-c', wiringBlock], {
+      // zsh -f skips user rc files (a stray `setopt sh_word_split` would mask the bug); /etc/zshenv still loads.
+      const args = shell === 'zsh' ? ['-f', '-c', wiringBlock] : ['-c', wiringBlock];
+      const { stdout } = await execFileAsync(shell, args, {
         cwd: f.repo, env: { ...process.env, FT_DIR: f.pinPath },
       });
       return { code: 0, stdout };
@@ -1026,6 +1028,41 @@ describe('pinned Codex wiring procedure', () => {
     }
     await checkRoster(f);
     assert.doesNotMatch((await reconcile(f)).stdout, /REMOVED/);
+  });
+
+  // CORE-849: agents run the block in the login shell, and zsh does not
+  // word-split an unquoted `$var`. The static check guards hosts without zsh.
+  it('never word-splits a roster from an unquoted variable', () => {
+    // Only a bare, unquoted `$(...)` splits in every shell; `"$(...)"` and `$var` do not in zsh.
+    assert.doesNotMatch(wiringBlock, /\bfor\s+\w+\s+in\s+(?:["']|\$(?!\())/);
+    assert.doesNotMatch(wiringBlock, /(?<!")\$\{?ft_(slugs|retired)\b/, 'roster variables expand only double-quoted');
+  });
+
+  it('wires, retires, and fails closed the same under zsh', async (t) => {
+    try { await execFileAsync('zsh', ['-f', '-c', 'true']); } catch { t.skip('zsh not installed'); return; }
+    const f = await fixture();
+    await mkdir(join(f.repo, '.agents/skills'), { recursive: true });
+    const retired = 'ft-file-followup';
+    await symlink(`../../${f.pinPath}/codex/skills/${retired}`, join(f.repo, '.agents/skills', retired));
+    const result = await reconcile(f, 'zsh');
+    assert.equal(result.code, 0, `${result.stdout ?? ''}${result.stderr ?? ''}`);
+    assert.equal(result.stdout.match(/^CREATED /gm).length, expectedSlugs.length);
+    assert.ok(result.stdout.includes(`REMOVED .agents/skills/${retired}\n`));
+    await checkRoster(f);
+    // A preserved custom destination must still surface through ft_failed.
+    const custom = join(f.repo, '.agents/skills', expectedSlugs[0]);
+    await unlink(custom);
+    await mkdir(custom);
+    const conflict = await reconcile(f, 'zsh');
+    assert.equal(conflict.code, 1);
+    assert.match(conflict.stdout, new RegExp(`^CONFLICT preserved \\.agents/skills/${expectedSlugs[0]}$`, 'm'));
+    // A missing body must stop before any link work, one slug per message.
+    const g = await fixture();
+    await unlink(join(g.core, 'codex/skills', expectedSlugs[1], 'SKILL.md'));
+    const missing = await reconcile(g, 'zsh');
+    assert.equal(missing.code, 1);
+    assert.equal(missing.stdout, `CONFLICT missing pinned body: ${expectedSlugs[1]}\n`);
+    await assert.rejects(lstat(join(g.repo, '.agents')), { code: 'ENOENT' });
   });
 
   it('does not retire a name still shipped by an older pin', async () => {

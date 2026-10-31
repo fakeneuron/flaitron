@@ -23,6 +23,8 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Medium
 
 - [ ] **CORE-849** [moderate]🧩 | codex-reconcile-portability — Starter: investigate `codex/reconcile-skills.md` failing under zsh (unsplit `$ft_slugs` → false missing-body CONFLICT) and tripping the NAT-195 path guard (`~ /` awk match, literal `../../`). Surfaced in fakeneuron `/ft-update` 2026-10-31.
+- [ ] **CORE-851** [heavy] | one-line-installer — Starter: POSIX `install.sh` (`curl … | sh`) that installs the pinned submodule, verifies the tag commit, wires agent skill links and hands off to `/ft-adopt` (Step 0 exception). Discovery: doctrine change vs CONVENTIONS package-manager distribution / PHILOSOPHY "zero scripts", and supply-chain risk of serving from the public repo's `main`. Grok intake 2026-10-31.
+- [ ] **CORE-852** [heavy] | pin-bump-tool-merge — Starter: make `tools/update-adopters.mjs` the single pin-bump engine (generic `--attended-ledger` guard first, then port natabula `wave-bump.sh` follow-through) and release it; natabula NAT-494 wraps it. Grok intake 2026-10-31.
 
 ## Low
 

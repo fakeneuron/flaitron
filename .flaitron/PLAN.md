@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-(none)
+- [ ] **CORE-849** [moderate]🧩 | codex-reconcile-portability — Starter: investigate `codex/reconcile-skills.md` failing under zsh (unsplit `$ft_slugs` → false missing-body CONFLICT) and tripping the NAT-195 path guard (`~ /` awk match, literal `../../`). Surfaced in fakeneuron `/ft-update` 2026-10-31.
 
 ## Low
 

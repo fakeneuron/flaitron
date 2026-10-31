@@ -170,7 +170,9 @@ the row's other clause-3 trips and §"Never autonomous" still decline it.
 A basis counts only once an operator has **confirmed** it. That happens
 when the operator keeps the starter at a filing gate that showed the basis
 fields: the `/ft-file-task --starter` S3 review, or a later gate that shows
-the same fields. A starter edited by hand afterwards carries the same trust
+the same fields. `/ft-seed-unattended`'s gate is one: it shows them for a
+starter it drafts (a scope) and for a `status: starter` note already on
+disk (a mark). A starter edited by hand afterwards carries the same trust
 as a hand-written token. An incomplete basis is not partly ready. The row
 is declined on the clause the basis would have satisfied, and the filer
 shows which of (a)–(d) is missing.
@@ -204,7 +206,11 @@ stays the mechanical layer under it, and the set adds no keyword to it.
 Every LLM filer and `/ft-seed-unattended` declines such a row as a
 **stay** whose reason names the item. It is never a pin, a split, or any
 other preparation: how to slice such work is the operator's call, made in
-an attended session.
+an attended session. One item has a narrow exception. A design choice not
+yet decided may become a `/ft-seed-unattended` **question**, alone or
+riding a scope (§"Preparing declined rows"), because the operator's answer at its gate
+decides it. An unanswered question leaves the row a stay, and no other item
+takes a question.
 
 ## Three postures
 
@@ -263,31 +269,44 @@ row *as it stands in the file* — the existing line is the drafted line — and
 brings the whole walk to **one** prose review gate. Two classes are skipped
 before the predicate runs and reported as counts — a row already carrying the
 token, wherever it sits (a mis-positioned one is also named, below), and a
-`[handoff]` row (clause 3). The gate lists three things, in this order:
+`[handoff]` row (clause 3). The gate lists four things, in this order:
 
 - **Marks.** Every row the predicate admits, shown as it stands with the
-  token in place.
-- **Preparations.** Every declined row a pin or a split
+  token in place. A `[heavy]`, heavy-tier-name, or rendered-surface row
+  may be admitted only on the basis of its `status: starter` note on disk,
+  the other clauses still applying, and its mark
+  shows those basis fields: keeping the mark confirms the basis
+  (§"Readiness basis"). An incomplete basis leaves the row a stay whose
+  reason names the missing fields; the walk never edits the note.
+- **Preparations.** Every declined row a pin, a split, or a scope
   (§"Preparing declined rows" below) rewrites, shown as the bytes the write
   will produce, each followed by a **dependent token
   item** when the predicate admits the resulting row as drafted — the pinned
-  row, or a split's mechanical row — shown with the token in place. A
+  row, a split's mechanical row, or the scoped row on its drafted basis —
+  shown with the token in place. A
   preparation whose result the predicate still declines — a pin on a
   `[heavy]` or heavy-tier-name row with no complete basis (clause 1), a `.k` whose predecessor is open and not a
   candidate (clause 6) — carries no item and names that clause instead, and
   the write leaves that row unmarked.
+- **Questions.** Every declined row a question prepares, each shown as the
+  question and its options, every option as the exact row its pin would
+  write, followed by the token item that answer would carry or the clause
+  that withholds it.
 - **Stays.** Every other declined row, with the first clause it failed and,
   where §"Preparing declined rows" asks for one, the reason: the path a
   keyword tripped on, the note or stub the ID collides with, the missing
-  `.N`.
+  `.N`, the basis field a scope could not fill, a cap.
 
-The gate opens when it holds a mark or a preparation; a walk with neither
-reports the counts and the stays and stops — no gate, no commit. The
+The gate opens when it holds a mark, a preparation, or a question; a walk
+with none reports the counts and the stays and stops — no gate, no commit. The
 operator's reply is the act, and the write covers only what the reply
 keeps: the token after `[model]` on each kept mark and each kept token item —
 every other byte verbatim to the file on a mark, to the drafted bytes on an
 item; the rewritten line of each kept pin; the remainder, the mechanical row,
-and the starter of each kept split. A token
+and the starter of each kept split; the pointer-suffixed row and the starter
+of each kept scope; the pinned row of each answered question, which on a
+question riding a scope also carries the pointer and is that row's only
+rewrite. A token
 item depends on its preparation: dropping the preparation drops the item with
 it; dropping the item keeps the preparation and leaves the row unmarked, for
 a later walk to offer as a mark when the predicate then admits it. Clause 6
@@ -313,8 +332,11 @@ Existing filers keep their own gates.
 ### Preparing declined rows
 
 Prefer a pin when one fact removes the person. Prefer a split when a
-factual slice separates cleanly and the rest still needs a person.
-Otherwise stay. Each declined row is one class:
+factual slice separates cleanly and the rest still needs a person. Prefer
+a scope when the row's only gap is a readiness basis the walk can
+complete, and a question when its only gap is one bounded design choice.
+Otherwise stay. Each declined row is one class, except that a question may
+ride a scope:
 
 - **Pin.** Add a fact to the existing line: a file, a command, or which of
   two patterns already in the repo. A pin may rewrite the words that ask
@@ -350,11 +372,45 @@ Otherwise stay. Each declined row is one class:
   words) has not separated cleanly, and the row
   stays. The source row becomes the remainder. File a starter for the
   remainder when its line alone does not say what to do.
+- **Scope.** A starter that carries a complete readiness basis, drafted
+  for a row declined only for want of one: by clause 1 (a `[heavy]` or
+  heavy-tier-name row), by clause 3's rendered-surface reading, or both.
+  Clause 6 aside for a `.k` waiting on an open sibling: as for a pin,
+  that withholds the item, not the scope. A `.1` or `.N` row is never a
+  scope.
+  The row has no other clause-3 trip, no §"Never autonomous" item but the
+  one undecided design choice a riding question answers, and no note or
+  stub for its ID. The walk reads the repo, bounded to the
+  paths the row names, a grep for its shortname, and the files that name
+  the repo's commands and spec runner, at the root and on the way to each
+  named path or shortname hit, and fills (a)–(d) as they
+  apply. The source row gains the starter pointer and nothing else.
+  The gate shows the basis fields beside the starter path, and keeping
+  the scope confirms the basis (§"Readiness basis"). A basis the walk
+  cannot complete is not a scope: no command decides a criterion, or no
+  spec runner in the repo decides a rendered result. The row stays, and
+  the reason names the missing field. A scope never writes a partial
+  starter, and it does not write the spec that (d) names.
+- **Question.** One bounded multiple-choice question, for a row whose
+  only gap is one design choice not yet decided (the §"Never autonomous"
+  exception). The choice is bounded: two or three options, each a fact a
+  pin could write (here the Pin bullet's "which of two patterns" stretches
+  to three). The same clause-6 aside as a scope's applies, and a `.1` or
+  `.N` row never takes a question either. The gate shows each option as the exact row its pin
+  would write, and the operator's answer selects that pin. The chosen row
+  is then held to the Pin bullet: it leaves no other clause-3 trip, or the
+  option is not offered. When the row is also a scope, its basis decides
+  the rendered-surface reading, so that reading neither bars the option
+  nor makes it a pin on a rendered surface. Each option then gets its own
+  starter draft, carrying its `### Decisions locked` row and the scope
+  and criteria it implies. The scope is kept only with an answer. An unanswered question, a row with two or
+  more open choices, and a choice with no bounded options all stay.
 - **Stay.** Taste and a true look stay declined — a
   true look is a result someone must see, where no existing test command
   decides it, and a rendered-surface change is one unless a complete basis
   decides it (clause 3). So does a row whose whole text is the person
-  act, a §"Never autonomous" row (the reason names the item), a
+  act, a §"Never autonomous" row (the reason names the item) other than
+  one undecided design choice a question takes, a
   `[frontier]`, `[xheavy]`, or frontier-name row (clause 1), a row whose
   clause-3 keyword trips only on a path or a name written outside
   backticks (a bare migrations/0001 — the reason names the path, for a
@@ -367,8 +423,17 @@ Otherwise stay. Each declined row is one class:
   stays as well: the skill does not overwrite a note or orphan a stub. So
   does a split whose drafted mechanical row still trips clauses 1–5.
 
-A pin or a split is a preparation at the gate above; a stay is listed with
-its clause. A split's mechanical `.k` takes the next number after the highest
+**Per-walk caps.** One walk offers at most five scopes and asks at most
+five questions, in PLAN order, and attempts at most ten drafts of each
+kind: a draft that fails frees its offer for the next row, but not its
+attempt. A scope that carries a question counts against both, once
+each however many options it drafts. The caps
+are constants, with no flag: each attempt costs a bounded repo read, and
+each question costs the operator a decision at the one gate. A row past a cap stays with `scope deferred — cap` or
+`question deferred — cap`, for a later walk.
+
+A pin, a split, or a scope is a preparation at the gate above, a question
+is listed in its own block, and a stay is listed with its clause. A split's mechanical `.k` takes the next number after the highest
 numeric sibling, so under clause 6 it waits on that sibling — the remainder
 itself when the source was the highest — and a later walk reads it the same
 way. The default errs toward a false negative, as the predicate does: the
@@ -426,7 +491,7 @@ fails that check.
 | `/ft-refactor` | Step 5 | Step 4 structured-ask review; own `--fast` → emit only | [[CORE-577.5]] |
 | `/ft-audit-repo` §6 | milestone write | write-confirm structured ask | [[CORE-577.6]] |
 | `/ft-task` · `/ft-close-epic` | — | not filers; carry the §"Persistence" hook only | [[CORE-577.4]] |
-| `/ft-seed-unattended` | Step 4 (existing rows, bulk — marks, pins, splits) | Step 3 prose review — the skill's only gate; no flags, attended only (§"Seeding an existing plan") | [[CORE-619]] · [[CORE-EPIC-812]] |
+| `/ft-seed-unattended` | Step 4 (existing rows, bulk — marks, pins, splits, scopes, questions) | Step 3 prose review — the skill's only gate; no flags, attended only (§"Seeding an existing plan") | [[CORE-619]] · [[CORE-EPIC-812]] · [[CORE-850.4]] |
 
 Adopter forks of `ft-audit` (`.claude/skills/audit/`) pick the mirror up only
 through `/ft-update`'s fork refresh; until then a fork files as before —

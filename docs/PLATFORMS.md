@@ -306,7 +306,7 @@ Concrete instantiation:
   the two `ft-audit`-family skills, plus `ft-adopt`, `ft-release`,
   `ft-seed-unattended`, `ft-update`), each slash-invocable, with any `argument-hint:` in
   its own frontmatter — no separate command stubs since [[CORE-769.2]] — some with
-  lazy-load fragments (`ft-task/step-*.md`, including `step-4-debug-mode.md` and `step-5-loop-mode.md`; `ft-task/micro-mode.md`; `ft-file-task/step-0-flags.md`, `park-mode.md` and `starter-mode.md`; `ft-audit/scaffold-bootstrap.md`; `ft-task/unattended-mode.md`; `ft-close-epic/unattended-close-epic.md`; `ft-open-epic/step-4.5-model-gate.md` and `step-5.5-deep-prepass.md`; `ft-release/step-*.md`), the every-run `ft-task/preamble.md`, or sibling libraries (`ft-audit/passes/*.md`)
+  lazy-load fragments (`ft-task/step-*.md`, including `step-4-debug-mode.md` and `step-5-loop-mode.md`; `ft-task/micro-mode.md`; `ft-file-task/step-0-flags.md`, `park-mode.md` and `starter-mode.md`; `ft-audit/scaffold-bootstrap.md`; `ft-task/unattended-mode.md`; `ft-close-epic/unattended-close-epic.md`; `ft-open-epic/step-4.5-model-gate.md` and `step-5.5-deep-prepass.md`; `ft-seed-unattended/scope-and-question.md`; `ft-release/step-*.md`), the every-run `ft-task/preamble.md`, or sibling libraries (`ft-audit/passes/*.md`)
 - **Adopter install**: relative symlinks for the adopter-installed subset from
   `.claude/skills/*` into the submodule, per
   `claude/AGENTS-snippet.md` §"One-time symlink wiring". The relative

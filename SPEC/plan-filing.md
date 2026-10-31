@@ -151,7 +151,7 @@ Rules:
   pass the accumulated-filings test above. A changed line this motion wrote
   is recognized: the appended PLAN row, any confirmed reconcile edit, each
   named inline fix, `/ft-seed-unattended`'s ` [unattended]` insertions, and
-  `/ft-seed-unattended`'s description rewrites on confirmed source rows — one line carrying both when a kept pin keeps its token item (those
+  `/ft-seed-unattended`'s description rewrites on confirmed source rows — one line carrying both when a kept pin or scope keeps its token item, an answered question counting as a pin (those
   edits fail the line test, which is why each pre-check runs before its write;
   post-stage accepts them or it undoes the rows the pre-check allowed). A
   starter or sidequest file this motion created is recognized, and so is a

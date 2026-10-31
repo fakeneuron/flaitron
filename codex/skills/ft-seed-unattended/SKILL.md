@@ -1,6 +1,6 @@
 ---
 name: ft-seed-unattended
-description: Seed `[unattended]` onto an existing PLAN.md from Codex in one attended pass, marking admitted rows and preparing declined ones (pin or split), confirming per row inside one review gate.
+description: Seed `[unattended]` onto an existing PLAN.md from Codex in one attended pass, marking admitted rows and preparing declined ones (pin, split, scope, or question), confirming per row inside one review gate.
 ---
 
 # ft-seed-unattended - Codex wrapper

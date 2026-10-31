@@ -48,15 +48,39 @@ review): `tags:`, `due:` (only if the conversation specified a deadline),
 The `## 🌱 Starter context` body **replaces** the host's conversational
 paragraph. Compose it from conversation context using the sub-headings the
 starter template ships (Why this exists / Solution shape / Files to touch /
-Explicitly out of scope / Decisions locked / Open at promotion / Related);
+Explicitly out of scope / Decisions locked / Acceptance that decides it /
+Open at promotion / Related);
 drop any sub-heading with nothing genuine to capture, per
 `<SPEC_DIR>/starter.md`. Everything stays under the single
 `## 🌱 Starter context` section — no 🎯 / ✅ / 🧩 spec sections, no phase
 scaffolding; promotion adds those.
 
 The host's **downstream-impact reconciliation scan** and its **`[unattended]`
-candidacy** proposal both run unchanged — the predicate is evaluated over the
-line *without* the `Filed with starter at …` suffix, which carries no signal.
+candidacy** proposal both run as in the host, with the one addition below.
+The predicate is evaluated over the line *without* the `Filed with starter
+at …` suffix, which carries no signal.
+
+**Readiness basis**
+(mirror of `SPEC/unattended-candidacy.md` §"Readiness basis").
+Here clause 1 also reads the drafted starter body. On a `[heavy]` row, or
+one whose work changes a rendered surface, list the four basis fields in
+the review, each marked present or missing:
+
+- (a) YAML `touches:`
+- (b) `### Acceptance that decides it`, with every criterion naming its command
+- (c) `### Open at promotion` empty
+- (d) on a rendered surface, a criterion that runs a deciding spec (`n/a`
+  when nothing renders)
+
+Propose the token only when the predicate admits the row. A `[heavy]` row
+is admitted only when every applicable field holds. Otherwise show no
+token and name what is missing (`basis incomplete — (b), (c)`). When the
+basis is complete and another clause still declines the row, name that
+clause instead (`basis complete; declined — clause 3`). For these
+rows, this note replaces the host's "declined row says nothing" rule. The
+operator can then fill the gap in the review, or file the row unmarked. `--starter` refuses
+`--unattended`, so the host's `unattended-candidates:` line never emits in
+this mode.
 
 **Surface for review** — the host's Step 3 review gate, with the body in place
 of the paragraph: the drafted starter body, the proposed PLAN.md line exactly
@@ -84,7 +108,8 @@ Host Step 4 runs with these substitutions, in the same continuous motion:
 
    Then fill it: YAML per SPEC §"Tasknote frontmatter" from the Step S2
    inputs — `title:` = the shortname, `status: starter` (already set),
-   `created:` = today (`YYYY-MM-DD`); H1 `# <TASK-ID> | <title>`; nav header
+   `created:` = today (`YYYY-MM-DD`), `touches:` uncommented and filled when
+   the S3 draft named its scope; H1 `# <TASK-ID> | <title>`; nav header
    `🌱 Starter (filed <today>)`, plus `· 🔗 [[RELATED]]` chips mirroring
    `related-tasks:` when set; the `## 🌱 Starter context` placeholder body
    replaced with the Step S3 draft.

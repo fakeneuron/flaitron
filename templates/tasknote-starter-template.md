@@ -47,6 +47,16 @@ _Captured YYYY-MM-DD during <design discussion / mid-flow discovery / etc.> — 
 |---|---|---|
 | <Decision> | <Choice> | <Why> |
 
+### Acceptance that decides it
+
+<!-- Promotion copies these into `## ✅ Acceptance` verbatim. Each names the
+     command that decides it; none is `judgment` / `👁️`. Required, with
+     `touches:` and an empty "Open at promotion", for a `[heavy]` or
+     rendered-surface row to be an `[unattended]` candidate
+     (SPEC/unattended-candidacy.md §"Readiness basis"). -->
+
+- <Criterion> — `<verify command>`
+
 ### Open at promotion (Phase 1 should resolve)
 
 - <Question>. Lean: <answer>.

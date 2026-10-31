@@ -43,16 +43,20 @@ Three consequences follow, and each is a boundary rather than a feature:
 
 Evaluated over the **drafted row text** — the exact `- [ ]` line the filer is
 about to write — plus, for epic children, the closure state of the siblings
-clause 6 names. Every clause must hold; the first miss disqualifies the row.
+clause 6 names, and, for clause 1's basis arm, the row's starter tasknote
+(§"Readiness basis"). Every clause must hold; the first miss disqualifies the row.
 The predicate is deliberately conservative: a false negative leaves a row
 undecided, which is the status quo, while a false positive is exactly what
 the operator's confirm exists to catch — so when a clause is uncertain, the
 row is **not** a candidate.
 
-1. **`[model]` is `[light]` or `[moderate]`** (legacy `[medium]` included).
-   `[heavy]` and a missing tag both fail. Heavy work is design or ambiguity
-   work, and a row with no model declared has not been scoped enough to be
-   dispatched blind.
+1. **`[model]` is `[light]` or `[moderate]`** (legacy `[medium]` included),
+   **or `[heavy]` with a complete, operator-confirmed readiness basis**
+   (§"Readiness basis").
+   A bare `[heavy]` row and a missing tag both fail. Heavy work is design or
+   ambiguity work. It is dispatchable only once a starter has settled that
+   design and the operator has confirmed the result. A row with no model
+   declared has not been scoped enough to be dispatched blind.
 2. **Not `[!critical]`.** The urgency flag exists to pull an operator's eye to
    the row, which is the opposite of "safe with nobody present."
 3. **No operator hand-off signal.** A `[handoff]` marker on the drafted row
@@ -93,6 +97,52 @@ Three filers carry their own carve-outs on top: `/ft-audit`'s trivial-fix rows
 (written and closed in one motion — nothing to dispatch), `/ft-open-epic`
 Step 4's parent + `.1` lines (clauses 5–6 by construction), and the epic
 parents and `.N` placeholders `/ft-audit-repo` files at first contact.
+
+## Readiness basis
+
+A **readiness basis** is the set of facts that makes a row dispatchable
+with nobody present when its line alone is not enough. It is required for a
+row above `[moderate]` and for a row whose work changes a rendered surface.
+A `[light]` or `[moderate]` row that renders nothing needs none. The basis
+lives in the row's **starter tasknote**
+([`SPEC/starter.md`](starter.md)), in sections the starter template already
+ships plus one new one, so no new file type exists and the PLAN.md line
+keeps its single `[unattended]` token. A basis is **complete** when all of
+these hold:
+
+- **(a) Scope.** YAML `touches:` is declared and non-empty. It names the
+  paths the run is confined to.
+- **(b) Deciding acceptance.** The starter's `### Acceptance that decides
+  it` sub-heading lists at least one criterion. Every criterion names the
+  command that decides it, per the verify-command rule in
+  [`SPEC.md`](../SPEC.md) §"🧪 Phase 3: Testing & Linting", and none is
+  marked `judgment` or `👁️`. An unfilled template placeholder
+  (`<Criterion>`, `<verify command>`) is not a criterion. Promotion copies
+  this list into `## ✅ Acceptance` verbatim.
+- **(c) Nothing open.** The sub-heading starting `### Open at promotion`
+  (the template ships it with a parenthetical suffix) is empty, holds only
+  the template placeholder, or is absent. An open question is a decision
+  nobody present can make.
+- **(d) A deciding spec for a rendered surface.** When the work changes a
+  rendered surface, at least one (b) criterion runs a spec (Playwright or
+  the repo's equivalent) that decides the rendered result. The criterion
+  states the assertion in words: what the spec asserts, and where. The run
+  may write that spec in Phase 2. Implementing an assertion the operator
+  stated is not choosing the check. A generic runner with no spec for that
+  result does not decide it (§"Preparing declined rows" → **Pin**).
+  On a row that renders nothing, (d) does not apply.
+
+Clause 1 is where a basis admits a row: it is what lets a `[heavy]` row
+through. For a rendered-surface row the basis is necessary but not enough.
+Clause 3 decides whether that row is admitted at all.
+
+A basis counts only once an operator has **confirmed** it. That happens
+when the operator keeps the starter at a filing gate that showed the basis
+fields: the `/ft-file-task --starter` S3 review, or a later gate that shows
+the same fields. A starter edited by hand afterwards carries the same trust
+as a hand-written token. An incomplete basis is not partly ready. The row
+is declined on the clause the basis would have satisfied, and the filer
+shows which of (a)–(d) is missing.
 
 ## Three postures
 
@@ -161,7 +211,7 @@ token, wherever it sits (a mis-positioned one is also named, below), and a
   item** when the predicate admits the resulting row as drafted — the pinned
   row, or a split's mechanical row — shown with the token in place. A
   preparation whose result the predicate still declines — a pin on a
-  `[heavy]` row (clause 1), a `.k` whose predecessor is open and not a
+  `[heavy]` row with no complete basis (clause 1), a `.k` whose predecessor is open and not a
   candidate (clause 6) — carries no item and names that clause instead, and
   the write leaves that row unmarked.
 - **Stays.** Every other declined row, with the first clause it failed and,

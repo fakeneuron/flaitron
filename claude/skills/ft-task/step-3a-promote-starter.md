@@ -12,7 +12,7 @@ The starter file already carries frontmatter and a `## 🌱 Starter context` bod
 3. **Replace the nav header.** Change `🌱 Starter (filed ...)` → `🟢 In progress · 🔗 [[<related-id-1>]] [[<related-id-2>]]`. Drop the `· 🔗 ...` segment if `related-tasks: []`.
 4. **Insert spec sections** between the nav header and the `## 🌱 Starter context` block:
    - `## 🎯 Goal` — one-sentence goal derived from the starter context.
-   - `## ✅ Acceptance` — checklist; populate during Phase 1 Discovery as the user clarifies what "done" looks like.
+   - `## ✅ Acceptance` — checklist. When the starter carries `### Acceptance that decides it`, copy its criteria in verbatim as `- [ ]` items, skipping any unfilled template placeholder (`<Criterion>`): they are the operator-confirmed readiness basis (`<SPEC_DIR>/starter.md`). Phase 1 may add criteria, but it never silently rewords or drops these. If step 1's drift check finds that a criterion's path or command has moved, surface it to the user. The fix is the user's call, as for any drifted seed. Otherwise, populate during Phase 1 Discovery as the user clarifies what "done" looks like.
    - `## 🧩 Subtasks` — checklist; populate during Phase 1 Discovery with concrete, ordered steps.
    - `## 🔗 Related` — bullet list mirroring `related-tasks:` from the YAML frontmatter (one bullet per ID with short context, e.g., `- [[<CORE-017>]] — frontmatter (predecessor)`). If `related-tasks: []`, write `- (none)`.
    - **Fidelity check** — verify the starter's `Solution shape` / `Decisions locked` / `Files to touch` are reflected in the synthesized Goal (and earmarked for Phase 1's Acceptance/Subtasks population); flag any dropped substance to the user.

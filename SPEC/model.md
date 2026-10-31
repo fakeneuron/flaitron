@@ -327,7 +327,12 @@ clause 1 reads a concrete token by its inherent tier
 predicate"): a light- or moderate-tier pin passes that clause, a
 heavy-tier pin needs a confirmed readiness basis, and a frontier name or a
 name with no single tier fails it. The other clauses still apply, and
-marking a pinned row does not loosen the pin.
+marking a pinned row does not loosen the pin. The gate checks a row's tag
+against the session it finds and never caps what a caller launches. An
+operator-less caller's runner cap (heavy-ceiling families at effort up
+to `xhigh`, never a frontier model by name) is the caller's, in
+[`docs/EXTERNAL-AGENTS.md`](../docs/EXTERNAL-AGENTS.md) §"The
+Orchestration Contract".
 
 ## Tier ladder vs. the next-move suggestion glyph
 

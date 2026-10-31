@@ -34,6 +34,8 @@ Do **not** use for:
 
 The convention is deliberately narrow so the procedure stays a handful of commands and the mental model stays simple.
 
+**One exception: operator-less dispatch.** A caller running tasknotes with nobody present starts *every* run in its own worktree, single tasks included ([`docs/EXTERNAL-AGENTS.md`](EXTERNAL-AGENTS.md) §"The Orchestration Contract", step 10). There the worktree contains a mid-run park's dirt rather than enabling parallelism, so the independence rules above do not gate it. The commands are unchanged, but three readings differ. A row with no note yet skips the tasknote `cp`. An open `blocked-by` warns nobody, so the caller declines to dispatch, which is the deny-by-default rule. A parked run's worktree stays until the run is resumed or discarded, so the "long-lived" rule yields there.
+
 ## Fan-out, YAML, and the start warn
 
 Three surfaces, one claim:
@@ -67,7 +69,7 @@ cp ".flaitron/tasknote/${TASK_ID}.md" "$WT_DIR/.flaitron/tasknote/"
 cp ".flaitron/tasknote/README.md"     "$WT_DIR/.flaitron/tasknote/"   # area table for the worktree session
 ```
 
-The `submodule update` line is a no-op in a checkout with no submodules; in an adopter it checks out the pinned `.flaitron/core`, and [MIGRATION.md](MIGRATION.md) §1.1's sparse-checkout line can be re-run inside the worktree to trim it the same way. Before `add`, read the child's YAML: if `blocked-by:` names a PLAN line that is still `- [ ]`, **warn** and let the operator decide — never refuse. Then hand off: open a *fresh* session in `$WT_DIR` and run `/ft-task <TASK-ID>` there (with `--loop` for a goal loop — run Phase 1 in main first, isolate, then re-invoke with the flag). The main-checkout tasknote stays untouched; it is the coordination point until the end half runs.
+The `submodule update` line is a no-op in a checkout with no submodules; in an adopter it checks out the pinned `.flaitron/core`, and [MIGRATION.md](MIGRATION.md) §1.1's sparse-checkout line can be re-run inside the worktree to trim it the same way. Before `add`, read the child's YAML: if `blocked-by:` names a PLAN line that is still `- [ ]`, **warn** and let the operator decide — never refuse. Then hand off: open a *fresh* session in `$WT_DIR` and run `/ft-task <TASK-ID>` there (with `--loop` for a goal loop — run Phase 1 in main first, isolate, then re-invoke with the flag). The main-checkout tasknote stays untouched; it is the coordination point until the end half runs. A starter note (`status: starter`) at the same path copies exactly like an active one, and the runner promotes it inside the worktree. A row with no note yet skips the tasknote `cp`, because the runner scaffolds one in the worktree.
 
 **End:**
 
@@ -94,7 +96,7 @@ A `git branch --list 'wt-*'` with no matching `git worktree list` entry is an or
 - **No 4-phase change inside a worktree.** The relevance gate, operator cues (🛠️ / 📦), conditional skip rule, and post-closure protocol are unchanged inside any tasknote that happens to run here, except that post-closure step 2's `## Completed` rotation is skipped in a linked worktree (its receipt line says so); the next over-60 close in the main checkout rotates. Fan-out / child YAML (CORE-445.3) is a planning declaration, not a second lifecycle.
 - **Epic lifecycle still governs.** The `.1` Discovery + children + `.N` Audit bracket (see [`SPEC/epic.md`](../SPEC/epic.md)) owns multi-child work; worktrees are the execution accelerator for the independent subset, declared on `.1` as optional `## 🌳 Fan-out`.
 - **Adopter wiring.** None — the procedure is this doc. At the next `/ft-update`, exact-owned retired Codex links with absent bodies are pruned; other dangling links from the retired skill pair are reported (`docs/MIGRATION.md` §"Retired skills leave dangling symlinks").
-- **External CLI agents.** Worktrees are the isolation layer for running independent children in parallel; [`docs/EXTERNAL-AGENTS.md`](EXTERNAL-AGENTS.md) adds the "one external agent per tasknote" convention on top — hand each worktree-isolated child to a single external agent (Kiro / Claude Code / Codex).
+- **External CLI agents.** Worktrees are the isolation layer for running independent children in parallel, and for every operator-less dispatch (the exception above). [`docs/EXTERNAL-AGENTS.md`](EXTERNAL-AGENTS.md) adds the "one external agent per tasknote" convention on top: hand each worktree-isolated child to a single external agent (Kiro / Claude Code / Codex).
 
 ## Open Questions (None)
 

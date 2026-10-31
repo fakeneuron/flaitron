@@ -17,7 +17,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [x] **CORE-850.3** [heavy] | predicate-clauses — Completed 2026-10-31.
   - [x] **CORE-850.4** [heavy] | seeder-scope-question — Completed 2026-10-31.
   - [x] **CORE-850.5** [heavy] | runner-scope-guardrails — Completed 2026-10-31.
-  - [ ] **CORE-850.6** [moderate] | caller-contract — docs/EXTERNAL-AGENTS.md: dispatch each operator-less run in a `wt-<ID>` worktree, state the runner cap (heavy-band models at effort up to xhigh, never frontier models), add stable-surface rows for the readiness basis, `out-of-scope`, and park-prose questions; WORKTREES note on starters; file the Caobunga row cross-repo in the same closure.
+  - [x] **CORE-850.6** [moderate] | caller-contract — Completed 2026-10-31.
   - [ ] **CORE-850.N** [heavy] | unattended-readiness audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
 
 ## Medium

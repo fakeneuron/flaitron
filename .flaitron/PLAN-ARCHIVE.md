@@ -274,6 +274,27 @@ Contract: [`SPEC/plan-filing.md`](../SPEC/plan-filing.md)
 - [x] **CORE-810** [medium]🧩 | prep-split-deploy-safety — Completed 2026-10-18.
 - [x] **CORE-809** [medium]🧩 | release v7.2.0 — Completed 2026-10-18.
 - [x] **CORE-803** [light]🔧 [unattended] | release-ci-line — Completed 2026-10-18.
+- [x] **FE-135** [moderate]🧩 | triple-slash-types-gate — Completed 2026-10-26.
+- [x] **FE-134** [moderate]🧩 | type-query-import-gate — Completed 2026-10-26.
+- [x] **CORE-832** [moderate]🧩 | narrow-just-check — Completed 2026-10-26.
+- [x] **FE-133** [light]🔧 [unattended] | dynamic-import-tier-gate — Completed 2026-10-26.
+- [x] **CORE-831** [light]🔧 [unattended] | unattended-just-check — Completed 2026-10-26.
+- [x] **CORE-830** [light]🔧 | check-cmd-drift — Completed 2026-10-26.
+- [x] **CORE-829** [moderate]🧩 | release-dir-headroom — Completed 2026-10-26.
+- [x] **CORE-827** [heavy]🧠 | updater-retire-migrations — Completed 2026-10-26.
+- [x] **FE-132** [light]🔧 [unattended] | theme-init-parity — Completed 2026-10-25.
+- [x] **CORE-828** [light]🔧 [unattended] | just-check — Completed 2026-10-25.
+- [x] **FE-131** [moderate]🧩 [unattended] | viz-tier-lint — Completed 2026-10-25.
+- [x] **CORE-826** [moderate]🧩 [unattended] | agents-snippet-drift-pair — Completed 2026-10-25.
+- [x] **CORE-825** [light]🔧 | audit-context-always-runs — Completed 2026-10-25.
+- [x] **CORE-824** [moderate]🧩 | release v7.5.0 — Completed 2026-10-25.
+- [x] **FE-129** [light]🔧 [unattended] | viz-audit-advisories — Completed 2026-10-24.
+- [x] **FE-130** [light] | devapi-host-comment — Rewrote the `isLoopbackAddress` comment in `viz/src/devApi.ts` to credit FE-128's `server.host` pin instead of claiming the config sets none. Surfaced by audit-security 2026-10-24 (Finding #1, Low), fixed inline.
+- [x] **CORE-823** [light] | settings-flowtron-paths — Removed two dead `npm --prefix …/Code/flowtron/viz` allow rules from gitignored `.claude/settings.local.json`; the path is gone since the v6.0.0 rename and `Bash(npm *)` already covers the live one. Surfaced by audit-context 2026-10-23 (Finding #1, Low), fixed inline.
+- [x] **CORE-821** [heavy]🧠 | fable-effort-split — Completed 2026-10-22.
+- [x] **CORE-820** [moderate]🧩 | empty-plan-emoji — Completed 2026-10-22.
+- [x] **CORE-822** [moderate]🧩 | visual-receipts-vs-park — Completed 2026-10-22.
+- [x] **CORE-819** [moderate]🧩 [unattended] | plan-only-subjects — Completed 2026-10-22.
 
 ## Completed 2026-09
 

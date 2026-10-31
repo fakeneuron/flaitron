@@ -41,9 +41,10 @@ of a gate changed in the window, so it stays dropped.
 | "Nobody is watching, so parking and finishing look the same from here." | Exactly backwards. A park is the **only** honest report of a gate that went unanswered; committing past one manufactures a paper-complete with no operator left to catch it. | [`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"`--unattended` operator posture" → "Park conversions" |
 | "The targeted tests are green, and this change isn't *broad* — the full suite can stay off for the unattended close." | "Broad enough?" is the judgment an attended reviewer can second-guess and an unattended run has nobody to second-guess. Under `--unattended` the full validation set runs, always; a red it cannot make green parks `input-needed`. Green-targeted / red-full closes are the motivating case. | [`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"`--unattended` operator posture" → "What `--unattended` never relaxes" |
 | "`--fast` suppresses 👁️, and `--unattended` is a superset — so 👁️ is suppressed here too." | The superset is over `--fast`'s **autonomy**, not its delegations. 📦 force-skip and 🛠️ no-op *remove a pause*; 👁️ suppression *hands the visual check to the operator who is standing there* — and this posture's entire premise is that nobody is. Inheriting it drops the obligation instead of transferring it. The ask converts to a `visual-confirm` park. | [`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"`--unattended` operator posture" → "What is inherited, and what is not" |
-| "The change is frontend, but the tests are green and it *probably* looks fine unattended." | There is no gating-vs-corroborating split on 👁️ — the trigger is the emission condition. If you judged the change needs a look, park; if it needs no look, the Phase 3 box is `N/A` and no ask exists to convert. "Probably fine" is the third judgment call this conversion deleted on purpose. | [`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"Park conversions"; §"Refused carve-outs" below |
+| "The change is frontend, but the tests are green and it *probably* looks fine unattended." | There is no gating-vs-corroborating split on 👁️ — the trigger is the emission condition. If you judged the change needs a look, park; if it needs no look, the Phase 3 box is `N/A` and no ask exists to convert. "Probably fine" is the third judgment call this conversion deleted on purpose. The one exception is not yours to judge: a deciding spec the operator confirmed before dispatch (§"Refused carve-outs", fourth form). | [`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"Park conversions"; §"Refused carve-outs" below |
 | "The visual baseline passes byte-identical — that is a recorded human approval **replayed**, not a guess like the row above." | Sharper, and still refused. Both premises fail here: flaitron defines no baseline and cannot tell a golden a human approved from one `--update-snapshots` minted with nobody looking — and this posture *is* the declaration that nobody is present to attest which it was. Then "does it cover the surface I changed?" is the gating-vs-corroborating split renamed, judged by you about your own diff. Where output provably did not change, the box is already `N/A` and there is no ask to convert; the carve-out bites only where the baseline is not evidence. | §"Refused carve-outs" below; [`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"Park conversions" |
 | "The agent read a screenshot of every changed state against a stated check and recorded `found: pass` receipts — that is evidence, not a baseline and not a guess." | The third form, with the same two defects. The premise is self-graded: the context that wrote the diff chose the checks, read the capture, and wrote the pass, and this posture is the declaration that nobody is present to attest to that reading. Then "do my checks cover what I changed?" is the gating-vs-corroborating split renamed, judged by you about your own diff. Receipts make the operator's look *short*; they do not replace it. Recorded beneath the `visual-confirm` park, they make the resume one look. | §"Refused carve-outs" below; [`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"Park conversions" |
+| "I wrote a Playwright spec for the new layout and it passes — that is a deciding spec, so the 👁️ box reads `decided by` and nothing parks." | Only the (d) criterion the operator confirmed in the promoted starter's basis decides. A spec you chose — in Phase 1, in Phase 2, or as a criterion you added — is the third refused form with a different tool: the context that wrote the diff chose the check. Without a confirmed basis, the ask parks `visual-confirm`. | §"Refused carve-outs" below; [`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"Scope guardrails" |
 | "That ✋ was *probably* advisory — keep going." | "Probably" is the doubt the ✋ split is biased against, the same asymmetry as the destructive-action predicate: an over-park costs one resume, an under-park closes a task whose prerequisite was never performed. | [`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"`--unattended` operator posture" → "Park conversions" |
 | "Recap is done, so I can suggest next-move while waiting for commit-go." | Next-move and the copy-paste line are **post-SHA**. The fire-branch turn emits 📦 and waits; 🏁 / next-move / copy-paste land only after a deliverable-covering SHA. Motivating case: CORE-432.2 (micro closed + next-task cue with uncommitted App/PLAN dirt). | [`SPEC/gates.md`](../SPEC/gates.md) §"Conditional skip rule" → On fire; [`SPEC/post-closure.md`](../SPEC/post-closure.md) step 2 |
 
@@ -106,12 +107,17 @@ finding to report or a box to tick.
   baseline covers what you changed.
 - You are citing your own screenshot receipts — captures you chose, read, and
   marked `pass` — as the reason a 👁️ park is unnecessary.
+- You are writing `decided by` into a 👁️ box, and the command is not the (d)
+  criterion logged from the promoted starter's basis.
+- An `--unattended` run is editing `touches:` after Phase 1, or reverting its
+  own work, so the scope check will pass.
 
 ## Refused carve-outs
 
-One argument on this surface has been raised three times, in three forms,
-and refused each time. It is recorded here in full so the next raise finds
-the answer rather than re-litigating it; [`SPEC/gate-postures.md`](../SPEC/gate-postures.md)
+One argument on this surface has been raised four times, in four forms. The
+first three were refused, and the fourth was admitted in a narrowed form. All
+four are recorded here in full so the next raise finds the answer rather than
+re-litigating it; [`SPEC/gate-postures.md`](../SPEC/gate-postures.md)
 §"Park conversions" points here from the decision point.
 
 **"The visual baseline passes byte-identical, so the `--unattended` 👁️ → park
@@ -170,3 +176,38 @@ that nobody looks.
 Provenance: raised as the third form from an adopter's tiered visual-evidence
 rule and refused at CORE-822 (2026-10-22), with the carve-out recorded here so
 the rule's own text could point at the answer.
+
+**"The operator stated, before dispatch, the spec that decides the rendered
+result, and the diff stayed inside the scope they confirmed, so the park
+should carve out."** Admitted, narrowly. It is the one form that answers both
+grounds, and only in the shape below.
+
+**Who chose the check.** The deciding assertion is criterion (d) of a
+readiness basis ([`SPEC/unattended-candidacy.md`](../SPEC/unattended-candidacy.md)
+§"Readiness basis"). The operator stated it in a starter and kept it at a
+filing gate before the run existed. The run may write the spec that
+implements it, but it does not choose what is asserted or where, and the
+external review grades that spec against the operator's words in
+`## ✅ Acceptance`: a spec weaker than the stated assertion is a verify command
+that "passed without deciding it", which is a blocker
+([`SPEC.md`](../SPEC.md) §"🧪 Phase 3: Testing & Linting"), not a pass. So the check is not self-chosen, and unlike a baseline, nobody has to
+guess where it came from.
+
+**What it covers.** "Does the check cover what I changed?" is answered by
+confinement, not by judgment. The diff is held mechanically to the `touches:`
+the operator confirmed beside the assertion, and under a size cap; a miss
+parks `out-of-scope`
+([`SPEC/gate-postures.md`](../SPEC/gate-postures.md) §"Scope guardrails").
+Coverage is therefore the operator's call, made before dispatch over the same
+scope, and the run never makes it about its own diff.
+
+Everything else stays refused. A spec the run chose, a criterion Phase 1
+added, a baseline, and screenshot receipts all decide nothing, and a basis
+that was incomplete at promotion parks `visual-confirm` as before. The agent's
+confidence in a rendering is never a criterion. When the form holds, the 👁️
+box records `decided by <command> — basis confirmed <starter created: date>`, so the next
+reader sees which operator-stated check stood in for the look.
+
+Provenance: admitted at CORE-850 (CORE-850.5, 2026-10-31), the
+`unattended-readiness` epic, as a boundary change recorded beside the
+refusals at CORE-495, CORE-503, and CORE-822.

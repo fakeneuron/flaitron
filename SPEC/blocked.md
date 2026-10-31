@@ -38,7 +38,8 @@ offers the two dispositions and the operator picks one:
   just-scaffolded tasknote. The `Blocked by [[ID]]` clause carries the whole
   state, and a fresh `/ft-task <ID>` re-enters from the top.
 - **Park** — Discovery produced work. Flip `status: blocked` and the nav chip
-  to `⏸ Blocked`, write `park-reason: drift — <what Discovery found>`, and
+  to `⏸ Blocked`, write `park-reason: drift — <what Discovery found, and the
+  question it puts>`, and
   halt with the tasknote intact. The task re-enters through the ordinary
   resume path (§"Exit (resume)"), Phase 1 not re-run.
 
@@ -75,7 +76,8 @@ carve-out has no operator to fire a banner at, so there is nobody to pick
 between the two dispositions above. The posture resolves it the safe way: a
 `Re-scope` / `De-scope` verdict **parks unconditionally** — flip `status:
 blocked`, flip the nav chip to `⏸ Blocked`, write `park-reason: drift — <what
-Discovery found>`, halt with the tasknote intact — because an unnecessary
+Discovery found, and the question it puts>` (§"Park reason"), halt with the
+tasknote intact — because an unnecessary
 park costs one resume while an unnecessary delete costs a Discovery. The
 PLAN.md edit and the tasknote deletion are **not** performed autonomously;
 the operator resumes and takes them under a real gate. That deferral, not the
@@ -94,8 +96,8 @@ not run Phase 3 or Phase 4. The tasknote sits at
 **Parked state.** A blocked tasknote is paused, not closed — Phase 4 is
 reserved for actual completion (or a Phase 1 De-scope). The tasknote is not
 archived, the PLAN.md task line stays unchecked, and Phase 1 + partial
-Phase 2 work are preserved verbatim. `park-reason:` states which of the eight
-stop causes (§"Park reason" below) put the note here, so a caller reading the
+Phase 2 work are preserved verbatim. `park-reason:` states which of the
+nine stop causes (§"Park reason" below) put the note here, so a caller reading the
 file alone can tell a drift park from a destructive-action park without a
 transcript.
 
@@ -144,12 +146,15 @@ this table, never a free-form value:
 | `input-needed` | A question autonomous execution cannot answer — a queued bundled in-📦 prompt, or `/ft-close-epic`'s Phase 1→2 clarification ask |
 | `visual-confirm` | A Phase 3 👁️ `CONFIRM` visual ask — the check an operator-less run has nobody to hand to |
 | `dependency` | A hard dependency surfaced mid-Phase-2 |
+| `out-of-scope` | The `--unattended` scope guardrail — the run's diff left its scope (the note's `touches:`, or a promoted starter's as logged) or passed the 400-line cap |
 | `interrupted` | The run ended without reaching closure *or* a gate — killed, out of context, session lost |
 
 The first six are the gate conversions in [`SPEC/gate-postures.md`](gate-postures.md)
 §"`--unattended` operator posture" — and `drift` doubles as the attended
 operator's park disposition at the 🛠️ gate (§"Phase 1 entry"), the one code
-written on both paths; `dependency` is the mid-Phase-2 park. `interrupted` is neither — nothing stopped the
+written on both paths; `dependency` is the mid-Phase-2 park. `out-of-scope` is
+the posture's scope guardrail, a check rather than a gate (same module,
+§"Scope guardrails"). `interrupted` is none of these — nothing stopped the
 run, it simply ended — and it is the one code a *caller* writes rather than a
 runner, to route a stranded note into the resume path (§"Resuming an
 interrupted run" below).
@@ -165,6 +170,14 @@ prose wants a colon rephrases (`visual-confirm — Phase 3 👁️ CONFIRM asks
 whether the header renders`, not `… CONFIRM: header renders`); quoting the
 value is not the fix, because it changes the bytes a line-wise reader splits.
 Backticks, emoji, and a trailing `?` are fine.
+
+**`drift` and `input-needed` prose states the question.** Both codes stop on
+a decision only the operator can make, so the prose ends with that one
+question, answerable without the transcript:
+`drift — Discovery found the endpoint already ships; re-scope the row to the client half, or close it?`.
+A finding with no question leaves the resuming operator to reconstruct what
+was being asked. `out-of-scope` prose names the stray paths, or the line count
+against the cap.
 
 **`drift` vs `dependency`.** The code names what *stopped* the run, not what
 motivated it. A `Re-scope` verdict parks as `drift` even when a dependency

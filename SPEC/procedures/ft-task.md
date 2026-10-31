@@ -391,8 +391,9 @@ time (Step 6).
   [`SPEC/tasknote-selection.md` §"Downstream-impact reconciliation"](../tasknote-selection.md).
 - **Phase 3: Testing & Linting** — [`SPEC.md` §"🧪 Phase 3"](../../SPEC.md).
   Run targeted tests + lint/type-check on changed code (full suite only for
-  broad/cross-cutting changes). **Under unattended mode** run the repo's full
-  validation set instead — when the justfile defines any of `check` /
+  broad/cross-cutting changes). **Under unattended mode** first take the scope
+  guardrails (cited below), then
+  run the repo's full validation set instead — when the justfile defines any of `check` /
   `test` / `lint` / `typecheck`, `just check` if defined plus each other
   one it defines that `check` does not reach (`just --show check`), else
   `AGENTS.md`/`CLAUDE.md` commands, else CI steps — never the
@@ -420,11 +421,10 @@ time (Step 6).
   `👁️ **CONFIRM**` ask in the **emphasized inline shape** — its own line,
   blank-line isolated, label bolded
   ([`SPEC/cue-vocabulary.md` §"Emphasized inline ask shape"](../cue-vocabulary.md)). Still inline
-  prose, **not** a banner: the emphasis is raised within the ask, not promoted
-  out of it. Under autonomous mode,
+  prose, **not** a banner. Under autonomous mode,
   suppress the 👁️ ask but still run lint/type-check. **Under unattended mode**
-  do not suppress it: there is no operator to hand the check to, so the ask
-  parks the tasknote with `park-reason: visual-confirm — …`, runs the lone-park commit, and stops.
+  it parks `visual-confirm` unless a confirmed deciding spec decides it
+  ([`SPEC/gate-postures.md` §"Scope guardrails"](../gate-postures.md)).
   **Under debug mode**, the fragment's repro
   re-verify runs **even under autonomous mode**; a still-failing repro returns
   to Phase 2, not closure.
@@ -434,7 +434,8 @@ time (Step 6).
   the **same** atomic closure commit this turn — otherwise flip nothing. In
   order:
   1. Doc-drift sweep across `.flaitron/tasknote/README.md` §"AI-referenced
-     docs" (per entry: "no change" or the update).
+     docs" (per entry: "no change" or the update); unattended: retake the
+     scope guardrails.
   2. Acceptance tick-through — tick or annotate (`N/A` / not-met + reason)
      every `## ✅ Acceptance` box. Do **not** flip the markdown nav chip to
      `✅ Completed`; it is render-derived from YAML.

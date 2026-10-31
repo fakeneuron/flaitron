@@ -63,7 +63,10 @@ semantics** (see [`SPEC/gate-postures.md`](gate-postures.md) §"`--fast` operato
   one-time ask does not vanish — it **parks** with
   `park-reason: visual-confirm — …`, per [`SPEC/gate-postures.md`](gate-postures.md)
   §"`--unattended` operator posture". The per-cycle suppression is unaffected:
-  the loop never had an ask to convert.
+  the loop never had an ask to convert. The 👁️ box of a rendered-surface row
+  run on a confirmed readiness basis may instead record `decided by`, on the
+  conditions in [`SPEC/gate-postures.md`](gate-postures.md) §"Scope
+  guardrails"; any criterion split out to the one-time ask still parks.
 - **External review** — collapses the same way, and for the same reason the
   taste checks do: it grades a diff, and the loop's termination condition is
   its verify commands. It runs **once**, after convergence, beside that

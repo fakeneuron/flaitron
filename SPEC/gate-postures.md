@@ -57,7 +57,8 @@ closed set in [`SPEC/blocked.md`](blocked.md) §"Park reason".
 | 📦 clear signal | Skips (autonomous commit) | Skips | Skips |
 | 📦 privileged-ops signal trip | Fires | Skips; the suppressed signal is named in the marker | Inherited — skips |
 | 📦 bundled in-📦 prompt | Fires | **Fires** | Parks `input-needed` |
-| 👁️ `CONFIRM` (Phase 3) | Emphasized inline ask | Suppressed — the present operator owns the check | Parks `visual-confirm` |
+| 👁️ `CONFIRM` (Phase 3) | Emphasized inline ask | Suppressed — the present operator owns the check | Parks `visual-confirm`, unless a confirmed deciding spec decides it (§"Scope guardrails") |
+| Diff outside `touches:` or over 400 lines | Not checked | Not checked | Parks `out-of-scope` |
 | 🗄️/▶️/📡/💻 destructive escalation | Escalates to a banner | **Escalates** | Parks `destructive` |
 | ✋ `ACTION`, prerequisite | Inline cue; does not block the assistant | Inline cue | Parks `prerequisite` |
 | ✋ `ACTION`, advisory | Inline cue | Inline cue | Recorded; the run continues |
@@ -141,12 +142,10 @@ flaitron, runtime in the caller.
 distinction is what this posture turns on. 📦 force-skip and the 🛠️ no-op
 **remove a pause** — the run proceeds and the operator reviews the commit
 afterwards — so both are inherited exactly as written. 👁️ suppression and
-the Re-scope notice **transfer an obligation**: the visual check to *"the
-operator [who] owns the visual-confirmation responsibility on fast-mode
-runs"*, and the review of a rewritten plan to the operator watching it scroll
-by (§"`--fast` operator override"). Neither is inherited; each converts to a
-park (`visual-confirm`, `drift`). The rows are in §"Flag precedence and
-surface matrix".
+the Re-scope notice **transfer an obligation**: the visual check to the
+operator standing there, and the review of a rewritten plan to the operator
+watching it scroll by (§"`--fast` operator override"). Neither is inherited;
+each converts to a park (`visual-confirm`, `drift`), as the matrix shows.
 
 A transfer needs a transferee. `--unattended` exists to declare there is
 none, so inheriting either delegated surface would inherit a **transfer to
@@ -165,11 +164,9 @@ Six gates cannot be answered by a caller that is not there, so under
 `--unattended` each converts from *ask and wait* to *park and stop*, one
 `park-reason:` code apiece: the 🛠️ drift carve-out (`drift`), the
 destructive-action escalation (`destructive`), a prerequisite ✋ `ACTION`
-(`prerequisite`), the Step 1.5 concrete-model mismatch (`model-mismatch`, via
-§"Pre-scaffold stops", which stops without a park when a note or stub
-exists), a queued bundled in-📦 prompt (`input-needed`), and the Phase 3 👁️
-ask (`visual-confirm`); their rows are in §"Surface matrix". What follows is
-why four of them read the way they do.
+(`prerequisite`), the Step 1.5 concrete-model mismatch (`model-mismatch`,
+§"Pre-scaffold stops"), a queued bundled in-📦 prompt (`input-needed`), and
+the Phase 3 👁️ ask (`visual-confirm`).
 
 The 🛠️ conversion parks at the Phase 1→2 boundary because Phase 1 is complete
 and its Discovery is exactly the work worth preserving. The destructive
@@ -183,7 +180,8 @@ confirmation at all is decided upstream, where it always was: a task with no
 rendered surface records the Phase 3 box `N/A`, emits no ask, and never
 parks. There is deliberately **no** gating-vs-corroborating split here — an
 `--fast`-style "the tests probably cover it" judgment is exactly the
-rationalization this conversion exists to remove.
+rationalization this conversion exists to remove. The one exception is a
+check the operator chose before dispatch (§"Scope guardrails").
 
 **A passing visual baseline does not convert it either** — not even a
 byte-identical one argued as a recorded human approval *replayed*. Full
@@ -195,13 +193,46 @@ the destructive-action predicate: an over-park costs one resume, an
 under-park reaches closure with the prerequisite never performed. "It is
 probably advisory" is the doubt the bias exists to refuse.
 
+### Scope guardrails
+
+Two mechanical checks confine an operator-less run to its note's declared
+scope, over its own diff (working tree plus this task's own commits). Both run
+before every Phase 3 entry, re-entry after a review blocker included, and once
+more after Phase 4's doc-drift sweep, before the first closure flip:
+
+- **Paths.** Every changed path matches the scope (the starter's `touches:`
+  as logged at promotion, else the note's) or is a workflow path — the two
+  `.flaitron/PLAN*.md` files, this note, a closure-filed note or stub, or the
+  promoted stub's deletion. With no scope, only those.
+- **Size.** Lines added plus deleted stay at or under 400, not counting
+  lockfiles, files `.gitattributes` marks `linguist-generated`, or
+  `.flaitron/`.
+
+Either miss parks `out-of-scope`, naming the stray paths or the count — a
+check every unattended `/ft-task` run takes. Never revert
+work or edit `touches:` to pass it: `touches:` is fixed at Phase 1 exit, and on a note
+promoted from a starter Phase 1 may narrow the confirmed list, never widen it
+(a needed path outside it is a `Re-scope`, which parks `drift`).
+
+**A confirmed deciding spec decides the 👁️.** Promotion reads the starter's
+readiness basis as it stands
+([`SPEC/unattended-candidacy.md`](unattended-candidacy.md) §"Readiness
+basis"). When it is complete, (d) included, the row carries `[unattended]`,
+and every (d) command passed in this run's receipt with both checks clear and
+the External review run, not `N/A`, the Phase 3 👁️ box records
+`decided by <command> — basis confirmed <starter created: date>`, and nothing
+parks. Only
+those commands decide — not a criterion Phase 1 added, nor any check the run
+chose — and every other run parks `visual-confirm`. No attended run writes it. Why it is admitted:
+[`docs/GATE-DISCIPLINE.md`](../docs/GATE-DISCIPLINE.md) §"Refused carve-outs".
+
 ### What a park is
 
 The park is [`SPEC/blocked.md`](blocked.md)'s existing parked state,
 entered from a gate rather than from a hard dependency:
 
 - Flip YAML `status:` to `blocked` and the nav chip to `⏸ Blocked`.
-- Record a **structured reason** distinguishing the six stop causes
+- Record a **structured reason** distinguishing the stop causes
   above — a caller reading the tasknote must be able to tell a drift park
   from a destructive-action park without a transcript. The reason key and
   its code tokens live in [`SPEC/blocked.md`](blocked.md) §"Park reason".
@@ -229,43 +260,25 @@ PLAN.md edit defers.
 
 ### Pre-scaffold stops
 
-The Step 1 pre-flight checks and the Step 1.5 model gate run before this
-run has written a tasknote (the skill/pin guard, last below, can also fire
-later), so a "park" there may have nothing to park — or
-may find a note it must not touch. `/ft-task`'s pre-flight refuses an
-in-flight note, so only a starter or blocked note can reach its model
-gate. The posture splits by what
-the stop is *about*:
+The Step 1 pre-flight checks and the Step 1.5 model gate run before this run
+has written a tasknote. Each stops in the `⏸ --unattended stop — <cause>: …`
+shape and writes nothing further:
 
-- **Concrete-model mismatch — scaffold, then park.** A task-level
-  assignment problem, and the tree is known clean (the foreign-dirt gate
-  already passed). Create the note only when none exists — neither a
-  tasknote nor a sidequest stub — writing it with `status: blocked` and
-  the reason, then the lone-park commit, then halt, so the caller gets the same readable stop surface
-  it gets everywhere else. An existing starter or blocked note, or a
-  sidequest stub, is left untouched — terminate and write nothing, so its
-  promote or resume routing survives.
-- **Foreign-dirt gate — terminate, write nothing.** Writing a new
-  untracked file into a tree the guard has just refused to touch makes
-  that file its own foreign dirt on the next invocation. Emit
-  `🚧 DIRTY — commit, stash, or discard first:`, then the paths, then
-  `⏸ --unattended stop — foreign-dirt:`, and write nothing.
-- **`## Completed` status gate and archive collision — terminate, write
-  nothing.** Both mean a tasknote for this ID already exists; there is
-  nothing new to park, and scaffolding one would duplicate it.
-- **Open-siblings audit — terminate, write nothing.** A `.N` audit ID
-  whose epic still has an open child would park on drift, and that note
-  would dirty the tree for the next dispatch. `/ft-task` walks the
-  parent's children at run time and stops with cause `open-siblings`
-  (`no-parent` / `parent-closed` when the parent is missing or closed),
-  as `/ft-close-epic` Step 2 already does.
-- **Skill/pin guard — stop, never park.** Body and pin disagree, so a
-  park is a further write the guard forbids, and a resume through the same
-  body would stop again. The guard paragraph in each body owns the line:
-  `⏸ --unattended stop — skill-pin-mismatch: <base directory or missing
-  path>; wrote <paths, or nothing>.` After a write (a lazily read missing
-  file), it reverts and commits nothing, and names what it wrote, marking
-  any path already committed.
+- **Foreign-dirt gate** — after `🚧 DIRTY` and the paths; a note written into
+  the refused tree would be the next run's foreign dirt.
+- **`## Completed` status gate, archive collision, in-flight note** — a note
+  for this ID already exists.
+- **Open-siblings audit** — a `.N` ID whose epic has an open child would park
+  on drift (`open-siblings`, or `no-parent` / `parent-closed`).
+- **Skill/pin guard** (`skill-pin-mismatch`) — never a park, as a resume
+  would stop again. Firing late, it names what the run already wrote.
+
+The one exception is the **concrete-model mismatch**, a task-level problem on
+a tree known clean: with no tasknote or sidequest stub for the ID, scaffold
+the note, park it `model-mismatch`, and run the lone-park commit. An existing
+starter or blocked note, or a stub, is left untouched and the run stops,
+writing nothing. Markers and steps: `claude/skills/ft-task/unattended-mode.md`
+§"Pre-scaffold stops".
 
 ### What `--unattended` never relaxes
 
@@ -310,7 +323,7 @@ the diff grades it against `## ✅ Acceptance` on every path, and the posture is
 the case it was written for: with nobody reading the commit, the external
 grade is the only read of the diff that is not the generator's own. A
 **blocker** the run can fix returns it to Phase 2; one it cannot parks
-`park-reason: input-needed — <the blocker>` rather than closing over it. A
+`park-reason: input-needed — <the blocker, and the question it puts>` rather than closing over it. A
 **note** is recorded and the run continues. The reviewer never patches, so
 this converts no gate and adds no row to a runner's park map — see
 [`SPEC.md`](../SPEC.md) §"🧪 Phase 3: Testing & Linting".

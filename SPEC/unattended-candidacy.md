@@ -103,7 +103,7 @@ row is **not** a candidate.
    would, so the rendered surface alone no longer declines it
    (§"Readiness basis"). Candidacy decides only what may be marked. How an
    `--unattended` run handles that row's 👁️ is the runner's rule, in the
-   same §"Park conversions". Candidacy never proposes
+   same module's §"Scope guardrails". Candidacy never proposes
    `[handoff]` itself; like `[unattended]`, it is written only by the operator.
 4. **No `Blocked by` clause of any form** — `Blocked by [[ID]]`, bare `Blocked
    by`, or a `blocked-by:` echo. A blocked row is by construction waiting on

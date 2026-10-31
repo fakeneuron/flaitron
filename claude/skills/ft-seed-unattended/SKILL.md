@@ -160,8 +160,8 @@ Draft the bytes Step 4 will write. No draft contains `[handoff]`.
 drafted row a preparation produces: the pinned row, or a split's mechanical
 row (never the remainder, which still needs its person). When it admits the
 row as drafted, the preparation carries a **dependent token item**: that row
-with the token in place. When it declines — a pin on a `[heavy]` row
-(clause 1), a mechanical `.k` waiting on an open sibling that is not a
+with the token in place. When it declines — a pin on a `[heavy]` or
+heavy-tier-name row with no complete basis (clause 1), a mechanical `.k` waiting on an open sibling that is not a
 candidate (clause 6) — the preparation carries no item; record that clause
 instead. A mechanical `.k` waits on the highest numeric sibling it was
 numbered after; when the source was the highest, that sibling is the open

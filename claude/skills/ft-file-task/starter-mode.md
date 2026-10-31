@@ -62,9 +62,10 @@ at …` suffix, which carries no signal.
 
 **Readiness basis**
 (mirror of `SPEC/unattended-candidacy.md` §"Readiness basis").
-Here clause 1 also reads the drafted starter body. On a `[heavy]` row, or
-one whose work changes a rendered surface, list the four basis fields in
-the review, each marked present or missing:
+Here clauses 1 and 3 also read the drafted starter body. On a `[heavy]`
+row, a heavy-tier name (`opus`), or a row whose work changes a rendered
+surface, list the four basis fields in the review, each marked present
+or missing:
 
 - (a) YAML `touches:`
 - (b) `### Acceptance that decides it`, with every criterion naming its command
@@ -72,8 +73,8 @@ the review, each marked present or missing:
 - (d) on a rendered surface, a criterion that runs a deciding spec (`n/a`
   when nothing renders)
 
-Propose the token only when the predicate admits the row. A `[heavy]` row
-is admitted only when every applicable field holds. Otherwise show no
+Propose the token only when the predicate admits the row. A heavy or
+rendered-surface row is admitted only when every applicable field holds. Otherwise show no
 token and name what is missing (`basis incomplete — (b), (c)`). When the
 basis is complete and another clause still declines the row, name that
 clause instead (`basis complete; declined — clause 3`). For these

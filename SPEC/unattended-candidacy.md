@@ -43,38 +43,67 @@ Three consequences follow, and each is a boundary rather than a feature:
 
 Evaluated over the **drafted row text** — the exact `- [ ]` line the filer is
 about to write — plus, for epic children, the closure state of the siblings
-clause 6 names, and, for clause 1's basis arm, the row's starter tasknote
+clause 6 names, and, for the basis arms of clauses 1 and 3, the row's starter tasknote
 (§"Readiness basis"). Every clause must hold; the first miss disqualifies the row.
 The predicate is deliberately conservative: a false negative leaves a row
 undecided, which is the status quo, while a false positive is exactly what
 the operator's confirm exists to catch — so when a clause is uncertain, the
 row is **not** a candidate.
 
-1. **`[model]` is `[light]` or `[moderate]`** (legacy `[medium]` included),
-   **or `[heavy]` with a complete, operator-confirmed readiness basis**
+1. **`[model]` is `[light]` or `[moderate]`** (legacy `[medium]` included)
+   **or a concrete name of that tier, or `[heavy]` or a heavy-tier name
+   with a complete, operator-confirmed readiness basis**
    (§"Readiness basis").
    A bare `[heavy]` row and a missing tag both fail. Heavy work is design or
    ambiguity work. It is dispatchable only once a starter has settled that
    design and the operator has confirmed the result. A row with no model
    declared has not been scoped enough to be dispatched blind.
+   A concrete name reads by its inherent tier. That is the "Band at
+   default effort" cell of `docs/PLATFORMS.md` §"Platform×model×effort
+   calibration table", for a roster token or for a model a cell names at
+   one band (`sol`, in the `gpt-5` row). A name off the roster reads by
+   the calibration baseline in [`SPEC/model.md`](model.md)
+   §"Category-vs-concrete matching" (`haiku`). So `haiku` reads light;
+   `sonnet`, `grok`, `codex`, and `sol` read moderate; `opus` reads heavy
+   and needs the basis. A name neither source can tier to one band fails:
+   `gpt-5` and `gemini-flash`, whose cells span several bands, and any
+   name neither lists. The token still pins the runner: the model gate
+   stops a run on any other model.
+   **Never admitted**, checked before the tier read: `[frontier]`,
+   `[xheavy]`, and the frontier names `fable`, `mythos`, and `astra`, plus
+   any name the roster bands frontier at its default. The three names are
+   an operator exclusion, not a roster reading (the roster bands Astra
+   heavy at its default). No basis admits them, and no preparation is
+   offered (§"Preparing declined rows" → **Stay**).
 2. **Not `[!critical]`.** The urgency flag exists to pull an operator's eye to
    the row, which is the opposite of "safe with nobody present."
 3. **No operator hand-off signal.** A `[handoff]` marker on the drafted row
    ([`SPEC/task-line-segments.md`](task-line-segments.md)) is **definitive** — the
    operator has declared the row stops for a human act, so it is never a
    candidate and nothing below is consulted. On an unmarked row the screen
-   falls back to the description: any of the cue glyphs `👁️` `🗄️` `▶️` `📡`
-   `💻` `✋`, or any of the words *operator*, *hand-off* / *handoff*, *manual*,
-   *credential*, *secret*, *password*, *physical*, *cross-repo*, *production*,
-   *deploy*, *migration*. Two layers. That list is the mechanical screen,
+   falls back to the row text, minus the row's own bold ID
+   (`**DEPLOY-054**`) and every backticked span (`` `migrations/0001` ``,
+   `` `docs/MIGRATION.md` ``), which name things rather than ask for a
+   person. Anything left that holds one of the cue glyphs `👁️` `🗄️` `▶️`
+   `📡` `💻` `✋`, or one of the words *operator*, *hand-off* / *handoff*,
+   *manual*, *credential*, *secret*, *password*, *physical*, *cross-repo*,
+   *production*, *deploy*, *migration*, trips. A keyword inside another ID
+   or a path outside backticks still trips. Two layers. That list is the mechanical screen,
    and it stays that list: do not add visual or raster keywords to close a
-   miss. A keyword miss is not a semantic pass. An LLM filer and
-   `/ft-seed-unattended` decline a row that reads as needing a person even
-   when no keyword trips. A row whose described work changes a rendered
-   surface reads that way: its Phase 3 👁️ ask is a person's look, and
-   `--unattended` parks on every one
-   ([`SPEC/gate-postures.md`](gate-postures.md) §"Park conversions").
-   Candidacy never proposes
+   miss. A keyword miss is not a semantic pass, and neither is a skipped
+   span. An LLM filer and `/ft-seed-unattended` decline a row that reads as
+   needing a person even when no keyword trips. They always decline a row
+   whose work falls in §"Never autonomous", whatever its basis; that is
+   where a backticked `` `wrangler deploy` `` is caught. A row whose
+   described work changes a rendered surface reads as needing a person
+   too: its Phase 3 👁️ is a person's look
+   ([`SPEC/gate-postures.md`](gate-postures.md) §"Park conversions"). The
+   exception is a row whose starter carries a complete, operator-confirmed
+   readiness basis, (d) included: its deciding spec stands where the look
+   would, so the rendered surface alone no longer declines it
+   (§"Readiness basis"). Candidacy decides only what may be marked. How an
+   `--unattended` run handles that row's 👁️ is the runner's rule, in the
+   same §"Park conversions". Candidacy never proposes
    `[handoff]` itself; like `[unattended]`, it is written only by the operator.
 4. **No `Blocked by` clause of any form** — `Blocked by [[ID]]`, bare `Blocked
    by`, or a `blocked-by:` echo. A blocked row is by construction waiting on
@@ -102,7 +131,8 @@ parents and `.N` placeholders `/ft-audit-repo` files at first contact.
 
 A **readiness basis** is the set of facts that makes a row dispatchable
 with nobody present when its line alone is not enough. It is required for a
-row above `[moderate]` and for a row whose work changes a rendered surface.
+`[heavy]` or heavy-tier-name row and for a row whose work changes a
+rendered surface. A row clause 1 never admits gains nothing from one.
 A `[light]` or `[moderate]` row that renders nothing needs none. The basis
 lives in the row's **starter tasknote**
 ([`SPEC/starter.md`](starter.md)), in sections the starter template already
@@ -132,9 +162,10 @@ these hold:
   result does not decide it (§"Preparing declined rows" → **Pin**).
   On a row that renders nothing, (d) does not apply.
 
-Clause 1 is where a basis admits a row: it is what lets a `[heavy]` row
-through. For a rendered-surface row the basis is necessary but not enough.
-Clause 3 decides whether that row is admitted at all.
+A basis admits a row in two places. Clause 1 lets a `[heavy]` or
+heavy-tier-name row through on it. Clause 3 stops reading a rendered
+surface as a person's look once (d) holds. Neither overrides anything else:
+the row's other clause-3 trips and §"Never autonomous" still decline it.
 
 A basis counts only once an operator has **confirmed** it. That happens
 when the operator keeps the starter at a filing gate that showed the basis
@@ -143,6 +174,37 @@ the same fields. A starter edited by hand afterwards carries the same trust
 as a hand-written token. An incomplete basis is not partly ready. The row
 is declined on the clause the basis would have satisfied, and the filer
 shows which of (a)–(d) is missing.
+
+## Never autonomous
+
+Some work needs a person however well it is scoped: the act itself is the
+operator's, or a mistake cannot be undone from the transcript. A row whose
+described work falls in this set is never a candidate. A basis does not
+change that, and neither does any tier or any keyword miss:
+
+- credentials and secrets;
+- deploy, production, and push;
+- migrations on real data;
+- destructive operations;
+- paid external calls, and any outbound side effect: email, posts, API
+  mutations, OAuth, the operator's identity leaving the machine;
+- physical acts, and reads of a live system;
+- prose in the operator's voice;
+- public or legal claims;
+- design choices not yet decided;
+- opening an epic;
+- self-widening guardrails: permission allowlists, hooks,
+  `path-access-roots`, gitleaks or pre-commit config, CI workflows, and
+  this module;
+- release and tag cuts;
+- new third-party dependencies.
+
+This is the semantic layer of clause 3, read by meaning. The keyword list
+stays the mechanical layer under it, and the set adds no keyword to it.
+Every LLM filer and `/ft-seed-unattended` declines such a row as a
+**stay** whose reason names the item. It is never a pin, a split, or any
+other preparation: how to slice such work is the operator's call, made in
+an attended session.
 
 ## Three postures
 
@@ -211,7 +273,7 @@ token, wherever it sits (a mis-positioned one is also named, below), and a
   item** when the predicate admits the resulting row as drafted — the pinned
   row, or a split's mechanical row — shown with the token in place. A
   preparation whose result the predicate still declines — a pin on a
-  `[heavy]` row with no complete basis (clause 1), a `.k` whose predecessor is open and not a
+  `[heavy]` or heavy-tier-name row with no complete basis (clause 1), a `.k` whose predecessor is open and not a
   candidate (clause 6) — carries no item and names that clause instead, and
   the write leaves that row unmarked.
 - **Stays.** Every other declined row, with the first clause it failed and,
@@ -260,10 +322,11 @@ Otherwise stay. Each declined row is one class:
   phrase that reads as one — only when it names an existing test command
   that decides that check. A generic runner that merely exists (`npm run
   test:e2e` with no spec for that result) does not, so the row is a split
-  or a stay. No test decides the Phase 3 👁️ on work that changes a
-  rendered surface (clause 3) — an `--unattended` run asks it whatever
-  passes — so that row is never a pin. Rewording a keyword that trips on
-  a path or a name removes no person, so the skill does not do it. A pin
+  or a stay. Work that changes a rendered surface is admitted only on a
+  starter's complete basis (clause 3), and a pin is a fact on the line,
+  so that row is never a pin. Rewording a keyword that trips on a path
+  or a name outside backticks removes no person, so the skill does not
+  do it. A pin
   leaves no other clause-3 trip on the row, or it is not a pin. The pin
   does not add a test, a
   Playwright spec, or a keyword to clause 3, and it does not change
@@ -279,20 +342,23 @@ Otherwise stay. Each declined row is one class:
   live provider before the act onboards its successor fails, even
   when the code is correct. A slice that fails either test has not
   separated cleanly, and the row stays. The drafted mechanical row
-  also passes clauses 1–5 as drafted — the exact line, its own ID and
-  any mention of the source ID included, since an ID such as `DEPLOY-12`
-  trips clause 3 on its prefix. A mention of the source is optional, so
-  one that trips is left out. A row that still trips (its own ID, a
-  path, the slice's words) has not separated cleanly, and the row
+  also passes clauses 1–5 as drafted — the exact line, any mention of
+  the source ID included. Clause 3 skips only the row's own bold ID and
+  backticked spans, so a mention such as DEPLOY-12 written
+  outside a backticked span trips on its prefix. A mention of the source is optional, so one that trips is left
+  out. A row that still trips (a path outside backticks, the slice's
+  words) has not separated cleanly, and the row
   stays. The source row becomes the remainder. File a starter for the
   remainder when its line alone does not say what to do.
-- **Stay.** Taste, credentials, deploy, and a true look stay declined — a
+- **Stay.** Taste and a true look stay declined — a
   true look is a result someone must see, where no existing test command
-  decides it, and a rendered-surface change always is one. So does a row
-  whose whole text is the person act, a row whose clause-3 keyword trips
-  only on a path or a name (`migrations/0001`, `docs/MIGRATION.md` — the
-  reason names the path,
-  for a hand edit), a `[!critical]` row, an epic parent, a `.1` Discovery
+  decides it, and a rendered-surface change is one unless a complete basis
+  decides it (clause 3). So does a row whose whole text is the person
+  act, a §"Never autonomous" row (the reason names the item), a
+  `[frontier]`, `[xheavy]`, or frontier-name row (clause 1), a row whose
+  clause-3 keyword trips only on a path or a name written outside
+  backticks (a bare migrations/0001 — the reason names the path, for a
+  hand edit), a `[!critical]` row, an epic parent, a `.1` Discovery
   row, a `.N` audit row, and a row clause 4 still blocks. A split of an
   epic child whose parent has no `.N` row stays too: there is no `.N` to
   insert before, so the new `.k` would land after a legacy numeric audit or

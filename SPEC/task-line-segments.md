@@ -34,7 +34,10 @@ Because flaitron never seeds the marker, a filing surface *proposes* it
 instead: every skill that writes a `- [ ]` row runs a conservative predicate
 over the drafted line and, when attended, shows the candidates inside the
 confirm gate it already has — the operator's confirmation is the act, and the
-token is written only on confirmed rows. Under `--fast` / `--unattended` there
+token is written only on confirmed rows. The predicate admits light- and
+moderate-tier work (a category tag or a concrete name), and heavy or rendered-surface work only on an
+operator-confirmed starter basis. It never admits `[frontier]`, `[xheavy]`, a frontier model name, or
+work in its §"Never autonomous" set. Under `--fast` / `--unattended` there
 is no act, so the filer emits an `unattended-candidates:` line and writes no
 token. Rows filed before or without that proposal are seeded in bulk through
 `/ft-seed-unattended` — one attended walk, one gate, the same predicate. The

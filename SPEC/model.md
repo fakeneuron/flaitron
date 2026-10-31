@@ -321,8 +321,13 @@ by any session at or above heavy tier, so it cannot route a task to one
 specific model. When a task — an epic child included — must run on one named
 model, file the concrete token (e.g. `[fable]`); the exact-identity gate then stops every
 other session at its switch-or-retag block, so running elsewhere takes a
-deliberate retag rather than a silent tier match. A concrete token fails
-`[unattended]` candidacy clause 1, so a pinned row stays attended.
+deliberate retag rather than a silent tier match. `[unattended]` candidacy
+clause 1 reads a concrete token by its inherent tier
+([`SPEC/unattended-candidacy.md`](unattended-candidacy.md) §"Candidacy
+predicate"): a light- or moderate-tier pin passes that clause, a
+heavy-tier pin needs a confirmed readiness basis, and a frontier name or a
+name with no single tier fails it. The other clauses still apply, and
+marking a pinned row does not loosen the pin.
 
 ## Tier ladder vs. the next-move suggestion glyph
 

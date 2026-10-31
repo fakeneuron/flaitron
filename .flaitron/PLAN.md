@@ -11,14 +11,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-- [ ] **CORE-EPIC-850** [heavy] | unattended-readiness — Widen what runs unattended by readiness, not by removing gates: `[heavy]` and tier-aliased model names admitted on a confirmed starter, seed-time pinned evidence for rendered surfaces, a never-autonomous set, seeder `scope` + `question` dispositions, runner scope guardrails, and the caller contract. Filed via /ft-open-epic --deep; refined at .1 closure.
-  - [x] **CORE-850.1** [frontier] | unattended-readiness discovery — Completed 2026-10-31.
-  - [x] **CORE-850.2** [heavy] | readiness-basis — Completed 2026-10-31.
-  - [x] **CORE-850.3** [heavy] | predicate-clauses — Completed 2026-10-31.
-  - [x] **CORE-850.4** [heavy] | seeder-scope-question — Completed 2026-10-31.
-  - [x] **CORE-850.5** [heavy] | runner-scope-guardrails — Completed 2026-10-31.
-  - [x] **CORE-850.6** [moderate] | caller-contract — Completed 2026-10-31.
-  - [ ] **CORE-850.N** [heavy] | unattended-readiness audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
+(none)
 
 ## Medium
 
@@ -36,6 +29,14 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-EPIC-850** [heavy] | unattended-readiness — Completed 2026-10-31.
+  - [x] **CORE-850.1** [frontier] | unattended-readiness discovery — Completed 2026-10-31.
+  - [x] **CORE-850.2** [heavy] | readiness-basis — Completed 2026-10-31.
+  - [x] **CORE-850.3** [heavy] | predicate-clauses — Completed 2026-10-31.
+  - [x] **CORE-850.4** [heavy] | seeder-scope-question — Completed 2026-10-31.
+  - [x] **CORE-850.5** [heavy] | runner-scope-guardrails — Completed 2026-10-31.
+  - [x] **CORE-850.6** [moderate] | caller-contract — Completed 2026-10-31.
+  - [x] **CORE-850.N** [heavy] | unattended-readiness audit — Completed 2026-10-31.
 - [x] **CORE-848** [moderate]🧩 | release v8.1.0 — Completed 2026-10-30.
 - [x] **CORE-847** [light] | readme-v8-major — Added v8.0.0 (the `/api/active` response-shape change) to README's breaking-majors sentence. Surfaced by audit-docs 2026-10-30 (Finding #4, Medium), fixed inline.
 - [x] **CORE-846** [light] | roster-guard-wording — Reworded the "names-only" KEEP IN SYNC guards in `AGENTS.md` and `claude/AGENTS-snippet.md` to "names plus arguments and per-skill flags, no stubs or gate detail", matching the rosters they guard. Surfaced by audit-docs 2026-10-30 (Finding #3, Low), fixed inline.

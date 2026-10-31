@@ -328,7 +328,7 @@ ticking each box in the tasknote as you go:
   `grep -q` on a contract file. A criterion no command decides marks itself
   `judgment` (or `👁️`) with a one-line reason; do not invent one. Contract:
   [`SPEC.md` §"Tasknote body shape"](../../SPEC.md).
-- **Populate 🧩 Subtasks** with concrete, ordered steps, and **declare YAML `touches:`** with the paths this task expects to edit. Contract — exemptions, and why it is never a gate: `SPEC.md` §"Tasknote frontmatter".
+- **Populate 🧩 Subtasks** with concrete, ordered steps, and **declare YAML `touches:`** with the paths this task expects to edit. Contract — exemptions, and the one run it binds: `SPEC.md` §"Tasknote frontmatter".
 
 **Under debug mode**, work the fragment's four Phase 1 prompts *inside* this
 checklist, after the Relevance Assessment, recording answers in Discovery

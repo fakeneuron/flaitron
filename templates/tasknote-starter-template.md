@@ -51,9 +51,9 @@ _Captured YYYY-MM-DD during <design discussion / mid-flow discovery / etc.> — 
 
 <!-- Promotion copies these into `## ✅ Acceptance` verbatim. Each names the
      command that decides it; none is `judgment` / `👁️`. Required, with
-     `touches:` and an empty "Open at promotion", for a `[heavy]` or
-     rendered-surface row to be an `[unattended]` candidate
-     (SPEC/unattended-candidacy.md §"Readiness basis"). -->
+     `touches:` and an empty "Open at promotion", for a `[heavy]`,
+     heavy-tier-name, or rendered-surface row to be an `[unattended]`
+     candidate (SPEC/unattended-candidacy.md §"Readiness basis"). -->
 
 - <Criterion> — `<verify command>`
 

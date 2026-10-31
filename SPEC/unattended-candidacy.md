@@ -102,9 +102,10 @@ row is **not** a candidate.
    readiness basis, (d) included: its deciding spec stands where the look
    would, so the rendered surface alone no longer declines it
    (§"Readiness basis"). Candidacy decides only what may be marked. How an
-   `--unattended` run handles that row's 👁️ is the runner's rule, in the
-   same module's §"Scope guardrails". Candidacy never proposes
-   `[handoff]` itself; like `[unattended]`, it is written only by the operator.
+   `--unattended` run handles that row's 👁️ is the runner's rule, in
+   [`SPEC/gate-postures.md`](gate-postures.md) §"Scope guardrails".
+   Candidacy never proposes `[handoff]` itself; like `[unattended]`, it is
+   written only by the operator.
 4. **No `Blocked by` clause of any form** — `Blocked by [[ID]]`, bare `Blocked
    by`, or a `blocked-by:` echo. A blocked row is by construction waiting on
    something outside itself.
@@ -135,10 +136,10 @@ with nobody present when its line alone is not enough. It is required for a
 rendered surface. A row clause 1 never admits gains nothing from one.
 A `[light]` or `[moderate]` row that renders nothing needs none. The basis
 lives in the row's **starter tasknote**
-([`SPEC/starter.md`](starter.md)), in sections the starter template already
-ships plus one new one, so no new file type exists and the PLAN.md line
-keeps its single `[unattended]` token. A basis is **complete** when all of
-these hold:
+([`SPEC/starter.md`](starter.md)), in sections the starter template ships,
+`### Acceptance that decides it` among them, so no new file type exists and
+the PLAN.md line keeps its single `[unattended]` token. A basis is
+**complete** when all of these hold:
 
 - **(a) Scope.** YAML `touches:` is declared and non-empty. It names the
   paths the run is confined to.
@@ -484,7 +485,7 @@ fails that check.
 | Surface | Write step | Existing gate the proposal rides | Owner |
 |---|---|---|---|
 | `/ft-open-epic` | Step 7 (`.2..M+1`, `.N`) | reconcile review prompt | [[CORE-577.3]] |
-| `/ft-file-task` default, `--starter` | Step 4 / S4 | Step 3 / S3 prose review | [[CORE-577.4]] |
+| `/ft-file-task` default, `--starter` | Step 4 / S4 | Step 3 / S3 prose review | [[CORE-577.4]] · [[CORE-850.2]] (`--starter` basis) |
 | `/ft-file-task --unattended` | Step 4 | none — emits, persists via the discharging runner | [[CORE-577.4]] |
 | `/ft-file-task --park` | — | **no candidacy** (one-motion by design; decided when the stub is promoted) | — |
 | `/ft-audit` §5 | ticket write | structured-ask write-step confirm | [[CORE-577.5]] |

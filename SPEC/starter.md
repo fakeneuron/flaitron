@@ -31,8 +31,9 @@ it / Open at promotion / Related) are conventional
 but optional — drop any with nothing to capture. The canonical layout lives
 in `templates/tasknote-starter-template.md`. One combination is not optional
 for one purpose. `touches:`, `### Acceptance that decides it`, and an empty
-`### Open at promotion` together make up the readiness basis. A `[heavy]` or
-rendered-surface row needs that basis to be an `[unattended]` candidate
+`### Open at promotion` together make up the readiness basis. A `[heavy]`,
+heavy-tier-name, or rendered-surface row needs that basis to be an
+`[unattended]` candidate
 ([`SPEC/unattended-candidacy.md`](unattended-candidacy.md) §"Readiness
 basis"). At promotion, those acceptance criteria seed `## ✅ Acceptance`
 verbatim. The drift check below still applies to them. A drifted criterion

@@ -171,7 +171,8 @@ supersedes:
 
 **`touches:` carries a lifecycle duty the other three do not.** Phase 1 fills
 it with the paths the task expects to edit — code or markdown, contract edits
-included — and Phase 4 reconciles it (§"Scope reconciliation"). Only a task with
+included — and Phase 4 reconciles it (§"Scope reconciliation", which also
+names the one run that checks it). Only a task with
 **no file deliverable** is exempt — a Discovery or audit child whose whole
 product is a `PLAN.md` filing — and an exempt note writes nothing rather than an
 empty list, so exempt and undeclared read alike in the YAML: the price of
@@ -509,9 +510,14 @@ time would bury the paths that do.
 
 A **recorded fact, not a check**: nothing refuses, nothing re-opens a phase,
 and a mismatch is not a finding — a task that legitimately grew says so on the
-same line and closes. That is why it lives in the recap and not in a gate. A
-task exempt from declaring (§"Tasknote frontmatter") writes
-`N/A — no file deliverable` and is done.
+same line and closes. That is why it lives in the recap and not in a gate.
+One exception: an operator-less `/ft-task` run (not `/ft-close-epic`) also
+checks its diff against this scope, or a promoted starter's as logged, under
+a size cap — at every Phase 3 entry, re-entry and each loop cycle's verify
+included, and again after Phase 4's doc-drift sweep. A miss parks `out-of-scope`
+([`SPEC/gate-postures.md`](SPEC/gate-postures.md) §"Scope guardrails"); the
+recap line itself stays a recorded fact. A task exempt from declaring
+(§"Tasknote frontmatter") writes `N/A — no file deliverable` and is done.
 
 > **Recap is recap-only.** The next-task suggestion belongs in the
 > post-closure protocol, after the commit lands — not inside the recap.

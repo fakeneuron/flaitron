@@ -144,7 +144,7 @@ Alphabetized. 73 entries. Maintained via epic children and audits.
 
 **Testing & Linting (Phase 3)** — See Phase 3.
 
-**touches** — Tasknote frontmatter array of path/glob strings naming the files this task expects to edit: its **declared scope**. Filled at Phase 1 on any task with file deliverables, reconciled against `git diff --name-only` in the Phase 4 recap as a recorded fact, never a gate. Omit-when-absent in shape (no validator) but omitted only when the task has no file deliverable. Distinct from a starter's `### Files to touch` prose survey. See SPEC §"Tasknote frontmatter".
+**touches** — Tasknote frontmatter array of path/glob strings naming the files this task expects to edit: its **declared scope**. Filled at Phase 1 on any task with file deliverables, reconciled against `git diff --name-only` in the Phase 4 recap as a recorded fact, never a gate. An `--unattended` `/ft-task` run adds a check, not a gate: its diff, workflow paths and lockfiles aside, must stay inside this scope (a promoted starter's logged scope when there is one) and under a 400-line cap, and a miss parks `out-of-scope` (SPEC/gate-postures.md §"Scope guardrails"). Omit-when-absent in shape (no validator) but omitted only when the task has no file deliverable. Distinct from a starter's `### Files to touch` prose survey. See SPEC §"Tasknote frontmatter".
 
 **[unattended]** — Optional task-level opt-in marker in the task-line grammar, sitting AFTER `[model]`; declares a row safe to dispatch with no operator present, the row-scoped counterpart to the `--unattended` invocation posture. Flaitron never writes it itself — seeding is an operator act, per row at a filer's confirm gate or in bulk via `/ft-seed-unattended`. Operator-less callers deny by default on an unmarked row. On an attended `/ft-task` invocation with no flag, it implies `--fast` only, never the `--unattended` posture. See SPEC/task-line-segments.md and SPEC/unattended-candidacy.md.
 
@@ -152,7 +152,7 @@ Alphabetized. 73 entries. Maintained via epic children and audits.
 
 **wikilink [[TASK-ID]]** — The only parsed cross-reference syntax in PLAN long-descriptions and tasknote Related sections; populates `relatedTasks` / `blockedBy` metadata. Bare IDs and angle-bracket placeholders are literal text only. See SPEC §"Task-line format".
 
-**worktree** — Isolated git checkout for one independent epic child (`<project>-worktrees/wt-<ID>/` alongside the project checkout, branch `wt-<ID>`, copy of the child tasknote). Operator-opt-in parallelism; the start procedure may warn on an open YAML `blocked-by` but must not lock. No skill — the hand-run procedure lives in docs/WORKTREES.md.
+**worktree** — Isolated git checkout for one task run (`<project>-worktrees/wt-<ID>/` alongside the project checkout, branch `wt-<ID>`, copy of the tasknote when one exists). Two uses. One is operator-opt-in parallelism for independent epic children; the start procedure may warn on an open YAML `blocked-by` but must not lock. The other is an operator-less caller's isolation of each dispatch, so a mid-run park's dirt stays out of the main checkout; a caller that uses the single checkout instead accepts that one such park stalls the repo (docs/EXTERNAL-AGENTS.md §"The Orchestration Contract" step 10). No skill — the hand-run procedure lives in docs/WORKTREES.md.
 
 ---
 

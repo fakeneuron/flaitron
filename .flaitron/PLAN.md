@@ -11,7 +11,9 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-(none)
+- [ ] **CORE-EPIC-850** [heavy] | unattended-readiness — Widen what runs unattended by readiness, not by removing gates: `[heavy]` and tier-aliased model names admitted on a confirmed starter, seed-time pinned evidence for rendered surfaces, a never-autonomous set, seeder `scope` + `question` dispositions, runner scope guardrails, and the caller contract. Filed via /ft-open-epic --deep; refined at .1 closure.
+  - [ ] **CORE-850.1** [frontier] | unattended-readiness discovery — Scope shared design and file children .2..6 per SPEC/epic.md.
+  - [ ] **CORE-850.N** [heavy] | unattended-readiness audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
 
 ## Medium
 

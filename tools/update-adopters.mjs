@@ -14,20 +14,48 @@
 //                                             # (default $FLAITRON_VIZ_WORKSPACE or ~/code)
 //   node tools/update-adopters.mjs --attended-ledger <relpath>   # repeatable;
 //                                             # skip any adopter tracking <relpath>
+//   node tools/update-adopters.mjs --target <tag>     # bump to <tag>, not the newest
+//   node tools/update-adopters.mjs --only <repo>      # repeatable; limit the sweep to
+//                                             # these top-level workspace dirs
+//   node tools/update-adopters.mjs --branch <name>    # skip adopters not on <name>
+//   node tools/update-adopters.mjs --accept-migration <tag>   # repeatable; waive
+//                                             # that one tag's Migration block
+//
+// Selection: --only names adopters by their directory under the workspace root.
+// Every other adopter is neither listed nor counted; a name that matches no
+// adopter prints a skip row (once, however often it is repeated), never a
+// silent drop. --target, --branch and --only carry the caller's fleet policy;
+// like --attended-ledger, the script knows none of its own.
+//
+// --accept-migration records that the operator reviewed one tag's Migration
+// block. Each tag is validated before any adopter is read — it must resolve,
+// sit at or before the target, and carry a readable Migration block that asks
+// for edits — else the run exits 2. It waives the migration-bearing gate for
+// that tag only: other tags in range are still checked, and it never waives an
+// attended ledger. The Migration's own unscripted steps still need follow-up.
+//
+// Submodule path: read from .gitmodules — a submodule whose url's last segment
+// is flaitron — else .flaitron/core; the first of those with a checked-out
+// SPEC.md wins. A declared submodule with no checked-out SPEC.md (never
+// initialised, or deinit'd) is reported as a skip row, not dropped from the
+// sweep.
 //
 // Exit codes: 0 = every adopter checked (or bumped) cleanly — skips and drift
 // are reported outcomes, not failures; 1 = at least one adopter failed its
 // check or bump (the ✗ lines, which go to stderr), or a pre-flight guard
-// aborted; 2 = usage error (bad CLI args, or FLAITRON_UPDATE_LATEST set to a
-// non-semver value). A failure never aborts the sweep, so the exit status is
-// what a wrapper script has to read.
+// aborted; 2 = usage error (bad CLI args, a --target or --accept-migration tag
+// that fails validation, or FLAITRON_UPDATE_LATEST set to a non-semver value).
+// A failure never aborts the sweep, so the exit status is what a wrapper script
+// has to read.
 //
 // Per-adopter safety gates (any hit → skip that repo, report why):
+//   - the declared flaitron submodule is not initialised → no pin to read
 //   - .flaitron/core/SPEC.md's Version line is unreadable → the current pin
 //     can't be established, so no range can be reasoned about
 //   - adopter repo's HEAD is detached (tag checkout, mid-bisect, mid-rebase)
 //     → a bump commit here would have no branch to land on and be orphaned
-//   - adopter pinned NEWER than the latest known release → bumping would
+//   - --branch given and the adopter is on a different branch
+//   - adopter pinned NEWER than the target release → bumping would
 //     downgrade it (usually a stale tag list in this checkout)
 //   - pinned tag can't be resolved locally (deleted/renamed upstream, or a
 //     hand-edited SPEC.md Version line) → no real commit to reason a range
@@ -38,7 +66,8 @@
 //     prints a suggested owner-task line; filing it stays the operator's act.
 //     The caller supplies the paths; this script knows none of its own.
 //   - release range carries a real Migration block (BREAKING or required
-//     project-side edits) → manual /ft-update required
+//     project-side edits) not waived by --accept-migration → manual
+//     /ft-update required
 //   - release range carries a tag whose notes can't be classified at all
 //     (lightweight tag, or annotated with an empty message) → fail closed
 //     rather than assume non-breaking; see migrationBearingTags
@@ -187,7 +216,8 @@ export async function git(cwd, ...args) {
 }
 
 const USAGE =
-  'Usage: node tools/update-adopters.mjs [--apply] [--root <dir>] [--attended-ledger <relpath>]...';
+  'Usage: node tools/update-adopters.mjs [--apply] [--root <dir>] [--target <tag>] [--only <repo>]...\n' +
+  '         [--branch <name>] [--accept-migration <tag>]... [--attended-ledger <relpath>]...';
 
 function usageError(firstLine, exitOnError) {
   if (exitOnError) {
@@ -201,21 +231,51 @@ function usageError(firstLine, exitOnError) {
 }
 
 export function parseArgs(argv, { exitOnError = true } = {}) {
-  const args = { apply: false, root: null, attendedLedgers: [] };
+  const args = {
+    apply: false,
+    root: null,
+    target: null,
+    only: [],
+    branch: null,
+    acceptMigrations: [],
+    attendedLedgers: [],
+  };
+  // Every value-taking flag rejects a missing or `--`-prefixed value (CORE-419.4).
+  const takeValue = (i) => {
+    const value = argv[i + 1];
+    if (value === undefined || value.startsWith('--')) {
+      usageError(`${argv[i]} requires a value`, exitOnError);
+    }
+    return value;
+  };
+  // Tags are compared numerically downstream, so a non-semver value is a usage
+  // error here rather than a confusing failure after the sweep has started.
+  const takeTag = (i) => {
+    const value = takeValue(i);
+    if (!parseSemverTag(value)) {
+      usageError(`${argv[i]} takes a semver release tag like v1.2.3 (got ${JSON.stringify(value)})`, exitOnError);
+    }
+    return value;
+  };
   for (let i = 0; i < argv.length; i += 1) {
     if (argv[i] === '--apply') args.apply = true;
     else if (argv[i] === '--root') {
-      const value = argv[i + 1];
-      if (value === undefined || value.startsWith('--')) {
-        usageError('--root requires a value', exitOnError);
-      }
-      args.root = value;
+      args.root = takeValue(i);
+      i += 1;
+    } else if (argv[i] === '--target') {
+      args.target = takeTag(i);
+      i += 1;
+    } else if (argv[i] === '--accept-migration') {
+      args.acceptMigrations.push(takeTag(i));
+      i += 1;
+    } else if (argv[i] === '--only' || argv[i] === '--branch') {
+      const value = takeValue(i);
+      if (value === '') usageError(`${argv[i]} requires a non-empty value`, exitOnError);
+      if (argv[i] === '--only') args.only.push(value);
+      else args.branch = value;
       i += 1;
     } else if (argv[i] === '--attended-ledger') {
-      const value = argv[i + 1];
-      if (value === undefined || value.startsWith('--')) {
-        usageError('--attended-ledger requires a value', exitOnError);
-      }
+      const value = takeValue(i);
       // Empty or root-escaping values would otherwise reach git and fail every
       // adopter's check (exit 1) instead of this usage error (exit 2).
       const normal = normalize(value);
@@ -336,9 +396,9 @@ function gitErrorLine(e) {
 
 // The superproject's committed submodule gitlink SHA at HEAD, or the unresolved
 // sentinel when git can't answer (no committed gitlink yet, unreadable repo).
-async function recordedGitlinkSha(repo) {
+async function recordedGitlinkSha(repo, subPath) {
   try {
-    return (await git(repo, 'rev-parse', `HEAD:${SUBMODULE_PATH}`)).trim();
+    return (await git(repo, 'rev-parse', `HEAD:${subPath}`)).trim();
   } catch (e) {
     return unresolved(gitErrorLine(e));
   }
@@ -361,8 +421,8 @@ async function canonicalTagSha(tag) {
 // unresolved sentinel when either lookup failed (the comparison never
 // happened — deliberately NOT null, which the caller reads as "no drift"),
 // else null.
-export async function gitlinkDrift(repo, latest) {
-  const recorded = await recordedGitlinkSha(repo);
+export async function gitlinkDrift(repo, latest, subPath = SUBMODULE_PATH) {
+  const recorded = await recordedGitlinkSha(repo, subPath);
   if (isUnresolved(recorded)) {
     return unresolved(`could not resolve the committed gitlink: ${recorded.error}`);
   }
@@ -371,7 +431,7 @@ export async function gitlinkDrift(repo, latest) {
     return unresolved(`could not resolve ${latest} in ${FLAITRON_REPO}: ${latestSha.error}`);
   }
   if (recorded === latestSha) return null;
-  return `committed gitlink at ${await describePin(recorded)}, worktree SPEC.md at ${latest} — commit the pin (git add ${SUBMODULE_PATH}) or run /ft-update`;
+  return `committed gitlink at ${await describePin(recorded)}, worktree SPEC.md at ${latest} — commit the pin (git add ${subPath}) or run /ft-update`;
 }
 
 // Shares its name with viz/src/workspace.ts's latestReleaseTag but not its
@@ -411,33 +471,62 @@ export async function tagsInRange(fromTag, toTag) {
 export async function migrationBearingTags(tags) {
   const bearing = [];
   for (const tag of tags) {
-    // %(objecttype) is "tag" for annotated tags, "commit" for lightweight.
-    const objecttype = (
-      await git(FLAITRON_REPO, 'tag', '-l', '--format=%(objecttype)', tag)
-    ).trim();
-    const contents = await git(FLAITRON_REPO, 'tag', '-l', '--format=%(contents)', tag);
-    // Lightweight / missing / empty-message tags have no release Migration
-    // block to trust — treat as bearing rather than silently non-breaking.
-    if (objecttype !== 'tag' || !contents.trim()) {
-      bearing.push(tag);
-      continue;
-    }
-    const lines = contents.split('\n');
-    const headingIdx = lines.findIndex((l) => /^Migration\b/.test(l.trim()));
-    if (headingIdx === -1) continue; // annotated but no Migration block → non-breaking
-    if (/BREAKING/.test(lines[headingIdx])) {
-      bearing.push(tag);
-      continue;
-    }
-    const firstBody = lines
-      .slice(headingIdx + 1)
-      .map((l) => l.trim())
-      .find((l) => l.length > 0);
-    if (!firstBody || !firstBody.toLowerCase().startsWith('no required project-side edits')) {
-      bearing.push(tag);
-    }
+    if ((await migrationAsk(tag)) !== null) bearing.push(tag);
   }
   return bearing;
+}
+
+// True when `tag` names a tag in FLAITRON_REPO — not just any ref: rev-parse
+// alone would accept a branch spelled like a release, which tagsInRange never
+// lists, so its own Migration block would go unclassified.
+export async function isReleaseTag(tag) {
+  try {
+    await git(FLAITRON_REPO, 'rev-parse', '--quiet', '--verify', `refs/tags/${tag}^{commit}`);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+// One tag's verdict for migrationBearingTags above: null when it asks for no
+// project-side edits, 'unreadable' when its notes can't be classified at all,
+// 'asks' when its Migration block asks. The split is what --accept-migration
+// validation needs — only an 'asks' tag has a block an operator could review.
+export async function migrationAsk(tag) {
+  // %(objecttype) is "tag" for annotated tags, "commit" for lightweight.
+  const objecttype = (
+    await git(FLAITRON_REPO, 'tag', '-l', '--format=%(objecttype)', tag)
+  ).trim();
+  const contents = await git(FLAITRON_REPO, 'tag', '-l', '--format=%(contents)', tag);
+  // Lightweight / missing / empty-message tags have no release Migration
+  // block to trust — treat as bearing rather than silently non-breaking.
+  if (objecttype !== 'tag' || !contents.trim()) return 'unreadable';
+  const lines = contents.split('\n');
+  const headingIdx = lines.findIndex((l) => /^Migration\b/.test(l.trim()));
+  if (headingIdx === -1) return null; // annotated but no Migration block → non-breaking
+  if (/BREAKING/.test(lines[headingIdx])) return 'asks';
+  const firstBody = lines
+    .slice(headingIdx + 1)
+    .map((l) => l.trim())
+    .find((l) => l.length > 0);
+  if (!firstBody || !firstBody.toLowerCase().startsWith('no required project-side edits')) {
+    return 'asks';
+  }
+  return null;
+}
+
+// Why `tag` cannot be waived by --accept-migration against `target`, or null
+// when it can. A waiver must name a reviewed block, so a tag that is unknown,
+// past the target, or carries no asking Migration block is refused — the
+// waiver would otherwise claim a review of nothing. Both tags are semver
+// (parseArgs guarantees it).
+export async function acceptMigrationError(tag, target) {
+  if (!(await isReleaseTag(tag))) return 'unknown tag';
+  if (compareSemver(parseSemverTag(tag), parseSemverTag(target)) > 0) return `after target ${target}`;
+  const ask = await migrationAsk(tag);
+  if (ask === null) return 'no Migration block to waive';
+  if (ask === 'unreadable') return 'release notes unreadable';
+  return null;
 }
 
 // The per-platform symlink-wiring set: paths named in the freshly-bumped
@@ -507,6 +596,38 @@ export function formatSkillsNote(surfaces) {
   return ` (new skills shipped in range — run /ft-update to wire ${surfaceText} symlinks)`;
 }
 
+// A url whose last path segment is the flaitron repo (`…/flaitron`,
+// `…/Flaitron.git`, `git@host:org/flaitron`) — not any url merely containing
+// the word, which would also catch e.g. a `flaitron-brand-assets` submodule.
+const FLAITRON_URL = /(?:^|[/:])flaitron(?:\.git)?\/?$/i;
+
+// The paths .gitmodules declares for submodules whose url names flaitron, in
+// file order (natabula wave-bump takes the first; discoverAdopters prefers the
+// first one checked out). Any git failure — no .gitmodules, no url entries, an
+// unparsable file — reads as none, so the caller falls back to SUBMODULE_PATH
+// as it did before this lookup existed. A declared path that is absolute or
+// escapes the repo is ignored.
+async function declaredSubmodulePaths(repo) {
+  if (!(await isFile(join(repo, '.gitmodules')))) return [];
+  const paths = [];
+  try {
+    const urls = await git(repo, 'config', '-z', '-f', '.gitmodules', '--get-regexp', '^submodule\\..*\\.url$');
+    for (const entry of urls.split('\0')) {
+      const nl = entry.indexOf('\n');
+      if (nl === -1 || !FLAITRON_URL.test(entry.slice(nl + 1).trim())) continue;
+      const pathKey = `${entry.slice(0, nl).replace(/\.url$/, '')}.path`;
+      // Trailing separator stripped: it would otherwise reach rev-parse
+      // HEAD:<path> and the commit pathspec.
+      const path = normalize((await git(repo, 'config', '-f', '.gitmodules', '--get', pathKey)).trim()).replace(/\/+$/, '');
+      if (isAbsolute(path) || path === '' || path === '.' || path === '..' || path.startsWith('../')) continue;
+      paths.push(path);
+    }
+  } catch {
+    // keep whatever resolved before the failure
+  }
+  return paths;
+}
+
 export async function discoverAdopters(root) {
   const entries = await readdir(root, { withFileTypes: true });
   const flaitronReal = await realOrResolve(FLAITRON_REPO);
@@ -516,8 +637,22 @@ export async function discoverAdopters(root) {
     if (entry.name.startsWith('.')) continue;
     const repo = join(root, entry.name);
     if ((await realOrResolve(repo)) === flaitronReal) continue; // flaitron itself: /ft-release territory
-    if (await isFile(join(repo, SUBMODULE_PATH, 'SPEC.md'))) {
-      adopters.push({ name: entry.name, repo });
+    // First checked-out candidate wins; SUBMODULE_PATH stays last so a stale
+    // or second flaitron-named entry never hides a working .flaitron/core.
+    const declared = await declaredSubmodulePaths(repo);
+    let subPath = null;
+    for (const candidate of [...declared, SUBMODULE_PATH]) {
+      if (await isFile(join(repo, candidate, 'SPEC.md'))) {
+        subPath = candidate;
+        break;
+      }
+    }
+    if (subPath !== null) {
+      adopters.push({ name: entry.name, repo, subPath });
+    } else if (declared.length > 0) {
+      // Declared but never checked out: no pin to read, but dropping it here
+      // would remove it from the report without anyone noticing.
+      adopters.push({ name: entry.name, repo, subPath: declared[0], uninitialised: true });
     }
   }
   adopters.sort((a, b) => a.name.localeCompare(b.name));
@@ -595,21 +730,30 @@ async function trackedLedgers(repo, ledgers) {
   return tracked;
 }
 
-// Ten sequential skip/drift gates below (unreadable version, unresolved
-// gitlink, reverse gitlink-drift, detached HEAD, pinned-ahead, missing-tag,
-// attended ledger, migration-bearing, staged changes, dirty submodule).
+// Twelve sequential skip/drift gates below (uninitialised submodule, unreadable
+// version, unresolved gitlink, reverse gitlink-drift, detached HEAD, --branch,
+// pinned-ahead, missing-tag, attended ledger, migration-bearing, staged
+// changes, dirty submodule).
 // Considered extracting them to an ordered array (CORE-479) but each later
 // gate consumes state a prior gate computed (current, recordedGitlink, currentVersion/latestVersion,
 // range/bearing) — an array of independent gate functions would need a
 // threaded context object, a larger refactor than this naming cleanup's
 // scope. Left inline.
-export async function checkAdopter(adopter, latest, { attendedLedgers = [] } = {}) {
+export async function checkAdopter(
+  adopter,
+  latest,
+  { attendedLedgers = [], branch = null, acceptedMigrations = [] } = {},
+) {
   const { repo } = adopter;
-  const sub = join(repo, SUBMODULE_PATH);
+  const subPath = adopter.subPath ?? SUBMODULE_PATH;
+  const sub = join(repo, subPath);
+  if (adopter.uninitialised) {
+    return { status: 'skip', reason: `submodule not initialised (${subPath})` };
+  }
   const current = await pinnedVersion(join(sub, 'SPEC.md'));
   if (current === null) return { status: 'skip', reason: 'unreadable pinned SPEC.md version' };
   if (current === latest) {
-    const drift = await gitlinkDrift(repo, latest);
+    const drift = await gitlinkDrift(repo, latest, subPath);
     // Unresolved is not "no drift": this branch returns without touching git
     // again, so reporting `current` here would render a git failure as a clean
     // bill of health. Skip and hand the operator git's own message instead.
@@ -632,14 +776,14 @@ export async function checkAdopter(adopter, latest, { attendedLedgers = [] } = {
   // early return above, this path continues into the detached-HEAD and
   // staged-diff gates, which rethrow any non-exit-1 git failure (CORE-366) —
   // a broken repo still fails loudly, it just fails there.
-  const recordedGitlink = await recordedGitlinkSha(repo);
+  const recordedGitlink = await recordedGitlinkSha(repo, subPath);
   if (!isUnresolved(recordedGitlink)) {
     const latestSha = await cachedCanonicalTagSha(latest);
     if (!isUnresolved(latestSha) && recordedGitlink === latestSha) {
       return {
         status: 'drift',
         current,
-        reason: `committed gitlink already at ${latest}, worktree SPEC.md at ${current} — run git submodule update in ${SUBMODULE_PATH} (or /ft-update) to sync the worktree; nothing to commit`,
+        reason: `committed gitlink already at ${latest}, worktree SPEC.md at ${current} — run git submodule update in ${subPath} (or /ft-update) to sync the worktree; nothing to commit`,
       };
     }
   }
@@ -648,24 +792,37 @@ export async function checkAdopter(adopter, latest, { attendedLedgers = [] } = {
   // current HEAD. A tag checkout, mid-bisect, or mid-rebase adopter has no
   // branch to carry that commit — it would be reachable only from a detached
   // ref, orphaned the moment the operator returns to a branch.
+  let headRef;
   try {
-    await git(repo, 'symbolic-ref', '--quiet', 'HEAD');
+    headRef = (await git(repo, 'symbolic-ref', '--quiet', 'HEAD')).trim();
   } catch (e) {
     if (e.code !== 1) throw e;
     return { status: 'skip', current, reason: 'detached HEAD — check out a branch before bumping' };
   }
 
+  // --branch gate: the caller's policy names the one branch a bump may land on
+  // (natabula's fleet: main). Absent flag → any branch. Compared as a full ref:
+  // `--short` turns `main` into `heads/main` when a same-named tag exists.
+  if (branch !== null && headRef !== `refs/heads/${branch}`) {
+    return {
+      status: 'skip',
+      current,
+      reason: `on branch ${headRef.replace(/^refs\/heads\//, '')}, not ${branch}`,
+    };
+  }
+
   // Pinned-ahead guard: `tagsInRange` is empty when the pin is newer than
   // `latest`, so the migration gate below would pass vacuously and `--apply`
   // would check out the OLDER tag — a silent downgrade. Almost always a stale
-  // tag list in this checkout rather than a genuinely ahead adopter.
+  // tag list in this checkout (or a --target below the fleet) rather than a
+  // genuinely ahead adopter.
   const currentVersion = parseSemverTag(current);
   const latestVersion = parseSemverTag(latest);
   if (currentVersion && latestVersion && compareSemver(currentVersion, latestVersion) > 0) {
     return {
       status: 'skip',
       current,
-      reason: `pinned ahead of latest release ${latest} — bumping would downgrade; run git fetch --tags in ${FLAITRON_REPO} and re-run`,
+      reason: `pinned ahead of target release ${latest} — bumping would downgrade; check --target, or run git fetch --tags in ${FLAITRON_REPO} and re-run`,
     };
   }
 
@@ -697,7 +854,11 @@ export async function checkAdopter(adopter, latest, { attendedLedgers = [] } = {
     };
   }
 
-  const bearing = await cachedMigrationBearingTags(current, latest);
+  // --accept-migration waives only the tags it names; the cache keeps the raw
+  // bearing list, so the filter runs per adopter.
+  const bearing = (await cachedMigrationBearingTags(current, latest)).filter(
+    (tag) => !acceptedMigrations.includes(tag),
+  );
   if (bearing.length > 0) {
     return {
       status: 'skip',
@@ -717,7 +878,7 @@ export async function checkAdopter(adopter, latest, { attendedLedgers = [] } = {
 
   const subStatus = await git(sub, 'status', '--porcelain');
   if (subStatus.trim().length > 0) {
-    return { status: 'skip', current, reason: `dirty ${SUBMODULE_PATH} worktree` };
+    return { status: 'skip', current, reason: `dirty ${subPath} worktree` };
   }
 
   return { status: 'bump', current, skillsNote: formatSkillsNote(await cachedNewSkillWiringSurfaces(current, latest)) };
@@ -742,16 +903,16 @@ export function verifyPinnedSha(checkedOutSha, canonicalSha, latest) {
 // Best-effort by construction — the caller is already unwinding a failure, so this
 // reports what it could not undo rather than throwing over the original error.
 // Returns null when the repo is fully restored, else a note naming the residue.
-async function rollbackBump(repo, sub, priorSha, staged) {
+async function rollbackBump(repo, subPath, priorSha, staged) {
   const residue = [];
   try {
-    await git(sub, 'checkout', '--quiet', priorSha);
+    await git(join(repo, subPath), 'checkout', '--quiet', priorSha);
   } catch (e) {
     residue.push(`submodule left at the new tag (${e.message})`);
   }
   if (staged) {
     try {
-      await git(repo, 'reset', '--quiet', '--', SUBMODULE_PATH);
+      await git(repo, '--literal-pathspecs', 'reset', '--quiet', '--', subPath);
     } catch (e) {
       residue.push(`gitlink left staged (${e.message})`);
     }
@@ -781,7 +942,8 @@ async function checkoutVerified(sub, latest) {
 
 export async function applyBump(adopter, latest) {
   const { repo } = adopter;
-  const sub = join(repo, SUBMODULE_PATH);
+  const subPath = adopter.subPath ?? SUBMODULE_PATH;
+  const sub = join(repo, subPath);
   // Fetch adds refs only — no worktree or index mutation, so it sits outside the
   // rollback window and the prior SHA is captured immediately before the checkout.
   // Timed: the only git call in this script that talks to a remote, so it's the
@@ -793,7 +955,10 @@ export async function applyBump(adopter, latest) {
     await checkoutVerified(sub, latest);
     // Flagged before the add: a partial add may already have staged the gitlink.
     staged = true;
-    await git(repo, 'add', '--', SUBMODULE_PATH);
+    // --literal-pathspecs on every pathspec call: subPath can come from the
+    // adopter's .gitmodules, and a glob or `:(…)` magic in it would otherwise
+    // widen what gets staged and committed beyond the gitlink.
+    await git(repo, '--literal-pathspecs', 'add', '--', subPath);
     // Pathspec commit: only the submodule gitlink lands, never unrelated work.
     // --no-verify: see the "Mid-bump rollback" note above for why
     // pre-commit/commit-msg hooks are skipped here (prepare-commit-msg/
@@ -801,16 +966,17 @@ export async function applyBump(adopter, latest) {
     const current = adopter.current;
     await git(
       repo,
+      '--literal-pathspecs',
       'commit',
       '--quiet',
       '--no-verify',
       '-m',
       `chore: bump flaitron ${current} → ${latest}`,
       '--',
-      SUBMODULE_PATH,
+      subPath,
     );
   } catch (e) {
-    const residue = await rollbackBump(repo, sub, priorSha, staged);
+    const residue = await rollbackBump(repo, subPath, priorSha, staged);
     // Rethrow the original failure — reportResult renders it as the ✗ line — with
     // the un-undone residue appended when the repo could not be fully restored.
     if (residue) e.message = `${e.message} (rollback incomplete: ${residue})`;
@@ -867,9 +1033,12 @@ async function main(argv = process.argv.slice(2)) {
   // entry point takes `latest` as a parameter; this is the only place the
   // choice is made internally. When the env is set, require a semver tag
   // (CORE-432.4) — empty/garbage must not be misreported as "no release tags".
+  // --target wins over both; it is validated below, before any adopter is read.
   const override = process.env.FLAITRON_UPDATE_LATEST;
   let latest;
-  if (override !== undefined) {
+  if (args.target !== null) {
+    latest = args.target;
+  } else if (override !== undefined) {
     if (!parseSemverTag(override)) {
       console.error(
         `FLAITRON_UPDATE_LATEST is set but invalid (got ${JSON.stringify(override)}); expected a semver release tag like v1.2.3`,
@@ -884,11 +1053,22 @@ async function main(argv = process.argv.slice(2)) {
     console.error(`No release tag found in ${FLAITRON_REPO} — nothing to compare against.`);
     process.exit(1);
   }
+  if (args.target !== null && !(await isReleaseTag(latest))) {
+    usageError(`Unknown --target tag in ${FLAITRON_REPO}: ${latest}`, true);
+  }
+  for (const tag of args.acceptMigrations) {
+    const why = await acceptMigrationError(tag, latest);
+    if (why) usageError(`Cannot --accept-migration ${tag}: ${why}`, true);
+  }
 
   const mode = args.apply ? 'APPLY' : 'DRY-RUN';
   console.log(`flaitron update-adopters — ${mode}`);
   console.log(`  workspace: ${root}`);
-  console.log(`  latest release: ${latest}\n`);
+  console.log(args.target === null ? `  latest release: ${latest}` : `  target release: ${latest}`);
+  if (args.acceptMigrations.length > 0) {
+    console.log(`  migration accepted (reviewed): ${args.acceptMigrations.join(', ')}`);
+  }
+  console.log('');
 
   let adopters;
   try {
@@ -899,7 +1079,19 @@ async function main(argv = process.argv.slice(2)) {
     return;
   }
 
-  if (adopters.length === 0) {
+  // --only: unnamed adopters are neither listed nor counted; a name that
+  // matches nothing becomes one skip row after the sweep (a Set, so a repeated
+  // name reports once) — ahead of the empty-workspace return, which would
+  // otherwise drop it silently.
+  let unmatched = [];
+  if (args.only.length > 0) {
+    const named = new Set(args.only);
+    const discovered = new Set(adopters.map((a) => a.name));
+    adopters = adopters.filter((a) => named.has(a.name));
+    unmatched = [...named].filter((name) => !discovered.has(name));
+  }
+
+  if (adopters.length === 0 && unmatched.length === 0) {
     console.log(`No ${SUBMODULE_PATH} adopters found.`);
     return;
   }
@@ -908,13 +1100,26 @@ async function main(argv = process.argv.slice(2)) {
   for (const adopter of adopters) {
     let result;
     try {
-      result = await checkAdopter(adopter, latest, { attendedLedgers: args.attendedLedgers });
+      result = await checkAdopter(adopter, latest, {
+        attendedLedgers: args.attendedLedgers,
+        branch: args.branch,
+        acceptedMigrations: args.acceptMigrations,
+      });
     } catch (e) {
       counts.failed += 1;
       console.error(`  ✗ ${adopter.name}: check failed — ${e.message}`);
       continue;
     }
     await reportResult(adopter, result, latest, args.apply, counts);
+  }
+  for (const name of unmatched) {
+    await reportResult(
+      { name },
+      { status: 'skip', reason: `no adopter at this exact name under ${root}` },
+      latest,
+      args.apply,
+      counts,
+    );
   }
 
   reportSummary(counts, args.apply);

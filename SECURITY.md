@@ -198,12 +198,19 @@ out to `git` across many repos, and can commit inside them.
   so there is no shell-injection surface even for inputs the script doesn't
   otherwise validate (e.g. adopter directory names discovered under the
   workspace root).
-- **Semver-constrained arguments.** The one value that reaches git from
-  outside the script's own control — the release tag checked out in an
-  adopter's submodule — is validated against `^v\d+\.\d+\.\d+$` before use
-  (`parseSemverTag`) and re-validated when supplied via the
-  `FLAITRON_UPDATE_LATEST` test-seam env var. A malformed or
+- **Semver-constrained arguments.** Release tags that reach git from
+  outside the script's own control — the tag checked out in an adopter's
+  submodule, whether `--target` or the newest release, and each
+  `--accept-migration` tag — are validated against `^v\d+\.\d+\.\d+$` before
+  use (`parseSemverTag`), re-validated when supplied via the
+  `FLAITRON_UPDATE_LATEST` test-seam env var, and must resolve as a tag in
+  `FLAITRON_REPO` before any adopter is read. A malformed or
   unexpected tag string is rejected rather than passed through.
+- **Literal pathspecs for the adopter-declared submodule path.** The
+  submodule path read from an adopter's `.gitmodules` is adopter-authored. It
+  is refused when absolute or escaping the repo, and every `git add` /
+  `commit` / `reset` it reaches runs under `--literal-pathspecs`, so glob or
+  `:(…)` magic in it cannot widen the commit beyond the gitlink.
 - **Canonical-SHA cross-check on checkout.** `applyBump` calls
   `checkoutVerified`, which doesn't trust the
   checked-out submodule's own claim of its version — after checkout it
@@ -217,7 +224,7 @@ out to `git` across many repos, and can commit inside them.
   `git push` anywhere in the script. Every bump commit stays local until
   the operator reviews and pushes it themselves, per repo.
 - **Bump commits pass `--no-verify`.** The bump commit is a
-  pathspec commit touching only the `.flaitron/core` gitlink. `--no-verify` skips only
+  pathspec commit touching only the flaitron submodule gitlink. `--no-verify` skips only
   `pre-commit`/`commit-msg` — the hooks that could run arbitrary adopter-authored
   code — as a side effect of an unattended fleet sweep; `prepare-commit-msg`/
   `post-commit` still run.

@@ -13,6 +13,7 @@ import { promisify } from 'node:util';
 import {
   FLAITRON_REPO,
   SUBMODULE_PATH,
+  acceptMigrationError,
   applyBump,
   cachedCanonicalTagSha,
   cachedMigrationBearingTags,
@@ -24,7 +25,9 @@ import {
   formatSkillsNote,
   git,
   gitlinkDrift,
+  isReleaseTag,
   latestReleaseTag,
+  migrationAsk,
   migrationBearingTags,
   newSkillWiringSurfaces,
   parseArgs,
@@ -120,7 +123,7 @@ after(async () => {
  * Build a minimal adopter superproject under `root/name` with `.flaitron/core`
  * cloned from the shared mirror and checked out at `pinTag`.
  */
-async function makeAdopter(root, name, pinTag) {
+async function makeAdopter(root, name, pinTag, subPath = SUBMODULE_PATH) {
   const repo = join(root, name);
   await mkdir(repo, { recursive: true });
   await gitQuiet(repo, 'init', '-q');
@@ -128,7 +131,7 @@ async function makeAdopter(root, name, pinTag) {
   await gitQuiet(repo, 'config', 'user.name', 'CORE-360');
   await gitQuiet(repo, 'config', 'advice.addEmbeddedRepo', 'false');
 
-  const sub = join(repo, SUBMODULE_PATH);
+  const sub = join(repo, subPath);
   // -n: skip the default-branch checkout the pinTag checkout below replaces
   // anyway — it is most of a fixture's cost (CORE-716.3).
   await execFileAsync('git', [
@@ -141,25 +144,85 @@ async function makeAdopter(root, name, pinTag) {
     sub,
   ]);
   await gitQuiet(sub, 'checkout', '-q', pinTag);
-  await gitQuiet(repo, 'add', SUBMODULE_PATH);
+  await gitQuiet(repo, 'add', subPath);
   await gitQuiet(repo, 'commit', '-q', '-m', `pin ${pinTag}`);
-  return { name, repo, sub };
+  return { name, repo, sub, subPath };
+}
+
+/**
+ * Commit a `.gitmodules` that declares `subPath` as the flaitron submodule
+ * (CORE-852.3). makeAdopter's embedded clone carries none, so discovery falls
+ * back to `.flaitron/core` unless a fixture declares one. An unrelated
+ * submodule listed first proves the lookup picks the url naming flaitron.
+ */
+async function declareSubmodule(repo, subPath) {
+  await writeFile(
+    join(repo, '.gitmodules'),
+    '[submodule "tools"]\n\tpath = vendor/tools\n\turl = https://example.invalid/tools.git\n' +
+      `[submodule "flaitron"]\n\tpath = ${subPath}\n\turl = https://example.invalid/flaitron.git\n`,
+  );
+  await gitQuiet(repo, 'add', '.gitmodules');
+  await gitQuiet(repo, 'commit', '-q', '-m', 'declare submodule');
+}
+
+/** What `git submodule deinit -f` leaves: the declared path, emptied. */
+async function deinitSubmodule(adopter) {
+  await rmTree(adopter.sub);
+  await mkdir(adopter.sub);
 }
 
 describe('parseArgs / pure helpers', () => {
+  const DEFAULT_ARGS = {
+    apply: false,
+    root: null,
+    target: null,
+    only: [],
+    branch: null,
+    acceptMigrations: [],
+    attendedLedgers: [],
+  };
+
   it('parses --apply and --root', () => {
-    assert.deepEqual(parseArgs([]), { apply: false, root: null, attendedLedgers: [] });
-    assert.deepEqual(parseArgs(['--apply']), { apply: true, root: null, attendedLedgers: [] });
-    assert.deepEqual(parseArgs(['--root', '/tmp/ws']), {
-      apply: false,
-      root: '/tmp/ws',
-      attendedLedgers: [],
-    });
+    assert.deepEqual(parseArgs([]), DEFAULT_ARGS);
+    assert.deepEqual(parseArgs(['--apply']), { ...DEFAULT_ARGS, apply: true });
+    assert.deepEqual(parseArgs(['--root', '/tmp/ws']), { ...DEFAULT_ARGS, root: '/tmp/ws' });
     assert.deepEqual(parseArgs(['--apply', '--root', '/tmp/ws']), {
+      ...DEFAULT_ARGS,
       apply: true,
       root: '/tmp/ws',
-      attendedLedgers: [],
     });
+  });
+
+  it('parses --target, --branch, and repeatable --only / --accept-migration (CORE-852.3)', () => {
+    assert.deepEqual(
+      parseArgs([
+        '--target', 'v2.0.0',
+        '--only', 'a',
+        '--accept-migration', 'v1.2.0',
+        '--branch', 'main',
+        '--only', 'b',
+        '--accept-migration', 'v2.0.0',
+      ]),
+      {
+        ...DEFAULT_ARGS,
+        target: 'v2.0.0',
+        only: ['a', 'b'],
+        branch: 'main',
+        acceptMigrations: ['v1.2.0', 'v2.0.0'],
+      },
+    );
+  });
+
+  it('rejects non-semver --target / --accept-migration and valueless selection flags (CORE-852.3)', () => {
+    for (const flag of ['--target', '--accept-migration']) {
+      assert.throws(() => parseArgs([flag, 'latest'], { exitOnError: false }), /semver release tag/);
+      assert.throws(() => parseArgs([flag], { exitOnError: false }), new RegExp(`${flag} requires a value`));
+    }
+    for (const flag of ['--only', '--branch']) {
+      assert.throws(() => parseArgs([flag], { exitOnError: false }), new RegExp(`${flag} requires a value`));
+      assert.throws(() => parseArgs([flag, '--apply'], { exitOnError: false }), /requires a value/);
+      assert.throws(() => parseArgs([flag, ''], { exitOnError: false }), /non-empty value/);
+    }
   });
 
   it('collects repeatable --attended-ledger paths in order (CORE-852.2)', () => {
@@ -282,6 +345,51 @@ describe('migrationBearingTags (real tags)', () => {
     } finally {
       try {
         await git(FLAITRON_REPO, 'tag', '-d', tag);
+      } catch {
+        // already gone
+      }
+    }
+  });
+
+  it('migrationAsk separates asks / all-clear (CORE-852.3)', async () => {
+    assert.equal(await migrationAsk('v5.0.0'), 'asks');
+    assert.equal(await migrationAsk('v5.10.1'), null);
+  });
+
+  // Mirrors wave-bump.test.sh's `rejects` cases; the semver lightweight tag
+  // sits below every real release, so no range or latest-tag lookup sees it.
+  it('acceptMigrationError names why a tag cannot be waived, null when it can (CORE-852.3)', async () => {
+    assert.equal(await acceptMigrationError('v5.0.0', latest), null);
+    assert.equal(await acceptMigrationError('v0.0.1', latest), 'unknown tag');
+    assert.equal(await acceptMigrationError(latest, previous), `after target ${previous}`);
+    assert.equal(await acceptMigrationError('v5.10.1', latest), 'no Migration block to waive');
+    const tag = 'v0.0.2';
+    try {
+      await git(FLAITRON_REPO, 'tag', tag); // lightweight — no -a/-m
+      assert.equal(await migrationAsk(tag), 'unreadable');
+      assert.equal(await acceptMigrationError(tag, latest), 'release notes unreadable');
+    } finally {
+      try {
+        await git(FLAITRON_REPO, 'tag', '-d', tag);
+      } catch {
+        // already gone
+      }
+    }
+  });
+
+  // A branch spelled like a release resolves under rev-parse but is no tag —
+  // tagsInRange would never list it, so its Migration block would go unread.
+  it('isReleaseTag accepts tags only, not a branch spelled like one (CORE-852.3)', async () => {
+    assert.equal(await isReleaseTag(latest), true);
+    assert.equal(await isReleaseTag('v0.0.1'), false);
+    const branch = 'v0.0.3';
+    try {
+      await git(FLAITRON_REPO, 'branch', branch, latest);
+      assert.equal(await isReleaseTag(branch), false);
+      assert.equal(await acceptMigrationError(branch, latest), 'unknown tag');
+    } finally {
+      try {
+        await git(FLAITRON_REPO, 'branch', '-D', branch);
       } catch {
         // already gone
       }
@@ -474,6 +582,73 @@ describe('checkAdopter classification (fixtures)', { concurrency: GROUP_CONCURRE
     assert.equal(result.status, 'current');
   });
 
+  // wave-bump.test.sh `offmain`: policy is a flag, so the branch is the caller's.
+  it('skip: --branch names a branch the adopter is not on (CORE-852.3)', async () => {
+    const adopter = await makeAdopter(root, 'offbranch-repo', previous);
+    const onBranch = (await git(adopter.repo, 'symbolic-ref', '--short', 'HEAD')).trim();
+    await gitQuiet(adopter.repo, 'checkout', '-q', '-b', 'feature');
+    const result = await checkAdopter(adopter, latest, { branch: onBranch });
+    assert.equal(result.status, 'skip');
+    assert.equal(result.current, previous);
+    assert.equal(result.reason, `on branch feature, not ${onBranch}`);
+    assert.equal((await checkAdopter(adopter, latest, { branch: 'feature' })).status, 'bump');
+    assert.equal((await checkAdopter(adopter, latest)).status, 'bump');
+    // A same-named tag makes `symbolic-ref --short` say `heads/feature`.
+    await gitQuiet(adopter.repo, 'tag', 'feature');
+    assert.equal((await checkAdopter(adopter, latest, { branch: 'feature' })).status, 'bump');
+  });
+
+  // wave-bump.test.sh `accept migration`: the waiver covers only the named tags.
+  it('bump only when --accept-migration names every bearing tag in range (CORE-852.3)', async () => {
+    const adopter = await makeAdopter(root, 'accepted-repo', 'v4.0.0');
+    const bearing = await migrationBearingTags(await tagsInRange('v4.0.0', latest));
+    assert.ok(bearing.includes('v5.0.0'));
+    const partial = await checkAdopter(adopter, latest, { acceptedMigrations: bearing.slice(1) });
+    assert.equal(partial.status, 'skip');
+    assert.match(partial.reason, new RegExp(`in range: ${bearing[0].replace(/\./g, '\\.')} — `));
+    const full = await checkAdopter(adopter, latest, { acceptedMigrations: bearing });
+    assert.equal(full.status, 'bump');
+  });
+
+  // wave-bump.test.sh "migration waiver cannot bypass semantic review".
+  it('skip: --accept-migration never waives a tracked --attended-ledger (CORE-852.3)', async () => {
+    const adopter = await makeAdopter(root, 'accepted-ledger-repo', 'v4.0.0');
+    await writeFile(join(adopter.repo, 'ledger.json'), '{}\n');
+    await gitQuiet(adopter.repo, 'add', 'ledger.json');
+    await gitQuiet(adopter.repo, 'commit', '-q', '-m', 'ledger');
+    const bearing = await migrationBearingTags(await tagsInRange('v4.0.0', latest));
+    const result = await checkAdopter(adopter, latest, {
+      attendedLedgers: ['ledger.json'],
+      acceptedMigrations: bearing,
+    });
+    assert.equal(result.status, 'skip');
+    assert.match(result.reason, /attended ledger tracked/);
+  });
+
+  it('skip: declared submodule not initialised names its path (CORE-852.3)', async () => {
+    // Own root: discovery scans the whole directory, and the group's shared
+    // root has sibling fixtures mid-construction.
+    const own = await mkdtemp(join(tmpdir(), 'ft-upd-uninit-'));
+    const adopter = await makeAdopter(own, 'uninit-repo', previous);
+    await declareSubmodule(adopter.repo, SUBMODULE_PATH);
+    await deinitSubmodule(adopter);
+    const [found] = await discoverAdopters(own);
+    assert.equal(found.uninitialised, true);
+    const result = await checkAdopter(found, latest);
+    assert.deepEqual(result, { status: 'skip', reason: `submodule not initialised (${SUBMODULE_PATH})` });
+    await rmTree(own);
+  });
+
+  it('bump / drift on a non-canonical submodule path read from .gitmodules (CORE-852.3)', async () => {
+    const adopter = await makeAdopter(root, 'vendored-repo', previous, 'vendor/flaitron');
+    await declareSubmodule(adopter.repo, 'vendor/flaitron');
+    assert.equal((await checkAdopter(adopter, latest)).status, 'bump');
+    await gitQuiet(adopter.sub, 'checkout', '-q', latest);
+    const drift = await checkAdopter(adopter, latest);
+    assert.equal(drift.status, 'drift');
+    assert.match(drift.reason, /git add vendor\/flaitron/);
+  });
+
   it('skip: pinned tag not found locally (missing-pinned-tag, CORE-459.4)', async () => {
     const adopter = await makeAdopter(root, 'missing-tag-repo', previous);
     // v0.0.1 parses as valid semver but sits below v0.1.0, the repo's oldest
@@ -517,7 +692,53 @@ describe('discoverAdopters', () => {
     await mkdir(join(root, 'pre-rename', '.flowtron', 'core'), { recursive: true });
     await writeFile(join(root, 'pre-rename', '.flowtron', 'core', 'SPEC.md'), '**Version:** v5.0.0\n');
     const adopters = await discoverAdopters(root);
-    assert.deepEqual(adopters, [{ name: 'alpha', repo: adopter.repo }]);
+    assert.deepEqual(adopters, [{ name: 'alpha', repo: adopter.repo, subPath: SUBMODULE_PATH }]);
+    await rmTree(root);
+  });
+
+  // CORE-852.3 — wave-bump's submodule_path: the url naming flaitron decides,
+  // whatever the path; an undeclared, unchecked-out repo stays invisible.
+  it('resolves the submodule path from .gitmodules and flags a declared, uninitialised one', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'ft-upd-disc-gm-'));
+    const vendored = await makeAdopter(root, 'vendored', latest, 'vendor/flaitron');
+    await declareSubmodule(vendored.repo, 'vendor/flaitron');
+    const uninit = await makeAdopter(root, 'uninit', latest);
+    await declareSubmodule(uninit.repo, SUBMODULE_PATH);
+    await deinitSubmodule(uninit);
+    const undeclared = await makeAdopter(root, 'undeclared', latest);
+    await deinitSubmodule(undeclared);
+    assert.deepEqual(await discoverAdopters(root), [
+      { name: 'uninit', repo: uninit.repo, subPath: SUBMODULE_PATH, uninitialised: true },
+      { name: 'vendored', repo: vendored.repo, subPath: 'vendor/flaitron' },
+    ]);
+    await rmTree(root);
+  });
+
+  // CORE-852.3 review notes: a stale or second flaitron entry never hides a
+  // working .flaitron/core; the url match is on the last segment, any case; a
+  // trailing slash on the declared path is dropped.
+  it('prefers a checked-out candidate, matches the url segment case-insensitively, strips a trailing slash', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'ft-upd-disc-gm2-'));
+    const write = async (repo, body) => {
+      await writeFile(join(repo, '.gitmodules'), body);
+      await gitQuiet(repo, 'add', '.gitmodules');
+      await gitQuiet(repo, 'commit', '-q', '-m', 'gitmodules');
+    };
+    const stale = await makeAdopter(root, 'stale', latest);
+    await write(stale.repo, '[submodule "old"]\n\tpath = old/flaitron\n\turl = ../flaitron\n');
+    const cased = await makeAdopter(root, 'cased', latest, 'vendor/ft');
+    await write(
+      cased.repo,
+      '[submodule "assets"]\n\tpath = vendor/assets\n\turl = https://example.invalid/flaitron-brand-assets.git\n' +
+        '[submodule "ft"]\n\tpath = vendor/ft/\n\turl = git@example.invalid:Org/Flaitron.git\n',
+    );
+    const lookalike = await makeAdopter(root, 'lookalike', latest);
+    await write(lookalike.repo, '[submodule "assets"]\n\tpath = vendor/assets\n\turl = https://example.invalid/flaitron-assets.git\n');
+    await deinitSubmodule(lookalike);
+    assert.deepEqual(await discoverAdopters(root), [
+      { name: 'cased', repo: cased.repo, subPath: 'vendor/ft' },
+      { name: 'stale', repo: stale.repo, subPath: SUBMODULE_PATH },
+    ]);
     await rmTree(root);
   });
 
@@ -644,6 +865,89 @@ describe('dry-run CLI (--root fixture)', { concurrency: GROUP_CONCURRENCY }, () 
     await rmTree(root);
   });
 
+  // wave-bump.test.sh `only`: named repos alone are listed and counted; an
+  // unknown name is one skip row however often it repeats.
+  it('--only limits the sweep and reports an unmatched name once (CORE-852.3)', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'ft-upd-only-'));
+    await makeAdopter(root, 'only-a', previous);
+    await makeAdopter(root, 'only-b', previous);
+    await mkdir(join(root, 'plain'), { recursive: true });
+
+    const { stdout } = await runCli(
+      ['--root', root, '--only', 'only-a', '--only', 'nosuch', '--only', 'nosuch', '--only', 'plain'],
+      { env: { FLAITRON_UPDATE_LATEST: latest } },
+    );
+    assert.match(stdout, /⬆ only-a: would bump/);
+    assert.doesNotMatch(stdout, /only-b/);
+    assert.equal(stdout.match(/⏭ nosuch: skipped — no adopter at this exact name under /g)?.length, 1);
+    assert.match(stdout, /⏭ plain: skipped — no adopter at this exact name/);
+    assert.match(stdout, /Summary: 0 current · 0 drift · would bump 1 · 2 skipped · 0 failed/);
+
+    // An empty workspace still reports the name rather than "no adopters".
+    const empty = await mkdtemp(join(tmpdir(), 'ft-upd-only-empty-'));
+    const { stdout: emptyOut } = await runCli(['--root', empty, '--only', 'gone'], {
+      env: { FLAITRON_UPDATE_LATEST: latest },
+    });
+    assert.match(emptyOut, /⏭ gone: skipped — no adopter at this exact name/);
+    assert.doesNotMatch(emptyOut, /No \.flaitron\/core adopters found/);
+    await rmTree(empty);
+    await rmTree(root);
+  });
+
+  it('--target bumps to the named tag over FLAITRON_UPDATE_LATEST (CORE-852.3)', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'ft-upd-target-'));
+    await makeAdopter(root, 'tgt-behind', previous);
+    const { stdout } = await runCli(['--root', root, '--target', latest], {
+      env: { FLAITRON_UPDATE_LATEST: previous },
+    });
+    assert.match(stdout, new RegExp(`target release: ${latest.replace(/\./g, '\\.')}`));
+    assert.match(stdout, new RegExp(`⬆ tgt-behind: would bump ${previous.replace(/\./g, '\\.')} → ${latest.replace(/\./g, '\\.')}`));
+    await rmTree(root);
+  });
+
+  it('rejects an unknown --target or an unwaivable --accept-migration before reading any repo (CORE-852.3)', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'ft-upd-reject-'));
+    await makeAdopter(root, 'untouched', previous);
+    const cases = [
+      [['--target', 'v0.0.1'], /Unknown --target tag .*v0\.0\.1/],
+      [['--accept-migration', 'v0.0.1'], /Cannot --accept-migration v0\.0\.1: unknown tag/],
+      [['--target', previous, '--accept-migration', latest], /Cannot --accept-migration .*: after target/],
+      [['--accept-migration', 'v5.10.1'], /Cannot --accept-migration v5\.10\.1: no Migration block to waive/],
+    ];
+    for (const [extra, expected] of cases) {
+      const { code, stdout, stderr } = await runCli(['--root', root, ...extra], {
+        expectFail: true,
+        env: { FLAITRON_UPDATE_LATEST: latest },
+      });
+      assert.equal(code, 2, `exit 2 for ${extra.join(' ')}`);
+      assert.match(stderr, expected);
+      assert.doesNotMatch(stdout, /workspace:|untouched/, 'no adopter read before the reject');
+    }
+    await rmTree(root);
+  });
+
+  it('accepted migrations are named in the header (CORE-852.3)', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'ft-upd-accept-hdr-'));
+    await makeAdopter(root, 'hdr', previous);
+    const { stdout } = await runCli(['--root', root, '--accept-migration', 'v5.0.0'], {
+      env: { FLAITRON_UPDATE_LATEST: latest },
+    });
+    assert.match(stdout, /migration accepted \(reviewed\): v5\.0\.0/);
+    await rmTree(root);
+  });
+
+  // wave-bump.test.sh `uninit`: never a silent drop.
+  it('a declared, uninitialised submodule prints a skip row (CORE-852.3)', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'ft-upd-uninit-cli-'));
+    const uninit = await makeAdopter(root, 'cli-uninit', previous);
+    await declareSubmodule(uninit.repo, SUBMODULE_PATH);
+    await deinitSubmodule(uninit);
+    const { stdout } = await runCli(['--root', root], { env: { FLAITRON_UPDATE_LATEST: latest } });
+    assert.match(stdout, /⏭ cli-uninit: skipped — submodule not initialised \(\.flaitron\/core\)/);
+    assert.match(stdout, /1 skipped · 0 failed/);
+    await rmTree(root);
+  });
+
   it('empty workspace prints no-adopters message', async () => {
     const root = await mkdtemp(join(tmpdir(), 'ft-upd-empty-'));
     const { stdout } = await runCli(['--root', root]);
@@ -702,6 +1006,23 @@ describe('sandboxed --apply', { concurrency: GROUP_CONCURRENCY }, () => {
     assert.match(stdout, /⬆ apply-cli: bumped/);
     assert.match(stdout, /✓ apply-me: current/);
 
+    await rmTree(root);
+  });
+
+  it('bumps and commits a non-canonical submodule path read from .gitmodules (CORE-852.3)', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'ft-upd-apply-vendored-'));
+    const adopter = await makeAdopter(root, 'vendored', previous, 'vendor/flaitron');
+    await declareSubmodule(adopter.repo, 'vendor/flaitron');
+
+    const { stdout } = await runCli(['--apply', '--root', root], {
+      env: { FLAITRON_UPDATE_LATEST: latest },
+    });
+    assert.match(stdout, /⬆ vendored: bumped/);
+    const pin = (await git(adopter.repo, 'rev-parse', 'HEAD:vendor/flaitron')).trim();
+    const latestSha = (await git(FLAITRON_REPO, 'rev-parse', `${latest}^{commit}`)).trim();
+    assert.equal(pin, latestSha);
+    const files = (await git(adopter.repo, 'show', '--name-only', '--pretty=format:', 'HEAD')).trim();
+    assert.equal(files, 'vendor/flaitron');
     await rmTree(root);
   });
 

@@ -191,7 +191,7 @@ In one continuous motion, after the user has confirmed the Step 3 review (includ
    `[unattended]` sits after `[<model>]` and any model-suggestion glyph (SPEC §"Task-line format"; position footgun in `SPEC/plan-parser.md`). It is written **only** on a row the operator confirmed as a candidate at Step 3 — never under `unattended-mode = true`, where the candidate is reported at Step 5 instead.
 
    Placement:
-   - If the priority section already has entries, append to the bottom of that section.
+   - If the priority section already has entries, append to the bottom of that section — past any 2-space-nested child rows, so a new top-level row never lands between an epic parent and its children.
    - If the section carries a `(none)` placeholder, replace the placeholder with the new entry.
 
    No `Filed with starter at ...` pointer (that suffix is starter mode's — `starter-mode.md` Step S4). The new line carries only the long description — no breadcrumb to a tasknote that doesn't exist.

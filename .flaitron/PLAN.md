@@ -14,7 +14,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 - [ ] **CORE-EPIC-857** [heavy]🧠 | context-redundancy — Trim the self-referential per-task context the 2026-11-01 HARNESS-SURVEY pass measured (procedure and ft-task skill re-narrating SPEC, incident history in the tasknote README, SPEC.md rationale) and fix small-task over-routing; bucket-grouped children with byte targets (filed via /ft-open-epic; refined at .1 closure).
   - [x] **CORE-857.1** [frontier]💎 | context-redundancy discovery — Completed 2026-11-01.
   - [x] **CORE-857.2** [heavy]🧠 | procedure-point-not-narrate — Completed 2026-11-01.
-  - [ ] **CORE-857.3** [moderate]🧩 [unattended] | readme-history-out — Move `.flaitron/tasknote/README.md` L76-141 (4,563 B of CORE-489.3 / 492 / 543 / 622.3 sweep history) to a new `docs/DOC-DRIFT-SWEEP.md` behind one pointer line; the sweep list and area table stay. `templates/tasknote-README.md` is unaffected (flaitron-self prose only). Target README ≤6,600 B.
+  - [x] **CORE-857.3** [moderate]🧩 [unattended] | readme-history-out — Completed 2026-11-01.
   - [x] **CORE-857.4** [heavy]🧠 | skill-b2-pointers — Completed 2026-11-01.
   - [x] **CORE-857.5** [heavy]🧠 | small-task-routing — Completed 2026-11-01.
   - [x] **CORE-857.6** [heavy]🧠 | spec-c-extraction — Completed 2026-11-01.

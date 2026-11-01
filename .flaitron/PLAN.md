@@ -23,7 +23,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [x] **CORE-852.4** [heavy] | follow-through-commit-contract — Completed 2026-10-31.
   - [x] **CORE-852.5** [heavy] | wiring-and-forks — Completed 2026-10-31.
   - [x] **CORE-852.6** [moderate] | ft-update-parity-carveout — Completed 2026-11-01.
-  - [ ] **CORE-852.7** [moderate] | release-and-parity-run — Before tagging, dry-run the updater over `~/Code` with natabula's policy flags beside `wave-bump.sh`'s dry run: same repo plan, fakeneuron attended in both; record the diff. Then cut a flaitron minor via `/ft-release` (operator approves tag and push). Unblocks natabula NAT-494.
+  - [x] **CORE-852.7** [moderate] | release-and-parity-run — Completed 2026-11-01.
   - [ ] **CORE-852.N** [heavy] | pin-bump-tool-merge audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
 - [ ] **CORE-853** [moderate] | workflow-replace-fence-aware — Make `update-adopters.mjs` Workflow-section replace ignore `#` lines inside code fences (truncates mid-fence today); mirror in `/ft-update` Step 3.5. Stub: `.flaitron/sidequest/CORE-853.md`.
 

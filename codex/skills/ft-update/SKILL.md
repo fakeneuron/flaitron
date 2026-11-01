@@ -12,5 +12,10 @@ surface. When Codex is selected or its root is already present, read
 `../../reconcile-skills.md` before any checkout. At source
 Step 1, run its block against the **current pin**, even if `.agents/skills`
 is absent **and selected**; do this before fetching or returning at the same version. After
-an approved bump, run it again against the new pin at Step 4. Preserve other
+an approved bump, follow Step 3.5's sequence as written: the tracked
+dangling-link prune, this block against the new pin, the pin-line and
+Workflow writes, Step 4's rules for every other present surface, and the
+removal of Step 1 links the target cannot back; any failure undoes the bump
+per Step 3.5. Source Step 2's read-only roster check runs before the bump
+ask. Preserve other
 platform selection, use the net-path selector for staging, and stop on conflicts.

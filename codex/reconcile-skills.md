@@ -14,7 +14,8 @@ The literal `ln -s` roster in `<FT>/codex/AGENTS-snippet.md` remains derived
 from Claude's canonical snippet. No second roster lives here. Retirement
 names come from the exact single-slug rows of the pinned
 `docs/MIGRATION.md` retired-skills table; grouped/wildcard rows remain
-report-only under update Step 4.6. A name alone never proves ownership.
+report-only under update Step 4.6, unless a bump's tracked dangling-link
+prune (update Step 4) removes them first. A name alone never proves ownership.
 
 ```sh
 (

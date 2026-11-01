@@ -86,8 +86,9 @@ A wrapper may add a rule of its own — `ft-task` names one for its lazy fragmen
 These relative symlinks point through the project's pinned
 `.flaitron/core` submodule, so the wired skill bodies move only when the
 project deliberately bumps flaitron. Update adds missing subset links even
-at the same version. It removes an exact-target Codex retired link only when
-the pinned retirement table names it and the body is absent; all other
+at the same version. It removes an exact-target Codex retired link when
+the pinned retirement table names it and the body is absent, and after an
+approved bump any tracked dangling link into the submodule; all other
 dangling links remain report-only (Step 4.6). See `docs/MIGRATION.md`
 §"Retired skills leave dangling symlinks".
 

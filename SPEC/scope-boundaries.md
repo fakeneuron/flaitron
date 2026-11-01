@@ -30,7 +30,12 @@ To prevent scope creep, flaitron deliberately omits:
   operator-side batch updater that walks the workspace and moves each
   adopter's pinned submodule to the latest non-breaking release (dry-run by
   default, local commits only, never pushes). It maintains the fleet *around*
-  flaitron-adopting projects, not the workflow inside one.
+  flaitron-adopting projects, not the workflow inside one. Inside each adopter
+  it writes only the files `/ft-update` writes there — the `.flaitron/core`
+  gitlink, `.flaitron/tasknote/README.md`'s `Pinned to:` line, AGENTS.md's
+  `## Workflow` block, and skill links on the wiring surfaces the adopter
+  already has — then commits them locally; never PLAN.md, a tasknote, or
+  source.
 - Schema validation (markdown is the schema; the assistant catches drift)
 - A database backend (markdown files in git are the database)
 - Cross-project query API (each project owns its history; the read-only

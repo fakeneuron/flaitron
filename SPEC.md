@@ -761,7 +761,9 @@ To prevent scope creep, flaitron deliberately omits:
 - A CLI tool (use `cp`, `mv`, and your editor) — one carved-out exception:
   [`tools/update-adopters.mjs`](tools/update-adopters.mjs), the operator-side
   batch updater that maintains the fleet *around* adopting projects, not the
-  workflow inside one.
+  workflow inside one; in each adopter it writes only the files `/ft-update`
+  writes (gitlink, `Pinned to:` line, AGENTS.md `## Workflow` block, skill
+  links), then commits them locally — never PLAN.md, a tasknote, or source.
 - Schema validation (markdown is the schema; the assistant catches drift)
 - A database backend (markdown files in git are the database)
 - Cross-project query API (each project owns its history; the read-only

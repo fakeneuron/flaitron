@@ -148,13 +148,47 @@ async function makeAdopter(root, name, pinTag) {
 
 describe('parseArgs / pure helpers', () => {
   it('parses --apply and --root', () => {
-    assert.deepEqual(parseArgs([]), { apply: false, root: null });
-    assert.deepEqual(parseArgs(['--apply']), { apply: true, root: null });
-    assert.deepEqual(parseArgs(['--root', '/tmp/ws']), { apply: false, root: '/tmp/ws' });
+    assert.deepEqual(parseArgs([]), { apply: false, root: null, attendedLedgers: [] });
+    assert.deepEqual(parseArgs(['--apply']), { apply: true, root: null, attendedLedgers: [] });
+    assert.deepEqual(parseArgs(['--root', '/tmp/ws']), {
+      apply: false,
+      root: '/tmp/ws',
+      attendedLedgers: [],
+    });
     assert.deepEqual(parseArgs(['--apply', '--root', '/tmp/ws']), {
       apply: true,
       root: '/tmp/ws',
+      attendedLedgers: [],
     });
+  });
+
+  it('collects repeatable --attended-ledger paths in order (CORE-852.2)', () => {
+    assert.deepEqual(
+      parseArgs(['--attended-ledger', 'a/ledger.json', '--apply', '--attended-ledger', 'b.json'])
+        .attendedLedgers,
+      ['a/ledger.json', 'b.json'],
+    );
+  });
+
+  it('rejects --attended-ledger values that are empty, absolute, or escape the adopter root (CORE-852.2)', () => {
+    for (const bad of ['', '/abs/ledger.json', '../ledger.json', 'a/../../x', '.']) {
+      assert.throws(
+        () => parseArgs(['--attended-ledger', bad], { exitOnError: false }),
+        /inside each adopter root/,
+        `expected a usage error for ${JSON.stringify(bad)}`,
+      );
+    }
+  });
+
+  it('rejects --attended-ledger without a value or with a -- value (CORE-852.2)', () => {
+    assert.throws(
+      () => parseArgs(['--attended-ledger'], { exitOnError: false }),
+      /--attended-ledger requires a value/,
+    );
+    assert.throws(
+      () => parseArgs(['--attended-ledger', '--apply'], { exitOnError: false }),
+      /--attended-ledger requires a value/,
+    );
   });
 
   it('throws on unknown arg when exitOnError is false', () => {
@@ -386,6 +420,60 @@ describe('checkAdopter classification (fixtures)', { concurrency: GROUP_CONCURRE
     assert.equal(typeof result.skillsNote, 'string');
   });
 
+  it('skip: tracked --attended-ledger path, with a suggested owner task (CORE-852.2)', async () => {
+    const adopter = await makeAdopter(root, 'ledger-repo', previous);
+    await mkdir(join(adopter.repo, 'evidence'), { recursive: true });
+    await writeFile(join(adopter.repo, 'evidence', 'ledger.json'), '{}\n');
+    await gitQuiet(adopter.repo, 'add', 'evidence/ledger.json');
+    await gitQuiet(adopter.repo, 'commit', '-q', '-m', 'ledger');
+    const result = await checkAdopter(adopter, latest, {
+      attendedLedgers: ['other.json', 'evidence/ledger.json'],
+    });
+    assert.equal(result.status, 'skip');
+    assert.equal(result.current, previous);
+    assert.match(result.reason, /attended ledger tracked \(evidence\/ledger\.json\)/);
+    assert.match(result.suggestion, /suggested owner task/);
+    assert.ok(result.suggestion.includes(`${previous} → ${latest}`));
+    assert.match(result.suggestion, /evidence\/ledger\.json/);
+  });
+
+  it('bump: an untracked file at an --attended-ledger path does not trip the gate (CORE-852.2)', async () => {
+    const adopter = await makeAdopter(root, 'untracked-ledger-repo', previous);
+    await writeFile(join(adopter.repo, 'ledger.json'), '{}\n');
+    const result = await checkAdopter(adopter, latest, { attendedLedgers: ['ledger.json'] });
+    assert.equal(result.status, 'bump');
+  });
+
+  it('bump: directory, glob, and pathspec-magic values match no ledger file literally (CORE-852.2)', async () => {
+    const adopter = await makeAdopter(root, 'literal-ledger-repo', previous);
+    await mkdir(join(adopter.repo, 'evidence'), { recursive: true });
+    await writeFile(join(adopter.repo, 'evidence', 'ledger.json'), '{}\n');
+    await gitQuiet(adopter.repo, 'add', 'evidence/ledger.json');
+    await gitQuiet(adopter.repo, 'commit', '-q', '-m', 'ledger');
+    const result = await checkAdopter(adopter, latest, {
+      attendedLedgers: ['evidence', 'evidence/', '*.json', 'evidence/*.json', ':(glob)**/ledger.json'],
+    });
+    assert.equal(result.status, 'bump');
+  });
+
+  it('skip: a staged-only ledger is not "tracked" — the staged-changes gate reports it (CORE-852.2)', async () => {
+    const adopter = await makeAdopter(root, 'staged-ledger-repo', previous);
+    await writeFile(join(adopter.repo, 'ledger.json'), '{}\n');
+    await gitQuiet(adopter.repo, 'add', 'ledger.json');
+    const result = await checkAdopter(adopter, latest, { attendedLedgers: ['ledger.json'] });
+    assert.equal(result.status, 'skip');
+    assert.match(result.reason, /staged changes/i);
+  });
+
+  it('current: a tracked --attended-ledger path does not affect an up-to-date adopter (CORE-852.2)', async () => {
+    const adopter = await makeAdopter(root, 'current-ledger-repo', latest);
+    await writeFile(join(adopter.repo, 'ledger.json'), '{}\n');
+    await gitQuiet(adopter.repo, 'add', 'ledger.json');
+    await gitQuiet(adopter.repo, 'commit', '-q', '-m', 'ledger');
+    const result = await checkAdopter(adopter, latest, { attendedLedgers: ['ledger.json'] });
+    assert.equal(result.status, 'current');
+  });
+
   it('skip: pinned tag not found locally (missing-pinned-tag, CORE-459.4)', async () => {
     const adopter = await makeAdopter(root, 'missing-tag-repo', previous);
     // v0.0.1 parses as valid semver but sits below v0.1.0, the repo's oldest
@@ -535,6 +623,24 @@ describe('dry-run CLI (--root fixture)', { concurrency: GROUP_CONCURRENCY }, () 
     assert.match(stdout, /⬆ cli-behind: would bump/);
     assert.match(stdout, /⏭ cli-staged .*skipped — staged changes/);
     assert.match(stdout, /Summary:.*1 current · 1 drift · would bump 1 · 1 skipped/);
+    await rmTree(root);
+  });
+
+  it('--attended-ledger prints the skip row and its suggested owner task (CORE-852.2)', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'ft-upd-ledger-'));
+    const ledgered = await makeAdopter(root, 'cli-ledger', previous);
+    await writeFile(join(ledgered.repo, 'ledger.json'), '{}\n');
+    await gitQuiet(ledgered.repo, 'add', 'ledger.json');
+    await gitQuiet(ledgered.repo, 'commit', '-q', '-m', 'ledger');
+    await makeAdopter(root, 'cli-plain', previous);
+
+    const { stdout } = await runCli(['--root', root, '--attended-ledger', 'ledger.json'], {
+      env: { FLAITRON_UPDATE_LATEST: latest },
+    });
+    assert.match(stdout, /⏭ cli-ledger .*skipped — attended ledger tracked \(ledger\.json\)/);
+    assert.match(stdout, /\n {6}↳ suggested owner task: bump flaitron .* and refresh ledger\.json/);
+    assert.match(stdout, /⬆ cli-plain: would bump/);
+    assert.match(stdout, /Summary:.*would bump 1 · 1 skipped · 0 failed/);
     await rmTree(root);
   });
 

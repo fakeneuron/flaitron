@@ -12,6 +12,8 @@
 //   node tools/update-adopters.mjs --apply    # perform the bumps + commits
 //   node tools/update-adopters.mjs --root <dir>   # workspace override
 //                                             # (default $FLAITRON_VIZ_WORKSPACE or ~/code)
+//   node tools/update-adopters.mjs --attended-ledger <relpath>   # repeatable;
+//                                             # skip any adopter tracking <relpath>
 //
 // Exit codes: 0 = every adopter checked (or bumped) cleanly — skips and drift
 // are reported outcomes, not failures; 1 = at least one adopter failed its
@@ -30,6 +32,11 @@
 //   - pinned tag can't be resolved locally (deleted/renamed upstream, or a
 //     hand-edited SPEC.md Version line) → no real commit to reason a range
 //     from; skip rather than compute a range against a nonexistent tag
+//   - adopter tracks a path named by --attended-ledger (relative to the adopter
+//     root) → that path records an attended review of a particular revision,
+//     so its owner must bump and refresh it together in one task. The report
+//     prints a suggested owner-task line; filing it stays the operator's act.
+//     The caller supplies the paths; this script knows none of its own.
 //   - release range carries a real Migration block (BREAKING or required
 //     project-side edits) → manual /ft-update required
 //   - release range carries a tag whose notes can't be classified at all
@@ -96,7 +103,7 @@
 import { execFile } from 'node:child_process';
 import { readdir, readFile, realpath, stat } from 'node:fs/promises';
 import { homedir } from 'node:os';
-import { dirname, join, resolve } from 'node:path';
+import { dirname, isAbsolute, join, normalize, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
 
@@ -179,7 +186,8 @@ export async function git(cwd, ...args) {
   }
 }
 
-const USAGE = 'Usage: node tools/update-adopters.mjs [--apply] [--root <dir>]';
+const USAGE =
+  'Usage: node tools/update-adopters.mjs [--apply] [--root <dir>] [--attended-ledger <relpath>]...';
 
 function usageError(firstLine, exitOnError) {
   if (exitOnError) {
@@ -193,7 +201,7 @@ function usageError(firstLine, exitOnError) {
 }
 
 export function parseArgs(argv, { exitOnError = true } = {}) {
-  const args = { apply: false, root: null };
+  const args = { apply: false, root: null, attendedLedgers: [] };
   for (let i = 0; i < argv.length; i += 1) {
     if (argv[i] === '--apply') args.apply = true;
     else if (argv[i] === '--root') {
@@ -202,6 +210,22 @@ export function parseArgs(argv, { exitOnError = true } = {}) {
         usageError('--root requires a value', exitOnError);
       }
       args.root = value;
+      i += 1;
+    } else if (argv[i] === '--attended-ledger') {
+      const value = argv[i + 1];
+      if (value === undefined || value.startsWith('--')) {
+        usageError('--attended-ledger requires a value', exitOnError);
+      }
+      // Empty or root-escaping values would otherwise reach git and fail every
+      // adopter's check (exit 1) instead of this usage error (exit 2).
+      const normal = normalize(value);
+      if (value === '' || isAbsolute(value) || normal === '.' || normal.startsWith('..')) {
+        usageError(
+          `--attended-ledger takes a file path inside each adopter root (got ${JSON.stringify(value)})`,
+          exitOnError,
+        );
+      }
+      args.attendedLedgers.push(value);
       i += 1;
     } else {
       usageError(`Unknown arg: ${argv[i]}`, exitOnError);
@@ -544,15 +568,42 @@ export function cachedCanonicalTagSha(tag) {
   return canonicalShaCache.get(tag);
 }
 
-// Nine sequential skip/drift gates below (unreadable version, unresolved
+// The --attended-ledger paths this adopter tracks as files committed at HEAD —
+// what the owner's CI sees; an untracked or merely staged copy asserts
+// nothing there. One `ls-tree` call answers for every path. Literal pathspecs
+// so a glob or `:` magic never widens the match, and only an exact blob path
+// counts (a directory lists as a tree entry and is ignored). A git failure
+// rethrows to the ✗ line rather than reading as "not tracked".
+async function trackedLedgers(repo, ledgers) {
+  if (ledgers.length === 0) return [];
+  const wanted = new Map(ledgers.map((path) => [normalize(path), path]));
+  const stdout = await git(
+    repo,
+    '--literal-pathspecs',
+    'ls-tree',
+    '-z',
+    '--full-tree',
+    'HEAD',
+    '--',
+    ...wanted.keys(),
+  );
+  const tracked = [];
+  for (const entry of stdout.split('\0')) {
+    const m = /^\d+ blob \S+\t(.+)$/s.exec(entry);
+    if (m && wanted.has(m[1])) tracked.push(wanted.get(m[1]));
+  }
+  return tracked;
+}
+
+// Ten sequential skip/drift gates below (unreadable version, unresolved
 // gitlink, reverse gitlink-drift, detached HEAD, pinned-ahead, missing-tag,
-// migration-bearing, staged changes, dirty submodule). Considered extracting
-// them to an ordered array (CORE-479) but each later gate consumes state a
-// prior gate computed (current, recordedGitlink, currentVersion/latestVersion,
+// attended ledger, migration-bearing, staged changes, dirty submodule).
+// Considered extracting them to an ordered array (CORE-479) but each later
+// gate consumes state a prior gate computed (current, recordedGitlink, currentVersion/latestVersion,
 // range/bearing) — an array of independent gate functions would need a
 // threaded context object, a larger refactor than this naming cleanup's
 // scope. Left inline.
-export async function checkAdopter(adopter, latest) {
+export async function checkAdopter(adopter, latest, { attendedLedgers = [] } = {}) {
   const { repo } = adopter;
   const sub = join(repo, SUBMODULE_PATH);
   const current = await pinnedVersion(join(sub, 'SPEC.md'));
@@ -630,6 +681,19 @@ export async function checkAdopter(adopter, latest) {
       status: 'skip',
       current,
       reason: `pinned tag ${current} not found in ${FLAITRON_REPO} — run git fetch --tags in ${FLAITRON_REPO} and re-run`,
+    };
+  }
+
+  // Attended-ledger gate: ahead of the migration gate (natabula wave-bump's
+  // order), since no waiver of a Migration block waives the ledger's review.
+  const ledgers = await trackedLedgers(repo, attendedLedgers);
+  if (ledgers.length > 0) {
+    const paths = ledgers.join(', ');
+    return {
+      status: 'skip',
+      current,
+      reason: `attended ledger tracked (${paths}) — its owner bumps and refreshes it in one task`,
+      suggestion: `suggested owner task: bump flaitron ${current} → ${latest} and refresh ${paths} (attended review)`,
     };
   }
 
@@ -768,6 +832,7 @@ async function reportResult(adopter, result, latest, apply, counts) {
     counts.skipped += 1;
     const at = result.current ? ` (${result.current})` : '';
     console.log(`  ⏭ ${adopter.name}${at}: skipped — ${result.reason}`);
+    if (result.suggestion) console.log(`      ↳ ${result.suggestion}`);
   } else if (apply) {
     try {
       await applyBump({ ...adopter, current: result.current }, latest);
@@ -843,7 +908,7 @@ async function main(argv = process.argv.slice(2)) {
   for (const adopter of adopters) {
     let result;
     try {
-      result = await checkAdopter(adopter, latest);
+      result = await checkAdopter(adopter, latest, { attendedLedgers: args.attendedLedgers });
     } catch (e) {
       counts.failed += 1;
       console.error(`  ✗ ${adopter.name}: check failed — ${e.message}`);

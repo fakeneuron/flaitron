@@ -21,7 +21,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
 - [ ] **FE-151** [moderate] | viz-quality-stack — From natabula NAT-506 (fleet audit 2026-10-31, @f82a48e, still true @08fc7d1): `viz/` lacks diff-cover, `--max-warnings 0`, `noUncheckedIndexedAccess` and a `just coverage` recipe (natabula QUALITY-STACK). Adopt them the next time viz is worked on (lazy).
-- [ ] **CORE-858** [light]🔧 | seed-question-only-ask — From natabula 2026-11-01 (v8.2.0, unchanged @9d29d39): a walk whose only offer was a question got `all`, which answers none, so it wrote nothing. When every offer is a question, lead the Step 3 ask in `claude/skills/ft-seed-unattended/scope-and-question.md` with `<ID> <letter>`; fix `— <N> rows` pluralization in `SKILL.md`.
 - [ ] **CORE-859** [light]🔧 | file-task-nested-placement — From natabula `679fcd1` (2026-11-01): a three-row `/ft-file-task` put a top-level row between an epic parent and its 2-space children. Make `claude/skills/ft-file-task/SKILL.md` Step 4 "append to the bottom of that section" say past any nested child rows.
 
 ## Future Opportunities
@@ -30,6 +29,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-858** [light]🔧 | seed-question-only-ask — Completed 2026-11-01.
 - [x] **CORE-EPIC-857** [heavy]🧠 | context-redundancy — Completed 2026-11-01.
   - [x] **CORE-857.1** [frontier]💎 | context-redundancy discovery — Completed 2026-11-01.
   - [x] **CORE-857.2** [heavy]🧠 | procedure-point-not-narrate — Completed 2026-11-01.

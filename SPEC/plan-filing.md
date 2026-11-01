@@ -90,7 +90,7 @@ Message shape, one per filing motion:
 | `/ft-audit-repo` | `chore: audit-repo file epics — <count> milestones` |
 | `/ft-refactor` | `chore: file <AREA>-EPIC-<N> refactor plan — <shortname>` |
 | `/ft-open-epic` | `chore: file <AREA>-EPIC-<N> — <shortname>` |
-| `/ft-seed-unattended` | `chore: seed [unattended] — <N> rows` |
+| `/ft-seed-unattended` | `chore: seed [unattended] — <N> rows` (`1 row` when `<N>` is 1) |
 
 Rules:
 

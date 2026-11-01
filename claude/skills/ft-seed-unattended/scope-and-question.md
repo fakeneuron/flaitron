@@ -152,6 +152,11 @@ Q1 CORE-620 — Persist drafts through the existing `src/db.ts` or `src/cache.ts
 `<ID> <letter>` (`CORE-620 b`), or `<ID> <letter> no item` to write the
 pin without the token. An answer is an ID in your list, so add `all` to
 keep the rest too (`all, CORE-620 b`); `all` alone answers no question.*
+When every offer is a question, or a mark or item leaning on one, `all`
+would keep nothing. Then the ask leads with *Answer a question with
+`<ID> <letter>` … without the token.* and offers only the body's `none`
+and ID-list forms beside it (`CORE-620 b, CORE-621`); every `all` form is
+left out.
 
 Reading the reply, on top of the body's rules:
 

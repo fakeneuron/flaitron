@@ -313,7 +313,7 @@ re-scan checks, writes, and recognized hunks when it was loaded):
    git add .flaitron/PLAN.md
    git add .flaitron/tasknote/<ID>.md   # each starter this motion created
    git diff --cached   # whole index, no pathspec
-   git commit -m "chore: seed [unattended] — <N> rows"
+   git commit -m "chore: seed [unattended] — <N> rows"   # `1 row` when <N> is 1
    ```
 
    Omit the starter `git add` when this motion created none.
@@ -339,7 +339,8 @@ re-scan checks, writes, and recognized hunks when it was loaded):
 
 One short message:
 
-- `seeded <N> rows: <IDs in PLAN order>` — the IDs that now carry the
+- `seeded <N> rows: <IDs in PLAN order>` (`row` / `source row` when `<N>`
+  is 1, here and below) — the IDs that now carry the
   token: each mark, each pinned row, each mechanical row (its own ID), and
   each scoped or answered row — or `seeded 0 rows`.
 - `prepared <N> source rows: <IDs in PLAN order>` — or `prepared 0 source

@@ -29,6 +29,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Low
 
 - [ ] **CORE-641** [light]🔧 | typescript-7 — Parked: wait for a proper typescript-eslint release accepting TS 7.x (latest 8.71.0 peers `<6.1.0`; TS 7.1 is dev-only as of 2026-10-03) — don't revisit before then. Bump typescript 5.9→7 once typescript-eslint supports TS 7.1+; tsc also TS2882 on CSS side-effect import. CORE-639.3 reverted.
+- [ ] **FE-151** [moderate] | viz-quality-stack — From natabula NAT-506 (fleet audit 2026-10-31, @f82a48e, still true @08fc7d1): `viz/` lacks diff-cover, `--max-warnings 0`, `noUncheckedIndexedAccess` and a `just coverage` recipe (natabula QUALITY-STACK). Adopt them the next time viz is worked on (lazy).
 
 ## Future Opportunities
 

@@ -17,7 +17,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [ ] **CORE-857.3** [moderate]🧩 [unattended] | readme-history-out — Move `.flaitron/tasknote/README.md` L76-141 (4,563 B of CORE-489.3 / 492 / 543 / 622.3 sweep history) to a new `docs/DOC-DRIFT-SWEEP.md` behind one pointer line; the sweep list and area table stay. `templates/tasknote-README.md` is unaffected (flaitron-self prose only). Target README ≤6,600 B.
   - [ ] **CORE-857.4** [heavy]🧠 | skill-b2-pointers — `claude/skills/ft-task/SKILL.md` restates modules it loads at five sites (5,262 B): `--unattended` posture L35, Step 6 L139-141, External review L127, Phase 4 op list L128, epic Notes L145. Cut each to its pointer plus the skill-only delta; keep every `pair_q` / `pair_s` literal. Target ≤23,500 B. Runs after .6 so pointers target final SPEC headings.
   - [x] **CORE-857.5** [heavy]🧠 | small-task-routing — Completed 2026-11-01.
-  - [ ] **CORE-857.6** [heavy]🧠 | spec-c-extraction — `SPEC.md` carries 5,464 B of rationale (CORE-856 bucket C). Under the CORE-657 filter (anti-misreading hardening stays): §"What flaitron does NOT provide" → stub + `SPEC/scope-boundaries.md`; §"What is Flaitron" / §"Core principles" → `docs/VISION.md` pointer; §Phase 3 "Choosing a test strategy" (636 B, bucket A) → one line. Target ≥3,000 B out; lower the 49,000 cap by the same.
+  - [x] **CORE-857.6** [heavy]🧠 | spec-c-extraction — Completed 2026-11-01.
   - [ ] **CORE-857.N** [heavy]🧠 | context-redundancy audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line); re-measure the per-runner cold start against the survey's byte targets. Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
 
 ## Medium

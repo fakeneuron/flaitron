@@ -6,22 +6,16 @@
 ## What is Flaitron
 
 Flaitron is a lightweight, project-agnostic tasknote system for solo
-AI-assisted coding. One source of truth, consumed by adopting projects via
-git submodule.
-
-The goal is simple: catch the agent before it wastes a session. The four
-phases, the Relevance Assessment, and the Acceptance criteria are the
-checkpoints where you look — and one task per context window keeps each one
-small enough to actually review. No scripts, daemons, databases, or schemas
-to maintain.
+AI-assisted coding, consumed by adopting projects via git submodule. Who it is
+for and why it exists: [`docs/VISION.md`](docs/VISION.md).
 
 ## Core principles
 
-1. **Markdown over JSON.** Plans and tasknotes are markdown files: human-editable, AI-scannable in diffs.
-2. **Zero scripts.** All operations are `cp`, `mv`, and editing markdown. Anything more is over-engineering. (The few scripts that sit *around* the workflow, never inside it, are listed in §"What flaitron does NOT provide".)
-3. **One task per context window.** Tasks are sized so the assistant can hold the entire scope in working memory.
-4. **Relevance before action.** Every task starts with a hard gate: is this still the right work?
-5. **Versioned and pinned.** Adopting projects pin a specific flaitron commit; updates are deliberate.
+1. **Markdown over JSON.** Plans and tasknotes are markdown: human-editable, AI-scannable in diffs.
+2. **Zero scripts.** Operations are `cp`, `mv`, and editing markdown; scripts *around* the workflow, never inside it, are in §"What flaitron does NOT provide".
+3. **One task per context window.** Tasks are sized so the assistant holds the entire scope in working memory.
+4. **Relevance before action.** Every task opens on a hard gate: is this still the right work?
+5. **Versioned and pinned.** Adopting projects pin a flaitron commit; updates are deliberate.
 
 ## Layout, and working in the flaitron repo itself
 
@@ -449,15 +443,13 @@ under `--unattended`, see [`SPEC/gate-postures.md`](SPEC/gate-postures.md)
 §"What `--unattended` never relaxes". Which primitive spawns the reviewer is
 the runner's business, as with any probe.
 
-**Choosing a test strategy (guidance, not a gate).** Default to targeted
-tests on the changed behavior. Where the input space is wide — parsers,
-encoders, round-trips, invariants that must hold across many inputs — a
-property-based test earns its keep; reach for one when example tests would
-leave large gaps. Visual confirmation covers UI surfaces that assertions
-can't. This is engineering judgment folded into Phase 3, never a new
-lifecycle phase or a schema/validator. `--unattended` removes the judgment and
-runs the full validation set ([`SPEC/gate-postures.md`](SPEC/gate-postures.md)
-§"What `--unattended` never relaxes").
+**Choosing a test strategy (guidance, not a gate).** Targeted tests on the
+changed behavior by default; a property-based test where the input space is
+wide enough that examples would leave large gaps; visual confirmation for UI.
+Never a new lifecycle phase or a schema/validator. `--unattended` removes this
+choice and runs the full validation set
+([`SPEC/gate-postures.md`](SPEC/gate-postures.md) §"What `--unattended` never
+relaxes").
 
 The visual-confirmation ask uses the **emphasized inline ask** shape — its own
 line, blank-line isolated, with the label bolded:
@@ -756,27 +748,20 @@ Canonical contract: see [`SPEC/versioning.md`](SPEC/versioning.md).
 
 ## What flaitron does NOT provide
 
-To prevent scope creep, flaitron deliberately omits:
+To prevent scope creep, flaitron deliberately omits a CLI tool (bar the
+carve-outs below), schema validation (markdown is the schema), a database
+backend, a cross-project query API, and per-project CI hooks (those belong in
+the adopting project). If you want one of these, write a project-side helper;
+do not add it to flaitron.
 
-- A CLI tool (use `cp`, `mv`, and your editor) — two carved-out exceptions:
-  [`tools/update-adopters.mjs`](tools/update-adopters.mjs), the operator-side
-  batch updater that maintains the fleet *around* adopting projects, not the
-  workflow inside one; in each adopter it writes only the files `/ft-update`
-  writes (gitlink, `Pinned to:` line, AGENTS.md `## Workflow` block, skill
-  links), then commits them locally — never PLAN.md, a tasknote, or source.
-  And [`install.sh`](install.sh), the adopter bootstrap. It installs the
-  submodule at a verified release tag, wires the snippet skill links and the
-  global `/ft-adopt`, then hands off to `/ft-adopt`. It commits nothing, and it
-  refuses once `.flaitron/PLAN.md` exists.
-- Schema validation (markdown is the schema; the assistant catches drift)
-- A database backend (markdown files in git are the database)
-- Cross-project query API (each project owns its history; the read-only
-  visualizer is a single global instance — a multi-project query API is not)
-- Per-project CI hooks (those belong in the adopting project)
-
-The carve-outs above are singular exceptions, not precedents. If you find
-yourself wanting any of these, write a project-side helper — do not add them
-to flaitron.
+The carve-outs are singular exceptions, not precedents:
+[`tools/update-adopters.mjs`](tools/update-adopters.mjs), the operator's fleet
+updater, writes in each adopter only what `/ft-update` writes and commits it
+locally, never PLAN.md, a tasknote, or source; [`install.sh`](install.sh), the
+adopter bootstrap, commits nothing and refuses once `.flaitron/PLAN.md` exists;
+and the read-only visualizer, a single global instance, not a cross-project
+query API.
 
 Canonical contract: see [`SPEC/scope-boundaries.md`](SPEC/scope-boundaries.md),
-which also carries the PR / suggestion archetypes flaitron does not accept.
+which also carries the carve-outs' full bounds and the PR archetypes flaitron
+does not accept.

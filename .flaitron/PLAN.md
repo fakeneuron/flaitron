@@ -11,14 +11,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-- [ ] **CORE-EPIC-857** [heavy]🧠 | context-redundancy — Trim the self-referential per-task context the 2026-11-01 HARNESS-SURVEY pass measured (procedure and ft-task skill re-narrating SPEC, incident history in the tasknote README, SPEC.md rationale) and fix small-task over-routing; bucket-grouped children with byte targets (filed via /ft-open-epic; refined at .1 closure).
-  - [x] **CORE-857.1** [frontier]💎 | context-redundancy discovery — Completed 2026-11-01.
-  - [x] **CORE-857.2** [heavy]🧠 | procedure-point-not-narrate — Completed 2026-11-01.
-  - [x] **CORE-857.3** [moderate]🧩 [unattended] | readme-history-out — Completed 2026-11-01.
-  - [x] **CORE-857.4** [heavy]🧠 | skill-b2-pointers — Completed 2026-11-01.
-  - [x] **CORE-857.5** [heavy]🧠 | small-task-routing — Completed 2026-11-01.
-  - [x] **CORE-857.6** [heavy]🧠 | spec-c-extraction — Completed 2026-11-01.
-  - [ ] **CORE-857.N** [heavy]🧠 | context-redundancy audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line); re-measure the per-runner cold start against the survey's byte targets. Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
+(none)
 
 ## Medium
 
@@ -35,6 +28,14 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-EPIC-857** [heavy]🧠 | context-redundancy — Completed 2026-11-01.
+  - [x] **CORE-857.1** [frontier]💎 | context-redundancy discovery — Completed 2026-11-01.
+  - [x] **CORE-857.2** [heavy]🧠 | procedure-point-not-narrate — Completed 2026-11-01.
+  - [x] **CORE-857.3** [moderate]🧩 [unattended] | readme-history-out — Completed 2026-11-01.
+  - [x] **CORE-857.4** [heavy]🧠 | skill-b2-pointers — Completed 2026-11-01.
+  - [x] **CORE-857.5** [heavy]🧠 | small-task-routing — Completed 2026-11-01.
+  - [x] **CORE-857.6** [heavy]🧠 | spec-c-extraction — Completed 2026-11-01.
+  - [x] **CORE-857.N** [heavy]🧠 | context-redundancy audit — Completed 2026-11-01.
 - [x] **CORE-856** [heavy]🧠 | agent-baseline-redundancy-survey — Completed 2026-11-01.
 - [x] **CORE-851** [heavy] | one-line-installer — Completed 2026-11-01.
 - [x] **CORE-EPIC-852** [heavy] | pin-bump-tool-merge — Completed 2026-11-01.

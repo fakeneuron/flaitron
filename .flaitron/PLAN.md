@@ -21,7 +21,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [x] **CORE-852.2** [moderate] | attended-ledger-guard — Completed 2026-10-31.
   - [x] **CORE-852.3** [heavy] | selection-gate-flags — Completed 2026-10-31.
   - [x] **CORE-852.4** [heavy] | follow-through-commit-contract — Completed 2026-10-31.
-  - [ ] **CORE-852.5** [heavy] | wiring-and-forks — Updater creates missing skill links on present wiring surfaces (Codex per `codex/reconcile-skills.md`, not a naive `ln -s` parse), prunes tracked dangling links into the submodule (keeps untracked/foreign, reports), skips a full-copy audit fork lacking a newly shipped pass file, notes fork drift. All inside .4's rollback window. Rewrite the header's "Not covered" paragraph.
+  - [x] **CORE-852.5** [heavy] | wiring-and-forks — Completed 2026-10-31.
   - [ ] **CORE-852.6** [moderate] | ft-update-parity-carveout — Add the `Pinned to:` line, Workflow-block replace and tracked dangling-link prune to `/ft-update` (`claude/` + `codex/` bodies) so single-repo and batch paths write the same; widen the CLI carve-out in `SPEC/scope-boundaries.md` and `SPEC.md` to name the adopter files the updater writes; sweep `docs/` updater mentions.
   - [ ] **CORE-852.7** [moderate] | release-and-parity-run — Before tagging, dry-run the updater over `~/Code` with natabula's policy flags beside `wave-bump.sh`'s dry run: same repo plan, fakeneuron attended in both; record the diff. Then cut a flaitron minor via `/ft-release` (operator approves tag and push). Unblocks natabula NAT-494.
   - [ ] **CORE-852.N** [heavy] | pin-bump-tool-merge audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).

@@ -184,11 +184,12 @@ reviewed as one. Do not add repository secrets to this workflow.
 
 `tools/update-adopters.mjs` is the singular script exception to
 `SPEC/scope-boundaries.md` §"What flaitron does NOT provide" — operator-side fleet maintenance across
-`~/code`, not workflow machinery inside a project. It batches the bump
-half of the `/ft-update` recipe (not its per-platform wiring repair) across
-every discovered adopter: bump the pinned
+`~/code`, not workflow machinery inside a project. It batches the
+`/ft-update` recipe across every discovered adopter: bump the pinned
 `.flaitron/core` submodule to the latest release, rewrite the adopter's pin
-line and AGENTS.md Workflow block, and commit — run manually
+line and AGENTS.md Workflow block, create missing skill links and remove
+tracked dangling ones on the wiring surfaces the adopter already has, and
+commit — run manually
 by the maintainer (never on a schedule or in CI). Its execution surface
 differs from the rest of this document: it walks a filesystem tree, shells
 out to `git` across many repos, and can commit inside them.
@@ -228,10 +229,16 @@ out to `git` across many repos, and can commit inside them.
   commit naming only the paths the run wrote: the flaitron submodule gitlink
   plus, when they changed, `.flaitron/tasknote/README.md`'s `Pinned to:` line
   and AGENTS.md's `## Workflow` section (each skipped when it or a parent
-  directory is a symlink, so no write lands outside the adopter). The script never passes `--no-verify`,
+  directory is a symlink, so no write lands outside the adopter), and each
+  skill link it created or removed. Links are made only on a surface whose
+  root is a real directory inside the adopter, never over an existing entry,
+  and only at a relative target into the submodule; a link is removed only
+  when it is tracked, dangling, and points into the submodule. The adopter's
+  `flaitron-reconciled:` / `flaitron-tracks:` fork markers must parse as a
+  semver tag and a skill slug before they reach git. The script never passes `--no-verify`,
   so every adopter-authored hook runs during a sweep — run it only over repos
   whose hooks you trust. A rejecting hook fails that adopter's bump: the
-  rewritten files, submodule and index are rolled back and the run exits 1.
+  rewritten files, links, submodule and index are rolled back and the run exits 1.
 - **Dry-run default.** The script only reports what it would do unless
   invoked with `--apply` (`parseArgs`); a bare
   `node tools/update-adopters.mjs` mutates nothing.

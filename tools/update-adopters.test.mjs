@@ -17,27 +17,27 @@ import {
   applyBump,
   cachedCanonicalTagSha,
   cachedMigrationBearingTags,
-  cachedNewSkillWiringSurfaces,
   checkAdopter,
+  codexRoster,
   compareSemver,
   describePin,
   discoverAdopters,
-  formatSkillsNote,
   git,
   gitlinkDrift,
   isReleaseTag,
   latestReleaseTag,
   migrationAsk,
   migrationBearingTags,
-  newSkillWiringSurfaces,
   parseArgs,
   parseSemverTag,
   pinnedVersion,
   realOrResolve,
   replaceWorkflowSection,
   rewritePinLines,
+  snippetLinks,
   tagsInRange,
   verifyPinnedSha,
+  wiringPlan,
   workflowPasteBlock,
 } from './update-adopters.mjs';
 
@@ -334,15 +334,6 @@ describe('parseArgs / pure helpers', () => {
     assert.equal(compareSemver([1, 0, 0], [1, 0, 0]), 0);
   });
 
-  it('formatSkillsNote', () => {
-    assert.equal(formatSkillsNote([]), '');
-    assert.match(formatSkillsNote(['Claude .claude/']), /Claude \.claude\//);
-    assert.match(
-      formatSkillsNote(['Claude .claude/', 'Codex .agents/skills']),
-      /Claude \.claude\/ and Codex \.agents\/skills/,
-    );
-  });
-
   it('pinnedVersion reads Version line', async () => {
     const dir = await mkdtemp(join(tmpdir(), 'ft-upd-spec-'));
     const path = join(dir, 'SPEC.md');
@@ -591,7 +582,7 @@ describe('checkAdopter classification (fixtures)', { concurrency: GROUP_CONCURRE
     const result = await checkAdopter(adopter, latest);
     assert.equal(result.status, 'bump');
     assert.equal(result.current, previous);
-    assert.equal(typeof result.skillsNote, 'string');
+    assert.equal(result.forkNote, '');
   });
 
   it('skip: tracked --attended-ledger path, with a suggested owner task (CORE-852.2)', async () => {
@@ -1322,6 +1313,334 @@ describe('applyBump rollback (CORE-419.3)', { concurrency: GROUP_CONCURRENCY }, 
   });
 });
 
+/** Create each `{ path: target }` symlink (parents made) and commit them. */
+async function commitLinks(repo, links, { commit = true } = {}) {
+  for (const [path, target] of Object.entries(links)) {
+    await mkdir(join(repo, path, '..'), { recursive: true });
+    await symlink(target, join(repo, path));
+  }
+  if (!commit) return;
+  await gitQuiet(repo, 'add', '--', ...Object.keys(links));
+  await gitQuiet(repo, 'commit', '-q', '-m', 'links');
+}
+
+/** Commit a local audit fork's SKILL.md (+ optional passes/ files) under `dir`. */
+async function commitFork(repo, dir, frontmatter, passes = null) {
+  await mkdir(join(repo, dir), { recursive: true });
+  await writeFile(join(repo, dir, 'SKILL.md'), `---\nname: audit\n${frontmatter}---\n\n# fork\n`);
+  const paths = [`${dir}/SKILL.md`];
+  if (passes !== null) {
+    await mkdir(join(repo, dir, 'passes'), { recursive: true });
+    for (const file of passes) {
+      await writeFile(join(repo, dir, 'passes', file), 'filled\n');
+      paths.push(`${dir}/passes/${file}`);
+    }
+  }
+  await gitQuiet(repo, 'add', '--', ...paths);
+  await gitQuiet(repo, 'commit', '-q', '-m', `fork ${dir}`);
+}
+
+const PASSES = 'claude/skills/ft-audit/passes/';
+async function passFiles(tag) {
+  return (await git(FLAITRON_REPO, 'ls-tree', '--name-only', tag, '--', PASSES))
+    .split('\n')
+    .filter(Boolean)
+    .map((p) => p.slice(PASSES.length));
+}
+
+describe('skill wiring and audit forks (CORE-852.5)', { concurrency: GROUP_CONCURRENCY }, () => {
+  /** The target rosters, read the way the updater reads them. */
+  let claudeLinks;
+  let grokLinks;
+  let codexSlugs;
+  /** A real tag whose ft-audit passes/ lacks a file `latest` ships. */
+  let olderPassTag;
+  let newlyShipped;
+  before(async () => {
+    const show = (path) => git(FLAITRON_REPO, 'show', `${latest}:${path}`);
+    claudeLinks = snippetLinks(await show('claude/AGENTS-snippet.md'), '.claude/skills');
+    grokLinks = snippetLinks(await show('grok/AGENTS-snippet.md'), '.grok/skills');
+    codexSlugs = codexRoster(await show('codex/AGENTS-snippet.md'));
+    assert.ok(claudeLinks.length > 0 && grokLinks.length > 0 && codexSlugs.length > 0);
+    const now = new Set(await passFiles(latest));
+    const tags = (await git(FLAITRON_REPO, 'tag', '--sort=-v:refname')).split('\n').filter((t) => parseSemverTag(t));
+    for (const tag of tags) {
+      const then = await passFiles(tag);
+      if (then.length > 0 && then.length < now.size && then.every((f) => now.has(f))) {
+        olderPassTag = tag;
+        newlyShipped = [...now].filter((f) => !then.includes(f)).sort();
+        break;
+      }
+    }
+    assert.ok(olderPassTag, 'need a tag whose passes/ is a strict subset of the latest one');
+  });
+
+  it('snippetLinks takes fenced ln -s pairs under the surface, swapping the submodule path', () => {
+    const snippet = [
+      'ln -s ../../.flaitron/core/claude/skills/ft-prose .claude/skills/ft-prose',
+      '```sh',
+      'mkdir -p .claude/skills',
+      'ln -s ../../.flaitron/core/claude/skills/ft-task   .claude/skills/ft-task',
+      'ln -s AGENTS.md CLAUDE.md',
+      'ln -s ../../elsewhere/ft-x .claude/skills/ft-x',
+      'ln -s ../../.flaitron/core/claude/skills/ft-deep .claude/skills/nested/ft-deep',
+      '```',
+      '```markdown',
+      'ln -s ../../.flaitron/core/claude/skills/ft-md .claude/skills/ft-md',
+      '```',
+    ].join('\n');
+    assert.deepEqual(snippetLinks(snippet, '.claude/skills', 'vendor/flaitron'), [
+      { dst: '.claude/skills/ft-task', target: '../../vendor/flaitron/claude/skills/ft-task' },
+    ]);
+    assert.deepEqual(
+      codexRoster('ln -s ../../.flaitron/core/codex/skills/ft-task .agents/skills/ft-task\nln -s x .agents/skills/custom\n'),
+      ['ft-task'],
+    );
+  });
+
+  it('--apply wires missing roster links on present surfaces only, keeping a custom entry', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'ft-upd-wire-'));
+    const adopter = await makeAdopter(root, 'wire', previous);
+    // .claude has one correct link already and one custom directory; .agents/skills
+    // and .grok/skills exist empty; .cursor/skills does not exist.
+    const [kept, custom] = claudeLinks;
+    await commitLinks(adopter.repo, { [kept.dst]: kept.target });
+    await mkdir(join(adopter.repo, custom.dst), { recursive: true });
+    await writeFile(join(adopter.repo, custom.dst, 'SKILL.md'), 'mine\n');
+    await gitQuiet(adopter.repo, 'add', '--', custom.dst);
+    await gitQuiet(adopter.repo, 'commit', '-q', '-m', 'custom');
+    await mkdir(join(adopter.repo, '.agents', 'skills'), { recursive: true });
+    await mkdir(join(adopter.repo, '.grok', 'skills'), { recursive: true });
+
+    const { stdout } = await runCli(['--apply', '--root', root], { env: { FLAITRON_UPDATE_LATEST: latest } });
+    assert.match(stdout, /⬆ wire: bumped .*, committed — /);
+    assert.match(stdout, new RegExp(`kept custom ${custom.dst.replace(/\./g, '\\.')}`));
+
+    const created = [
+      ...claudeLinks.slice(2),
+      ...codexSlugs.map((slug) => ({ dst: `.agents/skills/${slug}`, target: `../../.flaitron/core/codex/skills/${slug}` })),
+      ...grokLinks,
+    ];
+    for (const { dst, target } of created) {
+      assert.equal(await readlink(join(adopter.repo, dst)), target, dst);
+      assert.match(stdout, new RegExp(`wired ${dst.replace(/\./g, '\\.')}`));
+    }
+    assert.equal(await readlink(join(adopter.repo, kept.dst)), kept.target);
+    assert.equal(await readFile(join(adopter.repo, custom.dst, 'SKILL.md'), 'utf8'), 'mine\n');
+    await assert.rejects(() => lstat(join(adopter.repo, '.cursor')), /ENOENT/);
+    assert.deepEqual(await headFiles(adopter.repo), [SUBMODULE_PATH, ...created.map((l) => l.dst)].sort());
+    assert.equal((await git(adopter.repo, 'status', '--porcelain', '--untracked-files=no')).trim(), '');
+
+    await rmTree(root);
+  });
+
+  it('links a vendored submodule path and notes an ignored destination instead of creating it', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'ft-upd-wire-vendor-'));
+    const adopter = await makeAdopter(root, 'vendor', previous, 'vendor/flaitron');
+    const [ignored, ...rest] = grokLinks;
+    await writeFile(join(adopter.repo, '.gitignore'), `${ignored.dst}\n`);
+    await gitQuiet(adopter.repo, 'add', '.gitignore');
+    await gitQuiet(adopter.repo, 'commit', '-q', '-m', 'ignore');
+    await mkdir(join(adopter.repo, '.grok', 'skills'), { recursive: true });
+
+    const result = await checkAdopter(adopter, latest);
+    assert.equal(result.status, 'bump');
+    const notes = await applyBump({ ...adopter, current: result.current }, latest);
+    assert.ok(notes.includes(`not wired (ignored) ${ignored.dst}`), notes.join(', '));
+    await assert.rejects(() => lstat(join(adopter.repo, ignored.dst)), /ENOENT/);
+    for (const { dst } of rest) {
+      assert.equal(
+        await readlink(join(adopter.repo, dst)),
+        `../../vendor/flaitron/${dst.replace('.grok/skills/', 'claude/skills/')}`,
+      );
+    }
+
+    await rmTree(root);
+  });
+
+  it('removes tracked dangling links into the submodule, keeps untracked and foreign ones', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'ft-upd-prune-'));
+    const adopter = await makeAdopter(root, 'prune', previous);
+    // Already-wired roster, so the only changes are the prune's.
+    await commitLinks(adopter.repo, {
+      ...Object.fromEntries(claudeLinks.map((l) => [l.dst, l.target])),
+      '.claude/skills/ft-gone': '../../.flaitron/core/claude/skills/ft-gone',
+      '.claude/commands/ft-old.md': '../../.flaitron/core/claude/commands/ft-old.md',
+      '.claude/skills/mine': '../../nowhere/mine',
+      '.claude/worktrees/wt/ft-gone': '../../../.flaitron/core/claude/skills/ft-gone',
+    });
+    await commitLinks(adopter.repo, { '.claude/skills/ft-local': '../../.flaitron/core/claude/skills/ft-local' }, { commit: false });
+
+    const result = await checkAdopter(adopter, latest);
+    assert.equal(result.status, 'bump');
+    const notes = await applyBump({ ...adopter, current: result.current }, latest);
+    assert.deepEqual(notes.sort(), [
+      'kept broken .claude/skills/mine',
+      'kept untracked .claude/skills/ft-local',
+      'removed .claude/commands/ft-old.md',
+      'removed .claude/skills/ft-gone',
+    ]);
+    assert.deepEqual(await headFiles(adopter.repo), [
+      '.claude/commands/ft-old.md',
+      '.claude/skills/ft-gone',
+      SUBMODULE_PATH,
+    ]);
+    await assert.rejects(() => lstat(join(adopter.repo, '.claude/skills/ft-gone')), /ENOENT/);
+    await lstat(join(adopter.repo, '.claude/skills/ft-local'));
+    await lstat(join(adopter.repo, '.claude/worktrees/wt/ft-gone'));
+    assert.equal((await git(adopter.repo, 'status', '--porcelain', '--untracked-files=no')).trim(), '');
+
+    await rmTree(root);
+  });
+
+  it('replaces a stale in-submodule link at a roster path instead of keeping it as custom', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'ft-upd-stale-'));
+    const adopter = await makeAdopter(root, 'stale', previous);
+    const [stale, ...rest] = claudeLinks;
+    const oldTarget = `../../.flaitron/core/claude/commands/${stale.dst.split('/').at(-1)}.md`;
+    await commitLinks(adopter.repo, {
+      ...Object.fromEntries(rest.map((l) => [l.dst, l.target])),
+      [stale.dst]: oldTarget,
+    });
+
+    const result = await checkAdopter(adopter, latest);
+    assert.equal(result.status, 'bump');
+    const notes = await applyBump({ ...adopter, current: result.current }, latest);
+    assert.deepEqual(notes, [`removed ${stale.dst}`, `wired ${stale.dst}`]);
+    assert.equal(await readlink(join(adopter.repo, stale.dst)), stale.target);
+    assert.deepEqual(await headFiles(adopter.repo), [stale.dst, SUBMODULE_PATH].sort());
+    assert.equal((await git(adopter.repo, 'status', '--porcelain', '--untracked-files=no')).trim(), '');
+
+    await rmTree(root);
+  });
+
+  it('skips a Codex wiring conflict in dry-run and apply, leaving the pin unmoved', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'ft-upd-codex-conflict-'));
+    const custom = await makeAdopter(root, 'custom', previous);
+    const slug = codexSlugs[0];
+    await mkdir(join(custom.repo, '.agents', 'skills', slug), { recursive: true });
+    await writeFile(join(custom.repo, '.agents', 'skills', slug, 'SKILL.md'), 'mine\n');
+    await gitQuiet(custom.repo, 'add', '--', '.agents');
+    await gitQuiet(custom.repo, 'commit', '-q', '-m', 'custom codex');
+
+    const linked = await makeAdopter(root, 'linked-root', previous);
+    await mkdir(join(linked.repo, 'elsewhere'));
+    await mkdir(join(linked.repo, '.agents'));
+    await symlink('../elsewhere', join(linked.repo, '.agents', 'skills'));
+
+    // .agents itself redirected; .agents/skills is a real directory over there.
+    const linkedParent = await makeAdopter(root, 'linked-parent', previous);
+    await mkdir(join(linkedParent.repo, 'shared-agents', 'skills'), { recursive: true });
+    await symlink('shared-agents', join(linkedParent.repo, '.agents'));
+
+    const priorPins = [
+      (await git(custom.repo, 'rev-parse', `HEAD:${SUBMODULE_PATH}`)).trim(),
+      (await git(linked.repo, 'rev-parse', `HEAD:${SUBMODULE_PATH}`)).trim(),
+    ];
+    for (const args of [['--root', root], ['--apply', '--root', root]]) {
+      const { stdout } = await runCli(args, { env: { FLAITRON_UPDATE_LATEST: latest } });
+      assert.match(stdout, new RegExp(`⏭ custom \\(.*\\): skipped — codex wiring conflict \\(preserved \\.agents/skills/${slug}\\) — run /ft-update`));
+      assert.match(stdout, /⏭ linked-root \(.*\): skipped — codex wiring conflict \(skill root \.agents\/skills\)/);
+      assert.match(stdout, /⏭ linked-parent \(.*\): skipped — codex wiring conflict \(skill root \.agents\/skills\)/);
+    }
+    assert.deepEqual((await git(linkedParent.repo, 'ls-tree', '-r', '--name-only', 'HEAD')).trim(), SUBMODULE_PATH);
+    assert.deepEqual(
+      [
+        (await git(custom.repo, 'rev-parse', `HEAD:${SUBMODULE_PATH}`)).trim(),
+        (await git(linked.repo, 'rev-parse', `HEAD:${SUBMODULE_PATH}`)).trim(),
+      ],
+      priorPins,
+    );
+    // A target without a Codex roster (v5.0.0 shipped no codex/ snippet) conflicts too.
+    assert.deepEqual((await wiringPlan(custom.repo, SUBMODULE_PATH, 'v5.0.0')).conflicts, ['empty pinned Codex roster']);
+
+    await rmTree(root);
+  });
+
+  it('skips a full-copy fork missing a newly shipped pass file, never one deleted on purpose', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'ft-upd-fork-gap-'));
+    // Reconciled before the newest pass files shipped, with passes/ emptied: only
+    // the newly shipped ones count, the rest were deleted on purpose.
+    const gap = await makeAdopter(root, 'gap', previous);
+    await commitFork(gap.repo, '.claude/skills/audit', `flaitron-reconciled: ${olderPassTag}\nflaitron-tracks: ft-audit\n`, []);
+    const gapResult = await checkAdopter(gap, latest);
+    assert.equal(gapResult.status, 'skip');
+    assert.equal(
+      gapResult.reason,
+      `audit fork needs pass-file copy (${newlyShipped.map((f) => `.claude/skills/audit/passes/${f}`).join(', ')}) — run /ft-update`,
+    );
+    assert.match(gapResult.forkNote, new RegExp(`audit fork drift: \\.claude/skills/audit@${olderPassTag.replace(/\./g, '\\.')}`));
+
+    // Same fork with the newly shipped files present → no gap.
+    const filled = await makeAdopter(root, 'filled', previous);
+    await commitFork(filled.repo, '.agents/skills/audit', `flaitron-reconciled: ${olderPassTag}\nflaitron-tracks: ft-audit\n`, newlyShipped);
+    assert.equal((await checkAdopter(filled, latest)).status, 'bump');
+
+    // Thin overlay (no passes/) at the same marker: drift note only.
+    const thin = await makeAdopter(root, 'thin', previous);
+    await commitFork(thin.repo, '.claude/skills/audit', `flaitron-reconciled: ${olderPassTag}\nflaitron-tracks: ft-audit\n`);
+    const thinResult = await checkAdopter(thin, latest);
+    assert.equal(thinResult.status, 'bump');
+    assert.match(thinResult.forkNote, /audit fork drift: \.claude\/skills\/audit@/);
+
+    const { stdout } = await runCli(['--root', root], { env: { FLAITRON_UPDATE_LATEST: latest } });
+    assert.match(stdout, /⏭ gap \(.*\): skipped — audit fork needs pass-file copy .* \(audit fork drift: /);
+    assert.match(stdout, /⬆ thin: would bump .* \(audit fork drift: \.claude\/skills\/audit@.* — review and re-reconcile\)/);
+
+    await rmTree(root);
+  });
+
+  it('reads no marker from an unvalidated value, a linked skill dir, or a current fork', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'ft-upd-fork-markers-'));
+    const adopter = await makeAdopter(root, 'markers', previous);
+    await commitFork(adopter.repo, '.claude/skills/a', 'flaitron-reconciled: --output=/dev/null\nflaitron-tracks: ft-audit\n', []);
+    await commitFork(adopter.repo, '.claude/skills/b', `flaitron-reconciled: ${olderPassTag}\nflaitron-tracks: ../ft-audit\n`, []);
+    await commitFork(adopter.repo, '.claude/skills/c', `flaitron-reconciled: ${latest}\nflaitron-tracks: ft-audit\n`, []);
+    await commitFork(adopter.repo, 'shared/d', `flaitron-reconciled: ${olderPassTag}\nflaitron-tracks: ft-audit\n`, []);
+    await commitLinks(adopter.repo, { '.claude/skills/d': '../../shared/d' });
+
+    const result = await checkAdopter(adopter, latest);
+    assert.equal(result.status, 'bump');
+    assert.equal(result.forkNote, '');
+
+    await rmTree(root);
+  });
+
+  it('rollback unlinks created links and the directory made for them, and restores removed links', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'ft-upd-rb-links-'));
+    const adopter = await makeAdopter(root, 'rb-links', previous);
+    // .claude present without skills/: the run must mkdir it, then undo that.
+    await commitLinks(adopter.repo, { '.claude/commands/ft-old.md': '../../.flaitron/core/claude/commands/ft-old.md' });
+    const headBefore = (await git(adopter.repo, 'rev-parse', 'HEAD')).trim();
+    // The hook records what was staged, proving the link changes happened before
+    // the rollback had anything to undo.
+    await installHook(
+      adopter.repo,
+      'pre-commit',
+      'git diff --cached --name-only > "$(git rev-parse --git-dir)/staged-at-hook"\necho "refused" >&2\nexit 1',
+    );
+
+    await assert.rejects(
+      () => applyBump({ ...adopter, current: previous }, latest),
+      /^Error: commit failed \(hook\?\) — refused$/,
+    );
+
+    const staged = (await readFile(join(adopter.repo, '.git', 'staged-at-hook'), 'utf8')).split('\n').filter(Boolean);
+    assert.ok(staged.includes('.claude/commands/ft-old.md'), staged.join(', '));
+    assert.ok(staged.includes(claudeLinks[0].dst), staged.join(', '));
+    await assert.rejects(() => lstat(join(adopter.repo, '.claude', 'skills')), /ENOENT/);
+    assert.equal(
+      await readlink(join(adopter.repo, '.claude/commands/ft-old.md')),
+      '../../.flaitron/core/claude/commands/ft-old.md',
+    );
+    assert.equal((await git(adopter.repo, 'diff', '--cached', '--name-only')).trim(), '');
+    assert.equal((await git(adopter.repo, 'status', '--porcelain', '--untracked-files=no')).trim(), '');
+    assert.equal((await git(adopter.repo, 'rev-parse', 'HEAD')).trim(), headBefore);
+
+    await rmTree(root);
+  });
+});
+
 describe('applyBump fetch timeout (CORE-585)', () => {
   it('rejects with a timeout message instead of hanging on a stalled remote', async () => {
     const root = await mkdtemp(join(tmpdir(), 'ft-upd-fetch-timeout-'));
@@ -1360,21 +1679,6 @@ describe('applyBump fetch timeout (CORE-585)', () => {
   });
 });
 
-describe('newSkillWiringSurfaces (real tags)', () => {
-  it('flags a git-mv\'d skill as new on every surface (--no-renames, CORE-769.7)', async () => {
-    // The CORE-769.3 commit is a real `git mv` of ft-file-followup → ft-file-task.
-    const sha = (
-      await git(FLAITRON_REPO, 'log', '-1', '--format=%H', '--', 'claude/skills/ft-file-followup/SKILL.md')
-    ).trim();
-    assert.deepEqual(await newSkillWiringSurfaces(`${sha}~1`, sha), [
-      'Claude .claude/',
-      'Codex .agents/skills',
-      'Cursor .cursor/skills',
-      'Grok .grok/skills',
-    ]);
-  });
-});
-
 describe('tagsInRange', () => {
   it('returns tags strictly after from up to to', async () => {
     const range = await tagsInRange(previous, latest);
@@ -1402,13 +1706,6 @@ describe('(fromTag, toTag) memoization (CORE-490.4)', () => {
     const shared = cachedMigrationBearingTags(previous, latest);
     const distinct = cachedMigrationBearingTags(latest, latest);
     assert.notEqual(shared, distinct);
-  });
-
-  it('cachedNewSkillWiringSurfaces returns the exact same promise for a repeated pair', async () => {
-    const p1 = cachedNewSkillWiringSurfaces(previous, latest);
-    const p2 = cachedNewSkillWiringSurfaces(previous, latest);
-    assert.equal(p1, p2, 'repeated (fromTag, toTag) call must reuse the in-flight/cached promise');
-    assert.deepEqual(await p1, await p2);
   });
 
   it('checkAdopter reuses the cached promise across adopters sharing the same (current, latest) pair', async () => {

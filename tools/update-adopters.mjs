@@ -79,6 +79,10 @@
 //     follow-through below rewrites adopter files, and an uncommitted edit
 //     there would be overwritten, committed, or lost to a rollback
 //   - dirty .flaitron/core submodule worktree
+//   - the adopter's Codex wiring conflicts with the target roster under
+//     codex/reconcile-skills.md (see "Skill wiring" below) → /ft-update
+//   - a full-copy audit fork lacks a pass file shipped after its marker (see
+//     "Audit forks" below) → /ft-update copies it on a per-file confirm
 //   - the committed gitlink (or the latest tag's commit) can't be resolved at
 //     all → the pin can't be verified either way, so report the git error
 //     rather than the ✓ current this used to fall through to
@@ -122,22 +126,54 @@
 // snippet or its paste block is missing. The ⬆ line lists what changed and
 // what was skipped.
 //
+// Skill wiring (CORE-852.5, the /ft-update Step 4 rules): on each wiring
+// surface the adopter already has as a real directory (.claude/,
+// .agents/skills, .cursor/skills, .grok/skills — none is ever bootstrapped),
+// applyBump first removes each tracked dangling link on that surface whose
+// target points into the submodule (a skill retired or renamed upstream — the
+// new name is a missing link, so a rename needs no special case), then creates
+// every link the target's AGENTS-snippet roster lists that is still missing,
+// with the snippet's relative target and the submodule path substituted — one
+// whose body the target does not ship is noted, never created dangling. An
+// untracked dangling link is the operator's own and is kept; one pointing
+// anywhere else (or whose target can't be checked) is kept too; both are
+// noted. Rosters are read from
+// FLAITRON_REPO at the target. Codex follows codex/reconcile-skills.md rather
+// than a plain `ln -s` parse: roster = `.agents/skills/ft-<slug>` lines, link
+// target built as `../../<FT>/codex/skills/<slug>`, and a redirected root, a
+// roster body missing at the target, or any other entry at a roster path is a
+// conflict that skips the adopter (above). The other surfaces never replace an
+// existing destination (a custom one is noted) and skip, with a note, a root
+// reached through a symlink. A destination git ignores is noted, not created
+// or force-added. Each created or removed link is staged and committed.
+//
+// Audit forks: a real skill directory under .claude/skills or .agents/skills
+// whose SKILL.md carries `flaitron-reconciled: vX.Y.Z` and `flaitron-tracks:
+// <slug>` (other values are not read as a marker). A fork whose tracked
+// scaffold changed since its marker gets a drift note on its row; a full-copy
+// ft-audit fork (passes/ beside SKILL.md) missing a pass file the bundle
+// shipped after the marker skips the adopter, since the copy is /ft-update's
+// per-file confirm. A file the bundle already had at the marker was deleted on
+// purpose and never counts; a thin overlay (no passes/) inherits new files.
+//
 // Mid-bump rollback: applyBump mutates the adopter (submodule checkout, the
-// follow-through writes, then each path staged) before it commits, and every
+// follow-through writes and link changes, then each path staged) before it commits, and every
 // step after the checkout can fail. Without recovery a failed bump leaves the
 // repo half-updated — submodule at the new tag, files rewritten, paths possibly
 // staged, nothing committed — and the residue is self-concealing: the worktree
 // now reads the new version, so a re-run classifies the repo as current/drift
 // rather than bump and the failure never resurfaces. So the prior submodule SHA
-// and each rewritten file's bytes are captured before they change, and on any
-// later failure the files are written back, the submodule checked out at the
-// prior SHA, and every path this run staged unstaged (checkAdopter verified
+// and each rewritten file's bytes are captured before they change (each link
+// change, with its prior target, as it happens), and on any later failure the
+// links are put back, directories made for them removed, the files written
+// back, the submodule checked out at the prior SHA, and every path this run
+// staged unstaged (checkAdopter verified
 // the index and tracked files were otherwise clean, so that restores them
 // exactly). The original error still propagates to the ✗ report line; a
 // rollback that itself fails is appended to it rather than swallowed.
 //
 // Commit contract: one pathspec commit naming only the paths this run wrote
-// (the gitlink plus whichever follow-through files changed), with the
+// (the gitlink plus whichever follow-through files and links changed), with the
 // adopter's hooks running — no --no-verify. CORE-490.3 skipped pre-commit/
 // commit-msg when the commit was a pure gitlink move; once it carries README
 // and AGENTS.md edits, an adopter hook that validates them (a pin check, a
@@ -146,16 +182,19 @@
 // sends hook stdout to stderr), and the run exits 1. --trailer appends its
 // line as a separate paragraph of the message.
 //
-// Not covered (by design — run /ft-update in the repo for these): per-project
-// symlink wiring for newly shipped skills, and audit-fork drift scans. When a
-// bumped range ships a new *per-project-wired* skill (one named in a platform
-// AGENTS-snippet ln -s block), the report flags the repo and names the affected
-// wiring surface. A renamed skill counts as new.
+// Not covered (by design — run /ft-update in the repo for these): wiring a
+// platform the adopter has no surface for yet; copying a newly shipped pass
+// file into a full-copy fork (skipped above) or re-reconciling a drifted fork
+// and moving its marker (noted above); resolving a Codex conflict; removing an
+// untracked retired link (reconcile-skills.md's retirement pass unlinks an
+// exact-owned one, this sweep keeps it); re-applying the docs/MIGRATION.md
+// §1.1 sparse trim; and /ft-update Step 4.7's agent-home shadow check, which
+// reads outside the adopter. The dry run previews none of the follow-through.
 
 import { execFile } from 'node:child_process';
-import { lstat, readdir, readFile, realpath, stat, writeFile } from 'node:fs/promises';
+import { lstat, mkdir, readdir, readFile, readlink, realpath, rmdir, stat, symlink, unlink, writeFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
-import { dirname, isAbsolute, join, normalize, resolve } from 'node:path';
+import { dirname, isAbsolute, join, normalize, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
 
@@ -169,39 +208,19 @@ const execFileAsync = promisify(execFile);
 const FLAITRON_REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const FLAITRON_DIR = '.flaitron';
 const SUBMODULE_PATH = join(FLAITRON_DIR, 'core');
-// Claude, Cursor and Grok all symlink the canonical claude/skills/ bodies
-// into their own <platform>/skills/ path — Cursor and Grok ship no skills
-// directory of their own, and Claude's claude/commands/ stubs retired at
-// CORE-769.2 — so their surface config is identical bar `label` and
-// `snippetPath`.
-function claudeSkillsSurface(label, snippetPath) {
-  return {
-    label,
-    snippetPath,
-    diffPaths: ['claude/skills/'],
-    snippetKeyPattern: /\.flaitron\/core\/(claude\/skills\/\S+)/,
-    addedKeyForFile(path) {
-      const skill = path.match(/^(claude\/skills\/[^/]+)/);
-      return skill ? skill[1] : null;
-    },
-  };
-}
-
+// The per-project skill-wiring surfaces (CORE-852.5). `root` is what must
+// already exist as a real directory for the surface to count as present — the
+// updater never bootstraps a platform the repo lacks — and the tree the
+// dangling-link prune walks; `skillsDir` is where the snippet's links land.
+// Claude's root is the whole .claude/ (W's surface: retired .claude/commands
+// links dangle there too), with its worktrees/ checkouts left out of the walk.
 const WIRING_SURFACES = [
-  claudeSkillsSurface('Claude .claude/', 'claude/AGENTS-snippet.md'),
-  {
-    label: 'Codex .agents/skills',
-    snippetPath: 'codex/AGENTS-snippet.md',
-    diffPaths: ['codex/skills/'],
-    snippetKeyPattern: /\.flaitron\/core\/(codex\/skills\/\S+)/,
-    addedKeyForFile(path) {
-      const skill = path.match(/^(codex\/skills\/[^/]+)/);
-      return skill ? skill[1] : null;
-    },
-  },
-  claudeSkillsSurface('Cursor .cursor/skills', 'cursor/AGENTS-snippet.md'),
-  claudeSkillsSurface('Grok .grok/skills', 'grok/AGENTS-snippet.md'),
+  { platform: 'claude', root: '.claude', skillsDir: '.claude/skills', snippetPath: 'claude/AGENTS-snippet.md' },
+  { platform: 'codex', root: '.agents/skills', skillsDir: '.agents/skills', snippetPath: 'codex/AGENTS-snippet.md' },
+  { platform: 'cursor', root: '.cursor/skills', skillsDir: '.cursor/skills', snippetPath: 'cursor/AGENTS-snippet.md' },
+  { platform: 'grok', root: '.grok/skills', skillsDir: '.grok/skills', snippetPath: 'grok/AGENTS-snippet.md' },
 ];
+const PRUNE_SKIP = new Set([join('.claude', 'worktrees')]);
 
 // FLAITRON_FETCH_TIMEOUT_MS override read at call time (not cached at module
 // load) so tests can shrink it per-case without a child-process boundary.
@@ -559,71 +578,40 @@ export async function acceptMigrationError(tag, target) {
   return null;
 }
 
-// The per-platform symlink-wiring set: paths named in the freshly-bumped
-// AGENTS-snippet ln -s block — the authority /ft-update Step 4 consults.
-// Read at toTag to match what the adopter bumps to.
-async function wiredSkillKeys(toTag, surface) {
-  let snippet;
-  try {
-    snippet = await git(FLAITRON_REPO, 'show', `${toTag}:${surface.snippetPath}`);
-  } catch {
-    return null; // snippet unreadable at toTag — caller falls back to coarse check
-  }
-  const keys = new Set();
+// The links a non-Codex snippet wires: every `ln -s <src> <dst>` line inside a
+// ```sh fence (wave-bump's parse), kept only when <dst> is one slug directly
+// under `skillsDir` and <src> reaches into the default submodule path — the
+// shape every shipped block has. `src` is returned with that path swapped for
+// `subPath`, so a vendored submodule gets links that resolve.
+export function snippetLinks(snippet, skillsDir, subPath = SUBMODULE_PATH) {
+  const links = [];
+  let fenced = false;
+  const prefix = `../../${SUBMODULE_PATH}/`;
   for (const line of snippet.split('\n')) {
-    if (!line.includes('ln -s')) continue;
-    const m = line.match(surface.snippetKeyPattern);
-    if (m) keys.add(m[1]); // e.g. claude/skills/ft-task or codex/skills/ft-task
-  }
-  return keys;
-}
-
-// --no-renames: a `git mv`'d skill otherwise diffs as R, which --diff-filter=A
-// drops — a renamed slug needs a fresh link exactly like a new one (CORE-769.7).
-async function addedFilesForSurface(fromTag, toTag, surface) {
-  const stdout = await git(
-    FLAITRON_REPO,
-    'diff',
-    '--name-only',
-    '--no-renames',
-    '--diff-filter=A',
-    `${fromTag}..${toTag}`,
-    '--',
-    ...surface.diffPaths,
-  );
-  return stdout.split('\n').filter((l) => l.trim().length > 0);
-}
-
-export async function newSkillWiringSurfaces(fromTag, toTag) {
-  const affected = [];
-  for (const surface of WIRING_SURFACES) {
-    const added = await addedFilesForSurface(fromTag, toTag, surface);
-    if (added.length === 0) continue;
-
-    const wired = await wiredSkillKeys(toTag, surface);
-    // Snippet unreadable → fall back to the coarse platform signal (better to
-    // over-flag a no-op /ft-update than to silently miss a genuine new link).
-    if (wired === null) {
-      affected.push(surface.label);
+    if (/^```/.test(line)) {
+      fenced = !fenced && /^```sh\b/.test(line);
       continue;
     }
-
-    const needsWiring = added.some((path) => {
-      const key = surface.addedKeyForFile(path);
-      return key !== null && wired.has(key);
-    });
-    if (needsWiring) affected.push(surface.label);
+    const m = fenced && /^ln -s +(\S+) +(\S+)\s*$/.exec(line);
+    if (!m) continue;
+    const [, src, dst] = m;
+    if (!src.startsWith(prefix) || !new RegExp(`^${skillsDir.replace(/\./g, '\\.')}/[a-z0-9-]+$`).test(dst)) continue;
+    links.push({ dst, target: `../../${subPath}/${src.slice(prefix.length)}` });
   }
-  return affected;
+  return links;
 }
 
-export function formatSkillsNote(surfaces) {
-  if (surfaces.length === 0) return '';
-  const surfaceText =
-    surfaces.length === 1
-      ? surfaces[0]
-      : `${surfaces.slice(0, -1).join(', ')} and ${surfaces.at(-1)}`;
-  return ` (new skills shipped in range — run /ft-update to wire ${surfaceText} symlinks)`;
+// The Codex roster, read the way codex/reconcile-skills.md reads it: every
+// `ln -s` line whose last field is `.agents/skills/ft-<slug>`, the slug kept.
+// The link target is built, not parsed (`../../<FT>/codex/skills/<slug>`).
+export function codexRoster(snippet) {
+  const slugs = [];
+  for (const line of snippet.split('\n')) {
+    if (!/^ln -s /.test(line)) continue;
+    const m = /^\.agents\/skills\/(ft-[a-z-]+)$/.exec(line.trim().split(/\s+/).at(-1));
+    if (m) slugs.push(m[1]);
+  }
+  return slugs;
 }
 
 // A url whose last path segment is the flaitron repo (`…/flaitron`,
@@ -710,15 +698,6 @@ export function cachedMigrationBearingTags(fromTag, toTag) {
   return bearingTagsCache.get(key);
 }
 
-const skillWiringCache = new Map();
-export function cachedNewSkillWiringSurfaces(fromTag, toTag) {
-  const key = `${fromTag}::${toTag}`;
-  if (!skillWiringCache.has(key)) {
-    skillWiringCache.set(key, newSkillWiringSurfaces(fromTag, toTag));
-  }
-  return skillWiringCache.get(key);
-}
-
 // Single-tag counterpart to the (fromTag, toTag) caches above: `canonicalTagSha`
 // is called once per adopter for the sweep-constant `latest` (via gitlinkDrift
 // and the reverse-drift guard) and again for a commonly-shared `current` (the
@@ -760,10 +739,11 @@ async function trackedLedgers(repo, ledgers) {
   return tracked;
 }
 
-// Thirteen sequential skip/drift gates below (uninitialised submodule, unreadable
+// Fifteen sequential skip/drift gates below (uninitialised submodule, unreadable
 // version, unresolved gitlink, reverse gitlink-drift, detached HEAD, --branch,
 // pinned-ahead, missing-tag, attended ledger, migration-bearing, staged
-// changes, dirty tracked files, dirty submodule).
+// changes, dirty tracked files, dirty submodule, Codex wiring conflict, audit
+// fork pass-file gap).
 // Considered extracting them to an ordered array (CORE-479) but each later
 // gate consumes state a prior gate computed (current, recordedGitlink, currentVersion/latestVersion,
 // range/bearing) — an array of independent gate functions would need a
@@ -924,7 +904,31 @@ export async function checkAdopter(
     return { status: 'skip', current, reason: `dirty ${subPath} worktree` };
   }
 
-  return { status: 'bump', current, skillsNote: formatSkillsNote(await cachedNewSkillWiringSurfaces(current, latest)) };
+  // Codex-wiring gate (CORE-852.5): codex/reconcile-skills.md moves no pin
+  // over a conflict, and neither does a sweep — /ft-update resolves it with
+  // the operator. Read-only here; applyBump makes the links.
+  const { conflicts } = await wiringPlan(repo, subPath, latest);
+  if (conflicts.length > 0) {
+    const shown = conflicts.length > 3 ? `${conflicts.slice(0, 3).join(', ')}, …` : conflicts.join(', ');
+    return { status: 'skip', current, reason: `codex wiring conflict (${shown}) — run /ft-update` };
+  }
+
+  // Audit-fork gates: a full-copy fork missing a newly shipped pass file skips
+  // (its copy needs /ft-update's per-file confirm); a fork whose scaffold
+  // changed since its marker rides as a note on the row, never a skip.
+  const forks = await auditForks(repo);
+  const drifted = [];
+  const gaps = [];
+  for (const fork of forks) {
+    if (await cachedForkDrift(fork, latest)) drifted.push(`${fork.dir}@${fork.reconciled}`);
+    gaps.push(...(await forkPassGaps(repo, fork, latest)));
+  }
+  const forkNote = drifted.length > 0 ? ` (audit fork drift: ${drifted.join(', ')} — review and re-reconcile)` : '';
+  if (gaps.length > 0) {
+    return { status: 'skip', current, reason: `audit fork needs pass-file copy (${gaps.join(', ')}) — run /ft-update`, forkNote };
+  }
+
+  return { status: 'bump', current, forkNote };
 }
 
 // Belt-and-suspenders for applyBump: SPEC.md's Version line can't distinguish
@@ -939,7 +943,9 @@ export function verifyPinnedSha(checkedOutSha, canonicalSha, latest) {
   }
 }
 
-// Undo applyBump's mutations: write each rewritten file's captured bytes back,
+// Undo applyBump's mutations: undo each link change newest first (unlink a
+// created link, re-create a removed one at its prior target) and remove each
+// directory made for them, write each rewritten file's captured bytes back,
 // put the submodule worktree back on `priorSha`, and drop from the index every
 // path whose `git add` was attempted (a partial add may have staged it).
 // checkAdopter verified the index and tracked files were otherwise clean, so a
@@ -947,8 +953,23 @@ export function verifyPinnedSha(checkedOutSha, canonicalSha, latest) {
 // Best-effort by construction — the caller is already unwinding a failure, so this
 // reports what it could not undo rather than throwing over the original error.
 // Returns null when the repo is fully restored, else a note naming the residue.
-async function rollbackBump(repo, subPath, priorSha, { written, staged }) {
+async function rollbackBump(repo, subPath, priorSha, { written, staged, links, dirs }) {
   const residue = [];
+  for (const { path, target } of [...links].reverse()) {
+    try {
+      if (target === null) await unlink(join(repo, path));
+      else await symlink(target, join(repo, path));
+    } catch (e) {
+      residue.push(`${path} link left ${target === null ? 'created' : 'removed'} (${e.message})`);
+    }
+  }
+  for (const dir of [...dirs].reverse()) {
+    try {
+      await rmdir(join(repo, dir));
+    } catch (e) {
+      residue.push(`${dir} left created (${e.message})`);
+    }
+  }
   for (const [path, bytes] of written) {
     try {
       await writeFile(join(repo, path), bytes);
@@ -982,12 +1003,12 @@ const PIN_LINE = /(Pinned to: )v\d+\.\d+\.\d+/;
 const WORKFLOW_HEADING = /^## Workflow[ \t]*\r?$/;
 const SECTION_END = /^#{1,2} /;
 
-// What the follow-through may do with `path` in `repo`: 'file' (a regular
-// file that resolves to itself inside the repo), 'symlink' (the file or a
-// parent directory is a symlink — a write would land elsewhere while `git add`
-// staged only the link or refused the path), or null when absent or not a
-// regular file.
-async function fileKind(repo, path) {
+// What the follow-through may do with `path` in `repo`, expecting a `type`
+// ('file' or 'dir'): `type` itself (it is one, and resolves to itself inside
+// the repo), 'symlink' (it or a parent directory is a symlink — a write would
+// land elsewhere while `git add` staged only the link or refused the path),
+// 'other' (present but not a `type`), or null when absent.
+async function pathKind(repo, path, type = 'file') {
   const abs = join(repo, path);
   let s;
   try {
@@ -996,8 +1017,8 @@ async function fileKind(repo, path) {
     return null;
   }
   if (s.isSymbolicLink()) return 'symlink';
-  if (!s.isFile()) return null;
-  return (await realOrResolve(abs)) === join(await realOrResolve(repo), path) ? 'file' : 'symlink';
+  if (!(type === 'dir' ? s.isDirectory() : s.isFile())) return 'other';
+  return (await realOrResolve(abs)) === join(await realOrResolve(repo), path) ? type : 'symlink';
 }
 
 // Each `Pinned to: vX.Y.Z` (first per line) rewritten to `tag`.
@@ -1037,26 +1058,300 @@ export function replaceWorkflowSection(agents, block) {
   return `${head}${block}\n\n${lines.slice(next).join('\n')}`;
 }
 
-// The target's Workflow paste block, read once per tag for the whole sweep
-// (same per-process cache argument as the caches above). A snippet git can't
-// show reads as null — the same "snippet block not found" skip note as a
-// snippet without the block, never a failed bump.
-const workflowBlockCache = new Map();
-function cachedWorkflowBlock(tag) {
-  if (!workflowBlockCache.has(tag)) {
-    workflowBlockCache.set(
-      tag,
-      git(FLAITRON_REPO, 'show', `${tag}:claude/AGENTS-snippet.md`).then(workflowPasteBlock, () => null),
+// One file of FLAITRON_REPO at `tag`, read once per sweep (same per-process
+// cache argument as the caches above); null when git can't show it. Reading
+// here rather than in the adopter's checkout keeps a sparse submodule from
+// hiding a snippet.
+const flaitronFileCache = new Map();
+function cachedFlaitronFile(tag, path) {
+  const key = `${tag}:${path}`;
+  if (!flaitronFileCache.has(key)) {
+    flaitronFileCache.set(key, git(FLAITRON_REPO, 'show', key).catch(() => null));
+  }
+  return flaitronFileCache.get(key);
+}
+
+// The file paths under `dir` in FLAITRON_REPO at `tag`, as a Set — empty when
+// the tag can't be resolved, so a caller asking "did this ship at <tag>?" of
+// an unknown tag hears "no".
+const flaitronTreeCache = new Map();
+function cachedFlaitronTree(tag, dir) {
+  const key = `${tag}:${dir}`;
+  if (!flaitronTreeCache.has(key)) {
+    flaitronTreeCache.set(
+      key,
+      git(FLAITRON_REPO, 'ls-tree', '-r', '--name-only', tag, '--', dir).then(
+        (out) => new Set(out.split('\n').filter(Boolean)),
+        () => new Set(),
+      ),
     );
   }
-  return workflowBlockCache.get(tag);
+  return flaitronTreeCache.get(key);
+}
+
+// The target's Workflow paste block. A snippet git can't show reads as null —
+// the same "snippet block not found" skip note as a snippet without the block,
+// never a failed bump.
+async function cachedWorkflowBlock(tag) {
+  const snippet = await cachedFlaitronFile(tag, 'claude/AGENTS-snippet.md');
+  return snippet === null ? null : workflowPasteBlock(snippet);
+}
+
+// What the wiring follow-through would do in `repo` for a bump to `latest`
+// (CORE-852.5), computed without writing. `create` lists the missing links
+// ({ dst, target }); `conflicts` the Codex entries codex/reconcile-skills.md
+// refuses to work around (any one skips the adopter); `notes` the ⬆-line
+// remarks; `roots` the present surface roots the dangling-link prune walks.
+// Only a surface whose root already exists as a real directory takes part.
+// Codex follows reconcile-skills.md: a roster body missing at the target, a
+// redirected root, or any entry at a roster path that is not the exact link is
+// a conflict. The other surfaces keep /ft-update's report-only rule: an
+// existing destination is never replaced, a custom one is noted, and a
+// redirected root skips that surface with a note.
+export async function wiringPlan(repo, subPath, latest) {
+  const plan = { create: [], conflicts: [], notes: [], roots: [] };
+  const want = []; // { dst, target } before the existence checks
+  for (const surface of WIRING_SURFACES) {
+    const kind = await pathKind(repo, surface.root, 'dir');
+    if (kind === null) continue;
+    if (surface.platform === 'codex') {
+      if (kind !== 'dir') {
+        plan.conflicts.push(`skill root ${surface.root}`);
+        continue;
+      }
+      const snippet = await cachedFlaitronFile(latest, surface.snippetPath);
+      const slugs = snippet === null ? [] : codexRoster(snippet);
+      if (slugs.length === 0) {
+        plan.conflicts.push('empty pinned Codex roster');
+        continue;
+      }
+      const bodies = await cachedFlaitronTree(latest, 'codex/skills/');
+      const missing = slugs.filter((slug) => !bodies.has(`codex/skills/${slug}/SKILL.md`));
+      if (missing.length > 0) {
+        plan.conflicts.push(`missing pinned body ${missing.join(', ')}`);
+        continue;
+      }
+      for (const slug of slugs) {
+        const dst = `${surface.skillsDir}/${slug}`;
+        const target = `../../${subPath}/codex/skills/${slug}`;
+        const have = await linkTarget(repo, dst);
+        if (have === undefined) want.push({ dst, target });
+        else if (have !== target) plan.conflicts.push(`preserved ${dst}`);
+      }
+    } else {
+      const skillsKind = surface.skillsDir === surface.root ? kind : await pathKind(repo, surface.skillsDir, 'dir');
+      if (kind !== 'dir' || (skillsKind !== null && skillsKind !== 'dir')) {
+        plan.notes.push(`${surface.platform} wiring skipped (redirected ${kind !== 'dir' ? surface.root : surface.skillsDir})`);
+        continue;
+      }
+      const snippet = await cachedFlaitronFile(latest, surface.snippetPath);
+      for (const link of snippet === null ? [] : snippetLinks(snippet, surface.skillsDir, subPath)) {
+        const have = await linkTarget(repo, link.dst);
+        if (have !== undefined) {
+          if (have !== link.target) plan.notes.push(`kept custom ${link.dst}`);
+          continue;
+        }
+        // A link to a body the target does not ship would dangle on arrival
+        // (and the next sweep's prune would remove it): note it instead.
+        const body = link.target.slice(`../../${subPath}/`.length);
+        if (!(await cachedFlaitronTree(latest, `${dirname(body)}/`)).has(`${body}/SKILL.md`)) {
+          plan.notes.push(`not wired (missing pinned body) ${link.dst}`);
+        } else {
+          want.push(link);
+        }
+      }
+    }
+    plan.roots.push(surface.root);
+  }
+  const ignored = await ignoredPaths(repo, want.map((link) => link.dst));
+  for (const link of want) {
+    if (ignored.has(link.dst)) plan.notes.push(`not wired (ignored) ${link.dst}`);
+    else plan.create.push(link);
+  }
+  return plan;
+}
+
+// `path`'s symlink target, null when it exists but is not a symlink, or
+// undefined when nothing is there.
+async function linkTarget(repo, path) {
+  try {
+    if (!(await lstat(join(repo, path))).isSymbolicLink()) return null;
+  } catch {
+    return undefined;
+  }
+  return readlink(join(repo, path));
+}
+
+// Which of `paths` git would ignore in `repo` — a link created there could not
+// be staged, and /ft-update never force-adds one (one call answers for all).
+async function ignoredPaths(repo, paths) {
+  if (paths.length === 0) return new Set();
+  try {
+    return new Set((await git(repo, 'check-ignore', '--', ...paths)).split('\n').filter(Boolean));
+  } catch (e) {
+    if (e.code === 1) return new Set(); // exit 1: none ignored
+    throw e;
+  }
+}
+
+// Symlinks under `root` whose target does not exist, walked without following
+// links (a symlinked directory is itself a candidate, never traversed);
+// PRUNE_SKIP subtrees are left out. Only ENOENT / ENOTDIR count as dangling: a
+// target behind an unreadable directory or a link loop is not proof the
+// target was retired, so such a link is never pruned.
+async function danglingLinks(repo, root) {
+  const found = [];
+  const walk = async (rel) => {
+    if (PRUNE_SKIP.has(rel)) return;
+    for (const entry of await readdir(join(repo, rel), { withFileTypes: true })) {
+      const path = join(rel, entry.name);
+      if (entry.isSymbolicLink()) {
+        try {
+          await stat(join(repo, path));
+        } catch (e) {
+          if (e.code === 'ENOENT' || e.code === 'ENOTDIR') found.push(path);
+        }
+      } else if (entry.isDirectory()) {
+        await walk(path);
+      }
+    }
+  };
+  await walk(root);
+  return found.sort();
+}
+
+// Paths among `paths` that the index tracks (literal pathspecs: these names
+// come from the adopter's filesystem).
+async function trackedPaths(repo, paths) {
+  if (paths.length === 0) return new Set();
+  return new Set((await git(repo, '--literal-pathspecs', 'ls-files', '-z', '--', ...paths)).split('\0').filter(Boolean));
+}
+
+// Prune tracked dangling links into the submodule on the present surfaces,
+// then create the links still missing, staging each change. Pruning first
+// means a stale link at a roster path is replaced by the right one rather than
+// kept as "custom" and then deleted, and a link this run created is never seen
+// by the prune. `ctx.links` records each link change once it has happened
+// ({ path, target }: target null for a created link, the prior target for a
+// removed one) and `ctx.dirs` each directory made, so rollback can undo
+// exactly what this run did. A dangling link that is untracked (the
+// operator's own local state, which git could not restore) or that points
+// outside the submodule is kept and noted.
+async function wireSkills(repo, subPath, latest, ctx) {
+  const { conflicts, roots } = await wiringPlan(repo, subPath, latest);
+  // checkAdopter skipped any adopter with a conflict; one appearing since then
+  // fails the bump closed rather than writing around it.
+  if (conflicts.length > 0) throw new Error(`codex wiring conflict (${conflicts.join(', ')})`);
+  const notes = [];
+  const stage = async (path) => {
+    ctx.staged.push(path);
+    await git(repo, '--literal-pathspecs', 'add', '--', path);
+  };
+  const sub = resolve(repo, subPath);
+  for (const root of roots) {
+    const dangling = await danglingLinks(repo, root);
+    const tracked = await trackedPaths(repo, dangling);
+    for (const path of dangling) {
+      const target = await readlink(join(repo, path));
+      const abs = resolve(repo, dirname(path), target);
+      if (abs !== sub && !abs.startsWith(sub + sep)) {
+        notes.push(`kept broken ${path}`);
+      } else if (!tracked.has(path)) {
+        notes.push(`kept untracked ${path}`);
+      } else {
+        await unlink(join(repo, path));
+        ctx.links.push({ path, target });
+        await stage(path);
+        notes.push(`removed ${path}`);
+      }
+    }
+  }
+  // Re-planned after the prune: the removals change which roster links are missing.
+  const plan = await wiringPlan(repo, subPath, latest);
+  if (plan.conflicts.length > 0) throw new Error(`codex wiring conflict (${plan.conflicts.join(', ')})`);
+  notes.push(...plan.notes);
+  for (const { dst, target } of plan.create) {
+    if ((await pathKind(repo, dirname(dst), 'dir')) === null) {
+      await mkdir(join(repo, dirname(dst)));
+      ctx.dirs.push(dirname(dst));
+    }
+    await symlink(target, join(repo, dst));
+    ctx.links.push({ path: dst, target: null });
+    await stage(dst);
+    notes.push(`wired ${dst}`);
+  }
+  return notes;
+}
+
+// Local audit forks (CORE-852.5) — /ft-update Step 4.5's test: a real skill
+// directory under .claude/skills or .agents/skills whose real SKILL.md carries
+// `flaitron-reconciled:` and `flaitron-tracks:`. A value that is not a semver
+// tag or a skill slug is not read as a marker, so nothing adopter-authored
+// reaches a git rev range or pathspec unvalidated. `fullCopy`: a passes/
+// directory sits beside SKILL.md (a thin overlay has none and inherits new
+// pass files from the bundle at run time).
+const FORK_ROOTS = ['.claude/skills', '.agents/skills'];
+async function auditForks(repo) {
+  const forks = [];
+  for (const root of FORK_ROOTS) {
+    if ((await pathKind(repo, root, 'dir')) !== 'dir') continue;
+    for (const entry of await readdir(join(repo, root), { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue; // a linked skill directory is the submodule's
+      const dir = `${root}/${entry.name}`;
+      if ((await pathKind(repo, `${dir}/SKILL.md`)) !== 'file') continue;
+      const text = await readFile(join(repo, dir, 'SKILL.md'), 'utf8');
+      const reconciled = /^flaitron-reconciled:[ \t]*(\S+)/m.exec(text)?.[1];
+      const tracks = /^flaitron-tracks:[ \t]*(\S+)/m.exec(text)?.[1];
+      if (!reconciled || !parseSemverTag(reconciled) || !tracks || !/^[a-z0-9-]+$/.test(tracks)) continue;
+      forks.push({ dir, reconciled, tracks, fullCopy: (await pathKind(repo, `${dir}/passes`, 'dir')) === 'dir' });
+    }
+  }
+  return forks;
+}
+
+// Pass files shipped at `latest` that a full-copy ft-audit fork lacks and that
+// did not exist at its reconcile point, as `<dir>/passes/<file>`. A file the
+// bundle had at the reconcile point was deliberately deleted by the forker and
+// is never counted; a reconcile tag this checkout can't resolve counts every
+// missing file (fail closed — the copy needs /ft-update's per-file confirm).
+async function forkPassGaps(repo, fork, latest) {
+  if (!fork.fullCopy || fork.tracks !== 'ft-audit') return [];
+  const passes = 'claude/skills/ft-audit/passes/';
+  const shipped = await cachedFlaitronTree(latest, passes);
+  const before = await cachedFlaitronTree(fork.reconciled, passes);
+  const gaps = [];
+  for (const path of shipped) {
+    const file = `${fork.dir}/passes/${path.slice(passes.length)}`;
+    if (before.has(path) || (await pathKind(repo, file)) !== null) continue;
+    gaps.push(file);
+  }
+  return gaps.sort();
+}
+
+// True when the fork's tracked scaffold changed between its reconcile point and
+// `latest`; a reconcile tag git can't range over reads as drifted, so a stale
+// marker is reported rather than silently trusted.
+const forkDriftCache = new Map();
+function cachedForkDrift(fork, latest) {
+  const key = `${fork.reconciled}::${fork.tracks}::${latest}`;
+  if (!forkDriftCache.has(key)) {
+    forkDriftCache.set(
+      key,
+      git(FLAITRON_REPO, 'log', '--oneline', '-1', `${fork.reconciled}..${latest}`, '--', `claude/skills/${fork.tracks}/`).then(
+        (out) => out.trim() !== '',
+        () => true,
+      ),
+    );
+  }
+  return forkDriftCache.get(key);
 }
 
 // Rewrite the follow-through files in `repo` for a bump to `latest`, staging
 // each one that changed. `ctx.written` gets each rewritten path's prior bytes
 // before the write, `ctx.staged` each path before its `git add`, so the caller's
-// rollback covers a failure at any point. Returns the ⬆-line notes.
-async function followThrough(repo, latest, ctx) {
+// rollback covers a failure at any point. The skill wiring (wireSkills) runs
+// last. Returns the ⬆-line notes.
+async function followThrough(repo, subPath, latest, ctx) {
   const notes = [];
   const rewrite = async (path, before, after) => {
     if (after === before.toString('utf8')) return false;
@@ -1067,7 +1362,7 @@ async function followThrough(repo, latest, ctx) {
     return true;
   };
 
-  const readmeKind = await fileKind(repo, TASKNOTE_README);
+  const readmeKind = await pathKind(repo, TASKNOTE_README);
   if (readmeKind === 'symlink') {
     notes.push('pin line skipped (README.md is a symlink)');
   } else if (readmeKind === 'file') {
@@ -1078,7 +1373,7 @@ async function followThrough(repo, latest, ctx) {
     }
   }
 
-  const agentsKind = await fileKind(repo, AGENTS_MD);
+  const agentsKind = await pathKind(repo, AGENTS_MD);
   if (agentsKind === 'symlink') {
     notes.push('workflow skipped (AGENTS.md is a symlink)');
   } else if (agentsKind === 'file') {
@@ -1096,6 +1391,7 @@ async function followThrough(repo, latest, ctx) {
       }
     }
   }
+  notes.push(...(await wireSkills(repo, subPath, latest, ctx)));
   return notes;
 }
 
@@ -1134,7 +1430,8 @@ export async function applyBump(adopter, latest, { trailer = null } = {}) {
   // What rollback must undo: each rewritten file's prior bytes, and each path
   // whose `git add` was attempted (recorded before the add — a partial add may
   // already have staged it).
-  const ctx = { written: new Map(), staged: [] };
+  // (plus each link created or removed, and each directory made, once done).
+  const ctx = { written: new Map(), staged: [], links: [], dirs: [] };
   try {
     await checkoutVerified(sub, latest);
     ctx.staged.push(subPath);
@@ -1142,7 +1439,7 @@ export async function applyBump(adopter, latest, { trailer = null } = {}) {
     // adopter's .gitmodules, and a glob or `:(…)` magic in it would otherwise
     // widen what gets staged and committed beyond the paths this run wrote.
     await git(repo, '--literal-pathspecs', 'add', '--', subPath);
-    const notes = await followThrough(repo, latest, ctx);
+    const notes = await followThrough(repo, subPath, latest, ctx);
     // Pathspec commit naming only the paths this run wrote, never unrelated
     // work; hooks run (see "Commit contract" above).
     const message = ['-m', `chore: bump flaitron ${adopter.current} → ${latest}`];
@@ -1179,21 +1476,21 @@ async function reportResult(adopter, result, latest, apply, counts, trailer = nu
   } else if (result.status === 'skip') {
     counts.skipped += 1;
     const at = result.current ? ` (${result.current})` : '';
-    console.log(`  ⏭ ${adopter.name}${at}: skipped — ${result.reason}`);
+    console.log(`  ⏭ ${adopter.name}${at}: skipped — ${result.reason}${result.forkNote ?? ''}`);
     if (result.suggestion) console.log(`      ↳ ${result.suggestion}`);
   } else if (apply) {
     try {
       const notes = await applyBump({ ...adopter, current: result.current }, latest, { trailer });
       counts.bumped += 1;
       const changed = notes.length > 0 ? ` — ${notes.join(', ')}` : '';
-      console.log(`  ⬆ ${adopter.name}: bumped ${result.current} → ${latest}, committed${changed}${result.skillsNote}`);
+      console.log(`  ⬆ ${adopter.name}: bumped ${result.current} → ${latest}, committed${changed}${result.forkNote}`);
     } catch (e) {
       counts.failed += 1;
       console.error(`  ✗ ${adopter.name}: bump failed — ${e.message}`);
     }
   } else {
     counts.planned += 1;
-    console.log(`  ⬆ ${adopter.name}: would bump ${result.current} → ${latest}${result.skillsNote}`);
+    console.log(`  ⬆ ${adopter.name}: would bump ${result.current} → ${latest}${result.forkNote}`);
   }
 }
 

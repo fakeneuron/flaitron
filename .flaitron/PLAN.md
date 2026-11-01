@@ -16,7 +16,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Medium
 
 - [ ] **CORE-855** [moderate]🧩 | release v8.3.0 — Cut v8.3.0 with `/ft-release` (minor: CORE-851's `install.sh` carve-out). The README's tag-pinned installer URL 404s until the tag is pushed. After the push, confirm `install-test.yml` is green on ubuntu + macOS, and run the one-liner + `/ft-adopt` hand-off once on a scratch repo.
-- [ ] **CORE-856** [heavy]🧠 | agent-baseline-redundancy-survey — Third HARNESS-SURVEY pass, new lens: which per-task flaitron context restates what agents (weakest runner in use) already do, vs rationale bloat, mirror tax, and small-task ceremony. Read-only inventory plus an epic / pass-6 batch / targeted-trims recommendation. Filed with starter at `.flaitron/tasknote/CORE-856.md`.
 
 ## Low
 
@@ -29,6 +28,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-856** [heavy]🧠 | agent-baseline-redundancy-survey — Completed 2026-11-01.
 - [x] **CORE-851** [heavy] | one-line-installer — Completed 2026-11-01.
 - [x] **CORE-EPIC-852** [heavy] | pin-bump-tool-merge — Completed 2026-11-01.
   - [x] **CORE-852.1** [heavy] | pin-bump-tool-merge discovery — Completed 2026-10-31.

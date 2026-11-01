@@ -10,15 +10,22 @@ mechanics.
 **Use a tasknote when:**
 
 - The change touches more than one file
-- The task has a `<AREA>-<NUMBER>` ID in PLAN.md
+- The task has a `<AREA>-<NUMBER>` ID in PLAN.md and fits none of the skip cases below
 - The work involves design tradeoffs the assistant should record
 
 **Skip the tasknote for:**
 
 - Single-line typo fixes
 - Pure formatting tweaks
-- Documentation patches under ~10 lines
+- Documentation patches under ~25 lines
 - Trivial config edits with no logic impact
+
+The skip list wins over a PLAN.md ID: a filed standalone row that fits it is
+edited directly and closed in the same commit as a self-contained stub
+([`SPEC/plan-filing.md`](plan-filing.md) §"Exception — skip-tier closures").
+An epic child keeps its tasknote, since its closure drives the parent flip.
+`/ft-task` names the tier a row implies (skip / micro / full) at Step 1 as an
+advisory; the operator still picks.
 
 **Draft a spec (`templates/spec-template.md`) when:**
 

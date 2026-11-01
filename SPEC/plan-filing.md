@@ -46,8 +46,9 @@ One reading, for prefix `CORE` with folder `core`:
 
 **Why each source.** `PLAN.md` alone misses rotated rows (§"`## Completed`
 rotation"). The archive folder misses rows that never had a tasknote — an
-inline audit fix (§"Exception — inline audit fixes") is recorded only by its
-row, which rotation moves into `PLAN-ARCHIVE.md`. Note *bodies* are not
+inline audit fix (§"Exception — inline audit fixes") or a skip-tier closure
+(§"Exception — skip-tier closures") is recorded only by its row, which
+rotation moves into `PLAN-ARCHIVE.md`. Note *bodies* are not
 scanned: an adopter's notes cite flaitron's `CORE-` tickets under the same
 prefix.
 
@@ -260,6 +261,15 @@ tasknote and no archive file, so its `## Completed` line **retains** a
 short self-contained description plus `Surfaced by <audit-label>
 YYYY-MM-DD (Finding #N, <severity>), fixed inline` — here the line itself
 is the canonical record.
+
+**Exception — skip-tier closures.** A filed standalone row closed by direct
+edit at the skip tier ([`SPEC/tasknote-selection.md`](tasknote-selection.md)
+§"When to use a tasknote (and when not to)") has no tasknote either, so its
+stub keeps a short self-contained description ahead of the date:
+`- [x] **TASK-ID** [model] | shortname — <what changed>; no tasknote. Completed YYYY-MM-DD.`
+The edit and the row land in one commit. The stub's tail, `| shortname`,
+verbatim trailing bracket-token run, placement, and rotation rules apply
+unchanged.
 
 ## Epic parent flip
 

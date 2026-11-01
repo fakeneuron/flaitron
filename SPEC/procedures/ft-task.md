@@ -30,10 +30,10 @@ matches `<AREA>-<NUMBER>` (or `<AREA>-<NUMBER>.<SUB>` for an epic subtask)
 per [`SPEC.md` §"Task ID convention"](../../SPEC.md). If no valid ID is
 given, ask for one — do not guess.
 
-First decide whether the task even warrants a tasknote: single-line typos,
-formatting tweaks, ~10-line doc patches, and trivial config edits skip the
-ceremony — make the edit directly. See
-[`SPEC/tasknote-selection.md`](../tasknote-selection.md) for the use/skip
+Whether the task warrants a tasknote — the skip cases (~25-line doc patches
+among them) win over a standalone row's PLAN.md ID — is the Step 1 tier
+advisory's call.
+See [`SPEC/tasknote-selection.md`](../tasknote-selection.md) for the use/skip
 threshold and the lighter-weight forms (micro / starter / follow-up).
 
 ## Agent-neutral primitives
@@ -125,6 +125,17 @@ from the `PLAN.md` long description:
 Then continue in the same turn: it is not an operator cue or a gate, expects
 no reply, and neither autonomous nor unattended mode suppresses it. Contract:
 [`SPEC/cue-vocabulary.md` §"🎯 Purpose blurb"](../cue-vocabulary.md).
+
+**Tier advisory.** Judge the tier the long description implies — skip,
+micro, or full ([`SPEC/tasknote-selection.md`](../tasknote-selection.md); an
+epic child never reads as skip; not in debug or loop mode). When no tasknote
+or sidequest stub exists for the ID and the tier differs from the requested
+shape, say so in one ⚠️ line; never change the mode yourself. On **skip** with
+the operator present and no autonomous or unattended mode, ask once
+(structured ask): run as requested, or edit directly — once Step 2's model
+check and Step 3's pre-flight pass, make the edit, rewrite the row per
+[`SPEC/plan-filing.md` §"Exception — skip-tier closures"](../plan-filing.md),
+and commit both together, with no tasknote (never push).
 
 **Filing-length advisory.** If the captured long description exceeds 70 words,
 emit an informational warning and continue; do not block or refile it.

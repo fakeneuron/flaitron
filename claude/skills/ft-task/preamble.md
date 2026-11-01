@@ -30,6 +30,14 @@ The full grammar is `- [ ] **TASK-ID** [!critical] [model] [unattended] [handoff
 
 Two lines: the ID and the `| shortname`, then 1-2 sentences of purpose drawn from the long description just captured — the only source read yet. It fires once, here, ahead of any scaffold / promote / resume branch. Emit it and keep going in the same turn. Bounds — not a cue, not a gate, suppressed by neither flag: `SPEC/cue-vocabulary.md` §"🎯 Purpose blurb".
 
+**Tier advisory.** Judge the tier the long description implies — skip, micro, or full, per `SPEC/tasknote-selection.md` §"When to use a tasknote (and when not to)" (an epic child never reads as skip). Skip this under `--debug` / `--loop`, when `.flaitron/tasknote/<TASK-ID>.md` or `.flaitron/sidequest/<TASK-ID>.md` exists, or when the judged tier matches the invoked shape (`--micro` → micro, otherwise full). On a mismatch, emit one line and never change the flags — the runner does not auto-select:
+
+```text
+⚠️ <TASK-ID> reads as <tier> — <one-clause reason>; invoked as <micro|full>.
+```
+
+Micro or full continues. **Skip** continues too under `fast-mode` or `unattended-mode`; attended, ask once via AskUserQuestion — run as invoked, or edit directly. Editing directly ends this skill without a scaffold once §"Pre-flight" and §"Model gate" pass: make the edit, rewrite the row to the `SPEC/plan-filing.md` §"Exception — skip-tier closures" stub, and commit both together (never push).
+
 **Filing-discipline check (advisory).** Word-count the long description. Over the 70-word hard cap (SPEC/tasknote-selection.md §"PLAN.md filing-discipline thresholds") → surface one line and proceed:
 
 ```text

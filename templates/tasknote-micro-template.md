@@ -44,15 +44,16 @@ One-sentence goal of what this task accomplishes.
 ## ⚡ Notes
 
 **Relevance:** Proceed | Re-scope | De-scope — <one-line rationale>
-**Best Practices Review:** <responsibilities, dependency direction, existing abstractions, duplication, and any in-scope refactor or deferred cleanup; OR N/A with reason>
+**Best Practices Review:** <responsibilities, dependency direction, existing abstractions, duplication, and any in-scope refactor or deferred cleanup; N/A folds into **N/A:**>
 **Archive skim:** <relevant findings from `.flaitron/tasknote/archive/<area>/` (prefer YAML `touches:`; also follow Related / `supersedes` / ⚠️), OR "no prior tasknotes touch these paths" — on an absent or empty `archive/<area>/`, re-check `<area>` against the README table first>
 **Drift check:** <cited paths and hypotheses match current code, AND the plan matches its PLAN.md line and the SPEC; OR the specific findings>
 **Clarifications:** <answers, OR "No clarifications needed" with the explicit assumptions>
 **Pattern survey:** <neighboring code or sibling shape extended, OR justification for a new shape>
 **Implementation:** <what changed, key decisions, refactors made or deferred with reason>
 **Verification receipt:** <each Acceptance verify command as `command → exit code` (+ first failure line); changed code free of duplication, dead code, and stale docs; a frontend change's 👁️ CONFIRM reply; OR N/A with reason>
-**External review:** <findings with disposition (blocker → back to Implementation; note → fixed or filed), OR N/A with reason>
-**Docs touched:** <per-entry verdict for `.flaitron/tasknote/README.md` §"AI-referenced docs" — "no change" or the update; plus a Learnings line for the always-loaded layer, or N/A>
+**External review:** <findings with disposition (blocker → back to Implementation; note → fixed or filed); N/A folds into **N/A:**>
+**Docs touched:** <per-entry verdict for `.flaitron/tasknote/README.md` §"AI-referenced docs" — "no change" or the update; plus a Learnings line for the always-loaded layer; all "no change" with no Learnings folds into **N/A:**>
+**N/A:** <Best Practices Review / External review / Docs touched lines whose verdict is N/A fold here instead, each with its reason — `Best Practices — <reason> · External review — <reason> · Docs — no change`; delete this line when none folds>
 
 **Final Summary:**
 

@@ -143,4 +143,4 @@ Skill-specific:
 ## Notes
 
 - **Sub-tasks of an epic** (`<AREA>-<NUMBER>.<SUB>`) follow the same flow. The parent epic line in PLAN.md is not flipped to complete until all children are. For code-sweep / multi-child feature epics, the first subtask (`.1`) is typically a **Discovery** task — its deliverable is the filed child task list in PLAN.md, not code — and the final subtask is an **Audit** task that verifies the completed epic sits well in the codebase. Full lifecycle in `<SPEC_DIR>/epic.md` (loaded at Step 1 for epic IDs).
-- **Skip-the-tasknote cases** (single-line typo, formatting tweak, ~10-line doc patch, trivial config edit) — see SPEC/tasknote-selection.md §"When to use a tasknote (and when not to)". For these, decline to scaffold and tell the user to make the edit directly.
+- **Skip-the-tasknote cases** (SPEC/tasknote-selection.md §"When to use a tasknote (and when not to)") — the preamble's §"Locate and capture" tier advisory names them and asks; never decline on your own.

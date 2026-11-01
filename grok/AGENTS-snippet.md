@@ -36,7 +36,8 @@ wiring", and the Grok-only block below is that roster under one substitution —
 destination `.claude/skills/<n>` → `.grok/skills/<n>`, source path unchanged
 (the targets are the canonical Claude bodies), lines sorted. Adding or removing a skill means editing the SSOT and regenerating
 this block, never editing this block alone. It stays a literal `ln -s` list
-because adopters copy-paste it and `tools/update-adopters.mjs` parses it;
+because adopters copy-paste it and `tools/update-adopters.mjs` and
+`install.sh` parse it;
 `/ft-release` §7.1 diffs it against the SSOT as a set.
 
 For a **Grok-only project** — one with no `.claude/`, no `.agents/skills/`,

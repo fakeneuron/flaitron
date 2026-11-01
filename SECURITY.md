@@ -127,7 +127,7 @@ invocations will execute.
 
 **Adopter mitigations.**
 
-- Pin to annotated release tags (e.g. `v8.2.0`), not to `main` or to an
+- Pin to annotated release tags (e.g. `v8.3.0`), not to `main` or to an
   unreviewed commit on `main`. Release tags are reviewed deliberately;
   `main` is a moving target.
 - Review the diff between your pinned commit and the new tag before
@@ -182,6 +182,8 @@ surface the rest of this document did not cover: a contributor PR's tree
 is checked out and its tests run on a GitHub-hosted runner. Both jobs
 inherit the workflow-level `permissions: contents: read` and the same
 SHA-pinned `actions/checkout`, so the posture below covers both.
+`.github/workflows/install-test.yml` (the installer's path-filtered e2e) holds the
+same posture: `permissions: contents: read` and the same SHA-pinned checkout.
 
 The realistic compromise paths are (1) a mutable action tag silently
 moving to malicious code, (2) a workflow that grants the job more
@@ -214,7 +216,8 @@ reviewed as one. Do not add repository secrets to this workflow.
 
 ### Fleet updater (`tools/`)
 
-`tools/update-adopters.mjs` is the singular script exception to
+`tools/update-adopters.mjs` is one of two script exceptions (with `install.sh`,
+§"One-line installer") to
 `SPEC/scope-boundaries.md` §"What flaitron does NOT provide" — operator-side fleet maintenance across
 `~/code`, not workflow machinery inside a project. It batches the
 `/ft-update` recipe across every discovered adopter: bump the adopter's

@@ -21,7 +21,7 @@ actually review. No scripts, daemons, databases, or schemas to maintain.
 
 ![The flaitron visualizer showing flaitron's own PLAN.md — open tasks by priority, phase-progress dots, and the completed archive](.flaitron/screenshots/viz-board.png)
 
-Flaitron is built with flaitron: **1277 tasks** closed through this exact
+Flaitron is built with flaitron: **1289 tasks** closed through this exact
 workflow between 2026-04-28 and 2026-11-01 (as of 2026-11-01) — each one with
 a tasknote preserved in [`.flaitron/tasknote/archive/`](.flaitron/tasknote/archive/).
 Count and date range are recomputed each release by `/ft-release` §7.1's
@@ -122,6 +122,8 @@ serves it; Grok-only projects follow [`grok/AGENTS-snippet.md`](grok/AGENTS-snip
 - [docs/HARNESS-SURVEY.md](docs/HARNESS-SURVEY.md) — dated comparisons of
   flaitron against contemporary harnesses and trackers: differentiators, gaps,
   overkill, and the seed list for the next wider pass
+- [docs/DOC-DRIFT-SWEEP.md](docs/DOC-DRIFT-SWEEP.md) — history and exclusions
+  behind the tasknote doc-drift sweep list
 - [docs/GATE-DISCIPLINE.md](docs/GATE-DISCIPLINE.md) — gate-skip excuses,
   observer symptoms, and refused carve-outs
 - [docs/CODEX-VERIFICATION.md](docs/CODEX-VERIFICATION.md) — dated Codex

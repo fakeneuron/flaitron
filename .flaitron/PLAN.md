@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-855** [moderate]🧩 | release v8.3.0 — Cut v8.3.0 with `/ft-release` (minor: CORE-851's `install.sh` carve-out). The README's tag-pinned installer URL 404s until the tag is pushed. After the push, confirm `install-test.yml` is green on ubuntu + macOS, and run the one-liner + `/ft-adopt` hand-off once on a scratch repo.
+(none)
 
 ## Low
 
@@ -28,6 +28,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-855** [moderate]🧩 | release v8.3.0 — Completed 2026-11-01.
 - [x] **CORE-859** [light]🔧 | file-task-nested-placement — `/ft-file-task` Step 4 placement now appends past 2-space-nested child rows; no tasknote. Completed 2026-11-01.
 - [x] **CORE-858** [light]🔧 | seed-question-only-ask — Completed 2026-11-01.
 - [x] **CORE-EPIC-857** [heavy]🧠 | context-redundancy — Completed 2026-11-01.

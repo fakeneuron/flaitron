@@ -22,6 +22,14 @@ unless correcting a factual error.
 
 ---
 
+## v8.3.0 — one-line installer and a leaner always-loaded layer
+
+- `curl … /v8.3.0/install.sh | sh` installs flaitron in one tag-pinned command: it pins .flaitron/core to a release tag checked against GitHub's commit, wires each detected agent's skill links from the pinned snippets, links one global ft-adopt, and hands off to /ft-adopt. SPEC records it as a third CLI carve-out; SECURITY.md §"One-line installer" covers the threat model.
+- SPEC.md, the /ft-task body and SPEC/procedures/ft-task.md point at the module that owns each rule instead of restating it: the default cold-start path fell from 114,045 to 106,250 chars, with no rule changed.
+- Small tasks route by size first: a doc patch under ~25 lines can skip the tasknote even with a PLAN ID, and /ft-task flags a tier mismatch in one line.
+
+Also: /ft-seed-unattended's question-only ask and /ft-file-task's nested-row placement fixed; HARNESS-SURVEY gains a self-redundancy pass; Claude re-verified at v8.3.0.
+
 ## v8.2.0 — unattended readiness and one fleet pin-bump engine
 
 - A [heavy] row can run [unattended] on a complete, operator-confirmed readiness basis (a starter's `### Acceptance that decides it`). [frontier]/[xheavy] are never admitted. /ft-seed-unattended can draft that scope starter or ask one bounded question.

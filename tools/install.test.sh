@@ -4,7 +4,7 @@
 # HOME, FLAITRON_HOME and every target repo live under a fresh temp dir, so the
 # real ~/.claude/skills and ~/code/flaitron are never touched. Run by
 # .github/workflows/install-test.yml.
-# shellcheck disable=SC2329 # helpers are invoked through check()
+# shellcheck disable=SC2329,SC2317 # helpers are invoked through check(); SC2317 is the pre-0.11 code
 set -u
 INSTALLER=$(cd "$(dirname "$1")" && pwd)/$(basename "$1")
 shift

@@ -196,7 +196,9 @@ only the link.
   updater writes them: the lines before the heading, the block, then either
   one blank line and the rest from the next heading on, or — section to EOF —
   a single final newline. Headings are matched line by line, as the
-  updater does — a `#` line inside a code fence counts too. No AGENTS.md, or
+  updater does, skipping every line inside a code fence (``` or ~~~, up to
+  3 spaces of indent; closed by a run of the same character at least as
+  long) — a fenced `#` line or `## Workflow` is never a heading. No AGENTS.md, or
   no exact `## Workflow` heading (trailing whitespace allowed) → nothing to
   do. Skip with a note when there is more than one, or the snippet has no
   such block or it does not open with `## Workflow`. A `## Workflows (CI)`

@@ -1002,6 +1002,35 @@ const AGENTS_MD = 'AGENTS.md';
 const PIN_LINE = /(Pinned to: )v\d+\.\d+\.\d+/;
 const WORKFLOW_HEADING = /^## Workflow[ \t]*\r?$/;
 const SECTION_END = /^#{1,2} /;
+// A CommonMark fence line: up to 3 spaces, then 3+ backticks or tildes.
+const FENCE = /^ {0,3}(`{3,}|~{3,})/;
+
+// Per line, whether it is a heading candidate: false for every line inside a
+// fenced code block, fence lines included, so a fenced `# comment` or
+// `## Workflow` is never read as a heading (CORE-853). A fence closes on a run
+// of the opening character at least as long, with nothing but whitespace after
+// it. An unclosed fence runs to EOF.
+function headingLines(lines) {
+  let open = null;
+  return lines.map((line) => {
+    const m = FENCE.exec(line);
+    if (open === null) {
+      if (!m) return true;
+      open = m[1];
+      return false;
+    }
+    if (m && m[1][0] === open[0] && m[1].length >= open.length && !line.slice(m[0].length).trim()) {
+      open = null;
+    }
+    return false;
+  });
+}
+
+// The indices of AGENTS.md's unfenced `## Workflow` headings.
+function workflowHeadings(lines) {
+  const ok = headingLines(lines);
+  return lines.flatMap((l, i) => (ok[i] && WORKFLOW_HEADING.test(l) ? [i] : []));
+}
 
 // What the follow-through may do with `path` in `repo`, expecting a `type`
 // ('file' or 'dir'): `type` itself (it is one, and resolves to itself inside
@@ -1047,11 +1076,13 @@ export function workflowPasteBlock(snippet) {
 
 // `agents` with its one `## Workflow` section — that heading through the line
 // before the next H1/H2 heading, or to EOF — replaced by `block`, one blank
-// line kept before the next heading (wave-bump's awk output shape).
+// line kept before the next heading (wave-bump's awk output shape). Lines
+// inside code fences are never headings.
 export function replaceWorkflowSection(agents, block) {
   const lines = agents.split('\n');
-  const start = lines.findIndex((l) => WORKFLOW_HEADING.test(l));
-  const next = lines.findIndex((l, i) => i > start && SECTION_END.test(l));
+  const ok = headingLines(lines);
+  const start = workflowHeadings(lines)[0];
+  const next = lines.findIndex((l, i) => i > start && ok[i] && SECTION_END.test(l));
   const before = lines.slice(0, start).join('\n');
   const head = start > 0 ? `${before}\n` : '';
   if (next === -1) return `${head}${block}\n`;
@@ -1379,7 +1410,7 @@ async function followThrough(repo, subPath, latest, ctx) {
   } else if (agentsKind === 'file') {
     const before = await readFile(join(repo, AGENTS_MD));
     const text = before.toString('utf8');
-    const headings = text.split('\n').filter((l) => WORKFLOW_HEADING.test(l)).length;
+    const headings = workflowHeadings(text.split('\n')).length;
     if (headings > 1) {
       notes.push('workflow skipped (more than one ## Workflow heading)');
     } else if (headings === 1) {

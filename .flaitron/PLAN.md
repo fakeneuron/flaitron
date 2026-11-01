@@ -25,7 +25,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [x] **CORE-852.6** [moderate] | ft-update-parity-carveout — Completed 2026-11-01.
   - [x] **CORE-852.7** [moderate] | release-and-parity-run — Completed 2026-11-01.
   - [ ] **CORE-852.N** [heavy] | pin-bump-tool-merge audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
-- [ ] **CORE-853** [moderate] | workflow-replace-fence-aware — Make `update-adopters.mjs` Workflow-section replace ignore `#` lines inside code fences (truncates mid-fence today); mirror in `/ft-update` Step 3.5. Stub: `.flaitron/sidequest/CORE-853.md`.
 
 ## Low
 
@@ -38,6 +37,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-853** [moderate] | workflow-replace-fence-aware — Completed 2026-11-01.
 - [x] **CORE-849** [moderate]🧩 | codex-reconcile-portability — Completed 2026-10-31.
 - [x] **CORE-EPIC-850** [heavy] | unattended-readiness — Completed 2026-10-31.
   - [x] **CORE-850.1** [frontier] | unattended-readiness discovery — Completed 2026-10-31.

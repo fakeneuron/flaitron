@@ -1058,6 +1058,24 @@ describe('follow-through text helpers (CORE-852.4)', () => {
     );
   });
 
+  it('replaceWorkflowSection ignores # lines inside code fences (CORE-853)', () => {
+    // A fenced `# comment` inside the section does not end it: the whole fence goes.
+    assert.equal(
+      replaceWorkflowSection('# P\n\n## Workflow\n\n```sh\n# comment\nrun\n```\n\n## Next\n', '## Workflow\nNew.'),
+      '# P\n\n## Workflow\nNew.\n\n## Next\n',
+    );
+    // Tilde and longer fences; a shorter run inside does not close a longer one.
+    assert.equal(
+      replaceWorkflowSection('## Workflow\n~~~\n# a\n~~~\n````md\n```\n## b\n````\n## Next\n', '## Workflow\nNew.'),
+      '## Workflow\nNew.\n\n## Next\n',
+    );
+    // A fenced `## Workflow` earlier in the file is not the section's heading.
+    assert.equal(
+      replaceWorkflowSection('# P\n\n```md\n## Workflow\n```\n\n## Workflow\nOld.\n', '## Workflow\nNew.'),
+      '# P\n\n```md\n## Workflow\n```\n\n## Workflow\nNew.\n',
+    );
+  });
+
   it('a project\'s own ## Workflows… heading is not the flaitron section', async () => {
     const root = await mkdtemp(join(tmpdir(), 'ft-upd-follow-ci-'));
     const adopter = await makeAdopter(root, 'ci-workflows', previous);
@@ -1196,6 +1214,19 @@ describe('sandboxed --apply', { concurrency: GROUP_CONCURRENCY }, () => {
     assert.equal(await readFile(join(linked.repo, 'NOTES.md'), 'utf8'), `Pinned to: ${previous}\n`);
     assert.deepEqual(await headFiles(doubled.repo), ['.flaitron/core']);
     assert.equal(await readFile(join(doubled.repo, 'AGENTS.md'), 'utf8'), twice);
+
+    await rmTree(root);
+  });
+
+  it('a fenced ## Workflow does not count toward the doubled-heading skip (CORE-853)', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'ft-upd-follow-fenced-'));
+    const fenced = await makeAdopter(root, 'fenced', previous);
+    await commitFollowThroughFiles(fenced.repo, { agents: `${AGENTS_FIXTURE}\n\`\`\`md\n## Workflow\n\`\`\`\n` });
+
+    const { stdout } = await runCli(['--apply', '--root', root], { env: { FLAITRON_UPDATE_LATEST: latest } });
+    assert.match(stdout, /⬆ fenced: bumped .*, committed — .*workflow block/);
+    assert.doesNotMatch(stdout, /more than one ## Workflow heading/);
+    assert.match(await readFile(join(fenced.repo, 'AGENTS.md'), 'utf8'), /```md\n## Workflow\n```\n$/);
 
     await rmTree(root);
   });

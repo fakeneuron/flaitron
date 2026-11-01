@@ -11,7 +11,9 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-(none)
+- [ ] **CORE-EPIC-857** [heavy]🧠 | context-redundancy — Trim the self-referential per-task context the 2026-11-01 HARNESS-SURVEY pass measured (procedure and ft-task skill re-narrating SPEC, incident history in the tasknote README, SPEC.md rationale) and fix small-task over-routing; bucket-grouped children with byte targets (filed via /ft-open-epic; refined at .1 closure).
+  - [ ] **CORE-857.1** [frontier]💎 | context-redundancy discovery — Scope shared design and file children .2..6 per SPEC/epic.md.
+  - [ ] **CORE-857.N** [heavy]🧠 | context-redundancy audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line); re-measure the per-runner cold start against the survey's byte targets. Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
 
 ## Medium
 

@@ -5,7 +5,8 @@
 // (see the carve-out there): operator-side fleet maintenance across ~/code,
 // not workflow machinery inside a project. It batches the /ft-update recipe:
 // for every adopter pinned behind the latest released tag, move the
-// .flaitron/core submodule pin and commit — locally only, never pushing.
+// .flaitron/core submodule pin, carry the follow-through (below) and commit —
+// locally only, never pushing.
 //
 // Usage:
 //   node tools/update-adopters.mjs            # dry-run: report what would happen
@@ -20,6 +21,8 @@
 //   node tools/update-adopters.mjs --branch <name>    # skip adopters not on <name>
 //   node tools/update-adopters.mjs --accept-migration <tag>   # repeatable; waive
 //                                             # that one tag's Migration block
+//   node tools/update-adopters.mjs --trailer <line>   # append <line> as its own
+//                                             # paragraph in every bump commit
 //
 // Selection: --only names adopters by their directory under the workspace root.
 // Every other adopter is neither listed nor counted; a name that matches no
@@ -72,6 +75,9 @@
 //     (lightweight tag, or annotated with an empty message) → fail closed
 //     rather than assume non-breaking; see migrationBearingTags
 //   - staged changes in the adopter's index → a commit here would surprise
+//   - modified tracked files (the submodule's own entry aside) → the
+//     follow-through below rewrites adopter files, and an uncommitted edit
+//     there would be overwritten, committed, or lost to a rollback
 //   - dirty .flaitron/core submodule worktree
 //   - the committed gitlink (or the latest tag's commit) can't be resolved at
 //     all → the pin can't be verified either way, so report the git error
@@ -104,24 +110,41 @@
 // this direction is detected up front too and reported as `drift` before any
 // bump-path work runs.
 //
-// Mid-bump rollback: applyBump mutates the adopter (submodule checkout, then a
-// staged gitlink) before it commits, and every step after the checkout can fail.
-// Without recovery a failed bump leaves the repo half-updated — submodule at the
-// new tag, gitlink possibly staged, nothing committed — and the residue is
-// self-concealing: the worktree now reads the new version, so a re-run classifies
-// the repo as current/drift rather than bump and the failure never resurfaces. So
-// the prior submodule SHA is captured before the checkout and restored (plus the
-// gitlink unstaged, when it got that far) on any later failure. The original error
-// still propagates to the ✗ report line; a rollback that itself fails is appended
-// to it rather than swallowed.
+// Follow-through (CORE-852.4, ported from natabula wave-bump): after the
+// checkout, applyBump also rewrites, and stages, two adopter files when they
+// apply — every `Pinned to: vX.Y.Z` in .flaitron/tasknote/README.md (first per
+// line) moves to the target, and AGENTS.md's `## Workflow` section is replaced
+// wholesale with the target's claude/AGENTS-snippet.md paste block, read from
+// FLAITRON_REPO at the target tag. Either file is left alone, with a note, when
+// it or a parent directory is a symlink (a write would land outside the repo
+// while `git add` staged only the link); the Workflow replace is also skipped
+// when AGENTS.md carries more than one exact `## Workflow` heading or the
+// snippet or its paste block is missing. The ⬆ line lists what changed and
+// what was skipped.
 //
-// The bump commit itself passes --no-verify: it is a pathspec commit touching only
-// the .flaitron/core gitlink, a pure pin move with no adopter-authored content for a
-// pre-commit or commit-msg hook to lint. --no-verify skips only those two hooks
-// (prepare-commit-msg and post-commit still run); during a fleet-wide sweep,
-// skipping pre-commit/commit-msg keeps the commit's success contingent only on
-// the gitlink move that produced it, rather than on unrelated adopter-hook
-// failures or side effects.
+// Mid-bump rollback: applyBump mutates the adopter (submodule checkout, the
+// follow-through writes, then each path staged) before it commits, and every
+// step after the checkout can fail. Without recovery a failed bump leaves the
+// repo half-updated — submodule at the new tag, files rewritten, paths possibly
+// staged, nothing committed — and the residue is self-concealing: the worktree
+// now reads the new version, so a re-run classifies the repo as current/drift
+// rather than bump and the failure never resurfaces. So the prior submodule SHA
+// and each rewritten file's bytes are captured before they change, and on any
+// later failure the files are written back, the submodule checked out at the
+// prior SHA, and every path this run staged unstaged (checkAdopter verified
+// the index and tracked files were otherwise clean, so that restores them
+// exactly). The original error still propagates to the ✗ report line; a
+// rollback that itself fails is appended to it rather than swallowed.
+//
+// Commit contract: one pathspec commit naming only the paths this run wrote
+// (the gitlink plus whichever follow-through files changed), with the
+// adopter's hooks running — no --no-verify. CORE-490.3 skipped pre-commit/
+// commit-msg when the commit was a pure gitlink move; once it carries README
+// and AGENTS.md edits, an adopter hook that validates them (a pin check, a
+// lint) is exactly what must run. A rejecting hook is a failed bump: the full
+// rollback above runs, the ✗ line carries the hook's first output line (git
+// sends hook stdout to stderr), and the run exits 1. --trailer appends its
+// line as a separate paragraph of the message.
 //
 // Not covered (by design — run /ft-update in the repo for these): per-project
 // symlink wiring for newly shipped skills, and audit-fork drift scans. When a
@@ -130,7 +153,7 @@
 // wiring surface. A renamed skill counts as new.
 
 import { execFile } from 'node:child_process';
-import { readdir, readFile, realpath, stat } from 'node:fs/promises';
+import { lstat, readdir, readFile, realpath, stat, writeFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { dirname, isAbsolute, join, normalize, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -199,11 +222,15 @@ export async function git(cwd, ...args) {
       ? args.pop()
       : {};
   try {
-    const { stdout } = await execFileAsync('git', args, {
+    const pending = execFileAsync('git', args, {
       cwd,
       env: { ...process.env, GIT_TERMINAL_PROMPT: '0' },
       ...options,
     });
+    // Closed stdin: an adopter hook that reads it (the bump commit runs hooks)
+    // gets EOF instead of hanging the sweep on a pipe nobody writes to.
+    pending.child.stdin?.end();
+    const { stdout } = await pending;
     return stdout;
   } catch (e) {
     // Node's own timeout error never says "timeout" anywhere, which would
@@ -217,7 +244,8 @@ export async function git(cwd, ...args) {
 
 const USAGE =
   'Usage: node tools/update-adopters.mjs [--apply] [--root <dir>] [--target <tag>] [--only <repo>]...\n' +
-  '         [--branch <name>] [--accept-migration <tag>]... [--attended-ledger <relpath>]...';
+  '         [--branch <name>] [--accept-migration <tag>]... [--attended-ledger <relpath>]...\n' +
+  '         [--trailer <line>]';
 
 function usageError(firstLine, exitOnError) {
   if (exitOnError) {
@@ -239,6 +267,7 @@ export function parseArgs(argv, { exitOnError = true } = {}) {
     branch: null,
     acceptMigrations: [],
     attendedLedgers: [],
+    trailer: null,
   };
   // Every value-taking flag rejects a missing or `--`-prefixed value (CORE-419.4).
   const takeValue = (i) => {
@@ -268,11 +297,12 @@ export function parseArgs(argv, { exitOnError = true } = {}) {
     } else if (argv[i] === '--accept-migration') {
       args.acceptMigrations.push(takeTag(i));
       i += 1;
-    } else if (argv[i] === '--only' || argv[i] === '--branch') {
+    } else if (argv[i] === '--only' || argv[i] === '--branch' || argv[i] === '--trailer') {
       const value = takeValue(i);
       if (value === '') usageError(`${argv[i]} requires a non-empty value`, exitOnError);
       if (argv[i] === '--only') args.only.push(value);
-      else args.branch = value;
+      else if (argv[i] === '--branch') args.branch = value;
+      else args.trailer = value;
       i += 1;
     } else if (argv[i] === '--attended-ledger') {
       const value = takeValue(i);
@@ -730,10 +760,10 @@ async function trackedLedgers(repo, ledgers) {
   return tracked;
 }
 
-// Twelve sequential skip/drift gates below (uninitialised submodule, unreadable
+// Thirteen sequential skip/drift gates below (uninitialised submodule, unreadable
 // version, unresolved gitlink, reverse gitlink-drift, detached HEAD, --branch,
 // pinned-ahead, missing-tag, attended ledger, migration-bearing, staged
-// changes, dirty submodule).
+// changes, dirty tracked files, dirty submodule).
 // Considered extracting them to an ordered array (CORE-479) but each later
 // gate consumes state a prior gate computed (current, recordedGitlink, currentVersion/latestVersion,
 // range/bearing) — an array of independent gate functions would need a
@@ -876,6 +906,19 @@ export async function checkAdopter(
     return { status: 'skip', current, reason: 'staged changes in index — commit or unstage first' };
   }
 
+  // Dirty-tracked gate: the follow-through rewrites adopter files and rollback
+  // restores their pre-bump bytes, so an operator's uncommitted edit must not
+  // be in reach. Untracked files are never touched or committed and stay out.
+  // The submodule's own entry is left to the next gate, which names it.
+  const dirty = (await git(repo, 'status', '--porcelain', '-z', '--untracked-files=no'))
+    .split('\0')
+    .filter((entry) => entry.length > 3 && entry.slice(3) !== subPath)
+    .map((entry) => entry.slice(3));
+  if (dirty.length > 0) {
+    const shown = dirty.length > 3 ? `${dirty.slice(0, 3).join(', ')}, …` : dirty.join(', ');
+    return { status: 'skip', current, reason: `dirty tracked files (${shown}) — commit or stash first` };
+  }
+
   const subStatus = await git(sub, 'status', '--porcelain');
   if (subStatus.trim().length > 0) {
     return { status: 'skip', current, reason: `dirty ${subPath} worktree` };
@@ -896,28 +939,164 @@ export function verifyPinnedSha(checkedOutSha, canonicalSha, latest) {
   }
 }
 
-// Undo applyBump's mutations: put the submodule worktree back on `priorSha` and,
-// once the `git add` was attempted (a partial add may have staged it), drop the
-// gitlink from the index (checkAdopter
-// verified the index was otherwise clean, so a pathspec reset restores it exactly).
+// Undo applyBump's mutations: write each rewritten file's captured bytes back,
+// put the submodule worktree back on `priorSha`, and drop from the index every
+// path whose `git add` was attempted (a partial add may have staged it).
+// checkAdopter verified the index and tracked files were otherwise clean, so a
+// pathspec reset restores the index exactly.
 // Best-effort by construction — the caller is already unwinding a failure, so this
 // reports what it could not undo rather than throwing over the original error.
 // Returns null when the repo is fully restored, else a note naming the residue.
-async function rollbackBump(repo, subPath, priorSha, staged) {
+async function rollbackBump(repo, subPath, priorSha, { written, staged }) {
   const residue = [];
+  for (const [path, bytes] of written) {
+    try {
+      await writeFile(join(repo, path), bytes);
+    } catch (e) {
+      residue.push(`${path} left rewritten (${e.message})`);
+    }
+  }
   try {
     await git(join(repo, subPath), 'checkout', '--quiet', priorSha);
   } catch (e) {
     residue.push(`submodule left at the new tag (${e.message})`);
   }
-  if (staged) {
+  if (staged.length > 0) {
     try {
-      await git(repo, '--literal-pathspecs', 'reset', '--quiet', '--', subPath);
+      await git(repo, '--literal-pathspecs', 'reset', '--quiet', '--', ...staged);
     } catch (e) {
-      residue.push(`gitlink left staged (${e.message})`);
+      residue.push(`${staged.join(', ')} left staged (${e.message})`);
     }
   }
   return residue.length > 0 ? residue.join('; ') : null;
+}
+
+// The adopter files the follow-through may rewrite, relative to the adopter root.
+const TASKNOTE_README = join(FLAITRON_DIR, 'tasknote', 'README.md');
+const AGENTS_MD = 'AGENTS.md';
+// `Pinned to:` is natabula wave-bump's sed expression (first match per line).
+// The Workflow heading is matched exactly, not by wave-bump's `^## Workflow`
+// prefix, so a project's own `## Workflows (CI)` section is never replaced;
+// the section ends at the next H1 or H2 (wave-bump: H2 only).
+const PIN_LINE = /(Pinned to: )v\d+\.\d+\.\d+/;
+const WORKFLOW_HEADING = /^## Workflow[ \t]*\r?$/;
+const SECTION_END = /^#{1,2} /;
+
+// What the follow-through may do with `path` in `repo`: 'file' (a regular
+// file that resolves to itself inside the repo), 'symlink' (the file or a
+// parent directory is a symlink — a write would land elsewhere while `git add`
+// staged only the link or refused the path), or null when absent or not a
+// regular file.
+async function fileKind(repo, path) {
+  const abs = join(repo, path);
+  let s;
+  try {
+    s = await lstat(abs);
+  } catch {
+    return null;
+  }
+  if (s.isSymbolicLink()) return 'symlink';
+  if (!s.isFile()) return null;
+  return (await realOrResolve(abs)) === join(await realOrResolve(repo), path) ? 'file' : 'symlink';
+}
+
+// Each `Pinned to: vX.Y.Z` (first per line) rewritten to `tag`.
+export function rewritePinLines(text, tag) {
+  return text
+    .split('\n')
+    .map((line) => line.replace(PIN_LINE, `$1${tag}`))
+    .join('\n');
+}
+
+// The `## Workflow` block inside claude/AGENTS-snippet.md's paste fence (the
+// first ```markdown fence after `## Block to paste into AGENTS.md`), without
+// the fence lines; null when the snippet has no such block or it does not
+// open with a `## Workflow` heading.
+export function workflowPasteBlock(snippet) {
+  const lines = snippet.split('\n');
+  const heading = lines.findIndex((l) => /^## Block to paste into AGENTS\.md/.test(l));
+  if (heading === -1) return null;
+  const open = lines.findIndex((l, i) => i > heading && /^```markdown/.test(l));
+  if (open === -1) return null;
+  const close = lines.findIndex((l, i) => i > open && /^```/.test(l));
+  if (close === -1) return null;
+  const body = lines.slice(open + 1, close);
+  return WORKFLOW_HEADING.test(body[0] ?? '') ? body.join('\n') : null;
+}
+
+// `agents` with its one `## Workflow` section — that heading through the line
+// before the next H1/H2 heading, or to EOF — replaced by `block`, one blank
+// line kept before the next heading (wave-bump's awk output shape).
+export function replaceWorkflowSection(agents, block) {
+  const lines = agents.split('\n');
+  const start = lines.findIndex((l) => WORKFLOW_HEADING.test(l));
+  const next = lines.findIndex((l, i) => i > start && SECTION_END.test(l));
+  const before = lines.slice(0, start).join('\n');
+  const head = start > 0 ? `${before}\n` : '';
+  if (next === -1) return `${head}${block}\n`;
+  return `${head}${block}\n\n${lines.slice(next).join('\n')}`;
+}
+
+// The target's Workflow paste block, read once per tag for the whole sweep
+// (same per-process cache argument as the caches above). A snippet git can't
+// show reads as null — the same "snippet block not found" skip note as a
+// snippet without the block, never a failed bump.
+const workflowBlockCache = new Map();
+function cachedWorkflowBlock(tag) {
+  if (!workflowBlockCache.has(tag)) {
+    workflowBlockCache.set(
+      tag,
+      git(FLAITRON_REPO, 'show', `${tag}:claude/AGENTS-snippet.md`).then(workflowPasteBlock, () => null),
+    );
+  }
+  return workflowBlockCache.get(tag);
+}
+
+// Rewrite the follow-through files in `repo` for a bump to `latest`, staging
+// each one that changed. `ctx.written` gets each rewritten path's prior bytes
+// before the write, `ctx.staged` each path before its `git add`, so the caller's
+// rollback covers a failure at any point. Returns the ⬆-line notes.
+async function followThrough(repo, latest, ctx) {
+  const notes = [];
+  const rewrite = async (path, before, after) => {
+    if (after === before.toString('utf8')) return false;
+    ctx.written.set(path, before);
+    await writeFile(join(repo, path), after);
+    ctx.staged.push(path);
+    await git(repo, '--literal-pathspecs', 'add', '--', path);
+    return true;
+  };
+
+  const readmeKind = await fileKind(repo, TASKNOTE_README);
+  if (readmeKind === 'symlink') {
+    notes.push('pin line skipped (README.md is a symlink)');
+  } else if (readmeKind === 'file') {
+    const before = await readFile(join(repo, TASKNOTE_README));
+    const text = before.toString('utf8');
+    if (PIN_LINE.test(text) && (await rewrite(TASKNOTE_README, before, rewritePinLines(text, latest)))) {
+      notes.push('pin line');
+    }
+  }
+
+  const agentsKind = await fileKind(repo, AGENTS_MD);
+  if (agentsKind === 'symlink') {
+    notes.push('workflow skipped (AGENTS.md is a symlink)');
+  } else if (agentsKind === 'file') {
+    const before = await readFile(join(repo, AGENTS_MD));
+    const text = before.toString('utf8');
+    const headings = text.split('\n').filter((l) => WORKFLOW_HEADING.test(l)).length;
+    if (headings > 1) {
+      notes.push('workflow skipped (more than one ## Workflow heading)');
+    } else if (headings === 1) {
+      const block = await cachedWorkflowBlock(latest);
+      if (block === null) {
+        notes.push('workflow skipped (snippet block not found)');
+      } else if (await rewrite(AGENTS_MD, before, replaceWorkflowSection(text, block))) {
+        notes.push('workflow block');
+      }
+    }
+  }
+  return notes;
 }
 
 // Check out `latest` in `sub` and prove it is the canonical release: SPEC.md's
@@ -940,7 +1119,9 @@ async function checkoutVerified(sub, latest) {
   verifyPinnedSha(checkedOutSha, canonicalSha, latest);
 }
 
-export async function applyBump(adopter, latest) {
+// Returns the follow-through notes for the ⬆ line (empty when only the
+// gitlink moved).
+export async function applyBump(adopter, latest, { trailer = null } = {}) {
   const { repo } = adopter;
   const subPath = adopter.subPath ?? SUBMODULE_PATH;
   const sub = join(repo, subPath);
@@ -950,33 +1131,34 @@ export async function applyBump(adopter, latest) {
   // only one that can hang on a stalled peer rather than fail fast.
   await git(sub, 'fetch', '--tags', '--quiet', 'origin', { timeout: fetchTimeoutMs() });
   const priorSha = (await git(sub, 'rev-parse', 'HEAD')).trim();
-  let staged = false;
+  // What rollback must undo: each rewritten file's prior bytes, and each path
+  // whose `git add` was attempted (recorded before the add — a partial add may
+  // already have staged it).
+  const ctx = { written: new Map(), staged: [] };
   try {
     await checkoutVerified(sub, latest);
-    // Flagged before the add: a partial add may already have staged the gitlink.
-    staged = true;
+    ctx.staged.push(subPath);
     // --literal-pathspecs on every pathspec call: subPath can come from the
     // adopter's .gitmodules, and a glob or `:(…)` magic in it would otherwise
-    // widen what gets staged and committed beyond the gitlink.
+    // widen what gets staged and committed beyond the paths this run wrote.
     await git(repo, '--literal-pathspecs', 'add', '--', subPath);
-    // Pathspec commit: only the submodule gitlink lands, never unrelated work.
-    // --no-verify: see the "Mid-bump rollback" note above for why
-    // pre-commit/commit-msg hooks are skipped here (prepare-commit-msg/
-    // post-commit still run).
-    const current = adopter.current;
-    await git(
-      repo,
-      '--literal-pathspecs',
-      'commit',
-      '--quiet',
-      '--no-verify',
-      '-m',
-      `chore: bump flaitron ${current} → ${latest}`,
-      '--',
-      subPath,
-    );
+    const notes = await followThrough(repo, latest, ctx);
+    // Pathspec commit naming only the paths this run wrote, never unrelated
+    // work; hooks run (see "Commit contract" above).
+    const message = ['-m', `chore: bump flaitron ${adopter.current} → ${latest}`];
+    if (trailer !== null) message.push('-m', trailer);
+    try {
+      // Raised maxBuffer: a hook that lints or tests can print past execFile's
+      // 1 MB default, which would kill git mid-commit.
+      await git(repo, '--literal-pathspecs', 'commit', '--quiet', ...message, '--', ...ctx.staged, {
+        maxBuffer: 64 * 1024 * 1024,
+      });
+    } catch (e) {
+      throw new Error(`commit failed (hook?) — ${gitErrorLine(e)}`);
+    }
+    return notes;
   } catch (e) {
-    const residue = await rollbackBump(repo, subPath, priorSha, staged);
+    const residue = await rollbackBump(repo, subPath, priorSha, ctx);
     // Rethrow the original failure — reportResult renders it as the ✗ line — with
     // the un-undone residue appended when the repo could not be fully restored.
     if (residue) e.message = `${e.message} (rollback incomplete: ${residue})`;
@@ -987,7 +1169,7 @@ export async function applyBump(adopter, latest) {
 // Print one adopter's check result and fold it into the running counts. The
 // apply branch performs the bump inline, awaiting applyBump; all other branches
 // are pure presentation over the already-computed result.
-async function reportResult(adopter, result, latest, apply, counts) {
+async function reportResult(adopter, result, latest, apply, counts, trailer = null) {
   if (result.status === 'current') {
     counts.current += 1;
     console.log(`  ✓ ${adopter.name}: current (${result.current})`);
@@ -1001,9 +1183,10 @@ async function reportResult(adopter, result, latest, apply, counts) {
     if (result.suggestion) console.log(`      ↳ ${result.suggestion}`);
   } else if (apply) {
     try {
-      await applyBump({ ...adopter, current: result.current }, latest);
+      const notes = await applyBump({ ...adopter, current: result.current }, latest, { trailer });
       counts.bumped += 1;
-      console.log(`  ⬆ ${adopter.name}: bumped ${result.current} → ${latest}, committed${result.skillsNote}`);
+      const changed = notes.length > 0 ? ` — ${notes.join(', ')}` : '';
+      console.log(`  ⬆ ${adopter.name}: bumped ${result.current} → ${latest}, committed${changed}${result.skillsNote}`);
     } catch (e) {
       counts.failed += 1;
       console.error(`  ✗ ${adopter.name}: bump failed — ${e.message}`);
@@ -1110,7 +1293,7 @@ async function main(argv = process.argv.slice(2)) {
       console.error(`  ✗ ${adopter.name}: check failed — ${e.message}`);
       continue;
     }
-    await reportResult(adopter, result, latest, args.apply, counts);
+    await reportResult(adopter, result, latest, args.apply, counts, args.trailer);
   }
   for (const name of unmatched) {
     await reportResult(

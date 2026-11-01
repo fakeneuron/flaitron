@@ -34,8 +34,11 @@ import {
   parseSemverTag,
   pinnedVersion,
   realOrResolve,
+  replaceWorkflowSection,
+  rewritePinLines,
   tagsInRange,
   verifyPinnedSha,
+  workflowPasteBlock,
 } from './update-adopters.mjs';
 
 const execFileAsync = promisify(execFile);
@@ -171,6 +174,49 @@ async function deinitSubmodule(adopter) {
   await mkdir(adopter.sub);
 }
 
+const README_REL = '.flaitron/tasknote/README.md';
+
+/**
+ * Commit the adopter files the follow-through rewrites (CORE-852.4): the
+ * tasknote README and/or AGENTS.md, each only when given.
+ */
+async function commitFollowThroughFiles(repo, { readme, agents }) {
+  const paths = [];
+  if (readme !== undefined) {
+    await mkdir(join(repo, '.flaitron', 'tasknote'), { recursive: true });
+    await writeFile(join(repo, README_REL), readme);
+    paths.push(README_REL);
+  }
+  if (agents !== undefined) {
+    await writeFile(join(repo, 'AGENTS.md'), agents);
+    paths.push('AGENTS.md');
+  }
+  await gitQuiet(repo, 'add', '--', ...paths);
+  await gitQuiet(repo, 'commit', '-q', '-m', 'follow-through fixtures');
+}
+
+/**
+ * Install one executable hook. core.hooksPath is pinned explicitly so a global
+ * override on the host cannot silently disarm the injection.
+ */
+async function installHook(repo, name, body) {
+  const hooks = join(repo, '.git', 'hooks');
+  await mkdir(hooks, { recursive: true });
+  await writeFile(join(hooks, name), `#!/bin/sh\n${body}\n`, { mode: 0o755 });
+  await gitQuiet(repo, 'config', 'core.hooksPath', hooks);
+}
+
+/** Files the HEAD commit touched, sorted. */
+async function headFiles(repo) {
+  return (await git(repo, 'show', '--name-only', '--pretty=format:', 'HEAD'))
+    .trim()
+    .split('\n')
+    .filter(Boolean)
+    .sort();
+}
+
+const AGENTS_FIXTURE = '# Project\n\nIntro.\n\n## Workflow\n\nOld workflow text.\n\n## Local notes\n\nKeep me.\n';
+
 describe('parseArgs / pure helpers', () => {
   const DEFAULT_ARGS = {
     apply: false,
@@ -180,6 +226,7 @@ describe('parseArgs / pure helpers', () => {
     branch: null,
     acceptMigrations: [],
     attendedLedgers: [],
+    trailer: null,
   };
 
   it('parses --apply and --root', () => {
@@ -218,11 +265,19 @@ describe('parseArgs / pure helpers', () => {
       assert.throws(() => parseArgs([flag, 'latest'], { exitOnError: false }), /semver release tag/);
       assert.throws(() => parseArgs([flag], { exitOnError: false }), new RegExp(`${flag} requires a value`));
     }
-    for (const flag of ['--only', '--branch']) {
+    for (const flag of ['--only', '--branch', '--trailer']) {
       assert.throws(() => parseArgs([flag], { exitOnError: false }), new RegExp(`${flag} requires a value`));
       assert.throws(() => parseArgs([flag, '--apply'], { exitOnError: false }), /requires a value/);
       assert.throws(() => parseArgs([flag, ''], { exitOnError: false }), /non-empty value/);
     }
+  });
+
+  it('parses one --trailer line (CORE-852.4)', () => {
+    assert.deepEqual(parseArgs(['--trailer', 'Wave: NAT-494', '--apply']), {
+      ...DEFAULT_ARGS,
+      apply: true,
+      trailer: 'Wave: NAT-494',
+    });
   });
 
   it('collects repeatable --attended-ledger paths in order (CORE-852.2)', () => {
@@ -479,6 +534,17 @@ describe('checkAdopter classification (fixtures)', { concurrency: GROUP_CONCURRE
     const result = await checkAdopter(adopter, latest);
     assert.equal(result.status, 'skip');
     assert.match(result.reason, /staged changes/i);
+  });
+
+  it('skip: modified tracked file outside the submodule (CORE-852.4)', async () => {
+    const adopter = await makeAdopter(root, 'dirty-tracked-repo', previous);
+    await commitFollowThroughFiles(adopter.repo, { agents: AGENTS_FIXTURE });
+    await writeFile(join(adopter.repo, 'AGENTS.md'), `${AGENTS_FIXTURE}operator edit\n`);
+    // Untracked files never count: the follow-through neither touches nor commits them.
+    await writeFile(join(adopter.repo, 'scratch.txt'), 'untracked\n');
+    const result = await checkAdopter(adopter, latest);
+    assert.equal(result.status, 'skip');
+    assert.equal(result.reason, 'dirty tracked files (AGENTS.md) — commit or stash first');
   });
 
   it('skip: dirty .flaitron/core worktree', async () => {
@@ -969,6 +1035,50 @@ describe('dry-run CLI (--root fixture)', { concurrency: GROUP_CONCURRENCY }, () 
   });
 });
 
+describe('follow-through text helpers (CORE-852.4)', () => {
+  it('rewritePinLines moves every Pinned to: line, first match per line', () => {
+    assert.equal(
+      rewritePinLines('a\nPinned to: v1.2.3 (core)\nb Pinned to: v0.1.0, Pinned to: v0.1.0\nPinned to: latest\n', 'v9.0.0'),
+      'a\nPinned to: v9.0.0 (core)\nb Pinned to: v9.0.0, Pinned to: v0.1.0\nPinned to: latest\n',
+    );
+  });
+
+  it('workflowPasteBlock returns the fenced ## Workflow block, else null', () => {
+    const snippet = '# S\n\n## Block to paste into AGENTS.md\n\n<!-- c -->\n\n```markdown\n## Workflow\n\nBody.\n```\n\n## Other\n';
+    assert.equal(workflowPasteBlock(snippet), '## Workflow\n\nBody.');
+    assert.equal(workflowPasteBlock(snippet.replace('## Block to paste', '## Block to copy')), null);
+    assert.equal(workflowPasteBlock(snippet.replace('```markdown\n## Workflow', '```markdown\n## Flow')), null);
+    assert.equal(workflowPasteBlock('## Block to paste into AGENTS.md\n```markdown\n## Workflow\n'), null);
+  });
+
+  it('replaceWorkflowSection swaps the section, keeping one blank line before the next heading', () => {
+    assert.equal(
+      replaceWorkflowSection(AGENTS_FIXTURE, '## Workflow\n\nNew.'),
+      '# Project\n\nIntro.\n\n## Workflow\n\nNew.\n\n## Local notes\n\nKeep me.\n',
+    );
+    // Last section: replaced through EOF.
+    assert.equal(replaceWorkflowSection('# P\n\n## Workflow\n\nOld.\n', '## Workflow\n\nNew.'), '# P\n\n## Workflow\n\nNew.\n');
+    // First line of the file.
+    assert.equal(replaceWorkflowSection('## Workflow\nOld.\n## Next\n', '## Workflow\nNew.'), '## Workflow\nNew.\n\n## Next\n');
+    // An H1 ends the section too: the appendix survives.
+    assert.equal(
+      replaceWorkflowSection('## Workflow\nOld.\n# Appendix\n## Notes\n', '## Workflow\nNew.'),
+      '## Workflow\nNew.\n\n# Appendix\n## Notes\n',
+    );
+  });
+
+  it('a project\'s own ## Workflows… heading is not the flaitron section', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'ft-upd-follow-ci-'));
+    const adopter = await makeAdopter(root, 'ci-workflows', previous);
+    const agents = '# P\n\n## Workflows (CI)\n\nGitHub Actions.\n';
+    await commitFollowThroughFiles(adopter.repo, { agents });
+    await applyBump({ ...adopter, current: previous }, latest);
+    assert.deepEqual(await headFiles(adopter.repo), ['.flaitron/core']);
+    assert.equal(await readFile(join(adopter.repo, 'AGENTS.md'), 'utf8'), agents);
+    await rmTree(root);
+  });
+});
+
 describe('sandboxed --apply', { concurrency: GROUP_CONCURRENCY }, () => {
   it('bumps pin + pathspec commit only', async () => {
     const root = await mkdtemp(join(tmpdir(), 'ft-upd-apply-'));
@@ -1026,22 +1136,92 @@ describe('sandboxed --apply', { concurrency: GROUP_CONCURRENCY }, () => {
     await rmTree(root);
   });
 
-  // CORE-490.3 — the bump commit is a pure gitlink move; adopter-authored
-  // pre-commit/commit-msg hooks must not be able to block it.
-  it('bumps past a rejecting pre-commit hook (--no-verify)', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'ft-upd-noverify-'));
-    const adopter = await makeAdopter(root, 'hooked', previous);
+  it('commits the pin line, Workflow block and gitlink together, with --trailer (CORE-852.4)', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'ft-upd-follow-'));
+    const adopter = await makeAdopter(root, 'follow', previous);
+    const readme = `# Tasknotes\n\nPinned to: ${previous}\nOther: Pinned to: v0.0.1\n`;
+    await commitFollowThroughFiles(adopter.repo, { readme, agents: AGENTS_FIXTURE });
 
-    const hooks = join(adopter.repo, '.git', 'hooks');
-    await mkdir(hooks, { recursive: true });
-    await writeFile(join(hooks, 'pre-commit'), '#!/bin/sh\nexit 1\n', { mode: 0o755 });
-    await gitQuiet(adopter.repo, 'config', 'core.hooksPath', hooks);
+    const { stdout } = await runCli(['--apply', '--root', root, '--trailer', 'Wave: test'], {
+      env: { FLAITRON_UPDATE_LATEST: latest },
+    });
+    assert.match(stdout, /⬆ follow: bumped .*, committed — pin line, workflow block/);
+
+    assert.deepEqual(await headFiles(adopter.repo), ['.flaitron/core', 'AGENTS.md', README_REL].sort());
+    assert.equal(
+      await readFile(join(adopter.repo, README_REL), 'utf8'),
+      `# Tasknotes\n\nPinned to: ${latest}\nOther: Pinned to: ${latest}\n`,
+    );
+    const block = workflowPasteBlock(await git(FLAITRON_REPO, 'show', `${latest}:claude/AGENTS-snippet.md`));
+    assert.ok(block, `${latest}'s snippet carries a Workflow paste block`);
+    assert.equal(
+      await readFile(join(adopter.repo, 'AGENTS.md'), 'utf8'),
+      `# Project\n\nIntro.\n\n${block}\n\n## Local notes\n\nKeep me.\n`,
+    );
+    assert.equal(
+      (await git(adopter.repo, 'log', '-1', '--format=%B')).trim(),
+      `chore: bump flaitron ${previous} → ${latest}\n\nWave: test`,
+    );
+    assert.equal((await git(adopter.repo, 'status', '--porcelain', '--untracked-files=no')).trim(), '');
+
+    await rmTree(root);
+  });
+
+  it('leaves a symlinked AGENTS.md / README and a doubled ## Workflow untouched, noting why (CORE-852.4)', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'ft-upd-follow-skip-'));
+    const linked = await makeAdopter(root, 'linked', previous);
+    await writeFile(join(linked.repo, 'REAL.md'), AGENTS_FIXTURE);
+    await writeFile(join(linked.repo, 'NOTES.md'), `Pinned to: ${previous}\n`);
+    await mkdir(join(linked.repo, '.flaitron', 'tasknote'), { recursive: true });
+    await symlink('REAL.md', join(linked.repo, 'AGENTS.md'));
+    await symlink('../../NOTES.md', join(linked.repo, README_REL));
+    await gitQuiet(linked.repo, 'add', '--', 'REAL.md', 'NOTES.md', 'AGENTS.md', README_REL);
+    await gitQuiet(linked.repo, 'commit', '-q', '-m', 'linked fixtures');
+
+    const doubled = await makeAdopter(root, 'doubled', previous);
+    const twice = `${AGENTS_FIXTURE}\n## Workflow\n\nSecond.\n`;
+    await commitFollowThroughFiles(doubled.repo, { agents: twice });
+
+    // A symlinked parent directory: the README itself is a regular file.
+    const dirLinked = await makeAdopter(root, 'dir-linked', previous);
+    await mkdir(join(dirLinked.repo, 'shared'));
+    await writeFile(join(dirLinked.repo, 'shared', 'README.md'), `Pinned to: ${previous}\n`);
+    await symlink('../shared', join(dirLinked.repo, '.flaitron', 'tasknote'));
+    await gitQuiet(dirLinked.repo, 'add', '--', 'shared/README.md', '.flaitron/tasknote');
+    await gitQuiet(dirLinked.repo, 'commit', '-q', '-m', 'dir-linked fixtures');
+
+    const { stdout } = await runCli(['--apply', '--root', root], { env: { FLAITRON_UPDATE_LATEST: latest } });
+    assert.match(stdout, /⬆ dir-linked: bumped .*, committed — pin line skipped \(README\.md is a symlink\)/);
+    assert.equal(await readFile(join(dirLinked.repo, 'shared', 'README.md'), 'utf8'), `Pinned to: ${previous}\n`);
+    assert.deepEqual(await headFiles(dirLinked.repo), ['.flaitron/core']);
+    assert.match(
+      stdout,
+      /⬆ linked: bumped .*, committed — pin line skipped \(README\.md is a symlink\), workflow skipped \(AGENTS\.md is a symlink\)/,
+    );
+    assert.match(stdout, /⬆ doubled: bumped .*, committed — workflow skipped \(more than one ## Workflow heading\)/);
+
+    assert.deepEqual(await headFiles(linked.repo), ['.flaitron/core']);
+    assert.equal(await readFile(join(linked.repo, 'REAL.md'), 'utf8'), AGENTS_FIXTURE);
+    assert.equal(await readFile(join(linked.repo, 'NOTES.md'), 'utf8'), `Pinned to: ${previous}\n`);
+    assert.deepEqual(await headFiles(doubled.repo), ['.flaitron/core']);
+    assert.equal(await readFile(join(doubled.repo, 'AGENTS.md'), 'utf8'), twice);
+
+    await rmTree(root);
+  });
+
+  // CORE-852.4 supersedes CORE-490.3: hooks now run on the bump commit.
+  it('runs the adopter pre-commit hook on the bump commit', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'ft-upd-hookrun-'));
+    const adopter = await makeAdopter(root, 'hooked', previous);
+    // Reads stdin to EOF first: an open stdin pipe would hang here forever.
+    await installHook(adopter.repo, 'pre-commit', 'cat >/dev/null\n: > "$(git rev-parse --git-dir)/pre-commit-ran"');
 
     const result = await checkAdopter(adopter, latest);
     assert.equal(result.status, 'bump');
     await applyBump({ ...adopter, current: result.current }, latest);
 
     assert.equal(await pinnedVersion(join(adopter.sub, 'SPEC.md')), latest);
+    await lstat(join(adopter.repo, '.git', 'pre-commit-ran'));
 
     await rmTree(root);
   });
@@ -1054,13 +1234,9 @@ describe('sandboxed --apply', { concurrency: GROUP_CONCURRENCY }, () => {
     const failing = await makeAdopter(root, 'b-fail', previous);
     await makeAdopter(root, 'c-ok', previous);
 
-    // Guaranteed apply-path failure (same hook-injection shape as CORE-419.3, but
-    // prepare-commit-msg rather than pre-commit — the bump commit now passes
-    // --no-verify (CORE-490.3), which skips pre-commit/commit-msg but not this one).
-    const hooks = join(failing.repo, '.git', 'hooks');
-    await mkdir(hooks, { recursive: true });
-    await writeFile(join(hooks, 'prepare-commit-msg'), '#!/bin/sh\nexit 1\n', { mode: 0o755 });
-    await gitQuiet(failing.repo, 'config', 'core.hooksPath', hooks);
+    // Guaranteed apply-path failure (same hook-injection shape as CORE-419.3): a
+    // rejecting pre-commit hook, which the bump commit runs since CORE-852.4.
+    await installHook(failing.repo, 'pre-commit', 'echo "pin check: refused"\necho "detail line"\nexit 1');
 
     const { code, stdout, stderr } = await runCli(['--apply', '--root', root], {
       expectFail: true,
@@ -1069,7 +1245,9 @@ describe('sandboxed --apply', { concurrency: GROUP_CONCURRENCY }, () => {
 
     assert.equal(code, 1);
     assert.match(stdout, /⬆ a-ok: bumped/);
-    assert.match(stderr, /✗ b-fail: bump failed/);
+    // The ✗ line carries the hook's first output line, not git's command echo.
+    assert.match(stderr, /✗ b-fail: bump failed — commit failed \(hook\?\) — pin check: refused\n/);
+    assert.doesNotMatch(stderr, /detail line/);
     assert.match(stdout, /⬆ c-ok: bumped/);
     assert.match(stdout, /Summary:.*bumped 2 · 0 skipped · 1 failed/);
 
@@ -1116,27 +1294,29 @@ describe('applyBump rollback (CORE-419.3)', { concurrency: GROUP_CONCURRENCY }, 
     await rmTree(root);
   });
 
-  it('unstages the gitlink and restores the submodule when the commit fails', async () => {
+  it('restores rewritten files, the submodule and the index when a hook rejects the commit (CORE-852.4)', async () => {
     const root = await mkdtemp(join(tmpdir(), 'ft-upd-rb-commit-'));
     const adopter = await makeAdopter(root, 'commit-fail', previous);
+    const readme = `Pinned to: ${previous}\n`;
+    await commitFollowThroughFiles(adopter.repo, { readme, agents: AGENTS_FIXTURE });
     const priorSha = (await git(adopter.sub, 'rev-parse', 'HEAD')).trim();
     const headBefore = (await git(adopter.repo, 'rev-parse', 'HEAD')).trim();
 
-    // Fail at the last step — after `git add` staged the gitlink — so both halves
-    // of the rollback have to run. core.hooksPath is pinned explicitly so a global
-    // override on the host cannot silently disarm the injection. prepare-commit-msg
-    // rather than pre-commit — the bump commit passes --no-verify (CORE-490.3),
-    // which skips pre-commit/commit-msg but not this one.
-    const hooks = join(adopter.repo, '.git', 'hooks');
-    await mkdir(hooks, { recursive: true });
-    await writeFile(join(hooks, 'prepare-commit-msg'), '#!/bin/sh\nexit 1\n', { mode: 0o755 });
-    await gitQuiet(adopter.repo, 'config', 'core.hooksPath', hooks);
+    // Fail at the last step — after the follow-through rewrote and staged both
+    // files and the gitlink — so every part of the rollback has to run.
+    await installHook(adopter.repo, 'pre-commit', 'echo "lint: AGENTS.md rejected" >&2\nexit 1');
 
-    await assert.rejects(() => applyBump({ ...adopter, current: previous }, latest));
+    await assert.rejects(
+      () => applyBump({ ...adopter, current: previous }, latest),
+      /^Error: commit failed \(hook\?\) — lint: AGENTS\.md rejected$/,
+    );
 
     assert.equal((await git(adopter.sub, 'rev-parse', 'HEAD')).trim(), priorSha);
     assert.equal((await git(adopter.repo, 'diff', '--cached', '--name-only')).trim(), '');
+    assert.equal((await git(adopter.repo, 'status', '--porcelain', '--untracked-files=no')).trim(), '');
     assert.equal((await git(adopter.repo, 'rev-parse', 'HEAD')).trim(), headBefore);
+    assert.equal(await readFile(join(adopter.repo, README_REL), 'utf8'), readme);
+    assert.equal(await readFile(join(adopter.repo, 'AGENTS.md'), 'utf8'), AGENTS_FIXTURE);
 
     await rmTree(root);
   });

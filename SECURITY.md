@@ -187,7 +187,8 @@ reviewed as one. Do not add repository secrets to this workflow.
 `~/code`, not workflow machinery inside a project. It batches the bump
 half of the `/ft-update` recipe (not its per-platform wiring repair) across
 every discovered adopter: bump the pinned
-`.flaitron/core` submodule to the latest release and commit — run manually
+`.flaitron/core` submodule to the latest release, rewrite the adopter's pin
+line and AGENTS.md Workflow block, and commit — run manually
 by the maintainer (never on a schedule or in CI). Its execution surface
 differs from the rest of this document: it walks a filesystem tree, shells
 out to `git` across many repos, and can commit inside them.
@@ -210,7 +211,7 @@ out to `git` across many repos, and can commit inside them.
   submodule path read from an adopter's `.gitmodules` is adopter-authored. It
   is refused when absolute or escaping the repo, and every `git add` /
   `commit` / `reset` it reaches runs under `--literal-pathspecs`, so glob or
-  `:(…)` magic in it cannot widen the commit beyond the gitlink.
+  `:(…)` magic in it cannot widen the commit beyond the paths the run wrote.
 - **Canonical-SHA cross-check on checkout.** `applyBump` calls
   `checkoutVerified`, which doesn't trust the
   checked-out submodule's own claim of its version — after checkout it
@@ -223,11 +224,14 @@ out to `git` across many repos, and can commit inside them.
   and the only other network call is `fetch --tags` — there is no
   `git push` anywhere in the script. Every bump commit stays local until
   the operator reviews and pushes it themselves, per repo.
-- **Bump commits pass `--no-verify`.** The bump commit is a
-  pathspec commit touching only the flaitron submodule gitlink. `--no-verify` skips only
-  `pre-commit`/`commit-msg` — the hooks that could run arbitrary adopter-authored
-  code — as a side effect of an unattended fleet sweep; `prepare-commit-msg`/
-  `post-commit` still run.
+- **Bump commits run the adopter's hooks.** The bump commit is a pathspec
+  commit naming only the paths the run wrote: the flaitron submodule gitlink
+  plus, when they changed, `.flaitron/tasknote/README.md`'s `Pinned to:` line
+  and AGENTS.md's `## Workflow` section (each skipped when it or a parent
+  directory is a symlink, so no write lands outside the adopter). The script never passes `--no-verify`,
+  so every adopter-authored hook runs during a sweep — run it only over repos
+  whose hooks you trust. A rejecting hook fails that adopter's bump: the
+  rewritten files, submodule and index are rolled back and the run exits 1.
 - **Dry-run default.** The script only reports what it would do unless
   invoked with `--apply` (`parseArgs`); a bare
   `node tools/update-adopters.mjs` mutates nothing.

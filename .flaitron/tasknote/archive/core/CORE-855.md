@@ -56,7 +56,7 @@ Cut v8.3.0 minor release tagging CORE-851 (one-line installer carve-out) + CORE-
 - [x] Run the `docs ai-referenced` subroutine and the §7.1 standing-checks + mirror-pairs fragments
 - [x] Draft and lock the annotated tag message + VERSION-HISTORY entry (§7.2)
 - [x] Commit, tag, and push on 🟢 GO
-- [ ] Post-push: `install-test.yml` green on ubuntu + macOS; installer one-liner + `/ft-adopt` hand-off on a scratch repo
+- [x] Post-push: `install-test.yml` green on ubuntu + macOS; installer one-liner + `/ft-adopt` hand-off on a scratch repo
 
 ## 🔗 Related
 
@@ -159,7 +159,10 @@ Discovery surfaced no significant deviation → skip 🛠️ (the three asks wer
 
 - [x] **Learnings** — N/A for the always-loaded layer. The release recipe's shellcheck lives only in the path-filtered `install-test.yml`, so a runner-version lint gap surfaced first at the cut; §6.1 caught it as designed.
 
-**Post-push (recorded after the release push, per operator):** pending.
+**Post-push (recorded after the release push, per operator):** release commit `9e0913b6`, tag `v8.3.0` pushed, GitHub Release published and marked latest; `curl -fsSI …/v8.3.0/install.sh` → HTTP 200.
+- `install-test.yml`: the release commit touches no filtered path, so the `9ffe2d6e` run was re-run after the push (`41349129841`) — shellcheck, e2e ubuntu-latest, e2e macos-latest all success; the e2e log shows `flaitron v8.3.0 (source: GitHub releases/latest)` ×3 and no `FAIL` line. (An accidental re-run of the pre-fix `91b38a36` run was cancelled.)
+- Installer → `/ft-adopt` hand-off on a scratch repo, `HOME` / `FLAITRON_HOME` sandboxed under the session scratchpad: the tag-pinned one-liner exited 0, pinned `.flaitron/core` at v8.3.0 = `9e0913b6` (tag matched GitHub's commit), wired the 7 Claude policy links, cloned v8.3.0 and linked the global `ft-adopt`, staged `.gitmodules` + `.flaitron/core`, and printed `Next: run /ft-adopt`; no "predates this installer" warning. All four ft-adopt Step 0 installer-exception conditions hold there (no `.flaitron/PLAN.md`; `.gitmodules` URL `fakeneuron/flaitron`; `describe --exact-match` → v8.3.0; every `ft-*` link points into `.flaitron/core/` and resolves). An interactive `/ft-adopt` session in that repo was not driven — left for the operator if wanted.
+- CORE-851's two deferred checks are met here.
 
 **Final Summary:** Cut flaitron v8.3.0, a minor release. A new adopter can install flaitron with one tag-pinned command: `install.sh` pins `.flaitron/core` to a verified release tag, wires each detected agent's skill links from the pinned snippets, links one global `ft-adopt` and hands off to `/ft-adopt` (CORE-851). SPEC.md, the `/ft-task` body and the agent-neutral ft-task procedure now point at the module that owns each rule, cutting the default cold-start path from 114,045 to 106,250 chars, and small doc patches route by size first (CORE-EPIC-857). The 16 unpushed commits were pushed first so CI could gate HEAD. `install-test.yml`'s shellcheck job was red there (the runner's pre-0.11 shellcheck reports SC2317), fixed in `9ffe2d6e` and green on both OSes. The cut bumped the three version pins (the README URL was already v8.3.0). Claude was refreshed to v8.3.0; Grok, Codex and Cursor were recorded as skipped. The §7.1 sweep held four doc findings; the operator chose Stop, they were fixed here, and the re-run came back clean. SOP currency clean. Adopter impact: no required project-side edits.
 

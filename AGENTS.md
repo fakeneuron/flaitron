@@ -68,7 +68,7 @@ not to)".
 - `.gitleaks.toml` — gitleaks config for CI's secret scan.
 - `install.sh` — the one-line adopter installer (`curl … | sh`; a CLI carve-out per `SPEC/scope-boundaries.md`), tested by `tools/install.test.sh`.
 - `.github/` — GitHub-specific config (CI workflows: `workflows/ci.yml`, plus `workflows/install-test.yml`, the path-filtered network test of `install.sh`; Dependabot security-update config: `dependabot.yml`).
-- `justfile` — `just` recipes (`setup`/`dev`/`test`/`lint`/`typecheck`/`build`/`check`). Viz verbs delegate to the `viz/` npm scripts; `check` runs the eight §"Validation" commands below plus `bash tools/drift-checks.sh`. §"Validation" stays the roster of record.
+- `justfile` — `just` recipes (`setup`/`dev`/`test`/`lint`/`typecheck`/`build`/`check`/`coverage`). Viz verbs delegate to the `viz/` npm scripts; `check` runs the eight §"Validation" commands below plus `bash tools/drift-checks.sh`. §"Validation" stays the roster of record.
 - `SPEC.md` — canonical workflow contract.
 - `SPEC/` — lazy modules for epics, starter tasks, blocked tasks, model
   routing, gate machinery, flag postures, the operator-cue vocabulary,

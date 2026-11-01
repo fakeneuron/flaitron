@@ -146,12 +146,12 @@ export function extractSection(body: string, titleSubstring: string): string {
   let inSection = false;
   const collected: string[] = [];
   for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
+    const line = lines[i]!;
     if (!inFence[i]) {
       const heading = SECTION_HEADING.exec(line);
       if (heading) {
         if (inSection) break;
-        if (titleBoundary.test(heading[1])) {
+        if (titleBoundary.test(heading[1]!)) {
           inSection = true;
           continue;
         }
@@ -178,11 +178,11 @@ export function extractStarterSubsections(starterContext: string): StarterSubsec
     outOfScope: [],
   };
   for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
+    const line = lines[i]!;
     if (!inFence[i]) {
       const heading = SUBSECTION_HEADING.exec(line);
       if (heading) {
-        const title = heading[1];
+        const title = heading[1]!;
         const matchedKey =
           STARTER_SUBSECTION_KEYS.find((k) => title.includes(STARTER_SUBSECTION_TITLES[k])) ?? null;
         activeKey = matchedKey;
@@ -213,15 +213,16 @@ function structuralChecklistLines(markdown: string): { line: string; checked: bo
   const items: { line: string; checked: boolean }[] = [];
   for (let i = 0; i < lines.length; i++) {
     if (inFence[i]) continue;
-    const m = CHECKLIST_LINE.exec(lines[i]);
-    if (m) items.push({ line: lines[i], checked: m[1] === 'x' || m[1] === 'X' });
+    const line = lines[i]!;
+    const m = CHECKLIST_LINE.exec(line);
+    if (m) items.push({ line, checked: m[1] === 'x' || m[1] === 'X' });
   }
   return items;
 }
 
 export function activePhaseIndex(phases: ChecklistCounts[]): number {
   for (let i = 0; i < phases.length; i++) {
-    const p = phases[i];
+    const p = phases[i]!;
     if (p.total === 0) return i;
     if (p.done < p.total) return i;
   }

@@ -22,6 +22,10 @@ npm --prefix viz run build
 
 Inside `viz/`, drop the `--prefix viz`.
 
+`npm --prefix viz test -- --coverage` writes `viz/coverage/lcov.info`;
+`just coverage [BASE]` (default `origin/main`) gates the changed lines at 80%
+with `diff-cover`, mirroring CI's `coverage` job (FE-151).
+
 ### `package.json`'s `version` field is not maintained
 
 It does not track the flaitron release version — the git tag is the sole

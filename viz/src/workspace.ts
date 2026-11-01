@@ -49,7 +49,7 @@ async function pinnedVersion(specPath: string): Promise<string | null> {
     // Matches "**Version:** v4.5.0" or "**Version:** 4.5.0" (with or without v prefix)
     const m = /^\*\*Version:\*\*\s*(v?\d+\.\d+\.\d+)/m.exec(text);
     if (!m) return null;
-    const v = m[1];
+    const v = m[1]!;
     return v.startsWith('v') ? v : `v${v}`;
   } catch {
     return null;

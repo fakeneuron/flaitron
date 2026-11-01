@@ -102,7 +102,8 @@ export function useKeyboardNav(params: UseKeyboardNavParams) {
             : idx < 0
               ? visibleIds.length - 1
               : Math.max(idx - 1, 0);
-        const nextId = visibleIds[next];
+        // `next` is clamped to [0, length-1] and length > 0 (checked above).
+        const nextId = visibleIds[next]!;
         setSelectedId(nextId);
         scrollRowIntoView(nextId);
         e.preventDefault();

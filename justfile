@@ -11,6 +11,7 @@
 # (CORE-830). `check` keeps its standalone `typecheck` although `build` runs
 # `typecheck` too (FE-141): the repeat is a warm `tsc -b` (~0.2s, incremental
 # buildinfo), and §"Validation" lists `typecheck` as its own command (FE-143).
+# `coverage` mirrors CI's `coverage` job and stays out of `check` (FE-151).
 #
 # Prerequisite: `just` (one-time `brew install just`). Run `just` with no
 # args to list recipes.
@@ -42,6 +43,24 @@ typecheck:
 # build viz
 build:
     npm --prefix viz run build
+
+# Usage: `just coverage` (vs. origin/main) or `just coverage HEAD~3`.
+# changed-line coverage for viz (mirrors CI's `coverage` job)
+coverage BASE="origin/main":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    # Same tool, pin and threshold as the `coverage` job in
+    # .github/workflows/ci.yml (FE-151, after natabula NAT-229); bump both
+    # together. Not part of `check`: it needs a base ref to diff against.
+    # diff-cover reads `git diff`, so an untracked new file is not gated
+    # until it is `git add`ed (CI always sees it).
+    DC="diff-cover@10.5.1"; MIN=80
+    npm --prefix viz test -- --coverage
+    # lcov SF: paths are viz-relative, git diff paths repo-root-relative, and
+    # diff-cover's --src-roots does not remap lcov. Without this rewrite the
+    # gate reports "No lines with coverage information" and passes everything.
+    sed -i.bak 's|^SF:|SF:viz/|' viz/coverage/lcov.info && rm -f viz/coverage/lcov.info.bak
+    uvx "$DC" viz/coverage/lcov.info --compare-branch={{quote(BASE)}} --fail-under=$MIN --show-uncovered
 
 # run AGENTS.md §"Validation" plus drift checks
 check: test typecheck lint build

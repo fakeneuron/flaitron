@@ -15,8 +15,9 @@ export function fenceMask(lines: string[]): boolean[] {
   for (const line of lines) {
     const m = FENCE_DELIMITER.exec(line);
     if (open === null) {
-      if (m !== null && !(m[1][0] === '`' && m[2].includes('`'))) {
-        open = m[1];
+      // Both groups are mandatory and group 1 is 3+ chars, so the `!`s hold.
+      if (m !== null && !(m[1]![0] === '`' && m[2]!.includes('`'))) {
+        open = m[1]!;
         mask.push(true);
       } else {
         mask.push(false);
@@ -25,7 +26,7 @@ export function fenceMask(lines: string[]): boolean[] {
     }
     mask.push(true);
     const closes =
-      m !== null && m[1][0] === open[0] && m[1].length >= open.length && m[2].trim() === '';
+      m !== null && m[1]![0] === open[0] && m[1]!.length >= open.length && m[2]!.trim() === '';
     if (closes) open = null;
   }
   return mask;

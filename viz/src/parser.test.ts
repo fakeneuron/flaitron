@@ -44,9 +44,9 @@ describe('parsePlan', () => {
       completed: true,
       completedDate: '2026-04-30',
     });
-    expect(tasks[0].description).toContain('Did the thing');
-    expect(tasks[0].description).toContain('Notes here');
-    expect(tasks[0].description).not.toContain('2026-04-30');
+    expect(tasks[0]!.description).toContain('Did the thing');
+    expect(tasks[0]!.description).toContain('Notes here');
+    expect(tasks[0]!.description).not.toContain('2026-04-30');
   });
 
   it('parses subtasks under an epic in the same section', () => {
@@ -80,15 +80,15 @@ describe('parsePlan', () => {
 
   it('resolves a `[[TASK-ID.N]]` wikilink into relatedTasks', () => {
     const md = `## Medium\n\n- [ ] **CORE-005.2** — Builds on [[CORE-005.N]] audit findings.\n`;
-    const t = parsePlan(md)[0];
-    expect(t.relatedTasks).toEqual(['CORE-005.N']);
-    expect(t.blockedBy).toEqual([]);
+    const t = parsePlan(md)[0]!;
+    expect(t!.relatedTasks).toEqual(['CORE-005.N']);
+    expect(t!.blockedBy).toEqual([]);
   });
 
   // Adopter near-miss IDs — lettered subtask suffix + nested decimals.
   it('parses a lettered subtask id (`FE-310.3a`)', () => {
     const md = `## High\n\n- [ ] **FE-310.3a** [moderate] | lettered — adopter subtask suffix.\n`;
-    const t = parsePlan(md)[0];
+    const t = parsePlan(md)[0]!;
     expect(t).toMatchObject({
       id: 'FE-310.3a',
       model: 'moderate',
@@ -99,7 +99,7 @@ describe('parsePlan', () => {
 
   it('parses a nested-decimal id (`FE-067.2.1`)', () => {
     const md = `## Medium\n\n- [ ] **FE-067.2.1** [light] | nested — adopter nested decimal.\n`;
-    const t = parsePlan(md)[0];
+    const t = parsePlan(md)[0]!;
     expect(t).toMatchObject({
       id: 'FE-067.2.1',
       model: 'light',
@@ -110,8 +110,8 @@ describe('parsePlan', () => {
 
   it('extracts lettered and nested-decimal wikilinks into relatedTasks', () => {
     const md = `## High\n\n- [ ] **CORE-001** — See [[FE-310.3a]] and [[FE-067.2.1]].\n`;
-    const t = parsePlan(md)[0];
-    expect(t.relatedTasks).toEqual(['FE-310.3a', 'FE-067.2.1']);
+    const t = parsePlan(md)[0]!;
+    expect(t!.relatedTasks).toEqual(['FE-310.3a', 'FE-067.2.1']);
   });
 
   it('skips task-shaped lines outside known section headings', () => {
@@ -131,7 +131,7 @@ describe('parsePlan', () => {
 
 - [ ] **CORE-EPIC-009** — Migrate **acme** (epic; child tasks)
 `;
-    expect(parsePlan(md)[0].description).toBe('Migrate acme (epic; child tasks)');
+    expect(parsePlan(md)[0]!.description).toBe('Migrate acme (epic; child tasks)');
   });
 
   it('ignores empty-section placeholder lines', () => {
@@ -148,56 +148,56 @@ describe('parsePlan', () => {
 
   it('parses [model] segment when present', () => {
     const md = `## High\n\n- [ ] **CORE-001** [opus] — Hello\n`;
-    const t = parsePlan(md)[0];
-    expect(t.model).toBe('opus');
-    expect(t.shortname).toBeUndefined();
-    expect(t.description).toBe('Hello');
+    const t = parsePlan(md)[0]!;
+    expect(t!.model).toBe('opus');
+    expect(t!.shortname).toBeUndefined();
+    expect(t!.description).toBe('Hello');
   });
 
   it('parses | shortname segment when present', () => {
     const md = `## High\n\n- [ ] **CORE-001** | quick name — long description\n`;
-    const t = parsePlan(md)[0];
-    expect(t.model).toBeUndefined();
-    expect(t.shortname).toBe('quick name');
-    expect(t.description).toBe('long description');
+    const t = parsePlan(md)[0]!;
+    expect(t!.model).toBeUndefined();
+    expect(t!.shortname).toBe('quick name');
+    expect(t!.description).toBe('long description');
   });
 
   it('parses [model] + | shortname together', () => {
     const md = `## High\n\n- [ ] **CORE-001** [sonnet] | quick — long\n`;
-    const t = parsePlan(md)[0];
-    expect(t.model).toBe('sonnet');
-    expect(t.shortname).toBe('quick');
-    expect(t.description).toBe('long');
+    const t = parsePlan(md)[0]!;
+    expect(t!.model).toBe('sonnet');
+    expect(t!.shortname).toBe('quick');
+    expect(t!.description).toBe('long');
   });
 
   it('parses [model] + | shortname with no long description', () => {
     const md = `## High\n\n- [ ] **CORE-001** [opus] | quick name\n`;
-    const t = parsePlan(md)[0];
-    expect(t.model).toBe('opus');
-    expect(t.shortname).toBe('quick name');
-    expect(t.description).toBe('');
-    expect(t.completedDate).toBeUndefined();
+    const t = parsePlan(md)[0]!;
+    expect(t!.model).toBe('opus');
+    expect(t!.shortname).toBe('quick name');
+    expect(t!.description).toBe('');
+    expect(t!.completedDate).toBeUndefined();
   });
 
   it('parses [model] alone with no shortname or long description', () => {
     const md = `## High\n\n- [ ] **CORE-001** [opus]\n`;
-    const t = parsePlan(md)[0];
-    expect(t.model).toBe('opus');
-    expect(t.shortname).toBeUndefined();
-    expect(t.description).toBe('');
+    const t = parsePlan(md)[0]!;
+    expect(t!.model).toBe('opus');
+    expect(t!.shortname).toBeUndefined();
+    expect(t!.description).toBe('');
   });
 
   it('legacy minimal form leaves model and shortname undefined', () => {
     const md = `## High\n\n- [ ] **CORE-001** — Hello world\n`;
-    const t = parsePlan(md)[0];
-    expect(t.model).toBeUndefined();
-    expect(t.shortname).toBeUndefined();
-    expect(t.description).toBe('Hello world');
+    const t = parsePlan(md)[0]!;
+    expect(t!.model).toBeUndefined();
+    expect(t!.shortname).toBeUndefined();
+    expect(t!.description).toBe('Hello world');
   });
 
   it('extracts Completed date from long description with new grammar', () => {
     const md = `## Completed\n\n- [x] **FE-005** [opus] | viz rebuild — Did the thing. Completed 2026-04-30.\n`;
-    const t = parsePlan(md)[0];
+    const t = parsePlan(md)[0]!;
     expect(t).toMatchObject({
       id: 'FE-005',
       model: 'opus',
@@ -205,8 +205,8 @@ describe('parsePlan', () => {
       completed: true,
       completedDate: '2026-04-30',
     });
-    expect(t.description).toContain('Did the thing');
-    expect(t.description).not.toContain('2026-04-30');
+    expect(t!.description).toContain('Did the thing');
+    expect(t!.description).not.toContain('2026-04-30');
   });
 
   it('accepts adopter model tokens beyond opus|sonnet', () => {
@@ -241,47 +241,47 @@ describe('parsePlan', () => {
   // Grammar tolerances for real PLAN.md decorations.
   it('parses a model-suggestion glyph after [model] with no space', () => {
     const md = `## High\n\n- [ ] **FE-066** [moderate]🧠 | glyph tol — long desc\n`;
-    const t = parsePlan(md)[0];
+    const t = parsePlan(md)[0]!;
     expect(t).toMatchObject({ id: 'FE-066', model: 'moderate', shortname: 'glyph tol' });
-    expect(t.description).toBe('long desc');
+    expect(t!.description).toBe('long desc');
   });
 
   it('parses a model-suggestion glyph after [model] with a space', () => {
     const md = `## High\n\n- [ ] **FE-065** [light] 🔧 | dedup — cleanup work\n`;
-    const t = parsePlan(md)[0];
+    const t = parsePlan(md)[0]!;
     expect(t).toMatchObject({ id: 'FE-065', model: 'light', shortname: 'dedup' });
-    expect(t.description).toBe('cleanup work');
+    expect(t!.description).toBe('cleanup work');
   });
 
   it('parses a suggestion glyph directly before the long description (no shortname)', () => {
     const md = `## Completed\n\n- [x] **FE-064** [moderate]🧠 — Completed 2026-07-02.\n`;
-    const t = parsePlan(md)[0];
+    const t = parsePlan(md)[0]!;
     expect(t).toMatchObject({ id: 'FE-064', model: 'moderate', completed: true, completedDate: '2026-07-02' });
-    expect(t.shortname).toBeUndefined();
+    expect(t!.shortname).toBeUndefined();
   });
 
   it('parses stacked [model] tokens, capturing the first and dropping the rest', () => {
     const md = `## High\n\n- [ ] **CORE-001** [fable] [light] | stacked — desc\n`;
-    const t = parsePlan(md)[0];
-    expect(t.model).toBe('fable');
-    expect(t.shortname).toBe('stacked');
-    expect(t.description).toBe('desc');
+    const t = parsePlan(md)[0]!;
+    expect(t!.model).toBe('fable');
+    expect(t!.shortname).toBe('stacked');
+    expect(t!.description).toBe('desc');
   });
 
   // `[unattended]` is canonical grammar, not a dropped tolerance.
   it('captures [unattended] after [model] into Task.unattended', () => {
     const md = `## High\n\n- [ ] **CORE-494** [moderate] [unattended] | marker — desc\n`;
-    const t = parsePlan(md)[0];
+    const t = parsePlan(md)[0]!;
     expect(t).toMatchObject({ id: 'CORE-494', model: 'moderate', unattended: true });
-    expect(t.shortname).toBe('marker');
-    expect(t.description).toBe('desc');
+    expect(t!.shortname).toBe('marker');
+    expect(t!.description).toBe('desc');
   });
 
   it('captures [unattended] alongside stacked [model] tokens and a suggestion glyph', () => {
     const md = `## High\n\n- [ ] **CORE-494** [!critical] [fable] [light] [unattended]🔧 | mixed — desc\n`;
-    const t = parsePlan(md)[0];
+    const t = parsePlan(md)[0]!;
     expect(t).toMatchObject({ critical: true, model: 'fable', unattended: true });
-    expect(t.shortname).toBe('mixed');
+    expect(t!.shortname).toBe('mixed');
   });
 
   // The suggestion glyph is accepted on either side of the trailing-token
@@ -290,17 +290,17 @@ describe('parsePlan', () => {
   // after the run would fail TASK_LINE and drop the whole row.
   it('captures [unattended] written after a glyph-decorated [model]', () => {
     const md = `## High\n\n- [ ] **CORE-502** [xheavy]🔭 [unattended] | glyph first — desc\n`;
-    const t = parsePlan(md)[0];
+    const t = parsePlan(md)[0]!;
     expect(t).toMatchObject({ id: 'CORE-502', model: 'xheavy', unattended: true });
-    expect(t.shortname).toBe('glyph first');
-    expect(t.description).toBe('desc');
+    expect(t!.shortname).toBe('glyph first');
+    expect(t!.description).toBe('desc');
   });
 
   it('captures [unattended] after a space-separated glyph', () => {
     const md = `## High\n\n- [ ] **CORE-502** [moderate] 🧩 [unattended] | spaced glyph — desc\n`;
-    const t = parsePlan(md)[0];
+    const t = parsePlan(md)[0]!;
     expect(t).toMatchObject({ id: 'CORE-502', model: 'moderate', unattended: true });
-    expect(t.shortname).toBe('spaced glyph');
+    expect(t!.shortname).toBe('spaced glyph');
   });
 
   it('does not flag a glyph-before-marker row as an unparsed diagnostic', () => {
@@ -310,7 +310,7 @@ describe('parsePlan', () => {
 
   it('leaves unattended false on rows without the marker', () => {
     const md = `## High\n\n- [ ] **CORE-001** [fable] [light] | stacked — desc\n`;
-    expect(parsePlan(md)[0].unattended).toBe(false);
+    expect(parsePlan(md)[0]!.unattended).toBe(false);
   });
 
   // Footgun 1 (SPEC §"Task-line format"): the `!` prefix belongs to
@@ -350,9 +350,9 @@ describe('parsePlan', () => {
   // capture shape as `[unattended]`, same two footguns.
   it('captures [handoff] after [model] into Task.handoff', () => {
     const md = `## High\n\n- [ ] **CORE-598** [moderate] [handoff] | marker — desc\n`;
-    const t = parsePlan(md)[0];
+    const t = parsePlan(md)[0]!;
     expect(t).toMatchObject({ id: 'CORE-598', model: 'moderate', handoff: true, unattended: false });
-    expect(t.shortname).toBe('marker');
+    expect(t!.shortname).toBe('marker');
   });
 
   it('captures [handoff] and [unattended] together in either order', () => {
@@ -369,7 +369,7 @@ describe('parsePlan', () => {
 
   it('leaves handoff false on rows without the marker', () => {
     const md = `## High\n\n- [ ] **CORE-001** [fable] [light] [unattended] | stacked — desc\n`;
-    expect(parsePlan(md)[0].handoff).toBe(false);
+    expect(parsePlan(md)[0]!.handoff).toBe(false);
   });
 
   it('drops the whole line for [!handoff] and surfaces it as an unparsed diagnostic', () => {
@@ -399,42 +399,42 @@ describe('parsePlan', () => {
 
   it('parses a leading status glyph between the checkbox and the bold ID', () => {
     const md = `## High\n\n- [ ] ⏸ **CORE-042** [heavy] | parked — blocked work\n`;
-    const t = parsePlan(md)[0];
+    const t = parsePlan(md)[0]!;
     expect(t).toMatchObject({ id: 'CORE-042', model: 'heavy', shortname: 'parked' });
-    expect(t.description).toBe('blocked work');
+    expect(t!.description).toBe('blocked work');
   });
 
   it('composes all three tolerances with [!critical], shortname, long desc, and a wikilink', () => {
     const md = `## High\n\n- [ ] ⏸ **CORE-042** [!critical] [fable] [light]🧠 | hotfix — Builds on [[FE-001]].\n`;
-    const t = parsePlan(md)[0];
+    const t = parsePlan(md)[0]!;
     expect(t).toMatchObject({
       id: 'CORE-042',
       critical: true,
       model: 'fable',
       shortname: 'hotfix',
     });
-    expect(t.relatedTasks).toEqual(['FE-001']);
+    expect(t!.relatedTasks).toEqual(['FE-001']);
   });
 
   it('parses a [moderate] suggestion glyph (🧩)', () => {
     const md = `## High\n\n- [ ] **CORE-353** [moderate]🧩 | moderate glyph — long desc\n`;
-    const t = parsePlan(md)[0];
+    const t = parsePlan(md)[0]!;
     expect(t).toMatchObject({ id: 'CORE-353', model: 'moderate', shortname: 'moderate glyph' });
-    expect(t.description).toBe('long desc');
+    expect(t!.description).toBe('long desc');
   });
 
   it('parses the legacy [medium] alias with its 🧩 glyph, stored as written', () => {
     const md = `## High\n\n- [ ] **CORE-353** [medium]🧩 | legacy alias — long desc\n`;
-    const t = parsePlan(md)[0];
+    const t = parsePlan(md)[0]!;
     expect(t).toMatchObject({ id: 'CORE-353', model: 'medium', shortname: 'legacy alias' });
-    expect(t.description).toBe('long desc');
+    expect(t!.description).toBe('long desc');
   });
 
   it('parses an [xheavy] suggestion glyph (🔭)', () => {
     const md = `## High\n\n- [ ] **CORE-482** [xheavy]🔭 | xheavy glyph — long desc\n`;
-    const t = parsePlan(md)[0];
+    const t = parsePlan(md)[0]!;
     expect(t).toMatchObject({ id: 'CORE-482', model: 'xheavy', shortname: 'xheavy glyph' });
-    expect(t.description).toBe('long desc');
+    expect(t!.description).toBe('long desc');
   });
 
   it('parses a [frontier] suggestion glyph (💎) with and without a space', () => {
@@ -445,7 +445,7 @@ describe('parsePlan', () => {
       model: 'frontier',
       shortname: 'frontier glyph',
     });
-    expect(parsePlan(tight)[0].description).toBe('long desc');
+    expect(parsePlan(tight)[0]!.description).toBe('long desc');
     expect(parsePlan(spaced)[0]).toMatchObject({
       model: 'frontier',
       shortname: 'frontier spaced',
@@ -483,122 +483,122 @@ describe('parsePlan', () => {
 
   it('extracts a single [[TASK-ID]] wikilink into relatedTasks', () => {
     const md = `## Medium\n\n- [ ] **FE-003** | wikilink resolution — Builds on [[FE-001]] in viz/.\n`;
-    const t = parsePlan(md)[0];
-    expect(t.relatedTasks).toEqual(['FE-001']);
-    expect(t.blockedBy).toEqual([]);
+    const t = parsePlan(md)[0]!;
+    expect(t!.relatedTasks).toEqual(['FE-001']);
+    expect(t!.blockedBy).toEqual([]);
   });
 
   it('extracts multiple wikilinks into relatedTasks (deduped, in source order)', () => {
     const md = `## Medium\n\n- [ ] **FE-002** [opus] | cross-project viz — Extends [[FE-001]]; pairs with [[FE-004]] (and [[FE-001]] again).\n`;
-    const t = parsePlan(md)[0];
-    expect(t.relatedTasks).toEqual(['FE-001', 'FE-004']);
-    expect(t.blockedBy).toEqual([]);
+    const t = parsePlan(md)[0]!;
+    expect(t!.relatedTasks).toEqual(['FE-001', 'FE-004']);
+    expect(t!.blockedBy).toEqual([]);
   });
 
   it('extracts Blocked by [[ID]] into blockedBy', () => {
     const md = `## Medium\n\n- [ ] **CORE-016** [opus] — Execute migration. Blocked by [[CORE-008]] — do not start until backlog is cleared.\n`;
-    const t = parsePlan(md)[0];
-    expect(t.blockedBy).toEqual(['CORE-008']);
+    const t = parsePlan(md)[0]!;
+    expect(t!.blockedBy).toEqual(['CORE-008']);
     // Wikilink inside a Blocked-by block must NOT also land in relatedTasks.
-    expect(t.relatedTasks).toEqual([]);
+    expect(t!.relatedTasks).toEqual([]);
   });
 
   it('extracts Blocked by with multiple comma-separated wikilinks', () => {
     const md = `## Medium\n\n- [ ] **CORE-016** — Run migration. Blocked by [[CORE-008]], [[CORE-007]] — wait for upstream.\n`;
-    const t = parsePlan(md)[0];
-    expect(t.blockedBy).toEqual(['CORE-008', 'CORE-007']);
-    expect(t.relatedTasks).toEqual([]);
+    const t = parsePlan(md)[0]!;
+    expect(t!.blockedBy).toEqual(['CORE-008', 'CORE-007']);
+    expect(t!.relatedTasks).toEqual([]);
   });
 
   it('keeps related and blocked separate within the same description', () => {
     const md = `## Medium\n\n- [ ] **FE-007** — Builds on [[FE-001]] and [[FE-004]]. Blocked by [[CORE-008]] — wait for migration playbook.\n`;
-    const t = parsePlan(md)[0];
-    expect(t.relatedTasks).toEqual(['FE-001', 'FE-004']);
-    expect(t.blockedBy).toEqual(['CORE-008']);
+    const t = parsePlan(md)[0]!;
+    expect(t!.relatedTasks).toEqual(['FE-001', 'FE-004']);
+    expect(t!.blockedBy).toEqual(['CORE-008']);
   });
 
   it('puts a wikilink ID in blockedBy only when it appears in BOTH contexts (blocker wins)', () => {
     const md = `## Medium\n\n- [ ] **FE-009** — Extends [[CORE-008]] in spirit. Blocked by [[CORE-008]] until backlog clears.\n`;
-    const t = parsePlan(md)[0];
-    expect(t.blockedBy).toEqual(['CORE-008']);
-    expect(t.relatedTasks).toEqual([]);
+    const t = parsePlan(md)[0]!;
+    expect(t!.blockedBy).toEqual(['CORE-008']);
+    expect(t!.relatedTasks).toEqual([]);
   });
 
   it('does NOT match bare-ID `Blocked by: CORE-008` (wikilink-only contract)', () => {
     const md = `## Medium\n\n- [ ] **CORE-016** — Run migration. Blocked by: CORE-008 — bare ID without wikilinks must not parse.\n`;
-    const t = parsePlan(md)[0];
-    expect(t.blockedBy).toEqual([]);
-    expect(t.relatedTasks).toEqual([]);
+    const t = parsePlan(md)[0]!;
+    expect(t!.blockedBy).toEqual([]);
+    expect(t!.relatedTasks).toEqual([]);
   });
 
   it('returns empty arrays when the description has neither wikilinks nor blockers', () => {
     const md = `## High\n\n- [ ] **CORE-001** [opus] — Plain prose with no cross-references.\n`;
-    const t = parsePlan(md)[0];
-    expect(t.relatedTasks).toEqual([]);
-    expect(t.blockedBy).toEqual([]);
+    const t = parsePlan(md)[0]!;
+    expect(t!.relatedTasks).toEqual([]);
+    expect(t!.blockedBy).toEqual([]);
   });
 
   it('handles legacy minimal task lines with no description (no wikilinks possible)', () => {
     const md = `## High\n\n- [ ] **CORE-001** [opus] | quick name\n`;
-    const t = parsePlan(md)[0];
-    expect(t.relatedTasks).toEqual([]);
-    expect(t.blockedBy).toEqual([]);
+    const t = parsePlan(md)[0]!;
+    expect(t!.relatedTasks).toEqual([]);
+    expect(t!.blockedBy).toEqual([]);
   });
 
   it('ignores wikilinks and Blocked-by clauses inside backtick code spans', () => {
     const md = `## High\n\n- [ ] **FE-003** [opus] — Builds on [[FE-001]]; example placeholder \`[[FE-042]]\` and \`Blocked by [[CORE-999]]\` are literal code.\n`;
-    const t = parsePlan(md)[0];
-    expect(t.relatedTasks).toEqual(['FE-001']);
-    expect(t.blockedBy).toEqual([]);
+    const t = parsePlan(md)[0]!;
+    expect(t!.relatedTasks).toEqual(['FE-001']);
+    expect(t!.blockedBy).toEqual([]);
   });
 
   // Per-task [!critical] flag; there is no `Critical` Priority.
   it('defaults critical to false on a plain task line', () => {
     const md = `## High\n\n- [ ] **CORE-001** [opus] — Plain row.\n`;
-    expect(parsePlan(md)[0].critical).toBe(false);
+    expect(parsePlan(md)[0]!.critical).toBe(false);
   });
 
   it('parses [!critical] alone', () => {
     const md = `## High\n\n- [ ] **FE-100** [!critical] — Urgent row.\n`;
-    const t = parsePlan(md)[0];
-    expect(t.critical).toBe(true);
-    expect(t.model).toBeUndefined();
-    expect(t.description).toBe('Urgent row');
+    const t = parsePlan(md)[0]!;
+    expect(t!.critical).toBe(true);
+    expect(t!.model).toBeUndefined();
+    expect(t!.description).toBe('Urgent row');
   });
 
   it('parses [!critical] + [model] + | shortname + long description in canonical order', () => {
     const md = `## High\n\n- [ ] **FE-100** [!critical] [opus] | hotfix — Production breakage.\n`;
-    const t = parsePlan(md)[0];
-    expect(t.critical).toBe(true);
-    expect(t.model).toBe('opus');
-    expect(t.shortname).toBe('hotfix');
-    expect(t.description).toBe('Production breakage');
+    const t = parsePlan(md)[0]!;
+    expect(t!.critical).toBe(true);
+    expect(t!.model).toBe('opus');
+    expect(t!.shortname).toBe('hotfix');
+    expect(t!.description).toBe('Production breakage');
   });
 
   // Swapped flag order is a viz tolerance, not canonical authoring.
   it('parses [!critical] after [model] and still sets critical', () => {
     const md = `## High\n\n- [ ] **FE-100** [opus] [!critical] | hotfix — Production breakage.\n`;
-    const t = parsePlan(md)[0];
-    expect(t.critical).toBe(true);
-    expect(t.model).toBe('opus');
-    expect(t.shortname).toBe('hotfix');
-    expect(t.description).toBe('Production breakage');
+    const t = parsePlan(md)[0]!;
+    expect(t!.critical).toBe(true);
+    expect(t!.model).toBe('opus');
+    expect(t!.shortname).toBe('hotfix');
+    expect(t!.description).toBe('Production breakage');
   });
 
   it('parses [!critical] after stacked [model] tokens', () => {
     const md = `## High\n\n- [ ] **FE-100** [fable] [light] [!critical] — Urgent stacked.\n`;
-    const t = parsePlan(md)[0];
-    expect(t.critical).toBe(true);
-    expect(t.model).toBe('fable');
-    expect(t.description).toBe('Urgent stacked');
+    const t = parsePlan(md)[0]!;
+    expect(t!.critical).toBe(true);
+    expect(t!.model).toBe('fable');
+    expect(t!.description).toBe('Urgent stacked');
   });
 
   it('parses [!critical] after a model-suggestion glyph', () => {
     const md = `## High\n\n- [ ] **FE-100** [moderate]🧩 [!critical] | hotfix — After glyph.\n`;
-    const t = parsePlan(md)[0];
-    expect(t.critical).toBe(true);
-    expect(t.model).toBe('moderate');
-    expect(t.shortname).toBe('hotfix');
+    const t = parsePlan(md)[0]!;
+    expect(t!.critical).toBe(true);
+    expect(t!.model).toBe('moderate');
+    expect(t!.shortname).toBe('hotfix');
   });
 
   it('soft-migrates a legacy `## Critical` heading to priority=High with critical=true on every row', () => {
@@ -720,7 +720,7 @@ describe('rotated `## Completed <YYYY-MM>` history', () => {
     const { tasks } = parsePlanWithDiagnostics(plan, archive);
     const { nodes } = groupTasks(tasks);
     expect(nodes).toHaveLength(1);
-    expect(nodes[0].children.map((c) => c.id)).toEqual(['CORE-300.1']);
+    expect(nodes[0]!.children.map((c) => c.id)).toEqual(['CORE-300.1']);
   });
 });
 
@@ -1051,8 +1051,8 @@ describe('groupTasks', () => {
       t('CORE-009.3'),
     ]);
     expect(nodes).toHaveLength(1);
-    expect(nodes[0].task.id).toBe('CORE-EPIC-009');
-    expect(nodes[0].children.map((c) => c.id)).toEqual([
+    expect(nodes[0]!.task.id).toBe('CORE-EPIC-009');
+    expect(nodes[0]!.children.map((c) => c.id)).toEqual([
       'CORE-009.1',
       'CORE-009.2',
       'CORE-009.3',
@@ -1071,7 +1071,7 @@ describe('groupTasks', () => {
       'CORE-EPIC-009',
       'FE-002',
     ]);
-    expect(nodes[1].children.map((c) => c.id)).toEqual(['CORE-009.1']);
+    expect(nodes[1]!.children.map((c) => c.id)).toEqual(['CORE-009.1']);
   });
 
   it('attaches a subtask to its epic even when listed above the epic', () => {
@@ -1081,8 +1081,8 @@ describe('groupTasks', () => {
       t('CORE-009.2'),
     ]);
     expect(nodes).toHaveLength(1);
-    expect(nodes[0].task.id).toBe('CORE-EPIC-009');
-    expect(nodes[0].children.map((c) => c.id)).toEqual([
+    expect(nodes[0]!.task.id).toBe('CORE-EPIC-009');
+    expect(nodes[0]!.children.map((c) => c.id)).toEqual([
       'CORE-009.1',
       'CORE-009.2',
     ]);
@@ -1096,8 +1096,8 @@ describe('groupTasks', () => {
       t('CORE-005.N'),
     ]);
     expect(nodes).toHaveLength(1);
-    expect(nodes[0].task.id).toBe('CORE-EPIC-005');
-    expect(nodes[0].children.map((c) => c.id)).toEqual(['CORE-005.1', 'CORE-005.N']);
+    expect(nodes[0]!.task.id).toBe('CORE-EPIC-005');
+    expect(nodes[0]!.children.map((c) => c.id)).toEqual(['CORE-005.1', 'CORE-005.N']);
   });
 
   // Lettered + nested-decimal children still group under the epic.
@@ -1108,8 +1108,8 @@ describe('groupTasks', () => {
       t('FE-310.2.1'),
     ]);
     expect(nodes).toHaveLength(1);
-    expect(nodes[0].task.id).toBe('FE-EPIC-310');
-    expect(nodes[0].children.map((c) => c.id)).toEqual(['FE-310.3a', 'FE-310.2.1']);
+    expect(nodes[0]!.task.id).toBe('FE-EPIC-310');
+    expect(nodes[0]!.children.map((c) => c.id)).toEqual(['FE-310.3a', 'FE-310.2.1']);
   });
 
   it('treats orphan subtasks (no matching epic) as top-level rows', () => {
@@ -1121,8 +1121,8 @@ describe('groupTasks', () => {
   it('handles an epic with no children', () => {
     const { nodes } = groupTasks([t('CORE-EPIC-009')]);
     expect(nodes).toHaveLength(1);
-    expect(nodes[0].task.id).toBe('CORE-EPIC-009');
-    expect(nodes[0].children).toEqual([]);
+    expect(nodes[0]!.task.id).toBe('CORE-EPIC-009');
+    expect(nodes[0]!.children).toEqual([]);
   });
 
   it('returns no duplicate diagnostics when every epic ID is unique', () => {
@@ -1137,7 +1137,7 @@ describe('groupTasks', () => {
     const second = t('CORE-EPIC-421', false, 'Low');
     const { nodes, duplicateEpics } = groupTasks([first, second]);
     expect(nodes).toHaveLength(1);
-    expect(nodes[0].task.priority).toBe('Medium');
+    expect(nodes[0]!.task.priority).toBe('Medium');
     expect(duplicateEpics).toEqual([{ id: 'CORE-EPIC-421' }]);
   });
 
@@ -1153,7 +1153,7 @@ describe('groupTasks', () => {
       t('CORE-EPIC-421'),
     ]);
     expect(nodes).toHaveLength(1);
-    expect(nodes[0].children.map((c) => c.id)).toEqual(['CORE-421.1']);
+    expect(nodes[0]!.children.map((c) => c.id)).toEqual(['CORE-421.1']);
     expect(duplicateEpics).toEqual([{ id: 'CORE-EPIC-421' }]);
   });
 });
@@ -1164,7 +1164,7 @@ describe('PRIORITIES registry', () => {
       const md = `## ${priority}\n\n- [ ] **CORE-${i}** — task under ${priority}.`;
       const tasks = parsePlan(md);
       expect(tasks).toHaveLength(1);
-      expect(tasks[0].priority).toBe(priority);
+      expect(tasks[0]!.priority).toBe(priority);
     }
   });
 

@@ -179,5 +179,19 @@ export default defineConfig({
     // vmThreads builds jsdom once per worker instead of once per file (29×),
     // cutting environment setup from ~47% to ~20% of the run (CORE-716.4).
     pool: 'vmThreads',
+    // Off unless `--coverage` is passed (`just coverage`, CI's `coverage`
+    // job), which feed diff-cover's changed-line gate (FE-151). `include` is
+    // load-bearing: without it v8 omits never-imported files, so a new
+    // untested module reads as "no coverage information" and passes the gate.
+    // Test files stay out of the report with this custom `exclude` too
+    // (measured at FE-151: no `*.test.*` SF entries in lcov.info).
+    coverage: {
+      provider: 'v8',
+      reportsDirectory: './coverage',
+      reporter: ['text-summary', 'lcovonly'],
+      include: ['src/**/*.{ts,tsx}'],
+      // The browser bootstrap (createRoot + render) runs only in a real page.
+      exclude: ['src/main.tsx'],
+    },
   },
 });

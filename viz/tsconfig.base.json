@@ -26,6 +26,9 @@
     "allowImportingTsExtensions": true,
     "allowJs": false,
     "strict": true,
+    // `arr[i]` / `rec[key]` read as `T | undefined` (FE-151, natabula
+    // QUALITY-STACK wave 1).
+    "noUncheckedIndexedAccess": true,
     "types": ["node"]
   }
 }

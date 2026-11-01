@@ -74,8 +74,8 @@ describe('discoverProjects', () => {
     const projects = await discoverProjects(root);
 
     expect(projects).toHaveLength(1);
-    expect(projects[0].name).toBe('lonely');
-    expect(projects[0].tasknoteDir).toBe(join(root, 'lonely', '.flaitron', 'tasknote'));
+    expect(projects[0]!.name).toBe('lonely');
+    expect(projects[0]!.tasknoteDir).toBe(join(root, 'lonely', '.flaitron', 'tasknote'));
   });
 
   it('skips dotfiles and dot-dirs', async () => {
@@ -126,8 +126,8 @@ describe('discoverProjects', () => {
     const projects = await discoverProjects(root);
 
     expect(projects.map((p) => p.name)).toEqual(['linked']);
-    expect(projects[0].root).toBe(join(root, 'linked'));
-    expect(projects[0].planPath).toBe(join(root, 'linked', '.flaitron', 'PLAN.md'));
+    expect(projects[0]!.root).toBe(join(root, 'linked'));
+    expect(projects[0]!.planPath).toBe(join(root, 'linked', '.flaitron', 'PLAN.md'));
   });
 });
 

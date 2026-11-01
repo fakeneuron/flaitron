@@ -97,7 +97,7 @@ describe('createArchiveCache', () => {
     const second = await cache.get(project);
 
     expect(second).toBe(first);
-    expect(second[0].frontmatter?.title).toBe('original');
+    expect(second[0]!.frontmatter?.title).toBe('original');
   });
 
   it('returns the same in-flight promise to concurrent first-time callers', async () => {
@@ -129,7 +129,7 @@ describe('createArchiveCache', () => {
     const after = await cache.get(project);
 
     expect(hit).toBe(true);
-    expect(after[0].frontmatter?.title).toBe('mutated');
+    expect(after[0]!.frontmatter?.title).toBe('mutated');
   });
 
   it('invalidate() returns false for filepaths outside any archive dir', async () => {
@@ -226,7 +226,7 @@ describe('createArchiveCache', () => {
     const second = await cache.get(project);
 
     expect(second).toHaveLength(1);
-    expect(second[0].frontmatter?.title).toBe('recovered');
+    expect(second[0]!.frontmatter?.title).toBe('recovered');
   });
 
   it('drops archive files that resolve outside the project root', async () => {
@@ -286,10 +286,10 @@ describe('createArchiveCache', () => {
 
     // p1 was the least-recently touched when p6 (the 6th distinct project)
     // was inserted, so it should have been evicted; the next get() re-reads.
-    const p1Again = await cache.get(projects[0]);
+    const p1Again = await cache.get(projects[0]!);
     expect(p1Again).not.toBe(firsts[0]);
     // p6 (most recently inserted) and p2..p5 stay cached.
-    const p6Again = await cache.get(projects[5]);
+    const p6Again = await cache.get(projects[5]!);
     expect(p6Again).toBe(firsts[5]);
   });
 
@@ -304,13 +304,13 @@ describe('createArchiveCache', () => {
     for (const project of projects) firsts.push(await cache.get(project));
 
     // Touch p1 so p2 becomes the least-recently-used instead.
-    await cache.get(projects[0]);
+    await cache.get(projects[0]!);
     const p6 = await makeProject('p6', { 'frontend/FE-p6.md': tasknote('FE-p6', 'p6') });
     await cache.get(p6);
 
-    const p1Again = await cache.get(projects[0]);
+    const p1Again = await cache.get(projects[0]!);
     expect(p1Again).toBe(firsts[0]);
-    const p2Again = await cache.get(projects[1]);
+    const p2Again = await cache.get(projects[1]!);
     expect(p2Again).not.toBe(firsts[1]);
   });
 

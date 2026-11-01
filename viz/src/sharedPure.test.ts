@@ -40,9 +40,9 @@ const TIER_RULES = new Set([
 
 async function restricted(code: string, filePath: string): Promise<string[]> {
   const [result] = await eslint.lintText(code, { filePath });
-  const fatal = result.messages.filter((message) => message.fatal);
-  expect(fatal, result.messages.map((message) => message.message).join('\n')).toEqual([]);
-  return result.messages
+  const fatal = result!.messages.filter((message) => message.fatal);
+  expect(fatal, result!.messages.map((message) => message.message).join('\n')).toEqual([]);
+  return result!.messages
     .filter((message) => message.ruleId !== null && TIER_RULES.has(message.ruleId))
     .map((message) => message.message);
 }
@@ -64,7 +64,7 @@ function specifierOf(snippet: string): string {
   if (!match) {
     throw new Error(`not a static import fixture: ${snippet}`);
   }
-  return match[1];
+  return match[1]!;
 }
 
 async function expectGate(snippet: string, filePath: string, banned: boolean): Promise<void> {

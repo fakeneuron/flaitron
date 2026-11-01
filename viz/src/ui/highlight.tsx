@@ -3,7 +3,7 @@ import { splitHighlight } from './utils';
 
 export function highlightMatch(text: string, query: string): React.ReactNode {
   const segments = splitHighlight(text, query);
-  if (segments.length === 1 && !segments[0].matched) return text;
+  if (segments.length === 1 && !segments[0]!.matched) return text;
   return (
     <>
       {segments.map((seg, i) =>

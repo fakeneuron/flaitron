@@ -643,7 +643,7 @@ describe('useProjectData — rotated PLAN-ARCHIVE.md', () => {
     );
 
     await waitFor(() => expect(hook.result.current.tasks.map((t) => t.id)).toEqual(['FE-1', 'FE-0']));
-    expect(hook.result.current.tasks[1].priority).toBe('Completed');
+    expect(hook.result.current.tasks[1]!.priority).toBe('Completed');
   });
 
   it('requests the archive alongside the other three endpoints', async () => {

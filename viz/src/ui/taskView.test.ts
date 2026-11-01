@@ -141,13 +141,13 @@ describe('pruneMatchingNodes', () => {
   it('keeps a non-matching parent when a child matches, and prunes the siblings', () => {
     const out = pruneMatchingNodes([node(parent, [kid1, kid2])], (t) => t.description === 'alpha');
     expect(out).toHaveLength(1);
-    expect(out[0].task.id).toBe('FE-EPIC-1');
-    expect(out[0].children.map((c) => c.id)).toEqual(['FE-1.2']);
+    expect(out[0]!.task.id).toBe('FE-EPIC-1');
+    expect(out[0]!.children.map((c) => c.id)).toEqual(['FE-1.2']);
   });
 
   it('prunes every child when the parent matches but no child does', () => {
     const out = pruneMatchingNodes([node(parent, [kid1, kid2])], (t) => t.id === 'FE-EPIC-1');
-    expect(out[0].children).toEqual([]);
+    expect(out[0]!.children).toEqual([]);
   });
 
   it('drops a node when neither it nor any child matches', () => {
@@ -171,22 +171,22 @@ describe('pruneMatchingNodes', () => {
     const out = pruneMatchingNodes([a, b], () => true);
     expect(out[0]).toBe(a);
     expect(out[1]).toBe(b);
-    expect(out[1].children).toBe(b.children);
+    expect(out[1]!.children).toBe(b.children);
   });
 
   it('allocates a fresh node, but still reuses the children reference, when only the parent itself does not match', () => {
     const b = node(parent, [kid1, kid2]);
     const out = pruneMatchingNodes([b], (t) => t.id !== parent.id);
     expect(out[0]).not.toBe(b);
-    expect(out[0].children).toBe(b.children);
+    expect(out[0]!.children).toBe(b.children);
   });
 
   it('allocates a fresh children array when filtering actually removes a child', () => {
     const b = node(parent, [kid1, kid2]);
     const out = pruneMatchingNodes([b], (t) => t.id !== kid2.id);
     expect(out[0]).not.toBe(b);
-    expect(out[0].children).not.toBe(b.children);
-    expect(out[0].children.map((c) => c.id)).toEqual(['FE-1.2']);
+    expect(out[0]!.children).not.toBe(b.children);
+    expect(out[0]!.children.map((c) => c.id)).toEqual(['FE-1.2']);
   });
 });
 

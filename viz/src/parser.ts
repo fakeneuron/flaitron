@@ -185,7 +185,7 @@ function extractBlockedBy(text: string): string[] {
   const cleaned = stripCodeSpans(text);
   const ids = new Set<string>();
   for (const block of cleaned.matchAll(BLOCKED_BY_BLOCK)) {
-    for (const m of block[1].matchAll(WIKILINK_PATTERN)) ids.add(m[1]);
+    for (const m of block[1]!.matchAll(WIKILINK_PATTERN)) ids.add(m[1]!);
   }
   return Array.from(ids);
 }
@@ -195,7 +195,8 @@ function extractRelatedTasks(text: string, blocked: string[]): string[] {
   const blockedSet = new Set(blocked);
   const ids = new Set<string>();
   for (const m of cleaned.matchAll(WIKILINK_PATTERN)) {
-    if (!blockedSet.has(m[1])) ids.add(m[1]);
+    const id = m[1]!;
+    if (!blockedSet.has(id)) ids.add(id);
   }
   return Array.from(ids);
 }
@@ -378,7 +379,7 @@ function parseTaskLine(
       const isLegacyRecord =
         legacyMatch !== null &&
         (legacyMatch[1] === 'x' || legacyMatch[1] === 'X') &&
-        !ID_SHAPE_CASE_INSENSITIVE.test(legacyMatch[2]);
+        !ID_SHAPE_CASE_INSENSITIVE.test(legacyMatch[2]!);
       // A checkbox with no ID emphasis (`*` / `**`) is a prose
       // checklist item, not a failed task. Genuine ID near-misses still
       // carry asterisks (`*FE-064*`, `**fe-065**`) and keep flagging.
@@ -389,6 +390,7 @@ function parseTaskLine(
     return null;
   }
 
+  // `id` is a mandatory TASK_LINE group, so `id!` below holds on a match.
   const [, mark, id, criticalRaw, modelRaw, trailingTokens, criticalAfter, shortnameRaw, longRaw] =
     m;
   const completed = mark === 'x' || mark === 'X';
@@ -399,7 +401,7 @@ function parseTaskLine(
 
   return {
     task: {
-      id,
+      id: id!,
       description: longText ? cleanDescription(longText) : '',
       priority: currentPriority,
       critical: criticalRaw === '!critical' || criticalAfter === '!critical' || legacyCriticalSection,
@@ -428,11 +430,11 @@ function scanDocument(markdown: string): PlanParseResult {
   let legacyCriticalSection = false;
 
   for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
+    const line = lines[i]!;
     if (inFence[i]) continue;
     const headingMatch = HEADING_LINE.exec(line);
     if (headingMatch) {
-      const heading = headingMatch[1];
+      const heading = headingMatch[1]!;
       const resolved = resolveHeadingLine(heading);
       currentPriority = resolved.priority;
       legacyCriticalSection = resolved.legacyCriticalSection;

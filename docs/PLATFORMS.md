@@ -96,6 +96,11 @@ roster from the pin, preserves custom destinations and reports conflicts;
 it prunes only exact-owned links named retired whose bodies are absent.
 Other platforms keep remaining retired-link reporting. These are markdown
 instructions executed by the caller, not a new installer or fleet tool.
+The one-line installer (`install.sh`, CORE-851) is the exception to the
+explicit-request rule, by operator decision. Before adoption it wires every
+agent it detects (printing each), and `/ft-adopt`'s Step 0 installer
+exception takes those surfaces as selected. It still links only **one**
+agent-home `ft-adopt` per machine, per the rule below.
 
 **Flaitron's own checkout is not an adopter.** The adopter-installed subset
 above governs projects that consume flaitron through `.flaitron/core/`. Flaitron

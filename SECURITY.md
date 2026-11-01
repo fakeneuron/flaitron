@@ -140,6 +140,38 @@ invocations will execute.
   customization pattern in `docs/MIGRATION.md` §1.2.1), you take over
   review responsibility for that forked copy.
 
+### One-line installer
+
+`install.sh` (`CORE-851`) is the one flaitron file meant to be piped from the
+network into a shell (`curl … | sh`). Unlike a `SKILL.md`, which a poisoned
+`main` reaches only at a later skill invocation, the script runs immediately,
+with the user's permissions. Mitigations:
+
+- **Tag-pinned URL.** The README serves the script from
+  `raw.githubusercontent.com/fakeneuron/flaitron/<tag>/install.sh`, and
+  `/ft-release` rewrites the tag each cut. A push to `main` does not change
+  what that URL serves. A `main` URL works but is not advertised; prefer the
+  tag, and read the script first (`curl -fsSL <url> | less`).
+- **Truncation-safe.** Every statement runs inside a function, and the
+  last line calls `main`. A cut-off download defines functions and runs
+  nothing.
+- **Tag integrity, stated honestly.** Before changing anything, the
+  script reads the tag's commit from GitHub. After checkout, it requires
+  HEAD == tag == that commit, and it aborts with nothing changed when
+  `FLAITRON_SHA` disagrees. Tags are unsigned and releases carry no
+  checksums, so this guards against a moved or mismatched tag, not against
+  a compromised GitHub account. Tag signing and `SHA256SUMS` are not
+  provided (out of scope at CORE-851).
+- **Bounded writes.** It writes `.gitmodules`, `.flaitron/core`, and the
+  skill symlinks in the project; the clone at `FLAITRON_HOME`; and the
+  global `ft-adopt` link (skip both with `FLAITRON_NO_GLOBAL=1`). It replaces
+  only flaitron symlinks, backs up anything else outside the skill dirs
+  (`.flaitron/backup/`, `~/.local/state/flaitron/backup/`), commits nothing,
+  and refuses symlinked skill roots, a foreign `.flaitron/core`, and a
+  project that already has `.flaitron/PLAN.md`.
+- **Network identity.** Its GitHub API request sends a project
+  User-Agent and no credentials. Git runs with prompts disabled.
+
 ### GitHub Actions CI
 
 `.github/workflows/ci.yml` runs the AGENTS.md §"Validation" roster

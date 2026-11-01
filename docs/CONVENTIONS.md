@@ -59,6 +59,8 @@ The second job, `drift`, runs the release-context-free subset of `/ft-release` �
 
 The two jobs must stay separate. §7.1 Pair H pins the `validate` job's `run:` steps to AGENTS.md §"Validation" byte-for-byte by extracting every `      - run: ` line in this file; the `drift` job stays out of that extraction by writing its one step as `- name:` + `run:`. The workflow carries a comment saying so. The `drift` checks need no binding of their own, because nothing else carries their shell. Until `CORE-734.4` the first three were copies of a §7.1 or `SPEC/layout.md` fence, and §7.1 Pair L bound them, after a `SPEC.md` → `SPEC/layout.md` repair landed in §7.1 and not in the CI copy, failing the job through an entire release cut (`CORE-546`, `CORE-543`). Keep it that way: a check's rule may be stated anywhere, but its shell goes only in the script.
 
+A second workflow, `.github/workflows/install-test.yml` (`CORE-851`), runs shellcheck and `tools/install.test.sh` against `install.sh` on Ubuntu and macOS. It needs the network: it calls GitHub releases/latest and `git ls-remote`, and makes real clones. So, like the dependency audit below, its result depends on live state and not only on the commit. It therefore runs only when `install.sh`, its test or its workflow changes, and it never joins `ci.yml`'s `validate` job.
+
 ### Dependency audit cadence
 
 `npm --prefix viz audit --audit-level=high` runs once per release cut (`/ft-release` §6.2), not as a `validate`-job CI step. The `validate` job's eight commands (AGENTS.md §"Validation": the four `viz` scripts, the three updater commands, and the drift self-test) are pure functions of the code at a given commit — the same commit always passes or fails them identically, which is exactly what §7.1 Pair H's byte-for-byte binding to AGENTS.md §"Validation" is built to protect: a deterministic "passing" definition, verbatim on both the human-run and CI-run sides. `npm audit`'s result additionally depends on the public advisory database's state *at the moment it runs* — a commit that passes audit today can fail it tomorrow with zero code change of its own, for a dependency nobody touched in that push. Folding that into the `validate` gate would make an unrelated future push red for a reason outside the pushed diff — the same class of self-inflicted CI-badge failure this file already documents as a cautionary precedent above (`CORE-546`, a `drift`-job mirror miss that reddened CI for an entire release cut), just triggered externally instead of by a repair that missed a mirror.
@@ -164,6 +166,14 @@ The skills also assume it. Every skill resolves its contract root to `.flaitron/
 The cost is acknowledged: adoption is a `git submodule add` plus symlink wiring rather than one install command, which is real friction for a first-time adopter. `/ft-adopt` absorbs it in one pass. The friction buys the pin.
 
 This is distinct from the CLI carve-out in [SPEC/scope-boundaries.md](../SPEC/scope-boundaries.md) §"What flaitron does NOT provide" — that entry rules out flaitron *being* a CLI; this one rules out flaitron being *delivered* by one. A package-manager-distributed flaitron would still be pure markdown, and is still declined.
+
+**The one-line installer is not a reversal (`CORE-851`).** `install.sh`, run as `curl … | sh`, cuts the friction above without giving up the pin:
+- It still adds the git submodule, at a release tag it resolves and prints.
+- It checks that the tag's commit matches the one GitHub reports, before anything changes.
+- It never resolves a range, never tracks `main`, and never moves an existing pin unless told to (`update`).
+- It is a shell script in this repo, not a package: `npx` / `uvx` / marketplace wrappers stay declined.
+
+The README serves it from a tag-pinned URL that `/ft-release` rewrites each cut, so no `main`-served code path is advertised ([SECURITY.md](../SECURITY.md) §"One-line installer"). Its scope limits are in the scope-boundaries entry above.
 
 ### Template override stacking
 

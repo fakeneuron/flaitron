@@ -91,7 +91,7 @@ If the proposed bump and the PLAN-line target match, the user confirms in one sh
 
 ## Step 2.5 — Context-budget self-assessment (escape hatch)
 
-Before scaffolding the tasknote (Step 3), self-assess whether the **remaining context budget** is comfortable for a full release cut driven inline in this session. A full cut is a long, multi-file motion: the 3 version edits (Step 5), the dogfood-gate walk (per-agent `AskUserQuestion` + stamp edits), the audit-overlay `docs` subroutine (5 passes over the doc set, Step 7.1), tag-message drafting (Step 7.2), and the commit/tag/push sequence (Step 7.5). Driving all of that with little headroom risks a degraded cut.
+Before scaffolding the tasknote (Step 3), self-assess whether the **remaining context budget** is comfortable for a full release cut driven inline in this session. A full cut is a long, multi-file motion: the 4 version edits (Step 5), the dogfood-gate walk (per-agent `AskUserQuestion` + stamp edits), the audit-overlay `docs` subroutine (5 passes over the doc set, Step 7.1), tag-message drafting (Step 7.2), and the commit/tag/push sequence (Step 7.5). Driving all of that with little headroom risks a degraded cut.
 
 **Still needed after CORE-507 (re-evaluated).** That task cut this file from ~77k to ~38k by moving §7.1's standing checks and mirror pairs into fragments, so the *eager* load at Step 0 is roughly half what it was and this hatch should fire less often than it already did. It is not thereby obsolete: the budget this step guards is the whole cut, not the skill body. The two §7.1 fragments are ~60k that still arrives — just at Step 7 instead of Step 0 — and the audit-overlay `docs` subroutine, the dogfood-gate walk, and the version edits are unchanged. The split improves the odds of a clean inline cut; it does not remove the failure mode this hatch exists for.
 
@@ -105,7 +105,7 @@ Before scaffolding the tasknote (Step 3), self-assess whether the **remaining co
     `/ft-release`
     ```
 
-**Re-entry is `/ft-release`, not `/ft-task <TASK-ID>`.** The release recipe (3 version edits · dogfood gate · annotated tag · push) lives in *this* skill; running `/ft-task` against the pre-filed release line would drive the generic 4-phase flow without any of it. The escape hatch defers the release skill itself to a clean context — it does not hand off to the tasknote runner.
+**Re-entry is `/ft-release`, not `/ft-task <TASK-ID>`.** The release recipe (4 version edits · dogfood gate · annotated tag · push) lives in *this* skill; running `/ft-task` against the pre-filed release line would drive the generic 4-phase flow without any of it. The escape hatch defers the release skill itself to a clean context — it does not hand off to the tasknote runner.
 
 ## Step 3 — Scaffold the release tasknote
 
@@ -147,7 +147,7 @@ Walk the Phase 1 checklist per SPEC §"📝 Phase 1: Discovery". Most boxes tick
 - **Relevance Assessment** — Verdict: Proceed. Rationale: bump pattern is well-established; commit log + version drift verified in Step 2.
 - **Read relevant source files** — `SPEC.md:3`, `docs/MIGRATION.md` example pin (grep for `describe --tags`).
 - **Archive skim** — `.flaitron/tasknote/archive/core/` for prior release tasknotes (CORE-048, CORE-046, CORE-043). Note any structural drift in their precedents that this release should account for.
-- **Drift check** — verify the cited locations: `SPEC.md:3` reads `**Version:** vX.Y.Z`; docs/MIGRATION.md grep returns one example pin at `(e.g., \`vX.Y.Z\`)`. Surface any drift before continuing.
+- **Drift check** — verify the cited locations: `SPEC.md:3` reads `**Version:** vX.Y.Z`; docs/MIGRATION.md grep returns one example pin at `(e.g., \`vX.Y.Z\`)`; README.md carries one `flaitron/v…/install.sh` URL. Surface any drift before continuing.
 - **Adopter migration impact** — for each commit since the last tag, classify whether it requires adopter action (new template section, new doc-set entry, BREAKING change with migration steps). Capture findings in Discovery Notes — feeds the Migration block of the tag message in Phase 4. CORE-047 (in CORE-048's release) is the canonical example of a context-sensitive migration block.
 - **Clarifying questions** — typically none. If the bump is major, or if any commit's adopter impact is ambiguous, AskUserQuestion to confirm the migration block contents.
 - **Subtasks populated** — already populated in Step 3 from the recipe.
@@ -156,11 +156,12 @@ Tick boxes as each step completes. Do not enter Phase 2 until every Phase 1 box 
 
 ## Step 5 — Drive Phase 2: Execution
 
-Apply the 3 version edits in order:
+Apply the 4 version edits in order:
 
 1. **`SPEC.md:3`** — `**Version:** vX.Y.Z` → `**Version:** vA.B.C`.
 2. **`docs/MIGRATION.md`** — locate the example pin (grep for `describe --tags`) and bump `(e.g., \`vX.Y.Z\`)` → `(e.g., \`vA.B.C\`)`. Historical references like `v1.0 additions` stay (write-once historical context, per CORE-046 precedent).
 3. **`SECURITY.md`** — locate the release-tag example pin (grep for `release tags (e.g.`) and bump `(e.g. \`vX.Y.Z\`)` → `(e.g. \`vA.B.C\`)`.
+4. **`README.md`** — the Quickstart installer one-liner (grep for `flaitron/v[0-9].*/install.sh`): set its tag to `vA.B.C`. This edit is what keeps the advertised `curl … | sh` URL tag-pinned, never `main` (`SECURITY.md` §"One-line installer"). The URL works only once the tag is pushed.
 
 Verify the `v`-prefixed pins post-edit:
 
@@ -168,15 +169,16 @@ Verify the `v`-prefixed pins post-edit:
 grep -rn 'vX\.Y\.Z' SPEC.md SPEC/ docs/ README.md SECURITY.md templates/ claude/ 2>/dev/null
 ```
 
-The three `v`-prefixed pins above should be clean.
+The three `v`-prefixed pins above should be clean, and
+`grep -c "flaitron/vA.B.C/install.sh" README.md` (substituting the new version) should print `1`.
 
-**Dogfood gate + SOP-currency walk — read the fragment now.** The 3 version edits above stay here; the dogfood-or-explicit-skip walk and the standing SOP-currency check live in a sibling fragment so this skill stays under its load budget. Read `claude/skills/ft-release/step-5-dogfood-sop.md` now — it carries both walks. Walk them in that order, then continue to the tick-boxes closer below. The fragment is part of this step, not an optional appendix: skipping it silently drops the dogfood gate.
+**Dogfood gate + SOP-currency walk — read the fragment now.** The 4 version edits above stay here; the dogfood-or-explicit-skip walk and the standing SOP-currency check live in a sibling fragment so this skill stays under its load budget. Read `claude/skills/ft-release/step-5-dogfood-sop.md` now — it carries both walks. Walk them in that order, then continue to the tick-boxes closer below. The fragment is part of this step, not an optional appendix: skipping it silently drops the dogfood gate.
 
-Tick boxes; populate Implementation Notes with the diff shape (the 3 version edits, plus any dogfood-gate stamp refreshes/skips landed by the walk in `step-5-dogfood-sop.md`, plus the SOP-currency verdict).
+Tick boxes; populate Implementation Notes with the diff shape (the 4 version edits, plus any dogfood-gate stamp refreshes/skips landed by the walk in `step-5-dogfood-sop.md`, plus the SOP-currency verdict).
 
 ## Step 6 — Drive Phase 3: Testing & Linting
 
-The 3 version edits are markdown prose — run a markdown lint mental-pass on SPEC.md, docs/MIGRATION.md, and SECURITY.md:
+The 4 version edits are markdown prose — run a markdown lint mental-pass on SPEC.md, docs/MIGRATION.md, SECURITY.md, and README.md:
 
 - Edits are single-token version-string substitutions; surrounding prose unchanged.
 - No frontmatter touched; no fenced blocks broken.
@@ -254,7 +256,7 @@ docs ai-referenced
 Read the tracked file rather than invoking the `/audit` skill, so the cut does not depend on per-machine wiring. `.claude/skills/audit` is gitignored, it is absent in a fresh clone or under Codex, and repairing it mid-session does not add it to a session's skill roster. The standing self-wiring check below still guards that link for interactive `/audit` use. The overlay is the single statement of this audit's config: its `docs:` deltas supply the rubric and the verification gates, so this step restates neither. This read counts as a subroutine invocation with an explicit scope for the dispatcher's Subroutine-safe hard rule: no PLAN.md writes, no auto-commit, and no blocking ticket confirmation. If the scaffold bootstrap stops anyway (a pass-file slot the overlay does not fill yet), take its **run once** branch with the overlay's `docs:` values, and treat the gap as a Medium finding. The overlay runs the bundled `ft-audit` scaffold by reference; the `docs` domain walks its 5 passes (Claims vs. code · Cross-doc consistency · Cross-references · Currency · Stale content) over the declared doc set and returns the report inline. Per the dispatcher's Subroutine-safe hard rule it does **not** write tickets to `.flaitron/PLAN.md`; the release skill is the orchestrator. Critical / High findings are fixed inline. Medium / Low findings are not disposed one by one, and filing them does not by itself let the cut continue.
 
 Classify each returned finding:
-- **Critical / High** — fix inline as part of the release cut (the 3 version edits in Phase 2 normally clear the routine SPEC + MIGRATION + SECURITY version-pin drift; anything else surfaced here gets the same treatment). Cleared means the finding is gone. A finding that only drops to Medium or Low is held for the ask below. If it is still Critical or High after the inline fix, stop the cut and say why. Release anyway is not available for a finding that is still Critical or High.
+- **Critical / High** — fix inline as part of the release cut (the 4 version edits in Phase 2 normally clear the routine SPEC + MIGRATION + SECURITY + README-installer version-pin drift; anything else surfaced here gets the same treatment). Cleared means the finding is gone. A finding that only drops to Medium or Low is held for the ask below. If it is still Critical or High after the inline fix, stop the cut and say why. Release anyway is not available for a finding that is still Critical or High.
 - **Medium / Low** — hold it. Do not file it yet, and do not absorb it inside the ask.
 
 If any Medium or Low finding is still open, stop and ask with AskUserQuestion before §7.2. Show every held finding as a one-line summary. Two options, and neither is the default:
@@ -314,7 +316,7 @@ git add docs/AGENT-COMPAT.md docs/PLATFORMS.md claude/CAPABILITIES.md
 
 (The Step 7.3 `mv` left the archived tasknote untracked; the explicit `git add` here stages it.)
 
-Surface the bundled 📦 ready-to-commit gate per SPEC/gates.md §"Operator-gate cues" (banner block + mandatory 1-2 sentence preview line summarising what executes on commit-go — typically "cut flaitron vA.B.C: commit the 3 version edits + any dogfood-gate stamp refreshes/skips + PLAN.md flip + tasknote archive, create annotated `vA.B.C` tag, push branch + tag to origin, and publish a GitHub Release for `vA.B.C` (or hold local, unpublished, if push-go declined)"). Alongside the SPEC-defined bundle (closure review · recap · proposed commit message), this skill carries:
+Surface the bundled 📦 ready-to-commit gate per SPEC/gates.md §"Operator-gate cues" (banner block + mandatory 1-2 sentence preview line summarising what executes on commit-go — typically "cut flaitron vA.B.C: commit the 4 version edits + any dogfood-gate stamp refreshes/skips + PLAN.md flip + tasknote archive, create annotated `vA.B.C` tag, push branch + tag to origin, and publish a GitHub Release for `vA.B.C` (or hold local, unpublished, if push-go declined)"). Alongside the SPEC-defined bundle (closure review · recap · proposed commit message), this skill carries:
 
 - **Dogfood-gate resolution (enforcement)** — confirm the §5 walk resolved **every** dogfooded row **by re-running `step-5-dogfood-sop.md` step 5 from file state now** (the grep loop over the walk's ledger; must print nothing) — never from memory of what the walk wrote, since a parallel session can overwrite a stamp between §5 and here (CORE-588) — and surface the per-agent summary inside the closure review:
 

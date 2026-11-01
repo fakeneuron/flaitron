@@ -25,8 +25,8 @@ tasks.
 
 To prevent scope creep, flaitron deliberately omits:
 
-- A CLI tool (use `cp`, `mv`, and your editor) — with one carved-out
-  exception: [`tools/update-adopters.mjs`](../tools/update-adopters.mjs), the
+- A CLI tool (use `cp`, `mv`, and your editor) — with two carved-out
+  exceptions. The first is [`tools/update-adopters.mjs`](../tools/update-adopters.mjs), the
   operator-side batch updater that walks the workspace and moves each
   adopter's pinned submodule to the latest non-breaking release or a named
   `--target` (dry-run by default, local commits only, never pushes). It
@@ -37,6 +37,18 @@ To prevent scope creep, flaitron deliberately omits:
   `## Workflow` block, and skill links on the wiring surfaces the adopter
   already has — then commits them locally; never PLAN.md, a tasknote, or
   source.
+
+  The second is [`install.sh`](../install.sh), the adopter bootstrap run
+  once per project as `curl … | sh` (CORE-851). It installs the flaitron
+  submodule at a release tag after checking that the tag's commit matches the
+  one GitHub reports. It wires the skill links listed in the pinned snippets'
+  `ln -s` blocks and the global `/ft-adopt`, then hands off to `/ft-adopt`.
+  It writes nothing a manual `docs/MIGRATION.md` §1.0–1.2 adoption would not,
+  commits nothing, and refuses once `.flaitron/PLAN.md` exists, so it never
+  becomes a second bump path beside `/ft-update`. It is adopter bootstrap, not
+  a workflow CLI. It keeps the pin, so it is not package-manager distribution
+  either (`docs/CONVENTIONS.md` §"Package-manager and marketplace
+  distribution").
 - Schema validation (markdown is the schema; the assistant catches drift)
 - A database backend (markdown files in git are the database)
 - Cross-project query API (each project owns its history; the read-only
@@ -44,11 +56,11 @@ To prevent scope creep, flaitron deliberately omits:
   not)
 - Per-project CI hooks (those belong in the adopting project)
 
-Both carve-outs above — the updater and the visualizer — are singular
-exceptions, not precedents. If you find yourself wanting these, write a
+The carve-outs above — the updater, the installer, and the visualizer —
+are singular exceptions, not precedents. If you find yourself wanting these, write a
 project-side helper. Do not add them to flaitron.
 
-[`tools/drift-checks.sh`](../tools/drift-checks.sh) is neither: it is the
+[`tools/drift-checks.sh`](../tools/drift-checks.sh) is none of these: it is the
 shell of flaitron's own CI `drift` job, run by that job and by `/ft-release`,
 and no adopter runs it. It is repo maintenance, not a workflow tool, and
 carves out nothing.

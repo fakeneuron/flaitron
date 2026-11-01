@@ -30,7 +30,32 @@ standalone or epic child) — see `claude/skills/ft-release/step-7.1-standing-ch
 
 ## Quickstart
 
-**Once per machine** — clone flaitron anywhere and wire the bootstrap skill:
+**Once per project**, from the project root (a git repo with an `AGENTS.md`
+or `CLAUDE.md`):
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/fakeneuron/flaitron/v8.3.0/install.sh | sh
+```
+
+[`install.sh`](install.sh) does five things, and commits nothing:
+- **Pins.** Adds the flaitron submodule at the latest release, printing the tag and where it came from.
+- **Verifies.** Checks the checkout against the commit GitHub reports for that tag.
+- **Wires the project.** Links the adopter skill subset for every agent it detects (Claude Code, Codex, Cursor-only, Grok-only). That's the tasknote family, `/ft-seed-unattended` and `/ft-update`; the exact roster is the `ln -s` block in [`claude/AGENTS-snippet.md`](claude/AGENTS-snippet.md) §"One-time symlink wiring".
+- **Touches your machine.** Clones flaitron to `~/code/flaitron` at that tag (if it isn't there already) and links the global `/ft-adopt` into your agent's skill directory (`FLAITRON_NO_GLOBAL=1` skips both; `FLAITRON_HOME` moves the clone).
+- **Hands off.** Ends by telling you to run `/ft-adopt` (Codex: `$ft-adopt`), which writes the AGENTS.md block and the `.flaitron/` skeleton and stages the adoption commit for your go.
+
+Read the script before piping it if you like (`curl -fsSL <url> | less`), and
+see [SECURITY.md](SECURITY.md) §"One-line installer" for what it checks.
+Options, all environment variables:
+- `FLAITRON_VERSION=vX.Y.Z` pins a release; `main` and other branches are refused.
+- `FLAITRON_SHA=<sha>` aborts, with nothing changed, unless the tag is that commit.
+- `FLAITRON_AGENTS=claude,codex` wires those agents instead of detecting.
+- A rerun keeps the existing pin; `… | sh -s -- update` moves it before adoption.
+
+Once `.flaitron/PLAN.md` exists, bump with `/ft-update` instead.
+
+**Manual install (fallback).** Once per machine, clone flaitron anywhere and wire the
+bootstrap skill, then run `/ft-adopt` from the project root:
 
 ```sh
 git clone https://github.com/fakeneuron/flaitron.git ~/code/flaitron
@@ -38,18 +63,8 @@ mkdir -p ~/.claude/skills
 ln -s ~/code/flaitron/claude/skills/ft-adopt ~/.claude/skills/ft-adopt
 ```
 
-**Once per project** — from the project root (a git repo with an `AGENTS.md`
-or `CLAUDE.md`):
-
-```sh
-/ft-adopt
-```
-
-That adds the flaitron submodule, wires the adopter skill subset — the tasknote
-family, `/ft-seed-unattended`, and `/ft-update`, whose exact roster is the
-`ln -s` block in [`claude/AGENTS-snippet.md`](claude/AGENTS-snippet.md)
-§"One-time symlink wiring" — and drops in the `.flaitron/` skeleton in one
-pass. Then file a task in `.flaitron/PLAN.md` and run it:
+Either way, `/ft-adopt` leaves the project adopted. Then file a task in
+`.flaitron/PLAN.md` and run it:
 
 ```sh
 /ft-task CORE-001
@@ -309,14 +324,15 @@ runtime lives in the runner; the contract lives in flaitron.
 - `.flaitron/` — flaitron's own roadmap and tasknotes (self-hosted)
 - `brand/` — public identity kit (blurb, marks, chamber references, `assets.json` manifest, prompt provenance; contract in `brand/README.md`)
 - `viz/` — Vite/React visualizer (priority-grouped list + optional board mode)
-- `tools/` — operator-side fleet scripts (`update-adopters.mjs`, the singular CLI carve-out — see `SPEC/scope-boundaries.md` §"What flaitron does NOT provide" — plus its portable `update-adopters.test.mjs` suite), and `drift-checks.sh`, the shell of the CI `drift` job and the `/ft-release` §7.1 pair walk, plus its `drift-checks.test.mjs` self-test
+- `install.sh` — the one-line adopter installer (§"Quickstart"; a CLI carve-out — see `SPEC/scope-boundaries.md` §"What flaitron does NOT provide")
+- `tools/` — operator-side fleet scripts (`update-adopters.mjs`, the operator-side CLI carve-out — see `SPEC/scope-boundaries.md` §"What flaitron does NOT provide" — plus its portable `update-adopters.test.mjs` suite), `drift-checks.sh`, the shell of the CI `drift` job and the `/ft-release` §7.1 pair walk, plus its `drift-checks.test.mjs` self-test, and `install.test.sh`, the installer's sandboxed end-to-end test
 - `CONTRIBUTING.md` — solo-maintenance model; issue and PR guidance; maintainer skill wiring
 - `SECURITY.md` — threat model and vulnerability reporting
 - `LICENSE` — MIT
 - `LOGO.webp` — the header image above
 - `.editorconfig` — editor formatting rules (UTF-8, LF, 2-space indent)
 - `.gitleaks.toml` — gitleaks config for CI's secret scan
-- `.github/` — CI workflow (`workflows/ci.yml`) and Dependabot config
+- `.github/` — CI workflows (`workflows/ci.yml`; `workflows/install-test.yml`, the installer's network test) and Dependabot config
 - `justfile` — `just` recipes; viz verbs delegate to the `viz/` npm scripts, and `check` runs validation plus drift checks
 - pre-v0.1.0 source preserved in git tag `legacy-pre-v0.1.0`
 

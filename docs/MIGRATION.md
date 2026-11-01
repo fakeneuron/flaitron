@@ -13,6 +13,8 @@ Both paths assume the project has its own git repo — the project can live anyw
 
 ### 1.0 Quick path: `/ft-adopt`
 
+**Fastest: the one-line installer.** From the project root, run the README §"Quickstart" one-liner (`curl -fsSL https://raw.githubusercontent.com/fakeneuron/flaitron/<tag>/install.sh | sh`). It does §1.1's submodule add (at a verified release tag, without the sparse-checkout step) and §1.2's links for every detected agent. It also does the once-per-machine clone and the global `ft-adopt` link below, so you can then run `/ft-adopt`, which continues from there (its Step 0 installer exception). Anything it had to move aside lands in `.flaitron/backup/`; add that path to `.gitignore` (`/ft-adopt` does this when the directory exists). It commits nothing, and it refuses a project that already has `.flaitron/PLAN.md` — bump those with `/ft-update`.
+
 If you have flaitron's `/ft-adopt` skill installed globally (one-time setup below), the manual steps in §1.1–1.7 are wrapped in a single command:
 
 ```sh

@@ -18,7 +18,7 @@ to maintain.
 ## Core principles
 
 1. **Markdown over JSON.** Plans and tasknotes are markdown files: human-editable, AI-scannable in diffs.
-2. **Zero scripts.** All operations are `cp`, `mv`, and editing markdown. Anything more is over-engineering.
+2. **Zero scripts.** All operations are `cp`, `mv`, and editing markdown. Anything more is over-engineering. (The few scripts that sit *around* the workflow, never inside it, are listed in §"What flaitron does NOT provide".)
 3. **One task per context window.** Tasks are sized so the assistant can hold the entire scope in working memory.
 4. **Relevance before action.** Every task starts with a hard gate: is this still the right work?
 5. **Versioned and pinned.** Adopting projects pin a specific flaitron commit; updates are deliberate.
@@ -758,19 +758,23 @@ Canonical contract: see [`SPEC/versioning.md`](SPEC/versioning.md).
 
 To prevent scope creep, flaitron deliberately omits:
 
-- A CLI tool (use `cp`, `mv`, and your editor) — one carved-out exception:
+- A CLI tool (use `cp`, `mv`, and your editor) — two carved-out exceptions:
   [`tools/update-adopters.mjs`](tools/update-adopters.mjs), the operator-side
   batch updater that maintains the fleet *around* adopting projects, not the
   workflow inside one; in each adopter it writes only the files `/ft-update`
   writes (gitlink, `Pinned to:` line, AGENTS.md `## Workflow` block, skill
   links), then commits them locally — never PLAN.md, a tasknote, or source.
+  And [`install.sh`](install.sh), the adopter bootstrap. It installs the
+  submodule at a verified release tag, wires the snippet skill links and the
+  global `/ft-adopt`, then hands off to `/ft-adopt`. It commits nothing, and it
+  refuses once `.flaitron/PLAN.md` exists.
 - Schema validation (markdown is the schema; the assistant catches drift)
 - A database backend (markdown files in git are the database)
 - Cross-project query API (each project owns its history; the read-only
   visualizer is a single global instance — a multi-project query API is not)
 - Per-project CI hooks (those belong in the adopting project)
 
-Both carve-outs above are singular exceptions, not precedents. If you find
+The carve-outs above are singular exceptions, not precedents. If you find
 yourself wanting any of these, write a project-side helper — do not add them
 to flaitron.
 

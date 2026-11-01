@@ -1,7 +1,7 @@
 # `/ft-release` §5 — Dogfood gate + SOP-currency walk
 
 > Lazy fragment. Loaded by `ft-release` SKILL.md §5 (`claude/skills/ft-release/SKILL.md`)
-> after the 3 version edits. Walk the dogfood-or-explicit-skip gate, then the
+> after the 4 version edits. Walk the dogfood-or-explicit-skip gate, then the
 > standing SOP-currency check; both are part of Step 5, not optional appendices.
 
 **Dogfood gate — walk the dogfooded rows (dogfood-or-explicit-skip).** Since CORE-224 the doc set carries `last-verified` version stamps (`docs/AGENT-COMPAT.md` matrix, `claude/CAPABILITIES.md`, and per-agent `docs/PLATFORMS.md` stubs) formatted `vX.Y.Z · YYYY-MM[-DD] (context-tag)`. These are **not** release pins. Per the release-gate obligation (`docs/AGENT-COMPAT.md` §"Reading the cells"), **every row carrying a `dogfooded` history must be resolved at each release** — refreshed from a real verification run at the new version, or recorded as a deliberate skip. Leaving a stale stamp silently untouched is not a valid release state. Walk it now:

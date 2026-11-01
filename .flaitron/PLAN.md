@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-851** [heavy] | one-line-installer — Starter: POSIX `install.sh` (`curl … | sh`) that installs the pinned submodule, verifies the tag commit, wires agent skill links and hands off to `/ft-adopt` (Step 0 exception). Discovery: doctrine change vs CONVENTIONS package-manager distribution / PHILOSOPHY "zero scripts", and supply-chain risk of serving from the public repo's `main`. Grok intake 2026-10-31.
+- [ ] **CORE-855** [moderate]🧩 | release v8.3.0 — Cut v8.3.0 with `/ft-release` (minor: CORE-851's `install.sh` carve-out). The README's tag-pinned installer URL 404s until the tag is pushed. After the push, confirm `install-test.yml` is green on ubuntu + macOS, and run the one-liner + `/ft-adopt` hand-off once on a scratch repo.
 
 ## Low
 
@@ -28,6 +28,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-851** [heavy] | one-line-installer — Completed 2026-11-01.
 - [x] **CORE-EPIC-852** [heavy] | pin-bump-tool-merge — Completed 2026-11-01.
   - [x] **CORE-852.1** [heavy] | pin-bump-tool-merge discovery — Completed 2026-10-31.
   - [x] **CORE-852.2** [moderate] | attended-ledger-guard — Completed 2026-10-31.

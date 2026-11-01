@@ -23,6 +23,20 @@ The skill operates on the current working directory. Before doing anything:
 
   If any are present, stop. Surface what's already there and ask whether the user meant to bump the pinned version (see `docs/MIGRATION.md` §"Pinning and bumping") instead of bootstrapping fresh.
 
+  **Installer exception.** flaitron's `install.sh` (README §"Quickstart") stops one step short of adoption. It leaves `.flaitron/core/` and the `ft-*` links, and no `.flaitron/PLAN.md`. Continue instead of stopping when all of these hold:
+  - `.flaitron/PLAN.md` is absent.
+  - `.flaitron/core` is the flaitron submodule (`.gitmodules` URL `fakeneuron/flaitron`).
+  - `git -C .flaitron/core describe --tags --exact-match` names a release tag.
+  - Every existing `ft-*` link in a project skill dir points into `.flaitron/core/`.
+
+  Then:
+  - In Step 1, keep that tag as the pin (don't ask for a version). Take the skill dirs the installer wired as the selected surfaces.
+  - In Step 2, run only the `sparse-checkout` line.
+  - In Step 3, add only missing links (Codex's reconciliation already preserves existing ones).
+  - If the installer left `.flaitron/backup/`, add that path to `.gitignore` and stage `.gitignore` in Step 7.
+
+  Anything else stops as above.
+
 - None of the following exist at the project root (their presence means a legacy workflow system is in place — flaitron would conflict, e.g. a root `PLAN.md` collides with `.flaitron/PLAN.md`):
   - `PLAN.md`
   - `plan.json`
@@ -46,7 +60,9 @@ otherwise use the invocation platform: Codex → `.agents/skills`, Claude →
 `.claude/skills`. Cursor uses existing Claude wiring or its Cursor-only
 snippet; Grok uses an existing compatible surface or its Grok-only snippet.
 If the caller platform is unknown, ask. Record the selected snippet as
-`<wiring-snippet>`; install multiple surfaces only on an explicit request.
+`<wiring-snippet>`; install multiple surfaces only on an explicit request
+(or when the Step 0 installer exception applies: the installer wires every
+detected agent, and each wired surface counts as selected).
 For Codex, read this executing bundle's `codex/reconcile-skills.md` now
 (relative to flaitron's root); its data will come from the chosen pin.
 

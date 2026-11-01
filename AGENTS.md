@@ -66,7 +66,8 @@ not to)".
 - `LOGO.webp` — README header image.
 - `.editorconfig` — editor formatting rules (§"Editing Rules" below).
 - `.gitleaks.toml` — gitleaks config for CI's secret scan.
-- `.github/` — GitHub-specific config (CI workflow: `workflows/ci.yml`; Dependabot security-update config: `dependabot.yml`).
+- `install.sh` — the one-line adopter installer (`curl … | sh`; a CLI carve-out per `SPEC/scope-boundaries.md`), tested by `tools/install.test.sh`.
+- `.github/` — GitHub-specific config (CI workflows: `workflows/ci.yml`, plus `workflows/install-test.yml`, the path-filtered network test of `install.sh`; Dependabot security-update config: `dependabot.yml`).
 - `justfile` — `just` recipes (`setup`/`dev`/`test`/`lint`/`typecheck`/`build`/`check`). Viz verbs delegate to the `viz/` npm scripts; `check` runs the eight §"Validation" commands below plus `bash tools/drift-checks.sh`. §"Validation" stays the roster of record.
 - `SPEC.md` — canonical workflow contract.
 - `SPEC/` — lazy modules for epics, starter tasks, blocked tasks, model
@@ -93,7 +94,7 @@ not to)".
   design rationale, and `CONTEXT-BUDGET.md` (per-file byte budgets, enforced
   in CI and at release).
 - `templates/` — canonical markdown templates.
-- `tools/` — operator-side fleet scripts (`update-adopters.mjs` + tests) and `drift-checks.sh` (+ its `drift-checks.test.mjs` self-test), the shell of CI's `drift` job and the `/ft-release` §7.1 pair walk.
+- `tools/` — operator-side fleet scripts (`update-adopters.mjs` + tests), `drift-checks.sh` (+ its `drift-checks.test.mjs` self-test), the shell of CI's `drift` job and the `/ft-release` §7.1 pair walk, and `install.test.sh`, the installer's sandboxed end-to-end test.
 - `viz/` — Vite/React/TypeScript visualizer (module tiers + no-Node-under-`src/ui/` rule: [`viz/README.md`](viz/README.md)).
 
 ## Validation
@@ -130,6 +131,15 @@ check fails on it:
 
 ```sh
 node --test tools/drift-checks.test.mjs
+```
+
+For the installer, run shellcheck and its sandboxed end-to-end test (needs the
+network; it never touches the real `~`). CI runs both in the separate,
+path-filtered `install-test.yml`, not in the eight-command roster above:
+
+```sh
+shellcheck -s sh install.sh tools/install.test.sh
+sh tools/install.test.sh install.sh
 ```
 
 CI's `drift` job runs every check in `bash tools/drift-checks.sh` — Pair Q

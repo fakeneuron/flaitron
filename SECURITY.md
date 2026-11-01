@@ -127,7 +127,7 @@ invocations will execute.
 
 **Adopter mitigations.**
 
-- Pin to annotated release tags (e.g. `v8.1.0`), not to `main` or to an
+- Pin to annotated release tags (e.g. `v8.2.0`), not to `main` or to an
   unreviewed commit on `main`. Release tags are reviewed deliberately;
   `main` is a moving target.
 - Review the diff between your pinned commit and the new tag before
@@ -185,8 +185,9 @@ reviewed as one. Do not add repository secrets to this workflow.
 `tools/update-adopters.mjs` is the singular script exception to
 `SPEC/scope-boundaries.md` §"What flaitron does NOT provide" — operator-side fleet maintenance across
 `~/code`, not workflow machinery inside a project. It batches the
-`/ft-update` recipe across every discovered adopter: bump the pinned
-`.flaitron/core` submodule to the latest release, rewrite the adopter's pin
+`/ft-update` recipe across every discovered adopter: bump the adopter's
+flaitron submodule (path from `.gitmodules`, default `.flaitron/core`) to the
+latest release or `--target <tag>`, rewrite the adopter's pin
 line and AGENTS.md Workflow block, create missing skill links and remove
 tracked dangling ones on the wiring surfaces the adopter already has, and
 commit — run manually

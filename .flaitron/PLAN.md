@@ -37,6 +37,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-854** [moderate]🧩 | release v8.2.0 — Completed 2026-11-01.
 - [x] **CORE-853** [moderate] | workflow-replace-fence-aware — Completed 2026-11-01.
 - [x] **CORE-849** [moderate]🧩 | codex-reconcile-portability — Completed 2026-10-31.
 - [x] **CORE-EPIC-850** [heavy] | unattended-readiness — Completed 2026-10-31.

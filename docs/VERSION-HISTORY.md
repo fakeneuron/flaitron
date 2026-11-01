@@ -22,6 +22,14 @@ unless correcting a factual error.
 
 ---
 
+## v8.2.0 — unattended readiness and one fleet pin-bump engine
+
+- A [heavy] row can run [unattended] on a complete, operator-confirmed readiness basis (a starter's `### Acceptance that decides it`). [frontier]/[xheavy] are never admitted. /ft-seed-unattended can draft that scope starter or ask one bounded question.
+- --unattended /ft-task runs stay inside touches: and under 400 changed lines, or park `out-of-scope`.
+- tools/update-adopters.mjs is the single fleet pin-bump engine (--target, --only, --accept-migration, --attended-ledger, …). /ft-update makes the same follow-through writes: the Pinned to: line, the AGENTS.md Workflow block (fence-aware), and the dangling-link prune.
+
+Also: Codex reconcile runs under zsh/dash; /ft-release files a missing release line without asking; Claude, Grok and Codex re-verified at v8.2.0.
+
 ## v8.1.0 — an unattended park commits its lone tasknote
 
 - An --unattended park whose tasknote is the only uncommitted path commits it alone (`chore: park <ID> — <code>`, never pushed), so the next dispatch's foreign-dirt gate no longer stops on it. Other dirt leaves the park uncommitted; attended parks never auto-commit.

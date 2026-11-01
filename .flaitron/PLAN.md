@@ -16,15 +16,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Medium
 
 - [ ] **CORE-851** [heavy] | one-line-installer — Starter: POSIX `install.sh` (`curl … | sh`) that installs the pinned submodule, verifies the tag commit, wires agent skill links and hands off to `/ft-adopt` (Step 0 exception). Discovery: doctrine change vs CONVENTIONS package-manager distribution / PHILOSOPHY "zero scripts", and supply-chain risk of serving from the public repo's `main`. Grok intake 2026-10-31.
-- [ ] **CORE-EPIC-852** [heavy] | pin-bump-tool-merge — Make `tools/update-adopters.mjs` the single fleet pin-bump engine: generic `--attended-ledger` guard, port natabula `wave-bump.sh` gates and follow-through (hooks run, full rollback), `/ft-update` parity, generic policy flags; release it. natabula NAT-494 wraps it. Re-scoped from CORE-852 in Phase 1 (2026-10-31).
-  - [x] **CORE-852.1** [heavy] | pin-bump-tool-merge discovery — Completed 2026-10-31.
-  - [x] **CORE-852.2** [moderate] | attended-ledger-guard — Completed 2026-10-31.
-  - [x] **CORE-852.3** [heavy] | selection-gate-flags — Completed 2026-10-31.
-  - [x] **CORE-852.4** [heavy] | follow-through-commit-contract — Completed 2026-10-31.
-  - [x] **CORE-852.5** [heavy] | wiring-and-forks — Completed 2026-10-31.
-  - [x] **CORE-852.6** [moderate] | ft-update-parity-carveout — Completed 2026-11-01.
-  - [x] **CORE-852.7** [moderate] | release-and-parity-run — Completed 2026-11-01.
-  - [ ] **CORE-852.N** [heavy] | pin-bump-tool-merge audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
 
 ## Low
 
@@ -37,6 +28,15 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-EPIC-852** [heavy] | pin-bump-tool-merge — Completed 2026-11-01.
+  - [x] **CORE-852.1** [heavy] | pin-bump-tool-merge discovery — Completed 2026-10-31.
+  - [x] **CORE-852.2** [moderate] | attended-ledger-guard — Completed 2026-10-31.
+  - [x] **CORE-852.3** [heavy] | selection-gate-flags — Completed 2026-10-31.
+  - [x] **CORE-852.4** [heavy] | follow-through-commit-contract — Completed 2026-10-31.
+  - [x] **CORE-852.5** [heavy] | wiring-and-forks — Completed 2026-10-31.
+  - [x] **CORE-852.6** [moderate] | ft-update-parity-carveout — Completed 2026-11-01.
+  - [x] **CORE-852.7** [moderate] | release-and-parity-run — Completed 2026-11-01.
+  - [x] **CORE-852.N** [heavy] | pin-bump-tool-merge audit — Completed 2026-11-01.
 - [x] **CORE-854** [moderate]🧩 | release v8.2.0 — Completed 2026-11-01.
 - [x] **CORE-853** [moderate] | workflow-replace-fence-aware — Completed 2026-11-01.
 - [x] **CORE-849** [moderate]🧩 | codex-reconcile-portability — Completed 2026-10-31.

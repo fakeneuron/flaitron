@@ -15,7 +15,7 @@ The release task is normally filed in `.flaitron/PLAN.md` as a one-line entry be
 - [ ] **<TASK-ID>** [model] | release vX.Y.Z — Cut vX.Y.Z minor release tagging <FEAT-A> + <FEAT-B> since v<prev>.
 ```
 
-`/ft-release` scans PLAN for the entry and drives it. If no such entry exists, Step 1 offers to draft and file one itself (task ID, version, and description all self-computed from repo state) rather than just bouncing the user to file it by hand. The skill takes **no arguments**.
+`/ft-release` scans PLAN for the entry and drives it. If no such entry exists, Step 1 drafts and files one itself (task ID, version, and description all self-computed from repo state) and carries on, rather than bouncing the user to file it by hand. The skill takes **no arguments**.
 
 ## Step 0 — Verify cwd is the flaitron repo
 
@@ -31,7 +31,7 @@ If any check fails, stop. Tell the user `/ft-release` only runs from inside the 
 
 Read `.flaitron/PLAN.md`. Scan un-checked task lines under `## High | Medium | Low` (and `## Critical` if a legacy heading is still present — see SPEC §"Task-line format"; skip `## Completed` and `## Future Opportunities`) whose `| <shortname>` segment matches `release v*` (case-insensitive — e.g., `release vX.Y.Z`).
 
-- **Zero matches.** Don't just bounce the user to file it by hand — offer to draft and file the line now (Step 1.1 below), same as if it had already existed. Only fall back to stopping if the user declines.
+- **Zero matches.** Don't bounce the user to file it by hand. Draft and file the line now (Step 1.1 below) without asking, then continue as if it had already existed.
 - **Multiple matches.** Stop. List the matches and tell the user `/ft-release` requires exactly one pending release task. Ask them to close/de-scope the duplicates or restructure to a single line. Do not scaffold.
 - **Exactly one match.** Capture the `<TASK-ID>`, the `[model]` segment, the `| <shortname>` segment, the long description, and the section heading (priority). Continue.
 
@@ -39,14 +39,13 @@ Parse the **target version** from the shortname: `release v<X.Y.Z>` → `vX.Y.Z`
 
 ### Step 1.1 — Zero-matches fallback: draft and file the line
 
-Runs only when Step 1 found no pending `release v*` line. Computes the same version/bump-kind facts Step 2 would, just earlier, so the two never disagree — this step does not replace Step 2's own confirmation, it just gets the PLAN line in place first.
+Runs only when Step 1 found no pending `release v*` line. Computes the same version/bump-kind facts Step 2 would, just earlier, so the two never disagree. Filing is not a gate. The skill files the line and continues without asking, because invoking `/ft-release` already asked for a cut and every field is computed from repo state.
 
 1. **Compute the proposed version.** Read `SPEC.md:3` for the current version. Run `git describe --tags --abbrev=0` and confirm it matches — if it doesn't, stop and surface the drift exactly as Step 2 would (don't file a new release line over an already-broken state). Run `git log <last-tag>..HEAD --oneline`, classify each commit by Conventional-Commits prefix (same rule as Step 2: `feat!:`/`BREAKING CHANGE:` → major, `feat:` → minor, everything else → patch), and take the highest-rank classification as the proposed bump kind. Apply it to the current version for the proposed new version. If there are zero commits since the last tag, stop and tell the user there is nothing to release yet.
 2. **Suggest a task ID.** Flaitron-self release tasknotes always use the `CORE` area (every prior `release v*` entry does). Take the next `CORE` number per `SPEC/plan-filing.md` §"ID allocation" and suggest `CORE-<N>`.
 3. **Draft the shortname, model, and description.** Shortname: `release v<A.B.C>`. Model: `[moderate]🧩` (the tier of every prior release entry, filed before [[CORE-EPIC-815]] as legacy `[medium]`). Long description: `Cut v<A.B.C> <bump-kind> release tagging <FEAT-A> + <FEAT-B> since v<prev>.` — name the feature-level task IDs found in the classified commit log (e.g. from `feat: <TASK-ID> — ...` subjects), not every individual commit.
-4. **Surface the draft and ask.** AskUserQuestion with the fully drafted line shown verbatim (e.g. `- [ ] **CORE-<N>** [moderate]🧩 | release vA.B.C — ...`) and options: **File it and continue** (default) / **Let me edit the task ID, version, or description first** / **I'll file it myself — stop here**. Honor edits before filing.
-5. **On accept, append the line** under `## Medium` in `.flaitron/PLAN.md` (bottom of the section, or replacing a `(none)` placeholder) using the canonical task-line grammar. Do **not** commit this edit separately — flaitron's own release history shows the pending line and its Step 7.3 flip-to-Completed have always landed in the single release commit together, never as a standalone filing commit, so this follows the same pattern. Then proceed exactly as if Step 1 had found this line as its one match — capture the same fields, and skip re-deriving the bump proposal in Step 2 since it was already computed here.
-6. **On decline ("I'll file it myself"),** stop with the original message: "No pending `release v*` task in PLAN.md. File a one-liner first (e.g., `**<TASK-ID>** [model] | release vX.Y.Z — ...`), then run `/ft-release` again." Do not scaffold.
+4. **Append the line** under `## Medium` in `.flaitron/PLAN.md` (bottom of the section, or replacing a `(none)` placeholder) using the canonical task-line grammar. Do **not** commit this edit separately — flaitron's own release history shows the pending line and its Step 7.3 flip-to-Completed have always landed in the single release commit together, never as a standalone filing commit, so this follows the same pattern. Then proceed exactly as if Step 1 had found this line as its one match, and capture the same fields.
+5. **Report, don't ask.** Print the filed line verbatim and the Step 2 summary block (current version, commits since the last tag, bump kind), then continue to Step 2.5. Skip Step 2's "Confirm or override?". Its proposal and the PLAN target are the same computation here, so there is nothing to reconcile. The operator can still interrupt to change the ID, version, or description. The filed line is an uncommitted PLAN edit until the release commit, so a correction is one edit.
 
 ## Step 2 — Verify state and propose bump kind
 
@@ -265,7 +264,7 @@ If any Medium or Low finding is still open, stop and ask with AskUserQuestion be
 
 An empty, unclear, or uncertain reply is **Stop**. This ask is a skill-recipe wait, like the §7.2 tag-message review. It is not bundled into 📦: Stop has to land before §7.2, and folding the choice into commit-go would tag before the operator made it.
 
-If the sweep reports zero findings, or the only findings were Critical / High and those are fixed inline, say so and continue into the standing checks below. **Release anyway** does the same after the follow-ups are filed. **Stop** does not: do not read the standing checks, and do not enter §7.2. Do not invent a third phase-gate banner for this ask — `SPEC/gates.md` §"Operator-gate cues" caps standing banners at 🛠️ and 📦. This is a blocking AskUserQuestion in the same family as Step 1.1.
+If the sweep reports zero findings, or the only findings were Critical / High and those are fixed inline, say so and continue into the standing checks below. **Release anyway** does the same after the follow-ups are filed. **Stop** does not: do not read the standing checks, and do not enter §7.2. Do not invent a third phase-gate banner for this ask — `SPEC/gates.md` §"Operator-gate cues" caps standing banners at 🛠️ and 📦. This is a blocking AskUserQuestion, a skill-recipe wait like the §7.2 tag-message review.
 
 **Standing checks — read both fragments now** (only when the cut is continuing). Independently of the subroutine findings, §7.1 carries two blocks of standing checks that live in sibling fragments so this skill stays under its load budget. Read them **in parallel**:
 
@@ -393,5 +392,5 @@ The post-closure protocol is canonical in `SPEC/post-closure.md` — **Read it n
 
 - **Flaitron-self only.** This skill is never symlinked into adopter projects. Adopters consume flaitron via submodule pin and the manual bump procedure in `docs/MIGRATION.md` §"Pinning and bumping".
 - **Context-budget escape hatch (Step 2.5).** A full cut is a long session. If the remaining context budget looks tight at invocation, the skill offers to defer the whole cut to a fresh `/ft-release` chat (re-entry is `/ft-release`, not `/ft-task <TASK-ID>` — the recipe lives here) rather than driving inline on thin headroom. Comfortable budgets skip the hatch and drive inline as before.
-- **Why no args.** A flaitron release is a coordinated cut — there is at most one pending `release v*` task in PLAN at a time. The PLAN-line filing normally happens before `/ft-release` runs, or Step 1.1 drafts and files it on the spot when none exists yet (still gated by an AskUserQuestion review — never a silent write). Multiple un-cut releases queued is a process smell; the skill bails to surface it.
+- **Why no args.** A flaitron release is a coordinated cut — there is at most one pending `release v*` task in PLAN at a time. The PLAN-line filing normally happens before `/ft-release` runs, or Step 1.1 drafts and files it on the spot when none exists yet. That filing does not ask; it prints the line it filed, which stays uncommitted until the release commit. Multiple un-cut releases queued is a process smell; the skill bails to surface it.
 - **Tag-message review is mandatory.** The auto-draft seeds the structure; the user is expected to review and edit. CORE-048's deviation from CORE-046's `No required project-side edits` boilerplate (calling out CORE-047's adopter action item) is the canonical example of context-sensitive editing — a rote auto-draft would have missed it.

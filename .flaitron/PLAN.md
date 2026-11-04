@@ -13,6 +13,8 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 (none)
 
+- [ ] **CORE-862** [light] | ci-job-timeouts — Raise every Actions job to the NAT-528 defaults (15 min lint/type/unit, 30 min E2E/build/deploy) where the current timeout-minutes differs. Origin NAT-528.
+
 ## Medium
 
 (none)

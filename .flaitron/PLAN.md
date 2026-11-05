@@ -19,7 +19,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Low
 
-- [ ] **CORE-861** [heavy] | brand-casing-policy — Decide the casing rule for flaitron here. flaitron-site's guard (`scripts/copy-guard.sh`, FS-028) accepts only FLAITRON or flaitron, but 261 title-case "Flaitron" matches sit in 100 tracked files, including the `# Flaitron — Workflow Specification` heading `/ft-task` detects, and archived notes are write-once. Choose: allow title-case, scope the rule to paths, or rename; then file the guard row. Filed from natabula NAT-522.
+- [ ] **CORE-863** [moderate] | brand-casing-guard — Apply `brand/BRAND.md` §"Name casing" (CORE-861): lowercase every live title-case hit outside the tasknote archive and PLAN-ARCHIVE, then drop that section's pending note. Its matchers must accept both `SPEC.md` headings, because `install.sh` checks older pinned cores. Keep deliberate case fixtures (URL test, drift self-test). Same commit: add a word-bounded check accepting `flaitron`/`FLAITRON`, a seeded case and a catalogue entry, and retarget the `brand_nearmiss` comment.
 
 ## Future Opportunities
 
@@ -27,6 +27,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-861** [heavy]🧠 | brand-casing-policy — Completed 2026-11-05.
 - [x] **CORE-862** [light]🔧 | ci-job-timeouts — Completed 2026-11-05.
 - [x] **CORE-860** [moderate] [unattended] | brand-nearmiss-guard — Completed 2026-11-04.
 - [x] **CORE-641** [light]🔧 | typescript-7 — Completed 2026-11-01. De-scoped: upstream toolchain watching is a fleet concern; re-filed in natabula as NAT-517.

@@ -16,3 +16,20 @@ Fill all three; keep them public-safe. Caps are caps, not targets:
 
 Below this line the file is free — longer copy, voice notes, what not to
 say. This file and `README.md` are the self-contained contract.
+
+## Name casing
+
+- `flaitron` is the framework, its repo, package and paths. It is always
+  lowercase, even at the start of a sentence or a heading.
+- `FLAITRON` is the consulting business at flaitron.com, which has its own
+  repo. Use it here only when you mean the business, never for the framework.
+  A check cannot tell which one is meant, so review enforces this.
+- Any other casing, including an initial capital, is wrong in tracked
+  text. Archived tasknotes and `.flaitron/PLAN-ARCHIVE.md` rows are
+  write-once and keep whatever casing they were written with.
+- An identifier joined to other word characters follows its own convention
+  (`FLAITRON_HOME`, `cachedFlaitronFile`) and is not brand text. A
+  standalone name, in code or prose, follows this rule.
+
+The blurb fields above, `assets.json` and the SVG labels still use the old
+capitalized form until CORE-863 renames them.

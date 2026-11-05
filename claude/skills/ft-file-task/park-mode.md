@@ -75,7 +75,7 @@ Ready to execute **now** → `/ft-task <ID> --micro`, not this mode.
 Template path (resolved by the host SKILL's Step 0 layout branch):
 
 - **Adopter:** `.flaitron/core/templates/sidequest-template.md`
-- **Flaitron self-host:** `templates/sidequest-template.md`
+- **flaitron self-host:** `templates/sidequest-template.md`
 
 Then:
 

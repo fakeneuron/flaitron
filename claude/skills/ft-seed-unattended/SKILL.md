@@ -22,7 +22,7 @@ The skill is markdown-only — the assistant runs git inline via its Bash tool,
 no shell scripts (per `SPEC/scope-boundaries.md` §"What flaitron does NOT
 provide").
 
-**The rule this skill exists under.** Flaitron itself never writes
+**The rule this skill exists under.** flaitron itself never writes
 `[unattended]` — seeding is an operator act (`SPEC/task-line-segments.md`;
 `SPEC/unattended-candidacy.md` §"Recommend, never write"). This skill does not
 change who writes the token. It changes *when the question is asked*: instead
@@ -38,7 +38,7 @@ restate it here.
 Two layouts. Pick by which file exists:
 
 - **Adopter project:** `.flaitron/core/SPEC.md` exists → `<root>` = `.flaitron/core/`.
-- **Flaitron self-host:** repo-root `SPEC.md` with heading `# Flaitron — Workflow Specification` → `<root>` = repo-root.
+- **flaitron self-host:** repo-root `SPEC.md` with heading `# flaitron — Workflow Specification` → `<root>` = repo-root.
 
 If neither matches, bail. `PLAN` is `.flaitron/PLAN.md` on both layouts; if it
 is absent, bail — there is nothing to seed.

@@ -22,7 +22,7 @@ regenerating this block, never editing this block alone. It stays a literal
 
 Codex discovers repo-scoped skills from `.agents/skills` in the current
 directory walk. From an adopting project's repository root, after adding the
-flaitron submodule at `.flaitron/core`, wire the adopter-facing Flaitron skill
+flaitron submodule at `.flaitron/core`, wire the adopter-facing flaitron skill
 subset (tasknote execution family, `ft-seed-unattended`, and `ft-update`):
 
 ```sh
@@ -53,7 +53,7 @@ fallback, keep it out of search tooling with a `.flaitron/core/.flaitron/` line 
 sparse line and the per-tool list are in `../docs/MIGRATION.md` §1.1.
 
 Use `/skills` in Codex or type `$ft-task` / `$ft-update` / another wired
-skill name to invoke a Flaitron skill. Global utility skills such as
+skill name to invoke a flaitron skill. Global utility skills such as
 `ft-adopt` and `ft-audit-repo` may be installed in the user skill directory when desired;
 `ft-release` remains flaitron-self-only and is not part of the adopter snippet.
 The canonical category table lives in
@@ -70,7 +70,7 @@ how Codex translates lands in one place:
 
 - Use a concise prose question when the source skill asks for a structured ask
   and no Codex structured prompt is available.
-- Invoke sibling Flaitron Codex skills by their `ft-*` names when a source step
+- Invoke sibling flaitron Codex skills by their `ft-*` names when a source step
   references another skill.
 - Treat `.claude/` paths as Claude-only install paths; Codex install paths are
   documented in §"One-time skill wiring" above.

@@ -4,7 +4,7 @@
 
 The bootstrap adds **install repair**, never audit mechanics. Domain resolution, scope resolution, pass order, capped findings, finding format, closing sections, the write-to-PLAN step, and the hard rules are untouched by everything below — it runs once, ahead of pass 1, and returns either resolved values or an explicit degraded-run acknowledgement.
 
-Flaitron ships this skill as a **stack-neutral scaffold** whose scope, rubric,
+flaitron ships this skill as a **stack-neutral scaffold** whose scope, rubric,
 and gate slots stay placeholders until a fork fills them. Run against unfilled
 slots, an audit has no project contracts to grade against: the rubric load
 finds nothing to open, the gates are uninvokable strings, and every "Why it
@@ -53,7 +53,7 @@ degraded*.
 ## 2. Resolve the install context
 
 - **Adopter** — `.flaitron/core/claude/skills/ft-audit/` resolves from the repo root. All three branches below are available; a thin overlay's referenced scaffold is `.flaitron/core/claude/skills/ft-audit/SKILL.md`.
-- **Flaitron-self** — no `.flaitron/core/` submodule, but repo-root `SPEC.md` exists with heading `# Flaitron — Workflow Specification` (the same detection `passes/context.md` §"Scope & rubric hints" uses for flaitron-mode). All three branches below are available; a thin overlay's referenced scaffold is the in-tree `claude/skills/ft-audit/SKILL.md` — there is no submodule to point at.
+- **flaitron-self** — no `.flaitron/core/` submodule, but repo-root `SPEC.md` exists with heading `# flaitron — Workflow Specification` (the same detection `passes/context.md` §"Scope & rubric hints" uses for flaitron-mode). All three branches below are available; a thin overlay's referenced scaffold is the in-tree `claude/skills/ft-audit/SKILL.md` — there is no submodule to point at.
 - **Non-adopter** — neither resolves. A thin overlay's referenced-scaffold path would not resolve either, so **do not offer fork+fill**; offer only *run once* and *proceed degraded*, and say in one line why the fork option is absent.
 
 ## 3. Auto-derive candidate values
@@ -157,7 +157,7 @@ cp .flaitron/core/templates/audit-overlay-template.md .claude/skills/audit/SKILL
 Set `flaitron-reconciled:` to the currently pinned flaitron tag (`git -C
 .flaitron/core describe --tags`).
 
-**Flaitron-self:** the overlay body is **tracked** here, unlike an adopter's,
+**flaitron-self:** the overlay body is **tracked** here, unlike an adopter's,
 and `.claude/` is reached by a symlink — `.claude/` stays wholly ignored, so an
 overlay written into it would be unversionable (`CONTRIBUTING.md` §"Developing flaitron skills").
 

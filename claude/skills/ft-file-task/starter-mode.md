@@ -101,7 +101,7 @@ Host Step 4 runs with these substitutions, in the same continuous motion:
    the host's Step 0 layout branch):
 
    - **Adopter:** `.flaitron/core/templates/tasknote-starter-template.md`
-   - **Flaitron self-host:** `templates/tasknote-starter-template.md`
+   - **flaitron self-host:** `templates/tasknote-starter-template.md`
 
    ```sh
    cp <starter template path> .flaitron/tasknote/<TASK-ID>.md

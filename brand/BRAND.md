@@ -1,7 +1,7 @@
 ---
 tagline: "Markdown tasknotes for AI-assisted coding"
-one_liner: "Flaitron is a lightweight, agent-neutral tasknote workflow for solo AI-assisted coding — one markdown plan, four-phase tasknotes, no scripts or database."
-description: "Flaitron is a project-agnostic tasknote system for solo, AI-assisted coding: one markdown plan (PLAN.md) as the single source of truth per project, consumed via git submodule, with self-contained four-phase tasknotes (Discovery, Execution, Testing, Closure) that keep AI context windows sized to hold a complete task. A relevance gate re-checks scope before work starts, cutting stale or drifted work. No daemons, scripts, or database — just versioned markdown, readable and editable by any agent or human."
+one_liner: "flaitron is a lightweight, agent-neutral tasknote workflow for solo AI-assisted coding — one markdown plan, four-phase tasknotes, no scripts or database."
+description: "flaitron is a project-agnostic tasknote system for solo, AI-assisted coding: one markdown plan (PLAN.md) as the single source of truth per project, consumed via git submodule, with self-contained four-phase tasknotes (Discovery, Execution, Testing, Closure) that keep AI context windows sized to hold a complete task. A relevance gate re-checks scope before work starts, cutting stale or drifted work. No daemons, scripts, or database — just versioned markdown, readable and editable by any agent or human."
 ---
 
 # Brand
@@ -30,6 +30,5 @@ say. This file and `README.md` are the self-contained contract.
 - An identifier joined to other word characters follows its own convention
   (`FLAITRON_HOME`, `cachedFlaitronFile`) and is not brand text. A
   standalone name, in code or prose, follows this rule.
-
-The blurb fields above, `assets.json` and the SVG labels still use the old
-capitalized form until CORE-863 renames them.
+- `brand_casing` in `tools/drift-checks.sh` enforces the rule. A test
+  fixture that needs another casing marks its line `brand-casing: fixture`.

@@ -1,6 +1,6 @@
-# Flaitron — Vision
+# flaitron — Vision
 
-Flaitron is a workflow contract for one person managing a handful of solo AI-assisted coding projects. It exists to catch the agent before it wastes a session: the four phases, the Relevance Assessment, and the Acceptance criteria are the checkpoints where you look, and one task per context window is what keeps each one small enough to actually review — without scripts, daemons, databases, or schemas to maintain.
+flaitron is a workflow contract for one person managing a handful of solo AI-assisted coding projects. It exists to catch the agent before it wastes a session: the four phases, the Relevance Assessment, and the Acceptance criteria are the checkpoints where you look, and one task per context window is what keeps each one small enough to actually review — without scripts, daemons, databases, or schemas to maintain.
 
 See [SPEC.md](../SPEC.md) for the contract and [PHILOSOPHY.md](PHILOSOPHY.md) for the history of how the shape got here.
 
@@ -12,7 +12,7 @@ Solo developers running 2-5 side projects in parallel with an AI coding assistan
 - You context-switch across multiple projects week-to-week and want one source-of-truth workflow shape, not a snowflake per repo.
 - You use an AI assistant (Claude Code, Codex, or similar) for actual implementation, not just code review.
 
-Flaitron is **not** for teams, monorepos at scale, large open-source projects with contributor onboarding, or non-code knowledge management.
+flaitron is **not** for teams, monorepos at scale, large open-source projects with contributor onboarding, or non-code knowledge management.
 
 ## Principles
 
@@ -33,11 +33,11 @@ This section is the **canonical** statement: the justification is written once, 
 
 - **Schema validators.** Markdown is the schema; the assistant catches drift. Adding a JSON-schema validator (or equivalent runtime checker) reintroduces the friction flaitron was built to remove — see the v0.1.0 history in [PHILOSOPHY.md](PHILOSOPHY.md). PRs that ship validation tooling are rejected; if drift is recurring, the answer is a sharper SPEC clause, not a validator.
 
-- **Abstractions without two-project precedent.** A helper is only canonical when ≥2 projects need the same shape. One project's convenience function is a project-side helper, not a flaitron primitive. Three similar lines repeated across projects is cheaper than an abstraction layer that fits none of them well. PRs that promote a single-project pattern into flaitron are deferred until a second project's organic need surfaces. **The bounded exception is a declared caller surface** ([EXTERNAL-AGENTS.md](EXTERNAL-AGENTS.md) §"Stable surfaces for callers"): a surface with **one real out-of-repo consumer** is admissible when it costs the standalone workflow nothing — no new gate, no runner behaviour, no write flaitron performs on its own, and a project that never uses it sees the contract exactly as before. Flaitron may carry features that exist so a tool *around* it can adopt it, even ones flaitron never exercises internally; the `[handoff]` marker and the `[unattended]` candidacy proposals are the instances. The test is the standalone cost, not the consumer count — a surface that would add a pause or a write to an ordinary task still waits for the second project.
+- **Abstractions without two-project precedent.** A helper is only canonical when ≥2 projects need the same shape. One project's convenience function is a project-side helper, not a flaitron primitive. Three similar lines repeated across projects is cheaper than an abstraction layer that fits none of them well. PRs that promote a single-project pattern into flaitron are deferred until a second project's organic need surfaces. **The bounded exception is a declared caller surface** ([EXTERNAL-AGENTS.md](EXTERNAL-AGENTS.md) §"Stable surfaces for callers"): a surface with **one real out-of-repo consumer** is admissible when it costs the standalone workflow nothing — no new gate, no runner behaviour, no write flaitron performs on its own, and a project that never uses it sees the contract exactly as before. flaitron may carry features that exist so a tool *around* it can adopt it, even ones flaitron never exercises internally; the `[handoff]` marker and the `[unattended]` candidacy proposals are the instances. The test is the standalone cost, not the consumer count — a surface that would add a pause or a write to an ordinary task still waits for the second project.
 
 - **Cross-project query layers beyond the read-only visualizer.** Each project owns its own history. The read-only `viz/` visualizer (priority-grouped list, optional board mode) is the *one* aggregated surface, intentionally scoped to "show me everything open, grouped by priority" — anything richer (queryable cross-project search, dependency graphs spanning repos, status APIs) is out of scope. The exception is documented and bounded; PRs that expand it without that boundary check are rejected.
 
-- **Multi-user / team features.** Flaitron is a solo system. Assignment fields, reviewer queues, approval workflows, shared-state coordination, role-based access — none of these belong here. Teams have different needs and different existing tools; flaitron deliberately doesn't compete with them.
+- **Multi-user / team features.** flaitron is a solo system. Assignment fields, reviewer queues, approval workflows, shared-state coordination, role-based access — none of these belong here. Teams have different needs and different existing tools; flaitron deliberately doesn't compete with them.
 
 - **Runtime security scanners / agent-callable audit servers.** Markdown is the schema and the human at the gate is the control; an advisory risk-scorer — or an MCP "auditor" the agent calls into — adds attack surface and false confidence without an enforcement chokepoint. Deterministic enforcement (block-secrets, restrict-shell) belongs in per-project agent permission hooks (Claude Code's, or the runner's equivalent), not in flaitron. The markdown-native security need is already met by the `ft-audit` skill's `security` domain and [`SECURITY.md`](../SECURITY.md). PRs that ship audit daemons, scan scripts, or a fifth "Security Gate" lifecycle phase are rejected.
 

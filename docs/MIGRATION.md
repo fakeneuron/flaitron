@@ -1,4 +1,4 @@
-# Adopting Flaitron in a Project
+# Adopting flaitron in a Project
 
 This is the procedural guide for putting flaitron into a project. For the "why," see [PHILOSOPHY.md](PHILOSOPHY.md). For the workflow contract, see [SPEC.md](../SPEC.md). For the load-bearing vocabulary (terms, phases, markers, grammar), see the lazy-loaded [GLOSSARY.md](GLOSSARY.md) (pointers only; SPEC is authoritative).
 
@@ -44,7 +44,7 @@ For Codex, install only the same optional utility names using
 `mkdir -p ~/.agents/skills` and
 `ln -s <path-to-flaitron-checkout>/codex/skills/<skill> ~/.agents/skills/<skill>`.
 On a machine where Codex is the driver, replace a retired global
-`ft-new-project` only after verifying its exact Flaitron target; install
+`ft-new-project` only after verifying its exact flaitron target; install
 `ft-adopt` individually, preserving unrelated entries. Never glob the wrapper
 inventory into the user directory.
 
@@ -84,7 +84,7 @@ The `checkout` step is what pins the project to a specific flaitron version. Wit
 - **Cursor** — add the line `.flaitron/core/.flaitron/` to a root `.cursorignore` (blocks both indexing and AI access).
 - **ripgrep-based search** (`rg`, and the shell greps most agents run) — the same line in a root `.ignore` (`.rgignore` for ripgrep only). `.gitignore` is the wrong file for this: the path is tracked content inside the submodule.
 
-Commit whichever files you created — §1.6 stages them. Flaitron's own checkout has no `.flaitron/core/` and needs nothing.
+Commit whichever files you created — §1.6 stages them. flaitron's own checkout has no `.flaitron/core/` and needs nothing.
 
 ### 1.2 Wire the adopter skill subset via symlinks
 
@@ -102,7 +102,7 @@ Global utilities (`/ft-adopt`, `/ft-audit-repo`) live in the user's agent home w
 
 ### 1.2.1 Optional: fork the `/ft-audit` scaffold per stack
 
-Flaitron ships one stack-neutral audit scaffold at `.flaitron/core/claude/skills/ft-audit/` — a parameterized `/ft-audit <domain> [scope]` dispatcher over an eight-file `passes/` library. The shared procedure (scope resolution, passes-in-order, capped findings, finding format, closing sections, write-tickets-to-PLAN) lives once in `SKILL.md`; each domain's pass definitions, severity guide, scope/rubric/gate hints, and specialist rules live in a sibling `passes/<domain>.md` loaded at run time. **Forked, not symlinked**: per-stack rubrics/commands/examples diverge.
+flaitron ships one stack-neutral audit scaffold at `.flaitron/core/claude/skills/ft-audit/` — a parameterized `/ft-audit <domain> [scope]` dispatcher over an eight-file `passes/` library. The shared procedure (scope resolution, passes-in-order, capped findings, finding format, closing sections, write-tickets-to-PLAN) lives once in `SKILL.md`; each domain's pass definitions, severity guide, scope/rubric/gate hints, and specialist rules live in a sibling `passes/<domain>.md` loaded at run time. **Forked, not symlinked**: per-stack rubrics/commands/examples diverge.
 
 | Domain | Scope | Passes (5 each, except `context`) |
 |---|---|---|
@@ -265,7 +265,7 @@ If the project already has a real `CLAUDE.md` holding Claude-only directives, le
 @AGENTS.md
 ```
 
-Then re-run the verification above. Both routes leave `AGENTS.md` the single source of the contract; `CLAUDE.md` only ever carries the loading shim plus whatever Claude-only directives already lived there. Flaitron's own repo uses the symlink route — see its root `CLAUDE.md`.
+Then re-run the verification above. Both routes leave `AGENTS.md` the single source of the contract; `CLAUDE.md` only ever carries the loading shim plus whatever Claude-only directives already lived there. flaitron's own repo uses the symlink route — see its root `CLAUDE.md`.
 
 The same applies to any other agent with a native context file (`GROK.md`, `GEMINI.md`, Aider's `CONVENTIONS.md`): verify, and shim to `AGENTS.md` only if the verification fails. See [`AGENT-COMPAT.md`](AGENT-COMPAT.md) §"Reading the cells" for the per-agent entry points.
 
@@ -416,7 +416,7 @@ If the legacy IDs already follow flaitron's `<AREA>-<NUMBER>` convention (e.g. `
 
 If the legacy IDs follow a non-canonical scheme (phase-prefixed `P11.7-1`, sequential numerics, project-internal codes), do a one-time rename of the **open queue only**. Map each open task to a canonical area prefix and record the cross-walk in the migration tasknote:
 
-| Legacy ID | Flaitron ID | Notes |
+| Legacy ID | flaitron ID | Notes |
 |---|---|---|
 | P41-2 | BE-001 | auth middleware |
 | P42-1 | BE-002 | boot banner |
@@ -469,7 +469,7 @@ Create `AGENTS.md` and paste the flaitron block from §1.3, then run §1.3's loa
 
 After §3.2–§3.7 land and `/ft-task` shows in the slash menu, sweep for residual state the migration steps didn't auto-handle. Each item below is a decision point — log the resolution in the migration tasknote's Cleanup Notes (or equivalent). The list is the **generic core**; project-specific tails (live-runtime smoke, CLAUDE.md project-guardrail check, project-specific orphan dirs) belong in the adopter's migration tasknote.
 
-- **Redundant template removal.** `git rm .flaitron/tasknote/tasknote-template.md` if a project-local template survived §3.2. Flaitron's template now lives at `.flaitron/core/templates/`.
+- **Redundant template removal.** `git rm .flaitron/tasknote/tasknote-template.md` if a project-local template survived §3.2. flaitron's template now lives at `.flaitron/core/templates/`.
 - **`_legacy_task` backup disposition.** If §3.1 backed up a project-local `/ft-task` command or skill to `_legacy_task.md` / `_legacy_task/`, decide: delete after migration confirms flaitron's `/ft-task` works, OR keep indefinitely as historical reference.
 - **Stale path-reference + ID sweep.** Walk the hit list captured in §3.1's path-reference inventory:
   - In active markdown docs: rewrite as `[<legacy-ID> (legacy)](legacy/...)`-style markdown links per §3.3, OR replace with the cross-walked flaitron ID if the reference is still relevant going forward.
@@ -527,7 +527,7 @@ for d in .claude .agents/skills .cursor/skills .grok/skills; do
 done
 ```
 
-Before removing any hit, verify its symlink type and exact Flaitron target against the retirement evidence. A missing target alone does not prove ownership; preserve custom links and real directories.
+Before removing any hit, verify its symlink type and exact flaitron target against the retirement evidence. A missing target alone does not prove ownership; preserve custom links and real directories.
 
 **Skills retired so far**, with what replaced them:
 

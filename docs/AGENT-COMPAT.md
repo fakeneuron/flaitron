@@ -138,7 +138,7 @@ dogfooded history but are refreshed or explicitly skipped per release.
 Contract-only rows start from vendor documentation and launch coverage until a
 live flaitron session is run under that agent. Grok Build, Codex CLI, and Cursor
 have all been dogfooded; Gemini CLI, Aider, and Sourcegraph Amp remain
-pre-adoption expectations. Flaitron ships full Claude/Codex inventories and
+pre-adoption expectations. flaitron ships full Claude/Codex inventories and
 thin Cursor and Grok siblings (snippet + procedure pointer; Grok also loads
 `.claude/skills/` / `.agents/skills/` / `.cursor/skills/` as compat surfaces);
 the remaining contract-only agents have no wiring bundle. Update a row on
@@ -148,7 +148,7 @@ triggers".
 
 ## Cross-agent cue fallback policy
 
-Flaitron's operator cues are `<glyph> <UPPERCASE-LABEL>` pairs — the canonical
+flaitron's operator cues are `<glyph> <UPPERCASE-LABEL>` pairs — the canonical
 set lives in [`SPEC/cue-vocabulary.md` §"Operator-cue vocabulary"](../SPEC/cue-vocabulary.md). The
 pairing *is* the cross-agent reliability mechanism: the glyph is a fast-scan
 accelerator; the UPPERCASE ASCII label is the authoritative, durable token.

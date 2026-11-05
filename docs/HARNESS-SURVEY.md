@@ -331,7 +331,7 @@ the README's 5,307, and `gates.md` + `post-closure.md`'s 2,208 of B2/C →
 
 **The hypothesis is mostly false by bytes.** Bucket A — clauses a current
 agent would follow unprompted — is 1.4% of the Claude path and 4.1% of the
-procedure (1,389 / 34,197). Flaitron is not over-specifying agent defaults; the two prior
+procedure (1,389 / 34,197). flaitron is not over-specifying agent defaults; the two prior
 survey passes' "lifecycle core well-balanced" verdict holds at the clause
 level too. What the lens actually surfaced is **self-reference**: the runner
 bodies re-narrate the SPEC they load (B2, 6.3 KB on Claude, 14.7 KB on the
@@ -433,7 +433,7 @@ candidacy, multi-runner wiring, four phases) are unchanged by this lens.
    `:13` / `:20` contradiction.
 5. **`SPEC.md` C** — 5,464 B, of which ~3 KB passes the CORE-657 filter
    (§"What flaitron does NOT provide" → `scope-boundaries.md` stub; §Core
-   principles / §What is Flaitron → `docs/VISION.md`).
+   principles / §What is flaitron → `docs/VISION.md`).
 6. **Bucket A** — ~2 KB. Not worth a child on its own; fold the §Phase 3
    "Choosing a test strategy" and §Phase 2 prose into whichever child touches
    those sections.

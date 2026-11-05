@@ -340,7 +340,7 @@ describe('App — project switching', () => {
       'aria-pressed',
       'false',
     );
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Flaitron — acme');
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('flaitron — acme');
   });
 
   it('shows the pinned flaitron version in the header when known', async () => {
@@ -446,7 +446,7 @@ describe('App — load() partial failure on project switch', () => {
     await user.click(screen.getByRole('button', { name: 'Project: acme' }));
 
     await waitFor(() =>
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Flaitron — acme'),
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('flaitron — acme'),
     );
     await waitFor(() =>
       expect(screen.getByText(/Archive list failed: HTTP 500/)).toBeInTheDocument(),

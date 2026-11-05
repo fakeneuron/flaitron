@@ -1,6 +1,6 @@
 ---
 name: ft-release
-description: Cut a flaitron release — version bump, doc-currency shifts, doc-drift sweep, single `feat:` commit, annotated tag, VERSION-HISTORY prepend, push. Use when the user asks to cut or ship a flaitron release. Flaitron-self only (repo-scoped in flaitron's own checkout); never installed in adopter projects or agent homes. Encodes the CORE-048 / CORE-046 / CORE-043 release recipe.
+description: Cut a flaitron release — version bump, doc-currency shifts, doc-drift sweep, single `feat:` commit, annotated tag, VERSION-HISTORY prepend, push. Use when the user asks to cut or ship a flaitron release. flaitron-self only (repo-scoped in flaitron's own checkout); never installed in adopter projects or agent homes. Encodes the CORE-048 / CORE-046 / CORE-043 release recipe.
 ---
 
 # release — flaitron self-host release skill
@@ -21,7 +21,7 @@ The release task is normally filed in `.flaitron/PLAN.md` as a one-line entry be
 
 The skill bails if invoked outside flaitron's own checkout:
 
-- `SPEC.md` exists at the repo root with the heading `# Flaitron — Workflow Specification` on line 1.
+- `SPEC.md` exists at the repo root with the heading `# flaitron — Workflow Specification` on line 1.
 - `.flaitron/PLAN.md` exists (flaitron's own PLAN.md, not an adopter's `.flaitron/core/PLAN.md`).
 - `.flaitron/core/SPEC.md` does NOT exist (its presence means we're inside an adopting project — `/ft-release` must not run there).
 
@@ -42,7 +42,7 @@ Parse the **target version** from the shortname: `release v<X.Y.Z>` → `vX.Y.Z`
 Runs only when Step 1 found no pending `release v*` line. Computes the same version/bump-kind facts Step 2 would, just earlier, so the two never disagree. Filing is not a gate. The skill files the line and continues without asking, because invoking `/ft-release` already asked for a cut and every field is computed from repo state.
 
 1. **Compute the proposed version.** Read `SPEC.md:3` for the current version. Run `git describe --tags --abbrev=0` and confirm it matches — if it doesn't, stop and surface the drift exactly as Step 2 would (don't file a new release line over an already-broken state). Run `git log <last-tag>..HEAD --oneline`, classify each commit by Conventional-Commits prefix (same rule as Step 2: `feat!:`/`BREAKING CHANGE:` → major, `feat:` → minor, everything else → patch), and take the highest-rank classification as the proposed bump kind. Apply it to the current version for the proposed new version. If there are zero commits since the last tag, stop and tell the user there is nothing to release yet.
-2. **Suggest a task ID.** Flaitron-self release tasknotes always use the `CORE` area (every prior `release v*` entry does). Take the next `CORE` number per `SPEC/plan-filing.md` §"ID allocation" and suggest `CORE-<N>`.
+2. **Suggest a task ID.** flaitron-self release tasknotes always use the `CORE` area (every prior `release v*` entry does). Take the next `CORE` number per `SPEC/plan-filing.md` §"ID allocation" and suggest `CORE-<N>`.
 3. **Draft the shortname, model, and description.** Shortname: `release v<A.B.C>`. Model: `[moderate]🧩` (the tier of every prior release entry, filed before [[CORE-EPIC-815]] as legacy `[medium]`). Long description: `Cut v<A.B.C> <bump-kind> release tagging <FEAT-A> + <FEAT-B> since v<prev>.` — name the feature-level task IDs found in the classified commit log (e.g. from `feat: <TASK-ID> — ...` subjects), not every individual commit.
 4. **Append the line** under `## Medium` in `.flaitron/PLAN.md` (bottom of the section, or replacing a `(none)` placeholder) using the canonical task-line grammar. Do **not** commit this edit separately — flaitron's own release history shows the pending line and its Step 7.3 flip-to-Completed have always landed in the single release commit together, never as a standalone filing commit, so this follows the same pattern. Then proceed exactly as if Step 1 had found this line as its one match, and capture the same fields.
 5. **Report, don't ask.** Print the filed line verbatim and the Step 2 summary block (current version, commits since the last tag, bump kind), then continue to Step 2.5. Skip Step 2's "Confirm or override?". Its proposal and the PLAN target are the same computation here, so there is nothing to reconcile. The operator can still interrupt to change the ID, version, or description. The filed line is an uncommitted PLAN edit until the release commit, so a correction is one edit.
@@ -392,7 +392,7 @@ The post-closure protocol is canonical in `SPEC/post-closure.md` — **Read it n
 
 ## Notes
 
-- **Flaitron-self only.** This skill is never symlinked into adopter projects. Adopters consume flaitron via submodule pin and the manual bump procedure in `docs/MIGRATION.md` §"Pinning and bumping".
+- **flaitron-self only.** This skill is never symlinked into adopter projects. Adopters consume flaitron via submodule pin and the manual bump procedure in `docs/MIGRATION.md` §"Pinning and bumping".
 - **Context-budget escape hatch (Step 2.5).** A full cut is a long session. If the remaining context budget looks tight at invocation, the skill offers to defer the whole cut to a fresh `/ft-release` chat (re-entry is `/ft-release`, not `/ft-task <TASK-ID>` — the recipe lives here) rather than driving inline on thin headroom. Comfortable budgets skip the hatch and drive inline as before.
 - **Why no args.** A flaitron release is a coordinated cut — there is at most one pending `release v*` task in PLAN at a time. The PLAN-line filing normally happens before `/ft-release` runs, or Step 1.1 drafts and files it on the spot when none exists yet. That filing does not ask; it prints the line it filed, which stays uncommitted until the release commit. Multiple un-cut releases queued is a process smell; the skill bails to surface it.
 - **Tag-message review is mandatory.** The auto-draft seeds the structure; the user is expected to review and edit. CORE-048's deviation from CORE-046's `No required project-side edits` boilerplate (calling out CORE-047's adopter action item) is the canonical example of context-sensitive editing — a rote auto-draft would have missed it.

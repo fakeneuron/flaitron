@@ -18,7 +18,7 @@ On top of that, it adds **exactly one behavior**: where `--fast` still lets a ga
 
 The park that conversion writes is committed when the note is the tree's only uncommitted path (§"The park recipe"). Any other dirt, and the commit is skipped.
 
-Flaitron ships no orchestrator, scheduler, or session daemon. This posture is the contract an orchestrator reports to — contract in flaitron, runtime in the caller.
+flaitron ships no orchestrator, scheduler, or session daemon. This posture is the contract an orchestrator reports to — contract in flaitron, runtime in the caller.
 
 ## The park recipe
 

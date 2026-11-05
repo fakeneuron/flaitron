@@ -1,4 +1,4 @@
-# Flaitron Agent Guide
+# flaitron Agent Guide
 
 ## Workflow
 
@@ -48,7 +48,7 @@ in `SPEC.md`; read it before starting non-trivial work.
   above: `/ft-adopt`, `/ft-audit`, `/ft-audit-repo`, `/ft-seed-unattended`. Full roster + naming convention:
   `SPEC/layout.md` §"Skill namespace".
 
-Flaitron self-hosts its own roadmap. For non-trivial edits, follow the
+flaitron self-hosts its own roadmap. For non-trivial edits, follow the
 tasknote lifecycle: `SPEC.md` §"The 4-phase workflow". Do not skip phases
 once a tasknote is open — whether a change needs a tasknote at all is
 decided by `SPEC/tasknote-selection.md` §"When to use a tasknote (and when

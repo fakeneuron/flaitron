@@ -1,6 +1,6 @@
 ---
 name: ft-adopt
-description: "Bootstrap a fresh project with Flaitron from Codex: submodule, PLAN, tasknote README, AGENTS.md block, and wiring."
+description: "Bootstrap a fresh project with flaitron from Codex: submodule, PLAN, tasknote README, AGENTS.md block, and wiring."
 ---
 
 # ft-adopt - Codex wrapper

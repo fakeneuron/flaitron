@@ -1,6 +1,6 @@
 # Security
 
-Flaitron is a solo-maintained workflow system, not a hardened product. This
+flaitron is a solo-maintained workflow system, not a hardened product. This
 page documents the realistic threat model and the conventions adopters should
 follow. It is short on purpose — anything not covered here is out of scope.
 
@@ -17,7 +17,7 @@ we agree on a path.
 
 ### Prompt injection via user-authored markdown
 
-Flaitron's bundled execution surfaces — Claude Code skills
+flaitron's bundled execution surfaces — Claude Code skills
 (`/ft-task`, `/ft-audit`, `/ft-release`, `/ft-audit-repo`, and others),
 Codex skill wrappers under `codex/skills/`, and Cursor / Grok thin wiring
 under `cursor/` and `grok/` (snippet + procedure pointer; skills are the
@@ -403,10 +403,10 @@ Examples (one per line):
 
 These suppress only the documented prose examples. Real credential material in your code or env files remains flagged.
 
-**Flaitron-specific guidance**
+**flaitron-specific guidance**
 
 Add the lines above (adjusted for your submodule path) to your scanner configuration. The examples cover the four uppercase keywords (`API_KEY`, `SECRET`, `TOKEN`, `PASSWORD`) that appear in the Conditional skip rule definition and in explanatory text throughout the tree.
 
 See SPEC/gates.md §"Conditional skip rule" for the authoritative privileged-ops path categories and keyword-trigger clause.
 
-Flaitron does not ship `.prompt-injection-scanignore` or `.secretscanignore` files — zero runtime scanner configuration by design.
+flaitron does not ship `.prompt-injection-scanignore` or `.secretscanignore` files — zero runtime scanner configuration by design.

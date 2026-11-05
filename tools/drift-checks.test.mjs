@@ -62,6 +62,10 @@ const CASES = {
     seed: () => edit('README.md', (s) => `${s}\nflatiron flatron flaitrn flaitorn flaiton flaytron fliatron falitron flaitrone flaitronn flaitrons\n`),
     finding: /^BRAND NEAR MISS {2}README\.md:[0-9]+:flatiron flatron flaitrn flaitorn flaiton flaytron fliatron falitron flaitrone flaitronn flaitrons$/m,
   },
+  brand_casing: {
+    seed: () => edit('README.md', (s) => `${s}\nFlaitron is built with flaitron.\n`),
+    finding: /^BRAND CASING {2}README\.md:[0-9]+:Flaitron is built with flaitron\.$/m,
+  },
   sidequest_orphan: {
     // One closed row per PLAN file: a rotated row, and a nested epic child.
     // Then one stub beside an active tasknote and one beside an archived one,
@@ -254,6 +258,45 @@ describe('brand near-miss matching', () => {
         (e) => e.status === 1 && e.stdout === `BRAND NEAR MISS  copy with spaces.md:1:${text}brand_nearmiss FAILED\n`,
         variant,
       );
+    }
+  });
+});
+
+// Same isolated-fixture shape for the casing rule (brand/BRAND.md §"Name casing").
+describe('brand casing matching', () => {
+  let fixture;
+  const source = readFileSync(join(REPO, SCRIPT), 'utf8');
+  const run = () => execFileSync('bash', [SCRIPT, 'brand_casing'], { cwd: fixture, encoding: 'utf8', stdio: 'pipe' });
+  before(() => {
+    fixture = mkdtempSync(join(tmpdir(), 'brand-casing-'));
+    mkdirSync(join(fixture, 'tools'));
+    writeFileSync(join(fixture, SCRIPT), source);
+    writeFileSync(join(fixture, 'tools/drift-checks.test.mjs'), 'Flaitron\n');
+    mkdirSync(join(fixture, '.flaitron/tasknote/archive/core'), { recursive: true });
+    writeFileSync(join(fixture, '.flaitron/tasknote/archive/core/ZZ-1.md'), 'Flaitron\n');
+    writeFileSync(join(fixture, '.flaitron/PLAN-ARCHIVE.md'), 'Flaitron\n');
+    execFileSync('git', ['init', '-q'], { cwd: fixture });
+    writeFileSync(
+      join(fixture, 'copy with spaces.md'),
+      'flaitron FLAITRON .flaitron/core FLAITRON_HOME cachedFlaitronFile _Flaitron Flaitron_ Flaitrons\n' +
+        'url = Org/Flaitron.git // brand-casing: fixture\n',
+    );
+    writeFileSync(join(fixture, 'image.bin'), Buffer.from('\0Flaitron\n'));
+    execFileSync('git', ['add', '.'], { cwd: fixture });
+    writeFileSync(join(fixture, 'untracked.md'), 'Flaitron\n');
+  });
+  after(() => { if (fixture) rmSync(fixture, { recursive: true, force: true }); });
+
+  it('accepts both casings, identifiers, marked lines, history, sources, binaries and untracked files', () => {
+    assert.equal(run(), 'brand_casing ok\n');
+  });
+
+  it('rejects every other casing, at line start and after a good occurrence', () => {
+    // The last two: a backticked marker is a mention, not a mark; two bad
+    // occurrences still report the line once.
+    for (const text of ['Flaitron leads.', 'flaitron, then (fLAITRON).', 'end: FlaiTron', 'Flaitron: mark with `brand-casing: fixture`', 'Flaitron and FLAItron']) {
+      writeFileSync(join(fixture, 'copy with spaces.md'), `ok\n${text}\n`);
+      assert.throws(run, (e) => e.status === 1 && e.stdout === `BRAND CASING  copy with spaces.md:2:${text}\nbrand_casing FAILED\n`, text);
     }
   });
 });

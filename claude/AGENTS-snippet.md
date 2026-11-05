@@ -1,4 +1,4 @@
-# Flaitron adoption snippet
+# flaitron adoption snippet
 
 Paste the block below into your project's `AGENTS.md`, then run the symlink commands once to wire flaitron's skills into your project's `.claude/`.
 
@@ -51,7 +51,7 @@ Components use the design tokens in `frontend/src/styles/tokens.css`; never
 hardcode a hex value.
 ```
 
-Flaitron's per-file byte budgets for its own shipped surfaces are in [`docs/CONTEXT-BUDGET.md`](../docs/CONTEXT-BUDGET.md).
+flaitron's per-file byte budgets for its own shipped surfaces are in [`docs/CONTEXT-BUDGET.md`](../docs/CONTEXT-BUDGET.md).
 
 Two limits worth knowing before you move anything:
 

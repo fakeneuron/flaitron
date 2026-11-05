@@ -33,7 +33,7 @@ Then guard — the skill bails unless this is a flaitron-adopting project:
 
 - `<FT>/SPEC.md` exists (the pinned submodule resolved above).
 - `.flaitron/PLAN.md` exists (this project's own PLAN).
-- The repo-root `SPEC.md` heading is **not** `# Flaitron — Workflow Specification` — that heading means cwd is the flaitron checkout itself, where there is no submodule to bump.
+- The repo-root `SPEC.md` heading is **not** `# flaitron — Workflow Specification` — that heading means cwd is the flaitron checkout itself, where there is no submodule to bump.
 
 If no flaitron submodule resolves, or any guard fails, stop. Tell the user `/ft-update` only runs inside a flaitron-adopting project (one with a flaitron submodule under `.flaitron/`). For flaitron's own checkout, releases are cut with `/ft-release`, not bumped. Do not modify any files.
 
@@ -77,7 +77,7 @@ or stage a gitlink for repair-only runs. Otherwise capture `<current>` and
 
 ## Step 2 — Surface the bump + tag changelog, confirm
 
-Flaitron has no `CHANGELOG.md` — the annotated tag message is the changelog. Show it:
+flaitron has no `CHANGELOG.md` — the annotated tag message is the changelog. Show it:
 
 ```sh
 git -C <FT> show <target> --no-patch
@@ -334,7 +334,7 @@ If any of those commands print hits, name each one's replacement. Take the link'
 ⚠️  Dangling symlink(s) found — target no longer resolves in the bumped submodule:
     <path>  → <replacement, e.g. /ft-file-task (renamed in v7.0.0)>
     <path>  → <replacement>
-Each replacement comes from <FT>/docs/MIGRATION.md §"Retired skills leave dangling symlinks". For a renamed skill in the snippet list, Step 4 has already wired the new name. Verify each link's type and exact target before deciding to remove it; these remaining hits have not been proven owned by Flaitron.
+Each replacement comes from <FT>/docs/MIGRATION.md §"Retired skills leave dangling symlinks". For a renamed skill in the snippet list, Step 4 has already wired the new name. Verify each link's type and exact target before deciding to remove it; these remaining hits have not been proven owned by flaitron.
 ```
 
 If all present-surface commands print nothing, report "No dangling symlinks found." This remaining-link check is informational only; it performs no deletion.

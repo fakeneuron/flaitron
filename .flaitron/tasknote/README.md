@@ -12,7 +12,7 @@ at the repo root; canonical tasknote templates ship at `templates/`.
 
 ## Area prefixes
 
-Flaitron uses only the canonical prefixes defined in [`SPEC.md` §"Task ID convention"](../../SPEC.md) — `CORE-`, `BE-`, `FE-`, `DB-`, `DEPLOY-`, `TEST-`. No project-specific prefixes.
+flaitron uses only the canonical prefixes defined in [`SPEC.md` §"Task ID convention"](../../SPEC.md) — `CORE-`, `BE-`, `FE-`, `DB-`, `DEPLOY-`, `TEST-`. No project-specific prefixes.
 
 ## Archive layout
 
@@ -36,7 +36,7 @@ new prefix, it names the folder the prefix lowercased with the trailing `-`
 dropped, then adds the row above; the folder is created when the first tasknote
 in that area lands. An adopter may deliberately declare a folder the default
 would not produce (e.g. `OPS-*` → `archive/operations/`); the row wins. That is
-why `<area>` is read from the table rather than computed. Flaitron itself uses
+why `<area>` is read from the table rather than computed. flaitron itself uses
 only the canonical prefixes, so its six rows happen to match the default — which
 is exactly the case that makes deriving look safe.
 

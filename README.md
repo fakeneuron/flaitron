@@ -21,7 +21,7 @@ actually review. No scripts, daemons, databases, or schemas to maintain.
 
 ![The flaitron visualizer showing flaitron's own PLAN.md — open tasks by priority, phase-progress dots, and the completed archive](.flaitron/screenshots/viz-board.png)
 
-Flaitron is built with flaitron: **1289 tasks** closed through this exact
+flaitron is built with flaitron: **1289 tasks** closed through this exact
 workflow between 2026-04-28 and 2026-11-01 (as of 2026-11-01) — each one with
 a tasknote preserved in [`.flaitron/tasknote/archive/`](.flaitron/tasknote/archive/).
 Count and date range are recomputed each release by `/ft-release` §7.1's
@@ -186,7 +186,7 @@ single global instance above.
 
 ## Working in markdown vaults
 
-Flaitron is editor-agnostic — markdown files in git remain the source of
+flaitron is editor-agnostic — markdown files in git remain the source of
 truth — but two of its choices happen to fit markdown-vault tools
 (Obsidian, Foam, Logseq) natively:
 
@@ -225,7 +225,7 @@ These tools are opt-in companion surfaces. None of the above is required.
 
 Autonomous AI coding agents — Claude Code sessions, sub-agents, fresh
 context windows — need persistent memory that survives the context window:
-state on disk they can reload and resume from. Flaitron's markdown state
+state on disk they can reload and resume from. flaitron's markdown state
 model already is that layer:
 
 - `PLAN.md` — durable intent: priorities, open tasks, and recent
@@ -305,7 +305,7 @@ the discipline the sizing principle depends on. The safe patterns:
   the review-probe variant of the same brief.
 
 This is guidance, not machinery — but the loop case has a contract.
-Flaitron ships no loop *runtime*: the runner, scheduler, and session
+flaitron ships no loop *runtime*: the runner, scheduler, and session
 lifetime are Claude Code's `/loop` (or any equivalent), by design
 ([docs/VISION.md](docs/VISION.md) §"What we won't accept"). What flaitron
 *does* ship is the markdown **contract a loop reports to** — how gates
@@ -348,7 +348,7 @@ Adopting projects pin a specific flaitron commit via git submodule and bump
 deliberately. Each release tag's annotated message lists migration steps for
 major bumps (no separate `CHANGELOG.md`).
 
-Flaitron is solo-maintained with a personal adopter fleet. The major version
+flaitron is solo-maintained with a personal adopter fleet. The major version
 number counts breaking changes from the May 2026 rapid-iteration period
 (v1.0.0 → v5.0.0 in 25 days), not project maturity — the contract was
 break-free from v5.0.0 (2026-06-01) until v6.0.0, the one-time rename below,
@@ -370,4 +370,4 @@ the old name. Existing adopters follow
 
 ## License
 
-Flaitron is [MIT-licensed](LICENSE).
+flaitron is [MIT-licensed](LICENSE).

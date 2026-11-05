@@ -1,11 +1,11 @@
-# Flaitron — Workflow Specification
+# flaitron — Workflow Specification
 
 **Version:** v8.3.0
 **Status:** Stable
 
-## What is Flaitron
+## What is flaitron
 
-Flaitron is a lightweight, project-agnostic tasknote system for solo
+flaitron is a lightweight, project-agnostic tasknote system for solo
 AI-assisted coding, consumed by adopting projects via git submodule. Who it is
 for and why it exists: [`docs/VISION.md`](docs/VISION.md).
 
@@ -122,7 +122,7 @@ Every tasknote opens with a YAML frontmatter block carrying machine-parseable
 fields, followed by a Markdown body. The canonical schema lives in `templates/tasknote-template.md`. Valid `status:` values:
 `starter | not-started | in-progress | blocked | completed`.
 
-Flaitron itself does not parse this frontmatter — the field contract exists
+flaitron itself does not parse this frontmatter — the field contract exists
 so adopting projects' tools (visualizers, dashboards, queries) can consume
 tasknote metadata without scraping the H1 line. Adopting projects can ignore
 the frontmatter and continue working as before.
@@ -145,7 +145,7 @@ globs.
 
 Do **not** add `blocks` (the inverse of `blocked-by`; derivable by grep) or
 `depends-on` (a synonym of `blocked-by`). A Related prose label `depends-on:`
-is not this key. Flaitron ships no validator for these keys. The shipped
+is not this key. flaitron ships no validator for these keys. The shipped
 templates comment them rather than emitting empty arrays, so the happy-path
 scaffold pays nothing at parse time. Starter `### Files to touch` stays the
 informal prose survey; YAML `touches:` is the short queryable list once the

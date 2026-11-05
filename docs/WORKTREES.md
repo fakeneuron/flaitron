@@ -1,6 +1,6 @@
 # Worktree Convention for Parallel Epic Children
 
-Flaitron's default execution model is strictly serial within a tasknote and serial across siblings under an epic. For adopters with large backlogs of *independent* children (e.g. a 20-child follow-up wave after a discovery epic), the stash/branch-swap overhead becomes real.
+flaitron's default execution model is strictly serial within a tasknote and serial across siblings under an epic. For adopters with large backlogs of *independent* children (e.g. a 20-child follow-up wave after a discovery epic), the stash/branch-swap overhead becomes real.
 
 This document records the adopted convention for executing independent epic children in isolated git worktrees. It is a direct adoption of the `using-git-worktrees` pattern from obra/superpowers, lifted into flaitron as this convention doc plus the [Procedure](#procedure) below — a handful of git commands each way, run by hand or by whatever agent is in the session. The pattern is **workflow-orthogonal**: it does not change the 4-phase contract, the relevance gate, or any post-closure protocol inside a tasknote.
 
@@ -91,7 +91,7 @@ Three rules the commands above encode, worth stating plainly:
 
 A `git branch --list 'wt-*'` with no matching `git worktree list` entry is an orphan from a start that never ended — clean it the same way.
 
-## Relationship to the Rest of Flaitron
+## Relationship to the Rest of flaitron
 
 - **No 4-phase change inside a worktree.** The relevance gate, operator cues (🛠️ / 📦), conditional skip rule, and post-closure protocol are unchanged inside any tasknote that happens to run here, except that post-closure step 2's `## Completed` rotation is skipped in a linked worktree (its receipt line says so); the next over-60 close in the main checkout rotates. Fan-out / child YAML (CORE-445.3) is a planning declaration, not a second lifecycle.
 - **Epic lifecycle still governs.** The `.1` Discovery + children + `.N` Audit bracket (see [`SPEC/epic.md`](../SPEC/epic.md)) owns multi-child work; worktrees are the execution accelerator for the independent subset, declared on `.1` as optional `## 🌳 Fan-out`.

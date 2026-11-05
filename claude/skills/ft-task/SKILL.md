@@ -15,7 +15,7 @@ If `args` is missing or its first token doesn't match `<AREA>-<NUMBER>` (or `<AR
 Two layouts. Pick by which file exists:
 
 - **Adopter project:** `.flaitron/core/SPEC.md` exists → `<root>` = `.flaitron/core/`.
-- **Flaitron self-host:** repo-root `SPEC.md` with heading `# Flaitron — Workflow Specification` → `<root>` = repo-root.
+- **flaitron self-host:** repo-root `SPEC.md` with heading `# flaitron — Workflow Specification` → `<root>` = repo-root.
 
 If neither matches, bail.
 

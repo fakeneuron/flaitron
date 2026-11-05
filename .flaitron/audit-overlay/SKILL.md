@@ -33,7 +33,7 @@ also invokable as `/audit docs ai-referenced` (extra scope token —
 `claude/skills/ft-audit/passes/docs.md` §"Scope & rubric hints (→ dispatcher §1)").
 
 **Not covered: `backend`.** Its passes (input contracts, persistence, async
-lifecycle) target an API/DB service. Flaitron's only server is the
+lifecycle) target an API/DB service. flaitron's only server is the
 localhost-only viz dev API, which `security` grades for exposure and `general`
 for idioms, and it has no persistence layer. A `/audit backend` run therefore
 still reaches the scaffold bootstrap, which is accurate, because nothing here

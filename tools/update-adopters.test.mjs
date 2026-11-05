@@ -787,7 +787,7 @@ describe('discoverAdopters', () => {
     await write(
       cased.repo,
       '[submodule "assets"]\n\tpath = vendor/assets\n\turl = https://example.invalid/flaitron-brand-assets.git\n' +
-        '[submodule "ft"]\n\tpath = vendor/ft/\n\turl = git@example.invalid:Org/Flaitron.git\n',
+        '[submodule "ft"]\n\tpath = vendor/ft/\n\turl = git@example.invalid:Org/Flaitron.git\n', // brand-casing: fixture
     );
     const lookalike = await makeAdopter(root, 'lookalike', latest);
     await write(lookalike.repo, '[submodule "assets"]\n\tpath = vendor/assets\n\turl = https://example.invalid/flaitron-assets.git\n');

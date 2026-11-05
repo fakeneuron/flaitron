@@ -2,7 +2,7 @@
 
 > Lazy-loaded SPEC module. Loaded by `/ft-task` only for explicit version-bump tasks. See `SPEC.md` for the always-loaded core spec.
 
-Flaitron uses semver tags. Each tagged release is consumable by adopting
+flaitron uses semver tags. Each tagged release is consumable by adopting
 projects via submodule checkout.
 
 - **Patch** (`v1.2.3` → `v1.2.4`) — clarifications, doc fixes, no project-side

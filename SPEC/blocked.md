@@ -231,7 +231,7 @@ parked work, flip back to `in-progress`, restore the `🟢 In progress` chip,
 remove `park-reason:`, continue Phase 2. No new flag, no second resume path,
 and no executable change to any runner.
 
-**Flaitron performs neither write.** It ships no crash detector, no supervisor,
+**flaitron performs neither write.** It ships no crash detector, no supervisor,
 and no session daemon (`docs/VISION.md` §"What we won't accept") — a runner
 cannot annotate a note in a session that no longer exists. This section is the
 contract the caller reports to; the two writes are the caller's, exactly as the

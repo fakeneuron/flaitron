@@ -29,7 +29,7 @@ the user for a valid task ID.
 Two layouts. Pick by which file exists:
 
 - **Adopter project:** `.flaitron/core/SPEC.md` exists → SPEC=`.flaitron/core/SPEC.md`, SPEC_DIR=`.flaitron/core/SPEC/`, SKILL_DIR=`.flaitron/core/claude/skills/ft-file-task/`, templates=`.flaitron/core/templates/` (`sidequest-template.md` for park mode, `tasknote-starter-template.md` for starter mode).
-- **Flaitron self-host:** repo-root `SPEC.md` with heading `# Flaitron — Workflow Specification` → SPEC=`SPEC.md`, SPEC_DIR=`SPEC/`, SKILL_DIR=`claude/skills/ft-file-task/`, templates=`templates/`.
+- **flaitron self-host:** repo-root `SPEC.md` with heading `# flaitron — Workflow Specification` → SPEC=`SPEC.md`, SPEC_DIR=`SPEC/`, SKILL_DIR=`claude/skills/ft-file-task/`, templates=`templates/`.
 
 If neither matches, bail. PLAN=`.flaitron/PLAN.md`, tasknote dir=`.flaitron/tasknote/`, sidequest dir=`.flaitron/sidequest/` either way.
 

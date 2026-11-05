@@ -1,4 +1,4 @@
-# Flaitron dogfood procedure
+# flaitron dogfood procedure
 
 A versioned, pasteable verification procedure any AI agent runs to
 confirm flaitron compatibility and refresh its `docs/AGENT-COMPAT.md`

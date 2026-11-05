@@ -129,7 +129,7 @@ waiting for an answer — and it adds exactly one behavior on top. Where
 `--fast` still lets a gate fire, `--unattended` **parks the tasknote**
 instead of firing a banner into an empty session.
 
-**Runtime stays out.** Flaitron ships no orchestrator, scheduler,
+**Runtime stays out.** flaitron ships no orchestrator, scheduler,
 dispatcher, or session daemon (see [`docs/VISION.md`](../docs/VISION.md)
 §"What we won't accept"). This posture is the **contract an orchestrator
 reports to** — the same boundary [`SPEC/loop.md`](loop.md) draws for loop

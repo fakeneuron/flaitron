@@ -880,7 +880,7 @@ The disposable fixture at `/private/tmp/core789-runtime-5li3btnm/adopter`
 has a real local submodule at `.flaitron/core`. Its source is an **unreleased
 snapshot of CORE-789's implementation**, committed only in a temporary source
 repo at `945441cb52d3f78128dacf9adc8218b9a7435eb1`, with SPEC v7.0.0. It is
-not a released Flaitron tag or a repaired member of the real adopter fleet.
+not a released flaitron tag or a repaired member of the real adopter fleet.
 The snapshot contains the actual wrappers, canonical bodies, snippets and
 shared reconciliation procedure; its roster is derived from Claude's snippet.
 

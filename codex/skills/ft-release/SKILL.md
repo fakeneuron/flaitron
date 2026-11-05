@@ -1,6 +1,6 @@
 ---
 name: ft-release
-description: "Cut a Flaitron release from Codex. Flaitron-self only: version bump, dogfood/docs gates, commit, tag, and push."
+description: "Cut a flaitron release from Codex. flaitron-self only: version bump, dogfood/docs gates, commit, tag, and push."
 ---
 
 # ft-release - Codex wrapper

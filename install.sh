@@ -23,7 +23,6 @@
 REPO_URL=https://github.com/fakeneuron/flaitron.git
 RELEASES_API=https://api.github.com/repos/fakeneuron/flaitron/releases/latest
 USER_AGENT='flaitron-install (+https://github.com/fakeneuron/flaitron)'
-SPEC_HEADING='# Flaitron — Workflow Specification'
 
 say() { printf '%s\n' "$*"; }
 die() { printf 'flaitron-install: error: %s\n' "$*" >&2; exit 1; }
@@ -56,8 +55,14 @@ core_url() {
   git config -f .gitmodules --get "${key%.path}.url" 2>/dev/null || true
 }
 
+# Line 1 of a flaitron SPEC.md. Cores before CORE-863 capitalize the name, and
+# an adopter's pin or FLAITRON_VERSION may name one, so both casings match.
 is_flaitron_tree() {
-  [ -f "$1/SPEC.md" ] && [ "$(head -n 1 "$1/SPEC.md")" = "$SPEC_HEADING" ]
+  [ -f "$1/SPEC.md" ] || return 1
+  case "$(head -n 1 "$1/SPEC.md")" in
+    '# '[Ff]'laitron — Workflow Specification') return 0 ;;
+  esac
+  return 1
 }
 
 # Latest release: GitHub releases/latest, falling back to the highest semver

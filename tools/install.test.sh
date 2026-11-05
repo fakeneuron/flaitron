@@ -113,10 +113,14 @@ check "bad SHA: says nothing changed" out_has "nothing changed"
 check "bad SHA: unchanged" [ "$(snap "$P2")" = "$before" ]
 mkdir -p "$W/notrepo"; run "$W/notrepo"
 check "outside a repo refused" [ "$(rc)" != 0 ]
-P3="$W/fakeft"; mkproj "$P3"; printf '# Flaitron — Workflow Specification\n' >"$P3/SPEC.md"; before=$(snap "$P3")
+P3="$W/fakeft"; mkproj "$P3"; printf '# Flaitron — Workflow Specification\n' >"$P3/SPEC.md"; before=$(snap "$P3") # brand-casing: fixture (pre-CORE-863 heading)
 run "$P3"
 check "flaitron repo refused" [ "$(rc)" != 0 ]
 check "flaitron repo: unchanged" [ "$(snap "$P3")" = "$before" ]
+printf '# flaitron — Workflow Specification\n' >"$P3/SPEC.md"; before=$(snap "$P3")
+run "$P3"
+check "flaitron repo (lowercase heading) refused" [ "$(rc)" != 0 ]
+check "flaitron repo (lowercase heading): unchanged" [ "$(snap "$P3")" = "$before" ]
 P4="$W/foreign"; mkproj "$P4"; mkdir -p "$P4/.flaitron/core"; echo x >"$P4/.flaitron/core/README.md"; before=$(snap "$P4")
 run "$P4"
 check "foreign core refused" [ "$(rc)" != 0 ]

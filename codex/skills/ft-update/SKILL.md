@@ -1,6 +1,6 @@
 ---
 name: ft-update
-description: Bump an adopter project's pinned Flaitron submodule from Codex and reconcile its skills, including repair at the same version.
+description: Bump an adopter project's pinned flaitron submodule from Codex and reconcile its skills, including repair at the same version.
 ---
 
 # ft-update - Codex wrapper

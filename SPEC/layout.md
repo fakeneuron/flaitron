@@ -29,7 +29,7 @@ bumps (see [`SPEC.md`](../SPEC.md) §"Versioning").
 
 ## Working in the flaitron repo itself
 
-Flaitron does not submodule itself. In this repo:
+flaitron does not submodule itself. In this repo:
 
 - The repo-root `SPEC.md` IS the canonical reference.
 - `SPEC/` — lazy SPEC modules loaded on demand by skills.

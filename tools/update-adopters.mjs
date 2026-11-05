@@ -615,7 +615,7 @@ export function codexRoster(snippet) {
 }
 
 // A url whose last path segment is the flaitron repo (`…/flaitron`,
-// `…/Flaitron.git`, `git@host:org/flaitron`) — not any url merely containing
+// `…/Flaitron.git` [brand-casing: fixture], `git@host:org/flaitron`) — not any url merely containing
 // the word, which would also catch e.g. a `flaitron-brand-assets` submodule.
 const FLAITRON_URL = /(?:^|[/:])flaitron(?:\.git)?\/?$/i;
 

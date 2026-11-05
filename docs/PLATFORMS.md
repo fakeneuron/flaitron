@@ -1,6 +1,6 @@
 # Multi-platform wiring pattern
 
-Flaitron's contract is agent-neutral; its execution-surface wiring is
+flaitron's contract is agent-neutral; its execution-surface wiring is
 per-platform. This doc explains the two-layer model that separates them
 and the symmetric plug-in pattern additional platforms follow if a
 contributor ships their wiring. Today Claude Code and Codex CLI have full
@@ -63,13 +63,13 @@ Four terms keep the wiring docs precise:
   wired, across many projects, or while maintaining flaitron itself. These live
   under the user's agent home (`~/.claude/skills`, `~/.agents/skills`, or the
   platform equivalent), not in every adopter repo.
-- **Flaitron-self-only skills** — upstream maintenance skills that must not be
+- **flaitron-self-only skills** — upstream maintenance skills that must not be
   installed in adopter projects. They may still ship in the upstream inventory
   so flaitron can dogfood them under that platform.
 
 Canonical policy:
 
-| Surface | Shipped inventory | Adopter-installed subset | Global-only utilities | Flaitron-self-only |
+| Surface | Shipped inventory | Adopter-installed subset | Global-only utilities | flaitron-self-only |
 |---|---|---|---|---|
 | **Claude Code** | Full `ft-*` skill inventory under `claude/skills/`. | The tasknote execution family (`ft-task`, `ft-file-task`, `ft-open-epic`, `ft-close-epic`, `ft-refactor`), `ft-seed-unattended`, and `ft-update`. The `ft-audit` scaffold is forked/overlaid locally under an unprefixed name, not symlinked as an upstream `ft-*` project skill. | `ft-adopt` and `ft-audit-repo`. | `ft-release`. |
 | **Codex CLI** | Full `ft-*` wrapper inventory under `codex/skills/`, kept in parity with Claude's shipped skill slugs. | Same policy as Claude, translated to `.agents/skills/`: tasknote execution family (including `ft-refactor`), `ft-seed-unattended`, and `ft-update`. Focused audits remain fork/overlay surfaces rather than verbatim upstream project symlinks. | Same utility set as Claude, installed in Codex's user skill directory when desired. | `ft-release`. |
@@ -102,8 +102,8 @@ agent it detects (printing each), and `/ft-adopt`'s Step 0 installer
 exception takes those surfaces as selected. It still links only **one**
 agent-home `ft-adopt` per machine, per the rule below.
 
-**Flaitron's own checkout is not an adopter.** The adopter-installed subset
-above governs projects that consume flaitron through `.flaitron/core/`. Flaitron
+**flaitron's own checkout is not an adopter.** The adopter-installed subset
+above governs projects that consume flaitron through `.flaitron/core/`. flaitron
 itself dogfoods everything it ships, so its repo-scoped `.claude/skills/` and
 Codex `.agents/skills/`
 mirror the **full** shipped inventory one-for-one —
@@ -298,7 +298,7 @@ divergence (and divergence is documented here).
 | `<platform>/commands/` + `<platform>/skills/` | Optional | A platform without its own command/skill *wrappers* can still ship a thin snippet that points adopters at another platform's canonical bodies (Cursor, Grok) or run flaitron conversationally (Amp / Aider / Gemini CLI today). Grok Build is Cursor-shaped: it loads those bodies from `.claude/skills/` / `.agents/skills/` / `.cursor/skills/` without its own wrappers, and Grok-only projects follow `grok/AGENTS-snippet.md`. Codex uses `skills/` only because its documented reusable workflow primitive is skills selected via `/skills` or `$name`, not arbitrary custom slash commands. |
 | Operator force-skip flag (e.g., `--fast`) | Optional | Mirror SPEC §"Operator-gate cues" in the platform's flag syntax if convenient. Concept is platform-neutral; syntax is wiring detail. |
 | Install/symlink mechanism | Optional | Depends on the platform's skill-consumption model. Claude Code uses relative symlinks; others may use copies or registry calls. |
-| `/ft-release` skill equivalent | Flaitron-self only | Release-cutting is only relevant if the platform is being used to maintain flaitron upstream. Skip in adopter contexts. |
+| `/ft-release` skill equivalent | flaitron-self only | Release-cutting is only relevant if the platform is being used to maintain flaitron upstream. Skip in adopter contexts. |
 
 ## Worked example: Claude Code
 
@@ -350,7 +350,7 @@ Concrete instantiation:
   §"One-time skill wiring". The relative paths survive `git clone` and pin to
   whichever flaitron commit the submodule is checked out at.
 - **Invocation**: Codex exposes skills through `/skills` selection and
-  `$ft-task` / `$ft-update` style mentions. Flaitron preserves the same
+  `$ft-task` / `$ft-update` style mentions. flaitron preserves the same
   exported `ft-*` names, but does not claim Codex supports arbitrary custom
   `/ft-*` slash commands.
 - **Operator flags**: same spellings as the canonical skill bodies the wrappers
@@ -410,7 +410,7 @@ Grok-specific skill wrappers exist. Adopters paste the `AGENTS.md` block
 per [`MIGRATION.md`](MIGRATION.md) §1.3. Amp / Aider / Gemini CLI remain
 the contract-layer-only path (see §"Today's surface").
 
-| Quirk | Behavior | Flaitron implication |
+| Quirk | Behavior | flaitron implication |
 |---|---|---|
 | **Context-load semantics** | Grok Build reads three context files: `AGENTS.md` (open standard), `CLAUDE.md` (Anthropic-popularized; Grok-compat fallback), and `GROK.md` (Grok-canonical, at `.grok/GROK.md` with cwd walk-up + `~/.grok/GROK.md` global fallback) | Use `AGENTS.md` — already the paste-block target and the cross-vendor canonical entry point. `GROK.md` is orthogonal to flaitron. |
 | **AGENTS.md visibility** | Grok Build "picks up AGENTS.md before it does anything" per xAI launch coverage — same load-before-act semantic as Claude Code | Paste-block is visible without configuration; no truncation noted in launch narratives |
@@ -538,7 +538,7 @@ Observations, not bands — the rows above govern.
 
 _Mirrors the per-trigger shape in [`../claude/CAPABILITIES.md`](../claude/CAPABILITIES.md) —
 **what it is · syntax · what it controls in flaitron · when to reach for it** — for the
-non-Claude agents in the matrix. Flaitron has not run a session under several
+non-Claude agents in the matrix. flaitron has not run a session under several
 of these agents. Grok Build, Codex CLI, and Cursor now carry
 first-use observations; remaining stub rows reflect vendor documentation and
 launch coverage. Update a row on first-use observation if anything diverges.
@@ -574,7 +574,7 @@ than by skill.
 | Trigger | Syntax | What it controls in flaitron | When to reach for it |
 |---|---|---|---|
 | **Effort / thinking level** | A `reasoning_effort` parameter — `low` / `medium` / `high` / `xhigh` / `max` on GPT-6 Astra and GPT-6.1 Sol (neither has `none`; Luna still does). The app labels `low` as Light. Codex's model page says start Astra at Light and Luna at High; Sol's API default is `medium`. The old CLI `minimal` rung maps to `low`. | Maps to the `[heavy]` / `[moderate]` / `[light]` / `[frontier]` PLAN-line tokens through the Codex column of §"Tier × platform map" (`[frontier]` = Astra @ high–xhigh). Heavier reasoning suits Discovery-heavy or cross-cutting tasknotes; lighter suits mechanical edits. | Match the running effort level to the task's `[model]` token. Switch before invoking the skill if the task's `[model]` differs from the current session's effort setting. |
-| **Skill invocation** | Use `/skills` in Codex or mention `$ft-task`, `$ft-update`, etc. after wiring the Codex adopter subset under `.agents/skills/` | Exposes the adopter-facing Flaitron workflows as Codex-native skills while preserving the same exported names as Claude | Use for normal Flaitron operations in Codex. Do not expect arbitrary custom `/ft-*` CLI commands; Codex's documented custom workflow primitive is skills. |
+| **Skill invocation** | Use `/skills` in Codex or mention `$ft-task`, `$ft-update`, etc. after wiring the Codex adopter subset under `.agents/skills/` | Exposes the adopter-facing flaitron workflows as Codex-native skills while preserving the same exported names as Claude | Use for normal flaitron operations in Codex. Do not expect arbitrary custom `/ft-*` CLI commands; Codex's documented custom workflow primitive is skills. |
 | **Skill-body flags** | Trailing tokens on the skill invocation, same spelling as Claude Code; each wrapper's frontmatter names the flags it takes. Codex is the one non-Claude platform that ships its own wrappers, so a flag takes one of two routes. **SOP-first:** `ft-task`'s wrapper reads `SPEC/procedures/ft-task.md`, which names its flags as neutral primitives; its Step 0 loads the canonical `step-0-flags.md` when trailing tokens are present, and the canonical whole skill stays a fallback for uncovered edges. **Direct:** every other wrapper (`ft-close-epic`, `ft-file-task`, `ft-open-epic`, and `ft-refactor` among them) delegates to its canonical body, so the flag's lazy fragment resolves relative to that body with no SOP hop. | Every operator flag in [`../claude/CAPABILITIES.md`](../claude/CAPABILITIES.md#the-triggers) §"The triggers", which owns each flag's semantics, composition rules, and gate effects; they are not restated here. | As that file's row for the flag says. This platform adds no flag of its own and drops none. A platform-native control a flag leans on, such as `--deep`'s structured asks, follows this table's own row for it. |
 | **Model / session switch** | In-session `/model` changes the active model mid-session (`learn.chatgpt.com/docs/developer-commands`). Orthogonal to the effort ladder in the first row — Codex exposes reasoning depth and model choice separately. | Ensures the task runs at its assigned `[heavy]` / `[moderate]` / `[light]` / `[frontier]` depth (Step 1.5 gate). The post-closure candidate list signals the target via the `[heavy]`🧠 / `[moderate]`🧩 / `[light]`🔧 / `[frontier]`💎 / `[xheavy]`🔭 emoji label and the Codex column's `model @ effort` pick, never a literal `/model` command. | Before starting a task whose `[model]` differs from the current session's model. |
 | **Context freshness** | In-session `/clear` clears the terminal and starts a fresh chat; `/compact` summarizes the visible chat to free tokens without a full reset (`learn.chatgpt.com/docs/developer-commands`). | `/clear` resets the context window so the next task starts cold — "one task per context window" in practice. `/compact` is a mid-task relief valve, not a substitute for a between-task reset: it keeps the finished task's residue in the summary. | `/clear` between tasks, before the next flaitron skill invocation. Reach for `/compact` only when a single tasknote genuinely outgrows the window. |

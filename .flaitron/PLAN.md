@@ -1,4 +1,4 @@
-# Flaitron — PLAN.md
+# flaitron — PLAN.md
 
 ## Vision
 
@@ -19,7 +19,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Low
 
-- [ ] **CORE-863** [moderate] | brand-casing-guard — Apply `brand/BRAND.md` §"Name casing" (CORE-861): lowercase every live title-case hit outside the tasknote archive and PLAN-ARCHIVE, then drop that section's pending note. Its matchers must accept both `SPEC.md` headings, because `install.sh` checks older pinned cores. Keep deliberate case fixtures (URL test, drift self-test). Same commit: add a word-bounded check accepting `flaitron`/`FLAITRON`, a seeded case and a catalogue entry, and retarget the `brand_nearmiss` comment.
+- [ ] **CORE-864** [light] | release-note-heading-casing — The release that ships CORE-863 must say in its tag notes that `SPEC.md`'s line-1 heading is now lowercase. An `install.sh` from an earlier tag refuses that core (`update` dies "does not hold flaitron"; global ft-adopt is skipped), so users fetch the latest installer. Close with that release.
 
 ## Future Opportunities
 
@@ -27,6 +27,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-863** [moderate]🧩 | brand-casing-guard — Completed 2026-11-05.
 - [x] **CORE-861** [heavy]🧠 | brand-casing-policy — Completed 2026-11-05.
 - [x] **CORE-862** [light]🔧 | ci-job-timeouts — Completed 2026-11-05.
 - [x] **CORE-860** [moderate] [unattended] | brand-nearmiss-guard — Completed 2026-11-04.

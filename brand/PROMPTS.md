@@ -27,8 +27,8 @@ generation. A blank model is unknown, not evidence that no model was used.
   the brand SVGs. Its tasknote records the operator's choice of a simplified
   redraw and “good proceed” visual confirmation at 32 px / 16 px.
 - CORE-711.4, commit `b44ffbaac530f35ee0866966e2485f773315cb8a`, changed
-  the SVG accessible labels from Flowtron to Flaitron; geometry and palette
-  were preserved. The project rename is not a new mark or product identity.
+  the SVG accessible labels from Flowtron to flaitron (CORE-863 lowercased
+  them); geometry and palette were preserved. The project rename is not a new mark or product identity.
 
 The original raster's creator, creation date, generation model, prompt and
 reference-image history are **unknown** in the recovered evidence. No new

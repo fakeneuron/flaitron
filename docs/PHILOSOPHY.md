@@ -1,6 +1,6 @@
-# Why Flaitron Exists
+# Why flaitron Exists
 
-Flaitron is a workflow system for one person. The person is me, and the work is solo AI-assisted coding across a handful of side projects. This document is the "why" — the things `SPEC.md` deliberately leaves out because they're history, not contract.
+flaitron is a workflow system for one person. The person is me, and the work is solo AI-assisted coding across a handful of side projects. This document is the "why" — the things `SPEC.md` deliberately leaves out because they're history, not contract.
 
 ## The actual problem
 
@@ -32,7 +32,7 @@ When I cleared away the project-specific debris, the same shape kept showing up:
 - A **relevance gate** at the start of every tasknote — "is this still the right work?" — because plans go stale faster than I update them.
 - A **model-routing signal** per task — I was constantly burning Opus tokens on mechanical work, or worse, trying to do design work on Sonnet and not noticing the quality drop. (In the current system, this is the `[model]` tag on the PLAN.md task line, not a field inside the tasknote.)
 
-The pattern was robust. The infrastructure around it wasn't. Flaitron is what's left when you keep the pattern and throw away the infrastructure.
+The pattern was robust. The infrastructure around it wasn't. flaitron is what's left when you keep the pattern and throw away the infrastructure.
 
 ## The decisions that fall out
 

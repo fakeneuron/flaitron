@@ -165,7 +165,7 @@ done < <(git grep -Il '' -- .)
 
 # Brand near misses (CORE-860)
 brand_nearmiss() {
-# Spelling only; casing policy belongs to CORE-861. POSIX ERE boundaries
+# Spelling only; casing is brand_casing below. POSIX ERE boundaries
 # avoid matching valid identifiers such as flaitronSpec. The two sources
 # below carry the intentional examples; no other tracked text is exempt.
 bad=
@@ -185,6 +185,54 @@ while IFS= read -r -d '' f; do
   fi
 done < <(git ls-files -z)
 [ "$n" -gt 0 ] || { echo "VACUOUS brand_nearmiss  no tracked file examined"; exit 1; }
+[ -z "$bad" ] || exit 1
+}
+
+# Brand casing (brand/BRAND.md §"Name casing")
+brand_casing() {
+# A standalone name is `flaitron` or, for the business, `FLAITRON`; any other
+# casing fails. Same word boundary as brand_nearmiss, so joined identifiers
+# (FLAITRON_HOME, cachedFlaitronFile) pass. Exempt: write-once history (the
+# tasknote archive, PLAN-ARCHIVE.md), the two sources carrying examples, and
+# a line marked `brand-casing: fixture` (a test that needs another casing).
+# A backticked mention of the marker is prose naming it, not a mark, so the
+# lines that document it stay checked.
+# awk walks every occurrence: a line can hold a good and a bad one. LC_ALL=C
+# keeps tolower ASCII-only, so byte offsets match the original line.
+bad=
+n=0
+while IFS= read -r -d '' f; do
+  case "$f" in
+    tools/drift-checks.sh|tools/drift-checks.test.mjs|.flaitron/tasknote/archive/*|.flaitron/PLAN-ARCHIVE.md) continue ;;
+  esac
+  [ -f "$f" ] || continue
+  n=$((n+1))
+  rc=0
+  hits=$(LC_ALL=C awk '
+    /(^|[^`])brand-casing: fixture/ { next }
+    {
+      low = tolower($0); off = 0
+      while ((i = index(substr(low, off + 1), "flaitron")) > 0) {
+        p = off + i
+        w = substr($0, p, 8)
+        # BSD awk reads substr(s, 0, 1) as the first character, not "".
+        pre = p > 1 ? substr($0, p - 1, 1) : ""
+        if (pre !~ /[[:alnum:]_]/ && substr($0, p + 8, 1) !~ /[[:alnum:]_]/ && w != "flaitron" && w != "FLAITRON") {
+          print FNR ":" $0; hit = 1; break
+        }
+        off = p + 7
+      }
+    }
+    END { exit hit ? 0 : 1 }' "$f") || rc=$?
+  if [ "$rc" -eq 0 ]; then
+    printf '%s\n' "$hits" | while IFS= read -r line; do printf 'BRAND CASING  %s:%s\n' "$f" "$line"; done
+    bad=1
+  elif [ "$rc" -ne 1 ]; then
+    printf 'BRAND SCAN ERROR  %s\n' "$f"
+    bad=1
+  fi
+done < <(git grep -lIiz -e flaitron)
+[ "$n" -gt 0 ] || { echo "VACUOUS brand_casing  no tracked file naming flaitron examined"; exit 1; }
 [ -z "$bad" ] || exit 1
 }
 

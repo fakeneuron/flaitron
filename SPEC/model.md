@@ -6,7 +6,7 @@ The model assignment lives on the PLAN.md task line — the `[model]` segment
 of §"Task-line format". PLAN.md is the source of truth. The token is a short
 identifier representing the cognitive load of the task.
 
-Flaitron's recommended primary labels are `[heavy]` (design, multi-file,
+flaitron's recommended primary labels are `[heavy]` (design, multi-file,
 high ambiguity, or exploratory work), `[moderate]` (multi-step, well-scoped),
 and `[light]` (mechanical, well-scoped, clear-diff implementation). A fourth,
 **chooser-assignable** rung — `[frontier]`, glyph 💎 — sits above `heavy` for
@@ -143,7 +143,7 @@ ladder above: the *same* named model can be pushed toward `heavy`-band output
 by raising its effort setting, or throttled toward `light`-band output by
 lowering it.
 
-Flaitron's tier stays a **cognitive-load label for the task** — a `[heavy]`
+flaitron's tier stays a **cognitive-load label for the task** — a `[heavy]`
 task is satisfied equally by a big model at low effort or a small model at
 high effort, whichever the operator's session is actually running. The
 `docs/PLATFORMS.md` §"Platform×model×effort calibration table" is the

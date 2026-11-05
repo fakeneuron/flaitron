@@ -19,11 +19,11 @@ Both must produce no output and exit 1. A hit means someone re-introduced a hand
 bash tools/drift-checks.sh shipped_skill_parity
 ```
 
-The two shipped inventories must match exactly by slug: `shipped_skill_parity ok`, or a `diff -u` of the `claude/skills` slugs against the `codex/skills` ones, or `VACUOUS shipped_skill_parity` when neither inventory read a skill (the read, not the inventories, is broken). This is parity of exported Flaitron skill names and routing coverage, not byte-identical skill bodies; Codex wrappers may route to `SPEC/procedures/` or to the canonical Claude skill body to avoid duplicated maintenance. A mismatch means a Flaitron skill shipped on one platform surface without the other — fix inline as Critical/High before cutting the release.
+The two shipped inventories must match exactly by slug: `shipped_skill_parity ok`, or a `diff -u` of the `claude/skills` slugs against the `codex/skills` ones, or `VACUOUS shipped_skill_parity` when neither inventory read a skill (the read, not the inventories, is broken). This is parity of exported flaitron skill names and routing coverage, not byte-identical skill bodies; Codex wrappers may route to `SPEC/procedures/` or to the canonical Claude skill body to avoid duplicated maintenance. A mismatch means a flaitron skill shipped on one platform surface without the other — fix inline as Critical/High before cutting the release.
 
 **Standing installed-surface policy check.** Independently of the subroutine findings, verify the repo-scoped adopter snippets install exactly the policy subset from `docs/PLATFORMS.md` §"Installed-surface policy", not the full shipped inventories.
 
-Nothing here is a hand-maintained roster. The expected set is **derived** — the shipped Claude skill inventory minus the declared non-adopter categories — and the three platform snippets are **derived surfaces** of `claude/AGENTS-snippet.md` §"One-time symlink wiring", each stating its own substitution in its own file. So a newly shipped adopter skill needs no edit here at all; only a change to *policy* (a new global-only utility or flaitron-self-only skill) touches the exclusion list below. That list is the machine form of `docs/PLATFORMS.md`'s "Global-only utilities" and "Flaitron-self-only" columns:
+Nothing here is a hand-maintained roster. The expected set is **derived** — the shipped Claude skill inventory minus the declared non-adopter categories — and the three platform snippets are **derived surfaces** of `claude/AGENTS-snippet.md` §"One-time symlink wiring", each stating its own substitution in its own file. So a newly shipped adopter skill needs no edit here at all; only a change to *policy* (a new global-only utility or flaitron-self-only skill) touches the exclusion list below. That list is the machine form of `docs/PLATFORMS.md`'s "Global-only utilities" and "flaitron-self-only" columns:
 
 ```text
 ft-adopt           (global-only)
@@ -58,7 +58,7 @@ The anchored `grep` prefixes are load-bearing: `codex/AGENTS-snippet.md` carries
 
 **Standing self-wiring parity check.** The checks above all compare one *declaration* to another — `claude/AGENTS-snippet.md` and its three derived platform snippets, plus the shipped `claude/skills/` listing. None resolves a symlink, so a slug correctly declared everywhere can still be unwired and unrunnable in flaitron's own checkout: `/ft-spec` shipped at CORE-352.2, passed all three, and sat missing from `.claude/` for a month. This check reads the filesystem instead.
 
-**Local repo-scoped wiring — blocking.** Flaitron is not an adopter; its `.claude/` mirrors the full shipped inventory (`docs/PLATFORMS.md` §"Installed-surface policy" → "Flaitron's own checkout is not an adopter"). Diff both directions:
+**Local repo-scoped wiring — blocking.** flaitron is not an adopter; its `.claude/` mirrors the full shipped inventory (`docs/PLATFORMS.md` §"Installed-surface policy" → "flaitron's own checkout is not an adopter"). Diff both directions:
 
 ```sh
 cd "$(git rev-parse --show-toplevel)"   # every path below is root-relative
@@ -94,7 +94,7 @@ Agent homes are machine state — no commit in this cut can carry the fix — so
 
 **Glob-free by design.** The scans use `find` (`-name 'ft-*'` where name-filtered) rather than a `for l in ~/.claude/skills/ft-*` loop because zsh — the common interactive shell — *errors* on an unmatched glob (`no matches found`) and aborts the loop before its body runs. A machine with no global installs would abort the check rather than report clean. Do not "simplify" these to globs; the same silent-false-negative class is why the SOP-currency block in Step 5 keeps its `$(echo …)` wrappers.
 
-**Standing README task-counter check.** README.md's "Flaitron is built with flaitron" sentence cites a closed-task count and date range that §5's post-edit version-pin verification never covers — it greps for `vX\.Y\.Z`, not a task count, so this line drifts silently between cuts (CORE-411). Recompute both from the same archive the sentence already points readers to:
+**Standing README task-counter check.** README.md's "flaitron is built with flaitron" sentence cites a closed-task count and date range that §5's post-edit version-pin verification never covers — it greps for `vX\.Y\.Z`, not a task count, so this line drifts silently between cuts (CORE-411). Recompute both from the same archive the sentence already points readers to:
 
 ```sh
 find .flaitron/tasknote/archive -name "*.md" | wc -l
@@ -142,7 +142,7 @@ if (rows.length) {
 
 `npm outdated` exits 1 when anything is behind, majors or not — swallow that and read stdout. No `OVER` / `exit 1` — a pending major is a nudge to bump or re-park after the cut, not a reason to hold the tag.
 
-**Standing context-budget check.** Flaitron ships per-file byte budgets for the
+**Standing context-budget check.** flaitron ships per-file byte budgets for the
 surfaces an agent loads to run one task. They live in
 [`docs/CONTEXT-BUDGET.md`](../../../docs/CONTEXT-BUDGET.md) §"Budgets" and are
 restated nowhere — this check measures, that doc decides, and the numbers

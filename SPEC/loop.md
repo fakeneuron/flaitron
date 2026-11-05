@@ -14,12 +14,12 @@ ready-made per-cycle contract at
 
 ## Runtime vs. contract — the boundary
 
-Flaitron answers *what* the assistant does and how it stays scoped. An
+flaitron answers *what* the assistant does and how it stays scoped. An
 iteration loop adds *when it runs and how long it keeps going* — and that
 half is **not** flaitron's to own.
 
 **Claude Code's `/loop` (or any equivalent runner) is the runtime.** It
-owns cadence, scheduling, re-invocation, and session lifetime. Flaitron
+owns cadence, scheduling, re-invocation, and session lifetime. flaitron
 ships **no loop runner, scheduler, daemon, or session-state tooling** — see
 [`docs/VISION.md`](../docs/VISION.md) §"What we won't accept".
 
@@ -27,7 +27,7 @@ ships **no loop runner, scheduler, daemon, or session-state tooling** — see
 and safety property a loop needs already exists as a flaitron pattern; this
 module names how they compose under repetition:
 
-| Loop need | Flaitron pattern it reuses |
+| Loop need | flaitron pattern it reuses |
 |---|---|
 | Termination condition | `## ✅ Acceptance` criteria (met → stop) |
 | "Still the right work?" | Core Principle #4 relevance gate, per-cycle |

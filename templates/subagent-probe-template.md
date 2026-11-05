@@ -109,7 +109,7 @@ Testing Notes, and owns whether a blocker really is one.
 - **The parent still owns the judgment.** A probe reports; it does not decide
   whether the task is still relevant, what the scope is, or what to do next.
   Those stay in the session that holds the tasknote.
-- **No machinery.** Flaitron ships this brief and this return shape and nothing
+- **No machinery.** flaitron ships this brief and this return shape and nothing
   else — no runner, no dispatcher, no fan-out (`docs/VISION.md` §"What we won't
   accept"). Which sub-agent primitive spawns the probe is the operator's and
   the platform's business.

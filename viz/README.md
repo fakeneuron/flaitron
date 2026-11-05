@@ -1,4 +1,4 @@
-# Flaitron visualizer (`viz/`)
+# flaitron visualizer (`viz/`)
 
 Read-only Vite/React/TypeScript view of every flaitron-adopting project under
 `${FLAITRON_VIZ_WORKSPACE:-~/code}`. Operator-facing runbook (workspace scan,

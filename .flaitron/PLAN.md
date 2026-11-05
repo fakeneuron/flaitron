@@ -13,8 +13,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 (none)
 
-- [ ] **CORE-862** [light] | ci-job-timeouts — Raise every Actions job to the NAT-528 defaults (15 min lint/type/unit, 30 min E2E/build/deploy) where the current timeout-minutes differs. Origin NAT-528.
-
 ## Medium
 
 (none)
@@ -29,6 +27,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-862** [light]🔧 | ci-job-timeouts — Completed 2026-11-05.
 - [x] **CORE-860** [moderate] [unattended] | brand-nearmiss-guard — Completed 2026-11-04.
 - [x] **CORE-641** [light]🔧 | typescript-7 — Completed 2026-11-01. De-scoped: upstream toolchain watching is a fleet concern; re-filed in natabula as NAT-517.
 - [x] **FE-151** [moderate] | viz-quality-stack — Completed 2026-11-01.

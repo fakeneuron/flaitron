@@ -163,6 +163,31 @@ done < <(git grep -Il '' -- .)
 [ -z "$bad" ] || exit 1
 }
 
+# Brand near misses (CORE-860)
+brand_nearmiss() {
+# Spelling only; casing policy belongs to CORE-861. POSIX ERE boundaries
+# avoid matching valid identifiers such as flaitronSpec. The two sources
+# below carry the intentional examples; no other tracked text is exempt.
+bad=
+n=0
+while IFS= read -r -d '' f; do
+  case "$f" in tools/drift-checks.sh|tools/drift-checks.test.mjs) continue ;; esac
+  [ -f "$f" ] || continue
+  n=$((n+1))
+  rc=0
+  hits=$(LC_ALL=C grep -nEiI '(^|[^[:alnum:]_])(flatiron|flatron|flaitrn|flaitorn|flaiton|flaytron|fliatron|falitron|flaitron[ens])([^[:alnum:]_]|$)' -- "$f") || rc=$?
+  if [ "$rc" -eq 0 ]; then
+    printf '%s\n' "$hits" | while IFS= read -r line; do printf 'BRAND NEAR MISS  %s:%s\n' "$f" "$line"; done
+    bad=1
+  elif [ "$rc" -ne 1 ]; then
+    printf 'BRAND SCAN ERROR  %s\n' "$f"
+    bad=1
+  fi
+done < <(git ls-files -z)
+[ "$n" -gt 0 ] || { echo "VACUOUS brand_nearmiss  no tracked file examined"; exit 1; }
+[ -z "$bad" ] || exit 1
+}
+
 # Sidequest orphans (claude/skills/ft-file-task/park-mode.md §Notes "Promotion")
 sidequest_orphan() {
 # A promoted stub is deleted by the runner that promotes it (CORE-606), but

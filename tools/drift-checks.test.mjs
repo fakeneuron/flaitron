@@ -58,6 +58,10 @@ const CASES = {
     seed: () => edit('README.md', (s) => s.replace(/\n+$/, '')),
     finding: /^NO FINAL NEWLINE {2}README\.md$/m,
   },
+  brand_nearmiss: {
+    seed: () => edit('README.md', (s) => `${s}\nflatiron flatron flaitrn flaitorn flaiton flaytron fliatron falitron flaitrone flaitronn flaitrons\n`),
+    finding: /^BRAND NEAR MISS {2}README\.md:[0-9]+:flatiron flatron flaitrn flaitorn flaiton flaytron fliatron falitron flaitrone flaitronn flaitrons$/m,
+  },
   sidequest_orphan: {
     // One closed row per PLAN file: a rotated row, and a nested epic child.
     // Then one stub beside an active tasknote and one beside an archived one,
@@ -215,4 +219,41 @@ describe('drift-checks.sh self-test', () => {
       assert.doesNotMatch(r.stdout, /^VACUOUS /m);
     });
   }
+});
+
+// An isolated git fixture keeps clean-input assertions independent of live
+// roadmap prose and verifies tracked/untracked selection explicitly.
+describe('brand near-miss matching', () => {
+  let fixture;
+  const source = readFileSync(join(REPO, SCRIPT), 'utf8');
+  const variants = ['flatiron', 'flatron', 'flaitrn', 'flaitorn', 'flaiton', 'flaytron', 'fliatron', 'falitron', 'flaitrone', 'flaitronn', 'flaitrons'];
+  before(() => {
+    fixture = mkdtempSync(join(tmpdir(), 'brand-check-'));
+    mkdirSync(join(fixture, 'tools'));
+    writeFileSync(join(fixture, SCRIPT), source);
+    writeFileSync(join(fixture, 'tools/drift-checks.test.mjs'), variants.join(' '));
+    execFileSync('git', ['init', '-q'], { cwd: fixture });
+    writeFileSync(join(fixture, 'copy with spaces.md'), 'flaitron Flaitron FLAITRON flaitronSpec prefixflatiron flatironSuffix _flatiron flatiron_\n');
+    writeFileSync(join(fixture, 'image.bin'), Buffer.from('\0flatiron\n'));
+    execFileSync('git', ['add', '.'], { cwd: fixture });
+    writeFileSync(join(fixture, 'untracked.md'), variants.join(' '));
+  });
+  after(() => { if (fixture) rmSync(fixture, { recursive: true, force: true }); });
+
+  it('accepts correct names and substrings and skips sources, binaries and untracked files', () => {
+    const out = execFileSync('bash', [SCRIPT, 'brand_nearmiss'], { cwd: fixture, encoding: 'utf8' });
+    assert.equal(out, 'brand_nearmiss ok\n');
+  });
+
+  it('rejects every standalone spelling in mixed case with punctuation and path/line evidence', () => {
+    for (const variant of variants) {
+      const text = `(${variant.toUpperCase()}), ${variant}\n`;
+      writeFileSync(join(fixture, 'copy with spaces.md'), text);
+      assert.throws(
+        () => execFileSync('bash', [SCRIPT, 'brand_nearmiss'], { cwd: fixture, encoding: 'utf8', stdio: 'pipe' }),
+        (e) => e.status === 1 && e.stdout === `BRAND NEAR MISS  copy with spaces.md:1:${text}brand_nearmiss FAILED\n`,
+        variant,
+      );
+    }
+  });
 });

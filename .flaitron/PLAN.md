@@ -21,7 +21,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Low
 
-- [ ] **CORE-860** [moderate] [unattended] | brand-nearmiss-guard — Add a `tools/drift-checks.sh` check failing on near-miss spellings of flaitron (flatiron, flatron, flaitrn, flaitorn, flaiton, flaytron, fliatron, falitron, flaitrone/n/s) in tracked files, skipping the check's own file and test. Source: flaitron-site `scripts/copy-guard.sh` (FS-028). Today 0 hits. Use `grep -E`, not rg; needs a seeded-drift case and a §7.1 catalogue entry. Filed from natabula NAT-522.
 - [ ] **CORE-861** [heavy] | brand-casing-policy — Decide the casing rule for flaitron here. flaitron-site's guard (`scripts/copy-guard.sh`, FS-028) accepts only FLAITRON or flaitron, but 261 title-case "Flaitron" matches sit in 100 tracked files, including the `# Flaitron — Workflow Specification` heading `/ft-task` detects, and archived notes are write-once. Choose: allow title-case, scope the rule to paths, or rename; then file the guard row. Filed from natabula NAT-522.
 
 ## Future Opportunities
@@ -30,6 +29,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-860** [moderate] [unattended] | brand-nearmiss-guard — Completed 2026-11-04.
 - [x] **CORE-641** [light]🔧 | typescript-7 — Completed 2026-11-01. De-scoped: upstream toolchain watching is a fleet concern; re-filed in natabula as NAT-517.
 - [x] **FE-151** [moderate] | viz-quality-stack — Completed 2026-11-01.
 - [x] **CORE-855** [moderate]🧩 | release v8.3.0 — Completed 2026-11-01.

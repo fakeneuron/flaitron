@@ -19,19 +19,15 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-EPIC-869** [heavy]🧠 | carrying-cost — Cut what the archive and the at-cap budgets cost per edit: batch the per-file drift loops, report near-cap surfaces, refresh two stale figures, restore budget headroom. Discovery supplied by audit-repo 2026-11-06. Surfaced by audit-repo 2026-11-06 (Theme: context budgets run at the cap; Theme: the archive's cost scales with success).
-  - [x] **CORE-869.2** [moderate]🧩 [unattended] | drift-check-batching — Completed 2026-11-06.
-  - [ ] **CORE-869.3** [light]🔧 [unattended] | budget-near-cap-report — Completed 2026-11-06.
-  - [x] **CORE-869.4** [light]🔧 [unattended] | stale-size-figures — Completed 2026-11-06.
-  - [x] **CORE-869.5** [heavy]🧠 | near-cap-trims — Completed 2026-11-06.
-  - [ ] **CORE-869.N** [heavy]🧠 | carrying-cost audit
+(none)
 
 ## Low
 
 - [ ] **CORE-864** [light] | release-note-heading-casing — The release that ships CORE-863 must say in its tag notes that `SPEC.md`'s line-1 heading is now lowercase. An `install.sh` from an earlier tag refuses that core (`update` dies "does not hold flaitron"; global ft-adopt is skipped), so users fetch the latest installer. Close with that release.
 - [ ] **CORE-865** [light] | agents-md-repo-layout-trim — From natabula fleet audit 2026-11-05 (@5cd59b70): root `AGENTS.md` has 108 prose lines outside `## Workflow` (natabula `check-fleet-agents-prose.sh` budget 100). `## Repo Layout` (line 60 on) is a file-by-file map that copies `SPEC/layout.md` and `README.md`. Trim it to a pointer plus any entry an agent must know before editing; keep `## Validation` and `## Editing Rules`.
-- [ ] **CORE-870** [light] | near-cap-release-note — In `claude/skills/ft-release/step-7.1-standing-checks.md` (~line 155), say a non-failing `NEAR CAP` line printed before `context_budget ok` needs no action; `context_budget` now prints them (CORE-869.3). That directory sits at 97% of its row, so size-check the edit or land it after CORE-869.5.
+- [ ] **CORE-870** [light] | near-cap-release-note — In `claude/skills/ft-release/step-7.1-standing-checks.md` (~line 155), say a non-failing `NEAR CAP` line printed before `context_budget ok` needs no action; `context_budget` now prints them (CORE-869.3). CORE-869.5 left that directory at 94.6% of its row.
 - [ ] **CORE-871** [light] | flaky-only-b-assertion — Fix the flaky `--only limits the sweep` test (CORE-852.3) in `tools/update-adopters.test.mjs` (~line 927): its assertion that the output lacks the text `only-b` also trips on the printed temp workspace `ft-upd-only-<random>` whenever the suffix starts with `b`. Match `only-b:` or drop the workspace line. Seen once 2026-11-06.
+- [ ] **CORE-873** [light]🔧 | unchecked-stub-row-check — Extend `pair_r` in `tools/drift-checks.sh` (or add a sibling check) to fail a bold-ID PLAN row that ends in the `Completed YYYY-MM-DD.` stub tail but is still `- [ ]`. CORE-869.3's closure wrote that row and every gate passed; only a hand read caught it. Add a self-test seed.
 
 ## Future Opportunities
 
@@ -39,6 +35,12 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-EPIC-869** [heavy]🧠 | carrying-cost — Completed 2026-11-06.
+  - [x] **CORE-869.2** [moderate]🧩 [unattended] | drift-check-batching — Completed 2026-11-06.
+  - [x] **CORE-869.3** [light]🔧 [unattended] | budget-near-cap-report — Completed 2026-11-06.
+  - [x] **CORE-869.4** [light]🔧 [unattended] | stale-size-figures — Completed 2026-11-06.
+  - [x] **CORE-869.5** [heavy]🧠 | near-cap-trims — Completed 2026-11-06.
+  - [x] **CORE-869.N** [heavy]🧠 | carrying-cost audit — Completed 2026-11-06.
 - [x] **CORE-872** [heavy]🧠 | size-cap-renames — Completed 2026-11-06.
 - [x] **CORE-867** [moderate] | doc-sweep-touches-scope — Completed 2026-11-06.
 - [x] **CORE-863** [moderate]🧩 | brand-casing-guard — Completed 2026-11-05.

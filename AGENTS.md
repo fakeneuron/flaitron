@@ -59,43 +59,27 @@ not to)".
 
 ## Repo Layout
 
-- `README.md` — top-level project overview and entry point.
-- `SECURITY.md` — security policy and vulnerability reporting.
-- `CONTRIBUTING.md` — contributor guide: maintenance model, filing issues, PR process, local skill wiring.
-- `LICENSE` — MIT.
-- `LOGO.webp` — README header image.
-- `.editorconfig` — editor formatting rules (§"Editing Rules" below).
-- `.gitleaks.toml` — gitleaks config for CI's secret scan.
-- `install.sh` — the one-line adopter installer (`curl … | sh`; a CLI carve-out per `SPEC/scope-boundaries.md`), tested by `tools/install.test.sh`.
-- `.github/` — GitHub-specific config (CI workflows: `workflows/ci.yml`, plus `workflows/install-test.yml`, the path-filtered network test of `install.sh`; Dependabot security-update config: `dependabot.yml`).
-- `justfile` — `just` recipes (`setup`/`dev`/`test`/`lint`/`typecheck`/`build`/`check`/`coverage`). Viz verbs delegate to the `viz/` npm scripts; `check` runs the eight §"Validation" commands below plus `bash tools/drift-checks.sh`. §"Validation" stays the roster of record.
-- `SPEC.md` — canonical workflow contract.
-- `SPEC/` — lazy modules for epics, starter tasks, blocked tasks, model
-  routing, gate machinery, flag postures, the operator-cue vocabulary,
-  versioning, tasknote selection, PLAN.md filing, loop tasks, the post-closure
-  protocol, repo layout,
-  PLAN parser tolerances, task-line segment semantics, scope boundaries,
-  optional tasknote inserts, superseded claims, `[unattended]` candidacy, and
-  `SPEC/procedures/` agent-neutral SOPs, and `SPEC/fixtures/plan/` task-line
-  grammar conformance fixtures.
+`README.md` and `SPEC/layout.md` §"Working in the flaitron repo itself" carry
+the fuller map; `ls` covers the rest. Know these before editing:
+
+- `SPEC.md` + `SPEC/` — the workflow contract and its lazy modules (incl.
+  `SPEC/procedures/` SOPs and `SPEC/fixtures/plan/` grammar fixtures);
+  `SPEC/layout.md` is the module and skill-namespace map.
 - `.flaitron/` — flaitron's own plan and tasknotes, plus `audit-overlay/SKILL.md`:
   the tracked body of flaitron-self's `/audit` thin overlay, which
   `.claude/skills/audit` symlinks to (`.claude/` is wholly gitignored, so the
   overlay's deltas would be unversionable there — `SPEC/layout.md`).
-- `brand/` — public identity kit (`BRAND.md` blurb, marks, `chamber-*.jpg`
-  references, `assets.json` manifest, `PROMPTS.md` provenance); contract in
-  `brand/README.md`.
-- `claude/` — Claude Code wiring: skills and the historical
-  source for the agent-neutral adopter snippet.
-- `codex/` — Codex CLI skill wrappers and wiring notes.
-- `cursor/` — Cursor thin wiring (snippet + `ft-task` procedure pointer; no skill wrappers).
-- `grok/` — Grok thin wiring (snippet + `ft-task` procedure pointer; no skill wrappers).
-- `docs/` — supporting docs, conventions, migration, platform compatibility,
-  design rationale, and `CONTEXT-BUDGET.md` (per-file byte budgets, enforced
-  in CI and at release).
-- `templates/` — canonical markdown templates.
-- `tools/` — operator-side fleet scripts (`update-adopters.mjs` + tests), `drift-checks.sh` (+ its `drift-checks.test.mjs` self-test), the shell of CI's `drift` job and the `/ft-release` §7.1 pair walk, and `install.test.sh`, the installer's sandboxed end-to-end test.
-- `viz/` — Vite/React/TypeScript visualizer (module tiers + no-Node-under-`src/ui/` rule: [`viz/README.md`](viz/README.md)).
+- `claude/`, `codex/`, `cursor/`, `grok/` — per-agent wiring; `claude/` holds
+  the skills and the adopter snippet (`claude/AGENTS-snippet.md`).
+- `docs/` — supporting docs; `docs/CONTEXT-BUDGET.md` holds per-file byte
+  budgets, enforced in CI and at release.
+- `brand/` — public identity kit; contract in `brand/README.md`.
+- `tools/`, `install.sh`, `justfile` — fleet scripts, drift checks, the
+  one-line installer (a CLI carve-out per `SPEC/scope-boundaries.md`), and
+  `just` recipes; `just check` runs the §"Validation" roster plus
+  `bash tools/drift-checks.sh`, and §"Validation" stays the roster of record.
+- `viz/` — the visualizer (module tiers + no-Node-under-`src/ui/` rule:
+  [`viz/README.md`](viz/README.md)).
 
 ## Validation
 

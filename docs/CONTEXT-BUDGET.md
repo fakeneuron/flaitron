@@ -206,6 +206,9 @@ Re-measured at [[CORE-867]]: `ft-task/SKILL.md` 23,487 → 23,610 and `SPEC.md`
 43,772 → 43,842 (the unattended sweep files out-of-scope drift instead of
 editing it); `AGENTS.md` 10,313 → 10,324, outside the sum and not this task's
 doing. The other five summed rows held. Sum **106,443** (+193).
+Re-measured at [[CORE-865]]: `AGENTS.md` 10,324 → 8,628 (§"Repo Layout" cut from a
+file-by-file map to a pointer plus the must-know entries), outside the sum; the
+summed rows held, sum **106,443**.
 
 [[CORE-664]] re-measured every row rather than differencing one against the
 v5.32.0 snapshot, and found the snapshot had gone stale on three of them —
@@ -231,7 +234,7 @@ stamped to this task rather than to v5.32.0.
 | `SPEC.md` | 43,842 |
 | `claude/skills/ft-task/SKILL.md` | 23,610 |
 | `claude/skills/ft-task/preamble.md` | 8,524 |
-| `AGENTS.md` (`CLAUDE.md` is a symlink to it) | 10,324 |
+| `AGENTS.md` (`CLAUDE.md` is a symlink to it) | 8,628 |
 | `.flaitron/tasknote/README.md` | 6,573 |
 | `templates/tasknote-template.md` | 3,993 |
 | `.flaitron/PLAN.md` | ~2–3k (band — see below) |

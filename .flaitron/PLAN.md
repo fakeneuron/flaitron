@@ -20,7 +20,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Low
 
 - [ ] **CORE-864** [light] | release-note-heading-casing — The release that ships CORE-863 must say in its tag notes that `SPEC.md`'s line-1 heading is now lowercase. An `install.sh` from an earlier tag refuses that core (`update` dies "does not hold flaitron"; global ft-adopt is skipped), so users fetch the latest installer. Close with that release.
-- [ ] **CORE-865** [light] | agents-md-repo-layout-trim — From natabula fleet audit 2026-11-05 (@5cd59b70): root `AGENTS.md` has 108 prose lines outside `## Workflow` (natabula `check-fleet-agents-prose.sh` budget 100). `## Repo Layout` (line 60 on) is a file-by-file map that copies `SPEC/layout.md` and `README.md`. Trim it to a pointer plus any entry an agent must know before editing; keep `## Validation` and `## Editing Rules`.
 
 ## Future Opportunities
 
@@ -28,6 +27,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-865** [light]🔧 | agents-md-repo-layout-trim — `AGENTS.md` §"Repo Layout" cut from a file-by-file map to a pointer plus eight must-know bullets (prose outside `## Workflow` 108 → 91, under natabula's 100 budget); `docs/CONTEXT-BUDGET.md` `AGENTS.md` row 10,324 → 8,628. Completed 2026-11-06.
 - [x] **CORE-870** [light]🔧 | near-cap-release-note — `step-7.1-standing-checks.md` now says a non-failing `NEAR CAP` line before `context_budget ok` needs no action; no tasknote. Completed 2026-11-06.
 - [x] **CORE-873** [light]🔧 | unchecked-stub-row-check — Completed 2026-11-06.
 - [x] **CORE-871** [light]🔧 | flaky-only-b-assertion — Completed 2026-11-06.

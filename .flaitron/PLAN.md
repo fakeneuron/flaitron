@@ -11,11 +11,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-- [ ] **CORE-EPIC-868** [heavy]🧠 | gate-blind-spots — Bind the three places no gate reads today: the installer's text anchors, the install at a freshly pushed tag, and the open Dependabot alert. Discovery supplied by audit-repo 2026-11-06. Surfaced by audit-repo 2026-11-06 (Theme: the installer reads text it does not own).
-  - [x] **CORE-868.2** [moderate]🧩 [unattended] | installer-anchor-drift-check — Completed 2026-11-06.
-  - [x] **CORE-868.3** [moderate]🧩 | release-installs-new-tag — Completed 2026-11-06.
-  - [x] **CORE-868.4** [light]🔧 | dependabot-minimatch-alert — Completed 2026-11-06.
-  - [ ] **CORE-868.N** [heavy]🧠 | gate-blind-spots audit
+(none)
 
 ## Medium
 
@@ -35,6 +31,11 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-EPIC-868** [heavy]🧠 | gate-blind-spots — Completed 2026-11-06.
+  - [x] **CORE-868.2** [moderate]🧩 [unattended] | installer-anchor-drift-check — Completed 2026-11-06.
+  - [x] **CORE-868.3** [moderate]🧩 | release-installs-new-tag — Completed 2026-11-06.
+  - [x] **CORE-868.4** [light]🔧 | dependabot-minimatch-alert — Completed 2026-11-06.
+  - [x] **CORE-868.N** [heavy]🧠 | gate-blind-spots audit — Completed 2026-11-06.
 - [x] **CORE-EPIC-869** [heavy]🧠 | carrying-cost — Completed 2026-11-06.
   - [x] **CORE-869.2** [moderate]🧩 [unattended] | drift-check-batching — Completed 2026-11-06.
   - [x] **CORE-869.3** [light]🔧 [unattended] | budget-near-cap-report — Completed 2026-11-06.

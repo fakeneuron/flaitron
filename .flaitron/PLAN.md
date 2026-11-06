@@ -20,6 +20,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Low
 
 - [ ] **CORE-864** [light] | release-note-heading-casing — The release that ships CORE-863 must say in its tag notes that `SPEC.md`'s line-1 heading is now lowercase. An `install.sh` from an earlier tag refuses that core (`update` dies "does not hold flaitron"; global ft-adopt is skipped), so users fetch the latest installer. Close with that release.
+- [ ] **CORE-865** [light] | agents-md-repo-layout-trim — From natabula fleet audit 2026-11-05 (@5cd59b70): root `AGENTS.md` has 108 prose lines outside `## Workflow` (natabula `check-fleet-agents-prose.sh` budget 100). `## Repo Layout` (line 60 on) is a file-by-file map that copies `SPEC/layout.md` and `README.md`. Trim it to a pointer plus any entry an agent must know before editing; keep `## Validation` and `## Editing Rules`.
 
 ## Future Opportunities
 

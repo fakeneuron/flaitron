@@ -17,9 +17,9 @@
 # skill_frontmatter_yaml (CORE-744). Each `pair_*` function has a §7.1 catalogue entry in
 # step-7.1-mirror-pairs.md that names it and says what a finding means.
 # Design notes sit as `#` comments inside the body, next to the line they
-# explain. skill_pin_guard_parity (CORE-729), final_newline (CORE-621) and
-# sidequest_orphan (CORE-742.2) have neither a source rule nor a catalogue
-# entry.
+# explain. skill_pin_guard_parity (CORE-729), final_newline (CORE-621),
+# sidequest_orphan (CORE-742.2) and installer_anchors (CORE-868.2) have
+# neither a source rule nor a catalogue entry.
 #
 # Shape rules — the dispatcher below reads them:
 # - One check per top-level function, `name() {` and its closing `}` each at
@@ -271,6 +271,63 @@ for f in .flaitron/sidequest/*.md; do
     break
   done
 done
+[ -z "$bad" ] || exit 1
+}
+
+# Installer anchors (CORE-868.2)
+installer_anchors() {
+# install.sh parses three texts it does not own, and install-test.yml's path
+# filter does not watch them, so an edit to one passes CI and breaks the
+# next real install. This check runs install.sh's own code on HEAD rather
+# than restating it: each function is cut out of install.sh by name and
+# eval'd, and the marker literal is read off its grep line. A reshaped
+# installer fails here as ANCHOR UNREAD, never as a silent pass.
+# - wire_project reads `.flaitron/core/<snippet>` from the cwd, so it runs
+#   in a temp dir whose `.flaitron/core` links to this checkout, with its
+#   side effects stubbed: link_one prints `LINK` and the roster pair it was
+#   handed, and die prints `DIE` and its message, so an empty roster reports
+#   install.sh's own words.
+bad=
+n=0
+# A one-line function (`say() { …; }`) ends on its own header line; any
+# other ends at the first column-0 `}`, install.sh's shape. A cut that
+# leaves the function undefined or unparsable is ANCHOR UNREAD.
+for fn in say is_flaitron_tree agent_snippet agent_dir wire_project; do
+  body=$(awk -v h="$fn() {" 'index($0, h) == 1 { on = 1; print; if ($0 ~ /}$/) exit; next } on { print } on && /^}$/ { exit }' install.sh)
+  { [ -n "$body" ] && eval "$body" 2>/dev/null && declare -F "$fn" >/dev/null; } || { echo "ANCHOR UNREAD  install.sh has no $fn()"; exit 1; }
+  [ "$fn" != agent_snippet ] || snip=$body
+done
+is_flaitron_tree . || { echo "INSTALLER ANCHOR  SPEC.md line 1 fails is_flaitron_tree :: $(head -n 1 SPEC.md)"; bad=1; }
+# The agents are those agent_snippet maps (a deleted snippet then fails in
+# wire_project's words) plus those with a snippet on disk (an unmapped one
+# is a finding of its own).
+mapped=$(printf '%s\n' "$snip" | sed -n 's/^ *\([a-z][a-z]*\)) say .*/\1/p')
+[ -n "$mapped" ] || { echo "ANCHOR UNREAD  install.sh agent_snippet maps no agent"; exit 1; }
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+mkdir -p "$tmp/.flaitron"
+ln -s "$PWD" "$tmp/.flaitron/core"
+for a in $( { printf '%s\n' "$mapped"; for s in */AGENTS-snippet.md; do [ -f "$s" ] && echo "${s%%/*}"; done; } | sort -u); do
+  n=$((n+1))
+  s="$a/AGENTS-snippet.md"
+  [ "$(agent_snippet "$a")" = "$s" ] || { echo "INSTALLER ANCHOR  $s :: agent_snippet $a names '$(agent_snippet "$a")'"; bad=1; continue; }
+  # shellcheck disable=SC2034,SC2329  # the eval'd wire_project reads these
+  out=$(
+    cd "$tmp" || exit 1
+    die() { echo "DIE $*"; exit 1; }
+    mkdir() { :; }
+    link_one() { echo "LINK $1 $2"; }
+    report_dangling() { :; }
+    AGENTS=" $a"
+    wire_project
+  ) || { echo "INSTALLER ANCHOR  $s :: $(printf '%s\n' "$out" | sed -n 's/^DIE //p')"; bad=1; continue; }
+  case "$out" in *'LINK '*) ;; *) echo "INSTALLER ANCHOR  $s :: wire_project linked nothing"; bad=1 ;; esac
+done
+[ "$n" -gt 0 ] || { echo "VACUOUS installer_anchors  no agent snippet examined"; exit 1; }
+# Exactly one grep line: two would make `grep -q` pass on either literal.
+marker=$(sed -n "s#^ *if ! grep -q '\([^']*\)' \"\$fh/claude/skills/ft-adopt/SKILL.md\".*#\1#p" install.sh)
+{ [ -n "$marker" ] && [ "$(printf '%s\n' "$marker" | wc -l)" -eq 1 ]; } || { echo "ANCHOR UNREAD  install.sh has no single ft-adopt marker grep"; exit 1; }
+grep -q -- "$marker" claude/skills/ft-adopt/SKILL.md || { echo "INSTALLER ANCHOR  claude/skills/ft-adopt/SKILL.md lacks '$marker'"; bad=1; }
 [ -z "$bad" ] || exit 1
 }
 

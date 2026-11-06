@@ -12,7 +12,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## High
 
 - [ ] **CORE-EPIC-868** [heavy]🧠 | gate-blind-spots — Bind the three places no gate reads today: the installer's text anchors, the install at a freshly pushed tag, and the open Dependabot alert. Discovery supplied by audit-repo 2026-11-06. Surfaced by audit-repo 2026-11-06 (Theme: the installer reads text it does not own).
-  - [ ] **CORE-868.2** [moderate]🧩 [unattended] | installer-anchor-drift-check — Add a `tools/drift-checks.sh` check, with its seeded-drift case, that fails when HEAD stops matching what `install.sh` parses: `SPEC.md` line 1 against `is_flaitron_tree`, a non-empty `ln -s` roster from each of the four `*/AGENTS-snippet.md` under `wire_project`'s awk, and the `Installer exception` marker in `claude/skills/ft-adopt/SKILL.md`.
+  - [x] **CORE-868.2** [moderate]🧩 [unattended] | installer-anchor-drift-check — Completed 2026-11-06.
   - [ ] **CORE-868.3** [moderate]🧩 | release-installs-new-tag — Have `/ft-release` prove the advertised installer URL after the tag is pushed: run `sh tools/install.test.sh install.sh` at the new tag and record the result. Add `workflow_dispatch` and the anchor files' paths to `install-test.yml`'s filter.
   - [ ] **CORE-868.4** [light]🔧 | dependabot-minimatch-alert — Close Dependabot alert #6 (minimatch < 11.0.1, GHSA-g3hv-75wg-m249, reached only through eslint in `viz` devDependencies; three failed `Dependabot Updates` runs since 2026-11-01). Take an eslint release that lifts the range, or an `overrides` pin if `npm --prefix viz run lint` stays green, else dismiss as dev-only with that reason. Record which.
   - [ ] **CORE-868.N** [heavy]🧠 | gate-blind-spots audit

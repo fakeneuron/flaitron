@@ -9,7 +9,7 @@ import { execFile, execFileSync } from 'node:child_process';
 import { cpSync, lstatSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
-import { after, afterEach, before, describe, it } from 'node:test';
+import { after, afterEach, before, beforeEach, describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
 
@@ -87,6 +87,11 @@ const CASES = {
         'PROMOTED STUB {2}\\.flaitron/sidequest/ZZ-4\\.md {2}\\(tasknote \\.flaitron/tasknote/archive/core/ZZ-4\\.md\\)$',
       'm',
     ),
+  },
+  installer_anchors: {
+    // The ft-adopt marker install.sh greps for loses its exact text.
+    seed: () => edit('claude/skills/ft-adopt/SKILL.md', (s) => s.replaceAll('Installer exception', 'Installer exemption')),
+    finding: /^INSTALLER ANCHOR {2}claude\/skills\/ft-adopt\/SKILL\.md lacks 'Installer exception'$/m,
   },
   skill_frontmatter_yaml: {
     // Undo CORE-744's quoting: the shipped `: ` shape returns.
@@ -259,6 +264,75 @@ describe('brand near-miss matching', () => {
         variant,
       );
     }
+  });
+});
+
+// The installer's three anchors, one at a time, against the real install.sh
+// (CORE-868.2). The fixture holds only what the check reads.
+describe('installer anchor matching', () => {
+  let fixture;
+  const source = readFileSync(join(REPO, SCRIPT), 'utf8');
+  const AGENTS = { claude: '.claude/skills', codex: '.agents/skills', cursor: '.cursor/skills', grok: '.grok/skills' };
+  const run = () => execFileSync('bash', [SCRIPT, 'installer_anchors'], { cwd: fixture, encoding: 'utf8', stdio: 'pipe' });
+  const fails = (out) => (e) => e.status === 1 && e.stdout === `${out}\ninstaller_anchors FAILED\n`;
+  const put = (rel, text) => {
+    mkdirSync(dirname(join(fixture, rel)), { recursive: true });
+    writeFileSync(join(fixture, rel), text);
+  };
+  beforeEach(() => {
+    fixture = mkdtempSync(join(tmpdir(), 'installer-anchors-'));
+    put(SCRIPT, source);
+    put('install.sh', readFileSync(join(REPO, 'install.sh'), 'utf8'));
+    put('SPEC.md', '# flaitron — Workflow Specification\n');
+    put('claude/skills/ft-adopt/SKILL.md', '**Installer exception.** continue\n');
+    for (const [a, d] of Object.entries(AGENTS)) {
+      put(`${a}/AGENTS-snippet.md`, `\`\`\`sh\nln -s ../../.flaitron/core/${a}/skills/ft-task ${d}/ft-task\n\`\`\`\n`);
+    }
+  });
+  afterEach(() => { if (fixture) rmSync(fixture, { recursive: true, force: true }); });
+
+  it('accepts both heading casings, four rosters and the marker', () => {
+    assert.equal(run(), 'installer_anchors ok\n');
+    put('SPEC.md', '# Flaitron — Workflow Specification\n'); // a pre-CORE-863 pin
+    assert.equal(run(), 'installer_anchors ok\n');
+  });
+
+  it('rejects a SPEC.md line 1 is_flaitron_tree refuses', () => {
+    put('SPEC.md', '# flaitron - Workflow Specification\n');
+    assert.throws(run, fails('INSTALLER ANCHOR  SPEC.md line 1 fails is_flaitron_tree :: # flaitron - Workflow Specification'));
+  });
+
+  it('rejects a snippet whose ln -s block wire_project cannot read, in its own words', () => {
+    // The link lands in another agent's dir, so the awk keeps no line.
+    put('grok/AGENTS-snippet.md', '```sh\nln -s ../../.flaitron/core/grok/skills/ft-task .claude/skills/ft-task\n```\n');
+    assert.throws(run, fails('INSTALLER ANCHOR  grok/AGENTS-snippet.md :: no ln -s roster for .grok/skills in .flaitron/core/grok/AGENTS-snippet.md'));
+  });
+
+  it('rejects a snippet install.sh does not map to an agent', () => {
+    put('zz/AGENTS-snippet.md', '```sh\n```\n');
+    assert.throws(run, fails("INSTALLER ANCHOR  zz/AGENTS-snippet.md :: agent_snippet zz names ''"));
+  });
+
+  it('rejects a deleted snippet install.sh still maps, in its own words', () => {
+    rmSync(join(fixture, 'grok/AGENTS-snippet.md'));
+    assert.throws(run, fails('INSTALLER ANCHOR  grok/AGENTS-snippet.md :: pinned snippet missing: .flaitron/core/grok/AGENTS-snippet.md'));
+  });
+
+  it('fails ANCHOR UNREAD on a second ft-adopt marker grep', () => {
+    const src = readFileSync(join(REPO, 'install.sh'), 'utf8');
+    const line = src.split('\n').find((l) => l.includes("grep -q 'Installer exception'"));
+    put('install.sh', src.replace(line, `${line.replace('Installer exception', 'zz-other')}\n    :\n  fi\n${line}`));
+    assert.throws(run, fails('ANCHOR UNREAD  install.sh has no single ft-adopt marker grep'));
+  });
+
+  it('rejects an ft-adopt body without the marker', () => {
+    put('claude/skills/ft-adopt/SKILL.md', '**Installer carve-out.** continue\n');
+    assert.throws(run, fails("INSTALLER ANCHOR  claude/skills/ft-adopt/SKILL.md lacks 'Installer exception'"));
+  });
+
+  it('fails ANCHOR UNREAD when install.sh no longer has a parsed function', () => {
+    put('install.sh', readFileSync(join(REPO, 'install.sh'), 'utf8').replace('\nwire_project() {\n', '\nwire_all() {\n'));
+    assert.throws(run, fails('ANCHOR UNREAD  install.sh has no wire_project()'));
   });
 });
 

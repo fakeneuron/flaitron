@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 // update-adopters — batch-bump flaitron adopter pins to the latest release.
 //
-// The singular script exception to SPEC.md §"What flaitron does NOT provide"
-// (see the carve-out there): operator-side fleet maintenance across ~/code,
-// not workflow machinery inside a project. It batches the /ft-update recipe:
-// for every adopter pinned behind the latest released tag, move the
-// .flaitron/core submodule pin, carry the follow-through (below) and commit —
-// locally only, never pushing.
+// One of the two CLI carve-outs (with install.sh) to SPEC.md §"What flaitron
+// does NOT provide" (SPEC/scope-boundaries.md): operator-side fleet
+// maintenance across ~/code, not workflow machinery inside a project. It
+// batches the /ft-update recipe: for every adopter pinned behind the latest
+// released tag, move the .flaitron/core submodule pin, carry the
+// follow-through (below) and commit — locally only, never pushing.
 //
 // Usage:
 //   node tools/update-adopters.mjs            # dry-run: report what would happen

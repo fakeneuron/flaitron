@@ -22,7 +22,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 - [ ] **CORE-EPIC-869** [heavy]🧠 | carrying-cost — Cut what the archive and the at-cap budgets cost per edit: batch the per-file drift loops, report near-cap surfaces, refresh two stale figures, restore budget headroom. Discovery supplied by audit-repo 2026-11-06. Surfaced by audit-repo 2026-11-06 (Theme: context budgets run at the cap; Theme: the archive's cost scales with success).
   - [x] **CORE-869.2** [moderate]🧩 [unattended] | drift-check-batching — Completed 2026-11-06.
   - [ ] **CORE-869.3** [light]🔧 [unattended] | budget-near-cap-report — Completed 2026-11-06.
-  - [ ] **CORE-869.4** [light]🔧 [unattended] | stale-size-figures — Re-measure the structure pass-4 figures in `.flaitron/audit-overlay/SKILL.md` (`tools/update-adopters.mjs` 872 → 1,653 lines, `tools/drift-checks.sh` 811 → 884, median and p90) and reword `tools/update-adopters.mjs` line 4 to match the two CLI carve-outs in `SPEC/scope-boundaries.md`.
+  - [x] **CORE-869.4** [light]🔧 [unattended] | stale-size-figures — Completed 2026-11-06.
   - [x] **CORE-869.5** [heavy]🧠 | near-cap-trims — Completed 2026-11-06.
   - [ ] **CORE-869.N** [heavy]🧠 | carrying-cost audit
 

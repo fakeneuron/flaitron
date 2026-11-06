@@ -467,7 +467,9 @@ Two layers, both reading this table rather than restating it, and one
 shell: the `context_budget` function in `tools/drift-checks.sh`, a
 `wc -c`-and-compare against the Budgets table above. The `drift` CI job runs
 it on every push to `main` and every pull request, catching a regression on
-the commit that lands it. The standing check in
+the commit that lands it. A surface at or above 95% of its row, and not over
+it, also prints a non-failing `NEAR CAP` line, so headroom erodes in view
+before it fails ([[CORE-869.3]]). The standing check in
 [`claude/skills/ft-release/step-7.1-standing-checks.md`](../claude/skills/ft-release/step-7.1-standing-checks.md)
 runs the same function at every release cut, then additionally
 applies the §"Known over budget" judgment above (which needs

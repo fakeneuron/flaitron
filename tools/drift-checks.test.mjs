@@ -321,6 +321,49 @@ describe('pair_p across notes', () => {
   });
 });
 
+// context_budget's NEAR CAP line (CORE-869.3): 95% up to the cap, in all three
+// row shapes (exact, glob, `/**` total), never failing the check. The fixture
+// holds only the Budgets table and the surfaces it names.
+describe('context_budget near-cap report', () => {
+  let fixture;
+  const put = (rel, size) => {
+    mkdirSync(dirname(join(fixture, rel)), { recursive: true });
+    writeFileSync(join(fixture, rel), 'x'.repeat(size));
+  };
+  const rows = ['| `exact.md` | 100 |', '| `g/*.md` | 100 |', '| `d/**` | 100 |'];
+  const run = () => execFileSync('bash', [SCRIPT, 'context_budget'], { cwd: fixture, encoding: 'utf8', stdio: 'pipe' });
+  beforeEach(() => {
+    fixture = mkdtempSync(join(tmpdir(), 'context-budget-'));
+    mkdirSync(join(fixture, 'tools'));
+    writeFileSync(join(fixture, SCRIPT), readFileSync(join(REPO, SCRIPT), 'utf8'));
+    mkdirSync(join(fixture, 'docs'));
+    writeFileSync(join(fixture, 'docs/CONTEXT-BUDGET.md'), `## Budgets\n\n| Surface | Budget |\n|---|---|\n${rows.join('\n')}\n\n## Known over budget\n`);
+  });
+  afterEach(() => { if (fixture) rmSync(fixture, { recursive: true, force: true }); });
+
+  it('prints NEAR CAP from 95% to the cap and exits 0, in every row shape', () => {
+    put('exact.md', 95); // exactly 95%
+    put('g/hit.md', 100); // at the cap, not over it
+    put('g/clear.md', 94); // below 95%
+    put('d/a', 60);
+    put('d/b', 36); // directory total 96
+    assert.equal(run(), [
+      'NEAR CAP  exact.md  95 of 100 (95%)',
+      'NEAR CAP  g/hit.md  100 of 100 (100%)',
+      'NEAR CAP  d/**  96 of 100 (96%)',
+      'context_budget ok',
+      '',
+    ].join('\n'));
+  });
+
+  it('stays silent below 95% and prints OVER BUDGET, not NEAR CAP, above the cap', () => {
+    put('exact.md', 94);
+    put('g/over.md', 101);
+    put('d/a', 10);
+    assert.throws(run, (e) => e.status === 1 && /^OVER BUDGET {2}g\/over\.md +101 > 100\ncontext_budget FAILED\n$/.test(e.stdout)); // BSD wc pads the count
+  });
+});
+
 // The installer's three anchors, one at a time, against the real install.sh
 // (CORE-868.2). The fixture holds only what the check reads.
 describe('installer anchor matching', () => {

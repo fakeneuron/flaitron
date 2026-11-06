@@ -89,6 +89,8 @@ diff -u <(printf 'claude/skills/%s/SKILL.md\n' ft-close-epic ft-file-task ft-ope
 context_budget() {
 # Reads the Budgets table and restates no number. The release-time reading
 # of a finding (§"Known over budget") is in step-7.1-standing-checks.md.
+# A surface at or above 95% of its row (and not over it) prints a `NEAR CAP`
+# line: informational, never sets `bad`, so the check still exits 0 (CORE-869.3).
 bad=
 # $exact is the set of non-glob rows, excluded from a glob row's expansion
 # so the most specific row wins. Collapse newlines: $(...) keeps them, and
@@ -116,7 +118,8 @@ while IFS='|' read -r surface budget; do
       [ -d "${surface%/\*\*}" ] || { echo "MISSING DIR  $surface"; bad=1; continue; }
       sz=$(find "${surface%/\*\*}" -type f -exec cat {} + | wc -c)
       n=$((n+1))
-      [ "$sz" -le "$budget" ] || { echo "OVER BUDGET  $surface  $sz > $budget"; bad=1; }
+      if [ "$sz" -gt "$budget" ]; then echo "OVER BUDGET  $surface  $sz > $budget"; bad=1
+      elif [ $((sz * 100)) -ge $((budget * 95)) ]; then echo "NEAR CAP  $surface  $((sz)) of $budget ($((sz * 100 / budget))%)"; fi
       ;;
     # Globs stay globs, an allowed exception to step-7.1-standing-checks.md
     # §"Glob-free by design": a newly shipped skill or SPEC/ module is
@@ -129,13 +132,15 @@ while IFS='|' read -r surface budget; do
         case " $exact " in *" $f "*) continue ;; esac
         sz=$(wc -c < "$f")
         n=$((n+1))
-        [ "$sz" -le "$budget" ] || { echo "OVER BUDGET  $f  $sz > $budget"; bad=1; }
+        if [ "$sz" -gt "$budget" ]; then echo "OVER BUDGET  $f  $sz > $budget"; bad=1
+        elif [ $((sz * 100)) -ge $((budget * 95)) ]; then echo "NEAR CAP  $f  $((sz)) of $budget ($((sz * 100 / budget))%)"; fi
       done
       ;;
     *)
       sz=$(wc -c < "$surface")
       n=$((n+1))
-      [ "$sz" -le "$budget" ] || { echo "OVER BUDGET  $surface  $sz > $budget"; bad=1; }
+      if [ "$sz" -gt "$budget" ]; then echo "OVER BUDGET  $surface  $sz > $budget"; bad=1
+      elif [ $((sz * 100)) -ge $((budget * 95)) ]; then echo "NEAR CAP  $surface  $((sz)) of $budget ($((sz * 100 / budget))%)"; fi
       ;;
   esac
 done < <(awk '/^## Budgets$/,/^## Known over budget/' docs/CONTEXT-BUDGET.md \

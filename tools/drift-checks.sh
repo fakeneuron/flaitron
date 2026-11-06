@@ -763,7 +763,7 @@ done < <(git ls-files '*.md' | grep -v -e '^\.flaitron/tasknote/archive/' -e '^\
 [ -z "$bad" ] || exit 1
 }
 
-# Pair R — checked PLAN stub rows carry a shortname pipe
+# Pair R — PLAN stub rows are checked and carry a shortname pipe
 pair_r() {
 # SPEC/plan-filing.md §"`## Completed` archive convention": the
 # Phase 4 stub rewrite requires `| shortname` — "so visualizers have
@@ -779,6 +779,12 @@ pair_r() {
 # `| ` pipe somewhere before it. The inline-audit-fix exception
 # (§"Exception — inline audit fixes") ends in "fixed inline."
 # instead, so it never matches the tail and needs no carve-out.
+# CORE-873: the same tail on a row still `- [ ]` is the opposite
+# half-write. CORE-869.3's closure left `- [ ] **CORE-869.3** … Completed
+# 2026-11-06.`, every gate passed, and only a hand read caught it. A
+# stub tail is only ever written by closure, so an open box beside it is
+# drift. Examined rows are the checked ones (the floor below); the
+# unchecked pass only reports.
 bad=
 n=0
 for f in .flaitron/PLAN.md .flaitron/PLAN-ARCHIVE.md; do
@@ -789,6 +795,10 @@ for f in .flaitron/PLAN.md .flaitron/PLAN-ARCHIVE.md; do
     echo "NO SHORTNAME  $f :: $line"
     bad=1
   done < <(grep -E '^[[:space:]]*- \[[xX]\] \*\*[^*]+\*\*.*Completed [0-9]{4}-[0-9]{2}-[0-9]{2}\.$' "$f")
+  while IFS= read -r line; do
+    echo "UNCHECKED STUB  $f :: $line"
+    bad=1
+  done < <(grep -E '^[[:space:]]*- \[ \] \*\*[^*]+\*\*.*Completed [0-9]{4}-[0-9]{2}-[0-9]{2}\.$' "$f")
 done
 [ "$n" -gt 0 ] || { echo "VACUOUS pair_r  no checked stub row examined"; exit 1; }
 [ -z "$bad" ] || exit 1

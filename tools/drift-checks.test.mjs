@@ -147,8 +147,16 @@ const CASES = {
     ],
   },
   pair_r: {
-    seed: () => edit('.flaitron/PLAN-ARCHIVE.md', (s) => `${s}- [x] **ZZ-1** Completed 2026-01-01.\n`),
-    finding: /^NO SHORTNAME {2}\.flaitron\/PLAN-ARCHIVE\.md :: - \[x\] \*\*ZZ-1\*\* Completed 2026-01-01\.$/m,
+    // Both halves: a checked stub row with no shortname pipe, and an unchecked,
+    // pipe-less one (nested, as epic children are) that still carries the stub tail (CORE-873).
+    seed: () => {
+      edit('.flaitron/PLAN-ARCHIVE.md', (s) => `${s}- [x] **ZZ-1** Completed 2026-01-01.\n`);
+      edit('.flaitron/PLAN.md', (s) => `${s}\n  - [ ] **ZZ-2.1** Completed 2026-01-01.\n`);
+    },
+    finding: [
+      /^NO SHORTNAME {2}\.flaitron\/PLAN-ARCHIVE\.md :: - \[x\] \*\*ZZ-1\*\* Completed 2026-01-01\.$/m,
+      /^UNCHECKED STUB {2}\.flaitron\/PLAN\.md ::\s+- \[ \] \*\*ZZ-2\.1\*\* Completed 2026-01-01\.$/m,
+    ],
   },
   pair_s: {
     // The flags bullet is hard-wrapped in AGENTS.md and one line in the

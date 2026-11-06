@@ -146,7 +146,7 @@ this table, never a free-form value:
 | `input-needed` | A question autonomous execution cannot answer — a queued bundled in-📦 prompt, or `/ft-close-epic`'s Phase 1→2 clarification ask |
 | `visual-confirm` | A Phase 3 👁️ `CONFIRM` visual ask — the check an operator-less run has nobody to hand to |
 | `dependency` | A hard dependency surfaced mid-Phase-2 |
-| `out-of-scope` | The `--unattended` scope guardrail — the run's diff left its scope (the note's `touches:`, or a promoted starter's as logged) or passed the 400-line cap |
+| `out-of-scope` | The `--unattended` scope guardrail — the run's diff left its scope (the note's `touches:`, or a promoted starter's as logged) or passed the 400-line cap, or Phase 1 estimated it would (no work held) |
 | `interrupted` | The run ended without reaching closure *or* a gate — killed, out of context, session lost |
 
 The first six are the gate conversions in [`SPEC/gate-postures.md`](gate-postures.md)

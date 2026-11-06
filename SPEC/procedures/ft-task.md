@@ -236,17 +236,17 @@ reason; the motions this SOP adds:
   [`SPEC/blocked.md` §"Phase 1 entry"](../blocked.md). The exit gate below
   routes either non-`Proceed` verdict, per mode.
 - **Read** the relevant source files — a broad or unknown read set → consider
-  a **probe** ([`templates/subagent-probe-template.md`](../../templates/subagent-probe-template.md))
-  and keep only its distilled return. No sub-agent primitive on your
+  a **probe** ([`templates/subagent-probe-template.md`](../../templates/subagent-probe-template.md)).
+  No sub-agent primitive on your
   platform: [`docs/PLATFORMS.md`](../../docs/PLATFORMS.md) §"Non-Claude capability triggers".
 - **Best Practices Review** — for code or module-boundary work; otherwise
   `N/A` with reason.
 - **Archive skim** — `ls .flaitron/tasknote/archive/<area>/`, `grep -l` it for
   each in-scope path (YAML `touches:` first), and open the IDs that
   `## 🔗 Related`, `supersedes:`, and ⚠️ `Superseded by` pointers on the hits
-  name. Over ~3 hits → hand the reading to a **probe**. An empty or absent
+  name; over ~3 hits, a **probe**. An empty or absent
   folder → re-check `<area>` against the README table before logging "no prior
-  tasknotes". Log load-bearing findings before re-interpreting the task.
+  tasknotes".
 - **Drift check** — cited facts against the code, **and** your plan against
   its `PLAN.md` line and the SPEC contracts it touches (read them, don't
   recall them); surface drift before acting.
@@ -280,7 +280,8 @@ halts instead
 ([`SPEC/gate-postures.md` §"`--fast` operator override"](../gate-postures.md)).
 Under unattended mode the verdict parks `drift` and stops **without** making its
 PLAN.md edit or deleting the tasknote — both wait for the resuming operator
-([`SPEC/blocked.md`](../blocked.md)).
+([`SPEC/blocked.md`](../blocked.md)); a `Proceed` first takes the size estimate
+(`claude/skills/ft-task/unattended-mode.md` §"Scope guardrails").
 
 ### 5 — Phases 2-4
 

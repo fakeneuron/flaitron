@@ -16,7 +16,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [ ] **CORE-868.3** [moderate]🧩 | release-installs-new-tag — Have `/ft-release` prove the advertised installer URL after the tag is pushed: run `sh tools/install.test.sh install.sh` at the new tag and record the result. Add `workflow_dispatch` and the anchor files' paths to `install-test.yml`'s filter.
   - [ ] **CORE-868.4** [light]🔧 | dependabot-minimatch-alert — Close Dependabot alert #6 (minimatch < 11.0.1, GHSA-g3hv-75wg-m249, reached only through eslint in `viz` devDependencies; three failed `Dependabot Updates` runs since 2026-11-01). Take an eslint release that lifts the range, or an `overrides` pin if `npm --prefix viz run lint` stays green, else dismiss as dev-only with that reason. Record which.
   - [ ] **CORE-868.N** [heavy]🧠 | gate-blind-spots audit
-- [ ] **CORE-872** [heavy]🧠 | size-cap-renames — Make the `--unattended` size cap rename-aware: size counts a rename by its content delta via one named git invocation (paths keep `--no-renames`), and Phase 1 estimates size with the same rule so over-cap rows park at Discovery, not closure. Evidence: marscharts FE-540/FE-541. Filed with starter at `.flaitron/tasknote/CORE-872.md`.
 
 ## Medium
 
@@ -40,6 +39,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-872** [heavy]🧠 | size-cap-renames — Completed 2026-11-06.
 - [x] **CORE-867** [moderate] | doc-sweep-touches-scope — Completed 2026-11-06.
 - [x] **CORE-863** [moderate]🧩 | brand-casing-guard — Completed 2026-11-05.
 - [x] **CORE-861** [heavy]🧠 | brand-casing-policy — Completed 2026-11-05.

@@ -58,7 +58,7 @@ closed set in [`SPEC/blocked.md`](blocked.md) §"Park reason".
 | 📦 privileged-ops signal trip | Fires | Skips; the suppressed signal is named in the marker | Inherited — skips |
 | 📦 bundled in-📦 prompt | Fires | **Fires** | Parks `input-needed` |
 | 👁️ `CONFIRM` (Phase 3) | Emphasized inline ask | Suppressed — the present operator owns the check | Parks `visual-confirm`, unless a confirmed deciding spec decides it (§"Scope guardrails") |
-| Diff outside `touches:` or over 400 lines | Not checked | Not checked | Parks `out-of-scope` |
+| Diff outside `touches:`, or diff or Phase 1 estimate over 400 lines | Not checked | Not checked | Parks `out-of-scope` |
 | 🗄️/▶️/📡/💻 destructive escalation | Escalates to a banner | **Escalates** | Parks `destructive` |
 | ✋ `ACTION`, prerequisite | Inline cue; does not block the assistant | Inline cue | Parks `prerequisite` |
 | ✋ `ACTION`, advisory | Inline cue | Inline cue | Recorded; the run continues |
@@ -197,7 +197,8 @@ probably advisory" is the doubt the bias exists to refuse.
 Two mechanical checks confine an operator-less run to its note's declared
 scope, over its own diff (working tree plus this task's own commits). Both run
 before every Phase 3 entry, re-entry after a review blocker included, and once
-more after Phase 4's doc-drift sweep, before the first closure flip:
+more after Phase 4's doc-drift sweep, before the first closure flip; Phase 1's
+exit also estimates Size and parks over the cap:
 
 - **Paths.** Every changed path matches the scope (the starter's `touches:`
   as logged at promotion, else the note's) or is a workflow path — the two
@@ -205,7 +206,7 @@ more after Phase 4's doc-drift sweep, before the first closure flip:
   promoted stub's deletion. With no scope, only those.
 - **Size.** Lines added plus deleted stay at or under 400, not counting
   lockfiles, files `.gitattributes` marks `linguist-generated`, or
-  `.flaitron/`.
+  `.flaitron/`; a rename counts its content delta.
 
 Either miss parks `out-of-scope`, naming the stray paths or the count. Never
 revert work or edit `touches:` to pass it: `touches:` is fixed at Phase 1 exit,
@@ -312,10 +313,9 @@ failure the diff caused returns the run to Phase 2; one the run cannot make
 green parks `input-needed` rather than closing over it — whether a red the
 diff did not cause may be closed over is exactly a question autonomous
 execution cannot answer, and the ✋ bias above (park on doubt) applies. A
-repo that declares no validation set records `N/A` with that reason. The
-motivating case is an orchestrator's green-targeted / red-full closes: the targeted
-run was green, the full suite was red, and the judgment that would have run
-it had no one to make it. `--fast` and the `[unattended]` row marker keep the
+repo that declares no validation set records `N/A` with that reason
+(motivating case: an orchestrator's green-targeted, red-full closes).
+`--fast` and the `[unattended]` row marker keep the
 attended default — an operator reviews those commits.
 
 **Nor does it relax Phase 3's External review.** A context that did not write

@@ -107,6 +107,8 @@ Skill-specific imperatives on top of the SPEC contract:
   - **Skip branch (default)** — emit the inline marker `✅ Phase 1 Discovery complete; entering Phase 2 Execution.` and start Step 5 Phase 2 immediately. Plain prose, not a banner; not a new gate.
   - **Fire branch** — surface the **🛠️ Phase 1→2 operator-gate cue** with the mandatory 1-2 sentence plain-English preview line (per SPEC/gates.md §"Operator-gate cues") and wait for the user's go (conversational assent — SPEC/cue-vocabulary.md §"Accepted gate replies") before starting Step 5 Phase 2.
 
+  - **Under `unattended-mode = true`**, on a `Proceed` verdict run `<SKILL_DIR>/unattended-mode.md` §"Scope guardrails" → "The Phase 1 size estimate" before either branch; over the cap it parks `out-of-scope`.
+
   - **Re-scope under `fast-mode = true`** (not under `--unattended` — Step 0) — not a fire. Make the verdict's PLAN.md line + tasknote-header rewrite exactly as attended, emit `⚠️ Re-scope (--fast) — <what changed in the plan>; proceeding.` on its own line, then take the Skip branch's marker. **On a blocked prerequisite**, park `drift` instead (`<SPEC_DIR>/blocked.md` §"Under `--fast`, park and say so"): the notice names the park in place of `proceeding`, and the run halts — the operator overrules inline. De-scope still fires.
 
   Record the judgment inline at the exit ("Discovery surfaced no significant deviation → skip 🛠️." or "Discovery surfaced <one-line reason> → fire 🛠️." or "Discovery landed Re-scope → ⚠️ notice (--fast).") so the operator can spot misjudgments in the transcript.

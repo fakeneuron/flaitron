@@ -103,7 +103,7 @@ Placement:
 
 Write `<M+1>` as the number (`.2..4` for M=3) — a resume reads M from it. Do NOT pre-write `.2..(M+1)` lines here — that is the Discovery's Phase 2 deliverable.
 
-The parent epic's long description is a placeholder that the Discovery `.1` will refine at closure time (the epic's actual scope crystallizes from Discovery, not from filing-time guesswork). Keep it under the 70w hard cap (SPEC/tasknote-selection.md §"PLAN.md filing-discipline thresholds").
+The parent epic's long description is a placeholder that the Discovery `.1` will refine at closure time (the epic's actual scope crystallizes from Discovery, not from filing-time guesswork; the visualizer parses both states identically). Keep it under the 70w hard cap (SPEC/tasknote-selection.md §"PLAN.md filing-discipline thresholds").
 
 **Commit the filing** (when `auto-commit = true`), before Step 5 scaffolds `.1` — the Step 3 confirmation is the commit authorization:
 
@@ -262,5 +262,5 @@ Walk the closure steps in order under SPEC §"Paper-complete guard". **No banner
 
 - **One-motion contract.** This skill files the parent + `.1` + `.N` PLAN lines AND drives the `.1` Discovery tasknote through closure in a single invocation. The one seam is Step 4.5: a `.1` tagged above the active model can stop after the filing commit, and `/ft-open-epic <AREA>-<N>.1` resumes on the right model.
 - **M can shift during Discovery.** Step 7 then files a different number of numeric children; `.N` never renumbers.
-- **Auto-wired into adopters** via `claude/skills/ft-adopt/SKILL.md` Step 3 + `docs/MIGRATION.md` §1.2 + `claude/AGENTS-snippet.md`'s "One-time symlink wiring" section.
+- **Auto-wired into adopters** via `claude/skills/ft-adopt/SKILL.md` Step 3 + `docs/MIGRATION.md` §1.2 + `claude/AGENTS-snippet.md`'s "One-time symlink wiring" section; existing adopters pick it up on their next flaitron bump.
 - **Siblings.** `/ft-close-epic` closes what this opens (drives the audit `.N`, whose closure flips the parent). `/ft-task <ID>` runs an existing PLAN.md entry. `/ft-file-task [ID] --starter` files a single-task starter, and also parks a fully formed epic brief across a `/clear` or model swap for this skill to read next session (`claude/skills/ft-file-task/starter-mode.md` §Notes "Proactive invocation on cross-session handoff").

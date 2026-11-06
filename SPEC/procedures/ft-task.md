@@ -55,8 +55,7 @@ re-verify is not a gate autonomous mode may suppress). Loop mode composes the
 same way — autonomous mode reaches only its pre-loop Phase 1 surface, since
 the loop already runs autonomously.
 Micro mode composes with autonomous mode.
-Unattended mode composes with all four — it is autonomous mode plus parking,
-never a replacement for any of them.
+Unattended mode composes with all four, never replacing any of them.
 
 **Parking.** How an unattended park writes, commits, and stops, and what it
 never does: `claude/skills/ft-task/unattended-mode.md` §"The park recipe";
@@ -153,8 +152,9 @@ you are running as, per [`SPEC/model.md`](../model.md). On a concrete
 mismatch, category under-tier, or missing tag, read
 [`claude/skills/ft-task/step-1.5-model-edge.md`](../../claude/skills/ft-task/step-1.5-model-edge.md),
 translating its asks and keeping every invocation flag in re-entry
-instructions; a concrete mismatch stops, a category under-tier only warns and proceeds. Never silently
-retag a satisfied category. **Under unattended
+instructions: a concrete mismatch stops, a missing tag asks before scaffold,
+a category under-tier only warns and proceeds. Never silently retag a
+satisfied category. **Under unattended
 mode** a concrete mismatch parks `model-mismatch` instead of asking, and you
 never retag the PLAN line yourself — what it writes, and when it writes
 nothing: [`SPEC/gate-postures.md` §"Pre-scaffold stops"](../gate-postures.md).
@@ -173,7 +173,7 @@ below routes it. Any other dirt: emit
 do not auto-clean ([`SPEC.md` §"Paper-complete guard"](../../SPEC.md)).
 **Unattended mode neither relaxes nor parks this**: it emits its `⏸` stop
 line and writes nothing, as on the archived / in-flight collisions below and
-the `.N` open-sibling stop —
+the `.N` open-sibling or missing/closed-parent stop —
 `claude/skills/ft-task/unattended-mode.md` §"Pre-scaffold stops".
 
 Check `.flaitron/tasknote/<TASK-ID>.md` and branch on its existence / YAML
@@ -277,8 +277,7 @@ PLAN.md edit or deleting the tasknote — both wait for the resuming operator
 ### 5 — Phases 2-4
 
 After the Phase 1→2 gate clears, Phase 2 → Phase 3 → Phase 4 closure ops flow
-**continuously with no intermediate gate** — the next gate is 📦 at commit
-time (Step 6).
+**continuously with no intermediate gate** until 📦 (Step 6).
 
 - **Phase 2: Execution** — [`SPEC.md` §"🛠️ Phase 2"](../../SPEC.md): pattern
   survey, the minimal solution, a refactor only under its Minimal refactor

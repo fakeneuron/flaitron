@@ -3,9 +3,9 @@
 > Lazy-loaded SPEC module. Loaded by `/ft-task` at its Step 0 flag parse when `--fast` or `--unattended` is set, at its Step 1 when the PLAN.md row's `[unattended]` marker implies `--fast`, and by `/ft-close-epic` at its Step 0 under `--unattended`; consulted by any surface reasoning about what a flag suppresses, converts, or never reaches. A flagless run on an unmarked row never loads it. See [`SPEC/gates.md`](gates.md) for the gate machinery these postures cross-cut and `SPEC.md` for the always-loaded core spec.
 
 `--fast` (an operator present but not wanting to be asked) and `--unattended`
-(no operator present) cross-cut every gate. Each gate section in `gates.md`
-states its own rule and points here for the flag interaction; nothing here
-restates a gate. The executable interpretation for
+(no operator present) cross-cut every gate; the ladder and matrix below
+settle every flag interaction in one place. Each gate section in `gates.md`
+states its own rule and points here; nothing here restates a gate. The executable interpretation for
 the operator-less posture is `claude/skills/ft-task/unattended-mode.md`; the
 `park-reason:` codes it writes are canonical in [`SPEC/blocked.md`](blocked.md)
 §"Park reason".
@@ -111,7 +111,7 @@ prerequisite it parks `drift` instead, names the park in the notice in place
 of `proceeding`, and halts; the operator overrules inline
 ([`SPEC/blocked.md`](blocked.md) §"Under `--fast`, park and say so").
 
-`--fast` applies to `/ft-task` (`--loop` and `--micro` included); the epic
+`--fast` applies to `/ft-task` (every flag set, `--debug`, `--loop` and `--micro` included); the epic
 skills do not accept it. `/ft-refactor`'s own `--fast` only skips its plan
 review pause and never touches the 👁️/📦/🛠️ surface above.
 
@@ -293,7 +293,8 @@ not reach (`just --show check`, followed through its dependencies), else
 the validation commands its `AGENTS.md` or `CLAUDE.md` names, else the
 steps its CI workflow runs — and the receipt records each command. `check`
 reaches a recipe only by naming it as a dependency, at any depth, or as
-`just <name>` in a body — a similar raw command does not count.
+`just <name>` in a body — a similar raw command does not count — and with
+no `check` every one of the three the justfile defines runs.
 A red result is Phase 2 evidence, not a closure question: a
 failure the diff caused returns the run to Phase 2; one the run cannot make
 green parks `input-needed` rather than closing over it — whether a red the

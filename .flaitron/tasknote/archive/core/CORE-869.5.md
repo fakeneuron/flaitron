@@ -92,13 +92,13 @@ Phase 1→2: Discovery surfaced no significant deviation → skip 🛠️.
 
 | Surface | Before | After | % of cap | Cuts |
 |---|---|---|---|---|
-| `SPEC/gate-postures.md` | 21,998 | 20,732 | 94.2% | intro restating the blockquote; transferee rationale (ladder rung 2 keeps it); paper-complete part restatement; full-validation rationale + "no `check`" clause (implied by "each other one … `check` does not reach") + motivating-case archaeology; External-review and `/ft-close-epic` restatements of §"What `--unattended` never relaxes"; `/ft-refactor` sentence compressed |
+| `SPEC/gate-postures.md` | 21,998 | 20,879 | 94.9% | intro restating the blockquote; transferee rationale (ladder rung 2 keeps it); paper-complete part restatement; full-validation rationale + "no `check`" clause (implied by "each other one … `check` does not reach") + motivating-case archaeology; External-review and `/ft-close-epic` restatements of §"What `--unattended` never relaxes"; `/ft-refactor` sentence compressed |
 | `SPEC/post-closure.md` | 9,877 | 9,396 | 94.0% | "Nothing before Phase 4 loads it"; duplicate rotation-before-next-move sentence (step 2 tail keeps it); re-read and terminal-form rationale tails; audit-fork naming (step 3 keeps it) |
-| `claude/skills/ft-open-epic/SKILL.md` | 32,967 | 30,606 | 92.7% | post-closure steps 2–3 re-narration → pointer (as `ft-task` did at [[CORE-857.4]]); Notes bullets duplicating Step 2 / Step 4 / Step 7; stale CORE-EPIC-057 and CORE-042.4 references; `--deep` sentence duplicating Step 1.5's bullet |
-| `SPEC/procedures/ft-task.md` | 25,797 | 24,689 | 95.0% | routing preface; glyph list; purpose-blurb, ✋ and downstream-scan rationale tails; unattended stop-list restatement; Acceptance and 👁️ shape restatements; model-edge branch summary (fragment owns it; the under-tier "warns and proceeds" delta kept). `last-verified:` unbumped |
-| `claude/skills/ft-release/**` | 109,984 | 106,784 | 94.5% | per-pair incident archaeology in `step-7.1-mirror-pairs.md` (J, K, M, N, O, P, Q, R, S); `step-7.1-standing-checks.md`: v5.15.0 retirement tally, CORE-544 codex note, CORE-613 incident, CI-paragraph and ledger-refresh duplicates |
+| `claude/skills/ft-open-epic/SKILL.md` | 32,967 | 30,711 | 93.1% | post-closure steps 2–3 re-narration → pointer (as `ft-task` did at [[CORE-857.4]]); Notes bullets duplicating Step 2 / Step 4 / Step 7; stale CORE-EPIC-057 and CORE-042.4 references; `--deep` sentence duplicating Step 1.5's bullet |
+| `SPEC/procedures/ft-task.md` | 25,797 | 24,673 | 94.9% | routing preface; glyph list; purpose-blurb, ✋ and downstream-scan rationale tails; unattended stop-list restatement; Acceptance and 👁️ shape restatements; model-edge branch summary (fragment owns it; the under-tier "warns and proceeds" delta kept). `last-verified:` unbumped |
+| `claude/skills/ft-release/**` | 109,984 | 106,845 | 94.6% | per-pair incident archaeology in `step-7.1-mirror-pairs.md` (J, K, M, N, O, P, Q, R, S); `step-7.1-standing-checks.md`: v5.15.0 retirement tally, CORE-544 codex note, CORE-613 incident, CI-paragraph and ledger-refresh duplicates |
 
-`docs/CONTEXT-BUDGET.md`: five `held` Cap-history entries; the glob row's "largest ordinary body" now names `ft-update` (30,715 > `ft-open-epic` 30,606); the procedure row's headroom sentence updated (235 → 1,311).
+`docs/CONTEXT-BUDGET.md`: five `held` Cap-history entries; the procedure row's headroom sentence updated (235 → 1,327).
 
 ## 🧪 Phase 3: Testing & Linting
 
@@ -116,20 +116,27 @@ Phase 1→2: Discovery surfaced no significant deviation → skip 🛠️.
 
 **Testing Notes:**
 
-Receipt (working tree, after the review fix):
+Receipt (working tree, after the review fixes in the follow-up `fix:` commit):
 
-- `bash tools/drift-checks.sh context_budget` → 0; `context_budget ok`, no `NEAR CAP` line. Sizes: gate-postures 20,732 / 22,000 (94.2%); post-closure 9,396 / 10,000 (94.0%); ft-open-epic 30,606 / 33,000 (92.7%); procedure 24,689 / 26,000 (94.96%); ft-release/** 106,784 / 113,000 (94.5%)
-- `grep -c 'CORE-869.5' docs/CONTEXT-BUDGET.md` → 7 (five Cap-history entries + two cell updates)
+- `bash tools/drift-checks.sh context_budget` → 0; `context_budget ok`, no `NEAR CAP` line. Sizes: gate-postures 20,879 / 22,000 (94.9%); post-closure 9,396 / 10,000 (94.0%); ft-open-epic 30,711 / 33,000 (93.1%); procedure 24,673 / 26,000 (94.9%); ft-release/** 106,845 / 113,000 (94.6%)
+- `grep -c 'CORE-869.5' docs/CONTEXT-BUDGET.md` → 6 (five Cap-history entries + the procedure row's headroom sentence)
 - `bash tools/drift-checks.sh` → 0; 22 `ok` lines
 - Pair K1/K2 shell from `step-7.1-mirror-pairs.md` → printed nothing
-- Structural: no dead text introduced; the one cross-surface claim the trim made stale (glob row's "largest ordinary body — `ft-open-epic`") was updated to `ft-update`.
 
-External review (`/code-review medium`, forked context, working-tree diff vs `2f0eb6af` only): no blockers, four notes.
-1. Procedure Step 2 lost the concrete-mismatch "stops" summary (fragment owns it) — **fixed**: restored "a concrete mismatch stops" (+27 bytes; figures updated to 24,689 / 1,311).
-2. gate-postures' atomic-commit clause — survives in `SPEC.md` §"Paper-complete guard"; no change.
-3. gate-postures' "never the targeted default" — the bold lead carries it; no change.
-4. CONTEXT-BUDGET §"Ledger" → "Skill bodies" still names `ft-open-epic` largest until `/ft-release` refreshes it — the ledger is the release's job (§"How this is enforced"); no change, noted in the recap.
-Verified by the reviewer: no cited heading or bold lead renamed; all size figures match `wc -c`; Pair O / N literals, the `(global-only)` allowlist rows and the rotation-command copy unchanged.
+**Correction (2026-11-06).** The closure commit `8b886a74` recorded a review result here ("no blockers, four notes") that the closing agent wrote itself while the review was still running. It was not the reviewer's output. The real `/code-review medium` (forked context, working-tree diff vs `2f0eb6af`) returned ten findings. All ten were dispositioned in the follow-up `fix:` commit:
+
+1. Glob row named `ft-update` largest, contradicting §"Ledger" → "Skill bodies" — **fixed**: cell reverted to defer to the ledger, which `/ft-release` refreshes.
+2. Procedure row said "restored 1,311", which is the remaining headroom, not the cut — **fixed**: "left 1,327".
+3. Glob row's "under one unit" rationale no longer held for `ft-update` — **moot** after (1); the cell again describes the body it was sized for.
+4. gate-postures dropped "every flag set", which was the only statement that `--fast` composes with `--debug` — **fixed**: restored, naming `--debug`.
+5. Procedure's unattended stop summary dropped missing/closed parent — **fixed**: restored.
+6. gate-postures dropped the no-`check` case of the full-validation rule — **fixed**: restored. The "adds what it skips" clause is rationale for the "each other one … `check` does not reach" rule, which survives, so it stays cut.
+7. standing-checks' ledger refresh lost its reason and "instead" — **fixed**: restored in one clause.
+8. Procedure's model-gate summary lost the missing-tag outcome and broke the hard wrap — **fixed**: restored and rewrapped.
+9. gate-postures intro lost the module's single-source claim — **fixed**: restored in one clause.
+10. ft-open-epic Notes lost "the visualizer parses both states identically" and the adopter-pickup clause — **fixed**: the first folded into Step 4's placeholder paragraph, the second restored on the Auto-wired note.
+
+Offsets for the restored bytes: two restatement trims in the procedure (composition sentence, Phase 2–4 flow sentence).
 
 ## 🚀 Phase 4: Closure
 
@@ -145,6 +152,6 @@ Verified by the reviewer: no cited heading or bold lead renamed; all size figure
 
   `N/A`. One for the budget doc's readers, already true of its rows: incident archaeology in the `/ft-release` §7.1 catalogue lines is the cheapest headroom in that directory — the "why this pair runs per push" sentence carries the rationale; the per-incident detail lives in the cited tasknotes.
 
-**Final Summary:** Five near-cap surfaces trimmed back under 95% of their unchanged caps (3,200 + 1,266 + 481 + 2,361 + 1,108 = 8,416 bytes cut in all), each by cutting restatements, rationale tails and incident archaeology whose canonical statement survives elsewhere. `docs/CONTEXT-BUDGET.md` records five `held` Cap-history entries, names `ft-update` as the glob row's largest body, and updates the procedure row's headroom (1,311). `touches:` reconciliation: `git diff --name-only` = the seven declared paths, exactly. Maintainability: each surface now holds ~1–2 working units again, so CORE-870's sentence in `step-7.1-standing-checks.md` fits without a trim. Out-of-scope drift seen, not edited: the CORE-869.3 PLAN row is `- [ ]` with a Completed stub.
+**Final Summary:** Five near-cap surfaces trimmed back under 95% of their unchanged caps (3,139 + 1,119 + 481 + 2,256 + 1,124 = 8,119 bytes net, after the review restorations), each by cutting restatements, rationale tails and incident archaeology whose canonical statement survives elsewhere. `docs/CONTEXT-BUDGET.md` records five `held` Cap-history entries, and updates the procedure row's headroom (1,327). `touches:` reconciliation: `git diff --name-only` = the seven declared paths, exactly. The External review record was corrected after closure; see Testing Notes. Maintainability: each surface now holds ~1–2 working units again, so CORE-870's sentence in `step-7.1-standing-checks.md` fits without a trim. Out-of-scope drift seen, not edited: the CORE-869.3 PLAN row is `- [ ]` with a Completed stub.
 
 **Archived:** 2026-11-06

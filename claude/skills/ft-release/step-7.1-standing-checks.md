@@ -167,8 +167,8 @@ bash tools/drift-checks.sh context_budget
 **Also run per push by the CI `drift` job** (`docs/CONVENTIONS.md` §"GitHub Actions CI"). CI cannot apply the §"Known over budget" judgment above, which needs `.flaitron/PLAN.md` ownership context, so a CI `OVER BUDGET` is expected while a surface is mid-flight under an open owner; the release-time interpretation above governs.
 
 **Refresh the ledger in this cut.** `docs/CONTEXT-BUDGET.md` §"Ledger" carries
-measured numbers and a `Measured YYYY-MM-DD at vX.Y.Z` stamp. Run these four
-— one per
+measured numbers and a `Measured YYYY-MM-DD at vX.Y.Z` stamp. `context_budget`
+measures only budgeted surfaces, so run these four instead — one per
 §"Ledger" subsection, in the order that section presents them:
 
 ```sh

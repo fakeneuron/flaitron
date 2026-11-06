@@ -2,12 +2,10 @@
 
 > Lazy-loaded SPEC module. Loaded by `/ft-task` at its Step 0 flag parse when `--fast` or `--unattended` is set, at its Step 1 when the PLAN.md row's `[unattended]` marker implies `--fast`, and by `/ft-close-epic` at its Step 0 under `--unattended`; consulted by any surface reasoning about what a flag suppresses, converts, or never reaches. A flagless run on an unmarked row never loads it. See [`SPEC/gates.md`](gates.md) for the gate machinery these postures cross-cut and `SPEC.md` for the always-loaded core spec.
 
-The two operator postures that cross-cut every gate live here — `--fast` (an
-operator who is present but does not want to be asked) and `--unattended` (no
-operator present at all) — with the precedence ladder and surface matrix that
-settle every `--fast` / `--unattended` / 👁️ interaction in one place. Each gate
-section in `gates.md` states its own rule and points here for the flag
-interaction; nothing here restates a gate. The executable interpretation for
+`--fast` (an operator present but not wanting to be asked) and `--unattended`
+(no operator present) cross-cut every gate. Each gate section in `gates.md`
+states its own rule and points here for the flag interaction; nothing here
+restates a gate. The executable interpretation for
 the operator-less posture is `claude/skills/ft-task/unattended-mode.md`; the
 `park-reason:` codes it writes are canonical in [`SPEC/blocked.md`](blocked.md)
 §"Park reason".
@@ -113,12 +111,9 @@ prerequisite it parks `drift` instead, names the park in the notice in place
 of `proceeding`, and halts; the operator overrules inline
 ([`SPEC/blocked.md`](blocked.md) §"Under `--fast`, park and say so").
 
-`--fast` applies to `/ft-task` (every flag set, `--loop` and `--micro`
-included) — the epic skills (`/ft-open-epic`,
-`/ft-close-epic`) do not accept it. `/ft-refactor` has its own,
-unrelated `--fast`: it only skips the operator review pause before
-filing the refactor epic and never touches the 👁️/📦/🛠️ gate surface
-described above.
+`--fast` applies to `/ft-task` (`--loop` and `--micro` included); the epic
+skills do not accept it. `/ft-refactor`'s own `--fast` only skips its plan
+review pause and never touches the 👁️/📦/🛠️ surface above.
 
 ## `--unattended` operator posture
 
@@ -147,13 +142,11 @@ operator standing there, and the review of a rewritten plan to the operator
 watching it scroll by (§"`--fast` operator override"). Neither is inherited;
 each converts to a park (`visual-confirm`, `drift`), as the matrix shows.
 
-A transfer needs a transferee. `--unattended` exists to declare there is
-none, so inheriting either delegated surface would inherit a **transfer to
-nobody**: the obligation is not deferred, it is dropped — silently, on the
-one cue [`SPEC/cue-vocabulary.md`](cue-vocabulary.md)
-§"Emphasized inline ask shape" calls the only one that *gates task
-completion*, or on a plan nobody re-read before it executed. Converting them
-costs no autonomy (a park is not a pause) and buys the caller a readable stop.
+Inheriting either would be a **transfer to nobody**: the obligation is not
+deferred but silently dropped — on the one cue
+[`SPEC/cue-vocabulary.md`](cue-vocabulary.md) §"Emphasized inline ask shape"
+says *gates task completion*, or on a plan nobody re-read. A park costs no
+autonomy and buys the caller a readable stop.
 
 Stated in one line: **`--unattended` supersets `--fast`'s autonomy, not its
 delegations.**
@@ -286,42 +279,33 @@ writing nothing. Markers and steps: `claude/skills/ft-task/unattended-mode.md`
 [`SPEC.md`](../SPEC.md) §"Paper-complete guard" holds in full — all three
 parts, with no unattended variant. The foreign-dirt gate emits `DIRTY` and
 the paths, then its machine-readable stop, and never stashes, cleans, or
-commits that dirt; deliverables, PLAN
-flip, and archive move still land in one atomic commit or not at all; and no
-operator watching is a reason to hold 🏁 harder, not to relax it — an
-unnoticed paper-complete is the failure the guard was written for.
+commits that dirt; and no operator watching is a reason to hold 🏁 harder,
+not to relax it.
 
 **Nor does it keep Phase 3's targeted default.** Attended,
-[`SPEC.md`](../SPEC.md) §"🧪 Phase 3" defaults to targeted tests on the
-changed behavior and reserves the full suite for broad or cross-cutting
-changes — guidance, because an operator reviews the commit and can
-second-guess the "is this change broad?" call. Under `--unattended` nobody
-does, so Phase 3 runs the repo's **full validation set** — when the
+[`SPEC.md`](../SPEC.md) §"🧪 Phase 3" defaults to targeted tests and reserves
+the full suite for broad changes, because an operator reviewing the commit
+can second-guess the "is this change broad?" call. Under `--unattended`
+nobody does, so Phase 3 runs the repo's **full validation set** — when the
 justfile defines any of `check` / `test` / `lint` / `typecheck`,
 `just check` if defined plus each other one it defines that `check` does
 not reach (`just --show check`, followed through its dependencies), else
 the validation commands its `AGENTS.md` or `CLAUDE.md` names, else the
-steps its CI workflow runs — never the targeted default, and the receipt
-records each command. A `check` that skips one of those three is narrower
-than the repo's own recipes, so the run adds what it skips rather than
-trusting the name. `check` reaches a recipe only by naming it as a
-dependency, at any depth, or as `just <name>` in a body — a similar raw
-command does not count — and with no `check` every one of the three the
-justfile defines runs.
+steps its CI workflow runs — and the receipt records each command. `check`
+reaches a recipe only by naming it as a dependency, at any depth, or as
+`just <name>` in a body — a similar raw command does not count.
 A red result is Phase 2 evidence, not a closure question: a
 failure the diff caused returns the run to Phase 2; one the run cannot make
 green parks `input-needed` rather than closing over it — whether a red the
-diff did not cause may be closed over is exactly a question autonomous
-execution cannot answer, and the ✋ bias above (park on doubt) applies. A
-repo that declares no validation set records `N/A` with that reason
-(motivating case: an orchestrator's green-targeted, red-full closes).
-`--fast` and the `[unattended]` row marker keep the
-attended default — an operator reviews those commits.
+diff did not cause may be closed over is a question autonomous execution
+cannot answer (park on doubt, as above). A repo that declares no validation
+set records `N/A` with that reason. `--fast` and the `[unattended]` row
+marker keep the attended default — an operator reviews those commits.
 
 **Nor does it relax Phase 3's External review.** A context that did not write
-the diff grades it against `## ✅ Acceptance` on every path, and the posture is
-the case it was written for: with nobody reading the commit, the external
-grade is the only read of the diff that is not the generator's own. A
+the diff grades it against `## ✅ Acceptance` on every path; with nobody
+reading the commit, it is the only read of the diff that is not the
+generator's own. A
 **blocker** the run can fix returns it to Phase 2; one it cannot parks
 `park-reason: input-needed — <the blocker, and the question it puts>` rather than closing over it. A
 **note** is recorded and the run continues. The reviewer never patches, so
@@ -332,7 +316,7 @@ this converts no gate and adds no row to a runner's park map — see
 
 ### `/ft-close-epic` under the posture
 
-`/ft-task` is not the whole surface. `/ft-close-epic` drives an
+`/ft-close-epic` drives an
 epic's `.N` audit through closure under the posture too, and the audit commits
 exactly as an attended run with clear signals would. Its parent flip is not a
 question, so the posture leaves it alone: the closure that leaves every child
@@ -349,8 +333,7 @@ flavor, so a clarification it cannot answer parks as `input-needed`, the same
 "question autonomous execution cannot answer" that code already names.
 
 Everything §"What `--unattended` never relaxes" lists holds here in full: the
-audit commit is a **real** commit, so the foreign-dirt gate still terminates
-write-nothing and 🏁 still requires a deliverable-covering SHA.
+audit commit is a **real** commit.
 
 **Applies to** the runner `--fast` applies to — `/ft-task` — plus
 `/ft-close-epic`, on the terms

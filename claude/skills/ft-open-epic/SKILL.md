@@ -40,7 +40,7 @@ After resolving paths, Read `<SPEC_DIR>/epic.md` for the canonical lifecycle bef
 
 Branch on `$ARGUMENTS`:
 
-- **Empty `$ARGUMENTS`** → default flow. Set internal flag `deep-mode = false` and continue to Step 2. Steps 5 and 5.5 are no-ops in this branch — flow is byte-identical to the pre-`--deep` skill.
+- **Empty `$ARGUMENTS`** → default flow. Set internal flag `deep-mode = false` and continue to Step 2.
 - **`<AREA>-<N>.1`** (a filed, unstarted epic Discovery; a trailing `--deep` also takes its bullet) → set `resume-mode = true` and **Read `<SKILL_DIR>/step-4.5-model-gate.md` now** — its §"Resume entry" replaces Steps 1–4.
 - **`--deep`** → set `deep-mode = true` and **Read `<SKILL_DIR>/step-5.5-deep-prepass.md` now** — it carries the whole of deep mode: what the flag is for, the Step 5 scaffold injection, and the three Step 5.5 stages (constitution → specify → clarify) that run before Phase 1 Discovery begins.
 - **`--unattended`** → this skill does not accept it (`SPEC/gate-postures.md` §"`--unattended` operator posture"): filing an epic means having a scoping conversation, and there is none to have with nobody present. Terminate readably and write nothing — do not fall through to the "Any other arg" branch below:
@@ -51,8 +51,6 @@ Branch on `$ARGUMENTS`:
 
 - **Any other arg** → surface a one-line usage notice ("Unknown arg `<arg>`. Usage: `/ft-open-epic [<AREA>-<N>.1] [--deep]`.") and ask via AskUserQuestion whether the user meant `--deep`, a resume, the default flow, or to abort. Do not proceed silently.
 
-`--deep` is opt-in for **high-uncertainty epics**; the fragment's §"What `--deep` is for" carries the judgment call.
-
 ## Step 2 — Collect inputs
 
 Use AskUserQuestion to gather the inputs below — all but Priority (item 3) — in one motion. Pre-populate from conversation context where possible — the AI proposes; the user confirms or overrides:
@@ -61,7 +59,7 @@ Use AskUserQuestion to gather the inputs below — all but Priority (item 3) —
 2. **Shortname** — concise label up to ~30 chars (e.g., `expand-shipped-skills`, `viz-keyboard-overhaul`). Used as the parent epic's `| shortname` segment.
 3. **Priority** — `High | Medium | Low | Future Opportunities`. **AI-decided, not asked** — leave it out of the AskUserQuestion call and file at your best read; Step 3's surface names the section, which is where the operator overrides. For urgent epics, choose `High` with a `[!critical]` flag on the parent (see `SPEC/task-line-segments.md`).
 4. **Model** — see `SPEC/model.md` §"Model field" (and its "Practical guidance and agent-aware defaults" subsection) for examples and realistic defaults (mid-tier models like Grok/Sonnet often `[moderate]`, or `[light]` for mechanical work); AI proposes a token (primary labels or specific name; `[frontier]` only on a trigger, never `[xheavy]` — the operator's manual-only rung); this is the epic's token — it goes on the parent line, `.1` and `.N` take it as `<.1-model>` / `<.N-model>` (a `[heavy]` or `[frontier]` epic files `.1` as `[frontier]` and caps `.N` at `[heavy]`; a concrete or `[xheavy]` token stays as filed — `SPEC/model.md` §"When to choose `[frontier]`"), and each implementation child's Step 7 proposal starts from it.
-5. **Implementation-child count M** — number of implementation children, *excluding* Discovery (`.1`) and the audit (`.N`). E.g., M=3 → the epic has `.1` Discovery + `.2..4` implementation + `.N` audit. The audit is always the reserved terminal `.N` suffix (per SPEC/epic.md), decoupled from the count — it never renumbers as children are added. The Discovery's deliverable is filing `.2..(M+1)` (the implementation children).
+5. **Implementation-child count M** — number of implementation children, *excluding* Discovery (`.1`) and the audit (`.N`). E.g., M=3 → the epic has `.1` Discovery + `.2..4` implementation + `.N` audit (the reserved terminal suffix, which never renumbers). The Discovery's deliverable is filing `.2..(M+1)` (the implementation children).
 
 The user may decline the audit subtask if the epic is a simple multi-child implementation that doesn't warrant the audit bracket (per `SPEC/epic.md` §"Epic lifecycle": "Simpler implementations don't need it — apply judgment"). In that case, the epic has `.1` Discovery + `.2..(M+1)` implementation and no `.N` audit; skip the audit-line filing in Step 4.
 
@@ -101,7 +99,7 @@ Placement:
 
 - If the priority section already has entries, append to the bottom of that section.
 - If the section carries a `(none)` placeholder, replace the placeholder with the new entries.
-- Preserve the 2-space child indent on the `.1` and `.N` lines (per CORE-EPIC-057 cohort in `.flaitron/PLAN.md`: `  - [ ] **CORE-057.1** ...`).
+- Preserve the 2-space child indent on the `.1` and `.N` lines.
 
 Write `<M+1>` as the number (`.2..4` for M=3) — a resume reads M from it. Do NOT pre-write `.2..(M+1)` lines here — that is the Discovery's Phase 2 deliverable.
 
@@ -188,7 +186,7 @@ Walk the Phase 1 checklist per SPEC §"📝 Phase 1: Discovery". Tick boxes as e
 - **Reviewed PLAN.md** — already done (the parent + `.1` + `.N` lines were written in Step 4).
 - **Relevance Assessment** — Verdict: Proceed (the user explicitly invoked `/ft-open-epic`, motivating filing an epic). Rationale: capture from the Step 1 conversation context.
 - **Read relevant source files** — read the source files the conversation surfaced as in-scope for the epic. If none surfaced yet, ask the user which directories / modules / files the epic touches and read those.
-- **Archive skim** — `ls <tasknote dir>/archive/<area>/` then `grep -l <source-path> <tasknote dir>/archive/<area>/*.md` for each source path (prefer YAML `touches:` when set). Read hits; also open IDs named by Related / `supersedes` / ⚠️ pointers — still grep + read, no query engine. Log load-bearing findings (file moves, precedents, design decisions, regressions) in Discovery Notes.
+- **Archive skim** — `ls <tasknote dir>/archive/<area>/` then `grep -l <source-path> <tasknote dir>/archive/<area>/*.md` for each source path. Read hits and the IDs their Related / `supersedes` / ⚠️ pointers name; log load-bearing findings in Discovery Notes.
 - **Drift check** — verify file paths, line numbers, and concepts cited in the conversation context still match HEAD. Flag any drift.
 - **Clarifying questions** — use AskUserQuestion to resolve open scoping decisions for the implementation children.
   Typical questions: per-child shortname + scope; cross-cutting adopter-wiring policy; SPEC contract impact per child. Record answers in a "Resolved scoping" table in Discovery Notes.
@@ -203,13 +201,13 @@ Do not enter Phase 2 until every Phase 1 box is ticked. Once ticked, apply the S
 
 The Phase 2 deliverable is the filed child lines. Walk the Phase 2 checklist:
 
-- **Pattern survey** — the existing CORE-EPIC-057 children are the closest precedent for the cohort-children filing pattern (2-space indent under the parent; `[<model>]` tag present on every line; em-dash separator; per-child long description ≤50w target / 70w hard cap).
+- **Pattern survey** — the `.1` / `.N` rows Step 4 filed are the shape to copy (Step 8 lists the checks).
 - **Implemented the minimal solution** — write the drafted `.2..(M+1)` child lines — each carrying its per-child `[model]` (below), drafted before the write — into `.flaitron/PLAN.md` directly under the existing `.1` Discovery line, before the `.N` audit line (or at the bottom if the epic excluded audit). Preserve the 2-space child indent. Word-count each line; rewrite if any breach the 70w cap.
 - **Updated/added tests** — N/A (pure PLAN.md filing; no executable code surface).
 
 **Per-child `[model]`.** Draft each `.2..(M+1)` token from the shape Discovery settled for that child — seed it from the epic's token (a `[frontier]` or `[xheavy]` epic seeds `[heavy]`), then raise or lower to the tier whose `SPEC/model.md` §"Practical guidance and agent-aware defaults" work shape the child matches (a concrete seed stays as-is unless lowered, which yields a category token). Propose category tokens only, capped at `[frontier]` — reached only by a `SPEC/model.md` trigger, never by seed or round-up; a concrete token (e.g. `[fable]`) only when the epic token is concrete or the operator named that model — a category tag matches by tier, so pinning a named model needs the concrete token (`SPEC/model.md` §"Pinning a named model").
 
-**Downstream-impact reconciliation scan.** SPEC/tasknote-selection.md §"Downstream-impact reconciliation" is authoritative for the triggers, the three scan steps, the impact classes, and the reconcile actions. The child cohort is a **new-task filing** trigger, so run the scan after writing the `.2..(M+1)` lines — scoping it to the **rest of** the active PLAN, since the just-filed children are themselves out of scope. A fresh-area epic whose children obviously touch nothing already filed skips it (judgment) — note "no downstream impact" and move on. Its user-confirm is an **AskUserQuestion-style review prompt, not a new banner** — the two-banner cap (🛠️ Phase 1→2 + 📦 ready-to-commit) is preserved, consistent with Step 5.5's per-stage gates.
+**Downstream-impact reconciliation scan.** SPEC/tasknote-selection.md §"Downstream-impact reconciliation" is authoritative for the triggers, the three scan steps, the impact classes, and the reconcile actions. The child cohort is a **new-task filing** trigger, so run the scan after writing the `.2..(M+1)` lines — scoping it to the **rest of** the active PLAN, since the just-filed children are themselves out of scope. A fresh-area epic whose children obviously touch nothing already filed skips it (judgment) — note "no downstream impact" and move on. Its user-confirm is an **AskUserQuestion-style review prompt, not a new banner**.
 
 **`[unattended]` candidacy** (mirror of `SPEC/unattended-candidacy.md` §"Three postures" — Read that module now, at this write step). Attended branch only: this skill accepts neither `--fast` nor `--unattended` (Step 1.5), so the `unattended-candidates:` line never fires here. Run §"Candidacy predicate" over each `.2..(M+1)` line as just written **and** over the `.N` audit row Step 4 filed; Step 4's parent + `.1` lines are not re-evaluated. Clause 6 on this surface: the `.1` is this tasknote and closes at Step 9 of the same motion, so the implementation child with no filed predecessor reads its predecessor as closed; every later child is admitted only when its stem predecessor — per the Fan-out classification Discovery settled (filled below), or `.k-1` when undeclared — is proposed in the same pass; the `.N` likewise reads `.1` as closed.
 
@@ -243,7 +241,7 @@ Tick all five Phase 3 boxes (test suite N/A, lint N/A, receipt N/A, External rev
 Walk the closure steps in order under SPEC §"Paper-complete guard". **No banner here** — closure ops auto-run; the recap drafted at the end bundles into Step 10's 📦 gate. Flip **only the `.1` line** (not the parent or other children); flip only when ready to proceed to the atomic commit in Step 10. Pure Discovery filing is workflow-only: PLAN child lines + archive are the deliverables.
 
 - **Doc-drift sweep** — for each entry in `<tasknote dir>/README.md` §"AI-referenced docs", state per-entry verdict ("no change" or the specific update). Pure Discovery filing typically lands "no change" across the board — contract edits live inside the implementation children.
-- **Tick through `## ✅ Acceptance`** — tick every criterion the Discovery satisfied; annotate any it did not (`N/A` / not-met with a one-line reason). Never leave a box silently unticked. Do **not** flip the markdown nav chip to `✅ Completed` — that write was retired by CORE-042.4 and the chip is render-derived from YAML (SPEC §"🚀 Phase 4: Closure").
+- **Tick through `## ✅ Acceptance`** — tick every criterion the Discovery satisfied; annotate any it did not (`N/A` / not-met with a one-line reason). Never leave a box silently unticked. Do **not** flip the nav chip to `✅ Completed` — it is render-derived from YAML (SPEC §"🚀 Phase 4: Closure").
 - **Flip the `.1` PLAN.md line to stub form** — `- [x] **<AREA>-<next-N>.1** [<.1-model>] | <shortname> discovery — Completed YYYY-MM-DD.` per SPEC/plan-filing.md §"`## Completed` archive convention". Keep nested under `<AREA>-EPIC-<next-N>` in its current `## <Priority>` section (SPEC/epic.md §"Child placement invariant").
 - **Flip the `.1` tasknote's YAML `status:`** — `in-progress` → `completed`, before the move — a lifecycle write, not a retroactive edit (SPEC §"Tasknote frontmatter" → "Write-once does not cover lifecycle writes").
 - **Move the `.1` tasknote** — set `**Archived:** YYYY-MM-DD` in the tasknote's Phase 4 block, then `mv <tasknote dir>/<AREA>-<next-N>.1.md <tasknote dir>/archive/<area>/<AREA>-<next-N>.1.md`. Plain `mv`, not `git mv`: Step 5 scaffolded the note untracked and nothing stages it before Step 10, so `git mv` fails "not under version control".
@@ -258,14 +256,11 @@ Walk the closure steps in order under SPEC §"Paper-complete guard". **No banner
   - **Fire branch** (privileged-ops signal hits) — its **bundled-approval motion**: surface the 📦 gate (`SPEC/post-closure.md` step 1) and wait for commit-go.
 - Proposed commit message (skill-specific): `chore: <AREA>-<next-N>.1 — scope <AREA>-EPIC-<next-N> children`, or `chore: <AREA>-<next-N>.1 — file <AREA>-EPIC-<next-N> + scope children` when Step 4 left the filing uncommitted (`feat:` if the diff leaves `.flaitron/`; or a user-edited variant). Do not commit unprompted on the fire branch.
 - 🏁 per `SPEC/post-closure.md` step 2, **only with a real SHA** whose paths cover PLAN + archive (and any other Discovery deliverables) — the skip branch collapses 🛠️ / 📦 to inline markers, but 🏁 still fires.
-- Suggest-next-move: run `SPEC/post-closure.md` step 2 as written — the rotation count and `Completed rotation:` line before 🏁 (over 60, rotate in this response or name the legal skip), then the **fresh PLAN.md re-read**, the unchecked-and-open-section verification, the **PLAN exhausted (terminal)** form when no candidate survives, and the emoji-primary-label + `model @ effort` pick print. Read the full task-line shape (including `[model]`) to know the recommended model for each child. The next move is typically `/ft-task <AREA>-<next-N>.2` (first implementation child).
-- Copy-paste helper: run `SPEC/post-closure.md` step 3 as written — the glyph and pick copied from the chosen candidate line, the own-line inline-code invocation with no trailing punctuation, and the 👇 `Run in this session:` exception for context-dependent skills. Here the invocation line is `` `/ft-task <next-ID>` ``.
+- Suggest-next-move and copy-paste helper: run `SPEC/post-closure.md` steps 2–3 as written. Read the full task-line shape (including `[model]`) for each child's recommended model; the next move is typically `/ft-task <AREA>-<next-N>.2` (first implementation child), and step 3's invocation line is `` `/ft-task <next-ID>` ``.
 
 ## Notes
 
 - **One-motion contract.** This skill files the parent + `.1` + `.N` PLAN lines AND drives the `.1` Discovery tasknote through closure in a single invocation. The one seam is Step 4.5: a `.1` tagged above the active model can stop after the filing commit, and `/ft-open-epic <AREA>-<N>.1` resumes on the right model.
-- **Audit subtask is optional.** Per `SPEC/epic.md` §"Epic lifecycle", simpler multi-child implementations don't need the Discovery + Audit bracket. Step 2's AskUserQuestion offers the option to skip the audit; in that case Step 4 files only the parent + `.1` and the epic has no `.N` audit slot.
-- **M can shift during Discovery.** If the Discovery surfaces that the implementation-child count M was wrong (scope shrinks or grows), Phase 2 in Step 7 files a different number of numeric children (`.2..(M+1)`) — the audit's reserved `.N` suffix is unaffected and never renumbers. Document the shift in Implementation Notes.
-- **Parent description is a placeholder.** The parent epic's long description filed in Step 4 is a one-paragraph placeholder; the Discovery's Final Summary refines it at closure time. The visualizer parses both states identically.
-- **Auto-wired into adopters.** Symlinked into adopter projects via `claude/skills/ft-adopt/SKILL.md` Step 3 + `docs/MIGRATION.md` §1.2 + `claude/AGENTS-snippet.md`'s "One-time symlink wiring" section. New adopter projects bootstrapping via `/ft-adopt` get this skill automatically; existing adopters pick it up on next flaitron version bump.
+- **M can shift during Discovery.** Step 7 then files a different number of numeric children; `.N` never renumbers.
+- **Auto-wired into adopters** via `claude/skills/ft-adopt/SKILL.md` Step 3 + `docs/MIGRATION.md` §1.2 + `claude/AGENTS-snippet.md`'s "One-time symlink wiring" section.
 - **Siblings.** `/ft-close-epic` closes what this opens (drives the audit `.N`, whose closure flips the parent). `/ft-task <ID>` runs an existing PLAN.md entry. `/ft-file-task [ID] --starter` files a single-task starter, and also parks a fully formed epic brief across a `/clear` or model swap for this skill to read next session (`claude/skills/ft-file-task/starter-mode.md` §Notes "Proactive invocation on cross-session handoff").

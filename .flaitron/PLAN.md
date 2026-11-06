@@ -23,7 +23,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [x] **CORE-869.2** [moderate]🧩 [unattended] | drift-check-batching — Completed 2026-11-06.
   - [ ] **CORE-869.3** [light]🔧 [unattended] | budget-near-cap-report — Completed 2026-11-06.
   - [ ] **CORE-869.4** [light]🔧 [unattended] | stale-size-figures — Re-measure the structure pass-4 figures in `.flaitron/audit-overlay/SKILL.md` (`tools/update-adopters.mjs` 872 → 1,653 lines, `tools/drift-checks.sh` 811 → 884, median and p90) and reword `tools/update-adopters.mjs` line 4 to match the two CLI carve-outs in `SPEC/scope-boundaries.md`.
-  - [ ] **CORE-869.5** [heavy]🧠 | near-cap-trims — Bring the five surfaces at 97% of cap or above back to 95% or below (`SPEC/gate-postures.md`, `claude/skills/ft-open-epic/SKILL.md`, `SPEC/post-closure.md`, `SPEC/procedures/ft-task.md`, `claude/skills/ft-release/**`) by trimming, or re-base a cap with its reason in `docs/CONTEXT-BUDGET.md`.
+  - [x] **CORE-869.5** [heavy]🧠 | near-cap-trims — Completed 2026-11-06.
   - [ ] **CORE-869.N** [heavy]🧠 | carrying-cost audit
 
 ## Low

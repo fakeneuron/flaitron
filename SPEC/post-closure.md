@@ -1,6 +1,6 @@
 # Post-closure protocol
 
-> Lazy-loaded SPEC module. Loaded by every closing runner at its final step — `/ft-task` Step 6, `/ft-close-epic` Step 9, `/ft-open-epic` Step 10, `/ft-release` Step 8 — once the tasknote is archived and the closure commit is the next motion. Nothing before Phase 4 loads it. See `SPEC.md` for the always-loaded core spec (the four phases and the paper-complete guard this protocol runs under) and [`SPEC/gates.md`](gates.md) §"Conditional skip rule" for the skip/fire decision step 1 branches on.
+> Lazy-loaded SPEC module. Loaded by every closing runner at its final step — `/ft-task` Step 6, `/ft-close-epic` Step 9, `/ft-open-epic` Step 10, `/ft-release` Step 8 — once the tasknote is archived and the closure commit is the next motion. See `SPEC.md` for the always-loaded core spec (the four phases and the paper-complete guard this protocol runs under) and [`SPEC/gates.md`](gates.md) §"Conditional skip rule" for the skip/fire decision step 1 branches on.
 
 After a tasknote is archived, run the three-step protocol (commit / mark landed, rotation count included / offer copy-paste line). Whether step 1 fires or skips is [`SPEC/gates.md` §"Conditional skip rule"](gates.md), which also carries the skip branch's autonomous-commit motion; what `--fast` and `--unattended` do to it is one row of [`SPEC/gate-postures.md` §"Flag precedence and surface matrix"](gate-postures.md). Steps 2–3 run **only after** a deliverable-covering SHA — never in the same turn as a fire-branch 📦 ask.
 
@@ -16,7 +16,7 @@ After a tasknote is archived, run the three-step protocol (commit / mark landed,
 
    The commit-go prompt carries a `🟢` prefix (e.g., `🟢 Reply commit / go to land.`). Accepted replies are the closed set in [`SPEC/cue-vocabulary.md` §"Accepted gate replies"](cue-vocabulary.md) (`commit` / `go` / `yes` and the explicit commit verbs named there); `okay` / `looks good` are not members. Skill-level extensions (e.g., `/ft-release` push-go) ride inside this bundle; the commit-go is the single approval authorizing recap + closure + bundled prompts + commit.
 
-2. **Mark the commit landed and suggest the next move.** Once the commit lands **and** the SHA passes the deliverable-covering check in [`SPEC.md` §"Paper-complete guard"](../SPEC.md), record its SHA for 🏁. **Never emit 🏁 without that SHA** — never an invented or reused one. The rest of this step runs in order, in the same response. The next-move list does not stand in for the rotation count.
+2. **Mark the commit landed and suggest the next move.** Once the commit lands **and** the SHA passes the deliverable-covering check in [`SPEC.md` §"Paper-complete guard"](../SPEC.md), record its SHA for 🏁. **Never emit 🏁 without that SHA** — never an invented or reused one. The rest of this step runs in order, in the same response.
 
    **Rotation, before 🏁.** Count the checked rows under `## Completed` (nested children included):
 
@@ -41,14 +41,14 @@ After a tasknote is archived, run the three-step protocol (commit / mark landed,
    - **<TASK-ID>** [moderate]🧩 | shortname — one-sentence "why now" (moderate) · Opus @ medium
    ```
 
-   **Re-read PLAN.md now** (fresh Read tool call — do not rely on the Step 1 cached parse; the Completed section grows long and stale-context suggestions are a known error mode). For each candidate you intend to name, verify its task line is `- [ ]` (unchecked) and lives in an open section (`## High`, `## Medium`, `## Low`, or `## Future Opportunities`), **not** under `## Completed`. Drop any candidate that fails this check before surfacing it.
+   **Re-read PLAN.md now** (a fresh Read, not the Step 1 cached parse — stale-context suggestions are a known error mode). For each candidate you intend to name, verify its task line is `- [ ]` (unchecked) and lives in an open section (`## High`, `## Medium`, `## Low`, or `## Future Opportunities`), **not** under `## Completed`. Drop any candidate that fails this check before surfacing it.
 
    One of three forms:
    - **Epic continuation:** closed task is in an active epic with cleared dependencies → name the single most natural next task ID.
    - **Open menu:** 2-3 candidates from PLAN.md mixing priority and readiness; user picks.
-   - **PLAN exhausted (terminal):** the fresh re-read leaves no surviving candidate — every open-section task is checked, or the only entries live under `## Completed`. **Stop. Do not invent a next move.** Naming a task from the `## Completed` archive, a doc example, or the cached Step-1 parse is exactly the confabulation this branch prevents — the two forms above both presuppose ≥1 open task and do not apply. Print `📭 EMPTY — PLAN.md holds no open work.`, then — *in this session, before any clear* — offer to file new work: `/ft-open-epic` for a new epic, `/ft-file-task` for a standalone follow-up. Skip step 3's copy-paste session-reset line: there is no queued task to run after a clear.
+   - **PLAN exhausted (terminal):** the fresh re-read leaves no surviving candidate — every open-section task is checked, or the only entries live under `## Completed`. **Stop. Do not invent a next move** — not from `## Completed`, a doc example, or the cached Step-1 parse. Print `📭 EMPTY — PLAN.md holds no open work.`, then — *in this session, before any clear* — offer to file new work: `/ft-open-epic` for a new epic, `/ft-file-task` for a standalone follow-up. Skip step 3's copy-paste session-reset line: there is no queued task to run after a clear.
 
-   **Audit-family flag.** When a next-move candidate is an `/ft-audit*` slash command, prefix the candidate line (this step) and the copy-paste line (step 3) with 🔍. The `/ft-audit` scaffold, when forked per `docs/MIGRATION.md` §1.2.1, runs in adopter context as the unprefixed local fork (e.g., `/audit`), not `/ft-audit`; `/ft-audit-repo` is never forked and keeps its name. The 🔍 marker doubles as a self-check for any AI about to emit `/ft-audit*` as next move.
+   **Audit-family flag.** When a next-move candidate is an `/ft-audit*` slash command, prefix the candidate line (this step) and the copy-paste line (step 3) with 🔍 (fork naming: step 3). The 🔍 marker doubles as a self-check for any AI about to emit `/ft-audit*` as next move.
 
 3. **Offer the copy-paste line.** The label-line glyph is **copied from the chosen candidate line just printed in step 2** — never default to 🔧. Emit the session-reset **label line**, then put the skill invocation **on its own line as inline-code with no trailing punctuation** — a trailing `.` after the ID collides with the `.N` epic-subtask grammar (`FE-132.3.`) and breaks copy/paste. Shape, where `<glyph>` is the candidate's 🔧/🧩/🧠/💎/🔭 and `<model @ effort>` its printed pick (with no pick, the label line ends `then run:`):
 

@@ -14,13 +14,10 @@ last-verified: v7.0.0 · 2026-10-11
 > [`claude/skills/ft-task/SKILL.md`](../../claude/skills/ft-task/SKILL.md)
 > directly. See [`SPEC/procedures/README.md`](README.md) for the layer.
 
-This SOP describes how to **drive** the flaitron 4-phase tasknote workflow
-for one task. It is the *floor* that narrows the adherence gap for agents
-without Claude Code's skill machinery — it **routes** to the canonical
-contract rather than restating it. The authority for every rule below is
-[`SPEC.md`](../../SPEC.md) and its lazy modules; when this SOP and the
-contract diverge, the contract wins. A step that cites a lazy module means
-*read it at that step*.
+This SOP **drives** the flaitron 4-phase tasknote workflow for one task, and
+**routes** to the canonical contract rather than restating it:
+[`SPEC.md`](../../SPEC.md) and its lazy modules win where the two diverge. A
+step that cites a lazy module means *read it at that step*.
 
 ## When to run this procedure
 
@@ -47,8 +44,8 @@ equivalent where a step calls for one (full ledger:
 | **structured ask** | A multi-option question to the operator (Claude Code's `AskUserQuestion`). Use your platform's structured-choice prompt, or fall back to a prose ask. |
 | **prose ask** | A free-text question to the operator. |
 | **trigger** | The operator's conversational request to start the task — there is no slash dispatch to rely on. |
-| **autonomous mode** | The operator may ask you to run without stopping at the conditional gates (Claude Code exposes this as `--fast`). Honor it as described under each gate; the concept is platform-neutral, the flag syntax is not. It is also **implied by a PLAN.md row's `[unattended]` marker** when no mode was requested — see Step 1. |
-| **debug mode** | The operator may ask you to drive the task hypothesis-first because the root cause is not yet known (Claude Code exposes this as `--debug`). **Explicit opt-in only** — never infer it from a bug-shaped task description. It adds *content* to Phases 1–4 and no mechanics: no new phase, template, banner, or gate. When requested, **read [`claude/skills/ft-task/step-4-debug-mode.md`](../../claude/skills/ft-task/step-4-debug-mode.md) now** — the mode's single body for Phases 1–4. Read its `--fast` / `fast-mode` as autonomous mode and `AskUserQuestion` as a structured ask. |
+| **autonomous mode** | The operator may ask you to run without stopping at the conditional gates (Claude Code exposes this as `--fast`). Honor it as described under each gate. It is also **implied by a PLAN.md row's `[unattended]` marker** when no mode was requested — see Step 1. |
+| **debug mode** | The operator may ask you to drive the task hypothesis-first because the root cause is not yet known (Claude Code exposes this as `--debug`). **Explicit opt-in only** — never infer it from a bug-shaped task description. It adds *content* to Phases 1–4, no new phase, template, banner, or gate. When requested, **read [`claude/skills/ft-task/step-4-debug-mode.md`](../../claude/skills/ft-task/step-4-debug-mode.md) now** — the mode's single body for Phases 1–4. Read its `--fast` / `fast-mode` as autonomous mode and `AskUserQuestion` as a structured ask. |
 | **loop mode** | The operator may ask you to run the task as an execute→verify loop because "done" is one or more machine-checkable commands (Claude Code exposes this as `--loop`). **Explicit opt-in only.** It changes the Phase 2↔3 drive, not the phases; cycles run autonomously, destructive steps park. Read [`SPEC/loop.md`](../loop.md) and [`claude/skills/ft-task/step-5-loop-mode.md`](../../claude/skills/ft-task/step-5-loop-mode.md) now, and follow the fragment wherever it amends a step, from scaffold to post-convergence review. Translate `fast-mode` to autonomous mode and `AskUserQuestion` to a structured ask. |
 | **micro mode** | The operator may ask for a micro-sized record (Claude Code exposes this as `--micro`). **Explicit opt-in only**, though it is the routing default for known work with no design question ([`SPEC/tasknote-selection.md`](../tasknote-selection.md)). Same phases, gates, and closure, logged in one `## ⚡ Notes` section. Read [`claude/skills/ft-task/micro-mode.md`](../../claude/skills/ft-task/micro-mode.md) now. Refuses loop and debug mode. |
 | **unattended mode** | The caller may declare that **no operator is present to answer a gate** (Claude Code exposes this as `--unattended`). It is autonomous mode's autonomy plus one behavior: the six gates nobody can answer **park the tasknote** instead of firing — the visual-confirmation ask and the Re-scope notice included, which autonomous mode only delegates to a present operator. **Read [`claude/skills/ft-task/unattended-mode.md`](../../claude/skills/ft-task/unattended-mode.md) now**, with [`SPEC/gate-postures.md` §"`--unattended` operator posture"](../gate-postures.md) and [`SPEC/blocked.md`](../blocked.md) beside it — the park recipe, the conversion map, the `park-reason:` codes. Translate as for debug mode, plus: its `/ft-task` steps are this SOP's steps, and `/ft-file-task --unattended` is the platform-neutral filing motion of [`SPEC.md` §"Deferred hand-off filing"](../../SPEC.md). |
@@ -71,10 +68,9 @@ and its `unattended-candidates:` copy, and that a park files nothing:
 **Cross-repo work** is filed in the repo it belongs to, never edited from
 this cycle: [`SPEC.md` §"Cross-repo edit remit"](../../SPEC.md).
 
-The **operator-cue vocabulary** (🛠️ 📦 🟢 👁️ 🏁 ✅ 🔧 🧩 🧠 💎 🔭 👇 📭 🗄️ ▶️ 📡 💻 ✋ 🔍 🚧 and
-their UPPERCASE labels) is contract-layer, not Claude-specific — emit it
-**verbatim**. The glyph is the fast-scan signal; the UPPERCASE label is the
-fallback if your surface strips emoji. Full vocabulary:
+The **operator-cue vocabulary** (every glyph and its UPPERCASE label, the
+fallback if your surface strips emoji) is contract-layer, not
+Claude-specific — emit it **verbatim**. Full vocabulary:
 [`SPEC/cue-vocabulary.md` §"Operator-cue vocabulary"](../cue-vocabulary.md).
 
 ## Steps
@@ -122,8 +118,7 @@ from the `PLAN.md` long description:
 <1-2 sentences of plain-English purpose.>
 ```
 
-Then continue in the same turn: it is not an operator cue or a gate, expects
-no reply, and neither autonomous nor unattended mode suppresses it. Contract:
+Then continue in the same turn; no mode suppresses it. Contract:
 [`SPEC/cue-vocabulary.md` §"🎯 Purpose blurb"](../cue-vocabulary.md).
 
 **Tier advisory.** Judge the tier the long description implies — skip,
@@ -158,9 +153,8 @@ you are running as, per [`SPEC/model.md`](../model.md). On a concrete
 mismatch, category under-tier, or missing tag, read
 [`claude/skills/ft-task/step-1.5-model-edge.md`](../../claude/skills/ft-task/step-1.5-model-edge.md),
 translating its asks and keeping every invocation flag in re-entry
-instructions: a concrete mismatch stops and offers switch or operator-approved
-retag, a missing tag asks before scaffold, a category under-tier only warns
-and proceeds. Never silently retag a satisfied category. **Under unattended
+instructions; a concrete mismatch stops, a category under-tier only warns and proceeds. Never silently
+retag a satisfied category. **Under unattended
 mode** a concrete mismatch parks `model-mismatch` instead of asking, and you
 never retag the PLAN line yourself — what it writes, and when it writes
 nothing: [`SPEC/gate-postures.md` §"Pre-scaffold stops"](../gate-postures.md).
@@ -177,11 +171,9 @@ rename) is not foreign dirt — the in-flight refusal runs first and the branch
 below routes it. Any other dirt: emit
 `🚧 DIRTY — commit, stash, or discard first:` then the dirt list, and stop;
 do not auto-clean ([`SPEC.md` §"Paper-complete guard"](../../SPEC.md)).
-**Unattended mode neither relaxes nor parks this**: after `🚧 DIRTY` and the
-paths it emits its `⏸` stop line and writes nothing, as it does on the
-archived / in-flight collisions below and, for a
-literal `.N` audit ID, on an open sibling or a missing or closed parent — stop
-lines:
+**Unattended mode neither relaxes nor parks this**: it emits its `⏸` stop
+line and writes nothing, as on the archived / in-flight collisions below and
+the `.N` open-sibling stop —
 `claude/skills/ft-task/unattended-mode.md` §"Pre-scaffold stops".
 
 Check `.flaitron/tasknote/<TASK-ID>.md` and branch on its existence / YAML
@@ -255,10 +247,9 @@ reason; the motions this SOP adds:
   assumptions. In autonomous mode, record reasonable assumptions directly
   instead of adding routine clarification pauses; required operator decisions
   retain their contract gates.
-- **Populate ✅ Acceptance** with concrete, testable criteria, each naming the
-  **verify command** that decides it — a test run, a lint/type-check, a
-  `grep -q` on a contract file. A criterion no command decides marks itself
-  `judgment` (or `👁️`) with a one-line reason; do not invent one. Contract:
+- **Populate ✅ Acceptance** with testable criteria, each naming the
+  **verify command** that decides it; one no command decides marks itself
+  `judgment` (or `👁️`) with a one-line reason. Contract:
   [`SPEC.md` §"Tasknote body shape"](../../SPEC.md).
 - **Populate 🧩 Subtasks** with concrete, ordered steps, and **declare YAML `touches:`** with the paths this task expects to edit. Contract — exemptions, and the one run it binds: `SPEC.md` §"Tasknote frontmatter".
 
@@ -298,16 +289,13 @@ time (Step 6).
   destructive-action escalation (🗄️/▶️/📡/💻) or prerequisite ✋ `ACTION`
   parks the same way: `park-reason: destructive — …` /
   `prerequisite — …`; an *advisory* ✋ is
-  recorded and the run continues. The prerequisite/advisory split is biased
-  conservative — park on doubt, since an over-park costs one resume and an
-  under-park reaches closure with the prerequisite never performed.
+  recorded and the run continues. On doubt between the two, park.
   If a **direction-changing decision** surfaces — one whose effect reaches
   *beyond* this task (approach, contract, data model, sequencing) — read
   [`SPEC/tasknote-selection.md` §"Downstream-impact reconciliation"](../tasknote-selection.md)
   and run its scan before continuing; a decision whose effect stays inside
   this task skips it. Its confirm is an inline review prompt, **not** a
-  banner, and it runs even under autonomous mode — it guards plan
-  correctness, and the operator owns the confirm. Under **unattended mode**
+  banner, and it runs even under autonomous mode. Under **unattended mode**
   nobody can confirm, so the decision is a `Re-scope` and parks `drift`.
 - **Phase 3: Testing & Linting** — [`SPEC.md` §"🧪 Phase 3"](../../SPEC.md).
   Run targeted tests + lint/type-check on changed code (full suite only for
@@ -334,10 +322,8 @@ time (Step 6).
   would have skipped the tasknote. Under
   unattended mode a blocker the run cannot fix parks `input-needed`.
   For frontend changes, ask the operator for visual confirmation with a
-  `👁️ **CONFIRM**` ask in the **emphasized inline shape** — its own line,
-  blank-line isolated, label bolded
-  ([`SPEC/cue-vocabulary.md` §"Emphasized inline ask shape"](../cue-vocabulary.md)). Still inline
-  prose, **not** a banner. Under autonomous mode,
+  `👁️ **CONFIRM**` ask in the emphasized inline shape, not a banner
+  ([`SPEC/cue-vocabulary.md` §"Emphasized inline ask shape"](../cue-vocabulary.md)). Under autonomous mode,
   suppress the 👁️ ask but still run lint/type-check. **Under unattended mode**
   it parks `visual-confirm` unless a confirmed deciding spec decides it
   ([`SPEC/gate-postures.md` §"Scope guardrails"](../gate-postures.md)).

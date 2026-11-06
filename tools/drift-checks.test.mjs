@@ -6,7 +6,7 @@
 
 import assert from 'node:assert/strict';
 import { execFile, execFileSync } from 'node:child_process';
-import { cpSync, lstatSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, lstatSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { after, afterEach, before, beforeEach, describe, it } from 'node:test';
@@ -264,6 +264,60 @@ describe('brand near-miss matching', () => {
         variant,
       );
     }
+  });
+
+  // The git grep prefilter reads a symlink's link text, so the check must
+  // still read a tracked symlink through to its target (CORE-869.2).
+  it('reads a tracked symlink through to its target', () => {
+    writeFileSync(join(fixture, 'copy with spaces.md'), 'flatiron\n');
+    symlinkSync('copy with spaces.md', join(fixture, 'link.md'));
+    execFileSync('git', ['add', 'link.md'], { cwd: fixture });
+    try {
+      assert.throws(
+        () => execFileSync('bash', [SCRIPT, 'brand_nearmiss'], { cwd: fixture, encoding: 'utf8', stdio: 'pipe' }),
+        (e) => e.status === 1 && e.stdout === 'BRAND NEAR MISS  copy with spaces.md:1:flatiron\nBRAND NEAR MISS  link.md:1:flatiron\nbrand_nearmiss FAILED\n',
+      );
+    } finally {
+      execFileSync('git', ['rm', '-q', '--cached', 'link.md'], { cwd: fixture });
+      rmSync(join(fixture, 'link.md'));
+    }
+  });
+});
+
+// pair_p reads the whole archive in one awk pass (CORE-869.2): per-note state
+// must reset at each note, and a note's findings print in note order even
+// though its stamp is read last. The fixture holds only the archive.
+describe('pair_p across notes', () => {
+  let fixture;
+  const A = '.flaitron/tasknote/archive/core';
+  before(() => {
+    fixture = mkdtempSync(join(tmpdir(), 'pair-p-'));
+    mkdirSync(join(fixture, 'tools'));
+    writeFileSync(join(fixture, SCRIPT), readFileSync(join(REPO, SCRIPT), 'utf8'));
+    mkdirSync(join(fixture, A), { recursive: true });
+    const note = (status, box, stamp) => `---\nstatus: ${status}\n---\n## ✅ Acceptance\n\n${box}\n\n## 🧩 Subtasks\n\n- [ ] sub\n\n**Archived:** ${stamp}\n`;
+    writeFileSync(join(fixture, A, 'ZZ-1.md'), note('in-progress', '- [ ] bare', '2026-10-01'));
+    writeFileSync(join(fixture, A, 'ZZ-2.md'), note('completed', '- [x] done', '2026-10-01'));
+    writeFileSync(join(fixture, A, 'ZZ-3.md'), note('in-progress', '- [ ] old', '2026-09-19'));
+    writeFileSync(join(fixture, A, 'ZZ-4.md'), note('completed', '- [ ] N/A — dropped', '2026-10-01'));
+    writeFileSync(join(fixture, A, 'ZZ-5.md'), note('completed', '- [ ] late', '2026-10-01'));
+    // Unstamped, and stamped twice across the floor: the first stamp decides.
+    writeFileSync(join(fixture, A, 'ZZ-6.md'), note('in-progress', '- [ ] unstamped', 'YYYY-MM-DD'));
+    writeFileSync(join(fixture, A, 'ZZ-7.md'), `${note('in-progress', '- [ ] restamped', '2026-09-19')}\n**Archived:** 2026-10-01\n`);
+  });
+  after(() => { if (fixture) rmSync(fixture, { recursive: true, force: true }); });
+
+  it('reports each post-floor note in order, status before boxes, and resets per note', () => {
+    assert.throws(
+      () => execFileSync('bash', [SCRIPT, 'pair_p'], { cwd: fixture, encoding: 'utf8', stdio: 'pipe' }),
+      (e) => e.status === 1 && e.stdout === [
+        `STATUS NOT COMPLETED  ${A}/ZZ-1.md`,
+        `UNANNOTATED BOX  ${A}/ZZ-1.md  - [ ] bare`,
+        `UNANNOTATED BOX  ${A}/ZZ-5.md  - [ ] late`,
+        'pair_p FAILED',
+        '',
+      ].join('\n'),
+    );
   });
 });
 

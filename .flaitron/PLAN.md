@@ -20,7 +20,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Medium
 
 - [ ] **CORE-EPIC-869** [heavy]🧠 | carrying-cost — Cut what the archive and the at-cap budgets cost per edit: batch the per-file drift loops, report near-cap surfaces, refresh two stale figures, restore budget headroom. Discovery supplied by audit-repo 2026-11-06. Surfaced by audit-repo 2026-11-06 (Theme: context budgets run at the cap; Theme: the archive's cost scales with success).
-  - [ ] **CORE-869.2** [moderate]🧩 [unattended] | drift-check-batching — Replace the one-process-per-file loops in `brand_nearmiss` and `pair_p` with single-pass calls that print the same findings. `node --test tools/drift-checks.test.mjs` stays green and local `bash tools/drift-checks.sh` wall time at least halves.
+  - [x] **CORE-869.2** [moderate]🧩 [unattended] | drift-check-batching — Completed 2026-11-06.
   - [ ] **CORE-869.3** [light]🔧 [unattended] | budget-near-cap-report — `context_budget` prints a non-failing `NEAR CAP` line for any surface at or above 95% of its Budgets-table row.
   - [ ] **CORE-869.4** [light]🔧 [unattended] | stale-size-figures — Re-measure the structure pass-4 figures in `.flaitron/audit-overlay/SKILL.md` (`tools/update-adopters.mjs` 872 → 1,653 lines, `tools/drift-checks.sh` 811 → 884, median and p90) and reword `tools/update-adopters.mjs` line 4 to match the two CLI carve-outs in `SPEC/scope-boundaries.md`.
   - [ ] **CORE-869.5** [heavy]🧠 | near-cap-trims — Bring the five surfaces at 97% of cap or above back to 95% or below (`SPEC/gate-postures.md`, `claude/skills/ft-open-epic/SKILL.md`, `SPEC/post-closure.md`, `SPEC/procedures/ft-task.md`, `claude/skills/ft-release/**`) by trimming, or re-base a cap with its reason in `docs/CONTEXT-BUDGET.md`.

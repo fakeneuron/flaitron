@@ -41,7 +41,7 @@
 #   never ((n++)), which returns 1 from zero and ends a `bash -e` check.
 #   skill_pin_guard_parity and pair_h need no counter: an empty read already
 #   fails their own guards. shipped_skill_parity and sidequest_orphan floor
-#   on their read set instead of a counter.
+#   on their read set instead of a counter; pair_p counts inside its awk.
 # - bash 3.2 compatible: the §7.1 walk runs on the operator's machine.
 # - Each check needs one seeded-drift case in tools/drift-checks.test.mjs
 #   (CORE-739.3); its coverage test fails on a check without one.
@@ -168,23 +168,43 @@ brand_nearmiss() {
 # Spelling only; casing is brand_casing below. POSIX ERE boundaries
 # avoid matching valid identifiers such as flaitronSpec. The two sources
 # below carry the intentional examples; no other tracked text is exempt.
+# Two processes, not one grep per file (CORE-869.2); one grep over every
+# file measured 2.7 s, this 0.6 s. `git grep -l` (threaded) names the
+# candidates; one grep -H then prints the path:line:text the per-file loop
+# assembled, in ls-files order. The prefilter reads binaries as text (-a),
+# so git's binary rules never drop a file; grep -I still skips them. grep,
+# not `git grep`, prints: it follows a tracked symlink (CLAUDE.md) as the
+# loop did, where `git grep` reads the link text, so a symlink is always a
+# candidate, and so is a path with a newline, which the newline-joined list
+# cannot hold. A failed prefilter makes every file a candidate. The path
+# loops are builtins only. A read error is reported once, not per file.
 bad=
 n=0
+re='(^|[^[:alnum:]_])(flatiron|flatron|flaitrn|flaitorn|flaiton|flaytron|fliatron|falitron|flaitron[ens])([^[:alnum:]_]|$)'
+nl='
+'
+files=()
 while IFS= read -r -d '' f; do
   case "$f" in tools/drift-checks.sh|tools/drift-checks.test.mjs) continue ;; esac
   [ -f "$f" ] || continue
   n=$((n+1))
-  rc=0
-  hits=$(LC_ALL=C grep -nEiI '(^|[^[:alnum:]_])(flatiron|flatron|flaitrn|flaitorn|flaiton|flaytron|fliatron|falitron|flaitron[ens])([^[:alnum:]_]|$)' -- "$f") || rc=$?
-  if [ "$rc" -eq 0 ]; then
-    printf '%s\n' "$hits" | while IFS= read -r line; do printf 'BRAND NEAR MISS  %s:%s\n' "$f" "$line"; done
-    bad=1
-  elif [ "$rc" -ne 1 ]; then
-    printf 'BRAND SCAN ERROR  %s\n' "$f"
-    bad=1
-  fi
+  files+=("$f")
 done < <(git ls-files -z)
 [ "$n" -gt 0 ] || { echo "VACUOUS brand_nearmiss  no tracked file examined"; exit 1; }
+rc=0
+cands=$(LC_ALL=C git grep -laiz -E "$re" | tr '\0' '\n'; exit "${PIPESTATUS[0]}") || rc=$?
+[ "$rc" -le 1 ] || { printf 'BRAND SCAN ERROR  git grep exit %s\n' "$rc"; bad=1; }
+sel=()
+for f in "${files[@]}"; do
+  if [ -n "$bad" ] || [ -L "$f" ]; then sel+=("$f"); continue; fi
+  case "$f" in *"$nl"*) sel+=("$f"); continue ;; esac
+  case "$nl$cands$nl" in *"$nl$f$nl"*) sel+=("$f") ;; esac
+done
+[ "${#sel[@]}" -gt 0 ] || exit 0
+rc=0
+hits=$(LC_ALL=C grep -HnEiI "$re" -- "${sel[@]}") || rc=$?
+[ -z "$hits" ] || { printf '%s\n' "$hits" | sed 's/^/BRAND NEAR MISS  /'; bad=1; }
+[ "$rc" -le 1 ] || { printf 'BRAND SCAN ERROR  grep exit %s\n' "$rc"; bad=1; }
 [ -z "$bad" ] || exit 1
 }
 
@@ -616,33 +636,40 @@ pair_p() {
 #   here — a stamp miss, owned by CORE-610.4's stamp-fill gate on the
 #   closure surfaces. Do not "fix" it by treating an unstamped note as
 #   post-floor: that retroactively binds the two legacy files.
-# - [[ "$d" < "$floor" ]], not [ "$d" \> … ]. ISO dates compare
-#   lexically, and the [[ form works in bash and zsh alike; the [ form
-#   with an escaped operator fails in zsh with `condition expected`.
-# - || true on both substitutions is load-bearing. This shell is bash -e,
-#   and an assignment whose command substitution ends in a grep that
-#   matched nothing exits the step — without the guard the first *clean*
-#   post-floor note (no bare boxes → grep -v returns 1) would fail the
-#   job, the exact inversion of what the step is for. Found on the
-#   mutated-copy proof in CORE-610.2; every earlier step avoids the trap
-#   by ending its pipelines in sort/tr, which this one cannot.
 # - Only ## ✅ Acceptance is read. ## 🧩 Subtasks is exempt by contract
-#   (SPEC.md §"Acceptance tick-through"); the awk window closes at the
-#   next ## heading, so Subtasks boxes never enter the grep.
-bad=
-n=0
-floor=2026-09-20
-for f in .flaitron/tasknote/archive/*/*.md; do
-  d=$(grep -m1 -oE '^\*\*Archived:\*\* +[0-9]{4}-[0-9]{2}-[0-9]{2}' "$f" | sed -E 's/.* //' || true)
-  [ -n "$d" ] || continue
-  [[ "$d" < "$floor" ]] && continue
-  n=$((n+1))
-  grep -q '^status: completed$' "$f" || { echo "STATUS NOT COMPLETED  $f"; bad=1; }
-  bare=$(awk '/^## ✅ Acceptance/{a=1;next} a&&/^## /{a=0} a' "$f" | grep -E '^ *- \[ \]' | grep -viE 'N/A|not[ -]met' || true)
-  [ -z "$bare" ] || { printf '%s\n' "$bare" | sed "s|^|UNANNOTATED BOX  $f  |"; bad=1; }
-done
-[ "$n" -gt 0 ] || { echo "VACUOUS pair_p  no post-floor archived note examined"; exit 1; }
-[ -z "$bad" ] || exit 1
+#   (SPEC.md §"Acceptance tick-through"); the window closes at the next
+#   ## heading, so Subtasks boxes never enter it.
+# - One awk pass over the whole archive (CORE-869.2), not up to five
+#   processes per note. The **Archived:** stamp sits at a note's foot, so
+#   each note's findings are buffered and printed when the next note starts
+#   (and at END), keeping the loop's order: status first, then boxes. ISO
+#   dates compare as strings. The stamp regex spells out its repeats
+#   because mawk (CI's awk) may lack {n}. LC_ALL=C keeps tolower and the ✅
+#   match bytewise, as the grep pipeline it replaced was.
+# - The counter lives in awk; the shell floor below only covers an empty
+#   glob. awk dies on a file it cannot open, so an unreadable note is
+#   skipped here, as the loop's grep … || true skipped it.
+files=()
+for f in .flaitron/tasknote/archive/*/*.md; do [ -f "$f" ] && [ -r "$f" ] && files+=("$f"); done
+[ "${#files[@]}" -gt 0 ] || { echo "VACUOUS pair_p  no post-floor archived note examined"; exit 1; }
+LC_ALL=C awk -v floor=2026-09-20 '
+  function flush() {
+    if (f == "" || d == "" || d < floor) return
+    n++
+    if (!done) { print "STATUS NOT COMPLETED  " f; bad = 1 }
+    if (boxes != "") { printf "%s", boxes; bad = 1 }
+  }
+  FILENAME != f { flush(); f = FILENAME; d = ""; done = 0; a = 0; boxes = "" }
+  d == "" && match($0, /^\*\*Archived:\*\* +[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/) { d = substr($0, RSTART + RLENGTH - 10, 10) }
+  $0 == "status: completed" { done = 1 }
+  /^## ✅ Acceptance/ { a = 1; next }
+  a && /^## / { a = 0 }
+  a && /^ *- \[ \]/ && tolower($0) !~ /n\/a|not[ -]met/ { boxes = boxes "UNANNOTATED BOX  " f "  " $0 "\n" }
+  END {
+    flush()
+    if (!n) { print "VACUOUS pair_p  no post-floor archived note examined"; exit 1 }
+    exit bad
+  }' "${files[@]}"
 }
 
 # Pair Q — section citations resolve (heading or bold-lead)

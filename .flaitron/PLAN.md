@@ -14,7 +14,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 - [ ] **CORE-EPIC-868** [heavy]🧠 | gate-blind-spots — Bind the three places no gate reads today: the installer's text anchors, the install at a freshly pushed tag, and the open Dependabot alert. Discovery supplied by audit-repo 2026-11-06. Surfaced by audit-repo 2026-11-06 (Theme: the installer reads text it does not own).
   - [x] **CORE-868.2** [moderate]🧩 [unattended] | installer-anchor-drift-check — Completed 2026-11-06.
   - [x] **CORE-868.3** [moderate]🧩 | release-installs-new-tag — Completed 2026-11-06.
-  - [ ] **CORE-868.4** [light]🔧 | dependabot-minimatch-alert — Close Dependabot alert #6 (minimatch < 11.0.1, GHSA-g3hv-75wg-m249, reached only through eslint in `viz` devDependencies; three failed `Dependabot Updates` runs since 2026-11-01). Take an eslint release that lifts the range, or an `overrides` pin if `npm --prefix viz run lint` stays green, else dismiss as dev-only with that reason. Record which.
+  - [x] **CORE-868.4** [light]🔧 | dependabot-minimatch-alert — Completed 2026-11-06.
   - [ ] **CORE-868.N** [heavy]🧠 | gate-blind-spots audit
 
 ## Medium

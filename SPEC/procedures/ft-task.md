@@ -348,8 +348,8 @@ time (Step 6).
   items 3–8 only when the deliverables can stage in the **same** atomic
   closure commit this turn — otherwise flip nothing. In order:
   1. Doc-drift sweep — per `.flaitron/tasknote/README.md` §"AI-referenced
-     docs" entry, "no change" or the update (unattended: then retake the
-     scope guardrails).
+     docs" entry, "no change" or the update (unattended: file
+     out-of-scope drift, don't edit it; then retake the scope guardrails).
   2. Acceptance tick-through — tick or annotate every box. Never flip the nav
      chip; it is render-derived from YAML.
   3. YAML `status: completed` — a lifecycle write, which write-once does not

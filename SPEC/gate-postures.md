@@ -183,9 +183,8 @@ parks. There is deliberately **no** gating-vs-corroborating split here — an
 rationalization this conversion exists to remove. The one exception is a
 check the operator chose before dispatch (§"Scope guardrails").
 
-**A passing visual baseline does not convert it either** — not even a
-byte-identical one argued as a recorded human approval *replayed*. Full
-reasoning: [`docs/GATE-DISCIPLINE.md`](../docs/GATE-DISCIPLINE.md) §"Refused
+**A passing visual baseline does not convert it either**, even a
+byte-identical one. Full reasoning: [`docs/GATE-DISCIPLINE.md`](../docs/GATE-DISCIPLINE.md) §"Refused
 carve-outs".
 
 **The ✋ split is biased conservative — park on doubt.** Same asymmetry as
@@ -208,11 +207,12 @@ more after Phase 4's doc-drift sweep, before the first closure flip:
   lockfiles, files `.gitattributes` marks `linguist-generated`, or
   `.flaitron/`.
 
-Either miss parks `out-of-scope`, naming the stray paths or the count — a
-check every unattended `/ft-task` run takes. Never revert
-work or edit `touches:` to pass it: `touches:` is fixed at Phase 1 exit, and on a note
-promoted from a starter Phase 1 may narrow the confirmed list, never widen it
-(a needed path outside it is a `Re-scope`, which parks `drift`).
+Either miss parks `out-of-scope`, naming the stray paths or the count. Never
+revert work or edit `touches:` to pass it: `touches:` is fixed at Phase 1 exit,
+and on a note promoted from a starter Phase 1 may narrow the confirmed list,
+never widen it (a needed path outside it is a `Re-scope`, which parks `drift`).
+The sweep edits no doc beyond the scope or size cap, filing that drift as
+one `/ft-file-task --unattended` row.
 
 **A confirmed deciding spec decides the 👁️.** Promotion reads the starter's
 readiness basis as it stands

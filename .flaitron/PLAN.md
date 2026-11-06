@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-867** [moderate] | doc-sweep-touches-scope — From marscharts BE-526: unattended Phase 4 doc-drift sweep edits docs outside `touches`, parking the row with work uncommitted and stalling the drain. Scope the sweep to touches, or file follow-ups.
+(none)
 
 ## Low
 
@@ -28,6 +28,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-867** [moderate] | doc-sweep-touches-scope — Completed 2026-11-06.
 - [x] **CORE-863** [moderate]🧩 | brand-casing-guard — Completed 2026-11-05.
 - [x] **CORE-861** [heavy]🧠 | brand-casing-policy — Completed 2026-11-05.
 - [x] **CORE-862** [light]🔧 | ci-job-timeouts — Completed 2026-11-05.

@@ -506,9 +506,10 @@ same line and closes. That is why it lives in the recap and not in a gate.
 One exception: an operator-less `/ft-task` run (not `/ft-close-epic`) also
 checks its diff against this scope, or a promoted starter's as logged, under
 a size cap — at every Phase 3 entry, re-entry and each loop cycle's verify
-included, and again after Phase 4's doc-drift sweep. A miss parks `out-of-scope`
-([`SPEC/gate-postures.md`](SPEC/gate-postures.md) §"Scope guardrails"); the
-recap line itself stays a recorded fact. A task exempt from declaring
+included, and again after Phase 4's doc-drift sweep, which
+files out-of-scope drift as a follow-up rather than editing it. A miss parks
+`out-of-scope` ([`SPEC/gate-postures.md`](SPEC/gate-postures.md) §"Scope
+guardrails"); the recap line itself stays a recorded fact. A task exempt from declaring
 (§"Tasknote frontmatter") writes `N/A — no file deliverable` and is done.
 
 > **Recap is recap-only.** The next-task suggestion belongs in the

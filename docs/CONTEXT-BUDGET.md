@@ -93,7 +93,7 @@ row was budgeted at on first appearing in this table, not a change.
 |---|---|
 | `SPEC.md` | 50,000 split target [[CORE-535.1]] → 55,000 [[CORE-555]] → 57,000 [[CORE-558.5]] → 53,000 [[CORE-607]] (extracted `post-closure.md`) → held 53,000 [[CORE-664]] (extracted `task-line-segments.md`) → 49,000 [[CORE-724.2]] (restatement + archaeology trim, 47,056 → 42,901) → 48,000 [[CORE-857.6]] (rationale trim, 44,818 → 43,772; the −1,046 cut rounded to the nearest 100) |
 | `SPEC/gates.md` | set [[CORE-535.1]]; split (cue vocabulary, discipline prose) [[CORE-535.5]] → 35,000 → 40,000 [[CORE-555]] → 25,000 [[CORE-604.2]] (extracted `gate-postures.md`) → 19,500 [[CORE-724.2]] ("Moved to" stubs retired, restatements cut, 20,454 → 14,314) |
-| `SPEC/gate-postures.md` | split from `gates.md`, budgeted 23,000 [[CORE-604.2]]; re-measured, no change [[CORE-631.3]] → held 23,000 [[CORE-671]] (trimmed 21,592 → 20,409) → 22,000 [[CORE-724.2]] (20,409 → 19,840) → held 22,000 [[CORE-738]] (open-siblings stop; 21,482) → held 22,000 [[CORE-850.5]] (§"Scope guardrails" added; §"Pre-scaffold stops" compressed to a summary of `unattended-mode.md`'s; 21,319 → 21,991) |
+| `SPEC/gate-postures.md` | split from `gates.md`, budgeted 23,000 [[CORE-604.2]]; re-measured, no change [[CORE-631.3]] → held 23,000 [[CORE-671]] (trimmed 21,592 → 20,409) → 22,000 [[CORE-724.2]] (20,409 → 19,840) → held 22,000 [[CORE-738]] (open-siblings stop; 21,482) → held 22,000 [[CORE-850.5]] (§"Scope guardrails" added; §"Pre-scaffold stops" compressed to a summary of `unattended-mode.md`'s; 21,319 → 21,991) → held 22,000 [[CORE-867]] (scoped doc-drift sweep; baseline-sentence trim; 21,991 → 21,999) |
 | `SPEC/post-closure.md` | split from `SPEC.md`, budgeted 12,000 [[CORE-607]] → 10,000 [[CORE-724.2]] (8,389 → 7,787) |
 | `SPEC/task-line-segments.md` | split from `SPEC.md` §"Task-line format", budgeted 10,000 [[CORE-664]] |
 | `SPEC/tasknote-selection.md` | budgeted 12,500 [[CORE-724.3]] (routing prose compressed, 15,217 → 10,706) → held 12,500 [[CORE-857.5]] (skip-wins-over-ID paragraph; 10,723 → 11,180) |
@@ -130,9 +130,9 @@ the cut that made them stale skipped its own standing check.
 **Default-path cold start.** A ledger row, not a budget — nothing here is
 CI-enforced; it sums the surfaces a flagless `/ft-task <ID>.<sub>` reads before
 any Phase 1 write: `claude/skills/ft-task/SKILL.md`
-(23,487) + `claude/skills/ft-task/preamble.md` (8,524) + `SPEC.md` (43,772) +
+(23,610) + `claude/skills/ft-task/preamble.md` (8,524) + `SPEC.md` (43,842) +
 `.flaitron/tasknote/README.md` (6,573) + `templates/tasknote-template.md`
-(3,993) + `SPEC/gates.md` (13,710) + `SPEC/epic.md` (6,191) = **106,250 chars**
+(3,993) + `SPEC/gates.md` (13,710) + `SPEC/epic.md` (6,191) = **106,443 chars**
 (≈27k tokens; `.flaitron/PLAN.md`'s own band, below, is excluded since it isn't
 a flaitron-shipped surface). Re-measured at [[CORE-674]] — the −231 since [[CORE-664]]'s 121,840 is `gates.md` losing
 464 (unrelated trims) against `ft-task/SKILL.md` +218 (CORE-656's review-probe
@@ -202,6 +202,10 @@ Re-measured at [[CORE-855]]: [[CORE-EPIC-857]]'s pointer cuts took `ft-task/SKIL
 ([[CORE-857.3]]); `SPEC.md` 44,428 → 43,772 ([[CORE-857.6]]'s −1,046 net of
 [[CORE-851]]'s installer carve-out), `preamble.md` 7,513 → 8,524 (the tier
 advisory, [[CORE-857.5]]). The other three rows held. Sum **106,250** (−7,795).
+Re-measured at [[CORE-867]]: `ft-task/SKILL.md` 23,487 → 23,610 and `SPEC.md`
+43,772 → 43,842 (the unattended sweep files out-of-scope drift instead of
+editing it); `AGENTS.md` 10,313 → 10,324, outside the sum and not this task's
+doing. The other five summed rows held. Sum **106,443** (+193).
 
 [[CORE-664]] re-measured every row rather than differencing one against the
 v5.32.0 snapshot, and found the snapshot had gone stale on three of them —
@@ -224,10 +228,10 @@ stamped to this task rather than to v5.32.0.
 
 | Surface | Chars |
 |---|---|
-| `SPEC.md` | 43,772 |
-| `claude/skills/ft-task/SKILL.md` | 23,487 |
+| `SPEC.md` | 43,842 |
+| `claude/skills/ft-task/SKILL.md` | 23,610 |
 | `claude/skills/ft-task/preamble.md` | 8,524 |
-| `AGENTS.md` (`CLAUDE.md` is a symlink to it) | 10,313 |
+| `AGENTS.md` (`CLAUDE.md` is a symlink to it) | 10,324 |
 | `.flaitron/tasknote/README.md` | 6,573 |
 | `templates/tasknote-template.md` | 3,993 |
 | `.flaitron/PLAN.md` | ~2–3k (band — see below) |
@@ -253,7 +257,7 @@ not ship.
 ### Lazy `SPEC/` modules
 
 `unattended-candidacy.md` 30,781 · `plan-filing.md` 26,725 ·
-`procedures/ft-task.md` 25,765 · `gate-postures.md` 21,991 · `model.md` 21,366 ·
+`procedures/ft-task.md` 25,805 · `gate-postures.md` 21,999 · `model.md` 21,366 ·
 `cue-vocabulary.md` 18,098 · `blocked.md` 15,870 · `gates.md` 13,710 ·
 `tasknote-selection.md` 11,180 · `plan-parser.md` 10,021 ·
 `post-closure.md` 9,877 · `loop.md` 8,688 · `task-line-segments.md` 6,517 ·

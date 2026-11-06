@@ -44,7 +44,7 @@ Alphabetized. 73 entries. Maintained via epic children and audits.
 
 **Discovery (Phase 1)** — The mandatory opening phase of every tasknote: Reviewed PLAN, Relevance Assessment (Proceed/Re-scope/De-scope), read sources, archive skim, drift check, clarifying questions (or logged assumptions), populate subtasks. Exit gate may emit 🛠️. See SPEC §"📝 Phase 1: Discovery".
 
-**Doc-drift sweep** — The mandatory Phase 4 (and epic-audit) step that walks every entry in the AI-referenced docs list and records "no change" or the precise update performed.
+**Doc-drift sweep** — The mandatory Phase 4 (and epic-audit) step that walks every entry in the AI-referenced docs list and records "no change" or the precise update performed. An `--unattended` `/ft-task` run files out-of-scope drift as a follow-up instead of editing it.
 
 **Downstream-impact reconciliation** — The scan that keeps PLAN.md cohesive as it grows: when a new task is filed or a mid-flow decision changes direction, active PLAN entries are checked for stale / contradictory / redundant overlap and one reconcile action (merge / nest / edit / delete / leave) is proposed per impacted entry behind a user-confirm gate (the plan is never auto-rewritten). Wired into the filing skills and the `/ft-task` Phase 2 decision path. See SPEC/tasknote-selection.md §"Downstream-impact reconciliation".
 

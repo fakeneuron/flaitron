@@ -388,6 +388,17 @@ The post-closure protocol is canonical in `SPEC/post-closure.md` — **Read it n
 
   `<release-sha>` is the §7.5 commit the marker names. A run still `in_progress` / `queued` reads as such, never as a pass; empty output, `gh` missing, or `gh` unauthenticated prints `CI: no runs reported` / `CI: not checked (<reason>)` rather than omitting the line. A `failure` / `cancelled` / `timed_out` is reported, not gated — the tag is already pushed — and the 🏁 marker still emits; name the red run and offer a fix commit as the next move. On push-go No, print `CI: not pushed`.
 
+- **Install line** — push-go Yes, once the release is "latest", prove README's URL ([[CORE-868.3]]):
+
+  ```sh
+  S=$(mktemp -d); U=$(git show vA.B.C:README.md | grep -o 'https://raw[^ ]*/vA.B.C/install.sh')
+  curl -fsSL "$U" -o "$S/i.sh" && git show vA.B.C:install.sh | cmp - "$S/i.sh"
+  git show vA.B.C:tools/install.test.sh >"$S/t.sh"; sh "$S/t.sh" "$S/i.sh" >"$S/o" 2>&1
+  grep -qxF 'ok   pin is latest (vA.B.C)' "$S/o"
+  ```
+
+  All exit 0 → `Install: pass vA.B.C` under `CI:`; else `Install: FAIL — <step, or $S/o's FAIL lines>`, flag-don't-block (a green test that missed the pin may be API lag: rerun once). No push: `Install: not pushed`.
+
 - **Suggest-next-move + copy-paste line** — follow in the same response as the 🏁 marker. Candidates carry `[model]` inline per option (`**<TASK-ID>** [model] | shortname — one-sentence "why now"`). The next move is typically the next pending child in the cohort that filed this release, or `/ft-file-task` for any drift surfaced during the cut.
 
 ## Notes

@@ -3,8 +3,12 @@ name: Install test
 # install.sh's end-to-end test (CORE-851). It needs the network (GitHub
 # releases/latest, git ls-remote, real clones), so its result depends on live
 # state as well as the commit. That is why it is a separate workflow,
-# path-filtered to the files it tests, and never a step in ci.yml's `validate`
-# job (docs/CONVENTIONS.md §"GitHub Actions CI"; §7.1 Pair H binds that job).
+# path-filtered to the files it tests (or run by hand), and never a step in
+# ci.yml's `validate` job (docs/CONVENTIONS.md §"GitHub Actions CI"; §7.1
+# Pair H binds that job). The texts install.sh parses (SPEC.md, the
+# snippets, ft-adopt) stay out of the filter: the run installs the latest
+# released tag, not this tree, so it would not test an edit to them —
+# drift-checks.sh's installer_anchors binds those at HEAD (CORE-868.3).
 
 on:
   push:
@@ -18,6 +22,7 @@ on:
       - install.sh
       - tools/install.test.sh
       - .github/workflows/install-test.yml
+  workflow_dispatch:
 
 concurrency:
   group: install-test-${{ github.ref }}

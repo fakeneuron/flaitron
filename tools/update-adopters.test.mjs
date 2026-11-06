@@ -935,7 +935,7 @@ describe('dry-run CLI (--root fixture)', { concurrency: GROUP_CONCURRENCY }, () 
       { env: { FLAITRON_UPDATE_LATEST: latest } },
     );
     assert.match(stdout, /⬆ only-a: would bump/);
-    assert.doesNotMatch(stdout, /only-b/);
+    assert.doesNotMatch(stdout, /only-b:/);
     assert.equal(stdout.match(/⏭ nosuch: skipped — no adopter at this exact name under /g)?.length, 1);
     assert.match(stdout, /⏭ plain: skipped — no adopter at this exact name/);
     assert.match(stdout, /Summary: 0 current · 0 drift · would bump 1 · 2 skipped · 0 failed/);

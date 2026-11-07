@@ -175,20 +175,23 @@ with the user's permissions. Mitigations:
 ### GitHub Actions CI
 
 `.github/workflows/ci.yml` runs the AGENTS.md §"Validation" roster
-(`validate`) and the cross-file drift checks described in
+(`validate`), the cross-file drift checks described in
 [docs/CONVENTIONS.md](docs/CONVENTIONS.md) §"GitHub Actions CI"
-(`drift`) on push to `main` and on every pull request. That is an execution
+(`drift`), and the changed-line coverage gate (`coverage`) on push to `main`
+and on every pull request. That is an execution
 surface the rest of this document did not cover: a contributor PR's tree
-is checked out and its tests run on a GitHub-hosted runner. Both jobs
+is checked out and its tests run on a GitHub-hosted runner. All three jobs
 inherit the workflow-level `permissions: contents: read` and the same
-SHA-pinned `actions/checkout`, so the posture below covers both.
+SHA-pinned `actions/checkout`, so the posture below covers all three.
 `.github/workflows/install-test.yml` (the installer's path-filtered e2e) holds the
 same posture: `permissions: contents: read` and the same SHA-pinned checkout.
 
 The realistic compromise paths are (1) a mutable action tag silently
 moving to malicious code, (2) a workflow that grants the job more
-`GITHUB_TOKEN` scope than it needs, and (3) a tampered gitleaks release
-tarball substituted for the real binary. Exposure is low — the workflow
+`GITHUB_TOKEN` scope than it needs, (3) a tampered gitleaks release
+tarball substituted for the real binary, and (4) a tampered `diff-cover`
+package, which the `coverage` job fetches from PyPI at run time (also on
+PR runs) and executes against the PR's tree. Exposure is low — the workflow
 uses `pull_request`, not `pull_request_target`, so fork runs get a
 read-only token and no repository secrets. The `pull_request` trigger
 carries no branch filter (`CORE-715`, the fleet CI spine), so a PR into
@@ -209,10 +212,18 @@ vulnerability.
   `checksums.txt` via `sha256sum --check` before extraction — a swapped
   or corrupted tarball fails the checksum and the step exits nonzero
   before any untrusted code runs.
+- `diff-cover` is pinned to an exact version (`DIFF_COVER_VERSION`, run as
+  `pipx run "diff-cover==<version>"`), so a newer release is never picked
+  up silently, and the runner's preinstalled `pipx` is used instead of a
+  third-party action. The job holds no secrets and only the read-only
+  token above.
 
-**What remains.** A PR that edits `ci.yml` to add `pull_request_target`,
-broaden `permissions:`, or swap a SHA is a code change and should be
-reviewed as one. Do not add repository secrets to this workflow.
+**What remains.** The `diff-cover` pin is a version, not a hash: nothing
+verifies the downloaded package against a digest, and its own
+dependencies resolve unpinned at run time. A PR that edits `ci.yml` to add
+`pull_request_target`, broaden `permissions:`, swap a SHA, or change
+`DIFF_COVER_VERSION` is a code change and should be reviewed as one. Do
+not add repository secrets to this workflow.
 
 ### Fleet updater (`tools/`)
 

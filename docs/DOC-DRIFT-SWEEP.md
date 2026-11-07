@@ -5,9 +5,9 @@ This is the historical record behind `.flaitron/tasknote/README.md` §"AI-refere
 ## Sweep-set exclusions
 
 `SPEC/*.md` (lazy modules) and `claude/skills/*/SKILL.md` sit outside this
-sweep set, excluded on both counts, so the distinction above does not arise for
-them. **Their exclusion is a volume decision, not a laziness one** — the
-paragraph above severs lazy-loading from sweep membership, so it cannot also be
+sweep set, excluded on both counts, so the membership-vs-cold-start distinction in
+`.flaitron/tasknote/README.md` §"AI-referenced docs" does not arise for them. **Their exclusion is a volume decision, not a laziness one** — that
+paragraph severs lazy-loading from sweep membership, so it cannot also be
 the reason these are excluded. The two trees run ~5,800 lines against a
 ~4,300-line sweep set, and walking them at every closure would roughly double a
 per-task step Core Principle #3 exists to keep small.

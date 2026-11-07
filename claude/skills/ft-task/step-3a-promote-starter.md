@@ -25,4 +25,4 @@ The starter file already carries frontmatter and a `## 🌱 Starter context` bod
 6. **Add the divider + four phase sections** below the spec sections, copied from the template (path resolved in Step 0) (📝 Phase 1: Discovery / 🛠️ Phase 2: Execution / 🧪 Phase 3: Testing & Linting / 🚀 Phase 4: Closure with their full checklists).
 7. **Tick** `Reviewed the task entry in PLAN.md` in Phase 1 (already done in Step 1). Continue at **Step 4 (Phase 1: Discovery)**.
 
-The starter's "Open at promotion" sub-heading feeds Phase 1 Step 5 (clarifying questions); resolve them via AskUserQuestion as part of Discovery.
+The starter's "Open at promotion" sub-heading feeds Phase 1's clarifying-questions item; resolve them via AskUserQuestion as part of Discovery.

@@ -128,7 +128,7 @@ what's at the project root:
 
 - **`CLAUDE.md` is already a symlink to `AGENTS.md`** — nothing to do.
 
-- **`CLAUDE.md` is a real file** (the Step 1 precondition accepts this) — do **not** replace it; it holds the project's Claude-only directives. Offer to append a single `@AGENTS.md` import line to it, and say why. If the user declines, note in the Step 8 hand-off that `AGENTS.md` may not be loaded and point at `docs/MIGRATION.md` §1.3's verification.
+- **`CLAUDE.md` is a real file** (the Step 0 precondition accepts this) — do **not** replace it; it holds the project's Claude-only directives. Offer to append a single `@AGENTS.md` import line to it, and say why. If the user declines, note in the Step 8 hand-off that `AGENTS.md` may not be loaded and point at `docs/MIGRATION.md` §1.3's verification.
 
 Never paste the workflow block into `CLAUDE.md` as a second copy — two copies of the contract drift apart. `AGENTS.md` stays the single source.
 

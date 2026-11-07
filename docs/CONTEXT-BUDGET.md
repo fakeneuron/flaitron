@@ -46,7 +46,7 @@ Checked on every push by the CI `drift` job and at every release cut by
 | `SPEC/post-closure.md` | 10,000 | The three post-archive steps — commit decision, 🏁 marker (rotation count included) plus next-move suggestion, copy-paste line — split out of `SPEC.md`. Budgeted although lazy — it arrives only at a closing runner's final step, once the tasknote is archived — for the same un-budgets-what-it-moves reason as `gate-postures.md`. Sized like its siblings: the file plus ~1.5 working units. |
 | `SPEC/task-line-segments.md` | 10,000 | The per-segment table, the worked examples, and the `[unattended]`-candidacy proposal contract, split out of `SPEC.md` §"Task-line format". Budgeted for the same reason as its siblings. Sized like its siblings: the file plus ~1.5 working units. The split point is read-vs-write, not frequency — a runner *capturing* a row at Step 1 needs only the grammar block and the ordering rule, both of which stay in `SPEC.md`; the per-token write semantics travel here. |
 | `SPEC/tasknote-selection.md` | 12,500 | The use/skip routing, the filing-discipline word budget, and the downstream-impact scan. Lazy by declaration, near-universal in practice: every filing and runner skill cites it, so it is budgeted like its loaded siblings. Sized like them: the file plus ~1.5 working units. |
-| `claude/skills/*/SKILL.md` | 33,000 | One skill body is loaded per task, on top of `SPEC.md`. Sized to give the largest ordinary body — `ft-open-epic`, per §"Skill bodies" (the numbers live there, not here: [[CORE-793]] retired this cell's restatement after it drifted from the ledger) — under one working unit of headroom, so its next substantial edit extracts a lazy fragment (a substantial skill edit runs +1,187 to +3,390 chars). `ft-task` has its own row below ([[CORE-857.4]]). Extracting a lazy fragment ([[CORE-556.2]]) is the preferred remedy over raising this cap when a body is genuinely overgrown rather than merely near its line. |
+| `claude/skills/*/SKILL.md` | 33,000 | One skill body is loaded per task, on top of `SPEC.md`. Sized to give the largest ordinary body, per §"Skill bodies" (the numbers live there, not here: [[CORE-793]] retired this cell's restatement after it drifted from the ledger) — under one working unit of headroom, so its next substantial edit extracts a lazy fragment (a substantial skill edit runs +1,187 to +3,390 chars). `ft-task` has its own row below ([[CORE-857.4]]). Extracting a lazy fragment ([[CORE-556.2]]) is the preferred remedy over raising this cap when a body is genuinely overgrown rather than merely near its line. |
 | `claude/skills/ft-task/preamble.md` | 9,000 | The one `ft-task` fragment read on **every** run — the Step 1 / 1.5 preamble, single-sourced rather than branch-gated ([[CORE-724.4]]). Budgeted because a fragment that loads every run is body by another name, and leaving it uncapped would let the `SKILL.md` row be met by moving bytes. Sized like `post-closure.md`: the file plus ~1.5 working units at [[CORE-724.4]]; [[CORE-857.5]]'s tier advisory left 476, about a third of a sibling unit (~1,400), so the next edit here trims or extracts before this cap raises. |
 | `claude/skills/ft-task/SKILL.md` | 27,000 | More specific row wins. The runner body every `/ft-task` reads before any Phase 1 write, on top of `SPEC.md` and `preamble.md`. Given its own row once its restatements of the modules it loads were cut to pointers ([[CORE-857.4]]), so the cut ratchets instead of regrowing under the glob's 33,000. Sized to file size plus one upper-bound substantial skill edit (+3,390; the range runs from +1,187); a new mode at that scale extracts a lazy fragment, as each flag mode already has. |
 | `claude/skills/ft-release/SKILL.md` | 40,000 | More specific row wins. A release cut is a whole-repo motion whose skill is loaded alone, never alongside a tasknote, and this body is already post-trim ([[CORE-507]] cut it from ~77,000 to 37,274). Budgeted rather than exempted so it still ratchets. |
@@ -130,9 +130,9 @@ the cut that made them stale skipped its own standing check.
 **Default-path cold start.** A ledger row, not a budget — nothing here is
 CI-enforced; it sums the surfaces a flagless `/ft-task <ID>.<sub>` reads before
 any Phase 1 write: `claude/skills/ft-task/SKILL.md`
-(23,610) + `claude/skills/ft-task/preamble.md` (8,524) + `SPEC.md` (43,842) +
+(23,824) + `claude/skills/ft-task/preamble.md` (8,524) + `SPEC.md` (43,842) +
 `.flaitron/tasknote/README.md` (6,573) + `templates/tasknote-template.md`
-(3,993) + `SPEC/gates.md` (13,710) + `SPEC/epic.md` (6,191) = **106,443 chars**
+(3,993) + `SPEC/gates.md` (13,710) + `SPEC/epic.md` (6,191) = **106,657 chars**
 (≈27k tokens; `.flaitron/PLAN.md`'s own band, below, is excluded since it isn't
 a flaitron-shipped surface). Re-measured at [[CORE-674]] — the −231 since [[CORE-664]]'s 121,840 is `gates.md` losing
 464 (unrelated trims) against `ft-task/SKILL.md` +218 (CORE-656's review-probe
@@ -207,8 +207,8 @@ Re-measured at [[CORE-867]]: `ft-task/SKILL.md` 23,487 → 23,610 and `SPEC.md`
 editing it); `AGENTS.md` 10,313 → 10,324, outside the sum and not this task's
 doing. The other five summed rows held. Sum **106,443** (+193).
 Re-measured at [[CORE-865]]: `AGENTS.md` 10,324 → 8,628 (§"Repo Layout" cut from a
-file-by-file map to a pointer plus the must-know entries), outside the sum; the
-summed rows held, sum **106,443**.
+file-by-file map to a pointer plus the must-know entries), outside the sum;
+`ft-task/SKILL.md` 23,610 → 23,824 ([[CORE-872]]), sum **106,657** (+214).
 
 [[CORE-664]] re-measured every row rather than differencing one against the
 v5.32.0 snapshot, and found the snapshot had gone stale on three of them —
@@ -232,7 +232,7 @@ stamped to this task rather than to v5.32.0.
 | Surface | Chars |
 |---|---|
 | `SPEC.md` | 43,842 |
-| `claude/skills/ft-task/SKILL.md` | 23,610 |
+| `claude/skills/ft-task/SKILL.md` | 23,824 |
 | `claude/skills/ft-task/preamble.md` | 8,524 |
 | `AGENTS.md` (`CLAUDE.md` is a symlink to it) | 8,628 |
 | `.flaitron/tasknote/README.md` | 6,573 |

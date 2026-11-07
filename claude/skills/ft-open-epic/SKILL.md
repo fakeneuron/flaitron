@@ -41,7 +41,7 @@ After resolving paths, Read `<SPEC_DIR>/epic.md` for the canonical lifecycle bef
 Branch on `$ARGUMENTS`:
 
 - **Empty `$ARGUMENTS`** → default flow. Set internal flag `deep-mode = false` and continue to Step 2.
-- **`<AREA>-<N>.1`** (a filed, unstarted epic Discovery; a trailing `--deep` also takes its bullet) → set `resume-mode = true` and **Read `<SKILL_DIR>/step-4.5-model-gate.md` now** — its §"Resume entry" replaces Steps 1–4.
+- **`<AREA>-<N>.1`** (a filed, unstarted epic Discovery; a trailing `--deep` also takes its bullet) → set `resume-mode = true` and **Read `<SKILL_DIR>/step-4.5-model-gate.md` now** — its §"Resume entry" replaces Steps 2–4 and Step 1's single-task-scope check.
 - **`--deep`** → set `deep-mode = true` and **Read `<SKILL_DIR>/step-5.5-deep-prepass.md` now** — it carries the whole of deep mode: what the flag is for, the Step 5 scaffold injection, and the three Step 5.5 stages (constitution → specify → clarify) that run before Phase 1 Discovery begins.
 - **`--unattended`** → this skill does not accept it (`SPEC/gate-postures.md` §"`--unattended` operator posture"): filing an epic means having a scoping conversation, and there is none to have with nobody present. Terminate readably and write nothing — do not fall through to the "Any other arg" branch below:
 

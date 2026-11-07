@@ -8,7 +8,7 @@
 
 ```sh
 awk '/^### 1\.6 Commit$/,/^### 1\.7 /' docs/MIGRATION.md | grep -n '\.claude/skills/ft-'
-awk '/^## Step 7 /,/^## Step 9 /' claude/skills/ft-adopt/SKILL.md | grep -n '\.claude/skills/ft-'
+awk '/^## Step 7 /,/^## Notes/' claude/skills/ft-adopt/SKILL.md | grep -n '\.claude/skills/ft-'
 ```
 
 Both must produce no output and exit 1. A hit means someone re-introduced a hand-maintained roster copy into a surface that is supposed to derive one — the CORE-329.2 drift class. Fix by restoring the derivation (`grep '^ln -s' … | awk '{print $NF}'`), not by re-syncing the list — fix inline as Critical/High before cutting the release. Do not reinstate a symlink-wiring *count* check: CORE-465 retired it as vacuous once the consumers derive.

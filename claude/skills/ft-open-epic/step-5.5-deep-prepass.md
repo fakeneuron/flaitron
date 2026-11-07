@@ -18,7 +18,7 @@ Applies when Step 5 scaffolds the `.1` Discovery tasknote:
 
 Skip this entire step if `deep-mode = false` (set in Step 1.5). On `--deep`, drive three discrete stages, writing each stage's output into the `## 🧭 Deep Pre-pass` section already injected into the `.1` tasknote in Step 5. Each stage ends with an AskUserQuestion review-and-confirm gate **before** the next stage begins.
 
-These per-stage gates are **AskUserQuestion-driven review prompts** — not the banner-block 🛠️ / 📦 operator-gate cues from SPEC/gates.md §"Operator-gate cues". The 4-phase workflow's two-banner cap is preserved: the 🛠️ Phase 1→2 banner and the 📦 ready-to-commit banner remain the only banner-blocks in the run. Per SPEC: "Skill-level extensions … bundle into the 📦 gate rather than adding their own banners. … it does not introduce new gates."
+These per-stage gates are **AskUserQuestion-driven review prompts** — not the banner-block 🛠️ / 📦 operator-gate cues from SPEC/gates.md §"Operator-gate cues". The 4-phase workflow's two-banner cap is preserved: the 🛠️ Phase 1→2 banner and the 📦 ready-to-commit banner remain the only banner-blocks in the run. Skill-level extensions bundle into the 📦 gate rather than adding their own banners (`SPEC/gates.md` §"Operator-gate cues"), so these prompts add no new banner-block.
 
 ### Stage 1 — Constitution
 

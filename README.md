@@ -322,7 +322,7 @@ runtime lives in the runner; the contract lives in flaitron.
 - `codex/` — Codex skill wrappers for the full `ft-*` inventory plus Codex-specific wiring notes
 - `cursor/` — Cursor thin wiring (`AGENTS-snippet.md` + `procedures/ft-task.md` pointer; no skill wrappers — adopters wire canonical `claude/skills/` bodies)
 - `grok/` — Grok thin wiring (`AGENTS-snippet.md` + `procedures/ft-task.md` pointer; no skill wrappers — adopters wire canonical `claude/skills/` bodies)
-- `docs/` — philosophy, vision, glossary, migration, upgrading, conventions, version history, agent-neutrality, platforms, agent-compat, dogfood, worktrees, gate-discipline, external-agents, harness-survey, codex-verification, and context-budget docs
+- `docs/` — philosophy, vision, glossary, migration, upgrading, conventions, version history, agent-neutrality, platforms, agent-compat, dogfood, worktrees, gate-discipline, external-agents, harness-survey, codex-verification, context-budget, and doc-drift-sweep docs
 - `.flaitron/` — flaitron's own roadmap and tasknotes (self-hosted)
 - `brand/` — public identity kit (blurb, marks, chamber references, `assets.json` manifest, prompt provenance; contract in `brand/README.md`)
 - `viz/` — Vite/React visualizer (priority-grouped list + optional board mode)

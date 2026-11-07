@@ -5,7 +5,7 @@ description: Cut a flaitron release — version bump, doc-currency shifts, doc-d
 
 # release — flaitron self-host release skill
 
-You are cutting a flaitron release. The recipe is canonical (CORE-048 / CORE-046 / CORE-043 precedents): SPEC.md version bump · docs/MIGRATION.md pin bump · doc-drift sweep · single `feat:` commit · annotated tag · curated `docs/VERSION-HISTORY.md` prepend · push. This skill scaffolds and drives a release tasknote through the full 4-phase flow.
+You are cutting a flaitron release. The recipe is canonical (CORE-048 / CORE-046 / CORE-043 precedents): SPEC.md version bump · docs/MIGRATION.md, SECURITY.md and README.md pin bumps · doc-drift sweep · single `feat:` commit · annotated tag · curated `docs/VERSION-HISTORY.md` prepend · push. This skill scaffolds and drives a release tasknote through the full 4-phase flow.
 
 This skill is **flaitron-self only**. It is wired repo-scoped in flaitron's own `.claude/` and never installed globally (`docs/PLATFORMS.md` §"One canonical install path per project"); it never runs in adopter projects. Step 0 enforces this.
 
@@ -126,6 +126,7 @@ Acceptance (parameterized):
 - [ ] SPEC.md `**Version:** vX.Y.Z` → `vA.B.C`
 - [ ] docs/MIGRATION.md example pin bumped `vX.Y.Z` → `vA.B.C`
 - [ ] SECURITY.md release-tag example pin bumped `vX.Y.Z` → `vA.B.C`
+- [ ] README.md Quickstart installer URL tag bumped `vX.Y.Z` → `vA.B.C`
 - [ ] Dogfood gate resolved — every dogfooded row (Claude / Grok / Codex / Cursor) refreshed from a real verification run at `vA.B.C`, or recorded `skipped @ vA.B.C` (per `docs/AGENT-COMPAT.md` §"Reading the cells")
 - [ ] SOP-currency check run — `SPEC/procedures/*.md` reported clean, or drift candidates adjudicated and a follow-up filed (stamps left un-bumped either way)
 - [ ] Phase 4 doc-drift sweep run across all `.flaitron/tasknote/README.md` §"AI-referenced docs" entries
@@ -307,7 +308,7 @@ Move the tasknote file with a plain `mv` — it was copied fresh in Step 3 and n
 Stage explicitly (do NOT use `git add .` or `-A` — there may be unrelated unstaged work):
 
 ```sh
-git add SPEC.md docs/MIGRATION.md SECURITY.md docs/VERSION-HISTORY.md .flaitron/PLAN.md
+git add SPEC.md docs/MIGRATION.md SECURITY.md README.md docs/VERSION-HISTORY.md .flaitron/PLAN.md
 git add .flaitron/tasknote/archive/core/<TASK-ID>.md
 # If the §5 dogfood-gate walk landed any refresh/skip edits, also stage the touched stamp files
 # (a git add of an unchanged file is a no-op, so listing all three is safe):

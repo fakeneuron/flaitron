@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-895** [heavy] | ft-import-task — Add a read-only skill that imports a starter-shaped note (file, folder or paste) into this repo's plan: real IDs, SPEC frontmatter, provenance, dedupe, sizing, plus an adopter claim hook. Filed with starter at `.flaitron/tasknote/CORE-895.md`.
+(none)
 
 ## Low
 
@@ -26,6 +26,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-895** [heavy] | ft-import-task — Completed 2026-11-08.
 - [x] **CORE-893** [moderate] | dogfood-render-outcome — Completed 2026-11-08.
 - [x] **CORE-894** [heavy] | release-midcut-defect-ask — Completed 2026-11-08.
 

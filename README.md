@@ -40,7 +40,7 @@ curl -fsSL https://raw.githubusercontent.com/fakeneuron/flaitron/v8.4.0/install.
 [`install.sh`](install.sh) does five things, and commits nothing:
 - **Pins.** Adds the flaitron submodule at the latest release, printing the tag and where it came from.
 - **Verifies.** Checks the checkout against the commit GitHub reports for that tag.
-- **Wires the project.** Links the adopter skill subset for every agent it detects (Claude Code, Codex, Cursor-only, Grok-only). That's the tasknote family, `/ft-seed-unattended` and `/ft-update`; the exact roster is the `ln -s` block in [`claude/AGENTS-snippet.md`](claude/AGENTS-snippet.md) §"One-time symlink wiring".
+- **Wires the project.** Links the adopter skill subset for every agent it detects (Claude Code, Codex, Cursor-only, Grok-only). That's the tasknote family, `/ft-import-task`, `/ft-seed-unattended` and `/ft-update`; the exact roster is the `ln -s` block in [`claude/AGENTS-snippet.md`](claude/AGENTS-snippet.md) §"One-time symlink wiring".
 - **Touches your machine.** Clones flaitron to `~/code/flaitron` at that tag (if it isn't there already) and links the global `/ft-adopt` into your agent's skill directory (`FLAITRON_NO_GLOBAL=1` skips both; `FLAITRON_HOME` moves the clone).
 - **Hands off.** Ends by telling you to run `/ft-adopt` (Codex: `$ft-adopt`), which writes the AGENTS.md block and the `.flaitron/` skeleton and stages the adoption commit for your go.
 

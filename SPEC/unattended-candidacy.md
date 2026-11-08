@@ -488,6 +488,7 @@ fails that check.
 | `/ft-file-task` default, `--starter` | Step 4 / S4 | Step 3 / S3 prose review | [[CORE-577.4]] · [[CORE-850.2]] (`--starter` basis) |
 | `/ft-file-task --unattended` | Step 4 | none — emits, persists via the discharging runner | [[CORE-577.4]] |
 | `/ft-file-task --park` | — | **no candidacy** (one-motion by design; decided when the stub is promoted) | — |
+| `/ft-import-task` | — | **no candidacy** (the rows are someone else's drafts; marking stays with `/ft-seed-unattended` after the operator has read them) | [[CORE-895]] |
 | `/ft-audit` §5 | ticket write | structured-ask write-step confirm | [[CORE-577.5]] |
 | `/ft-refactor` | Step 5 | Step 4 structured-ask review; own `--fast` → emit only | [[CORE-577.5]] |
 | `/ft-audit-repo` §6 | milestone write | write-confirm structured ask | [[CORE-577.6]] |

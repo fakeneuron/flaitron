@@ -4,7 +4,7 @@
 
 Adopted from the GSD-Pi `CONTEXT.md` glossary pattern (the "mega-doc" slice that survived the one-task-per-window filter during CORE-EPIC-194 Discovery). See [CORE-194.1](../.flaitron/tasknote/archive/core/CORE-194.1.md) for the extraction rationale and term-cohort decisions.
 
-Alphabetized. 73 entries. Maintained via epic children and audits.
+Alphabetized. 74 entries. Maintained via epic children and audits.
 
 ---
 
@@ -63,6 +63,8 @@ Alphabetized. 73 entries. Maintained via epic children and audits.
 **Fan-out (🌳)** — Optional Discovery `.1` body section declaring which epic children are Parallel / Sequential / Synthesis. Not in the default template; `/ft-open-epic` pre-fills when M>1. Children echo via YAML `blocked-by` / `parallel-safe-with`. A declaration, not a scheduler. See SPEC §"Tasknote body shape" and SPEC/epic.md §"Fan-out".
 
 **follow-up** — A lightweight mid-flow task filed via `/ft-file-task`; produces a one-line PLAN.md entry plus a short context paragraph delivered conversationally. Below the normal tasknote threshold.
+
+**`/ft-import-task`** — The attended, read-only **note importer**: takes starter-shaped notes written outside the repo (a file, a folder, or pasted text), skips non-notes, classifies, dedupes against `Source:` provenance lines, swaps placeholder IDs for real ones, sizes each as a row or starter, files what the operator keeps from one proposal table, and commits `chore: import <N> tasks`. It never writes to the source; an adopter overlay may add a fail-closed `## Claim hook` (`SPEC/starter.md` §"Importing a starter"; [[CORE-895]]).
 
 **`/ft-refactor`** — The refactor **depth planner that files**: takes one named target, runs a read-only survey (dependencies, seams, test coverage, blast radius), surfaces a sequenced behavior-preserving plan for operator review, then files a parent epic + implementation children from `.2` + a `.N` audit, each child a starter seeded with characterization-test and behavior-preservation acceptance. Never edits source — children execute via `/ft-task`. Its epics carry no `.1` Discovery (the run *is* the discovery). Depth counterpart to `/ft-audit structure`'s **breadth sweep**; contrast a hand-drafted spec (`templates/spec-template.md`; plans, never files) and `/ft-open-epic` (files, then drives a generic Discovery).
 

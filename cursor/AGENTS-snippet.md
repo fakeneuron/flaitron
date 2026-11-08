@@ -45,6 +45,7 @@ after adding the flaitron submodule at `.flaitron/core`:
 mkdir -p .cursor/skills
 ln -s ../../.flaitron/core/claude/skills/ft-close-epic .cursor/skills/ft-close-epic
 ln -s ../../.flaitron/core/claude/skills/ft-file-task .cursor/skills/ft-file-task
+ln -s ../../.flaitron/core/claude/skills/ft-import-task .cursor/skills/ft-import-task
 ln -s ../../.flaitron/core/claude/skills/ft-open-epic .cursor/skills/ft-open-epic
 ln -s ../../.flaitron/core/claude/skills/ft-refactor .cursor/skills/ft-refactor
 ln -s ../../.flaitron/core/claude/skills/ft-seed-unattended .cursor/skills/ft-seed-unattended
@@ -73,7 +74,7 @@ them separate avoids a slug collision between the canonical bodies and Codex's
 `codex/skills/` wrappers if the project later wires Codex too.
 
 This snippet wires the adopter-installed subset: the tasknote family,
-`/ft-seed-unattended`, and `/ft-update`. Global utility skills such as
+`/ft-import-task`, `/ft-seed-unattended`, and `/ft-update`. Global utility skills such as
 `ft-adopt` and `ft-audit-repo` may be installed in the user skill directory when desired;
 `ft-release` remains flaitron-self-only and is not part of the adopter snippet.
 The canonical category table lives in

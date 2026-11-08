@@ -56,3 +56,49 @@ is surfaced to the user, never silently reworded.
    above a divider, then the four phase sections), and flips status to
    `in-progress`. The starter context informs the spec sections; it is not
    silently authoritative — Phase 1's drift check applies fully.
+
+## Importing a starter
+
+A starter can also arrive from outside the repo: written by another agent, a
+bot, or another project, and handed in as a file, a folder, or pasted text.
+`/ft-import-task` files such notes into this repo's plan
+(`claude/skills/ft-import-task/SKILL.md`). This section is the portable input
+format it reads, so an outside author knows what to write.
+
+- **Body.** Starter-shaped: a `## 🌱 Starter context` section, or the
+  template's sub-headings (Why this exists / Solution shape / Files to touch /
+  Explicitly out of scope / Decisions / Acceptance that decides it / Open at
+  promotion / Related) without it. Wording is kept as written.
+- **Not a note.** A file whose first line starts with `NOT A TASKNOTE` (a
+  folder guide, an index) is skipped.
+- **IDs.** The author cannot know this repo's next number, so the note's own ID
+  is a placeholder: `<PREFIX>-<next>`, or any `<…>`-bracketed ID. A reference
+  to another note in the same batch names that note's file name. The importer
+  allocates real IDs per [`SPEC/plan-filing.md`](plan-filing.md) §"ID
+  allocation" and replaces both.
+- **Frontmatter.** The SPEC keys (§"Tasknote frontmatter" in `SPEC.md`) where
+  the author has them, plus four optional import keys, none of which survive
+  the import as written:
+
+  | Key | Meaning | On import |
+  |---|---|---|
+  | `repo:` | `owner/name` the note is for | Compared with this checkout's origin; a mismatch is skipped unless the operator files it anyway; several repos are always skipped |
+  | `read_at:` | `owner/name@<sha>` the author read | Kept as the provenance line's `read at` clause when it names this repo |
+  | `task:` | The ID a previous import already filed it as | A dedupe key: the note is already filed |
+  | `priority:` | `High` / `Medium` / `Low` / `Future`, or P0–P3 | Maps to the PLAN section (P0/P1 → High, P2 → Medium, P3 → Low) |
+
+  `touches:` may carry a repo prefix (`owner/name:path`); the importer strips
+  it to repo-local paths.
+- **Status.** `status: starter`, a missing `status:`, or `pending` is a
+  candidate. `parked`, `idea` or `revisit-later` is parked: reported, not
+  filed unless the operator asks. `done`, `completed` or `superseded` is
+  skipped.
+- **Decisions are proposals.** A decisions or open-questions section the
+  author wrote is filed as Discovery questions, its leans kept as evidence. Only
+  a decision the operator actually answered stays locked, with where they
+  answered it.
+
+An imported starter carries one extra line under its nav header,
+`Source: <locator> (<hash or id>), read at <owner/name>@<sha>` — the `read at`
+clause dropped when the note named no commit of this repo. It is the import
+record: dedupe reads it, and nothing is written back to the source.

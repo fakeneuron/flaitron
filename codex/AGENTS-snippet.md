@@ -23,12 +23,14 @@ regenerating this block, never editing this block alone. It stays a literal
 Codex discovers repo-scoped skills from `.agents/skills` in the current
 directory walk. From an adopting project's repository root, after adding the
 flaitron submodule at `.flaitron/core`, wire the adopter-facing flaitron skill
-subset (tasknote execution family, `ft-seed-unattended`, and `ft-update`):
+subset (tasknote execution family, `ft-import-task`, `ft-seed-unattended`, and
+`ft-update`):
 
 ```sh
 mkdir -p .agents/skills
 ln -s ../../.flaitron/core/codex/skills/ft-close-epic .agents/skills/ft-close-epic
 ln -s ../../.flaitron/core/codex/skills/ft-file-task .agents/skills/ft-file-task
+ln -s ../../.flaitron/core/codex/skills/ft-import-task .agents/skills/ft-import-task
 ln -s ../../.flaitron/core/codex/skills/ft-open-epic .agents/skills/ft-open-epic
 ln -s ../../.flaitron/core/codex/skills/ft-refactor .agents/skills/ft-refactor
 ln -s ../../.flaitron/core/codex/skills/ft-seed-unattended .agents/skills/ft-seed-unattended

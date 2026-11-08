@@ -68,7 +68,7 @@ wrappers (`<platform>/procedures/<procedure>.md`) rather than by the
 Bundled flaitron skills carry the `ft-` prefix in their slug (`/ft-task`,
 `/ft-release`, `/ft-adopt`,
 `/ft-file-task`, `/ft-open-epic`,
-`/ft-close-epic`, `/ft-refactor`,
+`/ft-close-epic`, `/ft-refactor`, `/ft-import-task`,
 `/ft-seed-unattended`, `/ft-update`, and the audit family
 `/ft-audit{,-repo}`). The prefix
 reserves the `ft-` slug namespace for flaitron-owned skills so adopter

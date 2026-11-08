@@ -126,6 +126,14 @@ one `/ft-task` cycle. Sequencing doctrine:
   same pass. The token lands only through the Step 4 review, never on a
   starter note; under `--fast` the Step 6 hand-off carries
   `unattended-candidates:` instead (Step 4).
+- **Downstream-impact reconciliation scan** (per
+  `SPEC/tasknote-selection.md` §"Downstream-impact reconciliation" — a
+  new-task filing trigger): scan the active PLAN for entries sharing a
+  surface with the target or any drafted step's files; classify and draft
+  one reconcile action per impacted entry, naming new rows by step position
+  (IDs resolve in Step 5). Drafted here so the proposals ride the Step 4
+  review. A plan nothing else is filed against skips the scan (judgment) —
+  note "no downstream impact".
 
 ## Step 4 — Review gate
 
@@ -135,8 +143,12 @@ step list with per-step one-liners and proposed model tags, then the
 proposed filing (area · parent shortname · priority · M · audit included?).
 Each Step 3 candidate is shown as its PLAN line with `[unattended]` in place
 after `[<model>]`, naming the clause-6 predecessor where one applies.
-Ask via AskUserQuestion whether to file as proposed, edit first (apply
-edits and re-surface), or stop (plan stays in the conversation only). Wait
+The Step 3 reconcile proposals show alongside, one action per impacted
+entry (or "no downstream impact"). Ask via AskUserQuestion whether to file
+as proposed (accepts every shown proposal), edit first (apply edits —
+amending or rejecting proposals included — re-run the Step 3 scan when the
+plan changed, and re-surface), or stop (plan stays in the conversation
+only). Wait
 for the operator's go. The go keeps a token; an edit that drops it drops
 it and every kept row leaning on it (module §"Three postures") — name those
 in the Step 6 hand-off; a declined row shows no token and says nothing. No
@@ -149,7 +161,8 @@ source files never. The skipped pause is the act that would have confirmed
 a Step 3 candidate, so under `--fast` **no `[unattended]` is written**; the
 Step 6 hand-off carries the candidates on their own line instead, always —
 `unattended-candidates: CORE-581.2, CORE-581.3` or `unattended-candidates: none`
-(shape: the module's §"Three postures").
+(shape: the module's §"Three postures"). For the same reason no reconcile
+edit is applied: the hand-off lists each Step 3 proposal, unapplied.
 
 The operator may decline the `.N` audit child for a short, low-risk plan
 (per `SPEC/epic.md`: "apply judgment") — default is to include it.
@@ -199,12 +212,10 @@ accumulated-filing IDs.
    - **Explicitly out of scope** — later steps' moves, by ID.
    - **Decisions locked** — sequencing/boundary decisions from the review.
    - **Open at promotion** — anything the survey left uncertain.
-4. **Downstream-impact reconciliation scan** (per
-   `SPEC/tasknote-selection.md` §"Downstream-impact reconciliation" — a
-   new-task filing trigger): scan the rest of the active PLAN for entries
-   sharing a surface with the target; classify and propose reconcile
-   actions; apply only operator-confirmed edits. A target nothing else is
-   filed against skips the scan (judgment) — note "no downstream impact".
+4. **Apply confirmed reconcile edits** — only the Step 3 proposals the
+   Step 4 go accepted or amended, step positions replaced by the item-1
+   IDs; a Merge into a child also lands in that child's starter. None
+   under `fast-mode = true`.
 
 ## Step 6 — Commit + hand off
 
@@ -229,7 +240,8 @@ and no 🏁: `SPEC/plan-filing.md` §"Filing commits".
 Then, in one short message: where the epic and starters landed (IDs +
 paths, or "plan left in conversation" on the stop branch), the commit SHA
 as plain text (or why the commit was skipped), the `unattended-candidates:`
-line when `fast-mode = true` (Step 4; own line, always), and the next move —
+line when `fast-mode = true` (Step 4; own line, always), any unapplied
+reconcile proposals under `fast-mode = true` (Step 4), and the next move —
 the first implementation child, with the copy-paste cue per SPEC §"Post-closure
 protocol" step 3 (label line
 `<glyph> Clear your session, then run on <model @ effort>:`, then

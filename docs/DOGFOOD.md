@@ -51,9 +51,15 @@ My row: [paste current stamp from AGENT-COMPAT.md].`
 
 Emit each cue in the full operator-cue vocabulary below, one per line,
 using the canonical `<glyph> <UPPERCASE-LABEL>` form (per
-`SPEC/cue-vocabulary.md` §"Operator-cue vocabulary"). Confirm each renders —
-no tofu □, no stripped glyph, no mojibake. The UPPERCASE label is the
-authoritative cross-agent fallback; note any glyph that fails to render.
+`SPEC/cue-vocabulary.md` §"Operator-cue vocabulary"). Rendering is the
+operator's observation: a session cannot see tofu □, a stripped glyph, or
+mojibake on their surface. After the list, ask the operator once, in
+prose, for the outcome — which glyphs failed, or that all glyphs rendered,
+and whether the UPPERCASE label fallback is legible, including whether the
+👁️ **CONFIRM** bold renders, shows literal asterisks, or is stripped.
+Record that answer verbatim inside the log line's bracket. The bracket
+holds only the operator's answer. The UPPERCASE label is the
+authoritative cross-agent fallback.
 
 **Event cues**
 - 🗄️ DB
@@ -65,7 +71,7 @@ authoritative cross-agent fallback; note any glyph that fails to render.
 
 **Inline asks**
 - 🟢 GO
-- 👁️ **CONFIRM** — emitted in the emphasized shape (own line, bold label); note whether the bold renders, shows literal asterisks, or is stripped
+- 👁️ **CONFIRM** — emitted in the emphasized shape (own line, bold label); the operator's outcome covers the bold (renders, literal asterisks, or stripped)
 - 🔍 AUDIT
 
 **Landmark cues**
@@ -83,8 +89,9 @@ authoritative cross-agent fallback; note any glyph that fails to render.
 - 👇 HERE (run here — do not clear)
 - 📭 EMPTY (no open rows left)
 
-Log: `Cue-render check complete. [Note any non-rendering glyphs and
-confirm the UPPERCASE label fallback is legible.]`
+Log: `Cue-render check complete. Operator: [their answer — non-rendering
+glyphs, or "all glyphs rendered"; CONFIRM bold (renders, literal
+asterisks, or stripped); UPPERCASE label fallback legible].`
 
 ### Step 3 — Phase-1 drive
 
@@ -154,19 +161,20 @@ it is this block filled in — nothing more, nothing rephrased:**
 
 ```text
 Contract comprehension complete. flaitron version: vX.Y.Z. My row: [stamp as found in docs/AGENT-COMPAT.md].
-Cue-render check complete. [non-rendering glyphs, or "all glyphs rendered"; UPPERCASE label fallback legible].
+Cue-render check complete. Operator: [their answer — non-rendering glyphs, or "all glyphs rendered"; CONFIRM bold (renders, literal asterisks, or stripped); UPPERCASE label fallback legible].
 Phase-1 drive complete. Task: [TASK-ID]. Exit-gate decision: [skip ✅ / fire 🛠️]. git status (session-written files): clean.
 Proposed stamp: vX.Y.Z · YYYY-MM-DD (dogfooded)
 ```
 
 The first three lines are the `Log:` lines from Steps 1–3, pasted
 verbatim — version read from `SPEC.md`, the row's current stamp as found
-in `docs/AGENT-COMPAT.md`, the cue-render outcome, and the Phase-1
-drive's task ID + exit-gate decision + the session-written-files status
-clause. These are the evidence; a report that summarises them in other
-words, or that describes running something other than this procedure,
-does not refresh a row (CORE-613: two agents paraphrased and had to be
-asked again). The fourth line is the stamp the row should now carry —
+in `docs/AGENT-COMPAT.md`, the operator's cue-render answer from Step 2,
+and the Phase-1 drive's task ID + exit-gate decision + the
+session-written-files status clause. These are the evidence; a report
+that summarises them in other words, or that describes running something
+other than this procedure, does not refresh a row (CORE-613: two agents
+paraphrased and had to be asked again). The fourth line is the stamp the
+row should now carry —
 `vX.Y.Z` is the version noted in Step 1, `YYYY-MM-DD` is today's date,
 and a real re-verification drops any prior `; skipped @ …` suffix. Do
 not withhold or qualify the receipt because `git status --porcelain`

@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-874** [light] [unattended] | audit-overlay-refresh — `.flaitron/audit-overlay/SKILL.md`: add `install.sh`, `tools/install.test.sh` and `.github/workflows/*.yml` to the unkeyed and `security:` scope globs (drop "the only code surfaces"); add `SECURITY.md` §"One-line installer" and §"GitHub Actions CI" to the `security:` rubric and `shellcheck -s sh install.sh tools/install.test.sh` to its gates; list or explicitly subset the three missing `validate` commands in the unkeyed gates; refresh the `docs:` scope counts; bump `flaitron-reconciled:` to v8.3.0 once `git diff v7.5.0..HEAD -- claude/skills/ft-audit` shows no delta change. Surfaced by audit-docs 2026-11-07 (Findings #3, #16, High).
+(none)
 
 ## Low
 
@@ -34,6 +34,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-874** [light]🔧 | audit-overlay-refresh — Completed 2026-11-07.
 - [x] **CORE-875** [light]🔧 | security-ci-coverage-job — Completed 2026-11-07.
 - [x] **CORE-882** [light]🔧 | close-epic-plain-mv — `/ft-close-epic` Step 7 archives the untracked audit note with plain `mv`, not `git mv`. Surfaced by audit-docs 2026-11-07 (Finding #1, High), fixed inline.
 - [x] **CORE-883** [light]🔧 | release-stages-readme — `/ft-release` §7.4 `git add`, §3 Acceptance and the line-8 recipe now include `README.md` (line 8 also `SECURITY.md`). Surfaced by audit-docs 2026-11-07 (Finding #2, High), fixed inline.

@@ -19,7 +19,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Low
 
-(none)
+- [ ] **CORE-893** [moderate] | dogfood-render-outcome — DOGFOOD.md Step 2 has the agent confirm glyph rendering it cannot observe, so Codex declined its v8.4.0 receipt ([[CORE-892]]). Reword Step 2 and the receipt's cue-render line so the operator supplies the outcome, keeping the verbatim three-line shape step-5-dogfood-sop.md checks. Check `docs/AGENT-COMPAT.md` §"Reading the cells" for restatements.
 
 ## Future Opportunities
 

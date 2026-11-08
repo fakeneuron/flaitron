@@ -15,7 +15,7 @@ in `SPEC.md`; read it before starting non-trivial work.
   calls for them.
 - Start a task with `/ft-task <TASK-ID>`; peer skills:
   `/ft-file-task` (`--park`, `--starter`; flags: `SPEC/tasknote-selection.md`),
-  `/ft-open-epic`, `/ft-close-epic`, `/ft-refactor`, `/ft-release`.
+  `/ft-open-epic` (`--deep`), `/ft-close-epic`, `/ft-refactor`, `/ft-release`.
 - `/ft-task` flags: `--debug` (hypothesis-first bug cadence), `--loop` (iterate
   Phase 2↔3 to a machine-checkable target — `SPEC/loop.md`), `--micro`
   (one `## ⚡ Notes` log in place of the phase checklists), `--fast`
@@ -28,8 +28,8 @@ in `SPEC.md`; read it before starting non-trivial work.
   <!-- KEEP IN SYNC — guards the roster above AND the path-convention bullets
        (Plans / tasknotes / archive locations) further up this section. Mirror: the KEEP
        IN SYNC comment above claude/AGENTS-snippet.md's paste-block fence.
-       1. The skill roster carries names plus arguments and per-skill flags,
-          no stubs or gate detail; `/ft-task` flags live on the flags line
+       1. The skill roster carries names plus per-skill flags, no stubs or
+          gate detail (only the snippet's roster carries arguments); `/ft-task` flags live on the flags line
           beside it, mirrored in claude/AGENTS-snippet.md's paste-block.
        2. Richer detail (stubs, gates) lives in SPEC/tasknote-selection.md and
           SPEC/gates.md — not in claude/AGENTS-snippet.md's paste-block, which

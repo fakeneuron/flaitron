@@ -17,7 +17,7 @@ Walk the tokens:
 - **`--unattended`** (no short alias) → set `unattended-mode = true`.
 - **`--low` / `--med` / `--medium` / `--fut` / `--future` / `--high`** → a park-mode priority flag; strip and carry. Outside park mode these are meaningless — surface the usage notice below rather than silently ignoring them.
 - **A `<AREA>-<NUMBER>` token** → the proposed task ID.
-- **Any other `--`-prefixed token** → surface a one-line usage notice (``Unknown arg `<arg>`. Usage: `/ft-file-task [TASK-ID] [--park [--low|--med|--fut|--high]] [--starter] [--unattended]`.``) and ask whether the user meant `--park`, a priority flag, `--starter`, `--unattended`, or the default flow. Do not proceed silently. **When `unattended-mode = true` there is nobody to ask** — emit the notice and stop, in the terminal shape below.
+- **Any other `--`-prefixed token** → surface a one-line usage notice (``Unknown arg `<arg>`. Usage: `/ft-file-task [TASK-ID] [--park|-p [--low|--med|--medium|--fut|--future|--high]] [--starter] [--unattended]`.``) and ask whether the user meant `--park`, a priority flag, `--starter`, `--unattended`, or the default flow. Do not proceed silently. **When `unattended-mode = true` there is nobody to ask** — emit the notice and stop, in the terminal shape below.
 - **Remaining free text** → the idea text (park mode) or drafting context (default and starter flows).
 
 **`--park` and `--unattended` do not compose.** Park mode preserves an operator's

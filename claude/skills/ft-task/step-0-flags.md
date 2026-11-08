@@ -9,7 +9,7 @@
 - **`--loop`** (no short alias) → set `loop-mode = true`.
 - **`--unattended`** (no short alias) → set `unattended-mode = true` **and** `fast-mode = true` — the posture supersets `--fast`'s autonomy — not its 👁️ delegation — so the operator never passes both.
 - **`--micro`** (no short alias) → set `micro-mode = true`.
-- **Any unrecognized token** → surface a one-line usage notice (``Unknown arg `<arg>`. Usage: `/ft-task <TASK-ID> [--debug] [--loop] [--micro] [--fast] [--unattended]`.``) and ask via AskUserQuestion whether the user meant `--fast`, `--debug`, `--loop`, `--micro`, `--unattended`, the default flow, or to abort. Do not proceed silently.
+- **Any unrecognized token** → surface a one-line usage notice (``Unknown arg `<arg>`. Usage: `/ft-task <TASK-ID> [--debug|-d] [--loop] [--micro] [--fast|-f] [--unattended]`.``) and ask via AskUserQuestion whether the user meant `--fast`, `--debug`, `--loop`, `--micro`, `--unattended`, the default flow, or to abort. Do not proceed silently.
 
 **`--micro` refuses `--loop` and `--debug`.** When the walk ends with `micro-mode` and either of them set, surface ``--micro does not compose with `<flag>` (it needs the phase sections a micro note collapses).`` and ask via AskUserQuestion which flag to drop, or to abort. Under `--unattended`, terminate and write nothing with `⏸ --unattended stop — flag-conflict: --micro with <flag>. No tasknote written.`
 

@@ -22,6 +22,15 @@ unless correcting a factual error.
 
 ---
 
+## v8.4.0 — lowercase brand guard, hardened unattended runs, self-checking releases
+
+- The framework name is lowercase wherever it stands alone, with `brand_nearmiss` and `brand_casing` drift checks to hold it. SPEC.md's line-1 heading is now `# flaitron — Workflow Specification`, so an install.sh from before v8.4.0 refuses this core: fetch the installer from the new tag. The v8.4.0 installer accepts both casings.
+- --unattended runs close green work: the Phase 4 doc sweep edits only in-scope docs and files the rest as one row, renames count by content delta against the 400-line cap, and a `handoff_rows` check keeps deferred hand-offs on the plan.
+- /ft-release proves the README installer URL against the published tag, and a new `installer_anchors` check fails when the installer is reshaped.
+- The visualizer gains `eslint --max-warnings 0`, `noUncheckedIndexedAccess` and a diff-cover 80% changed-line gate.
+
+Also: `context_budget` reports NEAR CAP at 95% and five near-cap surfaces were trimmed; drift-check batching cut local run time from 15.8s to 6.6s; /ft-refactor reconciles in Step 3.
+
 ## v8.3.0 — one-line installer and a leaner always-loaded layer
 
 - `curl … /v8.3.0/install.sh | sh` installs flaitron in one tag-pinned command: it pins .flaitron/core to a release tag checked against GitHub's commit, wires each detected agent's skill links from the pinned snippets, links one global ft-adopt, and hands off to /ft-adopt. SPEC records it as a third CLI carve-out; SECURITY.md §"One-line installer" covers the threat model.

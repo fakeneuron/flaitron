@@ -21,8 +21,8 @@ actually review. No scripts, daemons, databases, or schemas to maintain.
 
 ![The flaitron visualizer showing flaitron's own PLAN.md — open tasks by priority, phase-progress dots, and the completed archive](.flaitron/screenshots/viz-board.png)
 
-flaitron is built with flaitron: **1289 tasks** closed through this exact
-workflow between 2026-04-28 and 2026-11-01 (as of 2026-11-01) — each one with
+flaitron is built with flaitron: **1323 tasks** closed through this exact
+workflow between 2026-04-28 and 2026-11-08 (as of 2026-11-08) — each one with
 a tasknote preserved in [`.flaitron/tasknote/archive/`](.flaitron/tasknote/archive/).
 Count and date range are recomputed each release by `/ft-release` §7.1's
 "Standing README task-counter check" (one archived tasknote per closed task,
@@ -34,7 +34,7 @@ standalone or epic child) — see `claude/skills/ft-release/step-7.1-standing-ch
 or `CLAUDE.md`):
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/fakeneuron/flaitron/v8.3.0/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/fakeneuron/flaitron/v8.4.0/install.sh | sh
 ```
 
 [`install.sh`](install.sh) does five things, and commits nothing:

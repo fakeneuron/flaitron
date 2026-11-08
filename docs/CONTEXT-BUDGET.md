@@ -53,6 +53,7 @@ Checked on every push by the CI `drift` job and at every release cut by
 | `claude/skills/ft-release/**` | 113,000 | Directory total — every file under the skill, summed, not a per-file cap. The row above caps only the body, and the ledger's own §"Skill bodies" note says why that is not enough: fragments defer load, they do not remove it, and a release cut walks every fragment in this directory on every cut. Sized to the directory's measured total plus ~1.5 working units — a working unit here is a new mirror pair or CI binding, which across the last twenty touching commits ran +4,000 to +5,300. |
 | `SPEC/procedures/ft-task.md` | 26,000 | The always-loaded runner body for Codex/Cursor/Grok tasks — this project's non-Claude equivalent of `claude/skills/ft-task/SKILL.md`, read in full on every such task's cold start. Sized like its lazy-but-near-universal siblings: file size plus ~1.1–1.8 working units (a substantial edit runs +524 to +892 chars, a routine one +1 to +420) at [[CORE-857.2]]; [[CORE-857.5]]'s planned mirror edit then spent all but 235; [[CORE-869.5]]'s trim left 1,327 (~1.5–2.5 substantial edits) and [[CORE-876]]'s mirror clause spent 223 of it (1,104 left), so an edit past that offsets its growth with a pointer-not-narrate trim before this cap raises. A new mode at [[CORE-473.4]]'s scale is the case §"Known over budget" exists for. |
 | `claude/AGENTS-snippet.md` | 13,800 | Adopter-side always-loaded: its fenced paste-block sits in every adopter's `AGENTS.md`, re-synced by `/ft-update` on each bump. The row caps the whole file, since `context_budget` measures files, so setup prose outside the fence counts too, conservatively. Sized like its siblings: the file plus ~1.5 working units (a substantial edit runs +154 to +363 chars, a routine one 0 to +73, over the last twenty touching commits) at [[CORE-881]]. The unit is small, so that headroom sits under 5% and the row prints `NEAR CAP` from the start; judge it in units, not by that line. |
+| `templates/subagent-probe-template.md` | 5,200 | The probe brief and return shape. Budgeted although a template, unlike the seeds exempted below: a seed is written out as a file the project owns, but this one is never written out. Its text is briefed into a probe, from the task's own context, every time a probe is run. On the Codex/Cursor/Grok path that is each graded Phase 3 review (§"Variant — review probe", `SPEC.md` §"Who reviews"). On any path it also covers an optional Phase 1 probe and `/ft-refactor`'s survey. Sized at [[CORE-890]] like its siblings, the file plus ~1.5 working units (5,105), rounded up to the next 100. That leaves 212 chars, ~2.7 units at the routine upper bound of +78 over its eight touching commits (one −71 is offset by a +71). The one outlier, +2,043 when the review variant landed, is the scale at which a new variant extracts or re-justifies this cap. Like the snippet row, it prints `NEAR CAP` from the start; judge it in units, not by that line. |
 
 **Precedence:** the most specific matching row wins. `ft-release`'s and
 `ft-task`'s own rows govern them; every other `SKILL.md` falls under the glob
@@ -91,6 +92,17 @@ own rows, so a cap on the shipped copy would not bound what a runner reads
 there. The third is read once per scaffold, ahead of the filled note the task
 works from. §"Ledger" keeps all three in view at each release; a template a
 runner starts re-reading mid-task earns a row here.
+The other seeds are exempt on the same ground ([[CORE-890]]):
+`templates/tasknote-micro-template.md` is read once per `--micro` scaffold, like
+the third; `templates/tasknote-starter-template.md` and
+`templates/sidequest-template.md` once per note filed, each read written out
+as its own note; and `templates/spec-template.md`,
+`templates/audit-overlay-template.md` and
+`templates/loop-heartbeat-template.md` are copied by hand or at bootstrap, and
+runners read the owned copy (a heartbeat cycle reads `.claude/loop.md`, not
+the template). None of the six is in §"Ledger".
+`templates/subagent-probe-template.md` is a template that is never written
+out, so its row above caps it, and `context_budget` measures it on every push.
 
 ## Cap history
 
@@ -114,6 +126,7 @@ row was budgeted at on first appearing in this table, not a change.
 | `claude/skills/ft-release/**` | measured but unbudgeted through [[CORE-613]] (117,337, exceeding the body row unseen) → budgeted 125,000 [[CORE-622.2]] → 113,000 [[CORE-750]] (re-sized to measured + ~1.5 units after [[CORE-EPIC-734]]'s pair retirements cut the directory to 106,247, leaving ~4 units of slack) → held 113,000 [[CORE-869.5]] (per-pair incident archaeology trimmed from the two §7.1 fragments; 109,984 → 106,845) |
 | `SPEC/procedures/ft-task.md` | budgeted 38,000 [[CORE-608]]; re-measured, no change [[CORE-631.3]] → held 38,000 [[CORE-670.3]] (debug-mode restatement routed to `step-4-debug-mode.md`) → held 38,000 [[CORE-678.2]] (post-closure and cross-repo restatement routed back to their modules; 37,538 → 34,302) → 34,200 [[CORE-724.4]] (Phase 4 and drift-carve-out restatement routed to SPEC; 34,320 → 32,740) → held 34,200 [[CORE-738]] (open-siblings entry stop; 33,800) → held 34,200 [[CORE-741.4]] (`[frontier]` routing clause; 33,842) → held 34,200 [[CORE-850.5]] (scope-guardrail pointers, offset by a 👁️ restatement trim; 34,199) → 26,000 [[CORE-857.2]] (SPEC re-narration cut to pointers at the owning sections, deltas kept; 34,197 → 25,042) → held 26,000 [[CORE-857.5]] (Step 1 tier advisory mirror; 25,042 → 25,765) → held 26,000 [[CORE-872]] (Phase 1 size-estimate pointer, offset by Phase 1 restatement trims; 25,805 → 25,797) → held 26,000 [[CORE-869.5]] (routing preface, rationale tails and restated shapes trimmed; 25,797 → 24,673) → held 26,000 [[CORE-876]] (starter readiness-basis pointer, restamp; 24,673 → 24,896, crossing the 95% NEAR CAP line) |
 | `claude/AGENTS-snippet.md` | budgeted 13,800 [[CORE-881]] (ledger-only since [[CORE-535.1]]; 13,232) |
+| `templates/subagent-probe-template.md` | budgeted 5,200 [[CORE-890]] (4,988) |
 
 Full narrative provenance for any of the above — exact per-commit deltas,
 which task found which headroom figure — lives in `git log -p --

@@ -88,6 +88,38 @@ const CASES = {
       'm',
     ),
   },
+  handoff_rows: {
+    // Silent: a cite in a nested item, a bold-ID cite paragraph, an aliased
+    // wikilink, "none deferred", a code-span heading, "pre-handoff", a fenced
+    // heading, and a grandfathered note. Reported: a block citing only its
+    // own note (a real row), a "to be completed" heading, and an epic child
+    // citing only its parent epic (a real row).
+    seed: () => {
+      edit('.flaitron/PLAN.md', (s) =>
+        `${s}- [ ] **ZZ-9** | zz-drift — operator step.\n- [ ] **ZZ-5** | zz-drift — x.\n- [ ] **ZZ-EPIC-7** | zz-drift — x.\n`);
+      write('.flaitron/tasknote/archive/core/ZZ-5.md', [
+        '# ZZ-5 | zz-drift', '',
+        '- **Operator hand-off:**', '  - deploy **ZZ-9**', '',
+        '**Operator hand-off:**', '', '**ZZ-9** deploy prod', '',
+        '**Operator hand-off:** filed as [[ZZ-9|deploy row]].', '',
+        '**Operator hand-off:** none deferred.', '',
+        '### What `[handoff]` declares', '',
+        '## Visual smoke (pre-handoff)', '',
+        '## 🔄 Handoff', '', 'Run the deploy by hand ([[ZZ-5]] is this note).', '',
+        '## Handoff (to be completed by operator)', '', 'Run it.', '',
+        '```', '## Handoff', '```', '', '**Archived:** 2099-01-01', '',
+      ].join('\n'));
+      write('.flaitron/tasknote/archive/core/ZZ-6.md', '## Handoff\n\nRun it.\n\n**Archived:** 2026-01-01\n');
+      write('.flaitron/tasknote/archive/core/ZZ-7.2.md', '## Handoff\n\nSee [[ZZ-EPIC-7]].\n\n**Archived:** 2099-01-01\n');
+    },
+    // No `m` flag: the whole output, so a decoy that reports fails the case.
+    finding: new RegExp(
+      '^UNFILED HANDOFF {2}\\.flaitron/tasknote/archive/core/ZZ-5\\.md:18 :: ## 🔄 Handoff\\n' +
+        'UNFILED HANDOFF {2}\\.flaitron/tasknote/archive/core/ZZ-5\\.md:22 :: ## Handoff \\(to be completed by operator\\)\\n' +
+        'UNFILED HANDOFF {2}\\.flaitron/tasknote/archive/core/ZZ-7\\.2\\.md:1 :: ## Handoff\\n' +
+        'File each step[^\\n]*\\nhandoff_rows FAILED\\n$',
+    ),
+  },
   installer_anchors: {
     // The ft-adopt marker install.sh greps for loses its exact text.
     seed: () => edit('claude/skills/ft-adopt/SKILL.md', (s) => s.replaceAll('Installer exception', 'Installer exemption')),

@@ -23,10 +23,10 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Future Opportunities
 
-- [ ] **CORE-866** [moderate] | handoff-row-drift-check — From natabula NAT-535: make SPEC.md §"Deferred hand-off filing" mechanical. Port natabula `scripts/check-handoff-rows.sh` (a hand-off block in an archived note must cite a PLAN row or say none deferred) as a `tools/drift-checks.sh` check or `/ft-task` Phase 4 step. Also have `/ft-close-epic`'s `.N` audit file a row per open hand-off it lists. NAT-495.N listed four and filed none.
 
 ## Completed
 
+- [x] **CORE-866** [moderate] | handoff-row-drift-check — Completed 2026-11-08.
 - [x] **CORE-877** [moderate] | refactor-reconcile-gate — Completed 2026-11-08.
 - [x] **CORE-891** [moderate] | near-cap-small-unit-rows — Completed 2026-11-08.
 - [x] **CORE-890** [moderate] | budget-other-templates — Completed 2026-11-08.

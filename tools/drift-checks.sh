@@ -18,8 +18,8 @@
 # step-7.1-mirror-pairs.md that names it and says what a finding means.
 # Design notes sit as `#` comments inside the body, next to the line they
 # explain. skill_pin_guard_parity (CORE-729), final_newline (CORE-621),
-# sidequest_orphan (CORE-742.2) and installer_anchors (CORE-868.2) have
-# neither a source rule nor a catalogue entry.
+# sidequest_orphan (CORE-742.2), handoff_rows (CORE-866) and installer_anchors
+# (CORE-868.2) have neither a source rule nor a catalogue entry.
 #
 # Shape rules — the dispatcher below reads them:
 # - One check per top-level function, `name() {` and its closing `}` each at
@@ -40,8 +40,9 @@
 #   flags or one glob row with no file stays legal. Count with n=$((n+1)),
 #   never ((n++)), which returns 1 from zero and ends a `bash -e` check.
 #   skill_pin_guard_parity and pair_h need no counter: an empty read already
-#   fails their own guards. shipped_skill_parity and sidequest_orphan floor
-#   on their read set instead of a counter; pair_p counts inside its awk.
+#   fails their own guards. shipped_skill_parity, sidequest_orphan and
+#   handoff_rows floor on their read set instead of a counter; pair_p counts
+#   inside its awk.
 # - bash 3.2 compatible: the §7.1 walk runs on the operator's machine.
 # - Each check needs one seeded-drift case in tools/drift-checks.test.mjs
 #   (CORE-739.3); its coverage test fails on a check without one.
@@ -304,6 +305,121 @@ for f in .flaitron/sidequest/*.md; do
   done
 done
 [ -z "$bad" ] || exit 1
+}
+
+# Hand-off rows (SPEC.md §"Deferred hand-off filing")
+handoff_rows() {
+# CORE-866, ported from natabula's scripts/check-handoff-rows.sh (NAT-535).
+# The rule has been prose since CORE-529, and NAT-495.9/.11/.12/.15 each
+# still closed with a prose-only hand-off that nobody ran. Every hand-off
+# block in an archived note must cite a row — [[ID]], [[ID|alias]] or **ID**,
+# not the note's own ID or its parent epic — or say on its marker line
+# "none / no / nothing deferred", or "(resolved)" / "(completed)". The bare
+# words are not enough: "to be completed by the operator" is still open.
+# - A block opens on a level-2+ heading naming hand-off as a word ("pre-
+#   handoff" and `handoff_rows` do not), or a bold `**Operator hand-off` /
+#   `**For the operator` label, optionally as a list item. It ends at a
+#   heading of its level or higher; a label block also at `---` or a new
+#   bold paragraph (not one opening with a bold row ID: that is a cite); an
+#   item block at the next item no deeper than it. Fenced lines and code
+#   spans never open a block — flaitron names its `[handoff]` row token.
+# - Any row, open or closed, discharges a block: a filed hand-off row closes
+#   when the step is done, and its archived note must still pass.
+# - Notes archived before CUTOFF are grandfathered (started green, like
+#   natabula); a note with no **Archived:** date predates the pre-move gate.
+# - One awk over the PLAN files and every note (a fork per note cost ~3.6 s).
+#   Its output is captured so an awk failure fails the check instead of
+#   reading as zero blocks. The floor is the row-ID read, as in
+#   sidequest_orphan: zero notes past the cutoff is legal, zero rows is not.
+# - No {n} interval in the awk: older mawk lacks it.
+CUTOFF=2026-11-08
+for p in .flaitron/PLAN.md .flaitron/PLAN-ARCHIVE.md; do
+  [ -f "$p" ] || { echo "MISSING FILE  $p"; exit 1; }
+done
+[ -d .flaitron/tasknote/archive ] || { echo "MISSING DIR  .flaitron/tasknote/archive"; exit 1; }
+out=$(awk -v cutoff="$CUTOFF" '
+  function finish() {
+    flush()
+    if (note != "" && archived != "" && archived >= cutoff) printf "%s", pending
+    pending = ""; archived = ""; fence = 0
+  }
+  function flush(    n, i, a, id, filed) {
+    if (!open) return
+    open = 0
+    if (mnone) return
+    n = split(ids, a, " ")
+    for (i = 1; i <= n; i++) {
+      id = a[i]
+      if (id != self && id != parent && (id in rows)) { filed = 1; break }
+    }
+    if (!filed) pending = pending "UNFILED HANDOFF  " note ":" mline " :: " mtext "\n"
+  }
+  function add_ids(s,    m) {
+    while (match(s, /(\[\[|\*\*)[A-Z][A-Z0-9]*-[A-Z0-9.-]*[A-Z0-9](\]\]|\*\*|\|)/)) {
+      m = substr(s, RSTART + 2, RLENGTH - 2)
+      sub(/(\]\]|\*\*|\|)$/, "", m)
+      ids = ids " " m
+      s = substr(s, RSTART + RLENGTH)
+    }
+  }
+  FILENAME ~ /PLAN(-ARCHIVE)?\.md$/ {
+    if (match($0, /^[ \t]*- \[[ xX]\] \*\*[A-Z][A-Z0-9]*-[A-Z0-9.-]*\*\*/)) {
+      id = substr($0, RSTART, RLENGTH); sub(/^[^*]*\*\*/, "", id); sub(/\*\*$/, "", id)
+      rows[id] = 1; nrows++
+    }
+    next
+  }
+  FNR == 1 {
+    finish()
+    note = FILENAME
+    self = FILENAME; sub(/.*\//, "", self); sub(/\.md$/, "", self)
+    parent = ""
+    if (match(self, /^[A-Z][A-Z0-9]*-[0-9]+\./)) {
+      parent = substr(self, 1, RLENGTH - 1); sub(/-/, "-EPIC-", parent)
+    }
+  }
+  /^[ \t]*(```|~~~)/ { fence = !fence; next }
+  fence { next }
+  {
+    if (match($0, /^\*\*Archived:\*\*[ \t]*[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/))
+      archived = substr($0, RLENGTH - 9, 10)
+    lower = tolower($0)
+    gsub(/`[^`]*`/, "", lower)
+    is_heading = match($0, /^#+ /)
+    level = is_heading ? RLENGTH - 1 : 0
+    is_item = ($0 ~ /^[ \t]*([-*+] |[0-9]+\. )/)
+    match($0, /^[ \t]*/); indent = RLENGTH
+    marker = 0
+    if (is_heading && level >= 2 && lower ~ /(^|[^a-z_-])hand-?offs?([^a-z_-]|$)/) marker = 1
+    else if (lower ~ /^[ \t]*([-*+] |[0-9]+\. )?\*\*(operator hand-?offs?|for the operator)/) marker = 1
+    if (open) {
+      ends = 0
+      if (is_heading && (mlevel == 0 || level <= mlevel)) ends = 1
+      else if (mlevel == 0 && $0 ~ /^---[ \t]*$/) ends = 1
+      else if (mlevel == 0 && $0 ~ /^\*\*/ && $0 !~ /^\*\*[A-Z][A-Z0-9]*-[A-Z0-9.-]*[A-Z0-9]\*\*/) ends = 1
+      else if (mitem && is_item && indent <= mindent) ends = 1
+      if (ends) flush()
+    }
+    # A label inside an open heading block belongs to that block.
+    if (marker && open && mlevel > 0 && !is_heading) marker = 0
+    if (marker) {
+      flush()
+      open = 1; ids = ""; mline = FNR; mtext = $0; mlevel = level
+      mitem = is_item; mindent = indent
+      mnone = (lower ~ /(^|[^a-z])(none|no|nothing) deferred/ || lower ~ /\((resolved|completed)\)/) ? 1 : 0
+    }
+    if (open) add_ids($0)
+  }
+  END {
+    finish()
+    if (!nrows) { print "VACUOUS handoff_rows  no PLAN row ID read"; exit 1 }
+  }
+' .flaitron/PLAN.md .flaitron/PLAN-ARCHIVE.md .flaitron/tasknote/archive/*/*.md) || {
+  printf '%s\n' "$out"; echo "AWK FAILED  handoff_rows"; exit 1; }
+[ -n "$out" ] || exit 0
+printf '%s\n' "$out"
+echo "File each step as its own PLAN.md row and cite it, or mark the marker line \"none deferred\"."
+exit 1
 }
 
 # Installer anchors (CORE-868.2)

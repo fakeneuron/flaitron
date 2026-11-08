@@ -143,6 +143,7 @@ The Phase 2 deliverable is the audit findings — recorded in Implementation Not
 
 - **Pattern survey** — N/A for most audits (no new code surface; the audit is a verification pass over existing cohort deliverables). For audits that surface a fix needing inline correction, note the precedent surveyed.
 - **Implemented the minimal solution** — for most audits this is verification work, not code edits: walk the cohort coherence checklist (Acceptance criteria 2-4), record findings as Implementation Notes. If the audit surfaces a fix that's small and clearly in scope (e.g., a stale path reference in a sibling's deliverable), apply it inline. Larger misses → file each as a `- [ ]` child row of the epic: the next `.<k>` after the highest numeric child, 2-space nested before `.N`, with `[model]`, `| shortname`, and a long description under the 50w target / 70w cap (SPEC/tasknote-selection.md §"PLAN.md filing-discipline thresholds"). The rows land in the audit's closure commit, and an open child keeps the parent open until the last one closes (SPEC/epic.md lifecycle step 5).
+- **Open hand-offs** — any operator step a cohort note defers without citing a PLAN row (SPEC.md §"Deferred hand-off filing") → file it as its own `- [ ]` row in the epic's priority section, standalone rather than an epic child (an operator step should not hold the parent open), and cite it in the hand-off list as `[[ID]]` or `**ID**`, the forms a mechanical check can read. Listing an open hand-off without filing it is the miss this bullet exists for.
 - **Updated/added tests** — N/A unless the audit applied a code fix.
 
 Capture in Implementation Notes:
@@ -151,6 +152,7 @@ Capture in Implementation Notes:
 - Coherence findings ("no inconsistencies surfaced" or specific surfaced issues).
 - Any inline fixes applied (file:line + diff shape).
 - Misses filed as child rows (one bullet per row: ID + one-line rationale).
+- Open hand-offs filed as standalone rows (one bullet per row: ID + the deferred step), or "none deferred".
 
 Phase 2 flows continuously into the Step 6 lint/test pass and Step 7 closure ops without an intermediate gate; the next operator-gate cue is the 📦 ready-to-commit banner in Step 9.
 

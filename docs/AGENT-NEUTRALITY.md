@@ -16,6 +16,14 @@ are execution-surface details of the target runtime.
 Adding agent-specific execution surfaces is fine; leaking agent-specific
 assumptions into the contract layer is not.
 
+**Exemption — platform-coverage docs.** [`PLATFORMS.md`](PLATFORMS.md),
+[`AGENT-COMPAT.md`](AGENT-COMPAT.md), and
+[`CODEX-VERIFICATION.md`](CODEX-VERIFICATION.md) sit under `docs/` but their
+subject is the wiring layer itself: per-platform skill surfaces, install paths,
+operator flags, and dated verification receipts. They name platform-specific
+paths and commands by subject, so the leak rule above does not apply to them and
+the ledger below carries no per-reference rows for them.
+
 Future full platform wiring (Amp, Aider, Gemini CLI, …) plugs in symmetrically —
 see [`docs/PLATFORMS.md`](PLATFORMS.md) ([[CORE-154.4]]) for the plug-in
 pattern. Cursor and Grok thin siblings already ship under `cursor/` and
@@ -62,7 +70,7 @@ below.
 | `docs/PHILOSOPHY.md` | (historical-narrative paragraphs) | `Claude Code` + "Claude can read markdown" framing | Per [[CORE-132]] defense — file's role is personal narrative; voice IS the deliverable. |
 | `README.md` | §"Repo layout" | `` `claude/` `` — Claude Code skills | Factual repo-layout description. |
 | `README.md` | §"Agent memory"; §"Sessions, loops, and sub-agents" | "Claude Code sessions" (agent-memory intro); `` `--fast` `` on `` `/ft-task` `` (within-task-autonomy bullet); Claude Code's `` `/loop` `` (closing runtime paragraph) | Per [[CORE-408.4]]. The section's subject is operator-side session discipline — context reset, delegation, loop runtime — whose only *shipped* realizations are Claude Code's, so naming them is what makes the guidance concrete. Each is framed with its neutral escape hatch already in place ("or any equivalent runner"; `--fast` and `/loop` additionally hold their own ledger rows for their SPEC sites). Note what is **not** claimed here: the **probe** / **delegate** split this section carries is fully agent-neutral — no spawn primitive is named anywhere in the contract layer, and `templates/subagent-probe-template.md` explicitly leaves it to "the operator's and the platform's business". Claude Code's sub-agent mechanics live in `claude/CAPABILITIES.md` (wiring layer, no row); non-Claude equivalents in `docs/PLATFORMS.md`. |
-| `README.md` | §"Quickstart" | `/ft-adopt`, `/ft-task`, `~/.claude/skills/` install path | Per [[CORE-383]] — the above-fold quickstart shows the shortest real path to a working setup, which today means the Claude Code wiring that ships. Framed with an explicit escape hatch ("not using Claude Code?" → `docs/MIGRATION.md` manual path §1.1–1.7 + Codex / Cursor / Grok wiring (§1.2); Grok is Cursor-shaped via `docs/PLATFORMS.md`), so the contract stays followable without Claude Code. Concept (bootstrap a project, run a task) is platform-neutral; the slash commands and `~/.claude/` paths are wiring-layer detail. |
+| `README.md` | §"Quickstart" | the one-line `install.sh` install; `/ft-adopt`, `/ft-task` slash commands; the manual fallback's `~/.claude/skills/` link | Per [[CORE-383]], rewritten by [[CORE-878]] for the installer-first Quickstart — the above-fold quickstart shows the shortest real path to a working setup. `install.sh` is agent-neutral by construction: it detects Claude Code, Codex, Cursor-only and Grok-only projects and wires each, and the Codex hand-off is named inline (`$ft-adopt`). Only the manual fallback and the `/ft-*` spellings are Claude Code wiring. Framed with an explicit escape hatch ("or not using Claude Code?" → `docs/MIGRATION.md` manual path §1.1–1.7, the global-install table §1.0, and Codex / Cursor / Grok wiring §1.2), so the contract stays followable without Claude Code. Concept (bootstrap a project, run a task) is platform-neutral; the slash commands and `~/.claude/` paths are wiring-layer detail. |
 | `SECURITY.md` | §"Prompt injection via user-authored markdown" (Claude Code subsection) | `.claude/settings.local.json` tool allowlist + Claude Code harness mention | Claude Code-specific mitigation; clearly scoped after the [[CORE-154.2]] reframe. |
 
 ## Tool-call-specific terminology

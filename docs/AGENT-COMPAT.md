@@ -34,7 +34,7 @@ for its Grok Build notes. The agent-neutral workflow contract itself
 | Agent | Consume mode | Context entry-point | Skill / command primitive | Last verified |
 |---|---|---|---|---|
 | **Claude Code** | Wiring + contract | `AGENTS.md` (+ optional `CLAUDE.md`) | `.claude/skills/` slash-invocable skills — full `ft-*` bundle shipped; adopter repos wire the policy subset | `v8.3.0 · 2026-11-01 (dogfooded)` |
-| **Grok Build** | Wiring + contract (thin, Cursor-shaped) | `AGENTS.md` | Thin `grok/` bundle — `AGENTS-snippet.md` + `procedures/ft-task.md`; no skill wrappers. Discovers `.claude/skills/` and `.agents/skills/` (and `.cursor/skills/`) as compat surfaces plus native `.grok/skills/`; auto-wired as `/<name>`. Adopters reuse canonical `claude/skills/` bodies (stop if Claude/Codex/Cursor already wired; Grok-only follows `grok/AGENTS-snippet.md`). Those bodies' operator flags come with them ([`PLATFORMS.md` §"Non-Claude capability triggers"](PLATFORMS.md#non-claude-capability-triggers)) | `v8.2.0 · 2026-11-01 (dogfooded; skipped @ v8.3.0)` |
+| **Grok Build** | Wiring + contract (thin, Cursor-shaped) | `AGENTS.md` | Thin `grok/` bundle — `AGENTS-snippet.md` + `procedures/ft-task.md`; no skill wrappers. Discovers `.claude/skills/` and `.agents/skills/` (and `.cursor/skills/`) as compat surfaces plus native `.grok/skills/`; auto-wired as `/<name>`. Adopters reuse what is already wired (stop if Claude/Codex/Cursor already wired; Grok-only follows `grok/AGENTS-snippet.md`): canonical `claude/skills/` bodies via `.claude/skills/` or `.cursor/skills/`, or the `codex/skills/` wrappers via `.agents/skills/` in a Codex-wired repo. Those skills' operator flags come with them ([`PLATFORMS.md` §"Non-Claude capability triggers"](PLATFORMS.md#non-claude-capability-triggers)) | `v8.2.0 · 2026-11-01 (dogfooded; skipped @ v8.3.0)` |
 | **Codex CLI** | Wiring + contract | `AGENTS.md` | `.agents/skills/` repo-scoped skills — full `ft-*` bundle shipped under `codex/skills/`, adopter repos wire the policy subset; `codex/procedures/ft-task.md` pointer wrapper retained. `ft-task` enters `SPEC/procedures/ft-task.md` with canonical-body fallback; other wrappers enter the canonical `claude/skills/` bodies. Their operator flags come with them ([`PLATFORMS.md` §"Non-Claude capability triggers"](PLATFORMS.md#non-claude-capability-triggers)) | `v8.2.0 · 2026-11-01 (dogfooded; skipped @ v8.3.0)` |
 | **Cursor** | Wiring + contract (thin) | `AGENTS.md` | Thin `cursor/` bundle — `AGENTS-snippet.md` + `procedures/ft-task.md`; no skill wrappers. Adopters wire canonical `claude/skills/` bodies (reuse `.claude/` when already present, or `.cursor/skills/` for Cursor-only). Those bodies' operator flags come with them ([`PLATFORMS.md` §"Non-Claude capability triggers"](PLATFORMS.md#non-claude-capability-triggers)) | `v7.5.0 · 2026-10-25 (dogfooded; skipped @ v8.3.0)` |
 | **Gemini CLI** | Contract only | `AGENTS.md` | Native primitive exists; no flaitron bundle | unverified |
@@ -47,7 +47,8 @@ for its Grok Build notes. The agent-neutral workflow contract itself
   skill/command bundle that drives the 4-phase workflow inline;
   `Wiring + contract (thin)` / `(thin, Cursor-shaped)` means the agent
   loads the canonical `claude/skills/` bodies via a documented compat or
-  native scan (Cursor, Grok) without its own wrappers;
+  native scan (Cursor, Grok) without its own wrappers (Grok also scans
+  `.agents/skills/`, where a Codex-wired repo's `codex/skills/` wrappers sit);
   `Contract only` means the agent reads `AGENTS.md` and drives the
   contract conversationally with no flaitron-specific machinery. Mirrors
   PLATFORMS.md §"Today's surface".
@@ -62,12 +63,16 @@ for its Grok Build notes. The agent-neutral workflow contract itself
 - **Skill / command primitive** — whether the agent exposes a slash-command
   or skill mechanism, and whether flaitron ships a bundle for it. Claude Code
   and Codex CLI have full shipped inventories today; Cursor and Grok are
-  thin/Cursor-shaped: they reuse canonical `claude/skills/` bodies via
-  `.claude/skills/` / `.agents/skills/` (and Cursor's `.cursor/skills/`,
-  Grok's `.grok/skills/`) with no platform-specific wrappers. Adopter
+  thin/Cursor-shaped: they reuse whatever skills the project already wires —
+  canonical `claude/skills/` bodies via `.claude/skills/` (and Cursor's
+  `.cursor/skills/`, Grok's `.grok/skills/`), or, for Grok in a Codex-wired
+  repo, the `codex/skills/` wrappers via `.agents/skills/` — with no
+  platform-specific wrappers of their own. Adopter
   projects wire only the subset in PLATFORMS.md §"Installed-surface policy".
   The remaining contract-only rows note only that a native primitive exists
-  — their per-agent detail is filed with the non-Claude trigger reference.
+  — their per-agent detail is a stub in PLATFORMS.md §"Non-Claude capability
+  triggers" (Gemini CLI, Aider, Sourcegraph Amp) until a first-use
+  observation fills it.
 - **Last verified** — when this row was last checked against reality. Format:
   `vX.Y.Z · YYYY-MM[-DD] (context-tag)` where the context tag is one of:
   - `dogfooded` — verified by running a flaitron session under this agent at

@@ -370,6 +370,32 @@ describe('context_budget near-cap report', () => {
     put('d/a', 10);
     assert.throws(run, (e) => e.status === 1 && /^OVER BUDGET {2}g\/over\.md +101 > 100\ncontext_budget FAILED\n$/.test(e.stdout)); // BSD wc pads the count
   });
+
+  // A row's own `NEAR CAP at N%` moves its line (CORE-891); unmarked rows keep 95%.
+  it('honours a per-row NEAR CAP at N% override in every row shape', () => {
+    const marked = ['| `exact.md` | 100 | sized small; NEAR CAP at 98% |', '| `g/*.md` | 100 | NEAR CAP at 97% |', '| `d/**` | 100 | NEAR CAP at 99% |', '| `e/**` | 100 | NEAR CAP at 99% |', '| `plain.md` | 100 | no token |'];
+    writeFileSync(join(fixture, 'docs/CONTEXT-BUDGET.md'), `## Budgets\n\n| Surface | Budget | Why |\n|---|---|---|\n${marked.join('\n')}\n\n## Known over budget\n`);
+    put('exact.md', 97); // under its 98% line, though over the default 95%
+    put('g/hit.md', 97); // exactly its 97% line
+    put('g/quiet.md', 96); // under its 97% line
+    put('d/a', 99); // exactly its 99% line
+    put('e/a', 98); // under its 99% line
+    put('plain.md', 95); // unmarked row after marked ones: default 95% holds
+    assert.equal(run(), [
+      'NEAR CAP  g/hit.md  97 of 100 (97%)',
+      'NEAR CAP  d/**  99 of 100 (99%)',
+      'NEAR CAP  plain.md  95 of 100 (95%)',
+      'context_budget ok',
+      '',
+    ].join('\n'));
+  });
+
+  it('fails a NEAR CAP at N% override outside 1 to 99', () => {
+    const bad = ['| `a.md` | 100 | NEAR CAP at 100% |', '| `b.md` | 100 | NEAR CAP at 097% |', '| `c.md` | 100 | NEAR CAP at 0% |', '| `ok.md` | 100 | NEAR CAP at 97% |']; // ok.md keeps the read non-vacuous
+    writeFileSync(join(fixture, 'docs/CONTEXT-BUDGET.md'), `## Budgets\n\n| Surface | Budget | Why |\n|---|---|---|\n${bad.join('\n')}\n\n## Known over budget\n`);
+    for (const f of ['a.md', 'b.md', 'c.md', 'ok.md']) put(f, 50);
+    assert.throws(run, (e) => e.status === 1 && e.stdout === 'BAD NEAR CAP  a.md  100%\nBAD NEAR CAP  b.md  097%\nBAD NEAR CAP  c.md  0%\ncontext_budget FAILED\n');
+  });
 });
 
 // The installer's three anchors, one at a time, against the real install.sh

@@ -87,10 +87,12 @@ diff -u <(printf 'claude/skills/%s/SKILL.md\n' ft-close-epic ft-file-task ft-ope
 
 # Context budget (docs/CONTEXT-BUDGET.md §"Budgets")
 context_budget() {
-# Reads the Budgets table and restates no number. The release-time reading
+# Reads the Budgets table and restates no cap. The release-time reading
 # of a finding (§"Known over budget") is in step-7.1-standing-checks.md.
-# A surface at or above 95% of its row (and not over it) prints a `NEAR CAP`
-# line: informational, never sets `bad`, so the check still exits 0 (CORE-869.3).
+# A surface at or above its row's near-cap percentage (and not over the cap)
+# prints a `NEAR CAP` line: informational, never sets `bad`, so the check
+# still exits 0 (CORE-869.3). The percentage is 95 unless the row's "Why"
+# cell says `NEAR CAP at N%`, N from 1 to 99; any other N fails (CORE-891).
 bad=
 # $exact is the set of non-glob rows, excluded from a glob row's expansion
 # so the most specific row wins. Collapse newlines: $(...) keeps them, and
@@ -104,8 +106,13 @@ exact=$(awk '/^## Budgets$/,/^## Known over budget/' docs/CONTEXT-BUDGET.md \
         | sed -E 's/^\| `([^`]+)` \|.*/\1/' \
         | grep -v '\*' \
         | tr '\n' ' ')
-while IFS='|' read -r surface budget; do
+while IFS='|' read -r surface budget why; do
   budget=${budget//,/}
+  near=95
+  if [[ $why =~ NEAR\ CAP\ at\ ([0-9]+)% ]]; then
+    near=${BASH_REMATCH[1]}
+    [[ $near =~ ^[1-9][0-9]?$ ]] || { echo "BAD NEAR CAP  $surface  $near%"; bad=1; continue; }
+  fi
   case "$surface" in
     # A row ending in /** is a directory total: sum every file under it and
     # compare the sum. It is not a glob to expand, and it neither exempts
@@ -119,7 +126,7 @@ while IFS='|' read -r surface budget; do
       sz=$(find "${surface%/\*\*}" -type f -exec cat {} + | wc -c)
       n=$((n+1))
       if [ "$sz" -gt "$budget" ]; then echo "OVER BUDGET  $surface  $sz > $budget"; bad=1
-      elif [ $((sz * 100)) -ge $((budget * 95)) ]; then echo "NEAR CAP  $surface  $((sz)) of $budget ($((sz * 100 / budget))%)"; fi
+      elif [ $((sz * 100)) -ge $((budget * near)) ]; then echo "NEAR CAP  $surface  $((sz)) of $budget ($((sz * 100 / budget))%)"; fi
       ;;
     # Globs stay globs, an allowed exception to step-7.1-standing-checks.md
     # §"Glob-free by design": a newly shipped skill or SPEC/ module is
@@ -133,19 +140,19 @@ while IFS='|' read -r surface budget; do
         sz=$(wc -c < "$f")
         n=$((n+1))
         if [ "$sz" -gt "$budget" ]; then echo "OVER BUDGET  $f  $sz > $budget"; bad=1
-        elif [ $((sz * 100)) -ge $((budget * 95)) ]; then echo "NEAR CAP  $f  $((sz)) of $budget ($((sz * 100 / budget))%)"; fi
+        elif [ $((sz * 100)) -ge $((budget * near)) ]; then echo "NEAR CAP  $f  $((sz)) of $budget ($((sz * 100 / budget))%)"; fi
       done
       ;;
     *)
       sz=$(wc -c < "$surface")
       n=$((n+1))
       if [ "$sz" -gt "$budget" ]; then echo "OVER BUDGET  $surface  $sz > $budget"; bad=1
-      elif [ $((sz * 100)) -ge $((budget * 95)) ]; then echo "NEAR CAP  $surface  $((sz)) of $budget ($((sz * 100 / budget))%)"; fi
+      elif [ $((sz * 100)) -ge $((budget * near)) ]; then echo "NEAR CAP  $surface  $((sz)) of $budget ($((sz * 100 / budget))%)"; fi
       ;;
   esac
 done < <(awk '/^## Budgets$/,/^## Known over budget/' docs/CONTEXT-BUDGET.md \
          | grep -E '^\| `[^`]+` \| [0-9,]+ \|' \
-         | sed -E 's/^\| `([^`]+)` \| ([0-9,]+) \|.*/\1|\2/')
+         | sed -E 's/^\| `([^`]+)` \| ([0-9,]+) \|(.*)/\1|\2|\3/')
 # A renamed `## Budgets` heading or reshaped row leaves the read empty.
 [ "$n" -gt 0 ] || { echo "VACUOUS context_budget  no Budgets-table surface measured"; exit 1; }
 [ -z "$bad" ] || exit 1

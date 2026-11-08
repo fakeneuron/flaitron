@@ -152,7 +152,7 @@ are read from the table, never retyped. Run the function CI runs:
 bash tools/drift-checks.sh context_budget
 ```
 
-`context_budget ok` means nothing to do — including after a `NEAR CAP` line, which marks a surface at 95% or more of its row, still under it, and needs no action. Otherwise each `OVER BUDGET` line names a surface (or a `/**` directory total) and its measured size against its budget; the function's comments explain how rows match. `VACUOUS context_budget` means no Budgets-table row was read — the heading or row shape moved, not a size; fix the read before trusting a later `ok`. For each one printed:
+`context_budget ok` means nothing to do — including after a `NEAR CAP` line, which marks a surface at or above its row's NEAR CAP percentage of the budget (95% unless the row names its own), still under it, and needs no action. Otherwise each `OVER BUDGET` line names a surface (or a `/**` directory total) and its measured size against its budget; the function's comments explain how rows match. `VACUOUS context_budget` means no Budgets-table row was read — the heading or row shape moved, not a size; fix the read before trusting a later `ok`. For each one printed:
 
 - **Listed in §"Known over budget" with an open owner** — its owning task line
   is still `- [ ]` in `.flaitron/PLAN.md`. Informational: note it in the §7.4

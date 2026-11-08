@@ -21,7 +21,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-864** [light] | release-note-heading-casing — The release that ships CORE-863 must say in its tag notes that `SPEC.md`'s line-1 heading is now lowercase. An `install.sh` from an earlier tag refuses that core (`update` dies "does not hold flaitron"; global ft-adopt is skipped), so users fetch the latest installer. Close with that release.
 - [ ] **CORE-877** [moderate] | refactor-reconcile-gate — `/ft-refactor` Step 5 runs the reconciliation scan after the Step 4 review, its only gate, so "apply only confirmed edits" has no confirm (none under `--fast`). Move the scan into Step 3 so proposals ride Step 4; under `--fast` report them in the Step 6 hand-off and apply none. Surfaced by audit-docs 2026-11-07 (Finding #7, Medium).
-- [ ] **CORE-891** [moderate] | near-cap-small-unit-rows — `context_budget`'s flat 95% `NEAR CAP` line fires from the start on a row whose working unit is small: `claude/AGENTS-snippet.md`, sized file plus ~1.5 units at [[CORE-881]], sits at 95% of 13,800. Choose a per-row threshold read from the Budgets table, or a sizing rule for small-unit rows. Surfaced by CORE-881's External review.
 
 ## Future Opportunities
 
@@ -29,6 +28,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-891** [moderate] | near-cap-small-unit-rows — Completed 2026-11-08.
 - [x] **CORE-890** [moderate] | budget-other-templates — Completed 2026-11-08.
 - [x] **CORE-889** [light] | cursor-grok-wiring-wording — Completed 2026-11-08.
 - [x] **CORE-888** [light]🔧 | overlay-installer-invariants — Completed 2026-11-08.

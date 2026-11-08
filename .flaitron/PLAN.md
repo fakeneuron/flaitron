@@ -21,7 +21,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-864** [light] | release-note-heading-casing — The release that ships CORE-863 must say in its tag notes that `SPEC.md`'s line-1 heading is now lowercase. An `install.sh` from an earlier tag refuses that core (`update` dies "does not hold flaitron"; global ft-adopt is skipped), so users fetch the latest installer. Close with that release.
 - [ ] **CORE-877** [moderate] | refactor-reconcile-gate — `/ft-refactor` Step 5 runs the reconciliation scan after the Step 4 review, its only gate, so "apply only confirmed edits" has no confirm (none under `--fast`). Move the scan into Step 3 so proposals ride Step 4; under `--fast` report them in the Step 6 hand-off and apply none. Surfaced by audit-docs 2026-11-07 (Finding #7, Medium).
-- [ ] **CORE-880** [light] [unattended] | sparse-size-figures — Refresh the sparse-checkout figures in `docs/MIGRATION.md` §1.1 (~17 MB across ~1,300 files; ~20.6 → ~3.2 MB) and replace the copies in the four `*/AGENTS-snippet.md` files and `claude/skills/ft-adopt/SKILL.md` with "most of the checkout by bytes" plus a pointer to `docs/MIGRATION.md` §1.1. Surfaced by audit-docs 2026-11-07 (Finding #17, Low).
 - [ ] **CORE-881** [moderate] [unattended] | budget-shipped-surfaces — `docs/CONTEXT-BUDGET.md` neither caps nor exempts four shipped always-loaded surfaces. Add a §"Budgets" row for `claude/AGENTS-snippet.md` (13,187 chars; pasted into every adopter `AGENTS.md`) sized like its siblings (the file plus ~1.5 working units, the unit measured over the last twenty commits touching it), confirming `context_budget` enforces it; add `templates/tasknote-README.md`, `templates/PLAN.md` and `templates/tasknote-template.md` to "Not budgeted, deliberately" with a reason. Surfaced by audit-docs 2026-11-07 (Finding #18, Medium).
 - [ ] **CORE-888** [light] | overlay-installer-invariants — `.flaitron/audit-overlay/SKILL.md`: extend the Sacred invariants (Critical) with `install.sh` integrity checks on the `curl | sh` path and CI workflow `permissions:` and SHA pinning; add `sh tools/install.test.sh install.sh` as a `security:` gate (needs network). Surfaced by CORE-874 External review.
 - [ ] **CORE-889** [light] | cursor-grok-wiring-wording — Reword the canonical-bodies claim for Cursor and the Grok snippet: `docs/PLATFORMS.md` Cursor Skill invocation row (:610) and `grok/AGENTS-snippet.md` (:20-30) say a Codex-wired repo serves the canonical `claude/skills/` bodies; `.agents/skills/` links the `codex/skills/` wrappers. Surfaced by CORE-878 external review.
@@ -32,6 +31,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-880** [light] [unattended] | sparse-size-figures — Completed 2026-11-07.
 - [x] **CORE-879** [light] [unattended] | roster-args-deep-flag — Completed 2026-11-07.
 - [x] **CORE-878** [light] [unattended] | grok-codex-wiring-wording — Completed 2026-11-07.
 - [x] **CORE-876** [moderate]🧩 | ft-task-sop-reverify — Completed 2026-11-07.

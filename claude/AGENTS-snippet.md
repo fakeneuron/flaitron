@@ -99,7 +99,7 @@ ln -s ../../.flaitron/core/claude/skills/ft-seed-unattended .claude/skills/ft-se
 
 The relative paths are intentional — they survive `git clone` and pin to whichever flaitron commit the submodule is checked out at. Commit the symlinks (`git add .claude/`).
 
-The submodule also brings flaitron's own tasknote archive at `.flaitron/core/.flaitron/` (~16 MB, ~1,200 files) — flaitron's history, not this project's context. Sparse-checkout drops it from the working tree, and `/ft-update` re-applies it after a re-clone. As the fallback, keep it out of Grep, Glob, and `@file` with a `Read(./.flaitron/core/.flaitron/**)` deny rule in `.claude/settings.json`. The sparse line, the per-tool list, and the rule's one cost are in [`docs/MIGRATION.md`](../docs/MIGRATION.md) §1.1.
+The submodule also brings flaitron's own tasknote archive at `.flaitron/core/.flaitron/` (most of the checkout by bytes) — flaitron's history, not this project's context. Sparse-checkout drops it from the working tree, and `/ft-update` re-applies it after a re-clone. As the fallback, keep it out of Grep, Glob, and `@file` with a `Read(./.flaitron/core/.flaitron/**)` deny rule in `.claude/settings.json`. The sparse line, the per-tool list, and the rule's one cost are in [`docs/MIGRATION.md`](../docs/MIGRATION.md) §1.1.
 
 This snippet wires the adopter-installed subset: tasknote family, `/ft-seed-unattended`, and `/ft-update`. Global utilities live in the user's agent home when desired; `/ft-release` is flaitron-self-only. Never also install the adopter subset in `~/.claude/skills/`: a user-scope copy shadows this project's pinned wiring and runs against the pin (`⛔ skill/pin mismatch`) — [`docs/PLATFORMS.md`](../docs/PLATFORMS.md) §"One canonical install path per project".
 

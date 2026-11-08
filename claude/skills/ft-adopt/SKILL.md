@@ -77,7 +77,7 @@ git -C .flaitron/core checkout vX.Y.Z   # use the pinned version from Step 1
 git -C .flaitron/core sparse-checkout set --no-cone '/*' '!/.flaitron/'
 ```
 
-The `checkout` step is what pins the project to a specific flaitron commit. Skip it only if the user explicitly chose `main` in Step 1. Run the `sparse-checkout` line either way. It drops flaitron's dogfood archive (`.flaitron/core/.flaitron/`) from the working tree, ~18.9 → ~3.0 MB, and keeps every file an adopter runs. It needs git ≥ 2.35, so check `git --version` first. On older git, skip it and tell the user; Step 3b's fence then covers the path. Skip it too, and say so, if `.flaitron/core` is a symlink to a local flaitron checkout (`test -L .flaitron/core`): the line would trim that checkout's own `.flaitron/`.
+The `checkout` step is what pins the project to a specific flaitron commit. Skip it only if the user explicitly chose `main` in Step 1. Run the `sparse-checkout` line either way. It drops flaitron's dogfood archive (`.flaitron/core/.flaitron/`) from the working tree (most of the checkout by bytes; sizes in `docs/MIGRATION.md` §1.1) and keeps every file an adopter runs. It needs git ≥ 2.35, so check `git --version` first. On older git, skip it and tell the user; Step 3b's fence then covers the path. Skip it too, and say so, if `.flaitron/core` is a symlink to a local flaitron checkout (`test -L .flaitron/core`): the line would trim that checkout's own `.flaitron/`.
 
 Reference: `docs/MIGRATION.md` §1.1.
 
@@ -102,7 +102,7 @@ Reference: `claude/AGENTS-snippet.md` §"One-time symlink wiring" (canonical) ·
 
 ## Step 3b — Fence the submodule's dogfood archive
 
-`.flaitron/core/.flaitron/` is flaitron's own plan and tasknote archive (~16 MB, ~1,200 files) — flaitron's history, not this project's context. Step 2's sparse-checkout already removed it from this clone. The fence below is the fallback for a fresh clone of the project, which comes back full until `/ft-update` runs again, and for older git that skipped the sparse step. Write it now:
+`.flaitron/core/.flaitron/` is flaitron's own plan and tasknote archive (most of the checkout by bytes; `docs/MIGRATION.md` §1.1) — flaitron's history, not this project's context. Step 2's sparse-checkout already removed it from this clone. The fence below is the fallback for a fresh clone of the project, which comes back full until `/ft-update` runs again, and for older git that skipped the sparse step. Write it now:
 
 1. `.claude/settings.json` — when the project uses Claude Code, add `Read(./.flaitron/core/.flaitron/**)` to `permissions.deny`. Create the file with just that key if it is absent; if it exists, merge the rule into the existing `deny` array and change nothing else. Claude Code applies the rule to its file tools, Grep/Glob, and `@file` mentions.
 2. `.ignore` at the project root — append the line `.flaitron/core/.flaitron/` (create if absent). Covers ripgrep-based greps; `.gitignore` is the wrong file, the path is tracked content.

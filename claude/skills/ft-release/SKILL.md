@@ -17,6 +17,36 @@ The release task is normally filed in `.flaitron/PLAN.md` as a one-line entry be
 
 `/ft-release` scans PLAN for the entry and drives it. If no such entry exists, Step 1 drafts and files one itself (task ID, version, and description all self-computed from repo state) and carries on, rather than bouncing the user to file it by hand. The skill takes **no arguments**.
 
+## Mid-cut defects — apply when discovered
+
+Before publication, route **any defect surfaced during the cut** through this
+policy immediately, wherever found: dogfooding, validation, dependency audit,
+doc sweep, standing checks, or incidental inspection. Do not defer the decision
+to §7.1 or 📦. Record the defect and severity in the release tasknote.
+
+- **Critical / High** — fix inline and re-run the detecting check. If still
+  Critical / High, stop and explain why; Release anyway is unavailable. A
+  reduction to Medium / Low joins the ask below.
+- **Medium / Low** — hold all open defects and ask with AskUserQuestion before
+  fixing, filing, or continuing. Show each as a one-line summary. Two options,
+  neither default:
+  - **Stop** — do not file or advance the cut (including commit, tag, push).
+    Keep the work in this tree until fixed here and the detecting checks are
+    re-run. Remaining Medium / Low defects ask again; none remaining resumes
+    at the interrupted step.
+  - **Release anyway** — file each held defect via `/ft-file-task` (reuse an
+    existing row for the same defect), record the IDs and decision in the
+    release tasknote, then resume at the interrupted step. Filing alone never
+    authorizes continuation. A new defect requires a new decision.
+
+An empty, unclear, or uncertain reply is **Stop**. This is a blocking recipe
+wait, outside 📦, with no new phase-gate banner (`SPEC/gates.md`
+§"Operator-gate cues"). Release anyway never waives a check explicitly marked
+blocking. Expected results of named advisories (SOP currency, global wiring,
+completed rotation, viz majors, NEAR CAP) retain their stated disposition;
+a defect in those checks themselves still routes here. Post-publication
+failures retain Step 8's flag-and-report posture.
+
 ## Step 0 — Verify cwd is the flaitron repo
 
 The skill bails if invoked outside flaitron's own checkout:
@@ -237,14 +267,13 @@ npm --prefix viz audit --audit-level=high
 ```
 
 - **Clean (exit 0)** — proceed to Step 7.
-- **Findings reported** — fix inline when in scope for this release, or file
-  a follow-up PLAN.md task via `/ft-file-task` before closing the cut.
-  Never let a release close with unaddressed high/critical findings
-  unrecorded.
+- **Findings reported** — apply “Mid-cut defects” now. High / Critical
+  findings must clear; filing them never permits shipping. Medium / Low
+  findings require the Stop / Release anyway decision.
 
 ## Step 7 — Drive Phase 4: Closure
 
-Walk the closure steps in order. Three waits, each only when it fires, and none of them is a new banner: the §7.1 Medium/Low finding ask (release anyway, or stop), the §7.2 tag-message review, and the bundled 📦 commit-go (§7.4). Wait at each one that fires.
+Walk the closure steps in order: the mid-cut defect decision applies here too, followed by §7.2 tag-message review and bundled 📦 commit-go (§7.4). Wait at each one that fires.
 
 ### 7.1 — Doc-drift sweep (via audit-overlay `docs` subroutine)
 
@@ -256,18 +285,11 @@ docs ai-referenced
 
 Read the tracked file rather than invoking the `/audit` skill, so the cut does not depend on per-machine wiring. `.claude/skills/audit` is gitignored, it is absent in a fresh clone or under Codex, and repairing it mid-session does not add it to a session's skill roster. The standing self-wiring check below still guards that link for interactive `/audit` use. The overlay is the single statement of this audit's config: its `docs:` deltas supply the rubric and the verification gates, so this step restates neither. This read counts as a subroutine invocation with an explicit scope for the dispatcher's Subroutine-safe hard rule: no PLAN.md writes, no auto-commit, and no blocking ticket confirmation. If the scaffold bootstrap stops anyway (a pass-file slot the overlay does not fill yet), take its **run once** branch with the overlay's `docs:` values, and treat the gap as a Medium finding. The overlay runs the bundled `ft-audit` scaffold by reference; the `docs` domain walks its 5 passes (Claims vs. code · Cross-doc consistency · Cross-references · Currency · Stale content) over the declared doc set and returns the report inline. Per the dispatcher's Subroutine-safe hard rule it does **not** write tickets to `.flaitron/PLAN.md`; the release skill is the orchestrator. Critical / High findings are fixed inline. Medium / Low findings are not disposed one by one, and filing them does not by itself let the cut continue.
 
-Classify each returned finding:
-- **Critical / High** — fix inline as part of the release cut (the 4 version edits in Phase 2 normally clear the routine SPEC + MIGRATION + SECURITY + README-installer version-pin drift; anything else surfaced here gets the same treatment). Cleared means the finding is gone. A finding that only drops to Medium or Low is held for the ask below. If it is still Critical or High after the inline fix, stop the cut and say why. Release anyway is not available for a finding that is still Critical or High.
-- **Medium / Low** — hold it. Do not file it yet, and do not absorb it inside the ask.
-
-If any Medium or Low finding is still open, stop and ask with AskUserQuestion before §7.2. Show every held finding as a one-line summary. Two options, and neither is the default:
-
-- **Stop** — do not file, do not enter §7.2, and do not tag. Record the findings in the release tasknote. The cut stays in this working tree until they are fixed here and §7.1 is re-run. A re-run that still reports Medium or Low findings asks again. A re-run that reports none continues into the standing checks below.
-- **Release anyway** — file each held finding via `/ft-file-task`, record the new task IDs in the release tasknote, then continue the cut. This is the only path that ships with those findings still open.
-
-An empty, unclear, or uncertain reply is **Stop**. This ask is a skill-recipe wait, like the §7.2 tag-message review. It is not bundled into 📦: Stop has to land before §7.2, and folding the choice into commit-go would tag before the operator made it.
-
-If the sweep reports zero findings, or the only findings were Critical / High and those are fixed inline, say so and continue into the standing checks below. **Release anyway** does the same after the follow-ups are filed. **Stop** does not: do not read the standing checks, and do not enter §7.2. Do not invent a third phase-gate banner for this ask — `SPEC/gates.md` §"Operator-gate cues" caps standing banners at 🛠️ and 📦. This is a blocking AskUserQuestion, a skill-recipe wait like the §7.2 tag-message review.
+Apply “Mid-cut defects” to the returned findings now. **Stop** holds here:
+do not read the standing checks or enter §7.2 until the fixes and sweep re-run
+clear the findings, or the operator chooses Release anyway. Zero findings,
+Critical / High fixed and re-verified, or Release anyway with follow-ups
+recorded continues into the standing checks below.
 
 **Standing checks — read both fragments now** (only when the cut is continuing). Independently of the subroutine findings, §7.1 carries two blocks of standing checks that live in sibling fragments so this skill stays under its load budget. Read them **in parallel**:
 

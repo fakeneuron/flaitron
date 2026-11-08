@@ -27,7 +27,10 @@ already wired for Grok.** Grok loads `.claude/skills/` / `.claude/commands/`
 `.cursor/skills/` (Cursor compat, default on) as documented compatibility
 surfaces, so the symlinks from `../claude/AGENTS-snippet.md` §"One-time
 symlink wiring" (or the Codex / Cursor-only siblings) already serve Grok
-sessions. Run that block and stop there — a second parallel install into
+sessions. Which bodies Grok then runs follows the wiring: the canonical
+`claude/skills/` bodies under `.claude/skills/` or `.cursor/skills/`, or the
+`codex/skills/` wrappers under `.agents/skills/` in a Codex-wired repo. Run
+that block and stop there — a second parallel install into
 `.grok/skills/` adds no skills and no capability.
 
 **Derived surface.** The roster is not decided here. It is defined once in

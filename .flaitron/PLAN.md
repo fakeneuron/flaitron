@@ -15,11 +15,12 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-(none)
+- [ ] **CORE-893** [moderate] | dogfood-render-outcome — DOGFOOD.md Step 2 has the agent confirm glyph rendering it cannot observe, so Codex declined its v8.4.0 receipt ([[CORE-892]]). Reword Step 2 and the receipt's cue-render line so the operator supplies the outcome, keeping the verbatim three-line shape step-5-dogfood-sop.md checks. Check `docs/AGENT-COMPAT.md` §"Reading the cells" for restatements.
+- [ ] **CORE-894** [heavy] | release-midcut-defect-ask — /ft-release's stop-and-fix ask (§7.1 Medium/Low: Stop or Release anyway) covers only audit findings; a defect surfaced mid-cut elsewhere, like the dogfood render-check gap ([[CORE-893]]) at v8.4.0, was deferred unprompted. Extend the ask to any mid-cut defect; mind ft-release's 95% budget.
 
 ## Low
 
-- [ ] **CORE-893** [moderate] | dogfood-render-outcome — DOGFOOD.md Step 2 has the agent confirm glyph rendering it cannot observe, so Codex declined its v8.4.0 receipt ([[CORE-892]]). Reword Step 2 and the receipt's cue-render line so the operator supplies the outcome, keeping the verbatim three-line shape step-5-dogfood-sop.md checks. Check `docs/AGENT-COMPAT.md` §"Reading the cells" for restatements.
+(none)
 
 ## Future Opportunities
 

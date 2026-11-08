@@ -2,7 +2,7 @@
 procedure: ft-task
 source: claude/skills/ft-task/ templates/tasknote-template.md
 restates: SPEC.md
-last-verified: v7.0.0 · 2026-10-11
+last-verified: v8.3.0 · 2026-11-07
 ---
 
 # Procedure SOP — `ft-task`
@@ -250,7 +250,10 @@ reason; the motions this SOP adds:
 - **Populate ✅ Acceptance** with testable criteria, each naming the
   **verify command** that decides it; one no command decides marks itself
   `judgment` (or `👁️`) with a one-line reason. Contract:
-  [`SPEC.md` §"Tasknote body shape"](../../SPEC.md).
+  [`SPEC.md` §"Tasknote body shape"](../../SPEC.md). A promoted starter's
+  `### Acceptance that decides it` criteria arrive verbatim, placeholders
+  skipped — add to them and surface a drifted one, never silently reword or
+  drop them ([`SPEC/starter.md`](../starter.md)).
 - **Populate 🧩 Subtasks** with concrete, ordered steps, and **declare YAML `touches:`** with the paths this task expects to edit. Contract — exemptions, and the one run it binds: `SPEC.md` §"Tasknote frontmatter".
 
 **Under debug mode**, work the fragment's four Phase 1 prompts *inside* this

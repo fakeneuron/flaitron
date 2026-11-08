@@ -20,7 +20,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Low
 
 - [ ] **CORE-864** [light] | release-note-heading-casing — The release that ships CORE-863 must say in its tag notes that `SPEC.md`'s line-1 heading is now lowercase. An `install.sh` from an earlier tag refuses that core (`update` dies "does not hold flaitron"; global ft-adopt is skipped), so users fetch the latest installer. Close with that release.
-- [ ] **CORE-876** [moderate] [unattended] | ft-task-sop-reverify — `SPEC/procedures/ft-task.md` reads `last-verified: v7.0.0 · 2026-10-11`; reconcile it against the `source:` commits since that skipped the SOP (CORE-814, 815.4, 816, 850.2, 857.4, 863, `72b17a27`), then restamp v8.3.0. Surfaced by audit-docs 2026-11-07 (Finding #14, Medium).
 - [ ] **CORE-877** [moderate] | refactor-reconcile-gate — `/ft-refactor` Step 5 runs the reconciliation scan after the Step 4 review, its only gate, so "apply only confirmed edits" has no confirm (none under `--fast`). Move the scan into Step 3 so proposals ride Step 4; under `--fast` report them in the Step 6 hand-off and apply none. Surfaced by audit-docs 2026-11-07 (Finding #7, Medium).
 - [ ] **CORE-878** [light] [unattended] | grok-codex-wiring-wording — `docs/PLATFORMS.md` (:38, :77, :555) and `docs/AGENT-COMPAT.md` (:37, :65-67) say Grok in a Codex-wired repo runs the canonical bodies; it runs the `codex/skills/` wrappers. Reword; fix AGENT-COMPAT :69-70's "detail is filed"; rewrite `docs/AGENT-NEUTRALITY.md`'s README-Quickstart row for the installer-first README; add a §"Principle" exemption for PLATFORMS, AGENT-COMPAT and CODEX-VERIFICATION. Surfaced by audit-docs 2026-11-07 (Findings #8, #19, #21, Medium).
 - [ ] **CORE-879** [light] [unattended] | roster-args-deep-flag — Reword KEEP IN SYNC guard item 1 in `AGENTS.md` and `claude/AGENTS-snippet.md` to "names plus per-skill flags" (only the snippet carries arguments); add `--deep` to `/ft-open-epic` in both rosters; add `--medium|--future` to `/ft-file-task`'s `argument-hint` (and to its `description:` and the Codex wrapper's) and `-p` to its usage notice; add `-d` / `-f` to `/ft-task`'s usage line. Surfaced by audit-docs 2026-11-07 (Finding #9, Low).
@@ -34,6 +33,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-876** [moderate]🧩 | ft-task-sop-reverify — Completed 2026-11-07.
 - [x] **CORE-874** [light]🔧 | audit-overlay-refresh — Completed 2026-11-07.
 - [x] **CORE-875** [light]🔧 | security-ci-coverage-job — Completed 2026-11-07.
 - [x] **CORE-882** [light]🔧 | close-epic-plain-mv — `/ft-close-epic` Step 7 archives the untracked audit note with plain `mv`, not `git mv`. Surfaced by audit-docs 2026-11-07 (Finding #1, High), fixed inline.

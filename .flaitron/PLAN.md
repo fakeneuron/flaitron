@@ -16,7 +16,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Medium
 
 - [ ] **CORE-896** [moderate] | grok-block-adoption — Adopt Natabula Grok block v1 public variant in AGENTS.md; retain one CLAUDE import/link or symlink. Verify exact payload, checkout/closure capability stops and public-ID boundary using Natabula docs/GROK-TASKNOTES.md and its audit. Owner executes; push/PR/merge/deploy need explicit go.
-
+- [ ] **CORE-897** [heavy] | seeder-fleet-gaps — Resolve ten seeder gaps from Natabula NAT-551: independent splits, admitted-row corrections, parser-aligned collection and diagnostics, stay reasons, keyword matching, rewrite caps, mixed ID padding, glyph style, parked notes and operation-specific collisions. Preserve the attended review and re-scan invariants. Filed with starter at `.flaitron/tasknote/CORE-897.md`.
 
 ## Low
 

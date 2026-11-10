@@ -158,6 +158,6 @@ Alphabetized. 74 entries. Maintained via epic children and audits.
 
 ---
 
-**Maintenance.** This file is the survivor slice of the GSD-Pi `CONTEXT.md` pattern (see CORE-194.1). It is deliberately lazy-loaded and must never be added to the AI-referenced docs list. New terms are introduced only by epic children or audit follow-ups that also update the authoritative SPEC anchors. Last significant update: CORE-872 (2026-11-06) — revised the `touches` entry.
+**Maintenance.** This file is the survivor slice of the GSD-Pi `CONTEXT.md` pattern (see CORE-194.1). It is deliberately lazy-loaded and must never be added to the AI-referenced docs list. New terms are introduced only by epic children or audit follow-ups that also update the authoritative SPEC anchors. Last significant update: CORE-895 (2026-11-08) — added the `/ft-import-task` entry.
 
 See [SPEC.md](../SPEC.md) for the contract and [.flaitron/PLAN.md](../.flaitron/PLAN.md) for the current epic context.

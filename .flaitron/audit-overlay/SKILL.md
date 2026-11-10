@@ -1,7 +1,7 @@
 ---
 name: audit
 description: flaitron-self audit — thin overlay over flaitron's bundled `ft-audit` (runs its passes by reference, applies the project deltas below). Forked from flaitron's audit-overlay template; see `docs/MIGRATION.md` §1.2.1 (recipe) and `CONTRIBUTING.md` (this file's flaitron-self home).
-flaitron-reconciled: v8.3.0
+flaitron-reconciled: v8.4.0
 flaitron-tracks: ft-audit
 ---
 

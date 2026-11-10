@@ -1,6 +1,6 @@
 # Starter tasknotes
 
-> Lazy-loaded SPEC module. Loaded by `/ft-task` Step 3a when an existing tasknote has `status: starter`. See `SPEC.md` for the always-loaded core spec.
+> Lazy-loaded SPEC module. Loaded by `/ft-task` Step 3a when an existing tasknote has `status: starter`, and by `/ft-file-task --starter` and `/ft-import-task` before they write one. See `SPEC.md` for the always-loaded core spec.
 
 A **starter tasknote** is a lightweight, intentionally minimal tasknote shape
 for capturing rich AI-discovered context at task-filing time — when context

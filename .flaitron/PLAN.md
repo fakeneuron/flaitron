@@ -21,7 +21,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Low
 
-(none)
+- [ ] **CORE-902** [light] | install-test-shellcheck-pin — `install-test.yml`'s shellcheck job uses the runner image's shellcheck, which floats with `ubuntu-latest` (Ubuntu 26 rollout). Fetch a pinned release with `SHELLCHECK_VERSION` + `SHELLCHECK_SHA256` per natabula STACK-TENDENCIES §"Runner image" (NAT-461); fakeneuron-nas `ci.yml` is the precedent. Push needs explicit go.
 
 ## Future Opportunities
 

@@ -16,8 +16,8 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Medium
 
 - [ ] **CORE-903** [light]🔧 | gitleaks-allowlist-rule-scope — `.gitleaks.toml`'s three path allowlists skip every rule, so a `private-key` hit in a `*.test.ts`, `*.example` or archived tasknote passes CI; add `targetRules = ["generic-api-key"]` to each (verified on 8.30.1, tree stays clean) and fix the comment; natabula's baseline, which this copy is deposited from, needs the same change. Surfaced by audit-security 2026-11-14 (Finding #1, Medium).
-- [ ] **FE-152** [moderate]🧩 | api-host-guard — `/api/*` leans on Vite's `allowedHosts` middleware running ahead of plugin middleware for DNS-rebinding defence; add a Host-header allowlist check to `guarded` in `viz/src/devApi.ts` with tests, and update `SECURITY.md`'s bullet. Surfaced by audit-security 2026-11-14 (Finding #2, Medium).
-- [ ] **CORE-904** [moderate]🧩 | supply-chain-drift-check — Nothing in CI enforces sacred invariant (5); add a `tools/drift-checks.sh` check (seeded cases in `tools/drift-checks.test.mjs`) asserting `install.sh` keeps only assignments and a final `main "$@"` at top level, and every workflow keeps `permissions:` plus 40-hex `uses:` pins. Surfaced by audit-security 2026-11-14 (Finding #3, Medium).
+- [ ] **FE-152** [moderate]🧩 [unattended] | api-host-guard — `/api/*` leans on Vite's `allowedHosts` middleware running ahead of plugin middleware for DNS-rebinding defence; add a Host-header allowlist check to `guarded` in `viz/src/devApi.ts` with tests, and update `SECURITY.md`'s bullet. Surfaced by audit-security 2026-11-14 (Finding #2, Medium).
+- [ ] **CORE-904** [moderate]🧩 [unattended] | supply-chain-drift-check — Nothing in CI enforces sacred invariant (5); add a `tools/drift-checks.sh` check (seeded cases in `tools/drift-checks.test.mjs`) asserting `install.sh` keeps only assignments and a final `main "$@"` at top level, and every workflow keeps `permissions:` plus 40-hex `uses:` pins. Surfaced by audit-security 2026-11-14 (Finding #3, Medium).
 
 ## Low
 

@@ -154,7 +154,8 @@ with the user's permissions. Mitigations:
   tag, and read the script first (`curl -fsSL <url> | less`).
 - **Truncation-safe.** Every statement runs inside a function, and the
   last line calls `main`. A cut-off download defines functions and runs
-  nothing.
+  nothing. CI's `drift` job enforces that shape (`supply_chain` in
+  `tools/drift-checks.sh`).
 - **Tag integrity, stated honestly.** Before changing anything, the
   script reads the tag's commit from GitHub. After checkout, it requires
   HEAD == tag == that commit, and it aborts with nothing changed when
@@ -207,7 +208,10 @@ vulnerability.
 - `actions/checkout` and `actions/setup-node` pinned to full-length
   commit SHAs (with a version comment), not mutable major tags like `@v5`. Same
   reason this document tells adopters to pin the submodule to annotated
-  release tags rather than `main`.
+  release tags rather than `main`. The `drift` job's `supply_chain` check
+  fails a workflow that drops its workflow-level `permissions:` block, gives
+  any `permissions:` key a shorthand value such as `write-all`, or
+  references any action by anything else.
 - The gitleaks release tarball is verified against the release's
   `checksums.txt` via `sha256sum --check` before extraction — a swapped
   or corrupted tarball fails the checksum and the step exits nonzero

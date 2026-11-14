@@ -17,17 +17,18 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-903** [light]🔧 | gitleaks-allowlist-rule-scope — `.gitleaks.toml`'s three path allowlists skip every rule, so a `private-key` hit in a `*.test.ts`, `*.example` or archived tasknote passes CI; add `targetRules = ["generic-api-key"]` to each (verified on 8.30.1, tree stays clean) and fix the comment; natabula's baseline, which this copy is deposited from, needs the same change. Surfaced by audit-security 2026-11-14 (Finding #1, Medium).
 - [ ] **FE-152** [moderate]🧩 [unattended] | api-host-guard — `/api/*` leans on Vite's `allowedHosts` middleware running ahead of plugin middleware for DNS-rebinding defence; add a Host-header allowlist check to `guarded` in `viz/src/devApi.ts` with tests, and update `SECURITY.md`'s bullet. Surfaced by audit-security 2026-11-14 (Finding #2, Medium).
-- [ ] **CORE-904** [moderate]🧩 [unattended] | supply-chain-drift-check — Nothing in CI enforces sacred invariant (5); add a `tools/drift-checks.sh` check (seeded cases in `tools/drift-checks.test.mjs`) asserting `install.sh` keeps only assignments and a final `main "$@"` at top level, and every workflow keeps `permissions:` plus 40-hex `uses:` pins. Surfaced by audit-security 2026-11-14 (Finding #3, Medium).
 
 ## Low
 
 - [ ] **CORE-905** [light]🔧 | gitleaks-tarball-hash-pin — `ci.yml` verifies the gitleaks tarball against a checksums file from the same release; pin its SHA-256 in the workflow as `install-test.yml` does for shellcheck, and correct `SECURITY.md`'s "swapped tarball" claim. Surfaced by audit-security 2026-11-14 (Finding #4, Low).
+- [ ] **CORE-907** [moderate] | supply-chain-yaml-edges — `supply_chain` (tools/drift-checks.sh) reads workflows line by line, so `uses :`, a quoted `"uses":` key, or a next-line `permissions:` scalar pass unseen, while `uses:` text in a `run:` script and a multi-line top-level install.sh assignment fail closed. Harden or document the limits; details in CORE-904's archived Testing Notes.
 
 ## Future Opportunities
 
 
 ## Completed
 
+- [x] **CORE-904** [moderate] | supply-chain-drift-check — Completed 2026-11-14. bash lists install.sh top-level commands under a skipping DEBUG trap; workflow permissions + SHA pins checked.
 - [x] **CORE-906** [light] | overlay-invariant-5-exception — `.flaitron/audit-overlay/SKILL.md` invariant (5) now names `arch-health.yml`'s `report-failure` `issues: write` as the one sanctioned grant, matching `SECURITY.md`. Surfaced by audit-security 2026-11-14 (Finding #5, Low), fixed inline.
 - [x] **CORE-902** [light] | install-test-shellcheck-pin — Completed 2026-11-14. Pinned shellcheck 0.11.0 + SHA-256; live CI run not yet observed (needs a push).
 - [x] **CORE-897** [heavy] | seeder-fleet-gaps — Completed 2026-11-14. All ten NAT-551 cases landed per operator picks; adds a correction class.

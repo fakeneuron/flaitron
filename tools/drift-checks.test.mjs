@@ -125,6 +125,32 @@ const CASES = {
     seed: () => edit('claude/skills/ft-adopt/SKILL.md', (s) => s.replaceAll('Installer exception', 'Installer exemption')),
     finding: /^INSTALLER ANCHOR {2}claude\/skills\/ft-adopt\/SKILL\.md lacks 'Installer exception'$/m,
   },
+  supply_chain: {
+    // install.sh: an env-prefixed command, a statement behind a one-line
+    // function, an indented closer that reopens a function, and a statement
+    // after main. Workflows: a job-level write-all, a dropped permissions
+    // block, and a mutable action tag. None of the seeded commands runs.
+    seed: () => {
+      edit('install.sh', (s) => s.replace(/^USER_AGENT=.*\n/m, '$&ZZ=1 echo zz-env\nzz() { :; }; echo zz-fn #}\n'));
+      edit('install.sh', (s) => s.replace(/^usage\(\) \{\n/m, '$&  :; } ; echo zz-close; zz2() {\n'));
+      edit('install.sh', (s) => `${s}echo zz-drift\n`);
+      edit('.github/workflows/arch-health.yml', (s) => s.replace(/^( +)permissions:\n +issues: write$/m, '$1permissions: write-all'));
+      edit('.github/workflows/ci.yml', (s) => s.replace(/^permissions:\n( .*\n)+/m, ''));
+      edit('.github/workflows/ci.yml', (s) => s.replace(/(actions\/checkout)@[0-9a-f]{40}/, '$1@v5'));
+    },
+    finding: new RegExp(
+      '^INSTALL TOPLEVEL {2}install\\.sh:\\d+ :: ZZ=1 echo zz-env\\n' +
+        'INSTALL TOPLEVEL {2}install\\.sh:\\d+ :: echo zz-fn\\n' +
+        'INSTALL TOPLEVEL {2}install\\.sh:\\d+ :: echo zz-close\\n' +
+        'INSTALL TOPLEVEL {2}install\\.sh:\\d+ :: echo zz-drift\\n' +
+        'INSTALL MAIN NOT LAST {2}install\\.sh :: [^\\n]*\\n' +
+        'INSTALL LAST LINE {2}install\\.sh :: not main "\\$@"\\n' +
+        'BROAD PERMISSIONS {2}\\.github/workflows/arch-health\\.yml:\\d+ :: permissions: write-all\\n' +
+        'NO PERMISSIONS {2}\\.github/workflows/ci\\.yml\\n' +
+        'UNPINNED ACTION {2}\\.github/workflows/ci\\.yml:\\d+ :: - uses: actions/checkout@v5( #[^\\n]*)?$',
+      'm',
+    ),
+  },
   skill_frontmatter_yaml: {
     // Undo CORE-744's quoting: the shipped `: ` shape returns.
     seed: () => edit('claude/skills/ft-close-epic/SKILL.md', (s) => s.replace(/^description: '(.*)'$/m, 'description: $1')),

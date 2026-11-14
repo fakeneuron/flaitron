@@ -18,8 +18,9 @@
 # step-7.1-mirror-pairs.md that names it and says what a finding means.
 # Design notes sit as `#` comments inside the body, next to the line they
 # explain. skill_pin_guard_parity (CORE-729), final_newline (CORE-621),
-# sidequest_orphan (CORE-742.2), handoff_rows (CORE-866) and installer_anchors
-# (CORE-868.2) have neither a source rule nor a catalogue entry.
+# sidequest_orphan (CORE-742.2), handoff_rows (CORE-866), installer_anchors
+# (CORE-868.2) and supply_chain (CORE-904) have neither a source rule nor a
+# catalogue entry.
 #
 # Shape rules — the dispatcher below reads them:
 # - One check per top-level function, `name() {` and its closing `}` each at
@@ -476,6 +477,60 @@ done
 marker=$(sed -n "s#^ *if ! grep -q '\([^']*\)' \"\$fh/claude/skills/ft-adopt/SKILL.md\".*#\1#p" install.sh)
 { [ -n "$marker" ] && [ "$(printf '%s\n' "$marker" | wc -l)" -eq 1 ]; } || { echo "ANCHOR UNREAD  install.sh has no single ft-adopt marker grep"; exit 1; }
 grep -q -- "$marker" claude/skills/ft-adopt/SKILL.md || { echo "INSTALLER ANCHOR  claude/skills/ft-adopt/SKILL.md lacks '$marker'"; bad=1; }
+[ -z "$bad" ] || exit 1
+}
+
+# Supply-chain posture (CORE-904)
+supply_chain() {
+# The audit overlay's sacred invariant (5), made structural. install.sh is
+# piped into a shell, so a truncated download must define functions and run
+# nothing: its top-level commands are plain assignments, then `main "$@"`
+# once, as the final command and the file's last line. bash itself lists
+# them, so no brace or quoting shape can hide one: install.sh is sourced
+# under an extdebug DEBUG trap (-T reaches subshells) that prints each
+# command with its line and returns false, which skips it. Nothing in the
+# file runs, and a function definition is not a command. A plain
+# assignment's value is one bare word or one single-quoted string: `X=1 cmd`,
+# `X=$(cmd)` and `X=a; cmd` fail. Each workflow keeps a column-0
+# `permissions:` block; any `permissions:` line carrying a value other than
+# `{}` (`write-all`, `read-all`, a flow map) fails, and every action is
+# pinned to a 40-hex commit SHA. `.yaml` files and flow-style `{ uses: … }`
+# count too. Grant breadth inside a block (the sanctioned report-failure
+# `issues: write`) stays the audit's call.
+bad=
+n=0
+[ -f install.sh ] || { echo "VACUOUS supply_chain  no install.sh"; exit 1; }
+# shellcheck disable=SC2016  # the trap body expands in the inner bash
+cmds=$(bash -c 'shopt -s extdebug; set -T; go=; trap '\''if [ -z "$go" ]; then go=1; else printf "%s %s\n" "$LINENO" "$BASH_COMMAND" >&3; false; fi'\'' DEBUG; . ./install.sh' 3>&1 >/dev/null 2>&1 || true)
+out=$(printf '%s\n' "$cmds" | awk '
+  $0 == "" { next }
+  { k++; ln = $1; c = $0; sub(/^[0-9]+ /, "", c) }
+  c == "main \"$@\"" { mains++; at = k; next }
+  c ~ /^[A-Za-z_][A-Za-z0-9_]*=([^ \t;&|<>(){}$`"\047\\]+|\047[^\047]*\047)$/ { next }
+  { print "INSTALL TOPLEVEL  install.sh:" ln " :: " c }
+  END { if (mains != 1 || at != k) print "INSTALL MAIN NOT LAST  install.sh :: want one main \"$@\" as the final command" }
+')
+[ -z "$out" ] || { printf '%s\n' "$out"; bad=1; }
+# A function defined after main is no command, so read the last line too.
+# shellcheck disable=SC2016  # a literal $@
+[ "$(grep -vE '^[[:space:]]*(#|$)' install.sh | tail -n 1)" = 'main "$@"' ] || { echo "INSTALL LAST LINE  install.sh :: not main \"\$@\""; bad=1; }
+for f in .github/workflows/*.yml .github/workflows/*.yaml; do
+  [ -f "$f" ] || continue
+  n=$((n+1))
+  grep -q '^permissions:' "$f" || { echo "NO PERMISSIONS  $f"; bad=1; }
+  p=$(grep -nE '^[[:space:]]*permissions:' "$f" | grep -vE '^[0-9]+:[[:space:]]*permissions:[[:space:]]*(\{\}[[:space:]]*)?(#.*)?$' || true)
+  [ -z "$p" ] || { printf '%s\n' "$p" | awk -v f="$f" '{ i = index($0, ":"); l = substr($0, i + 1); sub(/^[ \t]*/, "", l); print "BROAD PERMISSIONS  " f ":" substr($0, 1, i - 1) " :: " l }'; bad=1; }
+  # Only the first `uses:` value on a line counts, so a pinned-looking one in
+  # a trailing comment cannot cover a mutable ref ahead of it.
+  hits=$(awk -v f="$f" '
+    /^[ \t]*#/ { next }
+    match($0, /(^|[^A-Za-z0-9_-])uses:/) {
+      v = substr($0, RSTART + RLENGTH); sub(/^[ \t]*/, "", v); sub(/[ \t,}].*$/, "", v); if (v ~ /^["\047].*["\047]$/) v = substr(v, 2, length(v) - 2)
+      if (v !~ /^[^@]+@[0-9a-f]+$/ || length(v) - index(v, "@") != 40) { l = $0; sub(/^[ \t]*/, "", l); print "UNPINNED ACTION  " f ":" NR " :: " l }
+    }' "$f")
+  [ -z "$hits" ] || { printf '%s\n' "$hits"; bad=1; }
+done
+[ "$n" -gt 0 ] || { echo "VACUOUS supply_chain  no workflow examined"; exit 1; }
 [ -z "$bad" ] || exit 1
 }
 

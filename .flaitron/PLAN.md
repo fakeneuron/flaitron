@@ -18,7 +18,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Low
 
-- [ ] **CORE-905** [light]🔧 | gitleaks-tarball-hash-pin — `ci.yml` verifies the gitleaks tarball against a checksums file from the same release; pin its SHA-256 in the workflow as `install-test.yml` does for shellcheck, and correct `SECURITY.md`'s "swapped tarball" claim. Surfaced by audit-security 2026-11-14 (Finding #4, Low).
 - [ ] **CORE-907** [moderate] | supply-chain-yaml-edges — `supply_chain` (tools/drift-checks.sh) reads workflows line by line, so `uses :`, a quoted `"uses":` key, or a next-line `permissions:` scalar pass unseen, while `uses:` text in a `run:` script and a multi-line top-level install.sh assignment fail closed. Harden or document the limits; details in CORE-904's archived Testing Notes.
 - [ ] **CORE-908** [light]🔧 | overlay-hostguard-boundary — `.flaitron/audit-overlay/SKILL.md` invariant (2) and the `security:` pass 3 line name `allowedHosts` + `originGuard` as the whole viz boundary; add FE-152's `/api/*` Host check `hostGuard` (`viz/src/devApi.ts`) to both. Surfaced by FE-152's doc-drift sweep; see `.flaitron/tasknote/archive/fe/FE-152.md`.
 - [ ] **CORE-909** [light] | gitleaks-step-fleet-shape — Move `ci.yml`'s gitleaks scan ahead of `npm --prefix viz ci`, run it once rather than per Node leg, and adopt natabula's spine-deposit step shape.
@@ -29,6 +28,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-905** [light]🔧 | gitleaks-tarball-hash-pin — Completed 2026-11-14. `ci.yml`'s gitleaks step checks the tarball against an in-workflow `GITLEAKS_SHA256` (GitHub asset digest), not the release's own checksums file; `SECURITY.md` claim scoped to match. Follow-ups [[CORE-909]], [[CORE-910]].
 - [x] **CORE-903** [light]🔧 | gitleaks-allowlist-rule-scope — Completed 2026-11-14. Each `.gitleaks.toml` allowlist now `targetRules = ["generic-api-key"]`; a `private-key` in a test path fires again. Source fix filed as natabula NAT-618.
 - [x] **FE-152** [moderate] | api-host-guard — Completed 2026-11-14. `guarded` 403s any Host / `:authority` not in shared `ALLOWED_HOSTS`, after the peer check; feeds `allowedHosts` + `ALLOWED_ORIGINS`.
 - [x] **CORE-904** [moderate] | supply-chain-drift-check — Completed 2026-11-14. bash lists install.sh top-level commands under a skipping DEBUG trap; workflow permissions + SHA pins checked.

@@ -212,10 +212,14 @@ vulnerability.
   fails a workflow that drops its workflow-level `permissions:` block, gives
   any `permissions:` key a shorthand value such as `write-all`, or
   references any action by anything else.
-- The gitleaks release tarball is verified against the release's
-  `checksums.txt` via `sha256sum --check` before extraction — a swapped
-  or corrupted tarball fails the checksum and the step exits nonzero
-  before any untrusted code runs.
+- The gitleaks release tarball is verified with `sha256sum -c` against a
+  SHA-256 pinned in the workflow (`GITLEAKS_SHA256`, beside
+  `GITLEAKS_VERSION`) before extraction. The digest lives in this repo,
+  not in the release, so a swapped or corrupted tarball fails the check
+  and the step exits nonzero before the downloaded binary runs, even if
+  the release's own checksums file was swapped with it. The step runs
+  after `npm --prefix viz ci` in the same job, so it does not guard
+  against a compromised npm dependency that has already run there.
 - `diff-cover` is pinned to an exact version (`DIFF_COVER_VERSION`, run as
   `pipx run "diff-cover==<version>"`), so a newer release is never picked
   up silently, and the runner's preinstalled `pipx` is used instead of a
@@ -224,8 +228,11 @@ vulnerability.
 
 **What remains.** The `diff-cover` pin is a version, not a hash: nothing
 verifies the downloaded package against a digest, and its own
-dependencies resolve unpinned at run time. A PR that edits `ci.yml` to add
-`pull_request_target`, broaden `permissions:`, swap a SHA, or change
+dependencies resolve unpinned at run time. `GITLEAKS_SHA256` is set by
+hand and no Dependabot ecosystem tracks `GITLEAKS_VERSION`: bump both
+together, taking the digest from GitHub's asset digest for the
+`linux_x64` tarball, never from the release download alone. A PR that
+edits `ci.yml` to add `pull_request_target`, broaden `permissions:`, swap a SHA, or change
 `DIFF_COVER_VERSION` is a code change and should be reviewed as one. Do
 not add repository secrets to this workflow.
 

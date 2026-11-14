@@ -47,16 +47,20 @@ jobs:
       # rather than a stack-specific lane. The baseline `.gitleaks.toml` is
       # a deposited copy at repo root (CORE-578), so --config reads it in
       # place rather than fetching it from anywhere.
+      # GITLEAKS_SHA256 is the linux_x64 tarball's GitHub asset digest, pinned
+      # here rather than read from the release's own checksums file, which a
+      # swapped release would swap too (CORE-905; shape from install-test.yml's
+      # shellcheck pin, natabula NAT-461). Bump both together.
       - name: Secret scan (gitleaks)
         env:
           GITLEAKS_VERSION: '8.30.1'
+          GITLEAKS_SHA256: '551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb'
         run: |
+          set -euo pipefail
           TARBALL="gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
-          curl -sSL -o "$RUNNER_TEMP/$TARBALL" \
+          curl -fsSL --retry 3 --retry-all-errors -o "$RUNNER_TEMP/$TARBALL" \
             "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/$TARBALL"
-          curl -sSL -o "$RUNNER_TEMP/gitleaks_${GITLEAKS_VERSION}_checksums.txt" \
-            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_checksums.txt"
-          ( cd "$RUNNER_TEMP" && sha256sum --ignore-missing --check "gitleaks_${GITLEAKS_VERSION}_checksums.txt" )
+          echo "${GITLEAKS_SHA256}  $RUNNER_TEMP/$TARBALL" | sha256sum -c -
           tar -xz -C "$RUNNER_TEMP" -f "$RUNNER_TEMP/$TARBALL" gitleaks
           "$RUNNER_TEMP/gitleaks" dir . --config .gitleaks.toml --no-banner --redact
 

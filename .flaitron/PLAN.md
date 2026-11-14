@@ -15,7 +15,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-896** [moderate] | grok-block-adoption — Adopt Natabula Grok block v1 public variant in AGENTS.md; retain one CLAUDE import/link or symlink. Verify exact payload, checkout/closure capability stops and public-ID boundary using Natabula docs/GROK-TASKNOTES.md and its audit. Owner executes; push/PR/merge/deploy need explicit go.
 - [ ] **CORE-897** [heavy] | seeder-fleet-gaps — Resolve ten seeder gaps from Natabula NAT-551: independent splits, admitted-row corrections, parser-aligned collection and diagnostics, stay reasons, keyword matching, rewrite caps, mixed ID padding, glyph style, parked notes and operation-specific collisions. Preserve the attended review and re-scan invariants. Filed with starter at `.flaitron/tasknote/CORE-897.md`.
 
 ## Low
@@ -27,6 +26,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-896** [moderate] | grok-block-adoption — Completed 2026-11-14. Adopted the current (v3) public block, not v1.
 - [x] **CORE-901** [moderate] | arch-health-adoption — Completed 2026-11-14.
 - [x] **CORE-898** [light] | spec-load-header-rosters — `SPEC/starter.md`, `SPEC/tasknote-selection.md` and `SPEC/model.md` load headers now name `/ft-import-task` (and `starter.md` names `/ft-file-task --starter`). Surfaced by audit-docs 2026-11-10 (Finding #1, Medium), fixed inline.
 - [x] **CORE-899** [light] | glossary-count-stamp — README no longer restates the glossary term count (was 73, 74 on disk); `docs/GLOSSARY.md` last-update stamp cites CORE-895's `/ft-import-task` entry. Surfaced by audit-docs 2026-11-10 (Finding #2, Low), fixed inline.

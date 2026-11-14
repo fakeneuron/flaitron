@@ -237,6 +237,8 @@ Re-measured at [[CORE-892]]: all seven summed rows held, sum **106,657**;
 `AGENTS.md` 8,628 → 8,671, outside the sum.
 Re-measured at [[CORE-901]]: `AGENTS.md` 8,671 → 9,071 (the natabula
 arch-health pointer block, +431 on a HEAD of 8,640), outside the sum.
+Re-measured at [[CORE-896]]: `AGENTS.md` 9,071 → 9,611 (natabula's public Grok
+Task Notes block, +540), outside the sum.
 
 [[CORE-664]] re-measured every row rather than differencing one against the
 v5.32.0 snapshot, and found the snapshot had gone stale on three of them —
@@ -262,7 +264,7 @@ stamped to this task rather than to v5.32.0.
 | `SPEC.md` | 43,842 |
 | `claude/skills/ft-task/SKILL.md` | 23,824 |
 | `claude/skills/ft-task/preamble.md` | 8,524 |
-| `AGENTS.md` (`CLAUDE.md` is a symlink to it) | 9,071 |
+| `AGENTS.md` (`CLAUDE.md` is a symlink to it) | 9,611 |
 | `.flaitron/tasknote/README.md` | 6,573 |
 | `templates/tasknote-template.md` | 3,993 |
 | `.flaitron/PLAN.md` | ~2–3k (band — see below) |

@@ -495,8 +495,10 @@ supply_chain() {
 # `permissions:` block; any `permissions:` line carrying a value other than
 # `{}` (`write-all`, `read-all`, a flow map) fails, and every action is
 # pinned to a 40-hex commit SHA. `.yaml` files and flow-style `{ uses: … }`
-# count too. Grant breadth inside a block (the sanctioned report-failure
-# `issues: write`) stays the audit's call.
+# count too. A step that fetches a `releases/download` URL also needs a
+# pinned `*_SHA256` and a `sha256sum -c` of its own (CORE-910). Grant breadth
+# inside a block (the sanctioned report-failure `issues: write`) stays the
+# audit's call.
 bad=
 n=0
 [ -f install.sh ] || { echo "VACUOUS supply_chain  no install.sh"; exit 1; }
@@ -529,6 +531,32 @@ for f in .github/workflows/*.yml .github/workflows/*.yaml; do
       if (v !~ /^[^@]+@[0-9a-f]+$/ || length(v) - index(v, "@") != 40) { l = $0; sub(/^[ \t]*/, "", l); print "UNPINNED ACTION  " f ":" NR " :: " l }
     }' "$f")
   [ -z "$hits" ] || { printf '%s\n' "$hits"; bad=1; }
+  # A hand-fetched release binary (CORE-910) is held to its own step: the
+  # step needs a literal 64-hex `*_SHA256:` key and a non-comment
+  # `sha256sum -c`. A step is a `- ` item at the first item's indent under
+  # `steps:`, numbered across the whole file so one job's pin never covers
+  # another's; a fetch outside any step is step 0 and fails closed. No `{64}`
+  # interval, which mawk may lack. Comment lines count for nothing.
+  fetches=$(awk -v f="$f" '
+    /^[ \t]*#/ || /^[ \t]*$/ { next }
+    { match($0, /^ */); ind = RLENGTH; if (steps && (ind < sind || (ind == sind && $0 !~ /^ *- /))) { steps = 0; step = 0 } }
+    /^[ \t]*steps:[ \t]*(#.*)?$/ { steps = 1; sind = ind; ci = -1; step = 0; next }
+    steps && /^ *- / { if (ci < 0) ci = ind; if (ind == ci) step = ++sid }
+    /releases\/download/ { nf++; fl[nf] = NR; fs[nf] = step; ft[nf] = $0 }
+    /^[ \t]*[A-Z][A-Z0-9_]*_SHA256:/ {
+      v = $0; sub(/^[^:]*:[ \t]*/, "", v); sub(/[ \t]+#.*$/, "", v); sub(/[ \t]+$/, "", v)
+      if (v ~ /^["\047].*["\047]$/) v = substr(v, 2, length(v) - 2)
+      if (length(v) == 64 && v ~ /^[0-9a-f]+$/) pin[step] = 1
+    }
+    /sha256sum[ \t]+(-c|--check)/ { ver[step] = 1 }
+    END {
+      for (i = 1; i <= nf; i++) {
+        l = ft[i]; sub(/^[ \t]*/, "", l)
+        if (!fs[i] || !pin[fs[i]]) print "NO SHA256 PIN  " f ":" fl[i] " :: " l
+        if (!fs[i] || !ver[fs[i]]) print "NO SHA256 VERIFY  " f ":" fl[i] " :: " l
+      }
+    }' "$f")
+  [ -z "$fetches" ] || { printf '%s\n' "$fetches"; bad=1; }
 done
 [ "$n" -gt 0 ] || { echo "VACUOUS supply_chain  no workflow examined"; exit 1; }
 [ -z "$bad" ] || exit 1

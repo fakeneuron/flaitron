@@ -221,6 +221,10 @@ vulnerability.
   its own `secret-scan` job on a clean checkout, before any npm install or
   build, so no dependency code has run in that job and `node_modules` and
   `dist` are not scanned.
+- The `drift` job's `supply_chain` check holds every workflow step that
+  fetches a `releases/download` URL to that shape: the same step must carry
+  a literal 64-hex `*_SHA256` env and a `sha256sum -c`, so dropping a pin or
+  adding an unpinned fetch fails drift.
 - `diff-cover` is pinned to an exact version (`DIFF_COVER_VERSION`, run as
   `pipx run "diff-cover==<version>"`), so a newer release is never picked
   up silently, and the runner's preinstalled `pipx` is used instead of a

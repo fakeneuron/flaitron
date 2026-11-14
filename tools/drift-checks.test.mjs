@@ -129,7 +129,11 @@ const CASES = {
     // install.sh: an env-prefixed command, a statement behind a one-line
     // function, an indented closer that reopens a function, and a statement
     // after main. Workflows: a job-level write-all, a dropped permissions
-    // block, and a mutable action tag. None of the seeded commands runs.
+    // block, a mutable action tag, and (CORE-910) release fetches: a new
+    // unpinned step whose only pin and verify sit in comments (and in the
+    // next step), a fetch in another job at the same step position as a
+    // pinned one, a verify dropped from the gitleaks step, and the shellcheck
+    // pin dropped. None of the seeded commands runs.
     seed: () => {
       edit('install.sh', (s) => s.replace(/^USER_AGENT=.*\n/m, '$&ZZ=1 echo zz-env\nzz() { :; }; echo zz-fn #}\n'));
       edit('install.sh', (s) => s.replace(/^usage\(\) \{\n/m, '$&  :; } ; echo zz-close; zz2() {\n'));
@@ -137,6 +141,20 @@ const CASES = {
       edit('.github/workflows/arch-health.yml', (s) => s.replace(/^( +)permissions:\n +issues: write$/m, '$1permissions: write-all'));
       edit('.github/workflows/ci.yml', (s) => s.replace(/^permissions:\n( .*\n)+/m, ''));
       edit('.github/workflows/ci.yml', (s) => s.replace(/(actions\/checkout)@[0-9a-f]{40}/, '$1@v5'));
+      edit('.github/workflows/ci.yml', (s) =>
+        s.replace(
+          '      - name: Secret scan (gitleaks)\n',
+          `      - name: zz fetch\n        run: curl -fsSL -o "$RUNNER_TEMP/zz" https://github.com/zz/zz/releases/download/v1/zz\n        # ZZ_SHA256: '${'0'.repeat(64)}'\n        # sha256sum -c\n$&`,
+        ),
+      );
+      edit('.github/workflows/ci.yml', (s) =>
+        s.replace(
+          '  secret-scan:\n',
+          '  zz-job:\n    runs-on: ubuntu-latest\n    steps:\n      - run: echo zz-a\n      - run: echo zz-b\n      - run: curl -fsSL -o "$RUNNER_TEMP/zz2" https://github.com/zz/zz2/releases/download/v1/zz2\n$&',
+        ),
+      );
+      edit('.github/workflows/ci.yml', (s) => s.replace(/^ +echo "\$\{GITLEAKS_SHA256\}.*\n/m, ''));
+      edit('.github/workflows/install-test.yml', (s) => s.replace(/^ +SHELLCHECK_SHA256:.*\n/m, ''));
     },
     finding: new RegExp(
       '^INSTALL TOPLEVEL {2}install\\.sh:\\d+ :: ZZ=1 echo zz-env\\n' +
@@ -147,7 +165,13 @@ const CASES = {
         'INSTALL LAST LINE {2}install\\.sh :: not main "\\$@"\\n' +
         'BROAD PERMISSIONS {2}\\.github/workflows/arch-health\\.yml:\\d+ :: permissions: write-all\\n' +
         'NO PERMISSIONS {2}\\.github/workflows/ci\\.yml\\n' +
-        'UNPINNED ACTION {2}\\.github/workflows/ci\\.yml:\\d+ :: - uses: actions/checkout@v5( #[^\\n]*)?$',
+        'UNPINNED ACTION {2}\\.github/workflows/ci\\.yml:\\d+ :: - uses: actions/checkout@v5( #[^\\n]*)?\\n' +
+        'NO SHA256 PIN {2}\\.github/workflows/ci\\.yml:\\d+ :: - run: curl [^\\n]*/zz/zz2/releases/download/[^\\n]*\\n' +
+        'NO SHA256 VERIFY {2}\\.github/workflows/ci\\.yml:\\d+ :: - run: curl [^\\n]*/zz/zz2/releases/download/[^\\n]*\\n' +
+        'NO SHA256 PIN {2}\\.github/workflows/ci\\.yml:\\d+ :: run: curl [^\\n]*/zz/zz/releases/download/[^\\n]*\\n' +
+        'NO SHA256 VERIFY {2}\\.github/workflows/ci\\.yml:\\d+ :: run: curl [^\\n]*/zz/zz/releases/download/[^\\n]*\\n' +
+        'NO SHA256 VERIFY {2}\\.github/workflows/ci\\.yml:\\d+ :: curl [^\\n]*/gitleaks/gitleaks/releases/download/[^\\n]*\\n' +
+        'NO SHA256 PIN {2}\\.github/workflows/install-test\\.yml:\\d+ :: curl [^\\n]*/koalaman/shellcheck/releases/download/[^\\n]*\\n',
       'm',
     ),
   },

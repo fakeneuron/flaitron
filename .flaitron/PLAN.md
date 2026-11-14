@@ -20,7 +20,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-907** [moderate] | supply-chain-yaml-edges — `supply_chain` (tools/drift-checks.sh) reads workflows line by line, so `uses :`, a quoted `"uses":` key, or a next-line `permissions:` scalar pass unseen, while `uses:` text in a `run:` script and a multi-line top-level install.sh assignment fail closed. Harden or document the limits; details in CORE-904's archived Testing Notes.
 - [ ] **CORE-908** [light]🔧 | overlay-hostguard-boundary — `.flaitron/audit-overlay/SKILL.md` invariant (2) and the `security:` pass 3 line name `allowedHosts` + `originGuard` as the whole viz boundary; add FE-152's `/api/*` Host check `hostGuard` (`viz/src/devApi.ts`) to both. Surfaced by FE-152's doc-drift sweep; see `.flaitron/tasknote/archive/fe/FE-152.md`.
-- [ ] **CORE-909** [light] | gitleaks-step-fleet-shape — Move `ci.yml`'s gitleaks scan ahead of `npm --prefix viz ci`, run it once rather than per Node leg, and adopt natabula's spine-deposit step shape.
 - [ ] **CORE-910** [light] | supply-chain-release-pin — Extend `supply_chain` in `tools/drift-checks.sh` so each workflow `releases/download` fetch needs a pinned `*_SHA256` env and `sha256sum -c` in-step.
 
 ## Future Opportunities
@@ -28,6 +27,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-909** [light] | gitleaks-step-fleet-shape — Completed 2026-11-14. The gitleaks scan runs once in its own `secret-scan` job on a clean checkout before install, in natabula's spine step shape; `SECURITY.md` caveat dropped. Not yet seen running on GitHub.
 - [x] **CORE-905** [light]🔧 | gitleaks-tarball-hash-pin — Completed 2026-11-14. `ci.yml`'s gitleaks step checks the tarball against an in-workflow `GITLEAKS_SHA256` (GitHub asset digest), not the release's own checksums file; `SECURITY.md` claim scoped to match. Follow-ups [[CORE-909]], [[CORE-910]].
 - [x] **CORE-903** [light]🔧 | gitleaks-allowlist-rule-scope — Completed 2026-11-14. Each `.gitleaks.toml` allowlist now `targetRules = ["generic-api-key"]`; a `private-key` in a test path fires again. Source fix filed as natabula NAT-618.
 - [x] **FE-152** [moderate] | api-host-guard — Completed 2026-11-14. `guarded` 403s any Host / `:authority` not in shared `ALLOWED_HOSTS`, after the peer check; feeds `allowedHosts` + `ALLOWED_ORIGINS`.

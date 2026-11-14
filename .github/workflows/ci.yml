@@ -43,25 +43,35 @@ jobs:
       - run: node --check tools/update-adopters.mjs
       - run: node --test tools/drift-checks.test.mjs
 
-      # Stack-agnostic (docs-only repos included), so it sits on `validate`
-      # rather than a stack-specific lane. The baseline `.gitleaks.toml` is
-      # a deposited copy at repo root (CORE-578), so --config reads it in
-      # place rather than fetching it from anywhere.
-      # GITLEAKS_SHA256 is the linux_x64 tarball's GitHub asset digest, pinned
-      # here rather than read from the release's own checksums file, which a
-      # swapped release would swap too (CORE-905; shape from install-test.yml's
-      # shellcheck pin, natabula NAT-461). Bump both together.
+  # Secret scan, on a clean checkout before any install or build (CORE-909,
+  # after natabula's CI spine, NAT-470): `viz/node_modules` and `viz/dist` are
+  # not in scope, no dependency lifecycle script has run, and it runs once
+  # rather than per `validate` Node leg. A separate job fits the spine, and
+  # keeps the scan independent of the Node matrix. The baseline
+  # `.gitleaks.toml` is a deposited copy at repo root (CORE-578), so --config
+  # reads it in place rather than fetching it from anywhere.
+  # GITLEAKS_SHA256 is the linux_x64 tarball's GitHub asset digest, pinned
+  # here rather than read from the release's own checksums file, which a
+  # swapped release would swap too (CORE-905; shape from install-test.yml's
+  # shellcheck pin, natabula NAT-461). Bump both together. The scan step is
+  # written `- name:` + `run:` so Pair H's `      - run: ` extraction
+  # (validate's roster) never sees it.
+  secret-scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+
       - name: Secret scan (gitleaks)
         env:
           GITLEAKS_VERSION: '8.30.1'
           GITLEAKS_SHA256: '551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb'
         run: |
           set -euo pipefail
-          TARBALL="gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
-          curl -fsSL --retry 3 --retry-all-errors -o "$RUNNER_TEMP/$TARBALL" \
-            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/$TARBALL"
-          echo "${GITLEAKS_SHA256}  $RUNNER_TEMP/$TARBALL" | sha256sum -c -
-          tar -xz -C "$RUNNER_TEMP" -f "$RUNNER_TEMP/$TARBALL" gitleaks
+          tgz="$RUNNER_TEMP/gitleaks.tar.gz"
+          curl -fsSL --retry 3 --retry-all-errors -o "$tgz" "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          echo "${GITLEAKS_SHA256}  $tgz" | sha256sum -c -
+          tar -xzf "$tgz" -C "$RUNNER_TEMP" gitleaks
           "$RUNNER_TEMP/gitleaks" dir . --config .gitleaks.toml --no-banner --redact
 
   # Cross-file drift checks — the release-context-free subset of /ft-release

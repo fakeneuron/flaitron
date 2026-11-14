@@ -176,14 +176,14 @@ with the user's permissions. Mitigations:
 ### GitHub Actions CI
 
 `.github/workflows/ci.yml` runs the AGENTS.md §"Validation" roster
-(`validate`), the cross-file drift checks described in
-[docs/CONVENTIONS.md](docs/CONVENTIONS.md) §"GitHub Actions CI"
+(`validate`), the secret scan (`secret-scan`), the cross-file drift checks
+described in [docs/CONVENTIONS.md](docs/CONVENTIONS.md) §"GitHub Actions CI"
 (`drift`), and the changed-line coverage gate (`coverage`) on push to `main`
 and on every pull request. That is an execution
 surface the rest of this document did not cover: a contributor PR's tree
-is checked out and its tests run on a GitHub-hosted runner. All three jobs
+is checked out and its tests run on a GitHub-hosted runner. All four jobs
 inherit the workflow-level `permissions: contents: read` and the same
-SHA-pinned `actions/checkout`, so the posture below covers all three.
+SHA-pinned `actions/checkout`, so the posture below covers all four.
 `.github/workflows/install-test.yml` (the installer's path-filtered e2e) holds the
 same posture: `permissions: contents: read` and the same SHA-pinned checkout.
 
@@ -217,9 +217,10 @@ vulnerability.
   `GITLEAKS_VERSION`) before extraction. The digest lives in this repo,
   not in the release, so a swapped or corrupted tarball fails the check
   and the step exits nonzero before the downloaded binary runs, even if
-  the release's own checksums file was swapped with it. The step runs
-  after `npm --prefix viz ci` in the same job, so it does not guard
-  against a compromised npm dependency that has already run there.
+  the release's own checksums file was swapped with it. The step runs in
+  its own `secret-scan` job on a clean checkout, before any npm install or
+  build, so no dependency code has run in that job and `node_modules` and
+  `dist` are not scanned.
 - `diff-cover` is pinned to an exact version (`DIFF_COVER_VERSION`, run as
   `pipx run "diff-cover==<version>"`), so a newer release is never picked
   up silently, and the runner's preinstalled `pipx` is used instead of a

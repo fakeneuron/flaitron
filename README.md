@@ -334,7 +334,7 @@ runtime lives in the runner; the contract lives in flaitron.
 - `LOGO.webp` — the header image above
 - `.editorconfig` — editor formatting rules (UTF-8, LF, 2-space indent)
 - `.gitleaks.toml` — gitleaks config for CI's secret scan
-- `.github/` — CI workflows (`workflows/ci.yml`; `workflows/install-test.yml`, the installer's network test) and Dependabot config
+- `.github/` — CI workflows (`workflows/ci.yml`; `workflows/install-test.yml`, the installer's network test; `workflows/arch-health.yml`, the weekly non-gating repo-map report) and Dependabot config
 - `justfile` — `just` recipes; viz verbs delegate to the `viz/` npm scripts, and `check` runs validation plus drift checks
 - pre-v0.1.0 source preserved in git tag `legacy-pre-v0.1.0`
 

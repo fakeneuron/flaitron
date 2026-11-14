@@ -169,3 +169,7 @@ has a thin sibling under `grok/` (`AGENTS-snippet.md` + procedure pointer;
 adopters reuse Claude/Codex/Cursor wiring or symlink canonical
 `claude/skills/` bodies into `.grok/skills/`). Other agents consume the
 contract conversationally through this file and `SPEC.md`.
+
+<!-- arch-health:start -->
+**Repo map:** for a task that touches more than one module, fetch the latest `arch-health` artifact (`gh run download -n arch-health -D arch`) into the gitignored `arch/` and read `arch/<stack>/dep-graph.json` (Python: `pydeps-<package>.json`) before planning. It holds static imports only, so read it as a lower bound (`.github/workflows/arch-health.yml`, natabula NAT-602.2).
+<!-- arch-health:end -->

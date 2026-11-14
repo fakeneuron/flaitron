@@ -225,6 +225,21 @@ dependencies resolve unpinned at run time. A PR that edits `ci.yml` to add
 `DIFF_COVER_VERSION` is a code change and should be reviewed as one. Do
 not add repository secrets to this workflow.
 
+**Arch-health report (`CORE-901`).** `.github/workflows/arch-health.yml`
+is natabula's weekly, non-gating repo-map report, adapted to `viz/`. It
+triggers on `schedule` and `workflow_dispatch` only, never on a push or a
+pull request, so a fork PR never runs it. A `workflow_dispatch` can still
+target any ref a collaborator with write access picks, and that ref's
+`viz/` install scripts and configs then run, so treat a dispatch on an
+unmerged branch as running that branch's code. It keeps the posture
+above: workflow-level `permissions: contents: read` and SHA-pinned
+`actions/checkout`, `actions/setup-node` and `actions/upload-artifact`.
+It runs `npm ci` in `viz/` and npm-installs dependency-cruiser, TypeScript
+and knip at exact versions. As with `diff-cover`, those pins are versions,
+not hashes. One job, `report-failure`, holds `issues: write`. It runs only
+after a failed scheduled run and only opens or comments on one tracking
+issue. It holds no other token scope and no secrets.
+
 ### Fleet updater (`tools/`)
 
 `tools/update-adopters.mjs` is one of two script exceptions (with `install.sh`,

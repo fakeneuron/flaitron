@@ -6,9 +6,12 @@
 # Consumed here by the CI secret-scan step (.github/workflows/ci.yml, working
 # tree), which passes this file explicitly.
 #
-# Comments in this copy are reworded to stand alone (CORE-652.2); the
-# allowlist rules are byte-identical to the source. An operator-side refresh
-# will show the comment diff — review it before overwriting.
+# Comments in this copy are reworded to stand alone (CORE-652.2). The
+# allowlist rules follow the source with two exceptions: the source also
+# allowlists `*.test.sh`, and the `targetRules` scoping below landed here
+# first (CORE-903). The source gets the same scoping under its own task. Until
+# it does, an operator-side refresh would revert that scoping, so keep
+# `targetRules` when reviewing the diff.
 title = "flaitron gitleaks baseline"
 
 [extend]
@@ -24,10 +27,12 @@ useDefault = true
 # repo-local .gitleaks.toml allowlist. Universal classes here; project-specific
 # noise there.
 #
-# Scoping by path rather than disabling generic-api-key globally keeps every
-# high-confidence rule — aws, jwt, github-pat, private-key, stripe — live
-# everywhere, including inside these files. That matters: the one genuine hit
-# the fleet measurement found was a `jwt`, not a generic key.
+# Each allowlist sets `targetRules = ["generic-api-key"]`, so it silences only
+# that rule on its paths. Without it, a gitleaks allowlist applies to every
+# rule. Every other high-confidence rule (aws, jwt, github-pat, private-key,
+# stripe) stays live on these paths too; only the upstream default's own
+# global allowlist still applies. That matters: the one
+# genuine hit the fleet measurement found was a `jwt`, not a generic key.
 
 [[allowlists]]
 description = """
@@ -37,6 +42,7 @@ historical record. Prose in a closed tasknote is documentation of past work,
 never a live credential surface.
 Measured hits: two archived tasknotes across two fleet repos.
 """
+targetRules = ["generic-api-key"]
 paths = ['''(^|/)\.flaitron/tasknote/archive/.*\.md$''']
 
 [[allowlists]]
@@ -47,6 +53,7 @@ trees only, so production code carrying the same shape still fires.
 Measured hits: backend test trees in two fleet repos (3 modules + 1 fixture
 script; 1 service test).
 """
+targetRules = ["generic-api-key"]
 paths = [
   '''(^|/)tests?/.*''',
   '''(^|/)__tests__/.*''',
@@ -62,6 +69,7 @@ the same convention the fleet's audit register (operator-private) exempts
 from the on-disk credential-shaped-file class.
 Measured hits: one repo's .env.example + k8s/secret.yaml.template.
 """
+targetRules = ["generic-api-key"]
 paths = [
   '''(^|/)\.env\.example$''',
   '''(^|/)\.env\.sample$''',

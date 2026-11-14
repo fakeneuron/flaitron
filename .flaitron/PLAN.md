@@ -15,7 +15,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-903** [light]🔧 | gitleaks-allowlist-rule-scope — `.gitleaks.toml`'s three path allowlists skip every rule, so a `private-key` hit in a `*.test.ts`, `*.example` or archived tasknote passes CI; add `targetRules = ["generic-api-key"]` to each (verified on 8.30.1, tree stays clean) and fix the comment; natabula's baseline, which this copy is deposited from, needs the same change. Surfaced by audit-security 2026-11-14 (Finding #1, Medium).
 
 ## Low
 
@@ -28,6 +27,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-903** [light]🔧 | gitleaks-allowlist-rule-scope — Completed 2026-11-14. Each `.gitleaks.toml` allowlist now `targetRules = ["generic-api-key"]`; a `private-key` in a test path fires again. Source fix filed as natabula NAT-618.
 - [x] **FE-152** [moderate] | api-host-guard — Completed 2026-11-14. `guarded` 403s any Host / `:authority` not in shared `ALLOWED_HOSTS`, after the peer check; feeds `allowedHosts` + `ALLOWED_ORIGINS`.
 - [x] **CORE-904** [moderate] | supply-chain-drift-check — Completed 2026-11-14. bash lists install.sh top-level commands under a skipping DEBUG trap; workflow permissions + SHA pins checked.
 - [x] **CORE-906** [light] | overlay-invariant-5-exception — `.flaitron/audit-overlay/SKILL.md` invariant (5) now names `arch-health.yml`'s `report-failure` `issues: write` as the one sanctioned grant, matching `SECURITY.md`. Surfaced by audit-security 2026-11-14 (Finding #5, Low), fixed inline.

@@ -34,6 +34,33 @@ Contract: [`SPEC/plan-filing.md`](../SPEC/plan-filing.md)
   - [x] **CORE-852.N** [heavy] | pin-bump-tool-merge audit — Completed 2026-11-01.
 - [x] **CORE-854** [moderate]🧩 | release v8.2.0 — Completed 2026-11-01.
 - [x] **CORE-853** [moderate] | workflow-replace-fence-aware — Completed 2026-11-01.
+- [x] **CORE-EPIC-869** [heavy]🧠 | carrying-cost — Completed 2026-11-06.
+  - [x] **CORE-869.2** [moderate]🧩 [unattended] | drift-check-batching — Completed 2026-11-06.
+  - [x] **CORE-869.3** [light]🔧 [unattended] | budget-near-cap-report — Completed 2026-11-06.
+  - [x] **CORE-869.4** [light]🔧 [unattended] | stale-size-figures — Completed 2026-11-06.
+  - [x] **CORE-869.5** [heavy]🧠 | near-cap-trims — Completed 2026-11-06.
+  - [x] **CORE-869.N** [heavy]🧠 | carrying-cost audit — Completed 2026-11-06.
+- [x] **CORE-872** [heavy]🧠 | size-cap-renames — Completed 2026-11-06.
+- [x] **CORE-867** [moderate] | doc-sweep-touches-scope — Completed 2026-11-06.
+- [x] **CORE-863** [moderate]🧩 | brand-casing-guard — Completed 2026-11-05.
+- [x] **CORE-861** [heavy]🧠 | brand-casing-policy — Completed 2026-11-05.
+- [x] **CORE-862** [light]🔧 | ci-job-timeouts — Completed 2026-11-05.
+- [x] **CORE-860** [moderate] [unattended] | brand-nearmiss-guard — Completed 2026-11-04.
+- [x] **CORE-641** [light]🔧 | typescript-7 — Completed 2026-11-01. De-scoped: upstream toolchain watching is a fleet concern; re-filed in natabula as NAT-517.
+- [x] **FE-151** [moderate] | viz-quality-stack — Completed 2026-11-01.
+- [x] **CORE-855** [moderate]🧩 | release v8.3.0 — Completed 2026-11-01.
+- [x] **CORE-859** [light]🔧 | file-task-nested-placement — `/ft-file-task` Step 4 placement now appends past 2-space-nested child rows; no tasknote. Completed 2026-11-01.
+- [x] **CORE-858** [light]🔧 | seed-question-only-ask — Completed 2026-11-01.
+- [x] **CORE-EPIC-857** [heavy]🧠 | context-redundancy — Completed 2026-11-01.
+  - [x] **CORE-857.1** [frontier]💎 | context-redundancy discovery — Completed 2026-11-01.
+  - [x] **CORE-857.2** [heavy]🧠 | procedure-point-not-narrate — Completed 2026-11-01.
+  - [x] **CORE-857.3** [moderate]🧩 [unattended] | readme-history-out — Completed 2026-11-01.
+  - [x] **CORE-857.4** [heavy]🧠 | skill-b2-pointers — Completed 2026-11-01.
+  - [x] **CORE-857.5** [heavy]🧠 | small-task-routing — Completed 2026-11-01.
+  - [x] **CORE-857.6** [heavy]🧠 | spec-c-extraction — Completed 2026-11-01.
+  - [x] **CORE-857.N** [heavy]🧠 | context-redundancy audit — Completed 2026-11-01.
+- [x] **CORE-856** [heavy]🧠 | agent-baseline-redundancy-survey — Completed 2026-11-01.
+- [x] **CORE-851** [heavy] | one-line-installer — Completed 2026-11-01.
 
 ## Completed 2026-10
 

@@ -32,13 +32,29 @@ permissions:
   contents: read
 
 jobs:
+  # shellcheck is fetched, not taken from the runner image: ubuntu-latest
+  # floats, and a new image's shellcheck changes its findings (natabula
+  # STACK-TENDENCIES §"Runner image", NAT-458; hash pin NAT-461).
+  # SHELLCHECK_SHA256 is the linux x86_64 tarball's GitHub digest (shellcheck
+  # publishes no checksums file); bump both together.
   shellcheck:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
       - name: shellcheck (POSIX sh)
-        run: shellcheck -s sh install.sh tools/install.test.sh
+        env:
+          SHELLCHECK_VERSION: '0.11.0'
+          SHELLCHECK_SHA256: '8c3be12b05d5c177a04c29e3c78ce89ac86f1595681cab149b65b97c4e227198'
+        run: |
+          set -euo pipefail
+          txz="$RUNNER_TEMP/shellcheck.tar.xz"
+          bindir="$RUNNER_TEMP/shellcheck-bin"
+          curl -fsSL --retry 3 --retry-all-errors -o "$txz" "https://github.com/koalaman/shellcheck/releases/download/v${SHELLCHECK_VERSION}/shellcheck-v${SHELLCHECK_VERSION}.linux.x86_64.tar.xz"
+          echo "${SHELLCHECK_SHA256}  $txz" | sha256sum -c -
+          mkdir -p "$bindir"
+          tar -xJf "$txz" -C "$bindir" --strip-components=1 "shellcheck-v${SHELLCHECK_VERSION}/shellcheck"
+          "$bindir/shellcheck" -s sh install.sh tools/install.test.sh
 
   e2e:
     runs-on: ${{ matrix.os }}

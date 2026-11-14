@@ -496,7 +496,9 @@ supply_chain() {
 # `{}` (`write-all`, `read-all`, a flow map) fails, and every action is
 # pinned to a 40-hex commit SHA. `.yaml` files and flow-style `{ uses: … }`
 # count too. A step that fetches a `releases/download` URL also needs a
-# pinned `*_SHA256` and a `sha256sum -c` of its own (CORE-910). Grant breadth
+# pinned `*_SHA256` and a `sha256sum -c` of its own (CORE-910), and a
+# `releases/latest/download` URL or a `gh release download` fails outright:
+# a digest cannot pin a moving asset (CORE-911). Grant breadth
 # inside a block (the sanctioned report-failure `issues: write`) stays the
 # audit's call.
 bad=
@@ -536,13 +538,18 @@ for f in .github/workflows/*.yml .github/workflows/*.yaml; do
   # `sha256sum -c`. A step is a `- ` item at the first item's indent under
   # `steps:`, numbered across the whole file so one job's pin never covers
   # another's; a fetch outside any step is step 0 and fails closed. No `{64}`
-  # interval, which mawk may lack. Comment lines count for nothing.
+  # interval, which mawk may lack. Comment lines count for nothing. A
+  # `latest/download` URL and a `gh release download` (which with no tag
+  # fetches the latest release) need no step bookkeeping: each fails on its
+  # own line, pinned or not.
   fetches=$(awk -v f="$f" '
     /^[ \t]*#/ || /^[ \t]*$/ { next }
     { match($0, /^ */); ind = RLENGTH; if (steps && (ind < sind || (ind == sind && $0 !~ /^ *- /))) { steps = 0; step = 0 } }
     /^[ \t]*steps:[ \t]*(#.*)?$/ { steps = 1; sind = ind; ci = -1; step = 0; next }
     steps && /^ *- / { if (ci < 0) ci = ind; if (ind == ci) step = ++sid }
     /releases\/download/ { nf++; fl[nf] = NR; fs[nf] = step; ft[nf] = $0 }
+    /releases\/latest\/download/ { l = $0; sub(/^[ \t]*/, "", l); print "LATEST RELEASE FETCH  " f ":" NR " :: " l }
+    /gh[ \t]+release[ \t]+download/ { l = $0; sub(/^[ \t]*/, "", l); print "GH RELEASE FETCH  " f ":" NR " :: " l }
     /^[ \t]*[A-Z][A-Z0-9_]*_SHA256:/ {
       v = $0; sub(/^[^:]*:[ \t]*/, "", v); sub(/[ \t]+#.*$/, "", v); sub(/[ \t]+$/, "", v)
       if (v ~ /^["\047].*["\047]$/) v = substr(v, 2, length(v) - 2)

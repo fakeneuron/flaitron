@@ -224,7 +224,9 @@ vulnerability.
 - The `drift` job's `supply_chain` check holds every workflow step that
   fetches a `releases/download` URL to that shape: the same step must carry
   a literal 64-hex `*_SHA256` env and a `sha256sum -c`, so dropping a pin or
-  adding an unpinned fetch fails drift.
+  adding an unpinned fetch fails drift. A `releases/latest/download` URL or a
+  `gh release download` fails outright: a digest cannot pin a moving asset,
+  so fetch a `releases/download/v<version>` URL instead.
 - `diff-cover` is pinned to an exact version (`DIFF_COVER_VERSION`, run as
   `pipx run "diff-cover==<version>"`), so a newer release is never picked
   up silently, and the runner's preinstalled `pipx` is used instead of a

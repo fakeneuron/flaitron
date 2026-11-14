@@ -133,7 +133,9 @@ const CASES = {
     // unpinned step whose only pin and verify sit in comments (and in the
     // next step), a fetch in another job at the same step position as a
     // pinned one, a verify dropped from the gitleaks step, and the shellcheck
-    // pin dropped. None of the seeded commands runs.
+    // pin dropped. CORE-911 adds a `releases/latest/download` URL and a
+    // `gh release download`, each failing outright, beside two comment lines
+    // naming them that must trip nothing. None of the seeded commands runs.
     seed: () => {
       edit('install.sh', (s) => s.replace(/^USER_AGENT=.*\n/m, '$&ZZ=1 echo zz-env\nzz() { :; }; echo zz-fn #}\n'));
       edit('install.sh', (s) => s.replace(/^usage\(\) \{\n/m, '$&  :; } ; echo zz-close; zz2() {\n'));
@@ -155,6 +157,15 @@ const CASES = {
       );
       edit('.github/workflows/ci.yml', (s) => s.replace(/^ +echo "\$\{GITLEAKS_SHA256\}.*\n/m, ''));
       edit('.github/workflows/install-test.yml', (s) => s.replace(/^ +SHELLCHECK_SHA256:.*\n/m, ''));
+      edit('.github/workflows/install-test.yml', (s) =>
+        s.replace(
+          '      - name: shellcheck (POSIX sh)\n',
+          '      - name: zz latest\n        run: curl -fsSL -o "$RUNNER_TEMP/zz3" https://github.com/zz/zz3/releases/latest/download/zz3\n' +
+            '      - name: zz gh\n        run: gh release download v1 --repo zz/zz4 --pattern zz4\n' +
+            '        # gh release download v1 --repo zz/zz5 (a comment trips nothing)\n' +
+            '        # https://github.com/zz/zz6/releases/latest/download/zz6\n$&',
+        ),
+      );
     },
     finding: new RegExp(
       '^INSTALL TOPLEVEL {2}install\\.sh:\\d+ :: ZZ=1 echo zz-env\\n' +
@@ -171,6 +182,8 @@ const CASES = {
         'NO SHA256 PIN {2}\\.github/workflows/ci\\.yml:\\d+ :: run: curl [^\\n]*/zz/zz/releases/download/[^\\n]*\\n' +
         'NO SHA256 VERIFY {2}\\.github/workflows/ci\\.yml:\\d+ :: run: curl [^\\n]*/zz/zz/releases/download/[^\\n]*\\n' +
         'NO SHA256 VERIFY {2}\\.github/workflows/ci\\.yml:\\d+ :: curl [^\\n]*/gitleaks/gitleaks/releases/download/[^\\n]*\\n' +
+        'LATEST RELEASE FETCH {2}\\.github/workflows/install-test\\.yml:\\d+ :: run: curl [^\\n]*/zz/zz3/releases/latest/download/zz3\\n' +
+        'GH RELEASE FETCH {2}\\.github/workflows/install-test\\.yml:\\d+ :: run: gh release download v1 [^\\n]*\\n' +
         'NO SHA256 PIN {2}\\.github/workflows/install-test\\.yml:\\d+ :: curl [^\\n]*/koalaman/shellcheck/releases/download/[^\\n]*\\n',
       'm',
     ),

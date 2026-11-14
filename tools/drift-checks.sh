@@ -492,20 +492,26 @@ supply_chain() {
 # file runs, and a function definition is not a command. A plain
 # assignment's value is one bare word or one single-quoted string: `X=1 cmd`,
 # `X=$(cmd)` and `X=a; cmd` fail. Each workflow keeps a column-0
-# `permissions:` block; any `permissions:` line carrying a value other than
-# `{}` (`write-all`, `read-all`, a flow map) fails, and every action is
-# pinned to a 40-hex commit SHA. `.yaml` files and flow-style `{ uses: … }`
+# `permissions:` block; any `permissions:` key carrying a value other than
+# `{}` or a mapping (`write-all`, `read-all`, a flow map, null) fails, and
+# every action is pinned to a 40-hex commit SHA. Text in a block scalar or a
+# one-line `run:` value is not read as keys (CORE-907). `.yaml` files and flow-style `{ uses: … }`
 # count too. A step that fetches a `releases/download` URL also needs a
 # pinned `*_SHA256` and a `sha256sum -c` of its own (CORE-910), and a
 # `releases/latest/download` URL or a `gh release download` fails outright:
 # a digest cannot pin a moving asset (CORE-911). Grant breadth
 # inside a block (the sanctioned report-failure `issues: write`) stays the
-# audit's call.
+# audit's call. The workflow reads are line greps, not a YAML parser or a
+# fetch detector (CORE-907): a fetch spelled otherwise passes unseen (gh
+# flags ahead of `release`, a `\` continuation, a URL hoisted into a
+# variable, `gh release view` then a curl of `browser_download_url`), and the
+# fetch patterns also match trailing comments and `name:` text.
 bad=
 n=0
 [ -f install.sh ] || { echo "VACUOUS supply_chain  no install.sh"; exit 1; }
 # shellcheck disable=SC2016  # the trap body expands in the inner bash
-cmds=$(bash -c 'shopt -s extdebug; set -T; go=; trap '\''if [ -z "$go" ]; then go=1; else printf "%s %s\n" "$LINENO" "$BASH_COMMAND" >&3; false; fi'\'' DEBUG; . ./install.sh' 3>&1 >/dev/null 2>&1 || true)
+cmds=$(bash -c 'shopt -s extdebug; set -T; go=; nl="
+"; trap '\''if [ -z "$go" ]; then go=1; else printf "%s %s\n" "$LINENO" "${BASH_COMMAND//$nl/ }" >&3; false; fi'\'' DEBUG; . ./install.sh' 3>&1 >/dev/null 2>&1 || true)
 out=$(printf '%s\n' "$cmds" | awk '
   $0 == "" { next }
   { k++; ln = $1; c = $0; sub(/^[0-9]+ /, "", c) }
@@ -521,17 +527,36 @@ out=$(printf '%s\n' "$cmds" | awk '
 for f in .github/workflows/*.yml .github/workflows/*.yaml; do
   [ -f "$f" ] || continue
   n=$((n+1))
-  grep -q '^permissions:' "$f" || { echo "NO PERMISSIONS  $f"; bad=1; }
-  p=$(grep -nE '^[[:space:]]*permissions:' "$f" | grep -vE '^[0-9]+:[[:space:]]*permissions:[[:space:]]*(\{\}[[:space:]]*)?(#.*)?$' || true)
-  [ -z "$p" ] || { printf '%s\n' "$p" | awk -v f="$f" '{ i = index($0, ":"); l = substr($0, i + 1); sub(/^[ \t]*/, "", l); print "BROAD PERMISSIONS  " f ":" substr($0, 1, i - 1) " :: " l }'; bad=1; }
-  # Only the first `uses:` value on a line counts, so a pinned-looking one in
-  # a trailing comment cannot cover a mutable ref ahead of it.
+  grep -qE '^["'\'']?permissions["'\'']?[[:space:]]*:' "$f" || { echo "NO PERMISSIONS  $f"; bad=1; }
+  # Keys may be quoted or spaced (`"uses":`, `uses :`). A block scalar's body
+  # (lines indented past a `key: |` or `key: >` line's key, the indicator
+  # right after the key's colon, so a comment ending `: |` opens nothing) is
+  # text, not keys, and so is a plain one-line `run:` value; neither is read
+  # for `uses:` or `permissions:`. An empty `permissions:` is null (BROAD)
+  # unless a more-indented `key:` line follows; any other more-indented line
+  # is a scalar there (BROAD). Only the first `uses:` value on a line
+  # counts, so a pinned-looking one in a trailing comment cannot cover a
+  # mutable ref ahead of it. BROAD findings print ahead of UNPINNED ones.
   hits=$(awk -v f="$f" '
+    BEGIN { blk = -1 }
+    { sub(/\r$/, "") }
+    /^[ \t]*$/ { next }
+    { match($0, /^ */); ind = RLENGTH; l = $0; sub(/^[ \t]*/, "", l) }
+    blk >= 0 && ind > blk { next }
+    { blk = -1 }
     /^[ \t]*#/ { next }
-    match($0, /(^|[^A-Za-z0-9_-])uses:/) {
+    pend { pend = 0; if (ind <= pind) br = br pnull; else if (l !~ /^["\047]?[A-Za-z0-9_-]+["\047]?[ \t]*:([ \t]|$)/) br = br "BROAD PERMISSIONS  " f ":" NR " :: " l "\n" }
+    /^[ \t]*(-[ \t]+)?["\047]?[A-Za-z0-9_.\/-]+["\047]?[ \t]*:[ \t]+([!&][^ \t]*[ \t]+)*[|>][-+0-9]*[ \t]*(#.*)?$/ { blk = match($0, /^ *- +/) ? RLENGTH : ind }
+    match($0, /^[ \t]*(-[ \t]+)?["\047]?permissions["\047]?[ \t]*:/) {
+      v = substr($0, RLENGTH + 1); sub(/^[ \t]*/, "", v); sub(/^#.*$/, "", v); sub(/[ \t]+#.*$/, "", v); sub(/[ \t]+$/, "", v)
+      if (v == "") { pend = 1; pind = match($0, /^ *- +/) ? RLENGTH : ind; pnull = "BROAD PERMISSIONS  " f ":" NR " :: " l " (null)\n" } else if (v != "{}") br = br "BROAD PERMISSIONS  " f ":" NR " :: " l "\n"
+    }
+    /^[ \t]*(-[ \t]+)?["\047]?run["\047]?[ \t]*:[ \t]*[^{[ \t]/ { next }
+    match($0, /(^|[^A-Za-z0-9_-])["\047]?uses["\047]?[ \t]*:/) {
       v = substr($0, RSTART + RLENGTH); sub(/^[ \t]*/, "", v); sub(/[ \t,}].*$/, "", v); if (v ~ /^["\047].*["\047]$/) v = substr(v, 2, length(v) - 2)
-      if (v !~ /^[^@]+@[0-9a-f]+$/ || length(v) - index(v, "@") != 40) { l = $0; sub(/^[ \t]*/, "", l); print "UNPINNED ACTION  " f ":" NR " :: " l }
-    }' "$f")
+      if (v !~ /^[^@]+@[0-9a-f]+$/ || length(v) - index(v, "@") != 40) un = un "UNPINNED ACTION  " f ":" NR " :: " l "\n"
+    }
+    END { if (pend) br = br pnull; printf "%s%s", br, un }' "$f")
   [ -z "$hits" ] || { printf '%s\n' "$hits"; bad=1; }
   # A hand-fetched release binary (CORE-910) is held to its own step: the
   # step needs a literal 64-hex `*_SHA256:` key and a non-comment

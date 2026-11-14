@@ -135,8 +135,23 @@ const CASES = {
     // pinned one, a verify dropped from the gitleaks step, and the shellcheck
     // pin dropped. CORE-911 adds a `releases/latest/download` URL and a
     // `gh release download`, each failing outright, beside two comment lines
-    // naming them that must trip nothing. None of the seeded commands runs.
+    // naming them that must trip nothing. CORE-907 adds a multi-line quoted
+    // install.sh assignment and a zz.yml with `uses :`, `"uses":`, a quoted
+    // `"permissions":`, a next-line permissions scalar (under comments ending
+    // in block indicators, which open no block), a null permissions and a
+    // uses after a block body, beside `uses:` and `permissions:` text in `run:` values
+    // that must trip nothing. None of the seeded commands runs.
     seed: () => {
+      edit('install.sh', (s) => s.replace(/^USER_AGENT=.*\n/m, "$&ZZ_ML='a\nb'\n"));
+      write(
+        '.github/workflows/zz.yml',
+        [
+          'on: push', 'permissions:', '  contents: read', 'jobs:', '  a:', '    "permissions": write-all', '    steps:',
+          '      - uses : zz/a@v1', '      - "uses": zz/b@v1', '      - run: echo uses: zz/c@v1',
+          '      - run: |', '          echo "uses: zz/d@v1"', '          permissions: write-all', '        uses: zz/e@main',
+          '  b:   # note: |', '    permissions:   # see: >', '      write-all', '  c:', '    permissions:', '',
+        ].join('\n'),
+      );
       edit('install.sh', (s) => s.replace(/^USER_AGENT=.*\n/m, '$&ZZ=1 echo zz-env\nzz() { :; }; echo zz-fn #}\n'));
       edit('install.sh', (s) => s.replace(/^usage\(\) \{\n/m, '$&  :; } ; echo zz-close; zz2() {\n'));
       edit('install.sh', (s) => `${s}echo zz-drift\n`);
@@ -184,7 +199,13 @@ const CASES = {
         'NO SHA256 VERIFY {2}\\.github/workflows/ci\\.yml:\\d+ :: curl [^\\n]*/gitleaks/gitleaks/releases/download/[^\\n]*\\n' +
         'LATEST RELEASE FETCH {2}\\.github/workflows/install-test\\.yml:\\d+ :: run: curl [^\\n]*/zz/zz3/releases/latest/download/zz3\\n' +
         'GH RELEASE FETCH {2}\\.github/workflows/install-test\\.yml:\\d+ :: run: gh release download v1 [^\\n]*\\n' +
-        'NO SHA256 PIN {2}\\.github/workflows/install-test\\.yml:\\d+ :: curl [^\\n]*/koalaman/shellcheck/releases/download/[^\\n]*\\n',
+        'NO SHA256 PIN {2}\\.github/workflows/install-test\\.yml:\\d+ :: curl [^\\n]*/koalaman/shellcheck/releases/download/[^\\n]*\\n' +
+        'BROAD PERMISSIONS {2}\\.github/workflows/zz\\.yml:6 :: "permissions": write-all\\n' +
+        'BROAD PERMISSIONS {2}\\.github/workflows/zz\\.yml:17 :: write-all\\n' +
+        'BROAD PERMISSIONS {2}\\.github/workflows/zz\\.yml:19 :: permissions: \\(null\\)\\n' +
+        'UNPINNED ACTION {2}\\.github/workflows/zz\\.yml:8 :: - uses : zz/a@v1\\n' +
+        'UNPINNED ACTION {2}\\.github/workflows/zz\\.yml:9 :: - "uses": zz/b@v1\\n' +
+        'UNPINNED ACTION {2}\\.github/workflows/zz\\.yml:14 :: uses: zz/e@main\\n',
       'm',
     ),
   },

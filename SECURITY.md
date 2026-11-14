@@ -210,8 +210,9 @@ vulnerability.
   reason this document tells adopters to pin the submodule to annotated
   release tags rather than `main`. The `drift` job's `supply_chain` check
   fails a workflow that drops its workflow-level `permissions:` block, gives
-  any `permissions:` key a shorthand value such as `write-all`, or
-  references any action by anything else.
+  any `permissions:` key a shorthand or null value such as `write-all`, or
+  references any action by anything else. Quoted or spaced keys count;
+  `uses:` and `permissions:` text inside a script body does not.
 - The gitleaks release tarball is verified with `sha256sum -c` against a
   SHA-256 pinned in the workflow (`GITLEAKS_SHA256`, beside
   `GITLEAKS_VERSION`) before extraction. The digest lives in this repo,
@@ -226,7 +227,11 @@ vulnerability.
   a literal 64-hex `*_SHA256` env and a `sha256sum -c`, so dropping a pin or
   adding an unpinned fetch fails drift. A `releases/latest/download` URL or a
   `gh release download` fails outright: a digest cannot pin a moving asset,
-  so fetch a `releases/download/v<version>` URL instead.
+  so fetch a `releases/download/v<version>` URL instead. The check reads
+  lines, not fetches: a fetch spelled another way passes unseen (gh flags
+  ahead of `release`, a `\` continuation, a URL hoisted into a variable,
+  `gh release view` then a curl of `browser_download_url`), so review still
+  owns any new download in a workflow.
 - `diff-cover` is pinned to an exact version (`DIFF_COVER_VERSION`, run as
   `pipx run "diff-cover==<version>"`), so a newer release is never picked
   up silently, and the runner's preinstalled `pipx` is used instead of a

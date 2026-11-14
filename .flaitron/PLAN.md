@@ -21,6 +21,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 - [ ] **CORE-905** [light]🔧 | gitleaks-tarball-hash-pin — `ci.yml` verifies the gitleaks tarball against a checksums file from the same release; pin its SHA-256 in the workflow as `install-test.yml` does for shellcheck, and correct `SECURITY.md`'s "swapped tarball" claim. Surfaced by audit-security 2026-11-14 (Finding #4, Low).
 - [ ] **CORE-907** [moderate] | supply-chain-yaml-edges — `supply_chain` (tools/drift-checks.sh) reads workflows line by line, so `uses :`, a quoted `"uses":` key, or a next-line `permissions:` scalar pass unseen, while `uses:` text in a `run:` script and a multi-line top-level install.sh assignment fail closed. Harden or document the limits; details in CORE-904's archived Testing Notes.
 - [ ] **CORE-908** [light]🔧 | overlay-hostguard-boundary — `.flaitron/audit-overlay/SKILL.md` invariant (2) and the `security:` pass 3 line name `allowedHosts` + `originGuard` as the whole viz boundary; add FE-152's `/api/*` Host check `hostGuard` (`viz/src/devApi.ts`) to both. Surfaced by FE-152's doc-drift sweep; see `.flaitron/tasknote/archive/fe/FE-152.md`.
+- [ ] **CORE-909** [light] | gitleaks-step-fleet-shape — Move `ci.yml`'s gitleaks scan ahead of `npm --prefix viz ci`, run it once rather than per Node leg, and adopt natabula's spine-deposit step shape.
 
 ## Future Opportunities
 

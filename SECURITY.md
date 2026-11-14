@@ -341,7 +341,11 @@ dev server:
   method and origin checks below.
 - Enforces `server.allowedHosts: ['localhost', '127.0.0.1']`, so requests
   with a spoofed `Host` header (DNS rebinding) are rejected by Vite
-  before reaching application code.
+  before reaching application code. `/api/*` does not lean on Vite's
+  middleware order for this: its own Host-header check (`hostGuard`,
+  `viz/src/devApi.ts`, sharing `ALLOWED_HOSTS` from `viz/src/originGuard.ts`)
+  answers 403 to any other hostname, or to an absent or malformed `Host`,
+  after the peer-address check and ahead of the method and origin checks.
 - Rejects `/api/*` requests with a cross-origin `Origin` or `Referer`
   header. Same-origin requests from the visualizer's own UI, and
   origin-less requests from the local terminal (e.g. `curl`), are

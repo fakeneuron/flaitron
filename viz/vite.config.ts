@@ -12,7 +12,7 @@ import {
   type ProjectDescriptor,
 } from './src/workspace.ts';
 import { createArchiveCache } from './src/archiveCache.ts';
-import { DEV_PORT } from './src/originGuard.ts';
+import { ALLOWED_HOSTS, DEV_PORT } from './src/originGuard.ts';
 import {
   createActiveHandler,
   createArchiveHandler,
@@ -149,11 +149,11 @@ export default defineConfig({
   server: {
     port: DEV_PORT,
     strictPort: true,
-    // Restrict Host header to loopback names. Combined with `originGuard()`
-    // on each /api/* middleware, this defeats DNS-rebinding against the dev
+    // Restrict Host header to loopback names. Paired with devApi's own
+    // `hostGuard` on /api/*, this defeats DNS-rebinding against the dev
     // server (a remote site resolving its domain to 127.0.0.1 to bypass
     // SOP). Mirrors Vite's own post-`CVE-2025` default posture.
-    allowedHosts: ['localhost', '127.0.0.1'],
+    allowedHosts: [...ALLOWED_HOSTS],
     headers: {
       'Content-Security-Policy': DEV_CSP,
     },

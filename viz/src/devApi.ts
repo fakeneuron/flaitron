@@ -1,7 +1,7 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { endPlain } from './apiResponse.ts';
-import { originGuard } from './originGuard.ts';
+import { ALLOWED_HOSTS, originGuard } from './originGuard.ts';
 import { realpathWithin, safeRealpath } from './fsSafe.ts';
 import { readTasknoteDir } from './tasknoteRead.ts';
 import type { UnparsableTasknote } from './tasknote.ts';
@@ -62,9 +62,36 @@ function loopbackGuard(req: IncomingMessage, res: ServerResponse): boolean {
   return false;
 }
 
+// DNS rebinding: a hostile page whose name re-resolves to 127.0.0.1 reaches
+// this server from a loopback peer and counts as same-origin to the browser,
+// so loopbackGuard and originGuard both pass. Only the `Host` header still
+// carries the hostile name. Vite's `allowedHosts` filters it too, but that
+// leans on Vite's host-check middleware running ahead of plugin middleware;
+// this check keeps the API's own defence in the API. Hostname only, port
+// ignored, case-insensitive. Deliberately narrower than Vite, which also
+// admits any IP literal: the list is ALLOWED_HOSTS, the same names
+// ALLOWED_ORIGINS is built from, so a Host this rejects could not pass
+// originGuard's Referer check from the viz UI anyway. A strict pattern, not
+// `new URL`, so userinfo (`x@localhost`) cannot normalize into an allowed
+// name. An absent or malformed Host fails closed. HTTP/2 clients may send
+// only `:authority`, so that stands in when `host` is absent.
+const HOST_HEADER = /^([a-z0-9.-]+)(?::\d{1,5})?$/i;
+
+function isAllowedHost(host: string | string[] | undefined): boolean {
+  if (typeof host !== 'string') return false;
+  const name = HOST_HEADER.exec(host)?.[1];
+  return name !== undefined && ALLOWED_HOSTS.has(name.toLowerCase());
+}
+
+function hostGuard(req: IncomingMessage, res: ServerResponse): boolean {
+  if (isAllowedHost(req.headers.host ?? req.headers[':authority'])) return true;
+  endPlain(res, 403, 'Forbidden: disallowed host');
+  return false;
+}
+
 // The prelude every /api/* handler runs before its own logic: security headers
-// on every response (error bodies included), then the loopback, method, and
-// origin guards.
+// on every response (error bodies included), then the loopback, host, method,
+// and origin guards.
 // Wrapping rather than repeating it makes shipping a handler without them a
 // structural impossibility instead of a review catch.
 //
@@ -84,6 +111,7 @@ function guarded(handler: Handler | AsyncHandler): AsyncHandler {
     try {
       applyApiHeaders(res);
       if (!loopbackGuard(req, res)) return;
+      if (!hostGuard(req, res)) return;
       if (!methodGuard(req, res)) return;
       if (!originGuard(req, res)) return;
       await handler(req, res);

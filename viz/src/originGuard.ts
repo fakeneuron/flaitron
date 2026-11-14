@@ -3,10 +3,15 @@ import { endPlain } from './apiResponse.ts';
 
 export const DEV_PORT = 5120;
 
-export const ALLOWED_ORIGINS: ReadonlySet<string> = new Set([
-  `http://localhost:${DEV_PORT}`,
-  `http://127.0.0.1:${DEV_PORT}`,
-]);
+// Loopback hostnames a request's `Host` may name. One list for
+// `server.allowedHosts` (vite.config.ts), devApi's `hostGuard`, and the
+// origins below, so those checks cannot drift apart. (vite.config.ts's CSP
+// `connect-src` still spells the two names out.)
+export const ALLOWED_HOSTS: ReadonlySet<string> = new Set(['localhost', '127.0.0.1']);
+
+export const ALLOWED_ORIGINS: ReadonlySet<string> = new Set(
+  [...ALLOWED_HOSTS].map((host) => `http://${host}:${DEV_PORT}`),
+);
 
 // Reject cross-origin browser requests to the viz dev API. Tasknote and
 // PLAN.md content is readable here; without this guard any website visited
@@ -14,7 +19,8 @@ export const ALLOWED_ORIGINS: ReadonlySet<string> = new Set([
 // historically by esbuild `GHSA-67mh-4wv8-2f99` / Vite `GHSA-4w7w-66w2-5vf9`).
 // Returns true if the request should proceed; otherwise writes a 403 and
 // returns false. Origin-less requests (terminal `curl`, EventSource
-// fallbacks) are allowed — `server.allowedHosts` handles DNS-rebinding.
+// fallbacks) are allowed — DNS rebinding is `hostGuard`'s job (devApi.ts),
+// backed by `server.allowedHosts`.
 export function originGuard(req: IncomingMessage, res: ServerResponse): boolean {
   // Checked before Origin/Referer because it is the only signal present in the
   // case those two miss: a cross-origin iframe navigation sends no `Origin`

@@ -37,7 +37,9 @@ function makeReq(opts: {
   const req = {
     url: opts.url ?? '/',
     method: opts.method ?? 'GET',
-    headers: opts.headers ?? {},
+    // A real HTTP/1.1 request always carries Host; default it so hostGuard
+    // passes unless a test names its own (or passes `host: undefined`).
+    headers: { host: `localhost:${DEV_PORT}`, ...opts.headers },
     socket: { remoteAddress: 'remoteAddress' in opts ? opts.remoteAddress : '127.0.0.1' },
     on(event: string, cb: () => void) {
       if (event === 'close') closeListeners.push(cb);
@@ -270,6 +272,78 @@ describe('guarded', () => {
     async (remoteAddress) => {
       const handler = createProjectsHandler(new Map(), null);
       const req = makeReq({ headers: { origin: ALLOWED_ORIGIN }, remoteAddress });
+      const { res, state } = makeRes();
+
+      await handler(req, res);
+
+      expect(state.statusCode).toBe(200);
+    },
+  );
+
+  it.each([
+    `evil.example:${DEV_PORT}`,
+    'evil.example',
+    'localhost.evil.example',
+    `x@localhost:${DEV_PORT}`,
+    `localhost:${DEV_PORT}/`,
+    '',
+    undefined,
+  ])('answers 403 to a disallowed Host (%s) before the handler runs', async (host) => {
+    const handler = createProjectsHandler(new Map(), null);
+    const req = makeReq({ headers: { host, origin: ALLOWED_ORIGIN } });
+    const { res, state } = makeRes();
+
+    await handler(req, res);
+
+    expect(state.statusCode).toBe(403);
+    expect(state.body).toBe('Forbidden: disallowed host');
+    expect(state.headers['x-content-type-options']).toBe('nosniff');
+    expect(state.headers['content-security-policy']).toBe("default-src 'none'; frame-ancestors 'none'");
+  });
+
+  it('rejects a disallowed Host ahead of the method and origin guards', async () => {
+    const handler = createProjectsHandler(new Map(), null);
+    const req = makeReq({ method: 'POST', headers: { host: 'evil.example', origin: BLOCKED_ORIGIN } });
+    const { res, state } = makeRes();
+
+    await handler(req, res);
+
+    expect(state.statusCode).toBe(403);
+    expect(state.body).toBe('Forbidden: disallowed host');
+    expect(state.headers.allow).toBeUndefined();
+  });
+
+  it('checks the peer address before the Host header', async () => {
+    const handler = createProjectsHandler(new Map(), null);
+    const req = makeReq({ headers: { host: 'evil.example' }, remoteAddress: '192.168.1.20' });
+    const { res, state } = makeRes();
+
+    await handler(req, res);
+
+    expect(state.statusCode).toBe(403);
+    expect(state.body).toBe('Forbidden: non-loopback client');
+  });
+
+  it('falls back to the HTTP/2 :authority header when Host is absent', async () => {
+    const handler = createProjectsHandler(new Map(), null);
+    const allowed = makeReq({ headers: { host: undefined, ':authority': `localhost:${DEV_PORT}` } });
+    const blocked = makeReq({ headers: { host: undefined, ':authority': 'evil.example' } });
+    const ok = makeRes();
+    const denied = makeRes();
+
+    await handler(allowed, ok.res);
+    await handler(blocked, denied.res);
+
+    expect(ok.state.statusCode).toBe(200);
+    expect(denied.state.statusCode).toBe(403);
+    expect(denied.state.body).toBe('Forbidden: disallowed host');
+  });
+
+  it.each(['localhost', `localhost:${DEV_PORT}`, `127.0.0.1:${DEV_PORT}`, `LocalHost:${DEV_PORT}`])(
+    'lets an allowed Host (%s) through to the handler',
+    async (host) => {
+      const handler = createProjectsHandler(new Map(), null);
+      const req = makeReq({ headers: { host, origin: ALLOWED_ORIGIN } });
       const { res, state } = makeRes();
 
       await handler(req, res);

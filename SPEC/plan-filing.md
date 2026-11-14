@@ -28,8 +28,11 @@ suggested for review or auto-allocated, and what a collision does.
 3. **One numeric space.** `<AREA>-<N>`, `<AREA>-EPIC-<N>`, and
    `<AREA>-<N>.<sub>` all claim `N` — an epic and its children share their
    number, so a standalone must not reuse it.
-4. **Allocate `max + 1`**, compared as integers, zero-padded like the prefix's
-   existing IDs; a prefix with no ID yet starts at `001`. Never backfill a gap:
+4. **Allocate `max + 1`**, compared as integers, zero-padded to the width
+   the max ID is written in (`CORE-58` → `CORE-59`, `CORE-058` →
+   `CORE-059`; the wider when that `N` is written both ways), so a mixed
+   padded/unpadded history follows its highest ID; a prefix with no ID yet
+   starts at `001`. Never backfill a gap:
    its number may still be cited from a commit or a note. A write minting
    several IDs allocates them in order, each counting the ones before it.
 5. **A hand-picked top-level number** — an explicit ID argument, an operator's override

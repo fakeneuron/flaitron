@@ -58,9 +58,18 @@ accepts neither flag has only the attended branch; this is that surface.
 §"Preparing declined rows" are applied from that text, not from memory or
 from this file.
 
-Read `PLAN`. Collect every **open** row — `- [ ]`, at any nesting depth — under
-the four active headings `## High` / `## Medium` / `## Low` /
-`## Future Opportunities`. `## Completed` is out of scope, and so is
+Read `PLAN`. Collect every **open task row** — a `- [ ]` line, at any nesting
+depth, that `SPEC.md` §"Task-line format" accepts with the
+`SPEC/plan-parser.md` tolerances — under the four active headings `## High` /
+`## Medium` / `## Low` / `## Future Opportunities`, and under a legacy
+`## Critical`, read as `## High` with `[!critical]` (module §"Seeding an
+existing plan"). Skip what the reference parser skips — HTML comments,
+fenced blocks (a fenced heading changes no section), and checkbox lines
+with no `*` / `**` emphasis — and count them as `not tasks`. Note as
+`malformed — not seeded`, with its line number, each open checkbox line
+with emphasis the grammar rejects (`*FE-064*`, `**fe-065**`), each bullet
+opening with a bold ID and no checkbox (`- **PID-030** …`), and each
+near-miss heading (`## high`), whose rows are not walked; none is walked. `## Completed` is out of scope, and so is
 `.flaitron/PLAN-ARCHIVE.md`; a closed row has nothing to dispatch. Also
 collect, for clause 6, the checkbox state of every row (open or closed) so an
 epic child's siblings can be resolved without a second read.
@@ -73,7 +82,9 @@ reported as counts, not listed:
   `SPEC/plan-parser.md` §"`[unattended]` / `[handoff]` mis-authoring
   footguns" case: name the row in the Step 3 report as `already marked —
   position looks off; not repaired`, and leave it. This skill does not
-  rewrite a token into place.
+  rewrite a token into place. A marked row whose line carries a defect a
+  correction would fix (module §"Preparing declined rows" → **Correction**)
+  is named the same way, `already marked — <defect>; not repaired`.
 - **`[handoff]`** — clause 3 calls the marker definitive; the row is never a
   candidate, never prepared, and nothing else is consulted.
 
@@ -85,7 +96,10 @@ the `unattended-candidates:` line never fires here. Run §"Candidacy predicate"
 over each remaining open row **as it stands in the file** — the row text *is*
 the drafted line. A row the predicate admits is a **mark**: shown in the
 Step 3 review with the token in place, and written at Step 4 only if the
-operator's confirmation keeps it. A row it declines is classified by
+operator's confirmation keeps it — unless its note bars a mark (below), or
+its line carries a defect the module's **Correction** bullet names, which
+makes it a `correction` or, with no fix it allows, a `stay` naming the
+defect. A row it declines is classified by
 §"Preparing declined rows" into exactly one of `stay`, `pin`, `split`,
 `scope`, or `question` (a question may ride a scope).
 
@@ -122,14 +136,20 @@ numeric audit child) waits on every sibling, so resolve it last. A `.1`
 Discovery row is never a candidate; a parent `<AREA>-EPIC-<N>` row is never
 one either.
 
-Settle the Stay-bullet collisions while classifying, before any draft: a
-source ID with `.flaitron/tasknote/<ID>.md`,
-`.flaitron/tasknote/archive/*/<ID>.md`, or `.flaitron/sidequest/<ID>.md` is
-`stay`, and so is a would-be split of an epic child whose parent has no `.N`
-row, or whose next `.<k>` (counting splits drafted ahead in this walk)
-already has a tasknote or stub. A row declined by clause 6 alone has no
-person to remove and stays too. The stay reason names the file, the missing
-`.N`, or the clause.
+**Notes and stubs, first.** Before any mark or draft, read every walked
+row's `.flaitron/tasknote/<ID>.md` (its `status:`, and its `park-reason:`
+when `blocked`), `.flaitron/tasknote/archive/*/<ID>.md`, and
+`.flaitron/sidequest/<ID>.md`, and apply the module's **Notes and stubs**
+rule per operation: a blocked, in-flight, or archived note keeps the row a
+stay whatever it would have been; a `status: starter` note or a stub stays
+a split, a scope, or a riding question, and lets a mark, a pin, a
+correction, or a standalone question through — unless the starter's
+`### Open at promotion` holds anything (`starter open — <path>`) —
+recording the file as `untouched: <path>`. Never edit one. A would-be split of an epic child
+whose parent has no `.N` row, or whose next `.<k>` (counting splits drafted
+ahead in this walk) already has a tasknote or stub, is `stay` too. A row
+declined by clause 6 alone has no person to remove and stays too. Each
+stay keeps one reason, picked by the module's **Stay reason** order.
 
 Draft the bytes Step 4 will write. No draft contains `[handoff]`.
 
@@ -138,8 +158,13 @@ Draft the bytes Step 4 will write. No draft contains `[handoff]`.
   except the description words the pin replaces. Do not change the checkbox,
   the ID, `[model]` or its glyph, `[!critical]`, the shortname, or the indent.
   Edit by exact-string replacement of the whole row. A pinned row left with
-  any clause-3 trip is not a pin (§"Preparing declined rows"): classify the
-  row as a split or a stay instead.
+  any clause-3 trip, or over 70 words (module **Row length**), is not a pin
+  (§"Preparing declined rows"): classify the row as a split or a stay
+  instead.
+- **`correction`** — drafted as a pin, changing only the defective span the
+  way the module's **Correction** bullet fixes it; the same 70-word cap. A
+  draft that breaks either stays, naming the defect — never a mark. Show
+  the defect beside the draft at Step 3.
 - **`split`** — two rows, plus a starter when §"Preparing declined rows" calls
   for one.
   - **Remainder.** The source row, rewritten so the description is only the
@@ -147,9 +172,11 @@ Draft the bytes Step 4 will write. No draft contains `[handoff]`.
     stays within `SPEC/tasknote-selection.md` §"PLAN.md filing-discipline
     thresholds" (≤50 words).
   - **Mechanical row.** A new `- [ ]` line in the source row's priority
-    section. `[light]🔧` when the slice is a clear diff, `[moderate]🧩` when it
+    section. `[light]` when the slice is a clear diff, `[moderate]` when it
     is multi-step and well-scoped (`SPEC/model.md` §"Model field"). No other
-    tier. Description is only the factual slice, ≤50 words, same thresholds.
+    tier. Its glyph (`🔧` / `🧩`) follows the source row: written only when
+    the source carries a model-suggestion glyph, since `SPEC/plan-parser.md`
+    calls it decorative and a glyph-free plan stays glyph-free. Description is only the factual slice, ≤50 words, same thresholds.
     Shortname ≤30 characters. A standalone source takes the next top-level ID
     from `SPEC/plan-filing.md` §"ID allocation", and is inserted at the
     source row's indent on the line
@@ -166,7 +193,10 @@ Draft the bytes Step 4 will write. No draft contains `[handoff]`.
     will show (§"Preparing declined rows"). Leave out a mention of the source
     ID that trips, and re-screen. A trip that remains turns the whole split
     into `stay`: drop the remainder rewrite, draft no starter, and name the
-    word and the clause.
+    word and the clause. On a §"Never autonomous" source (the module's
+    separable-act exception), the screen reads that set by meaning too:
+    the act stays in the remainder, and a mechanical row that falls in any
+    item stays the whole split, naming the item.
   - **Starter.** When the remainder is not understandable from its line,
     copy `<root>templates/tasknote-starter-template.md` to
     `.flaitron/tasknote/<source-ID>.md`, `status: starter`, `created:` today,
@@ -178,7 +208,7 @@ Draft the bytes Step 4 will write. No draft contains `[handoff]`.
     check above has already ruled out a note or stub for that ID.
 
 **Token items.** Run the full predicate — clause 6 included — over each
-drafted row a preparation produces: the pinned row, or a split's mechanical
+drafted row a preparation produces: the pinned or corrected row, or a split's mechanical
 row (never the remainder, which still needs its person). When it admits the
 row as drafted, the preparation carries a **dependent token item**: that row
 with the token in place. When it declines — a pin on a `[heavy]` or
@@ -190,15 +220,17 @@ remainder, and the item does not fire this walk, by design (module
 §"Preparing declined rows").
 
 Record, per row, either `mark (+ clause-6 predecessor when one applies)`,
-the preparation with its item or withholding clause, or `stay` with the
-**first clause that failed** and any reason the Stay bullet asks for.
+the preparation with its item or withholding clause, or `stay` with its
+one reason by the module's **Stay reason** order — plus any `untouched:`
+file.
 
 ## Step 3 — One review gate
 
 Surface the walk in one message, then stop and wait. The shape:
 
-1. **Counts.** Open rows walked · already marked (skipped) · `[handoff]`
-   (skipped) · marks · pins · splits · stays — plus the fragment's
+1. **Counts.** Open task rows walked · not tasks · malformed · already
+   marked (skipped) · `[handoff]` (skipped) · marks · pins · corrections ·
+   splits · stays — plus the fragment's
    §"Step 3" count additions when it was loaded; its scope entries,
    Questions block, and answer forms join the sections below.
 2. **Marks** — one per line, in PLAN order, each shown as the full row
@@ -210,9 +242,12 @@ Surface the walk in one message, then stop and wait. The shape:
    starter's basis (Step 2 **Basis read**) carries one more line, so the
    keep confirms fields the operator saw:
    `basis (on disk): <path> — (a) touches: … · (b) <criteria with commands> · (c) open: none · (d) <spec, or n/a>`.
-3. **Preparations** — pins and splits (and scopes, per the fragment), in
-   PLAN order. Each pin is the full
-   rewritten row. Each split is the remainder row, then the mechanical row,
+   A mark, pin, correction, or standalone question beside a note or stub
+   it leaves alone (Step 2) carries `untouched: <path>` on its own line.
+3. **Preparations** — pins, corrections, and splits (and scopes, per the
+   fragment), in PLAN order. Each pin is the full rewritten row; each
+   correction too, then `defect: <what the walk proved> → <the fix>`.
+   Each split is the remainder row, then the mechanical row,
    then `starter: .flaitron/tasknote/<ID>.md` when one will be written. Under
    each, its **dependent token item** — the pinned or mechanical row with the
    token in place, and its clause-6 predecessor when one applies — or
@@ -223,15 +258,17 @@ Surface the walk in one message, then stop and wait. The shape:
    2. - [ ] **CORE-582.3** [moderate]🧩 [unattended] | shortname — …   ← after CORE-582.2 (candidate in this pass)
    3. pin   - [ ] **CORE-590** [light]🔧 | shortname — … `npm test -- foo`
             item: - [ ] **CORE-590** [light]🔧 [unattended] | shortname — …
-   4. split - [ ] **CORE-591** [heavy] | shortname — … (remainder)
+   4. split - [ ] **CORE-591** [heavy]🧠 | shortname — … (remainder)
             - [ ] **CORE-602** [light]🔧 | slice — … (mechanical)
             item: - [ ] **CORE-602** [light]🔧 [unattended] | slice — …
    ```
 
-4. **Stays** — `ID — stay (reason) — clause N`, one line each; the reason
-   only where §"Preparing declined rows" asks for one. No token, no argument;
+4. **Stays** — `ID — stay — <reason>`, one line each, the one reason the
+   module's **Stay reason** order picks, ending `— clause N` when it has a
+   clause (a collision or a cap has none). No token, no argument;
    the predicate is conservative by design and a stay is the status quo, not
-   a finding.
+   a finding. Then **Not seeded** — each `malformed — not seeded` line, with
+   its line number, for a hand fix.
 5. **The ask**, in one line: *Reply `all` to keep everything, `none` to write
    nothing, a list of IDs to keep only those, or `all but <IDs>` — a source
    ID names its mark or its preparation with its item; `<source ID> item`
@@ -257,8 +294,8 @@ message holds it. This is a prose review, not an `AskUserQuestion`: the
 structured ask caps at sixteen options per call, which would split a large
 plan's confirmation across several gates, and the module asks for exactly one.
 
-No mark, no preparation, and no question → report the counts and the
-stays, say there is nothing to seed or prepare, and stop. No gate, no
+No mark, no preparation, and no question → report the counts, the
+stays, and the not-seeded lines, say there is nothing to seed or prepare, and stop. No gate, no
 commit.
 
 ## Step 4 — Write what the reply kept
@@ -282,7 +319,11 @@ re-scan checks, writes, and recognized hunks when it was loaded):
    reads as Step 1 read it. Re-scan a mark admitted on an on-disk
    starter's basis too: the note must still read as Step 2 read it and
    every script its criteria name must still be defined, or the mark is
-   skipped like a failed preparation. On any failure, skip that preparation and its
+   skipped like a failed preparation. Re-read every kept row's notes and
+   stubs too (Step 2): one that now bars the kept operation, or an
+   `untouched:` file that no longer reads as Step 2 read it, skips that
+   mark or preparation the same way, and so does a kept correction whose
+   defect no longer holds or whose fix target no longer exists. On any failure, skip that preparation and its
    item, leave its source row untouched, apply the reply's drop rules to
    what leaned on it, and name them all in Step 5. The writes in item 2 are
    this motion's own, not dirt the pre-check classifies.
@@ -301,8 +342,9 @@ re-scan checks, writes, and recognized hunks when it was loaded):
      `| shortname`, before ` — `. Every other byte of the row stays verbatim
      to the file: checkbox, ID, `[!critical]` (none can be present), model,
      shortname, description, nesting indent.
-   - **Pin** — the drafted rewrite, with the token inserted the same way when
-     its item was kept; every other byte verbatim to the draft.
+   - **Pin** or **correction** — the drafted rewrite, with the token
+     inserted the same way when its item was kept; every other byte
+     verbatim to the draft.
    - **Split** — the remainder rewrite; the mechanical row inserted where
      Step 2 placed it, with the token when its item was kept; the starter
      written from the draft.
@@ -320,7 +362,7 @@ re-scan checks, writes, and recognized hunks when it was loaded):
 
    **Post-stage verification.** Recognized hunks: a single-line change on a
    kept mark adding exactly ` [unattended]`; a description rewrite on a kept
-   source row, token included only on a pin, scope, or answered question
+   source row, token included only on a pin, correction, scope, or answered question
    whose item was kept (a remainder never carries it); an inserted mechanical
    row, token included when its item was kept; a starter file this motion
    created; and the accumulated filings the pre-check recorded (their IDs go
@@ -341,15 +383,15 @@ One short message:
 
 - `seeded <N> rows: <IDs in PLAN order>` (`row` / `source row` when `<N>`
   is 1, here and below) — the IDs that now carry the
-  token: each mark, each pinned row, each mechanical row (its own ID), and
+  token: each mark, each pinned or corrected row, each mechanical row (its own ID), and
   each scoped or answered row — or `seeded 0 rows`.
 - `prepared <N> source rows: <IDs in PLAN order>` — or `prepared 0 source
   rows`.
 - `committed <sha>` — or the `left uncommitted` line from Step 4.
 - Any mark, item, or split the reply or a Step 4 skip dropped by leaning or
   numbering, any preparation skipped at Step 4 with the re-scan check it
-  failed, and any `already marked — position looks off; not repaired` row,
-  so the operator can fix it by hand.
+  failed, and any `already marked — …; not repaired` or `malformed — not
+  seeded` row, so the operator can fix it by hand.
 - When the fragment was loaded, its §"Step 5" lines.
 
 The Step 3 reply **is** the commit authorization — there is no separate
@@ -373,11 +415,11 @@ dropped or withheld is still unmarked.
 - **Tokens only where the reply kept them.** The skill
   never writes `[handoff]`, which no filer proposes, and never writes
   `[unattended]` on a row the reply did not keep as a mark or an item.
-- **Seeds and prepares, never repairs.** A mis-positioned existing token, a
+- **Seeds and prepares, never repairs unasked.** A mis-positioned existing token, a
   `[handoff]` that reads stale, a `Blocked by` that has since cleared — all
   reported or skipped, none rewritten. Row repair is a hand edit or a
-  `/ft-task --micro`. A pin, a split, a scope, or an answered question is
-  a preparation the operator confirmed, not a repair.
+  `/ft-task --micro`. A pin, a correction, a split, a scope, or an
+  answered question is a preparation the operator confirmed, not a repair.
 - **Does not retag** `[model]` on a source row, and does not add a test, a
   Playwright spec, or a keyword to the predicate.
 - **Idempotent.** A second run walks the same plan, skips every row the first

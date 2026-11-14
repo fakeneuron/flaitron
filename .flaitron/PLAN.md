@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-897** [heavy] | seeder-fleet-gaps — Resolve ten seeder gaps from Natabula NAT-551: independent splits, admitted-row corrections, parser-aligned collection and diagnostics, stay reasons, keyword matching, rewrite caps, mixed ID padding, glyph style, parked notes and operation-specific collisions. Preserve the attended review and re-scan invariants. Filed with starter at `.flaitron/tasknote/CORE-897.md`.
+(none)
 
 ## Low
 
@@ -26,6 +26,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-897** [heavy] | seeder-fleet-gaps — Completed 2026-11-14. All ten NAT-551 cases landed per operator picks; adds a correction class.
 - [x] **CORE-896** [moderate] | grok-block-adoption — Completed 2026-11-14. Adopted the current (v3) public block, not v1.
 - [x] **CORE-901** [moderate] | arch-health-adoption — Completed 2026-11-14.
 - [x] **CORE-898** [light] | spec-load-header-rosters — `SPEC/starter.md`, `SPEC/tasknote-selection.md` and `SPEC/model.md` load headers now name `/ft-import-task` (and `starter.md` names `/ft-file-task --starter`). Surfaced by audit-docs 2026-11-10 (Finding #1, Medium), fixed inline.

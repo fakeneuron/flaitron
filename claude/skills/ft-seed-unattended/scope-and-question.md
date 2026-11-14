@@ -15,7 +15,9 @@ carries only the procedure. Like the body, it never emits the
 ## Step 2 — Classify and draft
 
 **Slot and draft first.** Before the body's clause-6 ordering runs, and
-after its collision stays are settled, walk the rows that still qualify in
+after its notes-and-stubs stays are settled — a standalone question goes
+ahead beside a starter note or stub, a scope or a rider does not (module
+**Notes and stubs**) — walk the rows that still qualify in
 PLAN order, and draft each one (Scope steps 1–4,
 Question steps 1–3)
 while the caps it needs have room (module §"Preparing declined rows",
@@ -94,7 +96,8 @@ order dependents resolve in never changes which rows are drafted. Items
    and the repo do not offer.
 2. **Draft each option** as the pinned row its answer would write, under
    the body's **pin** rules (exact-string rewrite, every other byte
-   verbatim). An option whose row keeps another clause-3 trip is dropped;
+   verbatim). An option whose row keeps another clause-3 trip, or runs over
+   70 words (module **Row length**), is dropped;
    on a rider, the rendered-surface reading is not such a trip, since the
    scope's basis decides it (module **Question** bullet). Fewer than two
    options left → the row stays, `question — unbounded`.

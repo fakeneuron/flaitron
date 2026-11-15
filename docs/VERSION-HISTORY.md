@@ -22,6 +22,14 @@ unless correcting a factual error.
 
 ---
 
+## v8.5.0 — /ft-import-task, a sharper seeder, supply-chain drift checks
+
+- /ft-import-task files starter-shaped notes written elsewhere (file, folder or paste) into a repo's own plan: it dedupes by source id, allocates real IDs, records provenance, sizes each note as row, starter or epic, and files everything behind one proposal table and one filing commit. Wired for Claude, Codex, Cursor and Grok.
+- /ft-seed-unattended closes ten fleet-reported gaps, including a separable-act split exception, a correction class for provable defects, parser-aligned collection, row-length caps and ID padding.
+- flaitron's own CI gains a `supply_chain` drift check (SHA-pinned actions, required `permissions:`, hash-pinned release downloads, no `latest` fetches), a standalone gitleaks job with a pinned tarball digest, and a pinned shellcheck.
+
+Also: the viz dev API rejects foreign Host headers itself; an arch-health dependency-graph artifact; /ft-release asks on mid-cut defects; DOGFOOD receipts carry the cue-render outcome.
+
 ## v8.4.0 — lowercase brand guard, hardened unattended runs, self-checking releases
 
 - The framework name is lowercase wherever it stands alone, with `brand_nearmiss` and `brand_casing` drift checks to hold it. SPEC.md's line-1 heading is now `# flaitron — Workflow Specification`, so an install.sh from before v8.4.0 refuses this core: fetch the installer from the new tag. The v8.4.0 installer accepts both casings.

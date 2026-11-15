@@ -25,6 +25,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-912** [moderate]🧩 | release v8.5.0 — Completed 2026-11-14.
 - [x] **CORE-908** [light]🔧 | overlay-hostguard-boundary — `.flaitron/audit-overlay/SKILL.md` invariant (2) and the `security:` pass 3 line now name `hostGuard` alongside `allowedHosts` and `originGuard` as the viz dev-server boundary; no tasknote. Completed 2026-11-14.
 - [x] **CORE-907** [moderate] | supply-chain-yaml-edges — Completed 2026-11-14. `supply_chain` reads quoted and spaced workflow keys, fails a next-line or null `permissions:`, and skips `run:` values and block-scalar bodies; fetch spellings a line grep cannot see are documented as known limits.
 - [x] **CORE-911** [light] | supply-chain-latest-download — Completed 2026-11-14. `supply_chain` fails a `releases/latest/download` URL or a `gh release download` outright, pinned or not. Hoisted-variable and spelled-differently fetches stay with [[CORE-907]].

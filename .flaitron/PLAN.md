@@ -15,6 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
+- [ ] **CORE-913** [moderate] | seed-grouped-stays — `ft-seed-unattended` Step 3 prints every stay on its own line, so a large plan's review runs long (natabula's 2026-11-15 fleet walk; one 43-row plan). Add a grouped form: stays sharing one reason and clause collapse to one line listing their IDs. Routed from natabula NAT-627.4.
 
 ## Low
 

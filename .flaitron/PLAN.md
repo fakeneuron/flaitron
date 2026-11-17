@@ -16,6 +16,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Medium
 
 - [ ] **CORE-913** [moderate] | seed-grouped-stays — `ft-seed-unattended` Step 3 prints every stay on its own line, so a large plan's review runs long (natabula's 2026-11-15 fleet walk; one 43-row plan). Add a grouped form: stays sharing one reason and clause collapse to one line listing their IDs. Routed from natabula NAT-627.4.
+- [ ] **CORE-914** [heavy] | fleet-clean-line — After a fleet pass, emit one compact line naming the repos checked and clean (with HEAD SHAs), stored where the next pass reads it; that pass alone skips clean repos whose HEAD is unchanged, never by time. Target repo undecided: the runner lives in caobunga-private and flaitron's scope boundary bars fleet tooling (D1). Filed with starter at `.flaitron/tasknote/CORE-914.md`.
 
 ## Low
 

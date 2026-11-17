@@ -16,7 +16,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Medium
 
 - [ ] **CORE-913** [moderate] | seed-grouped-stays — `ft-seed-unattended` Step 3 prints every stay on its own line, so a large plan's review runs long (natabula's 2026-11-15 fleet walk; one 43-row plan). Add a grouped form: stays sharing one reason and clause collapse to one line listing their IDs. Routed from natabula NAT-627.4.
-- [ ] **CORE-914** [heavy] | fleet-clean-line — After a fleet pass, emit one compact line naming the repos checked and clean (with HEAD SHAs), stored where the next pass reads it; that pass alone skips clean repos whose HEAD is unchanged, never by time. Target repo undecided: the runner lives in caobunga-private and flaitron's scope boundary bars fleet tooling (D1). Filed with starter at `.flaitron/tasknote/CORE-914.md`.
 
 ## Low
 
@@ -27,6 +26,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-914** [heavy] | fleet-clean-line — Completed 2026-11-17.
 - [x] **CORE-912** [moderate]🧩 | release v8.5.0 — Completed 2026-11-14.
 - [x] **CORE-908** [light]🔧 | overlay-hostguard-boundary — `.flaitron/audit-overlay/SKILL.md` invariant (2) and the `security:` pass 3 line now name `hostGuard` alongside `allowedHosts` and `originGuard` as the viz dev-server boundary; no tasknote. Completed 2026-11-14.
 - [x] **CORE-907** [moderate] | supply-chain-yaml-edges — Completed 2026-11-14. `supply_chain` reads quoted and spaced workflow keys, fails a next-line or null `permissions:`, and skips `run:` values and block-scalar bodies; fetch spellings a line grep cannot see are documented as known limits.

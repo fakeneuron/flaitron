@@ -263,9 +263,13 @@ Surface the walk in one message, then stop and wait. The shape:
             item: - [ ] **CORE-602** [light]🔧 [unattended] | slice — …
    ```
 
-4. **Stays** — `ID — stay — <reason>`, one line each, the one reason the
+4. **Stays** — `ID — stay — <reason>`, in PLAN order, the one reason the
    module's **Stay reason** order picks, ending `— clause N` when it has a
-   clause (a collision or a cap has none). No token, no argument;
+   clause (a collision or a cap has none).
+   **Grouped:** stays whose reason line, clause included, is byte-identical
+   share one line, `<ID>, <ID>, … — stay — <reason>`, IDs in PLAN order, at
+   the first ID's position. Display only: each row still counts, and a stay
+   ID is not a reply target. No token, no argument;
    the predicate is conservative by design and a stay is the status quo, not
    a finding. Then **Not seeded** — each `malformed — not seeded` line, with
    its line number, for a hand fix.
@@ -295,7 +299,7 @@ structured ask caps at sixteen options per call, which would split a large
 plan's confirmation across several gates, and the module asks for exactly one.
 
 No mark, no preparation, and no question → report the counts, the
-stays, and the not-seeded lines, say there is nothing to seed or prepare, and stop. No gate, no
+stays (item 4's form, grouped), and the not-seeded lines, say there is nothing to seed or prepare, and stop. No gate, no
 commit.
 
 ## Step 4 — Write what the reply kept

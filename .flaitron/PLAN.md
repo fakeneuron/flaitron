@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-913** [moderate] | seed-grouped-stays — `ft-seed-unattended` Step 3 prints every stay on its own line, so a large plan's review runs long (natabula's 2026-11-15 fleet walk; one 43-row plan). Add a grouped form: stays sharing one reason and clause collapse to one line listing their IDs. Routed from natabula NAT-627.4.
+(none)
 
 ## Low
 
@@ -26,6 +26,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-913** [moderate] | seed-grouped-stays — Completed 2026-11-17.
 - [x] **CORE-914** [heavy] | fleet-clean-line — Completed 2026-11-17.
 - [x] **CORE-912** [moderate]🧩 | release v8.5.0 — Completed 2026-11-14.
 - [x] **CORE-908** [light]🔧 | overlay-hostguard-boundary — `.flaitron/audit-overlay/SKILL.md` invariant (2) and the `security:` pass 3 line now name `hostGuard` alongside `allowedHosts` and `originGuard` as the viz dev-server boundary; no tasknote. Completed 2026-11-14.

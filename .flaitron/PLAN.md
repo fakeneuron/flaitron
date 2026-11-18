@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-(none)
+- [ ] **CORE-915** [heavy] | direct-edit-path — Turn the tasknote skip tier into a defined taskless direct-edit path: risk-based eligibility, a contract for unfiled mid-session fixes, required pre-commit checks, and a recording convention — so simple changes ship without tasknote ceremony. Filed with starter at `.flaitron/tasknote/CORE-915.md`.
 
 ## Low
 

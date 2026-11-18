@@ -8,13 +8,15 @@ The list is scoped to external conventions flaitron has explicitly considered. A
 
 ### Conventional Commits 1.0
 
-Commit subjects follow [Conventional Commits 1.0](https://www.conventionalcommits.org/en/v1.0.0/) with an em-dash separator and the originating task ID:
+Commit subjects follow [Conventional Commits 1.0](https://www.conventionalcommits.org/en/v1.0.0/). For a filed task, include its ID and an em-dash separator.
 
 ```text
 <type>: <TASK-ID> — <description>
 ```
 
 Types in active use: `feat:`, `fix:`, `chore:`, `docs:`, `refactor:`, `perf:`, `test:`, `ci:`. Scope segments (`feat(area):`) are not used — the `<TASK-ID>` prefix carries area information via its `CORE-` / `FE-` / `BE-` / `DB-` / `DEPLOY-` / `TEST-` prefix.
+
+For an unfiled direct edit, use a plain subject such as `docs: clarify close-epic invocation`. The commit records the edit. See [SPEC/tasknote-selection.md](../SPEC/tasknote-selection.md) §"Direct-edit path (skip tier)".
 
 **Breaking changes** use the canonical `!` indicator on new commits:
 
@@ -145,7 +147,7 @@ Backing principle: [PHILOSOPHY.md](PHILOSOPHY.md) §"The decisions that fall out
 
 flaitron does not ship pre-commit hooks. The pattern declined is [pre-commit](https://pre-commit.com/)-style framework hooks.
 
-Validation runs inline as Phase 3 of every tasknote — targeted tests, lint and type-check on changed code, optional visual confirmation for frontend changes. Phase 3 is part of the workflow contract (see [SPEC.md](../SPEC.md)) and runs in the same context where the change was authored. Hooks would duplicate that check at commit time on the same machine — if Phase 3 was skipped, a hook only repeats the gate in the same context; it does not catch a landed change the way §"GitHub Actions CI" does by running off the authoring machine.
+Validation runs inline as Phase 3 of every tasknote — targeted tests, lint and type-check on changed code, optional visual confirmation for frontend changes. Phase 3 is part of the workflow contract (see [SPEC.md](../SPEC.md)) and runs in the same context where the change was authored. Direct edits run their applicable checks inline too. Hooks would duplicate those checks on the authoring machine. The off-machine checks in §"GitHub Actions CI" can catch a landed change whose author skipped local validation.
 
 Same backing principle as release automation: [PHILOSOPHY.md](PHILOSOPHY.md) §"The decisions that fall out" (Zero scripts) — the assistant is the validator, and the workflow phase is the gate.
 

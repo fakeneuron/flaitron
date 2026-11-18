@@ -262,21 +262,23 @@ cohort to `## Completed` atomically (§"Epic parent flip"). Never strand an
 individual child as a top-level Completed row.
 
 **Exception — inline audit fixes.** A trivial fix applied inline by an
-audit skill (the `/ft-audit` §5 trivial-fix carve-out: skip-the-tasknote-sized
-patches done at audit time instead of filed as a `## Low` ticket) has no
-tasknote and no archive file, so its `## Completed` line **retains** a
+audit skill (the `/ft-audit` §5 trivial-fix carve-out) has no tasknote or
+archive file, so its `## Completed` line **retains** a
 short self-contained description plus `Surfaced by <audit-label>
 YYYY-MM-DD (Finding #N, <severity>), fixed inline` — here the line itself
 is the canonical record.
 
 **Exception — skip-tier closures.** A filed standalone row closed by direct
 edit at the skip tier ([`SPEC/tasknote-selection.md`](tasknote-selection.md)
-§"When to use a tasknote (and when not to)") has no tasknote either, so its
-stub keeps a short self-contained description ahead of the date:
+§"Direct-edit path (skip tier)") has no tasknote, so its stub keeps a short
+self-contained description ahead of the date:
 `- [x] **TASK-ID** [model] | shortname — <what changed>; no tasknote. Completed YYYY-MM-DD.`
-The edit and the row land in one commit. The stub's tail, `| shortname`,
-verbatim trailing bracket-token run, placement, and rotation rules apply
-unchanged.
+The edit and the row land in one commit. Keep the row open if the edit cannot
+land. Keep the stub's tail and `| shortname`, copy trailing bracket tokens
+verbatim, and apply the standard placement and rotation rules.
+
+An unfiled direct edit creates no PLAN.md row or task ID. Its commit is the
+record.
 
 ## Epic parent flip
 

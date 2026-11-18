@@ -1,31 +1,46 @@
 # Tasknote selection
 
-> Lazy-loaded SPEC module. Loaded by the filing/runner skills (`/ft-task`, `/ft-file-task`, `/ft-open-epic`, `/ft-refactor`, `/ft-import-task`) when they need the use/skip thresholds, the filing-discipline word budget, or the downstream-impact reconciliation scan. See `SPEC.md` for the always-loaded core spec. What happens to a PLAN.md row *after* it is filed — the filing-commit contract, the `## Completed` stub-form convention, and `## Completed` rotation — lives in the sibling [`SPEC/plan-filing.md`](plan-filing.md).
+> Lazy-loaded by `/ft-task`, `/ft-file-task`, `/ft-open-epic`, `/ft-refactor`, and `/ft-import-task` for routing, filing word limits, and downstream-impact reconciliation. See `SPEC.md` for the core contract and [`SPEC/plan-filing.md`](plan-filing.md) for filing commits, Completed stubs, and rotation.
 
 ## When to use a tasknote (and when not to)
 
-Each block below names the motion and its trigger; the skill named owns the
-mechanics.
+**Use a tasknote** for epic children and work outside the direct-edit path,
+including design tradeoffs. Keep fixes that serve an active task's
+acceptance in that task.
 
-**Use a tasknote when:**
+### Direct-edit path (skip tier)
 
-- The change touches more than one file
-- The task has a `<AREA>-<NUMBER>` ID in PLAN.md and fits none of the skip cases below
-- The work involves design tradeoffs the assistant should record
+Use direct edit for an authorized fix with known, local impact. It touches
+one file or a tightly coupled pair, its intent is clear from the diff, and
+it is easy to revert. A clarification of an existing SPEC rule or a small bug
+fix with its regression test can qualify. Route new contract decisions,
+uncertain behavior, privileged changes, and work needing a workflow gate
+such as visual confirmation through the tasknote path. Use the privileged-ops
+signal in [`SPEC/gates.md`](gates.md) §"Conditional skip rule" and judge the
+actual impact of the change.
 
-**Skip the tasknote for:**
+For an open standalone row without a tasknote or sidequest stub, the
+`/ft-task` Step 1 advisory lets the operator choose direct edit. For an
+unfiled fix requested or approved mid-session, use this path in conversation.
 
-- Single-line typo fixes
-- Pure formatting tweaks
-- Documentation patches under ~25 lines
-- Trivial config edits with no logic impact
+1. **Isolate.** Start with an empty index and clean target paths. Preserve
+   unrelated work. If pending edits overlap or affect verification, defer
+   the fix or work in isolation.
+2. **Review and check.** Show the scoped diff and run the narrowest applicable
+   project validation, including documented drift and budget checks for
+   contract edits (in flaitron, `bash tools/drift-checks.sh`).
+   Report the results or say why no project check applies. Resolve failures
+   before committing. If the diff outgrows eligibility, use the tasknote path.
+3. **Commit locally.** Choosing direct edit for a filed row authorizes the
+   commit. For an unfiled fix, use explicit or standing commit authorization.
+   Stage by path. Commit only if `git diff --cached --check` passes and the
+   full staged diff matches the verified edit plus any filed Completed stub
+   ([`SPEC/plan-filing.md`](plan-filing.md) §"Exception — skip-tier closures").
+   An unfiled fix uses a plain Conventional Commit subject such as
+   `fix: correct the empty-state count` with no task ID. Its commit is the sole
+   record. Report the SHA.
 
-The skip list wins over a PLAN.md ID: a filed standalone row that fits it is
-edited directly and closed in the same commit as a self-contained stub
-([`SPEC/plan-filing.md`](plan-filing.md) §"Exception — skip-tier closures").
-An epic child keeps its tasknote, since its closure drives the parent flip.
-`/ft-task` names the tier a row implies (skip / micro / full) at Step 1 as an
-advisory; the operator still picks.
+### Other workflow routes
 
 **Draft a spec (`templates/spec-template.md`) when:**
 
@@ -73,7 +88,7 @@ children plus a `.N` audit; execution is normal `/ft-task` cycles. No target →
 
 **Park an idea instead (`/ft-file-task --park [--low|--med|--fut|--high] [ID] [idea]`) when:**
 
-- An idea or **quick fix** surfaces mid-session, you are **not** switching context, and it fits a ≤80-word stub plus a ≤30w PLAN one-liner
+- You are deferring an idea or quick fix without switching context and it fits a ≤80-word stub plus a ≤30w PLAN one-liner
 
 **Priority flags** (override the AI's read): `--low` → `## Low` (`pickup:
 next-chat`); `--med` / `--medium` → `## Medium`; `--fut` / `--future` →

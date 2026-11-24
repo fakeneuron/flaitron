@@ -44,6 +44,7 @@ import {
 
 const execFileAsync = promisify(execFile);
 const SCRIPT = fileURLToPath(new URL('./update-adopters.mjs', import.meta.url));
+const WORKSPACE_MJS = fileURLToPath(new URL('./update-adopters/workspace.mjs', import.meta.url));
 const WORKSPACE_TS = fileURLToPath(new URL('../viz/src/workspace.ts', import.meta.url));
 
 async function runCli(args, { expectFail = false, env = {} } = {}) {
@@ -356,13 +357,13 @@ describe('parseArgs / pure helpers', () => {
 });
 
 describe('Version regex parity (CORE-366)', () => {
-  it('pins the same **Version:** regex source in update-adopters.mjs and viz/src/workspace.ts', async () => {
+  it('pins the same **Version:** regex source in update-adopters/workspace.mjs and viz/src/workspace.ts', async () => {
     const REGEX_SOURCE = String.raw`/^\*\*Version:\*\*\s*(v?\d+\.\d+\.\d+)/m`;
-    const toolSource = await readFile(SCRIPT, 'utf8');
+    const toolSource = await readFile(WORKSPACE_MJS, 'utf8');
     const vizSource = await readFile(WORKSPACE_TS, 'utf8');
     assert.ok(
       toolSource.includes(REGEX_SOURCE),
-      'tools/update-adopters.mjs no longer contains the pinned Version regex',
+      'tools/update-adopters/workspace.mjs no longer contains the pinned Version regex',
     );
     assert.ok(
       vizSource.includes(REGEX_SOURCE),

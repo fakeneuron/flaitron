@@ -17,7 +17,7 @@ export interface ProjectDescriptor {
   flaitronVersion: string | null;
 }
 
-// expandHome/workspaceRoot/isFile mirror tools/update-adopters.mjs verbatim
+// expandHome/workspaceRoot/isFile mirror tools/update-adopters/workspace.mjs verbatim
 // (bar workspaceRoot's arg shape — env object here, root string there). Kept
 // duplicated rather than shared — see the comment there for why.
 function expandHome(path: string): string {
@@ -39,7 +39,7 @@ async function isFile(path: string): Promise<boolean> {
   }
 }
 
-// Shares its name with tools/update-adopters.mjs's exported pinnedVersion —
+// Shares its name with tools/update-adopters/workspace.mjs's exported pinnedVersion —
 // same Version-line contract, kept duplicated for the same zero-dep reason
 // as expandHome/workspaceRoot/isFile above. Stays private/untested-by-name
 // here (only discoverProjects calls it), unlike the tools-side export.
@@ -61,7 +61,7 @@ async function pinnedVersion(specPath: string): Promise<string | null> {
 // Read once at dev-server startup — a release cut mid-session shows up on
 // the next restart, which matches how /ft-release restarts the gate anyway.
 //
-// Shares its name with tools/update-adopters.mjs's latestReleaseTag but not
+// Shares its name with tools/update-adopters/release.mjs's latestReleaseTag but not
 // its signature: that one takes zero args and always resolves against the
 // fixed FLAITRON_REPO constant, while this one needs an explicit repoDir
 // since viz discovers adopter projects at arbitrary paths. Deliberate, not a

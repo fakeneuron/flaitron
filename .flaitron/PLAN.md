@@ -27,7 +27,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [ ] **CORE-920.N** [heavy]🧠 | near-cap-trims-2 audit
 - [ ] **CORE-EPIC-931** [moderate]🧩 | updater-modules — Split `tools/update-adopters.mjs` (1,671 lines, seven responsibilities) into modules under `tools/update-adopters/`, leaf-first, behind the entry as a re-exporting facade so the CLI path, test imports and CI roster hold (filed via /ft-refactor; plan on the child starters).
   - [x] **CORE-931.2** [moderate]🧩 [unattended] | release-module — Completed 2026-11-24.
-  - [ ] **CORE-931.3** [light]🔧 [unattended] | workspace-module — Move the viz mirrors (`expandHome`, `workspaceRoot`, `isFile`, `pinnedVersion`), `realOrResolve`, `pathKind`, path constants and adopter discovery to `tools/update-adopters/workspace.mjs`; repoint the Version-regex parity test and `viz/src/workspace.ts`'s mirror comments.
+  - [x] **CORE-931.3** [light]🔧 [unattended] | workspace-module — Completed 2026-11-24.
   - [ ] **CORE-931.4** [light]🔧 [unattended] | text-module — Move the pure markdown helpers (`fenceOpeners`, Workflow-block and pin-line rewrites, `snippetLinks`, `codexRoster`) to `tools/update-adopters/text.mjs`; the fence and workflow-block fixture cases keep pinning them through the entry.
   - [ ] **CORE-931.5** [moderate]🧩 [unattended] | wiring-module — Move skill wiring (`wiringPlan`, `wireSkills`, dangling-link prune) and audit-fork reads (`auditForks`, `forkPassGaps`, fork drift) to `tools/update-adopters/wiring.mjs`.
   - [ ] **CORE-931.6** [moderate]🧩 [unattended] | check-module — Move `checkAdopter` and `trackedLedgers` to `tools/update-adopters/check.mjs`, gate order and inline shape unchanged (CORE-479's call stands).

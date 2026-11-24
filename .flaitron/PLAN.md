@@ -36,6 +36,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Low
 
 - [ ] **CORE-926** [light]🔧 [unattended] | layout-flaitron-dirs — Name `.flaitron/grok-checkout/`, `.flaitron/grok-done/` and `.flaitron/screenshots/` in `SPEC/layout.md` §"Working in the flaitron repo itself", with who writes each. Surfaced by audit-structure 2026-11-24 (Finding #6, Low)
+- [ ] **CORE-927** [light]🔧 [unattended] | epic-audit-drift-line-window — Open a decay window on the `.N` audit's fixed doc-drift Acceptance line: drop it and its "non-negotiable" lead-in from `claude/skills/ft-close-epic/SKILL.md`, keeping the Goal, Subtask walk and Phase 4 sweep; mark `SPEC/epic.md` §"Audit acceptance — fixed doc-drift line" as windowed; record the window-start SHA; file the restore-read row (bar: 5 `.N` audits archived after it). Surfaced by audit-context 2026-11-24 (Finding #1, Low).
 
 ## Future Opportunities
 

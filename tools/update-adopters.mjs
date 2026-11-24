@@ -124,7 +124,8 @@
 // while `git add` staged only the link); the Workflow replace is also skipped
 // when AGENTS.md carries more than one exact `## Workflow` heading or the
 // snippet or its paste block is missing. The ⬆ line lists what changed and
-// what was skipped.
+// what was skipped. SPEC/fixtures/workflow-block/cases.json pins the AGENTS.md
+// bytes and skips (workflowFollowThrough); /ft-update follows the same cases.
 //
 // Skill wiring (CORE-852.5, the /ft-update Step 4 rules): on each wiring
 // surface the adopter already has as a real directory (.claude/,
@@ -1088,7 +1089,7 @@ export function workflowPasteBlock(snippet) {
 // before the next H1/H2 heading or `<!-- <name>:start -->` marker, or to EOF —
 // replaced by `block`, one blank line kept before that next line (wave-bump's
 // awk output shape). Lines inside code fences are never section ends.
-export function replaceWorkflowSection(agents, block) {
+function replaceWorkflowSection(agents, block) {
   const lines = agents.split('\n');
   const ok = headingLines(lines);
   const start = workflowHeadings(lines)[0];
@@ -1097,6 +1098,19 @@ export function replaceWorkflowSection(agents, block) {
   const head = start > 0 ? `${before}\n` : '';
   if (next === -1) return `${head}${block}\n`;
   return `${head}${block}\n\n${lines.slice(next).join('\n')}`;
+}
+
+// What the follow-through does to AGENTS.md's text `agents` for the target's
+// paste `block` (null when the snippet has none): `{ text }` with the rewritten
+// file, `{ text: null }` when there is no unfenced `## Workflow` heading, or
+// `{ skip }` with the ⬆-line note. SPEC/fixtures/workflow-block/cases.json pins
+// it (CORE-921) — the byte contract /ft-update Step 3.5 follows too.
+export function workflowFollowThrough(agents, block) {
+  const headings = workflowHeadings(agents.split('\n')).length;
+  if (headings === 0) return { text: null };
+  if (headings > 1) return { skip: 'more than one ## Workflow heading' };
+  if (block === null) return { skip: 'snippet block not found' };
+  return { text: replaceWorkflowSection(agents, block) };
 }
 
 // One file of FLAITRON_REPO at `tag`, read once per sweep (same per-process
@@ -1419,17 +1433,11 @@ async function followThrough(repo, subPath, latest, ctx) {
     notes.push('workflow skipped (AGENTS.md is a symlink)');
   } else if (agentsKind === 'file') {
     const before = await readFile(join(repo, AGENTS_MD));
-    const text = before.toString('utf8');
-    const headings = workflowHeadings(text.split('\n')).length;
-    if (headings > 1) {
-      notes.push('workflow skipped (more than one ## Workflow heading)');
-    } else if (headings === 1) {
-      const block = await cachedWorkflowBlock(latest);
-      if (block === null) {
-        notes.push('workflow skipped (snippet block not found)');
-      } else if (await rewrite(AGENTS_MD, before, replaceWorkflowSection(text, block))) {
-        notes.push('workflow block');
-      }
+    const result = workflowFollowThrough(before.toString('utf8'), await cachedWorkflowBlock(latest));
+    if (result.skip) {
+      notes.push(`workflow skipped (${result.skip})`);
+    } else if (result.text !== null && (await rewrite(AGENTS_MD, before, result.text))) {
+      notes.push('workflow block');
     }
   }
   notes.push(...(await wireSkills(repo, subPath, latest, ctx)));

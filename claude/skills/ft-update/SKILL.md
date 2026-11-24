@@ -189,21 +189,18 @@ only the link.
   `Pinned to: vX.Y.Z` on each line to `Pinned to: <target>`. No such line →
   nothing to do.
 - **Workflow block.** Replace AGENTS.md's `## Workflow` section — the line
-  that is exactly `## Workflow` through the line before the next H1 or H2
-  heading or `<!-- <name>:start -->` marker line (`[a-z0-9-]+` names; the
-  marker is kept), or to EOF — with the paste block from `<FT>/claude/AGENTS-snippet.md`
+  that is exactly `## Workflow` (trailing whitespace allowed; `## Workflows
+  (CI)` never matches) through the line before the next H1 or H2 heading or
+  `<!-- <name>:start -->` marker line (kept), or to EOF; every line inside a
+  code fence is skipped when matching the heading, a section end or a
+  marker — with the paste block from `<FT>/claude/AGENTS-snippet.md`
   (now at `<target>`): the body of the first ```` ```markdown ```` fence after
-  `## Block to paste into AGENTS.md`, fence lines dropped. Bytes, as the
-  updater writes them: the lines before the heading, the block, then either
-  one blank line and the rest from that heading or marker on, or — section to
-  EOF — a single final newline. Headings and markers are matched line by line,
-  as the updater does, skipping every line inside a code fence (``` or ~~~, up to
-  3 spaces of indent; closed by a run of the same character at least as
-  long) — a fenced `#` line, marker, or `## Workflow` never counts. No AGENTS.md, or
-  no exact `## Workflow` heading (trailing whitespace allowed) → nothing to
-  do. Skip with a note when there is more than one, or the snippet has no
-  such block or it does not open with `## Workflow`. A `## Workflows (CI)`
-  section is never touched.
+  `## Block to paste into AGENTS.md`, fence lines dropped. No AGENTS.md or no
+  such heading → nothing to do; more than one, or no block → skip with a
+  note. **The bytes and skips are pinned by
+  `<FT>/SPEC/fixtures/workflow-block/cases.json`** (its `describes` states
+  the rule; the updater's suite runs every case). Read it before writing;
+  where this summary and a case differ, the case wins.
 
 Record each changed file for Step 5 staging and each skip for its recap.
 

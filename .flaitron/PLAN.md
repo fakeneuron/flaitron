@@ -11,7 +11,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-- [ ] **CORE-921** [heavy]🧠 | updater-followthrough-owner — `/ft-update` Steps 3–4 and `tools/update-adopters.mjs` both implement the bump follow-through (Workflow-block replace, wiring, fork drift), and `codex/skills/ft-update/SKILL.md` restates the Step 3.5 order; CORE-853 and CORE-916 each needed paired edits. Choose one owner — the skill delegating the writes to the updater's single-repo mode, or shared `AGENTS.md` before/after fixtures the updater's tests run — apply it, then run `/ft-refactor tools/update-adopters.mjs` to split the 1,655-line file with the safety gates in one module. Surfaced by audit-structure 2026-11-24 (Finding #1, High; Finding #7, Medium)
+(none)
 
 ## Medium
 
@@ -40,6 +40,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-921** [heavy]🧠 | updater-followthrough-owner — Completed 2026-11-24.
 - [x] **CORE-EPIC-918** [moderate]🧩 | closure-placeholder — Completed 2026-11-24.
   - [x] **CORE-918.2** [light]🔧 [unattended] | closure-none-clause — Completed 2026-11-24.
   - [x] **CORE-918.3** [moderate]🧩 [unattended] | plan-placeholder-check — Completed 2026-11-24.

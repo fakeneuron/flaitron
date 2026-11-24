@@ -1,0 +1,119 @@
+{
+  "describes": "What a bump's follow-through does to an adopter's AGENTS.md, given the target's `## Workflow` paste block (the body of the first ```markdown fence after `## Block to paste into AGENTS.md` in claude/AGENTS-snippet.md, fence lines dropped; `block: null` = the snippet has no such block, or it does not open with `## Workflow`). Text is `lines` joined with \"\\n\". Headings are matched line by line, skipping every line inside a fenced code block, fence lines included (SPEC/fixtures/fence/cases.json's rules), so a fenced `#` line, marker or `## Workflow` never counts. The section is the one unfenced line that is exactly `## Workflow` (trailing spaces, tabs or a CR allowed) through the line before the next unfenced H1 or H2 heading (`# ` / `## `) or `<!-- <name>:start -->` marker line (`[a-z0-9-]+` names, column 0, trailing whitespace allowed; the marker is kept), or to EOF. Output: the lines before the heading, the block, then one blank line and everything from that next line on — or, when the section ran to EOF, a single final newline. `expected: null` = nothing to do (no such heading; a `## Workflows (CI)` section is never touched). `skip` = leave the file alone and record that note: more than one such heading, or no block. Run by tools/update-adopters.test.mjs (workflowFollowThrough); the byte contract /ft-update Step 3.5 follows.",
+  "cases": [
+    {
+      "name": "swaps the section, one blank line kept before the next H2",
+      "agents": ["# Project", "", "Intro.", "", "## Workflow", "", "Old workflow text.", "", "## Local notes", "", "Keep me.", ""],
+      "block": ["## Workflow", "", "New."],
+      "expected": ["# Project", "", "Intro.", "", "## Workflow", "", "New.", "", "## Local notes", "", "Keep me.", ""]
+    },
+    {
+      "name": "last section is replaced through EOF with one final newline",
+      "agents": ["# P", "", "## Workflow", "", "Old.", ""],
+      "block": ["## Workflow", "", "New."],
+      "expected": ["# P", "", "## Workflow", "", "New.", ""]
+    },
+    {
+      "name": "heading on the first line",
+      "agents": ["## Workflow", "Old.", "## Next", ""],
+      "block": ["## Workflow", "New."],
+      "expected": ["## Workflow", "New.", "", "## Next", ""]
+    },
+    {
+      "name": "an H1 ends the section and the appendix survives",
+      "agents": ["## Workflow", "Old.", "# Appendix", "## Notes", ""],
+      "block": ["## Workflow", "New."],
+      "expected": ["## Workflow", "New.", "", "# Appendix", "## Notes", ""]
+    },
+    {
+      "name": "an H3 does not end the section",
+      "agents": ["## Workflow", "Old.", "### Sub", "x", "## Next", ""],
+      "block": ["## Workflow", "New."],
+      "expected": ["## Workflow", "New.", "", "## Next", ""]
+    },
+    {
+      "name": "heading with trailing whitespace still matches",
+      "agents": ["# P", "", "## Workflow  ", "Old.", ""],
+      "block": ["## Workflow", "New."],
+      "expected": ["# P", "", "## Workflow", "New.", ""]
+    },
+    {
+      "name": "a fenced # comment inside the section does not end it (CORE-853)",
+      "agents": ["# P", "", "## Workflow", "", "```sh", "# comment", "run", "```", "", "## Next", ""],
+      "block": ["## Workflow", "New."],
+      "expected": ["# P", "", "## Workflow", "New.", "", "## Next", ""]
+    },
+    {
+      "name": "tilde and longer fences; a shorter run does not close a longer one (CORE-853)",
+      "agents": ["## Workflow", "~~~", "# a", "~~~", "````md", "```", "## b", "````", "## Next", ""],
+      "block": ["## Workflow", "New."],
+      "expected": ["## Workflow", "New.", "", "## Next", ""]
+    },
+    {
+      "name": "a fenced ## Workflow earlier in the file is not the heading (CORE-853)",
+      "agents": ["# P", "", "```md", "## Workflow", "```", "", "## Workflow", "Old.", ""],
+      "block": ["## Workflow", "New."],
+      "expected": ["# P", "", "```md", "## Workflow", "```", "", "## Workflow", "New.", ""]
+    },
+    {
+      "name": "a <!-- name:start --> marker ends the section and is kept (CORE-916)",
+      "agents": ["# P", "", "## Workflow", "", "Old.", "", "<!-- grok-tasknotes:start -->", "## Grok Task Notes", "- x", "<!-- grok-tasknotes:end -->", ""],
+      "block": ["## Workflow", "New."],
+      "expected": ["# P", "", "## Workflow", "New.", "", "<!-- grok-tasknotes:start -->", "## Grok Task Notes", "- x", "<!-- grok-tasknotes:end -->", ""]
+    },
+    {
+      "name": "a marker with trailing whitespace and CR still stops (CORE-916)",
+      "agents": ["## Workflow", "Old.", "<!-- a:start -->  \r", "x", ""],
+      "block": ["## Workflow", "New."],
+      "expected": ["## Workflow", "New.", "", "<!-- a:start -->  \r", "x", ""]
+    },
+    {
+      "name": "a marker as the first body line stops (CORE-916)",
+      "agents": ["## Workflow", "<!-- a:start -->", "x", ""],
+      "block": ["## Workflow", "New."],
+      "expected": ["## Workflow", "New.", "", "<!-- a:start -->", "x", ""]
+    },
+    {
+      "name": "a fenced, :end or indented marker is not a stop (CORE-916)",
+      "agents": ["## Workflow", "```md", "<!-- a:start -->", "```", "<!-- b:end -->", "  <!-- c:start -->", "## Next", ""],
+      "block": ["## Workflow", "New."],
+      "expected": ["## Workflow", "New.", "", "## Next", ""]
+    },
+    {
+      "name": "no ## Workflow heading: nothing to do",
+      "agents": ["# P", "", "## Setup", "", "Text.", ""],
+      "block": ["## Workflow", "New."],
+      "expected": null
+    },
+    {
+      "name": "a project's own ## Workflows (CI) section is never touched",
+      "agents": ["# P", "", "## Workflows (CI)", "", "GitHub Actions.", ""],
+      "block": ["## Workflow", "New."],
+      "expected": null
+    },
+    {
+      "name": "only a fenced ## Workflow: nothing to do",
+      "agents": ["# P", "", "```md", "## Workflow", "```", ""],
+      "block": ["## Workflow", "New."],
+      "expected": null
+    },
+    {
+      "name": "more than one ## Workflow heading: skip",
+      "agents": ["## Workflow", "A.", "", "## Workflow", "B.", ""],
+      "block": ["## Workflow", "New."],
+      "skip": "more than one ## Workflow heading"
+    },
+    {
+      "name": "snippet block not found: skip",
+      "agents": ["# P", "", "## Workflow", "Old.", ""],
+      "block": null,
+      "skip": "snippet block not found"
+    },
+    {
+      "name": "no heading wins over a missing block: nothing to do",
+      "agents": ["# P", ""],
+      "block": null,
+      "expected": null
+    }
+  ]
+}

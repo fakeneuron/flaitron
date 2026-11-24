@@ -33,12 +33,12 @@ import {
   parseSemverTag,
   pinnedVersion,
   realOrResolve,
-  replaceWorkflowSection,
   rewritePinLines,
   snippetLinks,
   tagsInRange,
   verifyPinnedSha,
   wiringPlan,
+  workflowFollowThrough,
   workflowPasteBlock,
 } from './update-adopters.mjs';
 
@@ -1043,65 +1043,17 @@ describe('follow-through text helpers (CORE-852.4)', () => {
     assert.equal(workflowPasteBlock('## Block to paste into AGENTS.md\n```markdown\n## Workflow\n'), null);
   });
 
-  it('replaceWorkflowSection swaps the section, keeping one blank line before the next heading', () => {
-    assert.equal(
-      replaceWorkflowSection(AGENTS_FIXTURE, '## Workflow\n\nNew.'),
-      '# Project\n\nIntro.\n\n## Workflow\n\nNew.\n\n## Local notes\n\nKeep me.\n',
-    );
-    // Last section: replaced through EOF.
-    assert.equal(replaceWorkflowSection('# P\n\n## Workflow\n\nOld.\n', '## Workflow\n\nNew.'), '# P\n\n## Workflow\n\nNew.\n');
-    // First line of the file.
-    assert.equal(replaceWorkflowSection('## Workflow\nOld.\n## Next\n', '## Workflow\nNew.'), '## Workflow\nNew.\n\n## Next\n');
-    // An H1 ends the section too: the appendix survives.
-    assert.equal(
-      replaceWorkflowSection('## Workflow\nOld.\n# Appendix\n## Notes\n', '## Workflow\nNew.'),
-      '## Workflow\nNew.\n\n# Appendix\n## Notes\n',
-    );
-  });
-
-  it('replaceWorkflowSection ignores # lines inside code fences (CORE-853)', () => {
-    // A fenced `# comment` inside the section does not end it: the whole fence goes.
-    assert.equal(
-      replaceWorkflowSection('# P\n\n## Workflow\n\n```sh\n# comment\nrun\n```\n\n## Next\n', '## Workflow\nNew.'),
-      '# P\n\n## Workflow\nNew.\n\n## Next\n',
-    );
-    // Tilde and longer fences; a shorter run inside does not close a longer one.
-    assert.equal(
-      replaceWorkflowSection('## Workflow\n~~~\n# a\n~~~\n````md\n```\n## b\n````\n## Next\n', '## Workflow\nNew.'),
-      '## Workflow\nNew.\n\n## Next\n',
-    );
-    // A fenced `## Workflow` earlier in the file is not the section's heading.
-    assert.equal(
-      replaceWorkflowSection('# P\n\n```md\n## Workflow\n```\n\n## Workflow\nOld.\n', '## Workflow\nNew.'),
-      '# P\n\n```md\n## Workflow\n```\n\n## Workflow\nNew.\n',
-    );
-  });
-
-  it('replaceWorkflowSection stops at a <!-- name:start --> marker, keeping it (CORE-916)', () => {
-    assert.equal(
-      replaceWorkflowSection(
-        '# P\n\n## Workflow\n\nOld.\n\n<!-- grok-tasknotes:start -->\n## Grok Task Notes\n- x\n<!-- grok-tasknotes:end -->\n',
-        '## Workflow\nNew.',
-      ),
-      '# P\n\n## Workflow\nNew.\n\n<!-- grok-tasknotes:start -->\n## Grok Task Notes\n- x\n<!-- grok-tasknotes:end -->\n',
-    );
-    // Trailing whitespace or CR still stops; a marker as the first body line too.
-    assert.equal(
-      replaceWorkflowSection('## Workflow\nOld.\n<!-- a:start -->  \r\nx\n', '## Workflow\nNew.'),
-      '## Workflow\nNew.\n\n<!-- a:start -->  \r\nx\n',
-    );
-    assert.equal(
-      replaceWorkflowSection('## Workflow\n<!-- a:start -->\nx\n', '## Workflow\nNew.'),
-      '## Workflow\nNew.\n\n<!-- a:start -->\nx\n',
-    );
-    // A fenced marker, an :end marker, or an indented one is not a stop.
-    assert.equal(
-      replaceWorkflowSection(
-        '## Workflow\n```md\n<!-- a:start -->\n```\n<!-- b:end -->\n  <!-- c:start -->\n## Next\n',
-        '## Workflow\nNew.',
-      ),
-      '## Workflow\nNew.\n\n## Next\n',
-    );
+  // SPEC/fixtures/workflow-block/cases.json is the AGENTS.md byte contract the
+  // updater and /ft-update share (CORE-921); the CORE-852.4/853/916 cases live there.
+  it('workflowFollowThrough passes every SPEC/fixtures/workflow-block case', async () => {
+    const { cases } = JSON.parse(await readFile(new URL('../SPEC/fixtures/workflow-block/cases.json', import.meta.url), 'utf8'));
+    assert.ok(cases.length > 0);
+    const text = (lines) => (lines === null ? null : lines.join('\n'));
+    for (const c of cases) {
+      assert.ok(('skip' in c) !== ('expected' in c), `${c.name}: needs exactly one of skip / expected`);
+      const want = 'skip' in c ? { skip: c.skip } : { text: text(c.expected) };
+      assert.deepEqual(workflowFollowThrough(text(c.agents), text(c.block)), want, c.name);
+    }
   });
 
   it('a project\'s own ## Workflows… heading is not the flaitron section', async () => {

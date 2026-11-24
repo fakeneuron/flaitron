@@ -72,7 +72,7 @@ Scope at promotion: tools/update-adopters.mjs · tools/update-adopters/wiring.mj
 
 Size estimate: ~555 lines (rename-aware) — ~263 lines deleted from the entry (lines 263–276 and 686–934), ~275 added in the new untracked `wiring.mjs` (counted in full via `git diff --no-index`), ~20 import/re-export edits. Not a rename: the entry survives, so `-M` pairs nothing.
 
-Phase 1→2: Discovery verdict Proceed, but the `--unattended` size estimate exceeds the 400-line cap → park `out-of-scope` before any Phase 2 write (`unattended-mode.md` §"Scope guardrails" → "The Phase 1 size estimate"). On resume: run attended (the cap is unattended-only) — Phase 1 above is complete and the Subtasks are the plan; or split the move into two children (wiring, then audit forks) if it must stay unattended.
+Phase 1→2: Discovery verdict Proceed, but the `--unattended` size estimate exceeds the 400-line cap → park `out-of-scope` before any Phase 2 write (`claude/skills/ft-task/unattended-mode.md` §"Scope guardrails" → "The Phase 1 size estimate"). On resume: run attended (the cap is unattended-only) — Phase 1 above is complete and the Subtasks are the plan; or split the move into two children (wiring, then audit forks) if it must stay unattended.
 
 ## 🛠️ Phase 2: Execution
 

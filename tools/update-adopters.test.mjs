@@ -371,6 +371,53 @@ describe('Version regex parity (CORE-366)', () => {
   });
 });
 
+// CORE-931.2: the entry is the facade CORE-EPIC-931 moves code out from behind.
+// Its export set is what the CLI callers and this suite bind to, and
+// FLAITRON_REPO is derived from the defining module's own path, so a move one
+// directory deeper must not silently retarget every tag read.
+describe('entry facade (CORE-931.2)', () => {
+  it('exports exactly the pinned name set', async () => {
+    const entry = await import('./update-adopters.mjs');
+    assert.deepEqual(Object.keys(entry).sort(), [
+      'FLAITRON_REPO',
+      'SUBMODULE_PATH',
+      'acceptMigrationError',
+      'applyBump',
+      'cachedCanonicalTagSha',
+      'cachedMigrationBearingTags',
+      'checkAdopter',
+      'codexRoster',
+      'compareSemver',
+      'describePin',
+      'discoverAdopters',
+      'fenceOpeners',
+      'git',
+      'gitlinkDrift',
+      'isReleaseTag',
+      'latestReleaseTag',
+      'migrationAsk',
+      'migrationBearingTags',
+      'parseArgs',
+      'parseSemverTag',
+      'pinnedVersion',
+      'realOrResolve',
+      'rewritePinLines',
+      'snippetLinks',
+      'tagsInRange',
+      'verifyPinnedSha',
+      'wiringPlan',
+      'workflowFollowThrough',
+      'workflowPasteBlock',
+    ]);
+  });
+
+  it('resolves FLAITRON_REPO to the repo root holding this SPEC.md', async () => {
+    assert.equal(FLAITRON_REPO, fileURLToPath(new URL('..', import.meta.url)).replace(/[/\\]$/, ''));
+    const spec = await readFile(join(FLAITRON_REPO, 'SPEC.md'), 'utf8');
+    assert.match(spec, /^# flaitron — Workflow Specification$/m);
+  });
+});
+
 describe('migrationBearingTags (real tags)', () => {
   it('classifies v5.0.0 as migration-bearing (BREAKING)', async () => {
     const bearing = await migrationBearingTags(['v5.0.0']);

@@ -376,7 +376,7 @@ out=$(awk -v cutoff="$CUTOFF" '
   function finish() {
     flush()
     if (note != "" && archived != "" && archived >= cutoff) printf "%s", pending
-    pending = ""; archived = ""; fence = 0
+    pending = ""; archived = ""; fence = ""
   }
   function flush(    n, i, a, id, filed) {
     if (!open) return
@@ -413,8 +413,20 @@ out=$(awk -v cutoff="$CUTOFF" '
       parent = substr(self, 1, RLENGTH - 1); sub(/-/, "-EPIC-", parent)
     }
   }
-  /^[ \t]*(```|~~~)/ { fence = !fence; next }
-  fence { next }
+  # `fence` holds the open run. The rules of viz/src/fence.ts, pinned by
+  # SPEC/fixtures/fence/cases.json (CORE-922): up to 3 spaces of indent, no
+  # backtick in a backtick info string, closed by a run of the same character
+  # at least as long with only whitespace after it.
+  {
+    run = ""
+    if (match($0, /^ ? ? ?(```+|~~~+)/)) {
+      run = substr($0, RSTART, RLENGTH); sub(/^ +/, "", run)
+      info = substr($0, RSTART + RLENGTH)
+    }
+  }
+  fence == "" && run != "" && !(run ~ /^`/ && index(info, "`")) { fence = run; next }
+  fence != "" && run != "" && substr(run, 1, 1) == substr(fence, 1, 1) && length(run) >= length(fence) && info ~ /^[ \t\r]*$/ { fence = ""; next }
+  fence != "" { next }
   {
     if (match($0, /^\*\*Archived:\*\*[ \t]*[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/))
       archived = substr($0, RLENGTH - 9, 10)

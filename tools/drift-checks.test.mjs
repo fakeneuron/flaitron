@@ -466,6 +466,47 @@ describe('pair_p across notes', () => {
   });
 });
 
+// handoff_rows skips fenced lines by the rules SPEC/fixtures/fence/cases.json
+// pins (CORE-922). The awk reports only unfiled blocks, so each case's plain
+// word lines become `## Hand-off` probe headings in one archived note: the
+// probes it reports must be exactly the unfenced ones.
+describe('handoff_rows fence cases', () => {
+  let fixture;
+  const A = '.flaitron/tasknote/archive/core';
+  const { cases } = JSON.parse(readFileSync(join(REPO, 'SPEC/fixtures/fence/cases.json'), 'utf8'));
+  const want = [];
+  before(() => {
+    fixture = mkdtempSync(join(tmpdir(), 'handoff-fence-'));
+    mkdirSync(join(fixture, 'tools'));
+    writeFileSync(join(fixture, SCRIPT), readFileSync(join(REPO, SCRIPT), 'utf8'));
+    mkdirSync(join(fixture, A), { recursive: true });
+    writeFileSync(join(fixture, '.flaitron/PLAN.md'), '- [ ] **ZZ-0** | zz — x.\n');
+    writeFileSync(join(fixture, '.flaitron/PLAN-ARCHIVE.md'), '');
+    cases.forEach((c, k) => {
+      const note = `${A}/ZZ-${k + 1}.md`;
+      const body = c.lines.map((l, i) => {
+        if (!/^[a-z]+$/.test(l)) return l;
+        if (!c.mask[i]) want.push(`UNFILED HANDOFF  ${note}:${i + 2} :: ## Hand-off ${l}`);
+        return `## Hand-off ${l}`;
+      });
+      writeFileSync(join(fixture, note), ['**Archived:** 2099-01-01', ...body, ''].join('\n'));
+    });
+  });
+  after(() => { if (fixture) rmSync(fixture, { recursive: true, force: true }); });
+
+  it('reports exactly the unfenced probes', () => {
+    assert.ok(cases.length > 0 && want.length > 0);
+    assert.throws(
+      () => execFileSync('bash', [SCRIPT, 'handoff_rows'], { cwd: fixture, encoding: 'utf8', stdio: 'pipe' }),
+      (e) => {
+        assert.equal(e.status, 1);
+        assert.deepEqual(e.stdout.split('\n').filter((l) => l.startsWith('UNFILED')).sort(), [...want].sort());
+        return true;
+      },
+    );
+  });
+});
+
 // context_budget's NEAR CAP line (CORE-869.3): 95% up to the cap, in all three
 // row shapes (exact, glob, `/**` total), never failing the check. The fixture
 // holds only the Budgets table and the surfaces it names.

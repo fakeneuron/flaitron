@@ -579,20 +579,20 @@ export async function acceptMigrationError(tag, target) {
 }
 
 // The links a non-Codex snippet wires: every `ln -s <src> <dst>` line inside a
-// ```sh fence (wave-bump's parse), kept only when <dst> is one slug directly
-// under `skillsDir` and <src> reaches into the default submodule path — the
-// shape every shipped block has. `src` is returned with that path swapped for
-// `subPath`, so a vendored submodule gets links that resolve.
+// fenced code block whose info string starts `sh` (wave-bump's parse), kept
+// only when <dst> is one slug directly under `skillsDir` and <src> reaches
+// into the default submodule path — the shape every shipped block has. `src`
+// is returned with that path swapped for `subPath`, so a vendored submodule
+// gets links that resolve.
 export function snippetLinks(snippet, skillsDir, subPath = SUBMODULE_PATH) {
   const links = [];
-  let fenced = false;
   const prefix = `../../${SUBMODULE_PATH}/`;
-  for (const line of snippet.split('\n')) {
-    if (/^```/.test(line)) {
-      fenced = !fenced && /^```sh\b/.test(line);
-      continue;
-    }
-    const m = fenced && /^ln -s +(\S+) +(\S+)\s*$/.exec(line);
+  const lines = snippet.split('\n');
+  const openers = fenceOpeners(lines);
+  for (const [i, line] of lines.entries()) {
+    const o = openers[i];
+    const info = o === -1 ? '' : lines[o].slice(FENCE.exec(lines[o])[0].length).trim();
+    const m = /^sh\b/.test(info) && /^ln -s +(\S+) +(\S+)\s*$/.exec(line);
     if (!m) continue;
     const [, src, dst] = m;
     if (!src.startsWith(prefix) || !new RegExp(`^${skillsDir.replace(/\./g, '\\.')}/[a-z0-9-]+$`).test(dst)) continue;
@@ -1007,25 +1007,33 @@ const SECTION_END = /^#{1,2} |^<!-- [a-z0-9-]+:start -->[ \t]*\r?$/;
 // A CommonMark fence line: up to 3 spaces, then 3+ backticks or tildes.
 const FENCE = /^ {0,3}(`{3,}|~{3,})/;
 
+// Per line, the index of the fence line that opened the fenced code block it
+// sits in (fence lines included), or -1 outside one. viz/src/fence.ts's rules,
+// pinned by SPEC/fixtures/fence/cases.json (CORE-922): a backtick opener's info
+// string may not contain a backtick; a fence closes on a run of the opening
+// character at least as long, with nothing but whitespace after it (a `\r`
+// included); an unclosed fence runs to EOF.
+export function fenceOpeners(lines) {
+  let open = -1;
+  return lines.map((line, i) => {
+    const m = FENCE.exec(line);
+    const info = m ? line.slice(m[0].length) : '';
+    if (open === -1) {
+      if (m && !(m[1][0] === '`' && info.includes('`'))) open = i;
+      return open;
+    }
+    const at = open;
+    const run = FENCE.exec(lines[open])[1];
+    if (m && m[1][0] === run[0] && m[1].length >= run.length && !info.trim()) open = -1;
+    return at;
+  });
+}
+
 // Per line, whether it is a heading candidate: false for every line inside a
 // fenced code block, fence lines included, so a fenced `# comment` or
-// `## Workflow` is never read as a heading (CORE-853). A fence closes on a run
-// of the opening character at least as long, with nothing but whitespace after
-// it. An unclosed fence runs to EOF.
+// `## Workflow` is never read as a heading (CORE-853).
 function headingLines(lines) {
-  let open = null;
-  return lines.map((line) => {
-    const m = FENCE.exec(line);
-    if (open === null) {
-      if (!m) return true;
-      open = m[1];
-      return false;
-    }
-    if (m && m[1][0] === open[0] && m[1].length >= open.length && !line.slice(m[0].length).trim()) {
-      open = null;
-    }
-    return false;
-  });
+  return fenceOpeners(lines).map((o) => o === -1);
 }
 
 // The indices of AGENTS.md's unfenced `## Workflow` headings.

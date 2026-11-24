@@ -34,6 +34,7 @@ flaitron does not submodule itself. In this repo:
 - The repo-root `SPEC.md` IS the canonical reference.
 - `SPEC/` — lazy SPEC modules loaded on demand by skills.
 - `SPEC/fixtures/plan/` — cross-parser conformance fixtures for the `PLAN.md` task-line grammar (sample `.md` + expected `.json` pairs; consumer contract in [`SPEC/fixtures/plan/README.md`](fixtures/plan/README.md)). Cited from [`SPEC/plan-parser.md`](plan-parser.md); run by `viz/src/parser.test.ts`.
+- `SPEC/fixtures/fence/cases.json` — the fenced-code-block cases every line scanner shares (rules in its `describes` key; reference `viz/src/fence.ts`). Run by `viz/src/fence.test.ts`, `tools/update-adopters.test.mjs`, and `tools/drift-checks.test.mjs`.
 - `SPEC/procedures/` — agent-neutral procedure SOPs: the source-of-truth projection of execution procedures (e.g. the `/ft-task` 4-phase workflow) for non-Claude wiring and contract-only agents. Format + loading convention: [`SPEC/procedures/README.md`](procedures/README.md).
 - The flaitron `.flaitron/PLAN.md` tracks flaitron's own development.
 - `.flaitron/audit-overlay/SKILL.md` — flaitron-self's own `/audit` thin overlay

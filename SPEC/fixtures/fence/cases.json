@@ -1,0 +1,24 @@
+{
+  "describes": "Which lines sit inside a fenced code block, fence lines included — the CommonMark rules viz/src/fence.ts implements: up to 3 spaces of indent; a run of 3+ backticks or tildes; a backtick opener's info string may not contain a backtick; a fence closes only on a run of the same character at least as long, with nothing but whitespace after it; an unclosed fence runs to end of input. `mask[i]` is true when `lines[i]` is fenced. Every plain content line is a lone lowercase word, so a consumer that only reports per-line results (the handoff_rows awk) may replace it with a probe without changing the fence structure. Run by viz/src/fence.test.ts, tools/update-adopters.test.mjs and tools/drift-checks.test.mjs.",
+  "cases": [
+    { "name": "backtick fence", "lines": ["a", "```", "b", "```", "c"], "mask": [false, true, true, true, false] },
+    { "name": "tilde fence", "lines": ["~~~", "a", "~~~", "b"], "mask": [true, true, true, false] },
+    { "name": "info string", "lines": ["```sh", "a", "```", "b"], "mask": [true, true, true, false] },
+    { "name": "three-space indent opens and closes", "lines": ["   ```", "a", "   ```", "b"], "mask": [true, true, true, false] },
+    { "name": "four-space indent is not a fence", "lines": ["    ```", "a", "    ```", "b"], "mask": [false, false, false, false] },
+    { "name": "tab indent is not a fence", "lines": ["\t```", "a", "\t```", "b"], "mask": [false, false, false, false] },
+    { "name": "four-space indent does not close", "lines": ["```", "a", "    ```", "b", "```", "c"], "mask": [true, true, true, true, true, false] },
+    { "name": "tab indent does not close", "lines": ["```", "a", "\t```", "b", "```", "c"], "mask": [true, true, true, true, true, false] },
+    { "name": "two backticks are not a fence", "lines": ["``", "a", "``", "b"], "mask": [false, false, false, false] },
+    { "name": "other character does not close", "lines": ["```", "a", "~~~", "b", "```", "c"], "mask": [true, true, true, true, true, false] },
+    { "name": "shorter run does not close", "lines": ["````", "a", "```", "b", "````", "c"], "mask": [true, true, true, true, true, false] },
+    { "name": "longer run closes", "lines": ["```", "a", "`````", "b"], "mask": [true, true, true, false] },
+    { "name": "closer with an info string does not close", "lines": ["```", "a", "```sh", "b", "```", "c"], "mask": [true, true, true, true, true, false] },
+    { "name": "closer with trailing whitespace closes", "lines": ["```", "a", "```  ", "b"], "mask": [true, true, true, false] },
+    { "name": "backtick in a backtick info string does not open", "lines": ["``` x`y", "a"], "mask": [false, false] },
+    { "name": "backtick in a tilde info string opens", "lines": ["~~~ x`y", "a", "~~~", "b"], "mask": [true, true, true, false] },
+    { "name": "unclosed fence runs to end of input", "lines": ["a", "```", "b", "c"], "mask": [false, true, true, true] },
+    { "name": "adjacent fences", "lines": ["```", "a", "```", "```", "b", "```", "c"], "mask": [true, true, true, true, true, true, false] },
+    { "name": "inner fence inside a longer one", "lines": ["````markdown", "```sh", "a", "```", "````", "b"], "mask": [true, true, true, true, true, false] }
+  ]
+}

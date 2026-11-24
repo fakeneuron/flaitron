@@ -12,6 +12,7 @@ import { promisify } from 'node:util';
 
 import {
   FLAITRON_REPO,
+  fenceOpeners,
   SUBMODULE_PATH,
   acceptMigrationError,
   applyBump,
@@ -1433,6 +1434,14 @@ describe('skill wiring and audit forks (CORE-852.5)', { concurrency: GROUP_CONCU
     assert.ok(olderPassTag, 'need a tag whose passes/ is a strict subset of the latest one');
   });
 
+  // SPEC/fixtures/fence/cases.json: the scanner behind headingLines and
+  // snippetLinks marks the same lines fenced as viz/src/fence.ts (CORE-922).
+  it('fenceOpeners passes every SPEC/fixtures/fence case', async () => {
+    const { cases } = JSON.parse(await readFile(new URL('../SPEC/fixtures/fence/cases.json', import.meta.url), 'utf8'));
+    assert.ok(cases.length > 0);
+    for (const c of cases) assert.deepEqual(fenceOpeners(c.lines).map((o) => o !== -1), c.mask, c.name);
+  });
+
   it('snippetLinks takes fenced ln -s pairs under the surface, swapping the submodule path', () => {
     const snippet = [
       'ln -s ../../.flaitron/core/claude/skills/ft-prose .claude/skills/ft-prose',
@@ -1449,6 +1458,21 @@ describe('skill wiring and audit forks (CORE-852.5)', { concurrency: GROUP_CONCU
     ].join('\n');
     assert.deepEqual(snippetLinks(snippet, '.claude/skills', 'vendor/flaitron'), [
       { dst: '.claude/skills/ft-task', target: '../../vendor/flaitron/claude/skills/ft-task' },
+    ]);
+    // CommonMark fences (CORE-922): a ```sh shown inside a longer fence is
+    // content, and a ~~~sh fence counts.
+    const nested = [
+      '````markdown',
+      '```sh',
+      'ln -s ../../.flaitron/core/claude/skills/ft-shown .claude/skills/ft-shown',
+      '```',
+      '````',
+      '~~~ sh',
+      'ln -s ../../.flaitron/core/claude/skills/ft-tilde .claude/skills/ft-tilde',
+      '~~~',
+    ].join('\n');
+    assert.deepEqual(snippetLinks(nested, '.claude/skills'), [
+      { dst: '.claude/skills/ft-tilde', target: '../../.flaitron/core/claude/skills/ft-tilde' },
     ]);
     assert.deepEqual(
       codexRoster('ln -s ../../.flaitron/core/codex/skills/ft-task .agents/skills/ft-task\nln -s x .agents/skills/custom\n'),

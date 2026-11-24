@@ -23,6 +23,7 @@
     "src/tasknote.ts",
     "src/tasknote.test.ts",
     "src/fence.ts",
+    "src/fence.test.ts",
     "src/sseChange.ts",
     "src/sseChange.test.ts",
     "src/storage.ts",

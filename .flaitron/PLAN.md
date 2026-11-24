@@ -25,7 +25,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [ ] **CORE-920.3** [heavy]🧠 | headroom-runner-bodies — Same for `SPEC/procedures/ft-task.md` (95%) and `claude/AGENTS-snippet.md` (97%), whose paste-block reaches every adopter's `AGENTS.md` on its next bump.
   - [ ] **CORE-920.4** [heavy]🧠 | headroom-release-skill — Same for `claude/skills/ft-release/SKILL.md` (95%) and the `claude/skills/ft-release/**` directory cap (95%).
   - [ ] **CORE-920.N** [heavy]🧠 | near-cap-trims-2 audit
-- [ ] **CORE-925** [light]🔧 | just-wire — Add an idempotent `wire` recipe to `justfile` (missing `.claude/skills`, overlay and `.agents/skills` links only; prints dangling links, removes none) and point `CONTRIBUTING.md` §"Developing flaitron skills" at it. Surfaced by audit-structure 2026-11-24 (Finding #8, Medium)
 
 ## Low
 
@@ -40,6 +39,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-925** [light]🔧 | just-wire — Completed 2026-11-24.
 - [x] **CORE-929** [light]🔧 | roster-pin-check-docs — Completed 2026-11-24.
 - [x] **CORE-928** [light]🔧 | conventions-check-roster — Added `plan_placeholder` to the "no source rule nor catalogue entry" list in `docs/CONVENTIONS.md` and made it seven; no tasknote. Completed 2026-11-24.
 - [x] **CORE-936** [light] | roster-covers-modules — Completed 2026-11-24.

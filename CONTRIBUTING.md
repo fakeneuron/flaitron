@@ -36,6 +36,8 @@ Maintainer and contributor wiring for this checkout. Adopting projects wire thro
 
 The canonical skill definitions live in `claude/skills/` at the root of this checkout. The in-repo `.claude/` directory is gitignored (see root `.gitignore`) and must never contain committed per-machine wiring.
 
+Run `just wire` from the repo root to do the Claude and Codex wiring below in one idempotent step. It links only what is missing, leaves existing links alone, and prints dangling links without removing any. The manual commands that follow are the equivalent for a fresh checkout on a machine without `just`; the one difference is that the manual `ln -sfn` forces the `audit` link, where `just wire` keeps an existing one.
+
 For live editing with immediate effect, wire this checkout's own `.claude/`. The repo-scoped install is the canonical one ([`docs/PLATFORMS.md`](docs/PLATFORMS.md) §"One canonical install path per project"), and because its symlinks point into this tree, an edit to `claude/skills/` is live in the next session:
 
 ```sh

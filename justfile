@@ -63,6 +63,42 @@ coverage BASE="origin/main":
     sed -i.bak 's|^SF:|SF:viz/|' viz/coverage/lcov.info && rm -f viz/coverage/lcov.info.bak
     uvx "$DC" viz/coverage/lcov.info --compare-branch={{quote(BASE)}} --fail-under=$MIN --show-uncovered
 
+# wire this checkout's .claude/skills and .agents/skills (idempotent; CORE-925)
+wire:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    shopt -s nullglob
+    # Links only what is missing: a path that already exists as a file or a
+    # symlink (a dangling one included) is left alone, so a custom link or a
+    # retargeted one survives. Dangling links are printed at the end, never
+    # removed: CONTRIBUTING.md §"Developing flaitron skills" says what is safe
+    # to unlink. `.claude/` and `.agents/` are gitignored; nothing here is
+    # tracked.
+    link() { # link <target> <path>
+        if [ -e "$2" ] || [ -L "$2" ]; then return; fi
+        ln -s "$1" "$2"
+        echo "linked $2 -> $1"
+    }
+    mkdir -p .claude/skills .agents/skills
+    for d in claude/skills/*/; do
+        s=$(basename "$d")
+        link "../../claude/skills/$s" ".claude/skills/$s"
+    done
+    link "../../.flaitron/audit-overlay/" ".claude/skills/audit"
+    for d in codex/skills/*/; do
+        s=$(basename "$d")
+        link "../../codex/skills/$s" ".agents/skills/$s"
+    done
+    roots=()
+    for r in .claude/commands .claude/skills .agents/skills; do
+        if [ -d "$r" ]; then roots+=("$r"); fi
+    done
+    dangling=$(find "${roots[@]}" -maxdepth 1 -type l ! -exec test -e {} \; -print)
+    if [ -n "$dangling" ]; then
+        echo "dangling links (not removed; see CONTRIBUTING.md before unlinking):"
+        echo "$dangling"
+    fi
+
 # run AGENTS.md §"Validation" plus drift checks
 check: test typecheck lint build
     node --test tools/update-adopters.test.mjs

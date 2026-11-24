@@ -1,5 +1,5 @@
 {
-  "describes": "What a bump's follow-through does to an adopter's AGENTS.md, given the target's `## Workflow` paste block (the body of the first ```markdown fence after `## Block to paste into AGENTS.md` in claude/AGENTS-snippet.md, fence lines dropped; `block: null` = the snippet has no such block, or it does not open with `## Workflow`). Text is `lines` joined with \"\\n\". Headings are matched line by line, skipping every line inside a fenced code block, fence lines included (SPEC/fixtures/fence/cases.json's rules), so a fenced `#` line, marker or `## Workflow` never counts. The section is the one unfenced line that is exactly `## Workflow` (trailing spaces, tabs or a CR allowed) through the line before the next unfenced H1 or H2 heading (`# ` / `## `) or `<!-- <name>:start -->` marker line (`[a-z0-9-]+` names, column 0, trailing whitespace allowed; the marker is kept), or to EOF. Output: the lines before the heading, the block, then one blank line and everything from that next line on — or, when the section ran to EOF, a single final newline. `expected: null` = nothing to do (no such heading; a `## Workflows (CI)` section is never touched). `skip` = leave the file alone and record that note: more than one such heading, or no block. Line endings: when the `## Workflow` heading line ends in CR the file is CRLF, and the block (every line break in it) and the blank line after it are written CRLF; an LF heading means LF, whatever the other lines hold. `snippetCases` pin how the paste block is read: `snippet` lines (joined with \"\\n\") to the block lines, or `null`. The paste fence is the first line after `## Block to paste into AGENTS.md` that opens a fence (SPEC/fixtures/fence/cases.json's rules) and starts with 3+ backticks and `markdown`; it closes where that fence does (the first line of the opening character at least as long, nothing after it), so an inner tilde fence is body text, a longer outer backtick fence holds shorter ones, and a same-length backtick fence line closes it early; no closer (EOF) = `null`. Run by tools/update-adopters.test.mjs (workflowFollowThrough, workflowPasteBlock); the byte contract /ft-update Step 3.5 follows.",
+  "describes": "What a bump's follow-through does to an adopter's AGENTS.md, given the target's `## Workflow` paste block (the body of the first ```markdown fence after `## Block to paste into AGENTS.md` in claude/AGENTS-snippet.md, fence lines dropped; `block: null` = the snippet has no such block, or it does not open with `## Workflow`). Text is `lines` joined with \"\\n\". Headings are matched line by line, skipping every line inside a fenced code block, fence lines included (SPEC/fixtures/fence/cases.json's rules), so a fenced `#` line, marker or `## Workflow` never counts. The section is the one unfenced line that is exactly `## Workflow` (trailing spaces, tabs or a CR allowed) through the line before the next unfenced H1 or H2 heading (`# ` / `## `) or `<!-- <name>:start -->` marker line (`[a-z0-9-]+` names, column 0, trailing whitespace allowed; the marker is kept), or to EOF. Output: the lines before the heading, the block, then one blank line and everything from that next line on — or, when the section ran to EOF, a single final newline. `expected: null` = nothing to do (no such heading; a `## Workflows (CI)` section is never touched). `skip` = leave the file alone and record that note: more than one such heading, or no block. Line endings: when the `## Workflow` heading line ends in CR the file is CRLF, and the block (every line break in it) and the blank line after it are written CRLF; an LF heading means LF, whatever the other lines hold. `snippetCases` pin how the paste block is read: `snippet` lines (joined with \"\\n\") to the block lines, or `null`. The heading is the first unfenced `## Block to paste into AGENTS.md` line (one inside a fenced block is skipped). The paste fence is the first line after it that opens a fence (SPEC/fixtures/fence/cases.json's rules) and starts at column 0 with 3+ backticks (not tildes) and `markdown` as the first word of its info string (whitespace or end of line follows, so ```markdown-example is not it); it closes where that fence does (the first line of the opening character at least as long, nothing after it), so an inner tilde fence is body text, a longer outer backtick fence holds shorter ones, and a same-length backtick fence line closes it early; no closer (EOF) = `null`. Run by tools/update-adopters.test.mjs (workflowFollowThrough, workflowPasteBlock); the byte contract /ft-update Step 3.5 follows.",
   "cases": [
     {
       "name": "swaps the section, one blank line kept before the next H2",
@@ -175,6 +175,36 @@
       "name": "a ```markdown line inside an earlier fence is not the paste fence (CORE-930)",
       "snippet": ["## Block to paste into AGENTS.md", "```text", "```markdown", "## Workflow", "```", "", "## Other", ""],
       "expected": null
+    },
+    {
+      "name": "a fence whose info string only starts with markdown is not the paste fence (CORE-937)",
+      "snippet": ["## Block to paste into AGENTS.md", "```markdown-example", "## Workflow", "Body.", "```", ""],
+      "expected": null
+    },
+    {
+      "name": "the paste fence is the first fence whose first info word is exactly markdown (CORE-937)",
+      "snippet": ["## Block to paste into AGENTS.md", "```markdownish", "x", "```", "```markdown-example", "y", "```", "```markdown", "## Workflow", "Body.", "```", ""],
+      "expected": ["## Workflow", "Body."]
+    },
+    {
+      "name": "a markdown opener may carry more info-string words or a CR (CORE-937)",
+      "snippet": ["## Block to paste into AGENTS.md\r", "```markdown title\r", "## Workflow\r", "Body.\r", "```\r", ""],
+      "expected": ["## Workflow\r", "Body.\r"]
+    },
+    {
+      "name": "a tab after markdown ends its first word (CORE-937)",
+      "snippet": ["## Block to paste into AGENTS.md", "```markdown\ttitle", "## Workflow", "Body.", "```", ""],
+      "expected": ["## Workflow", "Body."]
+    },
+    {
+      "name": "a ## Block to paste heading inside a fence is not the heading (CORE-937)",
+      "snippet": ["```text", "## Block to paste into AGENTS.md", "```", "```markdown", "## Workflow", "Body.", "```", ""],
+      "expected": null
+    },
+    {
+      "name": "a fenced ## Block to paste heading is skipped for the first unfenced one (CORE-937)",
+      "snippet": ["```text", "## Block to paste into AGENTS.md", "```", "```markdown", "## Workflow", "Old.", "```", "", "## Block to paste into AGENTS.md", "```markdown", "## Workflow", "Body.", "```", ""],
+      "expected": ["## Workflow", "Body."]
     },
     {
       "name": "the block must open with ## Workflow",

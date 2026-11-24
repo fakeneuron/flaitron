@@ -61,16 +61,18 @@ export function rewritePinLines(text, tag) {
 // first ```markdown fence after `## Block to paste into AGENTS.md`), without
 // the fence lines; null when the snippet has no such block, the fence never
 // closes, or it does not open with a `## Workflow` heading. The fence is read
-// by fenceOpeners' rules: only a line that opens a fence can be the paste
-// fence, and it closes where the fence does — an inner fence is body text.
+// by fenceOpeners' rules: only an unfenced heading line counts, only a line
+// that opens a fence can be the paste fence (`markdown` must be the first word
+// of its info string, so ```markdown-example is not one), and it closes where
+// the fence does — an inner fence is body text.
 export function workflowPasteBlock(snippet) {
   // The trailing '' sits outside any fence, so an unclosed paste fence shows
   // as a run of lines that never ends rather than as one that ends at EOF.
   const lines = [...snippet.split('\n'), ''];
   const openers = fenceOpeners(lines);
-  const heading = lines.findIndex((l) => /^## Block to paste into AGENTS\.md/.test(l));
+  const heading = lines.findIndex((l, i) => openers[i] === -1 && /^## Block to paste into AGENTS\.md/.test(l));
   if (heading === -1) return null;
-  const open = lines.findIndex((l, i) => i > heading && openers[i] === i && /^`{3,}markdown/.test(l));
+  const open = lines.findIndex((l, i) => i > heading && openers[i] === i && /^`{3,}markdown(?=\s|$)/.test(l));
   if (open === -1) return null;
   const end = openers.findIndex((o, i) => i > open && o !== open);
   if (end === -1) return null;

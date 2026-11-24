@@ -18,9 +18,9 @@
 # step-7.1-mirror-pairs.md that names it and says what a finding means.
 # Design notes sit as `#` comments inside the body, next to the line they
 # explain. skill_pin_guard_parity (CORE-729), final_newline (CORE-621),
-# sidequest_orphan (CORE-742.2), handoff_rows (CORE-866), installer_anchors
-# (CORE-868.2) and supply_chain (CORE-904) have neither a source rule nor a
-# catalogue entry.
+# sidequest_orphan (CORE-742.2), plan_placeholder (CORE-918.3), handoff_rows
+# (CORE-866), installer_anchors (CORE-868.2) and supply_chain (CORE-904) have
+# neither a source rule nor a catalogue entry.
 #
 # Shape rules — the dispatcher below reads them:
 # - One check per top-level function, `name() {` and its closing `}` each at
@@ -42,8 +42,8 @@
 #   never ((n++)), which returns 1 from zero and ends a `bash -e` check.
 #   skill_pin_guard_parity and pair_h need no counter: an empty read already
 #   fails their own guards. shipped_skill_parity, sidequest_orphan and
-#   handoff_rows floor on their read set instead of a counter; pair_p counts
-#   inside its awk.
+#   handoff_rows floor on their read set instead of a counter; pair_p and
+#   plan_placeholder count inside their awk.
 # - bash 3.2 compatible: the §7.1 walk runs on the operator's machine.
 # - Each check needs one seeded-drift case in tools/drift-checks.test.mjs
 #   (CORE-739.3); its coverage test fails on a check without one.
@@ -306,6 +306,40 @@ for f in .flaitron/sidequest/*.md; do
   done
 done
 [ -z "$bad" ] || exit 1
+}
+
+# Empty-section placeholder (SPEC/plan-filing.md §"Empty-section placeholder")
+plan_placeholder() {
+# CORE-918.3: closures emptied a section and left it blank (CORE-916,
+# CORE-917), so each of the five priority sections in the live plan must hold
+# a task row (the §"Filing commits" pattern, `[ x]` only) or a `(none)` line,
+# never both: filing into a section replaces its `(none)`. A body runs to the
+# next `## ` heading. A missing heading is a finding of its own, since a
+# renamed one would otherwise drop its section unread.
+# PLAN-ARCHIVE.md is not read: its month headings are not priority sections.
+# Fenced and HTML-comment lines are read as plan text; the plan holds none.
+# `[ \t]`, not a POSIX class, and no {n} interval: older mawk.
+[ -f .flaitron/PLAN.md ] || { echo "MISSING FILE  .flaitron/PLAN.md"; exit 1; }
+awk '
+  function close_section() {
+    if (s != "" && !row && !none) { print "EMPTY SECTION  .flaitron/PLAN.md :: ## " s; bad = 1 }
+    if (s != "" && row && none) { print "STALE PLACEHOLDER  .flaitron/PLAN.md :: ## " s; bad = 1 }
+    s = ""
+  }
+  /^## / {
+    close_section()
+    if ($0 ~ /^## (High|Medium|Low|Future Opportunities|Completed)[ \t]*$/) { s = substr($0, 4); sub(/[ \t]+$/, "", s); seen[s] = 1; row = 0; none = 0; n++ }
+    next
+  }
+  s != "" && /^[ \t]*- \[[ x]\] \*\*[A-Z]+-(EPIC-)?[0-9]+(\.[0-9N]+)?\*\*/ { row = 1 }
+  s != "" && /^[ \t]*\(none\)[ \t]*$/ { none = 1 }
+  END {
+    close_section()
+    if (!n) { print "VACUOUS plan_placeholder  no priority section read"; exit 1 }
+    k = split("High|Medium|Low|Future Opportunities|Completed", want, "|")
+    for (i = 1; i <= k; i++) if (!(want[i] in seen)) { print "MISSING SECTION  .flaitron/PLAN.md :: ## " want[i]; bad = 1 }
+    exit bad
+  }' .flaitron/PLAN.md
 }
 
 # Hand-off rows (SPEC.md §"Deferred hand-off filing")

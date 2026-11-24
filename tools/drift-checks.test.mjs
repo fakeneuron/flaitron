@@ -88,6 +88,27 @@ const CASES = {
       'm',
     ),
   },
+  plan_placeholder: {
+    // Silent: `## Medium` reduced to a space-padded `(none)`, and an empty
+    // non-priority section. Reported: an emptied `## Low`, `## Future
+    // Opportunities` holding prose but no task row, a `(none)` left above
+    // `## Completed`'s rows, and `## High` renamed out of the set.
+    seed: () => edit('.flaitron/PLAN.md', (s) => {
+      const body = (t, name, text) => t.replace(new RegExp(`(^## ${name}\\n)[\\s\\S]*?(?=^## )`, 'm'), `$1${text}`);
+      let t = body(s, 'Medium', '\n  (none)  \n\n');
+      t = body(t, 'Low', '\n\n');
+      t = body(t, 'Future Opportunities', '\nzz-drift prose, no row.\n\n## Zz Notes\n\n');
+      return t.replace(/^## Completed\n/m, '$&\n(none)\n').replace(/^## High$/m, '## High priority');
+    }),
+    // No `m` flag: the whole output, so a decoy that reports fails the case.
+    finding: new RegExp(
+      '^EMPTY SECTION {2}\\.flaitron/PLAN\\.md :: ## Low\\n' +
+        'EMPTY SECTION {2}\\.flaitron/PLAN\\.md :: ## Future Opportunities\\n' +
+        'STALE PLACEHOLDER {2}\\.flaitron/PLAN\\.md :: ## Completed\\n' +
+        'MISSING SECTION {2}\\.flaitron/PLAN\\.md :: ## High\\n' +
+        'plan_placeholder FAILED\\n$',
+    ),
+  },
   handoff_rows: {
     // Silent: a cite in a nested item, a bold-ID cite paragraph, an aliased
     // wikilink, "none deferred", a code-span heading, "pre-handoff", a fenced

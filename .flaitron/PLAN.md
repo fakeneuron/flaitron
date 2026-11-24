@@ -13,7 +13,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-EPIC-918** [moderate]🧩 | closure-placeholder — The Phase 4 Closed line never says to put `(none)` back when a closure empties a section. The rule lives only in `SPEC/plan-filing.md` §"Empty-section placeholder", and closures apply it unevenly: CORE-913 and CORE-915 did, CORE-916 and CORE-917 did not, and `## Medium` and `## Future Opportunities` were already blank at v8.5.0. Discovery supplied by audit-repo 2026-11-24. Surfaced by audit-repo 2026-11-24 (Theme: Rules that live only in lazy modules)
   - [x] **CORE-918.2** [light]🔧 [unattended] | closure-none-clause — Completed 2026-11-24.
-  - [ ] **CORE-918.3** [moderate]🧩 [unattended] | plan-placeholder-check — New `tools/drift-checks.sh` check that fails when a priority section of the live `.flaitron/PLAN.md` holds neither a task row nor `(none)`, with its seeded case in `tools/drift-checks.test.mjs`. In the same change, restore `(none)` under any open section still blank and drop the stray blank line inside `## Completed`, so the check lands green.
+  - [x] **CORE-918.3** [moderate]🧩 [unattended] | plan-placeholder-check — Completed 2026-11-24.
   - [ ] **CORE-918.4** [light]🔧 | codex-closure-none — In `SPEC/procedures/ft-task.md` step 5 (the PLAN flip), add "a section this move leaves empty gets its `(none)` back" with a pointer to `SPEC/plan-filing.md` §"Empty-section placeholder", mirroring CORE-918.2's Closed-line clause. The file sits at 95% of its cap, so trim a clause elsewhere in step 5 to hold its size. Surfaced by CORE-918.2 External review.
   - [ ] **CORE-918.N** [moderate]🧩 | closure-placeholder audit
 - [ ] **CORE-921** [heavy]🧠 | updater-followthrough-owner — `/ft-update` Steps 3–4 and `tools/update-adopters.mjs` both implement the bump follow-through (Workflow-block replace, wiring, fork drift), and `codex/skills/ft-update/SKILL.md` restates the Step 3.5 order; CORE-853 and CORE-916 each needed paired edits. Choose one owner — the skill delegating the writes to the updater's single-repo mode, or shared `AGENTS.md` before/after fixtures the updater's tests run — apply it, then run `/ft-refactor tools/update-adopters.mjs` to split the 1,655-line file with the safety gates in one module. Surfaced by audit-structure 2026-11-24 (Finding #1, High; Finding #7, Medium)
@@ -38,9 +38,11 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-926** [light]🔧 [unattended] | layout-flaitron-dirs — Name `.flaitron/grok-checkout/`, `.flaitron/grok-done/` and `.flaitron/screenshots/` in `SPEC/layout.md` §"Working in the flaitron repo itself", with who writes each. Surfaced by audit-structure 2026-11-24 (Finding #6, Low)
 - [ ] **CORE-927** [light]🔧 [unattended] | epic-audit-drift-line-window — Open a decay window on the `.N` audit's fixed doc-drift Acceptance line: drop it and its "non-negotiable" lead-in from `claude/skills/ft-close-epic/SKILL.md`, keeping the Goal, Subtask walk and Phase 4 sweep; mark `SPEC/epic.md` §"Audit acceptance — fixed doc-drift line" as windowed; record the window-start SHA; file the restore-read row (bar: 5 `.N` audits archived after it). Surfaced by audit-context 2026-11-24 (Finding #1, Low).
+- [ ] **CORE-928** [light]🔧 | conventions-check-roster — In `docs/CONVENTIONS.md` §"GitHub Actions CI", the "Six checks have neither a source rule nor a catalogue entry" list omits `plan_placeholder`; add it (CORE-918.3: each priority section in `.flaitron/PLAN.md` holds a row or `(none)`, never both, and all five headings exist) and make it seven. Surfaced by CORE-918.3 doc-drift sweep.
 
 ## Future Opportunities
 
+(none)
 
 ## Completed
 
@@ -70,7 +72,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 - [x] **CORE-895** [heavy] | ft-import-task — Completed 2026-11-08.
 - [x] **CORE-893** [moderate] | dogfood-render-outcome — Completed 2026-11-08.
 - [x] **CORE-894** [heavy] | release-midcut-defect-ask — Completed 2026-11-08.
-
 - [x] **CORE-892** [moderate] | release v8.4.0 — Completed 2026-11-08.
 - [x] **CORE-864** [light] | release-note-heading-casing — Completed 2026-11-08.
 - [x] **CORE-866** [moderate] | handoff-row-drift-check — Completed 2026-11-08.

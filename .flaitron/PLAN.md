@@ -30,7 +30,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [ ] **CORE-920.3** [heavy]🧠 | headroom-runner-bodies — Same for `SPEC/procedures/ft-task.md` (95%) and `claude/AGENTS-snippet.md` (97%), whose paste-block reaches every adopter's `AGENTS.md` on its next bump.
   - [ ] **CORE-920.4** [heavy]🧠 | headroom-release-skill — Same for `claude/skills/ft-release/SKILL.md` (95%) and the `claude/skills/ft-release/**` directory cap (95%).
   - [ ] **CORE-920.N** [heavy]🧠 | near-cap-trims-2 audit
-- [ ] **CORE-924** [moderate]🧩 [unattended] | mirror-parity-checks — New `tools/drift-checks.sh` checks `snippet_roster_parity` (the `ln -s` slug sets across the four `*/AGENTS-snippet.md`) and `coverage_pin` (`justfile` `diff-cover`/`MIN` vs `ci.yml` `DIFF_COVER_VERSION`/`COVERAGE_MIN`), each with a seeded case in `tools/drift-checks.test.mjs`. Surfaced by audit-structure 2026-11-24 (Finding #4, Medium; Finding #5, Low)
 - [ ] **CORE-925** [light]🔧 | just-wire — Add an idempotent `wire` recipe to `justfile` (missing `.claude/skills`, overlay and `.agents/skills` links only; prints dangling links, removes none) and point `CONTRIBUTING.md` §"Developing flaitron skills" at it. Surfaced by audit-structure 2026-11-24 (Finding #8, Medium)
 
 ## Low
@@ -38,6 +37,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 - [ ] **CORE-926** [light]🔧 [unattended] | layout-flaitron-dirs — Name `.flaitron/grok-checkout/`, `.flaitron/grok-done/` and `.flaitron/screenshots/` in `SPEC/layout.md` §"Working in the flaitron repo itself", with who writes each. Surfaced by audit-structure 2026-11-24 (Finding #6, Low)
 - [ ] **CORE-927** [light]🔧 [unattended] | epic-audit-drift-line-window — Open a decay window on the `.N` audit's fixed doc-drift Acceptance line: drop it and its "non-negotiable" lead-in from `claude/skills/ft-close-epic/SKILL.md`, keeping the Goal, Subtask walk and Phase 4 sweep; mark `SPEC/epic.md` §"Audit acceptance — fixed doc-drift line" as windowed; record the window-start SHA; file the restore-read row (bar: 5 `.N` audits archived after it). Surfaced by audit-context 2026-11-24 (Finding #1, Low).
 - [ ] **CORE-928** [light]🔧 | conventions-check-roster — In `docs/CONVENTIONS.md` §"GitHub Actions CI", the "Six checks have neither a source rule nor a catalogue entry" list omits `plan_placeholder`; add it (CORE-918.3: each priority section in `.flaitron/PLAN.md` holds a row or `(none)`, never both, and all five headings exist) and make it seven. Surfaced by CORE-918.3 doc-drift sweep.
+- [ ] **CORE-929** [light]🔧 | roster-pin-check-docs — Name the CORE-924 checks where their rules live: `snippet_roster_parity` in `claude/AGENTS-snippet.md` §"One-time symlink wiring" and in place of `step-7.1-standing-checks.md`'s four roster diffs; `coverage_pin` in the `justfile`/`ci.yml` coverage comments; both in `docs/CONVENTIONS.md` §"GitHub Actions CI". Updates: `.flaitron/tasknote/archive/core/CORE-924.md` Phase 4.
 
 ## Future Opportunities
 
@@ -45,6 +45,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-924** [moderate]🧩 [unattended] | mirror-parity-checks — Completed 2026-11-24.
 - [x] **CORE-923** [moderate]🧩 [unattended] | drift-flag-helper — Completed 2026-11-24.
 - [x] **CORE-922** [moderate]🧩 [unattended] | fence-cases — Completed 2026-11-24.
 - [x] **CORE-917** [moderate] | arch-health-refresh — Completed 2026-11-24.

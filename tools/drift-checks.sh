@@ -20,7 +20,10 @@
 # explain. skill_pin_guard_parity (CORE-729), final_newline (CORE-621),
 # sidequest_orphan (CORE-742.2), plan_placeholder (CORE-918.3), handoff_rows
 # (CORE-866), installer_anchors (CORE-868.2) and supply_chain (CORE-904) have
-# neither a source rule nor a catalogue entry.
+# neither a source rule nor a catalogue entry. snippet_roster_parity and
+# coverage_pin (CORE-924) automate a rule stated elsewhere — the snippet
+# roster's §7.1 installed-surface check, and the "bump both together"
+# comments in justfile and ci.yml.
 #
 # Shape rules — the dispatcher below reads them:
 # - One check per top-level function, `name() {` and its closing `}` each at
@@ -1246,6 +1249,79 @@ if [ "$recipe" != "$want" ]; then
   diff -u <(printf '%s\n' "$want") <(printf '%s\n' "$recipe") || true
   exit 1
 fi
+}
+
+# Snippet roster parity — four */AGENTS-snippet.md wiring blocks
+snippet_roster_parity() {
+# CORE-924. claude/AGENTS-snippet.md §"One-time symlink wiring" is the
+# roster; the codex, cursor and grok blocks are its derived surfaces, and
+# /ft-release §7.1's installed-surface check diffs them only at release.
+# This is that set comparison at every push. A wiring line is a column-0
+# `ln -s ../../.flaitron/core/` line, so inline prose, codex's
+# `(cd … && ln -s …)` dev line and any other column-0 `ln -s` never count.
+# Each must read `<platform source>/skills/<slug> <platform dest>/<slug>`
+# (the claude block pads with spaces; awk splits on runs), so a block copied
+# from another platform fails BAD WIRING even when its slugs agree.
+bad=
+ssot=
+n=0
+  roster_of() {
+    awk -v s="../../.flaitron/core/$2/skills/" -v d="$3/" '
+      index($0, "ln -s ../../.flaitron/core/") == 1 {
+        slug = substr($3, length(s) + 1)
+        if (NF != 4 || index($3, s) != 1 || slug == "" || slug ~ /\// || $4 != d slug) print "!" $0
+        else print slug
+      }' "$1" | sort -u
+  }
+while read -r f src dest; do
+  [ -f "$f" ] || { echo "MISSING FILE  $f"; bad=1; continue; }
+  all=$(roster_of "$f" "$src" "$dest")
+  [ -n "$all" ] || { echo "VACUOUS snippet_roster_parity  no wiring line in $f"; exit 1; }
+  n=$((n+1))
+  printf '%s\n' "$all" | sed -n "s#^!#BAD WIRING  $f :: #p"
+  ! printf '%s\n' "$all" | grep -q '^!' || bad=1
+  got=$(printf '%s\n' "$all" | grep -v '^!' || true)
+  if [ "$n" -eq 1 ]; then
+    ssot=$got
+  elif [ "$got" != "$ssot" ]; then
+    echo "ROSTER DRIFT  $f"
+    diff -u <(printf '%s\n' "$ssot") <(printf '%s\n' "$got") || true
+    bad=1
+  fi
+done <<'ROSTERS'
+claude/AGENTS-snippet.md claude .claude/skills
+codex/AGENTS-snippet.md codex .agents/skills
+cursor/AGENTS-snippet.md claude .cursor/skills
+grok/AGENTS-snippet.md claude .grok/skills
+ROSTERS
+[ "$n" -gt 0 ] || { echo "VACUOUS snippet_roster_parity  no snippet examined"; exit 1; }
+[ -z "$bad" ] || exit 1
+}
+
+# Coverage pin — justfile `coverage` recipe ↔ ci.yml `coverage` job
+coverage_pin() {
+# CORE-924. Both files say "bump both together" and nothing compared
+# them. Each read is scoped to the `coverage` recipe / job, so a MIN= or
+# COVERAGE_MIN elsewhere is never compared; plain awk + sed, as pair_t
+# reads the justfile without `just`.
+bad=
+n=0
+rec=$(awk '/^coverage[ :]/ {on=1; next} on && /^[^ \t#]/ {on=0} on' justfile)
+job=$(awk '/^  coverage:$/ {on=1; next} on && /^  [^ #]/ {on=0} on' .github/workflows/ci.yml)
+jv=$(printf '%s\n' "$rec" | sed -nE 's/^[[:space:]]*DC="diff-cover@([^"]+)".*/\1/p')
+jm=$(printf '%s\n' "$rec" | sed -nE 's/.*[[:space:];]MIN=([0-9]+).*/\1/p')
+cv=$(printf '%s\n' "$job" | sed -nE "s/^[[:space:]]*DIFF_COVER_VERSION: '([^']+)'.*/\1/p")
+cm=$(printf '%s\n' "$job" | sed -nE "s/^[[:space:]]*COVERAGE_MIN: '([0-9]+)'.*/\1/p")
+for pair in "diff-cover|$jv|$cv" "coverage-min|$jm|$cm"; do
+  what=${pair%%|*}; rest=${pair#*|}; a=${rest%%|*}; b=${rest#*|}
+  if [ -z "$a" ] || [ -z "$b" ]; then
+    echo "VACUOUS coverage_pin  $what not read (justfile '$a', ci.yml '$b')"; exit 1
+  fi
+  n=$((n+1))
+  [ "$a" = "$b" ] || { echo "PIN DRIFT  $what  justfile $a vs ci.yml $b"; bad=1; }
+done
+[ "$n" -gt 0 ] || { echo "VACUOUS coverage_pin  no pin compared"; exit 1; }
+[ -z "$bad" ] || exit 1
 }
 
 self=$(CDPATH='' cd -- "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")

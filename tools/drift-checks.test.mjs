@@ -309,6 +309,26 @@ const CASES = {
     seed: () => edit('justfile', (s) => s.replace('    node --check tools/update-adopters.mjs\n', '')),
     finding: [/^CHECK DRIFT /m, /^-node --check tools\/update-adopters\.mjs$/m],
   },
+  snippet_roster_parity: {
+    // One grok line keeps its slug but wires into cursor's directory, as a
+    // block copied across platforms would: a bad line, and a slug gone.
+    seed: () => edit('grok/AGENTS-snippet.md', (s) => s.replace(' .grok/skills/ft-refactor\n', ' .cursor/skills/ft-refactor\n')),
+    finding: [
+      /^BAD WIRING {2}grok\/AGENTS-snippet\.md :: ln -s \.\.\/\.\.\/\.flaitron\/core\/claude\/skills\/ft-refactor \.cursor\/skills\/ft-refactor$/m,
+      /^ROSTER DRIFT {2}grok\/AGENTS-snippet\.md$/m,
+      /^-ft-refactor$/m,
+    ],
+  },
+  coverage_pin: {
+    // Moves ci.yml's pin and floor without the justfile, whatever they read.
+    seed: () => edit('.github/workflows/ci.yml', (s) => s
+      .replace(/DIFF_COVER_VERSION: '[^']+'/, "DIFF_COVER_VERSION: '0.0.0-zz'")
+      .replace(/COVERAGE_MIN: '[0-9]+'/, "COVERAGE_MIN: '999'")),
+    finding: [
+      /^PIN DRIFT {2}diff-cover {2}justfile \S+ vs ci\.yml 0\.0\.0-zz$/m,
+      /^PIN DRIFT {2}coverage-min {2}justfile [0-9]+ vs ci\.yml 999$/m,
+    ],
+  },
 };
 
 describe('drift-checks.sh self-test', () => {

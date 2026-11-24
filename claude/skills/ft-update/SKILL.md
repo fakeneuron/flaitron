@@ -197,9 +197,11 @@ only the link.
   (now at `<target>`): the body of the first ```` ```markdown ```` fence after
   `## Block to paste into AGENTS.md`, fence lines dropped. No AGENTS.md or no
   such heading → nothing to do; more than one, or no block → skip with a
-  note. That heading is the first unfenced one; the fence is the first line
-  opening a fence at column 0 with 3+ backticks (not tildes) and `markdown`
-  as its info string's first word (not ```` ```markdown-example ````), and it
+  note. That heading is the first unfenced line that is exactly it (trailing
+  whitespace allowed; a suffixed line is skipped for the next exact one); the
+  fence is the first line opening a fence at column 0 with 3+ backticks (not
+  tildes), optional spaces or tabs, then `markdown` as its info string's first
+  word (not ```` ```markdown-example ````), and it
   closes where that fence does (an inner tilde fence is body; a same-length
   backtick line ends it). A CRLF AGENTS.md (its
   `## Workflow` heading line ends in CR) gets the block in CRLF.

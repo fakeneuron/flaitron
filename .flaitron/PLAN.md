@@ -31,7 +31,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [x] **CORE-931.4** [light]🔧 [unattended] | text-module — Completed 2026-11-24.
   - [x] **CORE-931.5** [moderate]🧩 [unattended] | wiring-module — Completed 2026-11-24.
   - [x] **CORE-931.6** [moderate]🧩 [unattended] | check-module — Completed 2026-11-24.
-  - [ ] **CORE-931.7** [moderate]🧩 [unattended] | apply-module — Move `applyBump`, `followThrough`, `rollbackBump`, `checkoutVerified` and `verifyPinnedSha` to `tools/update-adopters/apply.mjs`; the entry keeps only `parseArgs`, `main`, the report printers and the `isMain` guard.
+  - [x] **CORE-931.7** [moderate]🧩 [unattended] | apply-module — Completed 2026-11-24.
   - [ ] **CORE-931.8** [moderate]🧩 | entry-docs — Split the 193-line header so each section sits on its module (entry keeps usage, selection, exit codes, module map); repoint SECURITY.md, `SPEC/layout.md`, README and the audit overlay scope line; decide whether the carve-out text names the module directory.
   - [ ] **CORE-931.N** [moderate]🧩 | updater-modules audit
 - [ ] **CORE-925** [light]🔧 | just-wire — Add an idempotent `wire` recipe to `justfile` (missing `.claude/skills`, overlay and `.agents/skills` links only; prints dangling links, removes none) and point `CONTRIBUTING.md` §"Developing flaitron skills" at it. Surfaced by audit-structure 2026-11-24 (Finding #8, Medium)

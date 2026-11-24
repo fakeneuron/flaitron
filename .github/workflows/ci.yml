@@ -41,6 +41,12 @@ jobs:
       - run: node --test tools/update-adopters.test.mjs
       - run: node --check tools/update-adopters.test.mjs
       - run: node --check tools/update-adopters.mjs
+      - run: node --check tools/update-adopters/apply.mjs
+      - run: node --check tools/update-adopters/check.mjs
+      - run: node --check tools/update-adopters/release.mjs
+      - run: node --check tools/update-adopters/text.mjs
+      - run: node --check tools/update-adopters/wiring.mjs
+      - run: node --check tools/update-adopters/workspace.mjs
       - run: node --test tools/drift-checks.test.mjs
 
   # Secret scan, on a clean checkout before any install or build (CORE-909,

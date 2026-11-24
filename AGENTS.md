@@ -104,6 +104,12 @@ from the repository root:
 node --test tools/update-adopters.test.mjs
 node --check tools/update-adopters.test.mjs
 node --check tools/update-adopters.mjs
+node --check tools/update-adopters/apply.mjs
+node --check tools/update-adopters/check.mjs
+node --check tools/update-adopters/release.mjs
+node --check tools/update-adopters/text.mjs
+node --check tools/update-adopters/wiring.mjs
+node --check tools/update-adopters/workspace.mjs
 ```
 
 The suite is a release gate; do not substitute a live adopter-fleet dry run or
@@ -119,7 +125,7 @@ node --test tools/drift-checks.test.mjs
 
 For the installer, run shellcheck and its sandboxed end-to-end test (needs the
 network; it never touches the real `~`). CI runs both in the separate,
-path-filtered `install-test.yml`, not in the eight-command roster above:
+path-filtered `install-test.yml`, not in the roster above:
 
 ```sh
 shellcheck -s sh install.sh tools/install.test.sh
@@ -132,7 +138,7 @@ checked PLAN stub rows for the `| shortname` that
 `SPEC/plan-filing.md` §"`## Completed` archive convention" requires, among
 others. Run it locally after markdown edits; naming a check
 (`bash tools/drift-checks.sh pair_q`) runs only that one. It is additive to
-the eight commands above, not part of the `validate`-job "passing" roster
+the commands above, not part of the `validate`-job "passing" roster
 `/ft-release` §7.1 Pair H binds byte-for-byte (same relationship as the
 gitleaks scan in `docs/CONVENTIONS.md` §"GitHub Actions CI").
 

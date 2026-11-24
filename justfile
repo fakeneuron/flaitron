@@ -67,5 +67,11 @@ check: test typecheck lint build
     node --test tools/update-adopters.test.mjs
     node --check tools/update-adopters.test.mjs
     node --check tools/update-adopters.mjs
+    node --check tools/update-adopters/apply.mjs
+    node --check tools/update-adopters/check.mjs
+    node --check tools/update-adopters/release.mjs
+    node --check tools/update-adopters/text.mjs
+    node --check tools/update-adopters/wiring.mjs
+    node --check tools/update-adopters/workspace.mjs
     node --test tools/drift-checks.test.mjs
     bash tools/drift-checks.sh

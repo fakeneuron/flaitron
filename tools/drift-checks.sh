@@ -1213,11 +1213,11 @@ fi
 
 # Pair T — justfile `check` recipe ↔ AGENTS.md §"Validation"
 pair_t() {
-# CORE-830. CORE-828's `check` recipe restates the eight Validation
+# CORE-830. CORE-828's `check` recipe restates the Validation
 # commands plus `bash tools/drift-checks.sh`, and pair_h binds AGENTS.md
 # only to ci.yml, so the recipe was a second copy nothing compared. The
-# roster read is a copy of pair_h's (widen one, widen the other); the ninth
-# command is a literal because AGENTS.md carries it as prose. `check` lists its four viz commands as dependency recipes
+# roster read is a copy of pair_h's (widen one, widen the other); the
+# `bash tools/drift-checks.sh` command is a literal because AGENTS.md carries it as prose. `check` lists its four viz commands as dependency recipes
 # (`test typecheck lint build`), so the awk expands each dependency to its
 # body lines, in the order listed, before `check`'s own lines. Plain awk,
 # not `just --dump`: the CI `drift` job's runner is checkout-only. Recipe

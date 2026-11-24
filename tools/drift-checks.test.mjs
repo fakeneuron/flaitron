@@ -343,6 +343,11 @@ const CASES = {
       /^PIN DRIFT {2}coverage-min {2}justfile [0-9]+ vs ci\.yml 999$/m,
     ],
   },
+  reconciled_pin: {
+    // A cut bumps SPEC.md and leaves the overlay pin behind.
+    seed: () => edit('SPEC.md', (s) => s.replace(/^\*\*Version:\*\* v[0-9.]+$/m, '**Version:** v999.0.0')),
+    finding: /^STALE PIN {2}\.flaitron\/audit-overlay\/SKILL\.md {2}v[0-9.]+ vs SPEC\.md v999\.0\.0$/m,
+  },
 };
 
 describe('drift-checks.sh self-test', () => {

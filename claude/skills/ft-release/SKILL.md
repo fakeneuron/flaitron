@@ -157,6 +157,7 @@ Acceptance (parameterized):
 - [ ] docs/MIGRATION.md example pin bumped `vX.Y.Z` → `vA.B.C`
 - [ ] SECURITY.md release-tag example pin bumped `vX.Y.Z` → `vA.B.C`
 - [ ] README.md Quickstart installer URL tag bumped `vX.Y.Z` → `vA.B.C`
+- [ ] `.flaitron/audit-overlay/SKILL.md` `flaitron-reconciled:` → `vA.B.C` (§5 scaffold-diff triage)
 - [ ] Dogfood gate resolved — every dogfooded row (Claude / Grok / Codex / Cursor) refreshed from a real verification run at `vA.B.C`, or recorded `skipped @ vA.B.C` (per `docs/AGENT-COMPAT.md` §"Reading the cells")
 - [ ] SOP-currency check run — `SPEC/procedures/*.md` reported clean, or drift candidates adjudicated and a follow-up filed (stamps left un-bumped either way)
 - [ ] Phase 4 doc-drift sweep run across all `.flaitron/tasknote/README.md` §"AI-referenced docs" entries
@@ -193,6 +194,8 @@ Apply the 4 version edits in order:
 2. **`docs/MIGRATION.md`** — locate the example pin (grep for `describe --tags`) and bump `(e.g., \`vX.Y.Z\`)` → `(e.g., \`vA.B.C\`)`. Historical references like `v1.0 additions` stay (write-once historical context, per CORE-046 precedent).
 3. **`SECURITY.md`** — locate the release-tag example pin (grep for `release tags (e.g.`) and bump `(e.g. \`vX.Y.Z\`)` → `(e.g. \`vA.B.C\`)`.
 4. **`README.md`** — the Quickstart installer one-liner (grep for `flaitron/v[0-9].*/install.sh`): set its tag to `vA.B.C`. This edit is what keeps the advertised `curl … | sh` URL tag-pinned, never `main` (`SECURITY.md` §"One-line installer"). The URL works only once the tag is pushed.
+
+Then the audit overlay's pin: `git diff --stat vX.Y.Z -- claude/skills/ft-audit/` empty → set `.flaitron/audit-overlay/SKILL.md` `flaitron-reconciled:` to `vA.B.C`; otherwise re-reconcile the overlay first. §7.1's `reconciled_pin` fails a cut that leaves it behind.
 
 Verify the `v`-prefixed pins post-edit:
 
@@ -330,7 +333,7 @@ Move the tasknote file with a plain `mv` — it was copied fresh in Step 3 and n
 Stage explicitly (do NOT use `git add .` or `-A` — there may be unrelated unstaged work):
 
 ```sh
-git add SPEC.md docs/MIGRATION.md SECURITY.md README.md docs/VERSION-HISTORY.md .flaitron/PLAN.md
+git add SPEC.md docs/MIGRATION.md SECURITY.md README.md docs/VERSION-HISTORY.md .flaitron/PLAN.md .flaitron/audit-overlay/SKILL.md
 git add .flaitron/tasknote/archive/core/<TASK-ID>.md
 # If the §5 dogfood-gate walk landed any refresh/skip edits, also stage the touched stamp files
 # (a git add of an unchanged file is a no-op, so listing all three is safe):

@@ -19,8 +19,9 @@
 # Design notes sit as `#` comments inside the body, next to the line they
 # explain. skill_pin_guard_parity (CORE-729), final_newline (CORE-621),
 # sidequest_orphan (CORE-742.2), plan_placeholder (CORE-918.3), handoff_rows
-# (CORE-866), installer_anchors (CORE-868.2), supply_chain (CORE-904) and
-# updater_roster (CORE-936) have neither a source rule nor a catalogue entry.
+# (CORE-866), installer_anchors (CORE-868.2), supply_chain (CORE-904),
+# updater_roster (CORE-936) and reconciled_pin (CORE-919.3) have neither a
+# source rule nor a catalogue entry.
 # snippet_roster_parity and coverage_pin (CORE-924) automate a rule stated
 # elsewhere — the snippet roster's §7.1 installed-surface check, and the
 # "bump both together" comments in justfile and ci.yml.
@@ -47,8 +48,9 @@
 #   flags or one glob row with no file stays legal. Count with n=$((n+1)),
 #   never ((n++)), which returns 1 from zero and ends a `bash -e` check.
 #   skill_pin_guard_parity and pair_h need no counter: an empty read already
-#   fails their own guards. shipped_skill_parity, sidequest_orphan and
-#   handoff_rows floor on their read set instead of a counter; pair_p and
+#   fails their own guards. shipped_skill_parity, sidequest_orphan,
+#   handoff_rows and reconciled_pin floor on their read set instead of a
+#   counter; pair_p and
 #   plan_placeholder count inside their awk.
 # - bash 3.2 compatible: the §7.1 walk runs on the operator's machine.
 # - Each check needs one seeded-drift case in tools/drift-checks.test.mjs
@@ -1351,6 +1353,30 @@ done <<EOF
 $roster
 EOF
 [ -z "$bad" ] || exit 1
+}
+
+# Reconciled pin — audit overlay `flaitron-reconciled:` ↔ SPEC.md `**Version:**`
+reconciled_pin() {
+# CORE-919.3. Four hand bumps (CORE-839, -874, -900, -919.2) were each
+# caught by an audit after the release. /ft-release §5 bumps SPEC.md in the
+# cut, before §7.1 runs this check, so a cut that leaves the pin behind fails
+# before its tag exists. Between cuts both read the last release. Two
+# in-tree reads, not `git describe`: CI's checkout is shallow and has no
+# tags. One file: the template's `<version>` and MIGRATION.md's example are
+# not pins. Both reads take a bare vX.Y.Z only, so a quoted or pre-release
+# value fails VACUOUS on purpose; the triage diff (no HEAD) reads the working
+# tree, so a scaffold edit made earlier in the same cut still counts.
+f=.flaitron/audit-overlay/SKILL.md
+pin=$(awk 'NR==1 && /^---$/ {fm=1; next} fm && /^---$/ {exit} fm' "$f" | sed -nE 's/^flaitron-reconciled:[[:space:]]*(v[0-9]+\.[0-9]+\.[0-9]+)[[:space:]]*$/\1/p')
+ver=$(sed -nE 's/^\*\*Version:\*\* (v[0-9]+\.[0-9]+\.[0-9]+)$/\1/p' SPEC.md | head -1)
+if [ -z "$pin" ] || [ -z "$ver" ]; then
+  echo "VACUOUS reconciled_pin  not read ($f '$pin', SPEC.md '$ver')"; exit 1
+fi
+[ "$pin" = "$ver" ] || {
+  echo "STALE PIN  $f  $pin vs SPEC.md $ver"
+  echo "  git diff --stat $pin -- claude/skills/ft-audit/ — empty: bump the pin; otherwise re-reconcile the overlay, then bump"
+  exit 1
+}
 }
 
 self=$(CDPATH='' cd -- "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")

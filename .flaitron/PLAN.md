@@ -17,7 +17,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-EPIC-919** [moderate]🧩 | derived-figures — Hand-copied figures in the audit overlay go stale within weeks. CORE-869.4 re-measured them on 2026-11-06 and they have drifted again (`tools/drift-checks.sh` 973 → 1,221 lines), and `flaitron-reconciled:` still reads v8.4.0 after v8.5.0. Swap figures for the command that yields them instead of re-measuring. Discovery supplied by audit-repo 2026-11-24. Surfaced by audit-repo 2026-11-24 (Theme: Hand-copied figures go stale)
   - [x] **CORE-919.2** [light]🔧 [unattended] | overlay-figures-to-commands — Completed 2026-11-24.
-  - [ ] **CORE-919.3** [heavy]🧠 | reconciled-pin-guard — Decide where a `flaitron-reconciled:` pin that trails the tag gets caught: a `/ft-release` §7.1 step that bumps it when the scaffold diff is empty, or a drift check. Today only an audit notices (CORE-900, then this run). `claude/skills/ft-release/**` is at 95% of its byte budget.
+  - [x] **CORE-919.3** [heavy]🧠 | reconciled-pin-guard — Completed 2026-11-24.
   - [x] **CORE-919.4** [light]🔧 | overlay-markdown-counts — Completed 2026-11-24.
   - [ ] **CORE-919.N** [moderate]🧩 | derived-figures audit
 - [ ] **CORE-EPIC-920** [heavy]🧠 | near-cap-trims-2 — Six budgeted surfaces sit at 95–97% of their caps 18 days after CORE-869.5 trimmed the last such set, so each next edit to them pays a trim first. Discovery supplied by audit-repo 2026-11-24. Surfaced by audit-repo 2026-11-24 (Theme: Budget trims don't hold)

@@ -11,11 +11,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-- [ ] **CORE-EPIC-918** [moderate]🧩 | closure-placeholder — The Phase 4 Closed line never says to put `(none)` back when a closure empties a section. The rule lives only in `SPEC/plan-filing.md` §"Empty-section placeholder", and closures apply it unevenly: CORE-913 and CORE-915 did, CORE-916 and CORE-917 did not, and `## Medium` and `## Future Opportunities` were already blank at v8.5.0. Discovery supplied by audit-repo 2026-11-24. Surfaced by audit-repo 2026-11-24 (Theme: Rules that live only in lazy modules)
-  - [x] **CORE-918.2** [light]🔧 [unattended] | closure-none-clause — Completed 2026-11-24.
-  - [x] **CORE-918.3** [moderate]🧩 [unattended] | plan-placeholder-check — Completed 2026-11-24.
-  - [x] **CORE-918.4** [light]🔧 | codex-closure-none — Completed 2026-11-24.
-  - [ ] **CORE-918.N** [moderate]🧩 | closure-placeholder audit
 - [ ] **CORE-921** [heavy]🧠 | updater-followthrough-owner — `/ft-update` Steps 3–4 and `tools/update-adopters.mjs` both implement the bump follow-through (Workflow-block replace, wiring, fork drift), and `codex/skills/ft-update/SKILL.md` restates the Step 3.5 order; CORE-853 and CORE-916 each needed paired edits. Choose one owner — the skill delegating the writes to the updater's single-repo mode, or shared `AGENTS.md` before/after fixtures the updater's tests run — apply it, then run `/ft-refactor tools/update-adopters.mjs` to split the 1,655-line file with the safety gates in one module. Surfaced by audit-structure 2026-11-24 (Finding #1, High; Finding #7, Medium)
 
 ## Medium
@@ -44,6 +39,11 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-EPIC-918** [moderate]🧩 | closure-placeholder — Completed 2026-11-24.
+  - [x] **CORE-918.2** [light]🔧 [unattended] | closure-none-clause — Completed 2026-11-24.
+  - [x] **CORE-918.3** [moderate]🧩 [unattended] | plan-placeholder-check — Completed 2026-11-24.
+  - [x] **CORE-918.4** [light]🔧 | codex-closure-none — Completed 2026-11-24.
+  - [x] **CORE-918.N** [moderate]🧩 | closure-placeholder audit — Completed 2026-11-24.
 - [x] **CORE-926** [light]🔧 [unattended] | layout-flaitron-dirs — Completed 2026-11-24.
 - [x] **CORE-924** [moderate]🧩 [unattended] | mirror-parity-checks — Completed 2026-11-24.
 - [x] **CORE-923** [moderate]🧩 [unattended] | drift-flag-helper — Completed 2026-11-24.

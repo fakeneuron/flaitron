@@ -30,7 +30,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [ ] **CORE-920.3** [heavy]🧠 | headroom-runner-bodies — Same for `SPEC/procedures/ft-task.md` (95%) and `claude/AGENTS-snippet.md` (97%), whose paste-block reaches every adopter's `AGENTS.md` on its next bump.
   - [ ] **CORE-920.4** [heavy]🧠 | headroom-release-skill — Same for `claude/skills/ft-release/SKILL.md` (95%) and the `claude/skills/ft-release/**` directory cap (95%).
   - [ ] **CORE-920.N** [heavy]🧠 | near-cap-trims-2 audit
-- [ ] **CORE-923** [moderate]🧩 [unattended] | drift-flag-helper — Extract `_description_flags` in `tools/drift-checks.sh` for the pipeline `pair_b`, `pair_j` and `pair_m` copy, and sanction `_`-prefixed helpers in the header shape rules (the dispatcher already skips them). Surfaced by audit-structure 2026-11-24 (Finding #3, Medium)
 - [ ] **CORE-924** [moderate]🧩 [unattended] | mirror-parity-checks — New `tools/drift-checks.sh` checks `snippet_roster_parity` (the `ln -s` slug sets across the four `*/AGENTS-snippet.md`) and `coverage_pin` (`justfile` `diff-cover`/`MIN` vs `ci.yml` `DIFF_COVER_VERSION`/`COVERAGE_MIN`), each with a seeded case in `tools/drift-checks.test.mjs`. Surfaced by audit-structure 2026-11-24 (Finding #4, Medium; Finding #5, Low)
 - [ ] **CORE-925** [light]🔧 | just-wire — Add an idempotent `wire` recipe to `justfile` (missing `.claude/skills`, overlay and `.agents/skills` links only; prints dangling links, removes none) and point `CONTRIBUTING.md` §"Developing flaitron skills" at it. Surfaced by audit-structure 2026-11-24 (Finding #8, Medium)
 
@@ -46,6 +45,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-923** [moderate]🧩 [unattended] | drift-flag-helper — Completed 2026-11-24.
 - [x] **CORE-922** [moderate]🧩 [unattended] | fence-cases — Completed 2026-11-24.
 - [x] **CORE-917** [moderate] | arch-health-refresh — Completed 2026-11-24.
 - [x] **CORE-916** [moderate] | ft-update-start-marker-stop — Completed 2026-11-24.

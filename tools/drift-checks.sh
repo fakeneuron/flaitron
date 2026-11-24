@@ -25,7 +25,10 @@
 # Shape rules — the dispatcher below reads them:
 # - One check per top-level function, `name() {` and its closing `}` each at
 #   column 0, preceded by a `#` line carrying the check's title. Checks run in
-#   file order. A function here that is not a check would run as one.
+#   file order. A function here that is not a check would run as one, unless
+#   its name is `_`-prefixed: helpers shared by checks (`_description_flags`)
+#   take a leading `_`, which the dispatcher's `fns=` pattern and the
+#   self-test's coverage regex both skip.
 # - Each check runs as its own `bash -e` process, no `pipefail` — the shell
 #   GitHub ran each `run:` step in before the move. A subshell would not do:
 #   `set -e` is ignored inside `( … ) || …`. Pair B/J/M fail on an empty
@@ -686,23 +689,29 @@ done
 [ -z "$bad" ] || exit 1
 }
 
+# Helper — the flags a SKILL.md's description: line documents (Pairs B, J, M)
+_description_flags() {
+# Prints them sorted and unique, one per line. The sed that strips
+# double-quoted segments is load-bearing, not incidental: descriptions
+# carry args="CORE-004 --debug --fast"-style illustrations, and counting
+# those inflates the Claude set with flags the description never
+# *documents* — dropping the strip takes Pair B from three real findings
+# to six, half of them noise (CORE-420.5 measured both). This is the one
+# copy of what counts as a documented flag; B, J and M all call it.
+grep -m1 '^description:' "$1" | sed -E 's/"[^"]*"//g' | grep -oE '\-\-[a-z][a-z-]+' | sort -u
+}
+
 # Pair B — Claude skill flags ↔ Codex wrapper descriptions
 pair_b() {
-# The sed that strips double-quoted segments is load-bearing, not
-# incidental: descriptions carry args="CORE-004 --debug --fast"-style
-# illustrations, and counting those inflates the Claude set with flags
-# the description never *documents* — dropping the strip takes this check
-# from three real findings to six, half of them noise (CORE-420.5
-# measured both). Pairs J and M reuse this pipeline verbatim; a change to
-# what counts as a documented flag belongs in B, J and M together.
+# Both sides go through _description_flags, quote-strip included.
 # Two empty flag sets compare equal, so only a pair with a flag on either
 # side counts toward the floor.
 bad=
 n=0
 for d in claude/skills/ft-*/SKILL.md; do
   s=$(basename "$(dirname "$d")"); c="codex/skills/$s/SKILL.md"; [ -f "$c" ] || continue
-  cf=$(grep -m1 '^description:' "$d" | sed -E 's/"[^"]*"//g' | grep -oE '\-\-[a-z][a-z-]+' | sort -u | tr '\n' ' ')
-  xf=$(grep -m1 '^description:' "$c" | sed -E 's/"[^"]*"//g' | grep -oE '\-\-[a-z][a-z-]+' | sort -u | tr '\n' ' ')
+  cf=$(_description_flags "$d" | tr '\n' ' ')
+  xf=$(_description_flags "$c" | tr '\n' ' ')
   [ -z "$cf$xf" ] || n=$((n+1))
   [ "$cf" = "$xf" ] || { echo "MISMATCH $s | claude:[$cf] codex:[$xf]"; bad=1; }
 done
@@ -764,8 +773,9 @@ pair_j() {
 #   failing loudly. The character class stops /ft-audit from swallowing
 #   /ft-audit-repo — every span ends in a backtick, so a slug at the end
 #   of one still has a character to match.
-# - The quote-strip is Pair B's pipeline verbatim — same sed, same
-#   load-bearing reason CORE-420.5 measured.
+# - The description: half is _description_flags, Pair B's helper — same
+#   quote-strip, same load-bearing reason CORE-420.5 measured. The span
+#   half is not quote-stripped and stays local.
 # - It is one-directional (prose → hint), on purpose. A hint may
 #   legitimately name more than the prose documents: short aliases
 #   (-f / -d / -p), which the --[a-z] extraction never sees, and
@@ -781,9 +791,10 @@ bad=
 n=0
 for f in claude/skills/ft-*/SKILL.md; do
   s=$(basename "$(dirname "$f")")
-  own=$( { grep -m1 '^description:' "$f" | sed -E 's/"[^"]*"//g'
-           grep -o '`[^`]*`' "$f" | grep -E -- "/${s}[^a-z-]" ; } \
-         | grep -oE -e '--[a-z][a-z-]+' | sort -u | tr '\n' ' ')
+  own=$( { _description_flags "$f"
+           grep -o '`[^`]*`' "$f" | grep -E -- "/${s}[^a-z-]" \
+             | grep -oE -e '--[a-z][a-z-]+' ; } \
+         | sort -u | tr '\n' ' ')
   [ -z "$own" ] && continue
   hint=$(grep -m1 '^argument-hint:' "$f") \
     || { echo "MISSING HINT $s :: $own"; bad=1; n=$((n+1)); continue; }
@@ -803,10 +814,9 @@ pair_m() {
 # so the hint cannot quietly fall behind. Both halves sit in the one
 # SKILL.md (the hint moved there from the claude/commands/ stub at
 # CORE-769.2), with no cross-file join. Five properties are deliberate:
-# - The flag extraction is Pair B's pipeline verbatim — same quote-strip,
-#   same load-bearing reason CORE-420.5 measured. A change to what counts
-#   as a *documented* flag belongs in B, J and M together, or the three
-#   start disagreeing.
+# - The flag extraction is _description_flags, shared with B and J — same
+#   quote-strip, same load-bearing reason CORE-420.5 measured. What counts
+#   as a *documented* flag changes there, for all three at once.
 # - It runs opposite to Pair J, and the two compose into a chain. J is
 #   prose → hint; M is hint → description:. Together they carry a flag
 #   from the skill's own invocation spans all the way to the dispatch surface, and
@@ -833,8 +843,7 @@ bad=
 n=0
 for d in claude/skills/ft-*/SKILL.md; do
   s=$(basename "$(dirname "$d")")
-  df=" $(grep -m1 '^description:' "$d" | sed -E 's/"[^"]*"//g' \
-         | grep -oE '\-\-[a-z][a-z-]+' | sort -u | tr '\n' ' ')"
+  df=" $(_description_flags "$d" | tr '\n' ' ')"
   for fl in $(grep -m1 '^argument-hint:' "$d" | grep -oE '\-\-[a-z][a-z-]+' | sort -u); do
     case "$fl" in --low|--med|--fut|--high) continue ;; esac
     n=$((n+1))

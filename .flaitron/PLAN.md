@@ -15,7 +15,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-916** [moderate] | ft-update-start-marker-stop — `/ft-update` Step 3 replaces AGENTS.md's `## Workflow` through the line before the next H1/H2, so a `<!-- <name>:start -->` line just above a following marked section is deleted; natabula's v8.5.0 bump stripped `grok-tasknotes:start` in four repos. Also end the section at an unfenced line matching `<!-- [a-z0-9-]+:start -->`, keeping it. From natabula NAT-643.
 
 ## Low
 
@@ -26,6 +25,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-916** [moderate] | ft-update-start-marker-stop — Completed 2026-11-24.
 - [x] **CORE-915** [heavy] | direct-edit-path — Completed 2026-11-17.
 - [x] **CORE-913** [moderate] | seed-grouped-stays — Completed 2026-11-17.
 - [x] **CORE-914** [heavy] | fleet-clean-line — Completed 2026-11-17.

@@ -998,10 +998,12 @@ const AGENTS_MD = 'AGENTS.md';
 // `Pinned to:` is natabula wave-bump's sed expression (first match per line).
 // The Workflow heading is matched exactly, not by wave-bump's `^## Workflow`
 // prefix, so a project's own `## Workflows (CI)` section is never replaced;
-// the section ends at the next H1 or H2 (wave-bump: H2 only).
+// the section ends at the next H1 or H2 (wave-bump: H2 only), or at a
+// `<!-- <name>:start -->` marker line, kept, so a marked section that follows
+// keeps its opening marker (CORE-916).
 const PIN_LINE = /(Pinned to: )v\d+\.\d+\.\d+/;
 const WORKFLOW_HEADING = /^## Workflow[ \t]*\r?$/;
-const SECTION_END = /^#{1,2} /;
+const SECTION_END = /^#{1,2} |^<!-- [a-z0-9-]+:start -->[ \t]*\r?$/;
 // A CommonMark fence line: up to 3 spaces, then 3+ backticks or tildes.
 const FENCE = /^ {0,3}(`{3,}|~{3,})/;
 
@@ -1075,9 +1077,9 @@ export function workflowPasteBlock(snippet) {
 }
 
 // `agents` with its one `## Workflow` section — that heading through the line
-// before the next H1/H2 heading, or to EOF — replaced by `block`, one blank
-// line kept before the next heading (wave-bump's awk output shape). Lines
-// inside code fences are never headings.
+// before the next H1/H2 heading or `<!-- <name>:start -->` marker, or to EOF —
+// replaced by `block`, one blank line kept before that next line (wave-bump's
+// awk output shape). Lines inside code fences are never section ends.
 export function replaceWorkflowSection(agents, block) {
   const lines = agents.split('\n');
   const ok = headingLines(lines);

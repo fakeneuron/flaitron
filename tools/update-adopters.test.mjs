@@ -1076,6 +1076,33 @@ describe('follow-through text helpers (CORE-852.4)', () => {
     );
   });
 
+  it('replaceWorkflowSection stops at a <!-- name:start --> marker, keeping it (CORE-916)', () => {
+    assert.equal(
+      replaceWorkflowSection(
+        '# P\n\n## Workflow\n\nOld.\n\n<!-- grok-tasknotes:start -->\n## Grok Task Notes\n- x\n<!-- grok-tasknotes:end -->\n',
+        '## Workflow\nNew.',
+      ),
+      '# P\n\n## Workflow\nNew.\n\n<!-- grok-tasknotes:start -->\n## Grok Task Notes\n- x\n<!-- grok-tasknotes:end -->\n',
+    );
+    // Trailing whitespace or CR still stops; a marker as the first body line too.
+    assert.equal(
+      replaceWorkflowSection('## Workflow\nOld.\n<!-- a:start -->  \r\nx\n', '## Workflow\nNew.'),
+      '## Workflow\nNew.\n\n<!-- a:start -->  \r\nx\n',
+    );
+    assert.equal(
+      replaceWorkflowSection('## Workflow\n<!-- a:start -->\nx\n', '## Workflow\nNew.'),
+      '## Workflow\nNew.\n\n<!-- a:start -->\nx\n',
+    );
+    // A fenced marker, an :end marker, or an indented one is not a stop.
+    assert.equal(
+      replaceWorkflowSection(
+        '## Workflow\n```md\n<!-- a:start -->\n```\n<!-- b:end -->\n  <!-- c:start -->\n## Next\n',
+        '## Workflow\nNew.',
+      ),
+      '## Workflow\nNew.\n\n## Next\n',
+    );
+  });
+
   it('a project\'s own ## Workflows… heading is not the flaitron section', async () => {
     const root = await mkdtemp(join(tmpdir(), 'ft-upd-follow-ci-'));
     const adopter = await makeAdopter(root, 'ci-workflows', previous);

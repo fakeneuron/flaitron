@@ -190,15 +190,16 @@ only the link.
   nothing to do.
 - **Workflow block.** Replace AGENTS.md's `## Workflow` section — the line
   that is exactly `## Workflow` through the line before the next H1 or H2
-  heading, or to EOF — with the paste block from `<FT>/claude/AGENTS-snippet.md`
+  heading or `<!-- <name>:start -->` marker line (`[a-z0-9-]+` names; the
+  marker is kept), or to EOF — with the paste block from `<FT>/claude/AGENTS-snippet.md`
   (now at `<target>`): the body of the first ```` ```markdown ```` fence after
   `## Block to paste into AGENTS.md`, fence lines dropped. Bytes, as the
   updater writes them: the lines before the heading, the block, then either
-  one blank line and the rest from the next heading on, or — section to EOF —
-  a single final newline. Headings are matched line by line, as the
-  updater does, skipping every line inside a code fence (``` or ~~~, up to
+  one blank line and the rest from that heading or marker on, or — section to
+  EOF — a single final newline. Headings and markers are matched line by line,
+  as the updater does, skipping every line inside a code fence (``` or ~~~, up to
   3 spaces of indent; closed by a run of the same character at least as
-  long) — a fenced `#` line or `## Workflow` is never a heading. No AGENTS.md, or
+  long) — a fenced `#` line, marker, or `## Workflow` never counts. No AGENTS.md, or
   no exact `## Workflow` heading (trailing whitespace allowed) → nothing to
   do. Skip with a note when there is more than one, or the snippet has no
   such block or it does not open with `## Workflow`. A `## Workflows (CI)`

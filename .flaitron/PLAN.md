@@ -15,11 +15,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-EPIC-919** [moderate]🧩 | derived-figures — Hand-copied figures in the audit overlay go stale within weeks. CORE-869.4 re-measured them on 2026-11-06 and they have drifted again (`tools/drift-checks.sh` 973 → 1,221 lines), and `flaitron-reconciled:` still reads v8.4.0 after v8.5.0. Swap figures for the command that yields them instead of re-measuring. Discovery supplied by audit-repo 2026-11-24. Surfaced by audit-repo 2026-11-24 (Theme: Hand-copied figures go stale)
-  - [x] **CORE-919.2** [light]🔧 [unattended] | overlay-figures-to-commands — Completed 2026-11-24.
-  - [x] **CORE-919.3** [heavy]🧠 | reconciled-pin-guard — Completed 2026-11-24.
-  - [x] **CORE-919.4** [light]🔧 | overlay-markdown-counts — Completed 2026-11-24.
-  - [ ] **CORE-919.N** [moderate]🧩 | derived-figures audit
 - [ ] **CORE-EPIC-920** [heavy]🧠 | near-cap-trims-2 — Six budgeted surfaces sit at 95–97% of their caps 18 days after CORE-869.5 trimmed the last such set, so each next edit to them pays a trim first. Discovery supplied by audit-repo 2026-11-24. Surfaced by audit-repo 2026-11-24 (Theme: Budget trims don't hold)
   - [ ] **CORE-920.2** [heavy]🧠 | headroom-spec-modules — Bring `SPEC/post-closure.md` (95%) and `SPEC/tasknote-selection.md` (97%) under their NEAR CAP lines with pointer-not-narrate cuts, ledger rows updated in `docs/CONTEXT-BUDGET.md`.
   - [ ] **CORE-920.3** [heavy]🧠 | headroom-runner-bodies — Same for `SPEC/procedures/ft-task.md` (95%) and `claude/AGENTS-snippet.md` (97%), whose paste-block reaches every adopter's `AGENTS.md` on its next bump.
@@ -37,6 +32,11 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-EPIC-919** [moderate]🧩 | derived-figures — Completed 2026-11-24.
+  - [x] **CORE-919.2** [light]🔧 [unattended] | overlay-figures-to-commands — Completed 2026-11-24.
+  - [x] **CORE-919.3** [heavy]🧠 | reconciled-pin-guard — Completed 2026-11-24.
+  - [x] **CORE-919.4** [light]🔧 | overlay-markdown-counts — Completed 2026-11-24.
+  - [x] **CORE-919.N** [moderate]🧩 | derived-figures audit — Completed 2026-11-24.
 - [x] **CORE-938** [light] | paste-block-heading-anchor — Completed 2026-11-24.
 - [x] **CORE-937** [light] | paste-block-opener-strict — Completed 2026-11-24.
 - [x] **CORE-930** [light] | paste-block-fence-crlf — Completed 2026-11-24.

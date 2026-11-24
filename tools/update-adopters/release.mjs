@@ -72,7 +72,7 @@ export async function describePin(sha) {
 }
 
 // Sentinel the two SHA resolvers (canonicalTagSha below, recordedGitlinkSha in
-// the entry) return when git could not answer. It
+// check.mjs) return when git could not answer. It
 // used to be a bare `null`, which read identically to "resolved, nothing to
 // compare" — so a failed `rev-parse` reached gitlinkDrift as "no drift" and
 // checkAdopter reported the adopter as ✓ current off a git failure (CORE-490.2).

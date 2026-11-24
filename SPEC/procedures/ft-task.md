@@ -342,14 +342,15 @@ After the Phase 1→2 gate clears, Phase 2 → Phase 3 → Phase 4 closure ops f
      chip; it is render-derived from YAML.
   3. YAML `status: completed` — a lifecycle write, which write-once does not
      reach — and the body's `**Archived:**` line set to today.
-  4. Superseded-claim pointer, if this task falsified an archived claim, in
-     the same commit ([`SPEC/superseded-claims.md`](../superseded-claims.md)).
+  4. Superseded-claim pointer, if this task falsified an archived claim
+     ([`SPEC/superseded-claims.md`](../superseded-claims.md)).
   5. Flip **only this task's** PLAN.md line to
      `[x] **<TASK-ID>** [model] | shortname — Completed YYYY-MM-DD.`, every
      other bracket token and glyph copied verbatim. Standalone → top of
-     `## Completed`; an epic child stays nested under its parent until the
-     closure that leaves every child `[x]` moves the cohort
-     ([`SPEC/epic.md` §"Child placement invariant"](../epic.md)).
+     `## Completed`; an epic child stays nested under its parent
+     ([`SPEC/epic.md` §"Child placement invariant"](../epic.md)). A section
+     this move leaves empty gets its `(none)` back
+     ([`SPEC/plan-filing.md` §"Empty-section placeholder"](../plan-filing.md)).
   6. Recap (with the `touches:` reconciliation) and **Learnings**; persist
      handoffs in the note and file each deferred real-world step as an open
      PLAN row ([`SPEC.md` §"Deferred hand-off filing"](../../SPEC.md)).
@@ -360,8 +361,7 @@ After the Phase 1→2 gate clears, Phase 2 → Phase 3 → Phase 4 closure ops f
      relaxes this.
   8. Move the tasknote to `.flaitron/tasknote/archive/<area>/<TASK-ID>.md`.
 
-  No banner here — the recap bundles into Step 6, and the next-task
-  suggestion lands after the commit.
+  No banner here — the recap bundles into Step 6.
 
 ### 6 — Post-closure protocol
 

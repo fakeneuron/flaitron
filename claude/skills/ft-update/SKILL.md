@@ -197,7 +197,11 @@ only the link.
   (now at `<target>`): the body of the first ```` ```markdown ```` fence after
   `## Block to paste into AGENTS.md`, fence lines dropped. No AGENTS.md or no
   such heading → nothing to do; more than one, or no block → skip with a
-  note. **The bytes and skips are pinned by
+  note. That fence is the first line opening a fence with 3+ backticks and
+  `markdown`, and it closes where that fence does (an inner tilde fence is
+  body; a same-length backtick line ends it). A CRLF AGENTS.md (its
+  `## Workflow` heading line ends in CR) gets the block in CRLF.
+  **The bytes and skips are pinned by
   `<FT>/SPEC/fixtures/workflow-block/cases.json`** (its `describes` states
   the rule; the updater's suite runs every case). Read it before writing;
   where this summary and a case differ, the case wins.

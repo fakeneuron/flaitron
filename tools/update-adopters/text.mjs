@@ -59,24 +59,31 @@ export function rewritePinLines(text, tag) {
 
 // The `## Workflow` block inside claude/AGENTS-snippet.md's paste fence (the
 // first ```markdown fence after `## Block to paste into AGENTS.md`), without
-// the fence lines; null when the snippet has no such block or it does not
-// open with a `## Workflow` heading.
+// the fence lines; null when the snippet has no such block, the fence never
+// closes, or it does not open with a `## Workflow` heading. The fence is read
+// by fenceOpeners' rules: only a line that opens a fence can be the paste
+// fence, and it closes where the fence does — an inner fence is body text.
 export function workflowPasteBlock(snippet) {
-  const lines = snippet.split('\n');
+  // The trailing '' sits outside any fence, so an unclosed paste fence shows
+  // as a run of lines that never ends rather than as one that ends at EOF.
+  const lines = [...snippet.split('\n'), ''];
+  const openers = fenceOpeners(lines);
   const heading = lines.findIndex((l) => /^## Block to paste into AGENTS\.md/.test(l));
   if (heading === -1) return null;
-  const open = lines.findIndex((l, i) => i > heading && /^```markdown/.test(l));
+  const open = lines.findIndex((l, i) => i > heading && openers[i] === i && /^`{3,}markdown/.test(l));
   if (open === -1) return null;
-  const close = lines.findIndex((l, i) => i > open && /^```/.test(l));
-  if (close === -1) return null;
-  const body = lines.slice(open + 1, close);
+  const end = openers.findIndex((o, i) => i > open && o !== open);
+  if (end === -1) return null;
+  const body = lines.slice(open + 1, end - 1);
   return WORKFLOW_HEADING.test(body[0] ?? '') ? body.join('\n') : null;
 }
 
 // `agents` with its one `## Workflow` section — that heading through the line
 // before the next H1/H2 heading or `<!-- <name>:start -->` marker, or to EOF —
 // replaced by `block`, one blank line kept before that next line (wave-bump's
-// awk output shape). Lines inside code fences are never section ends.
+// awk output shape). Lines inside code fences are never section ends. A file
+// whose `## Workflow` heading line ends in CR is a CRLF file: the block and the
+// line breaks this adds are CRLF too, so no line ending is mixed in (CORE-930).
 function replaceWorkflowSection(agents, block) {
   const lines = agents.split('\n');
   const ok = headingLines(lines);
@@ -84,8 +91,10 @@ function replaceWorkflowSection(agents, block) {
   const next = lines.findIndex((l, i) => i > start && ok[i] && SECTION_END.test(l));
   const before = lines.slice(0, start).join('\n');
   const head = start > 0 ? `${before}\n` : '';
-  if (next === -1) return `${head}${block}\n`;
-  return `${head}${block}\n\n${lines.slice(next).join('\n')}`;
+  const eol = lines[start].endsWith('\r') ? '\r\n' : '\n';
+  const body = eol === '\n' ? block : block.replace(/\r$/, '').replace(/\r?\n/g, eol);
+  if (next === -1) return `${head}${body}${eol}`;
+  return `${head}${body}${eol}${eol}${lines.slice(next).join('\n')}`;
 }
 
 // What the follow-through does to AGENTS.md's text `agents` for the target's

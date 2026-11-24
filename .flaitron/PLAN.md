@@ -28,9 +28,9 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Low
 
-- [ ] **CORE-930** [light] | paste-block-fence-crlf — Make `workflowPasteBlock` use `fenceOpeners` (an inner fence truncates the block today) and decide CRLF AGENTS.md endings; pin both in `SPEC/fixtures/workflow-block/cases.json`.
 - [ ] **CORE-933** [light]🔧 | epic-audit-drift-line-restore-read — Blocked by decay-window depth: once 5 `.N` audit tasknotes archive after window-start `f2887f37` (CORE-927), check whether any missed cumulative doc-drift the Phase 4 sweep did not catch; if one did, restore the Acceptance line in `claude/skills/ft-close-epic/SKILL.md` and un-window `SPEC/epic.md`; otherwise close the window.
 - [ ] **CORE-935** [light] | updater-node-guard-order — The Node ≥20 guard in `tools/update-adopters.mjs` now runs after six static module imports load; move it into a first-imported module or drop it.
+- [ ] **CORE-937** [light] | paste-block-opener-strict — `workflowPasteBlock`: add a word boundary to the `markdown` opener and skip a `## Block to paste` heading inside a fence; pin both in `workflow-block/cases.json` `snippetCases`.
 
 ## Future Opportunities
 
@@ -38,6 +38,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-930** [light] | paste-block-fence-crlf — Completed 2026-11-24.
 - [x] **CORE-934** [light] | fixed-drift-labels — Completed 2026-11-24.
 - [x] **CORE-925** [light]🔧 | just-wire — Completed 2026-11-24.
 - [x] **CORE-929** [light]🔧 | roster-pin-check-docs — Completed 2026-11-24.

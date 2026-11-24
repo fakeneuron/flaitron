@@ -1104,6 +1104,15 @@ describe('follow-through text helpers (CORE-852.4)', () => {
     }
   });
 
+  // The same fixture's `snippetCases` pin how the paste block is read (CORE-930).
+  it('workflowPasteBlock passes every SPEC/fixtures/workflow-block snippet case', async () => {
+    const { snippetCases } = JSON.parse(await readFile(new URL('../SPEC/fixtures/workflow-block/cases.json', import.meta.url), 'utf8'));
+    assert.ok(snippetCases.length > 0);
+    for (const c of snippetCases) {
+      assert.equal(workflowPasteBlock(c.snippet.join('\n')), c.expected === null ? null : c.expected.join('\n'), c.name);
+    }
+  });
+
   it('a project\'s own ## Workflows… heading is not the flaitron section', async () => {
     const root = await mkdtemp(join(tmpdir(), 'ft-upd-follow-ci-'));
     const adopter = await makeAdopter(root, 'ci-workflows', previous);

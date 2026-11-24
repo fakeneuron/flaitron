@@ -11,10 +11,22 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-(none)
+- [ ] **CORE-EPIC-918** [moderate]🧩 | closure-placeholder — The Phase 4 Closed line never says to put `(none)` back when a closure empties a section. The rule lives only in `SPEC/plan-filing.md` §"Empty-section placeholder", and closures apply it unevenly: CORE-913 and CORE-915 did, CORE-916 and CORE-917 did not, and `## Medium` and `## Future Opportunities` were already blank at v8.5.0. Discovery supplied by audit-repo 2026-11-24. Surfaced by audit-repo 2026-11-24 (Theme: Rules that live only in lazy modules)
+  - [ ] **CORE-918.2** [light]🔧 [unattended] | closure-none-clause — Add "a section this move leaves empty gets its `(none)` back" with a pointer to `SPEC/plan-filing.md` §"Empty-section placeholder" to the Phase 4 Closed line in `SPEC.md` §"🚀 Phase 4: Closure" and in `templates/tasknote-template.md`, keeping any pair that binds the two in step.
+  - [ ] **CORE-918.3** [moderate]🧩 [unattended] | plan-placeholder-check — New `tools/drift-checks.sh` check that fails when a priority section of the live `.flaitron/PLAN.md` holds neither a task row nor `(none)`, with its seeded case in `tools/drift-checks.test.mjs`. In the same change, restore `(none)` under any open section still blank and drop the stray blank line inside `## Completed`, so the check lands green.
+  - [ ] **CORE-918.N** [moderate]🧩 | closure-placeholder audit
 
 ## Medium
 
+- [ ] **CORE-EPIC-919** [moderate]🧩 | derived-figures — Hand-copied figures in the audit overlay go stale within weeks. CORE-869.4 re-measured them on 2026-11-06 and they have drifted again (`tools/drift-checks.sh` 973 → 1,221 lines), and `flaitron-reconciled:` still reads v8.4.0 after v8.5.0. Swap figures for the command that yields them instead of re-measuring. Discovery supplied by audit-repo 2026-11-24. Surfaced by audit-repo 2026-11-24 (Theme: Hand-copied figures go stale)
+  - [ ] **CORE-919.2** [light]🔧 [unattended] | overlay-figures-to-commands — In `.flaitron/audit-overlay/SKILL.md`, bump `flaitron-reconciled:` to v8.5.0 (`git diff v8.4.0 v8.5.0 -- claude/skills/ft-audit/` is empty) and replace the docs-scope file count and the structure pass-4 line counts, median and p90 with the command that produces each. Keep the frontend chunk sizes, which are a regression baseline. Done when `grep -n 'at v8.3.0' .flaitron/audit-overlay/SKILL.md` prints nothing.
+  - [ ] **CORE-919.3** [heavy]🧠 | reconciled-pin-guard — Decide where a `flaitron-reconciled:` pin that trails the tag gets caught: a `/ft-release` §7.1 step that bumps it when the scaffold diff is empty, or a drift check. Today only an audit notices (CORE-900, then this run). `claude/skills/ft-release/**` is at 95% of its byte budget.
+  - [ ] **CORE-919.N** [moderate]🧩 | derived-figures audit
+- [ ] **CORE-EPIC-920** [heavy]🧠 | near-cap-trims-2 — Six budgeted surfaces sit at 95–97% of their caps 18 days after CORE-869.5 trimmed the last such set, so each next edit to them pays a trim first. Discovery supplied by audit-repo 2026-11-24. Surfaced by audit-repo 2026-11-24 (Theme: Budget trims don't hold)
+  - [ ] **CORE-920.2** [heavy]🧠 | headroom-spec-modules — Bring `SPEC/post-closure.md` (95%) and `SPEC/tasknote-selection.md` (97%) under their NEAR CAP lines with pointer-not-narrate cuts, ledger rows updated in `docs/CONTEXT-BUDGET.md`.
+  - [ ] **CORE-920.3** [heavy]🧠 | headroom-runner-bodies — Same for `SPEC/procedures/ft-task.md` (95%) and `claude/AGENTS-snippet.md` (97%), whose paste-block reaches every adopter's `AGENTS.md` on its next bump.
+  - [ ] **CORE-920.4** [heavy]🧠 | headroom-release-skill — Same for `claude/skills/ft-release/SKILL.md` (95%) and the `claude/skills/ft-release/**` directory cap (95%).
+  - [ ] **CORE-920.N** [heavy]🧠 | near-cap-trims-2 audit
 
 ## Low
 

@@ -43,6 +43,9 @@ flaitron does not submodule itself. In this repo:
   audit contract: they exist nowhere else and must be versioned.
   `.claude/skills/audit` is a directory symlink to it — per-machine wiring the
   operator re-creates from [`CONTRIBUTING.md`](../CONTRIBUTING.md) §"Developing flaitron skills".
+- `.flaitron/grok-checkout/<NOTE-ID>.md` — claim markers: one tracked file per operator-assigned Grok task note this repo took on as a task. The coding agent that claims the note writes it, and commits it with the claim.
+- `.flaitron/grok-done/<NOTE-ID>.md` — done markers: the matching closure record, with an `outcome:` key. The agent that closes the claimed task writes it, in the closure commit.
+- `.flaitron/screenshots/` — tracked images the README embeds (today `viz-board.png`, the README hero). A task that re-captures the hero writes it; agent self-verification captures stay outside the repo.
 - The `templates/` folder holds the canonical tasknote templates (full, micro, starter, sidequest) plus spec, loop-heartbeat, audit-overlay (usage: [`docs/MIGRATION.md`](../docs/MIGRATION.md) §1.2.1), and subagent-probe templates, and the `PLAN.md` / `tasknote-README.md` seed files.
 - `claude/` — Claude Code skills (`/ft-task`, `/ft-release`, `/ft-adopt`, ...); the adopter snippet lives at `claude/AGENTS-snippet.md`.
 - `codex/` — Codex skill wrappers for the full `ft-*` inventory plus Codex-specific wiring notes.

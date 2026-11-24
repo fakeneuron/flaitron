@@ -89,7 +89,7 @@ tasknotes in one window, auto-dispatch, or a job graph. See
 [`docs/WORKTREES.md`](../docs/WORKTREES.md) and
 [`docs/VISION.md`](../docs/VISION.md) §"What we won't accept".
 
-## Audit acceptance — fixed doc-drift line
+## Audit acceptance — cumulative doc-drift sweep
 
 **Windowed** ([[CORE-927]]). `/ft-close-epic` no longer scaffolds this
 line into an audit's `## ✅ Acceptance`; the sweep runs as the audit's

@@ -30,7 +30,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-930** [light] | paste-block-fence-crlf — Make `workflowPasteBlock` use `fenceOpeners` (an inner fence truncates the block today) and decide CRLF AGENTS.md endings; pin both in `SPEC/fixtures/workflow-block/cases.json`.
 - [ ] **CORE-933** [light]🔧 | epic-audit-drift-line-restore-read — Blocked by decay-window depth: once 5 `.N` audit tasknotes archive after window-start `f2887f37` (CORE-927), check whether any missed cumulative doc-drift the Phase 4 sweep did not catch; if one did, restore the Acceptance line in `claude/skills/ft-close-epic/SKILL.md` and un-window `SPEC/epic.md`; otherwise close the window.
-- [ ] **CORE-934** [light] | fixed-drift-labels — Reword the "fixed" doc-drift labels CORE-927 left in `claude/skills/ft-close-epic/SKILL.md` and the `SPEC/epic.md` heading; update citations together for pair_q.
 - [ ] **CORE-935** [light] | updater-node-guard-order — The Node ≥20 guard in `tools/update-adopters.mjs` now runs after six static module imports load; move it into a first-imported module or drop it.
 
 ## Future Opportunities
@@ -39,6 +38,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-934** [light] | fixed-drift-labels — Completed 2026-11-24.
 - [x] **CORE-925** [light]🔧 | just-wire — Completed 2026-11-24.
 - [x] **CORE-929** [light]🔧 | roster-pin-check-docs — Completed 2026-11-24.
 - [x] **CORE-928** [light]🔧 | conventions-check-roster — Added `plan_placeholder` to the "no source rule nor catalogue entry" list in `docs/CONVENTIONS.md` and made it seven; no tasknote. Completed 2026-11-24.

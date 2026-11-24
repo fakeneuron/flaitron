@@ -111,7 +111,7 @@ Pre-populate `## 🎯 Goal`, `## ✅ Acceptance`, and `## 🧩 Subtasks` with th
 
 ```markdown
 - [ ] Inventory cohort children's archived tasknotes — read each implementation child's Final Summary + Implementation Notes; capture deliverables in Discovery Notes
-- [ ] Walk `.flaitron/tasknote/README.md` §"AI-referenced docs" entries — fixed doc-drift sweep
+- [ ] Walk `.flaitron/tasknote/README.md` §"AI-referenced docs" entries — cumulative doc-drift sweep
 - [ ] Cohort coherence pass — naming consistency, style parity, no contradictory cross-refs across the cohort's deliverables
 - [ ] Surface audit findings in Implementation Notes; file each miss as an open child row (Step 5)
 - [ ] Phase 4: flip `<AUDIT-SUBTASK-ID>` PLAN line to stub form + archive tasknote
@@ -163,7 +163,7 @@ Markdown-prose verification only for most audits — no test surface. If the aud
 
 Walk the Phase 4 checklist for the audit subtask itself under SPEC §"Paper-complete guard". **No banner here** — closure ops auto-run; the recap drafted at the end bundles into Step 9's 📦 gate. Flip only when ready to proceed to the atomic commit in Step 9; flip **only the audit subtask line** here (the parent flip runs in Step 9's post-closure protocol — not collateral).
 
-- **Doc-drift sweep (fixed line)** — for each entry in `<tasknote dir>/README.md` §"AI-referenced docs", state per-entry verdict ("no change" or the specific update). `SPEC/epic.md` §"Audit acceptance — fixed doc-drift line" windows only the Acceptance line, not this sweep; never skip.
+- **Doc-drift sweep (cumulative)** — for each entry in `<tasknote dir>/README.md` §"AI-referenced docs", state per-entry verdict ("no change" or the specific update). `SPEC/epic.md` §"Audit acceptance — cumulative doc-drift sweep" windows only the Acceptance line, not this sweep; never skip.
 - **Tick through `## ✅ Acceptance`** — tick every criterion the audit satisfied; annotate any it did not (`N/A` / not-met with a one-line reason). Never leave a box silently unticked. Do **not** flip the markdown nav chip to `✅ Completed` — that write was retired by CORE-042.4 and the chip is render-derived from YAML (SPEC §"🚀 Phase 4: Closure").
 - **Flip the audit's PLAN.md line to stub form** — `- [x] **<AUDIT-SUBTASK-ID>** [<model>] | <shortname> audit — Completed YYYY-MM-DD.` per SPEC/plan-filing.md §"`## Completed` archive convention". Keep nested under `<AREA>-EPIC-<NUMBER>` in its current `## <Priority>` section (the parent and cohort move in Step 9, when every child is `[x]`). **Epics filed before CORE-418 carry a bare `| audit` placeholder — replace it with `| <parent-epic-shortname> audit`, do not preserve it.** `| shortname` is required so visualizers have a row title, and a row reading only "audit" is untitled once several epics have closed.
 - **Flip the audit tasknote's YAML `status:`** — `in-progress` → `completed`, before the move — a lifecycle write, not a retroactive edit (SPEC §"Tasknote frontmatter" → "Write-once does not cover lifecycle writes").

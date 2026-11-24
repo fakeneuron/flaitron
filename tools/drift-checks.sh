@@ -19,11 +19,11 @@
 # Design notes sit as `#` comments inside the body, next to the line they
 # explain. skill_pin_guard_parity (CORE-729), final_newline (CORE-621),
 # sidequest_orphan (CORE-742.2), plan_placeholder (CORE-918.3), handoff_rows
-# (CORE-866), installer_anchors (CORE-868.2) and supply_chain (CORE-904) have
-# neither a source rule nor a catalogue entry. snippet_roster_parity and
-# coverage_pin (CORE-924) automate a rule stated elsewhere — the snippet
-# roster's §7.1 installed-surface check, and the "bump both together"
-# comments in justfile and ci.yml.
+# (CORE-866), installer_anchors (CORE-868.2), supply_chain (CORE-904) and
+# updater_roster (CORE-936) have neither a source rule nor a catalogue entry.
+# snippet_roster_parity and coverage_pin (CORE-924) automate a rule stated
+# elsewhere — the snippet roster's §7.1 installed-surface check, and the
+# "bump both together" comments in justfile and ci.yml.
 #
 # Shape rules — the dispatcher below reads them:
 # - One check per top-level function, `name() {` and its closing `}` each at
@@ -1321,6 +1321,35 @@ for pair in "diff-cover|$jv|$cv" "coverage-min|$jm|$cm"; do
   [ "$a" = "$b" ] || { echo "PIN DRIFT  $what  justfile $a vs ci.yml $b"; bad=1; }
 done
 [ "$n" -gt 0 ] || { echo "VACUOUS coverage_pin  no pin compared"; exit 1; }
+[ -z "$bad" ] || exit 1
+}
+
+# Updater roster — tools/update-adopters/*.mjs ↔ AGENTS.md §"Validation"
+updater_roster() {
+# CORE-936. pair_h and pair_t bind AGENTS.md to ci.yml and the justfile,
+# but all three list modules by hand, so a module added under
+# tools/update-adopters/ and left off AGENTS.md is missing from every
+# surface and nothing notices. `node --check` reads one file per call, so a
+# glob cannot stand in for the lines. Binding AGENTS.md alone covers the
+# other two, through pair_h and pair_t. Direct children only: the roster
+# names no subdirectory, and the entrypoint and test file sit beside the
+# directory, not in it. Both directions fail, so a deleted module's line
+# does not outlive it.
+bad=
+n=0
+roster=$(awk '/^## Validation$/,/^## Dev Server$/' AGENTS.md | sed -nE 's#^node --check (tools/update-adopters/[^ ]+)$#\1#p' || true)
+[ -n "$roster" ] || { echo "VACUOUS updater_roster  no node --check tools/update-adopters/ line read from AGENTS.md"; exit 1; }
+for f in tools/update-adopters/*.mjs; do
+  [ -f "$f" ] || continue
+  n=$((n+1))
+  printf '%s\n' "$roster" | grep -qxF "$f" || { echo "UNLISTED MODULE  $f"; bad=1; }
+done
+[ "$n" -gt 0 ] || { echo "VACUOUS updater_roster  no module under tools/update-adopters/"; exit 1; }
+while IFS= read -r f; do
+  [ -f "$f" ] || { echo "STALE ROSTER LINE  $f"; bad=1; }
+done <<EOF
+$roster
+EOF
 [ -z "$bad" ] || exit 1
 }
 

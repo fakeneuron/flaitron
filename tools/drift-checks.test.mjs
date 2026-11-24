@@ -319,6 +319,20 @@ const CASES = {
       /^-ft-refactor$/m,
     ],
   },
+  updater_roster: {
+    // One module with no roster line, and one roster line with no module.
+    seed: () => {
+      write('tools/update-adopters/zz-drift.mjs', '// zz\n');
+      edit('AGENTS.md', (s) => s.replace(
+        'node --check tools/update-adopters/apply.mjs\n',
+        'node --check tools/update-adopters/apply.mjs\nnode --check tools/update-adopters/zz-gone.mjs\n',
+      ));
+    },
+    finding: [
+      /^UNLISTED MODULE {2}tools\/update-adopters\/zz-drift\.mjs$/m,
+      /^STALE ROSTER LINE {2}tools\/update-adopters\/zz-gone\.mjs$/m,
+    ],
+  },
   coverage_pin: {
     // Moves ci.yml's pin and floor without the justfile, whatever they read.
     seed: () => edit('.github/workflows/ci.yml', (s) => s

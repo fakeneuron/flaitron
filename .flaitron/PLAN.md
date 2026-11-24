@@ -35,7 +35,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 - [ ] **CORE-933** [light]🔧 | epic-audit-drift-line-restore-read — Blocked by decay-window depth: once 5 `.N` audit tasknotes archive after window-start `f2887f37` (CORE-927), check whether any missed cumulative doc-drift the Phase 4 sweep did not catch; if one did, restore the Acceptance line in `claude/skills/ft-close-epic/SKILL.md` and un-window `SPEC/epic.md`; otherwise close the window.
 - [ ] **CORE-934** [light] | fixed-drift-labels — Reword the "fixed" doc-drift labels CORE-927 left in `claude/skills/ft-close-epic/SKILL.md` and the `SPEC/epic.md` heading; update citations together for pair_q.
 - [ ] **CORE-935** [light] | updater-node-guard-order — The Node ≥20 guard in `tools/update-adopters.mjs` now runs after six static module imports load; move it into a first-imported module or drop it.
-- [ ] **CORE-936** [light] | roster-covers-modules — Add a drift check diffing `tools/update-adopters/*.mjs` against the `node --check` lines in AGENTS.md §"Validation", so a module left off the roster fails.
 
 ## Future Opportunities
 
@@ -43,6 +42,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-936** [light] | roster-covers-modules — Completed 2026-11-24.
 - [x] **CORE-932** [light] | check-updater-modules — Completed 2026-11-24.
 - [x] **CORE-EPIC-931** [moderate]🧩 | updater-modules — Completed 2026-11-24.
   - [x] **CORE-931.2** [moderate]🧩 [unattended] | release-module — Completed 2026-11-24.

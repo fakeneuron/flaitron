@@ -92,7 +92,7 @@ Append to `.flaitron/PLAN.md` under the chosen `## <Priority>` heading. Use the 
 ```markdown
 - [ ] **<AREA>-EPIC-<next-N>** [<model>] | <shortname> — One-paragraph epic description (filed via /ft-open-epic; refined at .1 closure).
   - [ ] **<AREA>-<next-N>.1** [<.1-model>] | <shortname> discovery — Scope shared design and file children .2..<M+1> per SPEC/epic.md.
-  - [ ] **<AREA>-<next-N>.N** [<.N-model>] | <shortname> audit — Final-subtask audit per SPEC/epic.md (fixed doc-drift sweep acceptance line). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
+  - [ ] **<AREA>-<next-N>.N** [<.N-model>] | <shortname> audit — Final-subtask audit per SPEC/epic.md (cumulative doc-drift sweep). Filed now with the reserved terminal `.N` suffix (never renumbers as children are added).
 ```
 
 Placement:

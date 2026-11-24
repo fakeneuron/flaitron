@@ -91,12 +91,14 @@ tasknotes in one window, auto-dispatch, or a job graph. See
 
 ## Audit acceptance — fixed doc-drift line
 
-Every audit subtask's
-`## ✅ Acceptance` includes a doc-drift sweep across
-`.flaitron/tasknote/README.md` §"AI-referenced docs": for each entry,
-"no change" or the update. Always present — ticks fast when nothing
-drifted, surfaces the cumulative slice-local staleness that per-task
-Phase 4 closures can miss.
+**Windowed** ([[CORE-927]]). `/ft-close-epic` no longer scaffolds this
+line into an audit's `## ✅ Acceptance`; the sweep runs as the audit's
+Subtasks walk and Phase 4 box. The line was a doc-drift sweep across
+`.flaitron/tasknote/README.md` §"AI-referenced docs" ("no change" or the
+update per entry), kept to surface the cumulative slice-local staleness
+that per-task Phase 4 closures can miss. Window-start `f2887f37`, the
+last commit carrying it; after five `.N` audits archive past that SHA,
+[[CORE-933]] restores it only if one missed drift the sweep did not catch.
 
 **Skills.** The filing-and-Discovery side of the lifecycle (steps 1-2
 above) is codified in `claude/skills/ft-open-epic/`; the audit-and-close

@@ -38,11 +38,11 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Low
 
-- [ ] **CORE-927** [light]🔧 [unattended] | epic-audit-drift-line-window — Open a decay window on the `.N` audit's fixed doc-drift Acceptance line: drop it and its "non-negotiable" lead-in from `claude/skills/ft-close-epic/SKILL.md`, keeping the Goal, Subtask walk and Phase 4 sweep; mark `SPEC/epic.md` §"Audit acceptance — fixed doc-drift line" as windowed; record the window-start SHA; file the restore-read row (bar: 5 `.N` audits archived after it). Surfaced by audit-context 2026-11-24 (Finding #1, Low).
 - [ ] **CORE-928** [light]🔧 | conventions-check-roster — In `docs/CONVENTIONS.md` §"GitHub Actions CI", the "Six checks have neither a source rule nor a catalogue entry" list omits `plan_placeholder`; add it (CORE-918.3: each priority section in `.flaitron/PLAN.md` holds a row or `(none)`, never both, and all five headings exist) and make it seven. Surfaced by CORE-918.3 doc-drift sweep.
 - [ ] **CORE-929** [light]🔧 | roster-pin-check-docs — Name the CORE-924 checks where their rules live: `snippet_roster_parity` in `claude/AGENTS-snippet.md` §"One-time symlink wiring" and in place of `step-7.1-standing-checks.md`'s four roster diffs; `coverage_pin` in the `justfile`/`ci.yml` coverage comments; both in `docs/CONVENTIONS.md` §"GitHub Actions CI". Updates: `.flaitron/tasknote/archive/core/CORE-924.md` Phase 4.
 - [ ] **CORE-930** [light] | paste-block-fence-crlf — Make `workflowPasteBlock` use `fenceOpeners` (an inner fence truncates the block today) and decide CRLF AGENTS.md endings; pin both in `SPEC/fixtures/workflow-block/cases.json`.
 - [ ] **CORE-932** [light] | check-updater-modules — Add `tools/update-adopters/*.mjs` to the `node --check` step in justfile `check`, ci.yml and AGENTS.md §"Validation"; `/ft-release` Pair H pins the roster, so change all together.
+- [ ] **CORE-933** [light]🔧 | epic-audit-drift-line-restore-read — Blocked by decay-window depth: once 5 `.N` audit tasknotes archive after window-start `f2887f37` (CORE-927), check whether any missed cumulative doc-drift the Phase 4 sweep did not catch; if one did, restore the Acceptance line in `claude/skills/ft-close-epic/SKILL.md` and un-window `SPEC/epic.md`; otherwise close the window.
 
 ## Future Opportunities
 
@@ -50,6 +50,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-927** [light]🔧 [unattended] | epic-audit-drift-line-window — Completed 2026-11-24.
 - [x] **CORE-921** [heavy]🧠 | updater-followthrough-owner — Completed 2026-11-24.
 - [x] **CORE-EPIC-918** [moderate]🧩 | closure-placeholder — Completed 2026-11-24.
   - [x] **CORE-918.2** [light]🔧 [unattended] | closure-none-clause — Completed 2026-11-24.

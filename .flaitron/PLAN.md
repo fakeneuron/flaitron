@@ -25,15 +25,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [ ] **CORE-920.3** [heavy]🧠 | headroom-runner-bodies — Same for `SPEC/procedures/ft-task.md` (95%) and `claude/AGENTS-snippet.md` (97%), whose paste-block reaches every adopter's `AGENTS.md` on its next bump.
   - [ ] **CORE-920.4** [heavy]🧠 | headroom-release-skill — Same for `claude/skills/ft-release/SKILL.md` (95%) and the `claude/skills/ft-release/**` directory cap (95%).
   - [ ] **CORE-920.N** [heavy]🧠 | near-cap-trims-2 audit
-- [ ] **CORE-EPIC-931** [moderate]🧩 | updater-modules — Split `tools/update-adopters.mjs` (1,671 lines, seven responsibilities) into modules under `tools/update-adopters/`, leaf-first, behind the entry as a re-exporting facade so the CLI path, test imports and CI roster hold (filed via /ft-refactor; plan on the child starters).
-  - [x] **CORE-931.2** [moderate]🧩 [unattended] | release-module — Completed 2026-11-24.
-  - [x] **CORE-931.3** [light]🔧 [unattended] | workspace-module — Completed 2026-11-24.
-  - [x] **CORE-931.4** [light]🔧 [unattended] | text-module — Completed 2026-11-24.
-  - [x] **CORE-931.5** [moderate]🧩 [unattended] | wiring-module — Completed 2026-11-24.
-  - [x] **CORE-931.6** [moderate]🧩 [unattended] | check-module — Completed 2026-11-24.
-  - [x] **CORE-931.7** [moderate]🧩 [unattended] | apply-module — Completed 2026-11-24.
-  - [x] **CORE-931.8** [moderate]🧩 | entry-docs — Completed 2026-11-24.
-  - [ ] **CORE-931.N** [moderate]🧩 | updater-modules audit
 - [ ] **CORE-925** [light]🔧 | just-wire — Add an idempotent `wire` recipe to `justfile` (missing `.claude/skills`, overlay and `.agents/skills` links only; prints dangling links, removes none) and point `CONTRIBUTING.md` §"Developing flaitron skills" at it. Surfaced by audit-structure 2026-11-24 (Finding #8, Medium)
 
 ## Low
@@ -52,6 +43,15 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-EPIC-931** [moderate]🧩 | updater-modules — Completed 2026-11-24.
+  - [x] **CORE-931.2** [moderate]🧩 [unattended] | release-module — Completed 2026-11-24.
+  - [x] **CORE-931.3** [light]🔧 [unattended] | workspace-module — Completed 2026-11-24.
+  - [x] **CORE-931.4** [light]🔧 [unattended] | text-module — Completed 2026-11-24.
+  - [x] **CORE-931.5** [moderate]🧩 [unattended] | wiring-module — Completed 2026-11-24.
+  - [x] **CORE-931.6** [moderate]🧩 [unattended] | check-module — Completed 2026-11-24.
+  - [x] **CORE-931.7** [moderate]🧩 [unattended] | apply-module — Completed 2026-11-24.
+  - [x] **CORE-931.8** [moderate]🧩 | entry-docs — Completed 2026-11-24.
+  - [x] **CORE-931.N** [moderate]🧩 | updater-modules audit — Completed 2026-11-24.
 - [x] **CORE-927** [light]🔧 [unattended] | epic-audit-drift-line-window — Completed 2026-11-24.
 - [x] **CORE-921** [heavy]🧠 | updater-followthrough-owner — Completed 2026-11-24.
 - [x] **CORE-EPIC-918** [moderate]🧩 | closure-placeholder — Completed 2026-11-24.

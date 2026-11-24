@@ -43,6 +43,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 - [ ] **CORE-930** [light] | paste-block-fence-crlf — Make `workflowPasteBlock` use `fenceOpeners` (an inner fence truncates the block today) and decide CRLF AGENTS.md endings; pin both in `SPEC/fixtures/workflow-block/cases.json`.
 - [ ] **CORE-932** [light] | check-updater-modules — Add `tools/update-adopters/*.mjs` to the `node --check` step in justfile `check`, ci.yml and AGENTS.md §"Validation"; `/ft-release` Pair H pins the roster, so change all together.
 - [ ] **CORE-933** [light]🔧 | epic-audit-drift-line-restore-read — Blocked by decay-window depth: once 5 `.N` audit tasknotes archive after window-start `f2887f37` (CORE-927), check whether any missed cumulative doc-drift the Phase 4 sweep did not catch; if one did, restore the Acceptance line in `claude/skills/ft-close-epic/SKILL.md` and un-window `SPEC/epic.md`; otherwise close the window.
+- [ ] **CORE-934** [light] | fixed-drift-labels — Reword the "fixed" doc-drift labels CORE-927 left in `claude/skills/ft-close-epic/SKILL.md` and the `SPEC/epic.md` heading; update citations together for pair_q.
 
 ## Future Opportunities
 

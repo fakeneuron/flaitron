@@ -103,7 +103,8 @@ jobs:
   # Changed-line coverage for viz (FE-151, after natabula NAT-229): fails when
   # under COVERAGE_MIN% of the lines a push or PR adds or changes are covered.
   # Never a whole-project percentage. `just coverage` is the local mirror;
-  # bump the pin and threshold in both together. Every step uses `- name:` +
+  # bump the pin and threshold in both together (the `coverage_pin` drift
+  # check fails when they differ). Every step uses `- name:` +
   # `run:` so Pair H's `      - run: ` extraction (validate's roster) never
   # sees it. diff-cover runs via the runner image's preinstalled pipx, so no
   # third-party action is added.

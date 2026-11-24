@@ -32,7 +32,7 @@ ft-audit-repo      (global-only)
 ft-release         (flaitron-self-only)
 ```
 
-Run the derivation, then the four set-equality diffs:
+Run the derivation and the expected-set diff, then the function CI runs for the three platform blocks:
 
 ```sh
 ssot=$(grep '^ln -s ../../.flaitron/core/claude/skills/' claude/AGENTS-snippet.md \
@@ -45,14 +45,10 @@ diff -u <(ls claude/skills | grep '^ft-' \
         <(printf '%s\n' "$ssot")
 
 # Each derived platform block must be the same set under its substitution.
-diff -u <(printf '%s\n' "$ssot") <(grep '^ln -s ../../.flaitron/core/codex/skills/'  codex/AGENTS-snippet.md  | awk '{print $3}' | sed -E 's#.*/##' | sort -u)
-diff -u <(printf '%s\n' "$ssot") <(grep '^ln -s ../../.flaitron/core/claude/skills/' cursor/AGENTS-snippet.md | awk '{print $3}' | sed -E 's#.*/##' | sort -u)
-diff -u <(printf '%s\n' "$ssot") <(grep '^ln -s ../../.flaitron/core/claude/skills/' grok/AGENTS-snippet.md   | awk '{print $3}' | sed -E 's#.*/##' | sort -u)
+bash tools/drift-checks.sh snippet_roster_parity
 ```
 
-All four `diff` commands must produce no output and exit 0. A `-` line is a policy-subset skill missing from that surface; a `+` line is a slug installed that policy excludes — the forbidden-install case, now caught by the same diff rather than a separate grep pass.
-
-The anchored `grep` prefixes are load-bearing: `codex/AGENTS-snippet.md` carries a second `ln -s` block (the maintainer hot-reload glob `codex/skills/*`), and an unanchored match would drag `*` into the set.
+The expected-set `diff` must produce no output and exit 0, and the function must print `snippet_roster_parity ok`. In that `diff`, a `-` line is a policy-subset skill missing from the roster and a `+` line is a slug it installs that policy excludes — the forbidden-install case, caught by the same diff rather than a separate grep pass. `ROSTER DRIFT` (with its own unified diff, same `-`/`+` reading) is the finding for a platform block, `BAD WIRING` a wiring line that does not read `<platform source>/skills/<slug> <platform dest>/<slug>`, `MISSING FILE` an absent snippet, and `VACUOUS snippet_roster_parity` a read that found no wiring line. The function's comments carry the anchoring rule, which keeps `codex/AGENTS-snippet.md`'s second `ln -s` block (the maintainer hot-reload glob) out of the set; CI runs it on every push too (CORE-924).
 
 **Why this shape.** Do not re-hardcode the expected slug list: the predecessor did, and it went stale the day `/ft-refactor` shipped (CORE-463.5; found by CORE-465). Deriving both halves means only a genuine policy or wiring divergence fails. Fix any finding inline as Critical/High before cutting the release.
 

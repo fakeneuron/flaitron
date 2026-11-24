@@ -80,9 +80,9 @@ copy-pasted by adopters and parsed by `tools/update-adopters.mjs`
 (`snippetLinks()` / `codexRoster()`), `install.sh` (`wire_project`), `/ft-update` Step 4, and (Codex block)
 `codex/reconcile-skills.md` — so **adding or removing a skill
 means editing this block first, then regenerating the three platform blocks by
-substitution.** `/ft-release` §7.1's installed-surface check derives its expected
-set from here and diffs all four blocks against it; there is no hand-maintained
-roster left to drift.
+substitution.** CI's `snippet_roster_parity` holds the three platform blocks to
+this one on every push, and `/ft-release` §7.1's installed-surface check derives
+its expected set from here; there is no hand-maintained roster left to drift.
 
 Run these from the project root after adding the flaitron submodule at `.flaitron/core/`:
 

@@ -29,7 +29,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Low
 
-- [ ] **CORE-929** [light]🔧 | roster-pin-check-docs — Name the CORE-924 checks where their rules live: `snippet_roster_parity` in `claude/AGENTS-snippet.md` §"One-time symlink wiring" and in place of `step-7.1-standing-checks.md`'s four roster diffs; `coverage_pin` in the `justfile`/`ci.yml` coverage comments; both in `docs/CONVENTIONS.md` §"GitHub Actions CI". Updates: `.flaitron/tasknote/archive/core/CORE-924.md` Phase 4.
 - [ ] **CORE-930** [light] | paste-block-fence-crlf — Make `workflowPasteBlock` use `fenceOpeners` (an inner fence truncates the block today) and decide CRLF AGENTS.md endings; pin both in `SPEC/fixtures/workflow-block/cases.json`.
 - [ ] **CORE-933** [light]🔧 | epic-audit-drift-line-restore-read — Blocked by decay-window depth: once 5 `.N` audit tasknotes archive after window-start `f2887f37` (CORE-927), check whether any missed cumulative doc-drift the Phase 4 sweep did not catch; if one did, restore the Acceptance line in `claude/skills/ft-close-epic/SKILL.md` and un-window `SPEC/epic.md`; otherwise close the window.
 - [ ] **CORE-934** [light] | fixed-drift-labels — Reword the "fixed" doc-drift labels CORE-927 left in `claude/skills/ft-close-epic/SKILL.md` and the `SPEC/epic.md` heading; update citations together for pair_q.
@@ -41,6 +40,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-929** [light]🔧 | roster-pin-check-docs — Completed 2026-11-24.
 - [x] **CORE-928** [light]🔧 | conventions-check-roster — Added `plan_placeholder` to the "no source rule nor catalogue entry" list in `docs/CONVENTIONS.md` and made it seven; no tasknote. Completed 2026-11-24.
 - [x] **CORE-936** [light] | roster-covers-modules — Completed 2026-11-24.
 - [x] **CORE-932** [light] | check-updater-modules — Completed 2026-11-24.

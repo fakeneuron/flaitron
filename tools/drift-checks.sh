@@ -1254,9 +1254,9 @@ fi
 # Snippet roster parity — four */AGENTS-snippet.md wiring blocks
 snippet_roster_parity() {
 # CORE-924. claude/AGENTS-snippet.md §"One-time symlink wiring" is the
-# roster; the codex, cursor and grok blocks are its derived surfaces, and
-# /ft-release §7.1's installed-surface check diffs them only at release.
-# This is that set comparison at every push. A wiring line is a column-0
+# roster; the codex, cursor and grok blocks are its derived surfaces. This
+# is their set comparison at every push; the release skill's §7.1
+# installed-surface check runs this function too and adds the expected-set diff. A wiring line is a column-0
 # `ln -s ../../.flaitron/core/` line, so inline prose, codex's
 # `(cd … && ln -s …)` dev line and any other column-0 `ln -s` never count.
 # Each must read `<platform source>/skills/<slug> <platform dest>/<slug>`

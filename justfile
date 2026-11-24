@@ -51,7 +51,8 @@ coverage BASE="origin/main":
     set -euo pipefail
     # Same tool, pin and threshold as the `coverage` job in
     # .github/workflows/ci.yml (FE-151, after natabula NAT-229); bump both
-    # together. Not part of `check`: it needs a base ref to diff against.
+    # together: the `coverage_pin` drift check fails CI when they differ.
+    # Not part of `check`: it needs a base ref to diff against.
     # diff-cover reads `git diff`, so an untracked new file is not gated
     # until it is `git add`ed (CI always sees it).
     DC="diff-cover@10.5.1"; MIN=80

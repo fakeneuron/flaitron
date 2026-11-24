@@ -106,9 +106,8 @@ compose) when context must persist beyond a stub.
 
 A micro-tasknote keeps the spec on top (🎯 Goal / ✅ Acceptance / 🧩 Subtasks)
 and replaces the four phase checklists with one `## ⚡ Notes` log of
-bold-prefix lines; the phases, gates, and closure are `/ft-task`'s own. A
-`Re-scope` verdict converts it to the full shape in place. Cadence: the
-`micro-mode.md` fragment the flag loads.
+bold-prefix lines; the phases, gates, and closure are `/ft-task`'s own.
+Cadence: the `micro-mode.md` fragment the flag loads.
 
 **Skip the micro-tasknote (use plain `/ft-task` instead) when:**
 
@@ -126,8 +125,7 @@ default, not runner auto-select: the operator still passes `--micro`.
 
 Debug mode is **explicit opt-in only** — the operator picks the entry point at
 invocation, so never infer it from a bug-shaped description. It uses the
-standard template and adds content, never a phase, banner, or gate; it composes
-with `--fast` in either order, and the Phase 3 repro re-verify still runs. The
+standard template and adds content, never a phase, banner, or gate. The
 cadence lives in the `step-4-debug-mode.md` fragment the flag loads.
 
 **Skip debug mode (use a plain `/ft-task` run) when:**
@@ -137,8 +135,7 @@ cadence lives in the `step-4-debug-mode.md` fragment the flag loads.
 ## PLAN.md filing-discipline thresholds
 
 Active PLAN.md long descriptions (everything after `— ` on the task line)
-are subject to a hard word budget — the index reads cleanly only when each
-line stays scannable, and rich context routes into starter bodies:
+are subject to a hard word budget:
 
 | Range | Status | Action |
 |---|---|---|
@@ -153,20 +150,13 @@ are governed by [`SPEC/plan-filing.md`](plan-filing.md)
 
 `/ft-file-task` and `/ft-task` flag filings that breach the cap at
 filing/scaffold time — see the respective skill files for the mechanism.
-`/ft-file-task`'s default flow declines at >70w and routes to its own
-`--starter` mode, where the cap is a recorded override rather than a stop.
 
 ## Downstream-impact reconciliation
 
-PLAN.md is worked incrementally, so the plan drifts out of cohesion as it
-grows: a newly filed task or a mid-flow change of direction can leave an
-**already-filed** entry stale, contradictory, or redundant. The filing
-motion alone appends the new line and stops — it never checks whether
-existing downstream entries still make sense. The classic failure mode: a
-decision to change one task's approach (a contract, data model, or
-dependency) silently invalidates a separate task that was written against
-the old shape, and nobody notices until that task is picked up. The
-**downstream-impact reconciliation scan** closes that gap.
+A newly filed task or a mid-flow change of direction can leave an
+**already-filed** PLAN.md entry stale, contradictory, or redundant, and the
+filing motion alone never checks. The **downstream-impact reconciliation
+scan** closes that gap.
 
 **Triggers.** Run the scan at two moments:
 
@@ -213,10 +203,7 @@ same as the selection thresholds above.
 **User-confirm gate.** The scan **never auto-rewrites the plan.** It
 surfaces the impacted-entry list with one proposed action per line and waits
 for explicit confirmation; the user accepts, amends, or rejects each, and
-only then are the PLAN.md edits applied. The control is the human at the
-gate, not an automated scorer (consistent with `SPEC.md` §"What flaitron
-does NOT provide").
+only then are the PLAN.md edits applied.
 
-This section is the contract. The filing and runner skills invoke the scan
-at their filing / decision points — see each skill's own steps for where the
-scan fires and how it folds into the existing review gate.
+Each filing and runner skill's own steps say where the scan fires and how it
+folds into its review gate.

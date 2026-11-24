@@ -327,7 +327,7 @@ runtime lives in the runner; the contract lives in flaitron.
 - `brand/` — public identity kit (blurb, marks, chamber references, `assets.json` manifest, prompt provenance; contract in `brand/README.md`)
 - `viz/` — Vite/React visualizer (priority-grouped list + optional board mode)
 - `install.sh` — the one-line adopter installer (§"Quickstart"; a CLI carve-out — see `SPEC/scope-boundaries.md` §"What flaitron does NOT provide")
-- `tools/` — operator-side fleet scripts (`update-adopters.mjs`, the operator-side CLI carve-out — see `SPEC/scope-boundaries.md` §"What flaitron does NOT provide" — plus its portable `update-adopters.test.mjs` suite), `drift-checks.sh`, the shell of the CI `drift` job and the `/ft-release` §7.1 pair walk, plus its `drift-checks.test.mjs` self-test, and `install.test.sh`, the installer's sandboxed end-to-end test
+- `tools/` — operator-side fleet scripts (`update-adopters.mjs` with its modules under `tools/update-adopters/`, the operator-side CLI carve-out — see `SPEC/scope-boundaries.md` §"What flaitron does NOT provide" — plus its portable `update-adopters.test.mjs` suite), `drift-checks.sh`, the shell of the CI `drift` job and the `/ft-release` §7.1 pair walk, plus its `drift-checks.test.mjs` self-test, and `install.test.sh`, the installer's sandboxed end-to-end test
 - `CONTRIBUTING.md` — solo-maintenance model; issue and PR guidance; maintainer skill wiring
 - `SECURITY.md` — threat model and vulnerability reporting
 - `LICENSE` — MIT

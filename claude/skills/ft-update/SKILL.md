@@ -150,7 +150,7 @@ When Step 1 applied the sparse config, the checkout respects it and never writes
 
 ## Step 3.5 — Follow-through (approved bump only)
 
-The same two adopter-file writes the fleet updater (`tools/update-adopters.mjs`,
+The same two adopter-file writes the fleet updater (`tools/update-adopters/apply.mjs`,
 "Follow-through") makes, so a single-repo bump and a batch bump commit the
 same files. Never on a repair-only run. After the checkout, in this order:
 

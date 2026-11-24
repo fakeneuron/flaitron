@@ -6,7 +6,17 @@
 // maintenance across ~/code, not workflow machinery inside a project. It
 // batches the /ft-update recipe: for every adopter pinned behind the latest
 // released tag, move the .flaitron/core submodule pin, carry the
-// follow-through (below) and commit — locally only, never pushing.
+// follow-through (apply.mjs) and commit — locally only, never pushing.
+//
+// Modules (tools/update-adopters/, each header carrying its own contract):
+//   release.mjs    the git runner, FLAITRON_REPO's tags and release notes;
+//                  the retired migrations
+//   workspace.mjs  the workspace root, path helpers, pinned-version read and
+//                  adopter discovery (the submodule-path rule below)
+//   text.mjs       pure markdown rewrites and reads behind the follow-through
+//   wiring.mjs     skill wiring and audit forks
+//   check.mjs      the per-adopter safety gates and gitlink drift
+//   apply.mjs      the follow-through, mid-bump rollback and commit contract
 //
 // Usage:
 //   node tools/update-adopters.mjs            # dry-run: report what would happen
@@ -51,142 +61,10 @@
 // A failure never aborts the sweep, so the exit status is what a wrapper script
 // has to read.
 //
-// Per-adopter safety gates (any hit → skip that repo, report why):
-//   - the declared flaitron submodule is not initialised → no pin to read
-//   - .flaitron/core/SPEC.md's Version line is unreadable → the current pin
-//     can't be established, so no range can be reasoned about
-//   - adopter repo's HEAD is detached (tag checkout, mid-bisect, mid-rebase)
-//     → a bump commit here would have no branch to land on and be orphaned
-//   - --branch given and the adopter is on a different branch
-//   - adopter pinned NEWER than the target release → bumping would
-//     downgrade it (usually a stale tag list in this checkout)
-//   - pinned tag can't be resolved locally (deleted/renamed upstream, or a
-//     hand-edited SPEC.md Version line) → no real commit to reason a range
-//     from; skip rather than compute a range against a nonexistent tag
-//   - adopter tracks a path named by --attended-ledger (relative to the adopter
-//     root) → that path records an attended review of a particular revision,
-//     so its owner must bump and refresh it together in one task. The report
-//     prints a suggested owner-task line; filing it stays the operator's act.
-//     The caller supplies the paths; this script knows none of its own.
-//   - release range carries a real Migration block (BREAKING or required
-//     project-side edits) not waived by --accept-migration → manual
-//     /ft-update required
-//   - release range carries a tag whose notes can't be classified at all
-//     (lightweight tag, or annotated with an empty message) → fail closed
-//     rather than assume non-breaking; see migrationBearingTags
-//   - staged changes in the adopter's index → a commit here would surprise
-//   - modified tracked files (the submodule's own entry aside) → the
-//     follow-through below rewrites adopter files, and an uncommitted edit
-//     there would be overwritten, committed, or lost to a rollback
-//   - dirty .flaitron/core submodule worktree
-//   - the adopter's Codex wiring conflicts with the target roster under
-//     codex/reconcile-skills.md (see "Skill wiring" below) → /ft-update
-//   - a full-copy audit fork lacks a pass file shipped after its marker (see
-//     "Audit forks" below) → /ft-update copies it on a per-file confirm
-//   - the committed gitlink (or the latest tag's commit) can't be resolved at
-//     all → the pin can't be verified either way, so report the git error
-//     rather than the ✓ current this used to fall through to
-//
-// Retired migrations (CORE-827): the v6.0.0 `.flowtron/` → `.flaitron/` move
-// (CORE-711.3) and the v7.0.0 skill-link swap (CORE-769.7) once ran here as
-// automatic `migrate` work. Every adopter crossed both, so they were removed;
-// a pin still behind either tag now skips at the migration-bearing gate like
-// any other breaking range, and a `.flowtron/` repo is not discovered at all.
-//
-// Gitlink-drift detection: even when the checked-out .flaitron/core/SPEC.md reads
-// the latest release, the superproject's committed submodule pin can still record
-// an older commit (the tag was checked out inside .flaitron/core but the pin was
-// never committed). The submodule worktree is clean, so the dirty-worktree gate
-// misses it — a fresh clone would revert to the stale pin. Such a repo is reported
-// as `drift` (not `current`); the fix is `git add .flaitron/core` + commit, or
-// /ft-update. Report-only — never auto-committed. When either side of that
-// comparison can't be resolved, the lookup returns an unresolved sentinel and
-// the adopter is skipped with git's message: an unverifiable pin is reported as
-// unverified, never as current.
-//
-// The reverse also happens: the committed pin already matches the latest tag,
-// but the checked-out .flaitron/core worktree (what SPEC.md reads) is behind —
-// e.g. after a superproject checkout without `git submodule update`. Left
-// undetected, `checkAdopter` would classify this as an ordinary `bump` and
-// `applyBump` would stage a gitlink identical to HEAD, then fail to commit it
-// ("nothing to commit"); the resulting rollback resets the worktree back to
-// the stale SHA, un-fixing a repo that only needed `git submodule update`. So
-// this direction is detected up front too and reported as `drift` before any
-// bump-path work runs.
-//
-// Follow-through (CORE-852.4, ported from natabula wave-bump): after the
-// checkout, applyBump also rewrites, and stages, two adopter files when they
-// apply — every `Pinned to: vX.Y.Z` in .flaitron/tasknote/README.md (first per
-// line) moves to the target, and AGENTS.md's `## Workflow` section is replaced
-// wholesale with the target's claude/AGENTS-snippet.md paste block, read from
-// FLAITRON_REPO at the target tag. Either file is left alone, with a note, when
-// it or a parent directory is a symlink (a write would land outside the repo
-// while `git add` staged only the link); the Workflow replace is also skipped
-// when AGENTS.md carries more than one exact `## Workflow` heading or the
-// snippet or its paste block is missing. The ⬆ line lists what changed and
-// what was skipped. SPEC/fixtures/workflow-block/cases.json pins the AGENTS.md
-// bytes and skips (workflowFollowThrough); /ft-update follows the same cases.
-//
-// Skill wiring (CORE-852.5, the /ft-update Step 4 rules): on each wiring
-// surface the adopter already has as a real directory (.claude/,
-// .agents/skills, .cursor/skills, .grok/skills — none is ever bootstrapped),
-// applyBump first removes each tracked dangling link on that surface whose
-// target points into the submodule (a skill retired or renamed upstream — the
-// new name is a missing link, so a rename needs no special case), then creates
-// every link the target's AGENTS-snippet roster lists that is still missing,
-// with the snippet's relative target and the submodule path substituted — one
-// whose body the target does not ship is noted, never created dangling. An
-// untracked dangling link is the operator's own and is kept; one pointing
-// anywhere else (or whose target can't be checked) is kept too; both are
-// noted. Rosters are read from
-// FLAITRON_REPO at the target. Codex follows codex/reconcile-skills.md rather
-// than a plain `ln -s` parse: roster = `.agents/skills/ft-<slug>` lines, link
-// target built as `../../<FT>/codex/skills/<slug>`, and a redirected root, a
-// roster body missing at the target, or any other entry at a roster path is a
-// conflict that skips the adopter (above). The other surfaces never replace an
-// existing destination (a custom one is noted) and skip, with a note, a root
-// reached through a symlink. A destination git ignores is noted, not created
-// or force-added. Each created or removed link is staged and committed.
-//
-// Audit forks: a real skill directory under .claude/skills or .agents/skills
-// whose SKILL.md carries `flaitron-reconciled: vX.Y.Z` and `flaitron-tracks:
-// <slug>` (other values are not read as a marker). A fork whose tracked
-// scaffold changed since its marker gets a drift note on its row; a full-copy
-// ft-audit fork (passes/ beside SKILL.md) missing a pass file the bundle
-// shipped after the marker skips the adopter, since the copy is /ft-update's
-// per-file confirm. A file the bundle already had at the marker was deleted on
-// purpose and never counts; a thin overlay (no passes/) inherits new files.
-//
-// Mid-bump rollback: applyBump mutates the adopter (submodule checkout, the
-// follow-through writes and link changes, then each path staged) before it commits, and every
-// step after the checkout can fail. Without recovery a failed bump leaves the
-// repo half-updated — submodule at the new tag, files rewritten, paths possibly
-// staged, nothing committed — and the residue is self-concealing: the worktree
-// now reads the new version, so a re-run classifies the repo as current/drift
-// rather than bump and the failure never resurfaces. So the prior submodule SHA
-// and each rewritten file's bytes are captured before they change (each link
-// change, with its prior target, as it happens), and on any later failure the
-// links are put back, directories made for them removed, the files written
-// back, the submodule checked out at the prior SHA, and every path this run
-// staged unstaged (checkAdopter verified
-// the index and tracked files were otherwise clean, so that restores them
-// exactly). The original error still propagates to the ✗ report line; a
-// rollback that itself fails is appended to it rather than swallowed.
-//
-// Commit contract: one pathspec commit naming only the paths this run wrote
-// (the gitlink plus whichever follow-through files and links changed), with the
-// adopter's hooks running — no --no-verify. CORE-490.3 skipped pre-commit/
-// commit-msg when the commit was a pure gitlink move; once it carries README
-// and AGENTS.md edits, an adopter hook that validates them (a pin check, a
-// lint) is exactly what must run. A rejecting hook is a failed bump: the full
-// rollback above runs, the ✗ line carries the hook's first output line (git
-// sends hook stdout to stderr), and the run exits 1. --trailer appends its
-// line as a separate paragraph of the message.
-//
 // Not covered (by design — run /ft-update in the repo for these): wiring a
 // platform the adopter has no surface for yet; copying a newly shipped pass
-// file into a full-copy fork (skipped above) or re-reconciling a drifted fork
-// and moving its marker (noted above); resolving a Codex conflict; removing an
+// file into a full-copy fork (skipped: check.mjs) or re-reconciling a drifted
+// fork and moving its marker (noted: wiring.mjs); resolving a Codex conflict; removing an
 // untracked retired link (reconcile-skills.md's retirement pass unlinks an
 // exact-owned one, this sweep keeps it); re-applying the docs/MIGRATION.md
 // §1.1 sparse trim; and /ft-update Step 4.7's agent-home shadow check, which

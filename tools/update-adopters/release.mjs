@@ -1,4 +1,10 @@
-// update-adopters release reads: the git runner, FLAITRON_REPO's tags and release notes, and the per-sweep caches over them — contract in ../update-adopters.mjs's header (CORE-EPIC-931).
+// update-adopters release reads: the git runner, FLAITRON_REPO's tags and release notes, and the per-sweep caches over them (CORE-EPIC-931).
+//
+// Retired migrations (CORE-827): the v6.0.0 `.flowtron/` → `.flaitron/` move
+// (CORE-711.3) and the v7.0.0 skill-link swap (CORE-769.7) once ran in the updater as
+// automatic `migrate` work. Every adopter crossed both, so they were removed;
+// a pin still behind either tag now skips at the migration-bearing gate like
+// any other breaking range, and a `.flowtron/` repo is not discovered at all.
 
 import { execFile } from 'node:child_process';
 import { dirname, resolve } from 'node:path';

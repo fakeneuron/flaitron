@@ -1,4 +1,4 @@
-// update-adopters markdown text helpers: pure functions of text (no git, no fs) — the fence scan, the Workflow-block and pin-line rewrites, snippet link and Codex roster reads; contract in ../update-adopters.mjs's header (CORE-EPIC-931).
+// update-adopters markdown text helpers: pure functions of text (no git, no fs) — the fence scan, the Workflow-block and pin-line rewrites, snippet link and Codex roster reads; the rules they implement are in apply.mjs's "Follow-through" and wiring.mjs's "Skill wiring" headers (CORE-EPIC-931).
 
 import { SUBMODULE_PATH } from './workspace.mjs';
 

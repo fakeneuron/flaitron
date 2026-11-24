@@ -1,4 +1,34 @@
-// update-adopters skill wiring and audit-fork reads: the wiring plan, the link follow-through with its dangling-link prune, and the audit-fork marker, pass-gap and drift reads — contract in ../update-adopters.mjs's header (CORE-EPIC-931).
+// update-adopters skill wiring and audit-fork reads: the wiring plan, the link follow-through with its dangling-link prune, and the audit-fork marker, pass-gap and drift reads (CORE-EPIC-931).
+//
+// Skill wiring (CORE-852.5, the /ft-update Step 4 rules): on each wiring
+// surface the adopter already has as a real directory (.claude/,
+// .agents/skills, .cursor/skills, .grok/skills — none is ever bootstrapped),
+// applyBump first removes each tracked dangling link on that surface whose
+// target points into the submodule (a skill retired or renamed upstream — the
+// new name is a missing link, so a rename needs no special case), then creates
+// every link the target's AGENTS-snippet roster lists that is still missing,
+// with the snippet's relative target and the submodule path substituted — one
+// whose body the target does not ship is noted, never created dangling. An
+// untracked dangling link is the operator's own and is kept; one pointing
+// anywhere else (or whose target can't be checked) is kept too; both are
+// noted. Rosters are read from
+// FLAITRON_REPO at the target. Codex follows codex/reconcile-skills.md rather
+// than a plain `ln -s` parse: roster = `.agents/skills/ft-<slug>` lines, link
+// target built as `../../<FT>/codex/skills/<slug>`, and a redirected root, a
+// roster body missing at the target, or any other entry at a roster path is a
+// conflict that skips the adopter (a check.mjs gate). The other surfaces never replace an
+// existing destination (a custom one is noted) and skip, with a note, a root
+// reached through a symlink. A destination git ignores is noted, not created
+// or force-added. Each created or removed link is staged and committed.
+//
+// Audit forks: a real skill directory under .claude/skills or .agents/skills
+// whose SKILL.md carries `flaitron-reconciled: vX.Y.Z` and `flaitron-tracks:
+// <slug>` (other values are not read as a marker). A fork whose tracked
+// scaffold changed since its marker gets a drift note on its row; a full-copy
+// ft-audit fork (passes/ beside SKILL.md) missing a pass file the bundle
+// shipped after the marker skips the adopter, since the copy is /ft-update's
+// per-file confirm. A file the bundle already had at the marker was deleted on
+// purpose and never counts; a thin overlay (no passes/) inherits new files.
 
 import { lstat, mkdir, readdir, readFile, readlink, stat, symlink, unlink } from 'node:fs/promises';
 import { dirname, join, resolve, sep } from 'node:path';

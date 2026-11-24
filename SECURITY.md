@@ -280,7 +280,7 @@ differs from the rest of this document: it walks a filesystem tree, shells
 out to `git` across many repos, and can commit inside them.
 
 - **`execFile`-only git invocation.** Every git call goes through
-  `execFile('git', [...])` (`git()` in `tools/update-adopters.mjs`) —
+  `execFile('git', [...])` (`git()` in `tools/update-adopters/release.mjs`) —
   arguments are passed as an array, never interpolated into a shell string,
   so there is no shell-injection surface even for inputs the script doesn't
   otherwise validate (e.g. adopter directory names discovered under the
@@ -308,7 +308,7 @@ out to `git` across many repos, and can commit inside them.
   remote fails closed instead of committing a mismatched pin.
 - **Local-commits-never-push.** `applyBump` runs `git add` + `git commit`,
   and the only other network call is `fetch --tags` — there is no
-  `git push` anywhere in the script. Every bump commit stays local until
+  `git push` anywhere in `tools/update-adopters.mjs` or its modules under `tools/update-adopters/`. Every bump commit stays local until
   the operator reviews and pushes it themselves, per repo.
 - **Bump commits run the adopter's hooks.** The bump commit is a pathspec
   commit naming only the paths the run wrote: the flaitron submodule gitlink

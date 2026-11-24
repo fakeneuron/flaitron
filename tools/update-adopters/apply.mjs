@@ -1,4 +1,43 @@
-// update-adopters write path: the bump's checkout, SHA verification, follow-through rewrites, commit and rollback — contract in ../update-adopters.mjs's header (CORE-EPIC-931).
+// update-adopters write path: the bump's checkout, SHA verification, follow-through rewrites, commit and rollback (CORE-EPIC-931).
+//
+// Follow-through (CORE-852.4, ported from natabula wave-bump): after the
+// checkout, applyBump also rewrites, and stages, two adopter files when they
+// apply — every `Pinned to: vX.Y.Z` in .flaitron/tasknote/README.md (first per
+// line) moves to the target, and AGENTS.md's `## Workflow` section is replaced
+// wholesale with the target's claude/AGENTS-snippet.md paste block, read from
+// FLAITRON_REPO at the target tag. Either file is left alone, with a note, when
+// it or a parent directory is a symlink (a write would land outside the repo
+// while `git add` staged only the link); the Workflow replace is also skipped
+// when AGENTS.md carries more than one exact `## Workflow` heading or the
+// snippet or its paste block is missing. The ⬆ line lists what changed and
+// what was skipped. SPEC/fixtures/workflow-block/cases.json pins the AGENTS.md
+// bytes and skips (workflowFollowThrough); /ft-update follows the same cases.
+//
+// Mid-bump rollback: applyBump mutates the adopter (submodule checkout, the
+// follow-through writes and link changes, then each path staged) before it commits, and every
+// step after the checkout can fail. Without recovery a failed bump leaves the
+// repo half-updated — submodule at the new tag, files rewritten, paths possibly
+// staged, nothing committed — and the residue is self-concealing: the worktree
+// now reads the new version, so a re-run classifies the repo as current/drift
+// rather than bump and the failure never resurfaces. So the prior submodule SHA
+// and each rewritten file's bytes are captured before they change (each link
+// change, with its prior target, as it happens), and on any later failure the
+// links are put back, directories made for them removed, the files written
+// back, the submodule checked out at the prior SHA, and every path this run
+// staged unstaged (checkAdopter verified
+// the index and tracked files were otherwise clean, so that restores them
+// exactly). The original error still propagates to the ✗ report line; a
+// rollback that itself fails is appended to it rather than swallowed.
+//
+// Commit contract: one pathspec commit naming only the paths this run wrote
+// (the gitlink plus whichever follow-through files and links changed), with the
+// adopter's hooks running — no --no-verify. CORE-490.3 skipped pre-commit/
+// commit-msg when the commit was a pure gitlink move; once it carries README
+// and AGENTS.md edits, an adopter hook that validates them (a pin check, a
+// lint) is exactly what must run. A rejecting hook is a failed bump: the full
+// rollback above runs, the ✗ line carries the hook's first output line (git
+// sends hook stdout to stderr), and the run exits 1. --trailer appends its
+// line as a separate paragraph of the message.
 
 import { readFile, rmdir, symlink, unlink, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -184,7 +223,7 @@ export async function applyBump(adopter, latest, { trailer = null } = {}) {
     await git(repo, '--literal-pathspecs', 'add', '--', subPath);
     const notes = await followThrough(repo, subPath, latest, ctx);
     // Pathspec commit naming only the paths this run wrote, never unrelated
-    // work; hooks run (see "Commit contract" in ../update-adopters.mjs's header).
+    // work; hooks run (see "Commit contract" in this module's header).
     const message = ['-m', `chore: bump flaitron ${adopter.current} → ${latest}`];
     if (trailer !== null) message.push('-m', trailer);
     try {

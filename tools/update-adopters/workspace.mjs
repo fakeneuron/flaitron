@@ -1,4 +1,4 @@
-// update-adopters workspace and path code: the workspace root, path helpers (incl. pathKind's symlink-safety read), the pinned-version read and adopter discovery — contract in ../update-adopters.mjs's header (CORE-EPIC-931).
+// update-adopters workspace and path code: the workspace root, path helpers (incl. pathKind's symlink-safety read), the pinned-version read and adopter discovery — the submodule-path rule is in ../update-adopters.mjs's header (CORE-EPIC-931).
 
 import { lstat, readdir, readFile, realpath, stat } from 'node:fs/promises';
 import { homedir } from 'node:os';

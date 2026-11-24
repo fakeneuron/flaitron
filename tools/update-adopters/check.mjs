@@ -1,4 +1,61 @@
-// update-adopters adopter check: the committed-gitlink reads, the attended-ledger lookup, and checkAdopter's sequential skip/drift gates — contract in ../update-adopters.mjs's header (CORE-EPIC-931).
+// update-adopters adopter check: the committed-gitlink reads, the attended-ledger lookup, and checkAdopter's sequential skip/drift gates (CORE-EPIC-931).
+//
+// Per-adopter safety gates (any hit → skip that repo, report why):
+//   - the declared flaitron submodule is not initialised → no pin to read
+//   - .flaitron/core/SPEC.md's Version line is unreadable → the current pin
+//     can't be established, so no range can be reasoned about
+//   - adopter repo's HEAD is detached (tag checkout, mid-bisect, mid-rebase)
+//     → a bump commit here would have no branch to land on and be orphaned
+//   - --branch given and the adopter is on a different branch
+//   - adopter pinned NEWER than the target release → bumping would
+//     downgrade it (usually a stale tag list in this checkout)
+//   - pinned tag can't be resolved locally (deleted/renamed upstream, or a
+//     hand-edited SPEC.md Version line) → no real commit to reason a range
+//     from; skip rather than compute a range against a nonexistent tag
+//   - adopter tracks a path named by --attended-ledger (relative to the adopter
+//     root) → that path records an attended review of a particular revision,
+//     so its owner must bump and refresh it together in one task. The report
+//     prints a suggested owner-task line; filing it stays the operator's act.
+//     The caller supplies the paths; this script knows none of its own.
+//   - release range carries a real Migration block (BREAKING or required
+//     project-side edits) not waived by --accept-migration → manual
+//     /ft-update required
+//   - release range carries a tag whose notes can't be classified at all
+//     (lightweight tag, or annotated with an empty message) → fail closed
+//     rather than assume non-breaking; see migrationBearingTags
+//   - staged changes in the adopter's index → a commit here would surprise
+//   - modified tracked files (the submodule's own entry aside) → the
+//     follow-through (apply.mjs) rewrites adopter files, and an uncommitted edit
+//     there would be overwritten, committed, or lost to a rollback
+//   - dirty .flaitron/core submodule worktree
+//   - the adopter's Codex wiring conflicts with the target roster under
+//     codex/reconcile-skills.md (see "Skill wiring" in wiring.mjs) → /ft-update
+//   - a full-copy audit fork lacks a pass file shipped after its marker (see
+//     "Audit forks" in wiring.mjs) → /ft-update copies it on a per-file confirm
+//   - the committed gitlink (or the latest tag's commit) can't be resolved at
+//     all → the pin can't be verified either way, so report the git error
+//     rather than the ✓ current this used to fall through to
+//
+// Gitlink-drift detection: even when the checked-out .flaitron/core/SPEC.md reads
+// the latest release, the superproject's committed submodule pin can still record
+// an older commit (the tag was checked out inside .flaitron/core but the pin was
+// never committed). The submodule worktree is clean, so the dirty-worktree gate
+// misses it — a fresh clone would revert to the stale pin. Such a repo is reported
+// as `drift` (not `current`); the fix is `git add .flaitron/core` + commit, or
+// /ft-update. Report-only — never auto-committed. When either side of that
+// comparison can't be resolved, the lookup returns an unresolved sentinel and
+// the adopter is skipped with git's message: an unverifiable pin is reported as
+// unverified, never as current.
+//
+// The reverse also happens: the committed pin already matches the latest tag,
+// but the checked-out .flaitron/core worktree (what SPEC.md reads) is behind —
+// e.g. after a superproject checkout without `git submodule update`. Left
+// undetected, `checkAdopter` would classify this as an ordinary `bump` and
+// `applyBump` would stage a gitlink identical to HEAD, then fail to commit it
+// ("nothing to commit"); the resulting rollback resets the worktree back to
+// the stale SHA, un-fixing a repo that only needed `git submodule update`. So
+// this direction is detected up front too and reported as `drift` before any
+// bump-path work runs.
 
 import { join, normalize } from 'node:path';
 

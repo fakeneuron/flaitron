@@ -26,7 +26,8 @@ tasks.
 To prevent scope creep, flaitron deliberately omits:
 
 - A CLI tool (use `cp`, `mv`, and your editor) — with two carved-out
-  exceptions. The first is [`tools/update-adopters.mjs`](../tools/update-adopters.mjs), the
+  exceptions. The first is [`tools/update-adopters.mjs`](../tools/update-adopters.mjs)
+  (with its modules under `tools/update-adopters/`), the
   operator-side batch updater that walks the workspace and moves each
   adopter's pinned submodule to the latest non-breaking release or a named
   `--target` (dry-run by default, local commits only, never pushes). It

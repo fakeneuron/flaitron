@@ -18,13 +18,13 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Low
 
-- [ ] **CORE-917** [moderate] | arch-health-refresh — Bring CORE-901's arch-health up to natabula NAT-645/646 (a self-host has no `.flaitron/core`, so the wave can't reach it): upload the artifact on success only; report-failure fires on a failed or cancelled (timed-out) scheduled run; AGENTS.md pointer becomes its own `## Repo map` section with `rm -rf arch && gh run download …` and a no-artifact fallback; `.gitignore` line anchored to `/arch/`. From natabula NAT-651.
 
 ## Future Opportunities
 
 
 ## Completed
 
+- [x] **CORE-917** [moderate] | arch-health-refresh — Completed 2026-11-24.
 - [x] **CORE-916** [moderate] | ft-update-start-marker-stop — Completed 2026-11-24.
 - [x] **CORE-915** [heavy] | direct-edit-path — Completed 2026-11-17.
 - [x] **CORE-913** [moderate] | seed-grouped-stays — Completed 2026-11-17.

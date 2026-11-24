@@ -15,13 +15,16 @@ name: Arch health
 #     per-repo step after that repo's first cleanup.
 #
 # Agents read the map before planning a task that touches more than one
-# module. Fetch it with `gh run download -n arch-health -D arch`. That pointer
-# line lives in AGENTS.md.
+# module. Fetch it with `rm -rf arch && gh run download -n arch-health -D arch`
+# from the repo root, as AGENTS.md §"Repo map" says.
 #
 # Findings never turn the run red (NAT-118, facts not grades). A red run means
 # a tool failed: an install broke, dependency-cruiser crashed, or knip exited 2
-# (its error code; `--no-exit-code` turns only findings into 0). A scheduled red
-# opens or comments on one tracking issue (the report-failure job, NAT-360.4).
+# (its error code; `--no-exit-code` turns only findings into 0). A red run
+# uploads nothing, so the newest artifact is the last complete map while one
+# is within its 30 days; past that, agents plan from source (NAT-645). A
+# scheduled red or timeout opens or comments on one tracking issue (the
+# report-failure job, NAT-360.4).
 # That is the canary pattern of natabula's templates-typecheck.yml (NAT-213),
 # scoped to this workflow. It is not the global automatic issue writer that
 # docs/CI-HEALTH.md rejects.
@@ -149,10 +152,10 @@ jobs:
             echo "::endgroup::"
           done
 
-      # Uploads whatever was produced, even after a tool failure, so a red run
-      # still leaves the stacks that succeeded.
+      # Success only (NAT-645). A failed tool can leave an empty or truncated
+      # JSON file behind, and `gh run download -n arch-health` takes the newest
+      # artifact, so uploading after a red would hide the last complete map.
       - name: Upload arch-health
-        if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: arch-health
@@ -164,11 +167,16 @@ jobs:
   # Schedule only: a workflow_dispatch run already has an operator watching
   # it. One open issue, found by exact title. The first red opens it, each later
   # red comments on it, and a human closes it once the tool is fixed.
-  # `issues: write` is granted here only.
+  # `issues: write` is granted here only. A job that hits timeout-minutes ends
+  # `cancelled`, not `failure`, so the gate reads the result instead of
+  # `failure()`. `!cancelled()` is true unless the whole run was cancelled, so
+  # a manual or concurrency cancel opens nothing (NAT-645).
   report-failure:
     name: report failure
     needs: [report]
-    if: failure() && github.event_name == 'schedule'
+    if: >-
+      !cancelled() && github.event_name == 'schedule' &&
+      (contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled'))
     timeout-minutes: 15
     runs-on: ubuntu-latest
     permissions:
@@ -181,7 +189,7 @@ jobs:
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           title='Arch health report is red'
-          body="Scheduled run failed: $RUN_URL"
+          body="Scheduled run failed or timed out: $RUN_URL"
           # Captured before filtering, not piped: under `bash -e` a failed lookup
           # then fails the step instead of reading as "no issue" and opening a
           # duplicate. awk takes the exact title as data, never as program text.
@@ -194,5 +202,5 @@ jobs:
             gh issue create --title "$title" \
               --body "$body
 
-          A report tool failed, not a finding (see the header of .github/workflows/arch-health.yml). Fix the install or bump the pinned tool, then close this issue. Later reds comment here instead of opening a new one."
+          A report tool failed or timed out, not a finding (see the header of .github/workflows/arch-health.yml). Fix the install, bump the pinned tool or find the hang, then close this issue. Later reds comment here instead of opening a new one."
           fi

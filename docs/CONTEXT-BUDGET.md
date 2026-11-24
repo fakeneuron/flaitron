@@ -242,6 +242,8 @@ Task Notes block, +540), outside the sum.
 Re-measured at [[CORE-912]]: all seven summed rows held, sum **106,657**;
 `AGENTS.md` 9,611 → 9,663 (the `/ft-import-task` roster entry, [[CORE-895]]),
 outside the sum.
+Re-measured at [[CORE-917]]: `AGENTS.md` 9,663 → 9,835 (the arch-health
+pointer becomes its own `## Repo map` section, natabula NAT-646), outside the sum.
 
 [[CORE-664]] re-measured every row rather than differencing one against the
 v5.32.0 snapshot, and found the snapshot had gone stale on three of them —
@@ -267,7 +269,7 @@ stamped to this task rather than to v5.32.0.
 | `SPEC.md` | 43,842 |
 | `claude/skills/ft-task/SKILL.md` | 23,824 |
 | `claude/skills/ft-task/preamble.md` | 8,524 |
-| `AGENTS.md` (`CLAUDE.md` is a symlink to it) | 9,663 |
+| `AGENTS.md` (`CLAUDE.md` is a symlink to it) | 9,835 |
 | `.flaitron/tasknote/README.md` | 6,573 |
 | `templates/tasknote-template.md` | 3,993 |
 | `.flaitron/PLAN.md` | ~2–3k (band — see below) |

@@ -260,7 +260,7 @@ above: workflow-level `permissions: contents: read` and SHA-pinned
 It runs `npm ci` in `viz/` and npm-installs dependency-cruiser, TypeScript
 and knip at exact versions. As with `diff-cover`, those pins are versions,
 not hashes. One job, `report-failure`, holds `issues: write`. It runs only
-after a failed scheduled run and only opens or comments on one tracking
+after a failed or timed-out scheduled run and only opens or comments on one tracking
 issue. It holds no other token scope and no secrets.
 
 ### Fleet updater (`tools/`)

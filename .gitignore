@@ -27,4 +27,4 @@ SCRATCH*.md
 
 # Ephemeral repo map (NAT-G008 Part A): fetched from the weekly arch-health
 # artifact (`gh run download -n arch-health -D arch`), never committed.
-arch/
+/arch/

@@ -15,6 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [ ] **CORE-918.2** [light]🔧 [unattended] | closure-none-clause — Add "a section this move leaves empty gets its `(none)` back" with a pointer to `SPEC/plan-filing.md` §"Empty-section placeholder" to the Phase 4 Closed line in `SPEC.md` §"🚀 Phase 4: Closure" and in `templates/tasknote-template.md`, keeping any pair that binds the two in step.
   - [ ] **CORE-918.3** [moderate]🧩 [unattended] | plan-placeholder-check — New `tools/drift-checks.sh` check that fails when a priority section of the live `.flaitron/PLAN.md` holds neither a task row nor `(none)`, with its seeded case in `tools/drift-checks.test.mjs`. In the same change, restore `(none)` under any open section still blank and drop the stray blank line inside `## Completed`, so the check lands green.
   - [ ] **CORE-918.N** [moderate]🧩 | closure-placeholder audit
+- [ ] **CORE-921** [heavy]🧠 | updater-followthrough-owner — `/ft-update` Steps 3–4 and `tools/update-adopters.mjs` both implement the bump follow-through (Workflow-block replace, wiring, fork drift), and `codex/skills/ft-update/SKILL.md` restates the Step 3.5 order; CORE-853 and CORE-916 each needed paired edits. Choose one owner — the skill delegating the writes to the updater's single-repo mode, or shared `AGENTS.md` before/after fixtures the updater's tests run — apply it, then run `/ft-refactor tools/update-adopters.mjs` to split the 1,655-line file with the safety gates in one module. Surfaced by audit-structure 2026-11-24 (Finding #1, High; Finding #7, Medium)
 
 ## Medium
 
@@ -27,9 +28,14 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
   - [ ] **CORE-920.3** [heavy]🧠 | headroom-runner-bodies — Same for `SPEC/procedures/ft-task.md` (95%) and `claude/AGENTS-snippet.md` (97%), whose paste-block reaches every adopter's `AGENTS.md` on its next bump.
   - [ ] **CORE-920.4** [heavy]🧠 | headroom-release-skill — Same for `claude/skills/ft-release/SKILL.md` (95%) and the `claude/skills/ft-release/**` directory cap (95%).
   - [ ] **CORE-920.N** [heavy]🧠 | near-cap-trims-2 audit
+- [ ] **CORE-922** [moderate]🧩 [unattended] | fence-cases — Four fence scanners disagree (`viz/src/fence.ts`, `headingLines` and `snippetLinks` in `tools/update-adopters.mjs`, the `handoff_rows` awk in `tools/drift-checks.sh`). Add `SPEC/fixtures/fence/cases.json`, run it from `viz/src/fence.test.ts`, `tools/update-adopters.test.mjs` and `tools/drift-checks.test.mjs`, and align the tools copies with `fence.ts`. Surfaced by audit-structure 2026-11-24 (Finding #2, Medium)
+- [ ] **CORE-923** [moderate]🧩 [unattended] | drift-flag-helper — Extract `_description_flags` in `tools/drift-checks.sh` for the pipeline `pair_b`, `pair_j` and `pair_m` copy, and sanction `_`-prefixed helpers in the header shape rules (the dispatcher already skips them). Surfaced by audit-structure 2026-11-24 (Finding #3, Medium)
+- [ ] **CORE-924** [moderate]🧩 [unattended] | mirror-parity-checks — New `tools/drift-checks.sh` checks `snippet_roster_parity` (the `ln -s` slug sets across the four `*/AGENTS-snippet.md`) and `coverage_pin` (`justfile` `diff-cover`/`MIN` vs `ci.yml` `DIFF_COVER_VERSION`/`COVERAGE_MIN`), each with a seeded case in `tools/drift-checks.test.mjs`. Surfaced by audit-structure 2026-11-24 (Finding #4, Medium; Finding #5, Low)
+- [ ] **CORE-925** [light]🔧 | just-wire — Add an idempotent `wire` recipe to `justfile` (missing `.claude/skills`, overlay and `.agents/skills` links only; prints dangling links, removes none) and point `CONTRIBUTING.md` §"Developing flaitron skills" at it. Surfaced by audit-structure 2026-11-24 (Finding #8, Medium)
 
 ## Low
 
+- [ ] **CORE-926** [light]🔧 [unattended] | layout-flaitron-dirs — Name `.flaitron/grok-checkout/`, `.flaitron/grok-done/` and `.flaitron/screenshots/` in `SPEC/layout.md` §"Working in the flaitron repo itself", with who writes each. Surfaced by audit-structure 2026-11-24 (Finding #6, Low)
 
 ## Future Opportunities
 

@@ -156,7 +156,7 @@ Scope the merge of natabula `wave-bump.sh` into `tools/update-adopters.mjs` and 
 >
 > **Ties to preserve:** `/natabula-align`'s report axes and one-confirm wave; CBN-111's reliance on align; `/ft-update` stays the single-repo path (caobunga uses it); fakeneuron's `brand:check-pin` contract.
 >
-> **Related:** NAT-494; synergy study (Drive `1erEub8yAkNL0U1TJO0cDN_d0OlqtPQdd`) §2 "Duplication 1"; NAT-325, NAT-470; FE-137.
+> **Related:** NAT-494; synergy study (Drive `drive-file-c227b779ac`) §2 "Duplication 1"; NAT-325, NAT-470; FE-137.
 
 ## 🛠️ Phase 2: Execution
 

@@ -76,6 +76,15 @@ export function useProjectData(activeProject: string | null): {
   // complete: a narrow `archive` load starting after a broad one must
   // not invalidate the broad one's still-unresolved `active` half.
   const loadSeqRef = useRef<ScopeSeqs>({ plan: 0, active: 0, archive: 0 });
+  // Scopes the skeleton is still waiting on. Whichever load is latest for a
+  // scope settles it, so a full refresh that supersedes the initial load still
+  // lowers the skeleton, while a scoped refresh that outruns it settles only
+  // its own scope and leaves the rest owed.
+  const skeletonOwedRef = useRef<Set<ChangeScope>>(new Set());
+  // Last PLAN-ARCHIVE.md body committed for a project. A later failure of that
+  // optional fetch reparses fresh PLAN.md against it, so rotated rows already
+  // on the board do not vanish on a transient error.
+  const lastPlanArchiveRef = useRef<{ project: string; md: string } | null>(null);
 
   const load = useCallback(
     async (
@@ -88,16 +97,17 @@ export function useProjectData(activeProject: string | null): {
       const seqs = {} as ScopeSeqs;
       for (const scope of want) seqs[scope] = ++loadSeqRef.current[scope];
       // A slice is still ours to commit while nothing newer has been stamped
-      // for it. `some` for the shared loading write: the load is stale only
-      // once every scope it asked for has been superseded.
+      // for it.
       const stillLatest = (scope: ChangeScope) => loadSeqRef.current[scope] === seqs[scope];
-      const anyStillLatest = () => [...want].some(stillLatest);
       setErrors((prev) => {
         const next = { ...prev };
         for (const scope of want) next[scope] = null;
         return next;
       });
-      if (showSkeleton) setLoading(true);
+      if (showSkeleton) {
+        skeletonOwedRef.current = new Set(want);
+        setLoading(true);
+      }
       try {
         const q = `?project=${encodeURIComponent(project)}`;
         // `plan` owns both PLAN.md and its rotated sibling. PLAN-ARCHIVE.md is
@@ -106,7 +116,8 @@ export function useProjectData(activeProject: string | null): {
         // history moved, and splitting these two apart would strand it.
         const [planRes, planArchiveRes, activeRes, archiveRes] = await Promise.all([
           want.has('plan') ? fetch(`/api/plan${q}`) : undefined,
-          want.has('plan') ? fetch(`/api/plan-archive${q}`) : undefined,
+          // Optional, so a rejection here must not reject the whole batch.
+          want.has('plan') ? fetch(`/api/plan-archive${q}`).catch(() => undefined) : undefined,
           want.has('active') ? fetch(`/api/active${q}`) : undefined,
           want.has('archive') ? fetch(`/api/archive${q}`) : undefined,
         ]);
@@ -126,8 +137,16 @@ export function useProjectData(activeProject: string | null): {
         // Rotated `## Completed` history. Unlike the three above this one never
         // throws: the endpoint already answers an absent archive with an empty
         // body, and a board that PLAN.md alone can render must not be taken down
-        // by supplementary history.
-        const archiveMd = planArchiveRes?.ok ? await planArchiveRes.text() : '';
+        // by supplementary history. A failure falls back to the last body this
+        // project committed (PLAN.md alone when there is none yet). Best-effort:
+        // rows rotated since that body was cached are absent from both files
+        // until the fetch recovers.
+        const freshArchiveMd = planArchiveRes?.ok
+          ? await planArchiveRes.text().catch(() => null)
+          : null;
+        const lastArchive = lastPlanArchiveRef.current;
+        const archiveMd =
+          freshArchiveMd ?? (lastArchive?.project === project ? lastArchive.md : '');
         const active = activeRes?.ok
           ? ((await activeRes.json()) as ActiveTasknotesResponse | Tasknote[])
           : null;
@@ -135,6 +154,9 @@ export function useProjectData(activeProject: string | null): {
         if (activeProjectRef.current !== project) return;
         if (md !== null && stillLatest('plan')) {
           const parsed = parsePlanWithDiagnostics(md, archiveMd);
+          if (freshArchiveMd !== null) {
+            lastPlanArchiveRef.current = { project, md: freshArchiveMd };
+          }
           setTasks(parsed.tasks);
           setUnparsed(parsed.unparsed);
           setNearMissHeadings(parsed.nearMissHeadings);
@@ -165,11 +187,14 @@ export function useProjectData(activeProject: string | null): {
           });
         }
       } finally {
-        // Only the load that raised the skeleton lowers it. A scoped refresh can
-        // now outrun an in-flight initial load, and clearing the flag from there
-        // would flash an empty board before the first full load commits.
-        if (showSkeleton && activeProjectRef.current === project && anyStillLatest()) {
-          setLoading(false);
+        // The skeleton lowers once every scope it raised for has settled on its
+        // latest load. A scoped refresh can outrun an in-flight initial load,
+        // and clearing the flag from there alone would flash an empty board
+        // before the first full load commits.
+        const owed = skeletonOwedRef.current;
+        if (activeProjectRef.current === project && owed.size > 0) {
+          for (const scope of want) if (stillLatest(scope)) owed.delete(scope);
+          if (owed.size === 0) setLoading(false);
         }
       }
     },

@@ -664,6 +664,128 @@ describe('useProjectData — rotated PLAN-ARCHIVE.md', () => {
     await waitFor(() => expect(hook.result.current.tasks.map((t) => t.id)).toEqual(['FE-1']));
     expect(hook.result.current.error).toBeNull();
   });
+
+  // A later failure must not strip rotated rows the board already shows, nor
+  // hold back the fresh PLAN.md and tasknote slices fetched alongside it.
+  describe('when a later archive fetch fails', () => {
+    const rotated = '## Completed 2026-07\n\n- [x] **FE-0** — Completed 2026-07-14.\n';
+    const note = (id: string) => ({ id, path: `${id}.md`, frontmatter: { title: id } });
+
+    const mountThenFail = async (failure: () => Promise<unknown>) => {
+      let plan = planWith('FE-1');
+      let archive: () => Promise<unknown> = () => Promise.resolve(planRes(rotated));
+      let active: unknown[] = [];
+      vi.stubGlobal(
+        'fetch',
+        vi.fn((url: string) => {
+          if (routeIs(url, '/api/plan')) return Promise.resolve(planRes(plan));
+          if (routeIs(url, '/api/plan-archive')) return archive();
+          if (routeIs(url, '/api/active')) return Promise.resolve(jsonRes(active));
+          return Promise.resolve(jsonRes([]));
+        }),
+      );
+      const hook = renderHook(() => useProjectData('p1'));
+      await waitFor(() =>
+        expect(hook.result.current.tasks.map((t) => t.id)).toEqual(['FE-1', 'FE-0']),
+      );
+
+      plan = planWith('FE-2');
+      archive = failure;
+      active = [note('FE-A')];
+      await act(async () => {
+        hook.result.current.refresh();
+        await new Promise((r) => setTimeout(r, 0));
+      });
+      return hook;
+    };
+
+    it('keeps rotated rows and applies fresh PLAN.md on a non-OK response', async () => {
+      const hook = await mountThenFail(() => Promise.resolve({ ok: false, status: 500 }));
+
+      await waitFor(() =>
+        expect(hook.result.current.tasks.map((t) => t.id)).toEqual(['FE-2', 'FE-0']),
+      );
+      expect(hook.result.current.error).toBeNull();
+    });
+
+    it('keeps rotated rows and commits the other slices on a rejected fetch', async () => {
+      const hook = await mountThenFail(() => Promise.reject(new TypeError('Failed to fetch')));
+
+      await waitFor(() =>
+        expect(hook.result.current.tasks.map((t) => t.id)).toEqual(['FE-2', 'FE-0']),
+      );
+      expect([...hook.result.current.tasknotesById.keys()]).toEqual(['FE-A']);
+      expect(hook.result.current.error).toBeNull();
+    });
+  });
+});
+
+// The skeleton is raised by the initial load alone, so it must come down once
+// every scope that load asked for has settled — even when a newer load is the
+// one that settles it.
+describe('useProjectData — initial loading flag', () => {
+  // Gate only the initial load's four fetches; every later fetch resolves now.
+  const mountGatedInitial = () => {
+    let releaseInitial!: () => void;
+    const initialGate = new Promise<void>((r) => {
+      releaseInitial = r;
+    });
+    let calls = 0;
+    let plan = planWith('FE-1');
+    vi.stubGlobal(
+      'fetch',
+      vi.fn((url: string) => {
+        const gated = ++calls <= 4;
+        // Captured at call time, so a superseded initial load still answers
+        // with the plan it asked for and a wrongful commit would show it.
+        const planAtCall = plan;
+        const respond = () => {
+          if (routeIs(url, '/api/plan')) return planRes(planAtCall);
+          if (routeIs(url, '/api/plan-archive')) return planRes('');
+          return jsonRes([]);
+        };
+        return gated ? initialGate.then(respond) : Promise.resolve(respond());
+      }),
+    );
+    const hook = renderHook(() => useProjectData('p1'));
+    return {
+      hook,
+      releaseInitial,
+      setPlan: (md: string) => {
+        plan = md;
+      },
+    };
+  };
+
+  const settle = async (fn: () => void) => {
+    await act(async () => {
+      fn();
+      await new Promise((r) => setTimeout(r, 0));
+    });
+  };
+
+  it('clears when a full refresh supersedes the in-flight initial load', async () => {
+    const { hook, releaseInitial, setPlan } = mountGatedInitial();
+    expect(hook.result.current.loading).toBe(true);
+
+    setPlan(planWith('FE-2'));
+    await settle(() => hook.result.current.refresh());
+    await settle(releaseInitial);
+
+    await waitFor(() => expect(hook.result.current.loading).toBe(false));
+    expect(hook.result.current.tasks.map((t) => t.id)).toEqual(['FE-2']);
+  });
+
+  it('stays raised while a scoped refresh outruns the initial load', async () => {
+    const { hook, releaseInitial } = mountGatedInitial();
+
+    await settle(() => hook.result.current.refresh(['archive']));
+    expect(hook.result.current.loading).toBe(true);
+
+    await settle(releaseInitial);
+    await waitFor(() => expect(hook.result.current.loading).toBe(false));
+    expect(hook.result.current.tasks.map((t) => t.id)).toEqual(['FE-1']);
+  });
 });
 
 // The load error is tracked per scope: a refresh clears only the errors of the

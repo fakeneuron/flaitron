@@ -26,6 +26,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 - [ ] **CORE-933** [light]🔧 | epic-audit-drift-line-restore-read — Blocked by decay-window depth: once 5 `.N` audit tasknotes archive after window-start `f2887f37` (CORE-927), check whether any missed cumulative doc-drift the Phase 4 sweep did not catch; if one did, restore the Acceptance line in `claude/skills/ft-close-epic/SKILL.md` and un-window `SPEC/epic.md`; otherwise close the window.
 - [ ] **CORE-935** [light] | updater-node-guard-order — The Node ≥20 guard in `tools/update-adopters.mjs` now runs after six static module imports load; move it into a first-imported module or drop it.
 - [ ] **CORE-939** [light] | ft-update-fence-close-prose — `ft-update` Step 3.5 says a "same-length" backtick line closes the paste fence; `text.mjs` `fenceOpeners` accepts any run at least as long. Reword the prose.
+- [ ] **CORE-940** [light] | reconciled-pin-source-rule — `drift-checks.sh` header and `docs/CONVENTIONS.md` count `reconciled_pin` among checks with no source rule, but `/ft-release` Step 5 states it; regroup it and fix both counts.
 
 ## Future Opportunities
 

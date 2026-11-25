@@ -26,7 +26,7 @@ Starter criteria (verbatim). Under De-scope they are carried to caobunga-private
 - [ ] One line per fleet pass in the agreed place and format; the next pass skips only clean repos whose HEAD is unchanged, and prints each skip. — N/A (De-scope: carried to caobunga-private CBN-489)
 - [ ] A second pass, `--full`, or any missing/stale/malformed line gives a full scan. — N/A (De-scope: carried to CBN-489)
 - [ ] Tests in plan steps 3–5 pass; contract doc updated. — N/A (De-scope: carried to CBN-489)
-- [x] Closed by a done marker; in this public repo it has no `drive_id:` and no Drive link. — `test -f .flaitron/grok-done/FLT-G001.md && ! grep -qiE 'drive_id|drive\.google' .flaitron/grok-done/FLT-G001.md`
+- [x] Closed by a done marker; in this public repo it has no `Drive file field` and no Drive link. — `test -f .flaitron/grok-done/FLT-G001.md && ! grep -qiE 'drive_id|drive\.google' .flaitron/grok-done/FLT-G001.md`
 
 Retarget criteria (added in Phase 1, after the operator answered D1):
 

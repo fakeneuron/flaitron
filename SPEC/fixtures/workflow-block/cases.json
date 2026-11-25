@@ -242,6 +242,16 @@
       "expected": null
     },
     {
+      "name": "a tilde-opened markdown fence is not the paste fence (CORE-941)",
+      "snippet": ["## Block to paste into AGENTS.md", "~~~markdown", "## Workflow", "Body.", "~~~", ""],
+      "expected": null
+    },
+    {
+      "name": "an indented markdown fence is not the paste fence (CORE-941)",
+      "snippet": ["## Block to paste into AGENTS.md", "  ```markdown", "## Workflow", "Body.", "  ```", ""],
+      "expected": null
+    },
+    {
       "name": "the block must open with ## Workflow",
       "snippet": ["## Block to paste into AGENTS.md", "```markdown", "## Flow", "Body.", "```", ""],
       "expected": null

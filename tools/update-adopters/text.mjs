@@ -63,9 +63,12 @@ export function rewritePinLines(text, tag) {
 // closes, or it does not open with a `## Workflow` heading. The fence is read
 // by fenceOpeners' rules: only an unfenced heading line counts, and only when
 // it is the whole line (so `…AGENTS.md (legacy)` is not it); only a line that
-// opens a fence can be the paste fence (`markdown` must be the first word of
-// its info string, after any spaces or tabs, so ```markdown-example is not
-// one), and it closes where the fence does — an inner fence is body text.
+// opens a fence can be the paste fence, and only a run of 3+ backticks at
+// column 0 (a tilde or indented fence is not it, though fenceOpeners reads
+// both as fences: the snippet is first-party and ships the one form;
+// CORE-941). `markdown` must be the first word of its info string, after any
+// spaces or tabs, so ```markdown-example is not one. It closes where the fence
+// does — an inner fence is body text.
 export function workflowPasteBlock(snippet) {
   // The trailing '' sits outside any fence, so an unclosed paste fence shows
   // as a run of lines that never ends rather than as one that ends at EOF.

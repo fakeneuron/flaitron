@@ -399,6 +399,16 @@ describe('drift-checks.sh self-test', () => {
     for (const name of EXEMPT) assert.ok(bodies.some((m) => m[1] === name), `exempt check ${name} no longer exists`);
   });
 
+  it('updater_roster reads a roster line padded with whitespace (CORE-942)', async () => {
+    // A leading-space line and a trailing-tab line: both must still be read, so
+    // neither module reads as UNLISTED nor either line as VACUOUS or STALE.
+    edit('AGENTS.md', (s) => s
+      .replace('\nnode --check tools/update-adopters/apply.mjs\n', '\n  node --check tools/update-adopters/apply.mjs\n')
+      .replace('\nnode --check tools/update-adopters/check.mjs\n', '\nnode --check tools/update-adopters/check.mjs \t\n'));
+    const { stdout, stderr } = await execFileAsync('bash', [SCRIPT, 'updater_roster'], { cwd: copy });
+    assert.doesNotMatch(stdout + stderr, /UNLISTED MODULE|STALE ROSTER LINE|VACUOUS/);
+  });
+
   for (const [check, { seed, finding }] of Object.entries(CASES)) {
     it(`${check} fails on its seeded drift`, async () => {
       seed();

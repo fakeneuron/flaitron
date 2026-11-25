@@ -1339,7 +1339,7 @@ updater_roster() {
 # does not outlive it.
 bad=
 n=0
-roster=$(awk '/^## Validation$/,/^## Dev Server$/' AGENTS.md | sed -nE 's#^node --check (tools/update-adopters/[^ ]+)$#\1#p' || true)
+roster=$(awk '/^## Validation$/,/^## Dev Server$/' AGENTS.md | sed -nE 's#^[[:space:]]*node --check (tools/update-adopters/[^[:space:]]+)[[:space:]]*$#\1#p' || true)
 [ -n "$roster" ] || { echo "VACUOUS updater_roster  no node --check tools/update-adopters/ line read from AGENTS.md"; exit 1; }
 for f in tools/update-adopters/*.mjs; do
   [ -f "$f" ] || continue

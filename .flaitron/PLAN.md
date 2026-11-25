@@ -21,7 +21,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 - [ ] **CORE-933** [light]🔧 | epic-audit-drift-line-restore-read — Blocked by decay-window depth: once 5 `.N` audit tasknotes archive after window-start `f2887f37` (CORE-927), check whether any missed cumulative doc-drift the Phase 4 sweep did not catch; if one did, restore the Acceptance line in `claude/skills/ft-close-epic/SKILL.md` and un-window `SPEC/epic.md`; otherwise close the window.
 - [ ] **CORE-935** [light] | updater-node-guard-order — The Node ≥20 guard in `tools/update-adopters.mjs` now runs after six static module imports load; move it into a first-imported module or drop it.
-- [ ] **CORE-940** [light] | reconciled-pin-source-rule — `drift-checks.sh` header and `docs/CONVENTIONS.md` count `reconciled_pin` among checks with no source rule, but `/ft-release` Step 5 states it; regroup it and fix both counts.
 - [ ] **CORE-941** [light] | paste-fence-opener-forms — `tools/update-adopters/text.mjs` `workflowPasteBlock` opens the paste fence only on a column-0 backtick run, though `fenceOpeners` admits tilde and indented fences. Align the opener test or document the narrower contract. Surfaced by [[CORE-920.2]]'s review.
 - [ ] **CORE-942** [light] | updater-roster-whitespace — `drift-checks.sh` `updater_roster`'s anchored sed skips an AGENTS.md roster line with leading or trailing whitespace, failing closed with a spurious `UNLISTED MODULE`, `STALE ROSTER LINE` or `VACUOUS`. Tolerate surrounding whitespace. Surfaced by [[CORE-920.2]]'s review.
 
@@ -31,6 +30,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-940** [light] | reconciled-pin-source-rule — Completed 2026-11-24.
 - [x] **CORE-939** [light] | ft-update-fence-close-prose — Completed 2026-11-24.
 - [x] **CORE-EPIC-920** [heavy]🧠 | near-cap-trims-2 — Completed 2026-11-24.
   - [x] **CORE-920.2** [heavy]🧠 | headroom-spec-modules — Completed 2026-11-24.

@@ -19,12 +19,12 @@
 # Design notes sit as `#` comments inside the body, next to the line they
 # explain. skill_pin_guard_parity (CORE-729), final_newline (CORE-621),
 # sidequest_orphan (CORE-742.2), plan_placeholder (CORE-918.3), handoff_rows
-# (CORE-866), installer_anchors (CORE-868.2), supply_chain (CORE-904),
-# updater_roster (CORE-936) and reconciled_pin (CORE-919.3) have neither a
-# source rule nor a catalogue entry.
-# snippet_roster_parity and coverage_pin (CORE-924) automate a rule stated
-# elsewhere — the snippet roster's §7.1 installed-surface check, and the
-# "bump both together" comments in justfile and ci.yml.
+# (CORE-866), installer_anchors (CORE-868.2), supply_chain (CORE-904) and
+# updater_roster (CORE-936) have neither a source rule nor a catalogue entry.
+# snippet_roster_parity and coverage_pin (CORE-924) and reconciled_pin
+# (CORE-919.3) automate a rule stated elsewhere — the snippet roster's §7.1
+# installed-surface check, the "bump both together" comments in justfile and
+# ci.yml, and /ft-release Step 5's overlay-pin bump.
 #
 # Shape rules — the dispatcher below reads them:
 # - One check per top-level function, `name() {` and its closing `}` each at

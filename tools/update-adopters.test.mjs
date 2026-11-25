@@ -3,11 +3,11 @@
 
 import assert from 'node:assert/strict';
 import { execFile } from 'node:child_process';
-import { lstat, mkdtemp, mkdir, readFile, readlink, rm, symlink, unlink, writeFile } from 'node:fs/promises';
+import { copyFile, lstat, mkdtemp, mkdir, readFile, readlink, realpath, rm, symlink, unlink, writeFile } from 'node:fs/promises';
 import { availableParallelism, tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { after, before, describe, it } from 'node:test';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { promisify } from 'node:util';
 
 import {
@@ -92,8 +92,15 @@ let mirrorDir;
  */
 let latest;
 let previous;
+let sourceRefs;
+
+function readSourceRefs() {
+  return git(FLAITRON_REPO, 'for-each-ref', '--sort=refname',
+    '--format=%(refname) %(objectname)', 'refs/heads', 'refs/tags');
+}
 
 before(async () => {
+  sourceRefs = await readSourceRefs();
   const tags = (await git(FLAITRON_REPO, 'tag', '--sort=-v:refname'))
     .split('\n')
     .map((l) => l.trim())
@@ -122,6 +129,9 @@ before(async () => {
 
 after(async () => {
   if (mirrorDir) await rmTree(mirrorDir);
+  if (sourceRefs !== undefined) {
+    assert.equal(await readSourceRefs(), sourceRefs, 'source branches and tags changed during the suite');
+  }
 });
 
 /**
@@ -430,65 +440,55 @@ describe('migrationBearingTags (real tags)', () => {
     assert.deepEqual(bearing, []);
   });
 
-  // Lightweight tags carry empty %(contents); fail-closed (CORE-424.3).
-  it('classifies empty annotation (lightweight tag) as migration-bearing', async () => {
-    const tag = `v0.0.0-core-424-3-empty-${process.pid}`;
-    try {
-      await git(FLAITRON_REPO, 'tag', tag); // lightweight — no -a/-m
-      const bearing = await migrationBearingTags([tag]);
-      assert.deepEqual(bearing, [tag]);
-    } finally {
-      try {
-        await git(FLAITRON_REPO, 'tag', '-d', tag);
-      } catch {
-        // already gone
-      }
-    }
-  });
-
   it('migrationAsk separates asks / all-clear (CORE-852.3)', async () => {
     assert.equal(await migrationAsk('v5.0.0'), 'asks');
     assert.equal(await migrationAsk('v5.10.1'), null);
   });
 
-  // Mirrors wave-bump.test.sh's `rejects` cases; the semver lightweight tag
-  // sits below every real release, so no range or latest-tag lookup sees it.
   it('acceptMigrationError names why a tag cannot be waived, null when it can (CORE-852.3)', async () => {
     assert.equal(await acceptMigrationError('v5.0.0', latest), null);
     assert.equal(await acceptMigrationError('v0.0.1', latest), 'unknown tag');
     assert.equal(await acceptMigrationError(latest, previous), `after target ${previous}`);
     assert.equal(await acceptMigrationError('v5.10.1', latest), 'no Migration block to waive');
-    const tag = 'v0.0.2';
-    try {
-      await git(FLAITRON_REPO, 'tag', tag); // lightweight — no -a/-m
-      assert.equal(await migrationAsk(tag), 'unreadable');
-      assert.equal(await acceptMigrationError(tag, latest), 'release notes unreadable');
-    } finally {
-      try {
-        await git(FLAITRON_REPO, 'tag', '-d', tag);
-      } catch {
-        // already gone
-      }
-    }
   });
 
-  // A branch spelled like a release resolves under rev-parse but is no tag —
-  // tagsInRange would never list it, so its Migration block would go unread.
-  it('isReleaseTag accepts tags only, not a branch spelled like one (CORE-852.3)', async () => {
+  it('isReleaseTag recognizes a real release tag (CORE-852.3)', async () => {
     assert.equal(await isReleaseTag(latest), true);
     assert.equal(await isReleaseTag('v0.0.1'), false);
+  });
+});
+
+describe('migration guards (isolated refs)', () => {
+  let repo;
+  let release;
+
+  before(async () => {
+    repo = join(mirrorDir, 'release-refs');
+    // Give the synthetic refs their own namespace and leave the shared mirror
+    // read-only. The parent after hook removes both clones.
+    await gitQuiet(mirrorDir, 'clone', '-q', '-n', '--local', '--no-hardlinks', '--no-tags',
+      join(mirrorDir, 'core'), repo);
+    // The release helpers derive their Git root from this module's location.
+    const modulePath = 'tools/update-adopters/release.mjs';
+    await mkdir(join(repo, 'tools', 'update-adopters'), { recursive: true });
+    await copyFile(join(FLAITRON_REPO, modulePath), join(repo, modulePath));
+    release = await import(pathToFileURL(join(repo, modulePath)).href);
+    assert.equal(release.FLAITRON_REPO, await realpath(repo));
+  });
+
+  it('classifies a lightweight tag as migration-bearing and rejects its waiver', async () => {
+    const tag = 'v0.0.2';
+    await gitQuiet(repo, 'tag', '--no-sign', tag, 'HEAD');
+    assert.deepEqual(await release.migrationBearingTags([tag]), [tag]);
+    assert.equal(await release.migrationAsk(tag), 'unreadable');
+    assert.equal(await release.acceptMigrationError(tag, latest), 'release notes unreadable');
+  });
+
+  it('rejects a branch spelled like a release tag (CORE-852.3)', async () => {
     const branch = 'v0.0.3';
-    try {
-      await git(FLAITRON_REPO, 'branch', branch, latest);
-      assert.equal(await isReleaseTag(branch), false);
-      assert.equal(await acceptMigrationError(branch, latest), 'unknown tag');
-    } finally {
-      try {
-        await git(FLAITRON_REPO, 'branch', '-D', branch);
-      } catch {
-        // already gone
-      }
-    }
+    await gitQuiet(repo, 'update-ref', `refs/heads/${branch}`, 'HEAD');
+    assert.equal(await release.isReleaseTag(branch), false);
+    assert.equal(await release.acceptMigrationError(branch, latest), 'unknown tag');
   });
 });
 
@@ -508,8 +508,8 @@ describe('latestReleaseTag (real tags)', () => {
 // `{ concurrency: GROUP_CONCURRENCY }` groups (CORE-716.3): every test builds
 // its own uniquely named fixture and only reads the shared mirror, so tests
 // within the group overlap their git subprocesses — capped at the core count so
-// a small CI runner is not flooded. Groups that mutate process-wide state (the
-// PATH shim in CORE-585, the lightweight tag in FLAITRON_REPO) stay serial.
+// a small CI runner is not flooded. Groups that mutate process-wide state
+// (such as the PATH shim in CORE-585) stay serial.
 const GROUP_CONCURRENCY = availableParallelism();
 
 describe('checkAdopter classification (fixtures)', { concurrency: GROUP_CONCURRENCY }, () => {

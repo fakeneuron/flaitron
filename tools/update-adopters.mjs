@@ -117,11 +117,6 @@ export { wiringPlan } from './update-adopters/wiring.mjs';
 export { checkAdopter, gitlinkDrift } from './update-adopters/check.mjs';
 export { applyBump, verifyPinnedSha } from './update-adopters/apply.mjs';
 
-if (Number(process.versions.node.split('.')[0]) < 20) {
-  console.error(`update-adopters requires Node ≥20 (found ${process.version})`);
-  process.exit(1);
-}
-
 const USAGE =
   'Usage: node tools/update-adopters.mjs [--apply] [--root <dir>] [--target <tag>] [--only <repo>]...\n' +
   '         [--branch <name>] [--accept-migration <tag>]... [--attended-ledger <relpath>]...\n' +

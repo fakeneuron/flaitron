@@ -5,17 +5,11 @@ description: Cut a flaitron release — version bump, doc-currency shifts, doc-d
 
 # release — flaitron self-host release skill
 
-You are cutting a flaitron release. The recipe is canonical (CORE-048 / CORE-046 / CORE-043 precedents): SPEC.md version bump · docs/MIGRATION.md, SECURITY.md and README.md pin bumps · doc-drift sweep · single `feat:` commit · annotated tag · curated `docs/VERSION-HISTORY.md` prepend · push. This skill scaffolds and drives a release tasknote through the full 4-phase flow.
+You are cutting a flaitron release (CORE-048 / CORE-046 / CORE-043 precedents). This skill scaffolds and drives a release tasknote through the full 4-phase flow.
 
 This skill is **flaitron-self only**. It is wired repo-scoped in flaitron's own `.claude/` and never installed globally (`docs/PLATFORMS.md` §"One canonical install path per project"); it never runs in adopter projects. Step 0 enforces this.
 
-The release task is normally filed in `.flaitron/PLAN.md` as a one-line entry before `/ft-release` runs — for example:
-
-```text
-- [ ] **<TASK-ID>** [model] | release vX.Y.Z — Cut vX.Y.Z minor release tagging <FEAT-A> + <FEAT-B> since v<prev>.
-```
-
-`/ft-release` scans PLAN for the entry and drives it. If no such entry exists, Step 1 drafts and files one itself (task ID, version, and description all self-computed from repo state) and carries on, rather than bouncing the user to file it by hand. The skill takes **no arguments**.
+It takes **no arguments**: Step 1 drives the one pending `release vX.Y.Z` line in `.flaitron/PLAN.md`, or files it from repo state when none exists.
 
 ## Mid-cut defects — apply when discovered
 
@@ -61,7 +55,7 @@ If any check fails, stop. Tell the user `/ft-release` only runs from inside the 
 
 Read `.flaitron/PLAN.md`. Scan un-checked task lines under `## High | Medium | Low` (and `## Critical` if a legacy heading is still present — see SPEC §"Task-line format"; skip `## Completed` and `## Future Opportunities`) whose `| <shortname>` segment matches `release v*` (case-insensitive — e.g., `release vX.Y.Z`).
 
-- **Zero matches.** Don't bounce the user to file it by hand. Draft and file the line now (Step 1.1 below) without asking, then continue as if it had already existed.
+- **Zero matches.** Draft and file the line now (Step 1.1 below) without asking, then continue as if it had already existed.
 - **Multiple matches.** Stop. List the matches and tell the user `/ft-release` requires exactly one pending release task. Ask them to close/de-scope the duplicates or restructure to a single line. Do not scaffold.
 - **Exactly one match.** Capture the `<TASK-ID>`, the `[model]` segment, the `| <shortname>` segment, the long description, and the section heading (priority). Continue.
 
@@ -69,13 +63,13 @@ Parse the **target version** from the shortname: `release v<X.Y.Z>` → `vX.Y.Z`
 
 ### Step 1.1 — Zero-matches fallback: draft and file the line
 
-Runs only when Step 1 found no pending `release v*` line. Computes the same version/bump-kind facts Step 2 would, just earlier, so the two never disagree. Filing is not a gate. The skill files the line and continues without asking, because invoking `/ft-release` already asked for a cut and every field is computed from repo state.
+Runs only when Step 1 found no pending `release v*` line. Computes Step 2's version and bump-kind facts early, so the two never disagree. Filing is not a gate: invoking `/ft-release` already asked for a cut, and every field comes from repo state.
 
-1. **Compute the proposed version.** Read `SPEC.md:3` for the current version. Run `git describe --tags --abbrev=0` and confirm it matches — if it doesn't, stop and surface the drift exactly as Step 2 would (don't file a new release line over an already-broken state). Run `git log <last-tag>..HEAD --oneline`, classify each commit by Conventional-Commits prefix (same rule as Step 2: `feat!:`/`BREAKING CHANGE:` → major, `feat:` → minor, everything else → patch), and take the highest-rank classification as the proposed bump kind. Apply it to the current version for the proposed new version. If there are zero commits since the last tag, stop and tell the user there is nothing to release yet.
+1. **Compute the proposed version.** Read `SPEC.md:3` for the current version. Run `git describe --tags --abbrev=0` and confirm it matches — if it doesn't, stop and surface the drift exactly as Step 2 would (don't file a new release line over an already-broken state). Run `git log <last-tag>..HEAD --oneline`, classify each commit by Step 2's rule, and apply the highest-rank kind to the current version. If there are zero commits since the last tag, stop and tell the user there is nothing to release yet.
 2. **Suggest a task ID.** flaitron-self release tasknotes always use the `CORE` area (every prior `release v*` entry does). Take the next `CORE` number per `SPEC/plan-filing.md` §"ID allocation" and suggest `CORE-<N>`.
-3. **Draft the shortname, model, and description.** Shortname: `release v<A.B.C>`. Model: `[moderate]🧩` (the tier of every prior release entry, filed before [[CORE-EPIC-815]] as legacy `[medium]`). Long description: `Cut v<A.B.C> <bump-kind> release tagging <FEAT-A> + <FEAT-B> since v<prev>.` — name the feature-level task IDs found in the classified commit log (e.g. from `feat: <TASK-ID> — ...` subjects), not every individual commit.
-4. **Append the line** under `## Medium` in `.flaitron/PLAN.md` (bottom of the section, or replacing a `(none)` placeholder) using the canonical task-line grammar. Do **not** commit this edit separately — flaitron's own release history shows the pending line and its Step 7.3 flip-to-Completed have always landed in the single release commit together, never as a standalone filing commit, so this follows the same pattern. Then proceed exactly as if Step 1 had found this line as its one match, and capture the same fields.
-5. **Report, don't ask.** Print the filed line verbatim and the Step 2 summary block (current version, commits since the last tag, bump kind), then continue to Step 2.5. Skip Step 2's "Confirm or override?". Its proposal and the PLAN target are the same computation here, so there is nothing to reconcile. The operator can still interrupt to change the ID, version, or description. The filed line is an uncommitted PLAN edit until the release commit, so a correction is one edit.
+3. **Draft the shortname, model, and description.** Shortname: `release v<A.B.C>`. Model: `[moderate]🧩`. Long description: `Cut v<A.B.C> <bump-kind> release tagging <FEAT-A> + <FEAT-B> since v<prev>.` — name the feature-level task IDs found in the classified commit log (e.g. from `feat: <TASK-ID> — ...` subjects), not every individual commit.
+4. **Append the line** under `## Medium` in `.flaitron/PLAN.md` (bottom of the section, or replacing a `(none)` placeholder) using the canonical task-line grammar. Do **not** commit it separately: the pending line and its Step 7.3 flip land together in the single release commit. Then proceed exactly as if Step 1 had found this line as its one match, and capture the same fields.
+5. **Report, don't ask.** Print the filed line verbatim and the Step 2 summary block (current version, commits since the last tag, bump kind), then continue to Step 2.5. Skip Step 2's "Confirm or override?" — its proposal and the PLAN target are the same computation here. The operator can still interrupt; the line stays an uncommitted PLAN edit until the release commit, so a correction is one edit.
 
 ## Step 2 — Verify state and propose bump kind
 
@@ -121,21 +115,19 @@ If the proposed bump and the PLAN-line target match, the user confirms in one sh
 
 ## Step 2.5 — Context-budget self-assessment (escape hatch)
 
-Before scaffolding the tasknote (Step 3), self-assess whether the **remaining context budget** is comfortable for a full release cut driven inline in this session. A full cut is a long, multi-file motion: the 4 version edits (Step 5), the dogfood-gate walk (per-agent `AskUserQuestion` + stamp edits), the audit-overlay `docs` subroutine (5 passes over the doc set, Step 7.1), tag-message drafting (Step 7.2), and the commit/tag/push sequence (Step 7.5). Driving all of that with little headroom risks a degraded cut.
-
-**Still needed after CORE-507 (re-evaluated).** That task cut this file from ~77k to ~38k by moving §7.1's standing checks and mirror pairs into fragments, so the *eager* load at Step 0 is roughly half what it was and this hatch should fire less often than it already did. It is not thereby obsolete: the budget this step guards is the whole cut, not the skill body. The two §7.1 fragments are ~60k that still arrives — just at Step 7 instead of Step 0 — and the audit-overlay `docs` subroutine, the dogfood-gate walk, and the version edits are unchanged. The split improves the odds of a clean inline cut; it does not remove the failure mode this hatch exists for.
+Before scaffolding the tasknote (Step 3), self-assess whether the **remaining context budget** is comfortable for a full release cut driven inline in this session. A full cut is a long, multi-file motion: the 4 version edits (Step 5), the dogfood-gate walk (per-agent `AskUserQuestion` + stamp edits), the audit-overlay `docs` subroutine (5 passes over the doc set, Step 7.1), tag-message drafting (Step 7.2), and the commit/tag/push sequence (Step 7.5). Driving all of that with little headroom risks a degraded cut. Judge the whole cut, not this body: the §5 and §7.1 fragments still arrive later.
 
 - **Comfortable** → proceed to Step 3 and drive the cut inline. This is the default — the skill drives the whole release in one session; the escape hatch never fires.
 - **Tight** → do **not** scaffold. Surface an **offer** and let the operator decide (self-assess + offer; the assistant flags, the human chooses):
   - **Drive inline now** — proceed to Step 3 anyway (operator accepts the tight budget).
-  - **Defer to a fresh chat** — nothing is scaffolded. The pending `release v*` PLAN line found in Step 1 is the *only* prerequisite and already exists, so there is nothing new to file — the deferral hands the whole skill to a clean context. Tell the user to `/clear` and re-run `/ft-release` in a fresh session: it re-scans PLAN, picks up the same pending line, and self-assesses again with a full budget. Emit the re-entry as the canonical copy-paste cue (🧠 label line, then the invocation alone on its own line as inline-code with no trailing punctuation; `/ft-release` takes no args):
+  - **Defer to a fresh chat** — nothing is scaffolded; the pending `release v*` line from Step 1 is the only prerequisite. Tell the user to `/clear` and re-run `/ft-release` in a fresh session: it re-scans PLAN, picks up the same pending line, and self-assesses again with a full budget. Emit the re-entry as the canonical copy-paste cue (🧠 label line, then the invocation alone on its own line as inline-code with no trailing punctuation; `/ft-release` takes no args):
 
     ```markdown
     🧠 Clear your session, then run on <model @ effort>:
     `/ft-release`
     ```
 
-**Re-entry is `/ft-release`, not `/ft-task <TASK-ID>`.** The release recipe (4 version edits · dogfood gate · annotated tag · push) lives in *this* skill; running `/ft-task` against the pre-filed release line would drive the generic 4-phase flow without any of it. The escape hatch defers the release skill itself to a clean context — it does not hand off to the tasknote runner.
+**Re-entry is `/ft-release`, not `/ft-task <TASK-ID>`.** The release recipe (4 version edits · dogfood gate · annotated tag · push) lives in *this* skill; running `/ft-task` against the pre-filed release line would drive the generic 4-phase flow without any of it.
 
 ## Step 3 — Scaffold the release tasknote
 
@@ -206,7 +198,7 @@ grep -rn 'vX\.Y\.Z' SPEC.md SPEC/ docs/ README.md SECURITY.md templates/ claude/
 The three `v`-prefixed pins above should be clean, and
 `grep -c "flaitron/vA.B.C/install.sh" README.md` (substituting the new version) should print `1`.
 
-**Dogfood gate + SOP-currency walk — read the fragment now.** The 4 version edits above stay here; the dogfood-or-explicit-skip walk and the standing SOP-currency check live in a sibling fragment so this skill stays under its load budget. Read `claude/skills/ft-release/step-5-dogfood-sop.md` now — it carries both walks. Walk them in that order, then continue to the tick-boxes closer below. The fragment is part of this step, not an optional appendix: skipping it silently drops the dogfood gate.
+**Dogfood gate + SOP-currency walk — read the fragment now.** Read `claude/skills/ft-release/step-5-dogfood-sop.md` and walk both its walks in order, then continue below. It is part of this step: skipping it silently drops the dogfood gate.
 
 Tick boxes; populate Implementation Notes with the diff shape (the 4 version edits, plus any dogfood-gate stamp refreshes/skips landed by the walk in `step-5-dogfood-sop.md`, plus the SOP-currency verdict).
 
@@ -223,11 +215,9 @@ If a viz/code feature ships in this release, surface that the feature's own task
 
 ### 6.1 — CI status on the commit being built on (blocking)
 
-The Step 6 gate proves the tree passes **on this machine**, and say nothing
-about GitHub Actions. The `drift` job is not in the local roster, so a
-CI-only failure is invisible to Step 6 — at [[CORE-546]] it had been failing on
-every push since [[CORE-535.3]], and v5.25.0 was tagged on a commit whose own run
-concluded `failure`, unread. Check it:
+The Step 6 gate proves the tree passes **on this machine** and says nothing
+about GitHub Actions: the `drift` job is not in the local roster, so a CI-only
+failure is invisible to it ([[CORE-546]]). Check it:
 
 ```sh
 sha=$(git rev-parse HEAD)
@@ -238,32 +228,25 @@ gh run list --commit "$sha" --json workflowName,status,conclusion \
 Every reported run must be `completed` + `success`. Read the result as:
 
 - **All green** — proceed to Step 7.
-- **Any `failure` / `cancelled` / `timed_out`** — **blocking.** Unlike §7.1's
-  machine-global wiring half, this is repo state a commit in this cut can fix,
-  so it takes the same Critical/High posture: fix inline, or stop and tell the
-  operator why the cut cannot proceed. Never tag over a red commit — the tag is
-  what adopters pin, and `/ft-update` moves the fleet onto it.
+- **Any `failure` / `cancelled` / `timed_out`** — **blocking.** This is repo
+  state a commit in this cut can fix, so it is Critical/High: fix inline, or
+  stop and tell the operator why the cut cannot proceed. Never tag over a red
+  commit — the tag is what adopters pin.
 - **Still `in_progress` / `queued`** — not a pass. Wait for it, or surface the
   state and let the operator decide; never read "not yet failed" as green.
 - **No runs reported, `gh` missing, or `gh` not authenticated** — not a pass
   either. Say so explicitly and hand the operator the verdict rather than
-  skipping the step silently. A check that fails open reports clean instead of
-  reporting the truth (§"Glob-free by design" in the standing checks is the same
-  lesson one surface over).
+  skipping the step silently.
 
 **Scope: the commit this release builds on, not the release commit** — the
-latter does not exist until §7.5, so its run is only observable after the push.
-Deliberately not a wait-loop inside the cut: what failed at v5.25.0 was an
-*inherited* red `main`, which this step catches. The release commit's own run
-is read after the push, in Step 8, as one line, flag-don't-block.
+latter does not exist until §7.5. Step 8 reads its run after the push, as one
+flag-don't-block line.
 
 ### 6.2 — Dependency audit (release cadence)
 
 Run the visualizer's dependency audit once per cut — deliberately not part of
-the `validate` CI gate above. `docs/CONVENTIONS.md` §"Dependency audit
-cadence" is canonical on why: `npm audit`'s result depends on the public
-advisory database's state at run time, not just the code, so gating every
-push on it would redden CI for commits that touched nothing relevant.
+the `validate` CI gate (`docs/CONVENTIONS.md` §"Dependency audit cadence" says
+why).
 
 ```sh
 npm --prefix viz audit --audit-level=high
@@ -286,7 +269,7 @@ Run flaitron-self's `audit` overlay in **subroutine mode** with the `docs` domai
 docs ai-referenced
 ```
 
-Read the tracked file rather than invoking the `/audit` skill, so the cut does not depend on per-machine wiring. `.claude/skills/audit` is gitignored, it is absent in a fresh clone or under Codex, and repairing it mid-session does not add it to a session's skill roster. The standing self-wiring check below still guards that link for interactive `/audit` use. The overlay is the single statement of this audit's config: its `docs:` deltas supply the rubric and the verification gates, so this step restates neither. This read counts as a subroutine invocation with an explicit scope for the dispatcher's Subroutine-safe hard rule: no PLAN.md writes, no auto-commit, and no blocking ticket confirmation. If the scaffold bootstrap stops anyway (a pass-file slot the overlay does not fill yet), take its **run once** branch with the overlay's `docs:` values, and treat the gap as a Medium finding. The overlay runs the bundled `ft-audit` scaffold by reference; the `docs` domain walks its 5 passes (Claims vs. code · Cross-doc consistency · Cross-references · Currency · Stale content) over the declared doc set and returns the report inline. Per the dispatcher's Subroutine-safe hard rule it does **not** write tickets to `.flaitron/PLAN.md`; the release skill is the orchestrator. Critical / High findings are fixed inline. Medium / Low findings are not disposed one by one, and filing them does not by itself let the cut continue.
+Read the tracked file rather than invoking the `/audit` skill: `.claude/skills/audit` is gitignored per-machine wiring, absent in a fresh clone or under Codex. The overlay is the single statement of this audit's config: its `docs:` deltas supply the rubric and the verification gates, so this step restates neither. This read counts as a subroutine invocation with an explicit scope for the dispatcher's Subroutine-safe hard rule: no PLAN.md writes, no auto-commit, and no blocking ticket confirmation — the release skill is the orchestrator. If the scaffold bootstrap stops anyway (a pass-file slot the overlay does not fill yet), take its **run once** branch with the overlay's `docs:` values, and treat the gap as a Medium finding. The `docs` domain walks its passes over the declared doc set and returns the report inline.
 
 Apply “Mid-cut defects” to the returned findings now. **Stop** holds here:
 do not read the standing checks or enter §7.2 until the fixes and sweep re-run
@@ -294,24 +277,15 @@ clear the findings, or the operator chooses Release anyway. Zero findings,
 Critical / High fixed and re-verified, or Release anyway with follow-ups
 recorded continues into the standing checks below.
 
-**Standing checks — read both fragments now** (only when the cut is continuing). Independently of the subroutine findings, §7.1 carries two blocks of standing checks that live in sibling fragments so this skill stays under its load budget. Read them **in parallel**:
+**Standing checks — read both fragments now** (only when the cut is continuing), **in parallel**:
 
-- `claude/skills/ft-release/step-7.1-standing-checks.md` — wiring-consumer
-  derivation · shipped-skill parity · installed-surface policy · self-wiring
-  parity (local blocking + machine-global advisory) · README task-counter ·
-  completed-rotation (advisory backstop) · viz-majors-outdated (advisory) · context
-  budget (`docs/CONTEXT-BUDGET.md`; also refreshes that doc's ledger in this
-  cut).
+- `claude/skills/ft-release/step-7.1-standing-checks.md` — wiring, parity,
+  README counter, advisories, and the context budget with its ledger refresh.
 - `claude/skills/ft-release/step-7.1-mirror-pairs.md` — the Pair A–T
-  mirror-pair catalogue, opening with the local runner for the twelve pairs
-  whose shell lives in `tools/drift-checks.sh` (plus the skill-name
-  invariant).
+  mirror-pair catalogue and its local `tools/drift-checks.sh` runner.
 
-Walk them in that order, then continue to §7.2. Both fragments are part of this
-step, not optional appendices: skipping the second silently drops every
-mirror-pair gate. Every check in them blocks the cut unless it says otherwise
-(the machine-global wiring half, the completed-rotation count, and the
-viz-majors-outdated list are the standing advisories).
+Walk them in that order, then continue to §7.2; skipping either silently drops
+its gates. Every check in them blocks the cut unless it says otherwise.
 
 ### 7.2 — Auto-draft annotated tag message
 
@@ -340,11 +314,9 @@ git add .flaitron/tasknote/archive/core/<TASK-ID>.md
 git add docs/AGENT-COMPAT.md docs/PLATFORMS.md claude/CAPABILITIES.md
 ```
 
-(The Step 7.3 `mv` left the archived tasknote untracked; the explicit `git add` here stages it.)
-
 Surface the bundled 📦 ready-to-commit gate per SPEC/gates.md §"Operator-gate cues" (banner block + mandatory 1-2 sentence preview line summarising what executes on commit-go — typically "cut flaitron vA.B.C: commit the 4 version edits + any dogfood-gate stamp refreshes/skips + PLAN.md flip + tasknote archive, create annotated `vA.B.C` tag, push branch + tag to origin, and publish a GitHub Release for `vA.B.C` (or hold local, unpublished, if push-go declined)"). Alongside the SPEC-defined bundle (closure review · recap · proposed commit message), this skill carries:
 
-- **Dogfood-gate resolution (enforcement)** — confirm the §5 walk resolved **every** dogfooded row **by re-running `step-5-dogfood-sop.md` step 5 from file state now** (the grep loop over the walk's ledger; must print nothing) — never from memory of what the walk wrote, since a parallel session can overwrite a stamp between §5 and here (CORE-588) — and surface the per-agent summary inside the closure review:
+- **Dogfood-gate resolution (enforcement)** — confirm the §5 walk resolved **every** dogfooded row **by re-running `step-5-dogfood-sop.md` step 5 from file state now** (must print nothing; never from memory — a parallel session can overwrite a stamp after §5) — and surface the per-agent summary inside the closure review:
 
   ```text
   Dogfood gate:
@@ -354,15 +326,13 @@ Surface the bundled 📦 ready-to-commit gate per SPEC/gates.md §"Operator-gate
     Cursor  skipped @ vA.B.C
   ```
 
-  This is a hard gate: **do not surface commit-go while any dogfooded row is unresolved** (stale prefix carrying no `; skipped @ vA.B.C` suffix for this release). An unresolved row sends you back to §5 to refresh-or-skip it before the cut continues — the gate blocks tagging until the summary shows every dogfooded row resolved.
+  This is a hard gate: **do not surface commit-go while any dogfooded row is unresolved** (stale prefix carrying no `; skipped @ vA.B.C` suffix for this release); an unresolved row sends you back to §5 to refresh-or-skip it.
 
-- **SOP-currency verdict (advisory)** — carry the §5 flag-don't-bump result into the closure review as one line, e.g. `SOP currency: clean` or `SOP currency: ft-task behind source (2 candidates) → filed CORE-NNN`. Unlike the dogfood gate this **does not block commit-go**, and the `last-verified:` stamps are not among the files this cut edits.
-
-- **Global self-wiring verdict (advisory)** — carry the §7.1 machine-global half into the closure review as one line, e.g. `Global wiring: clean`, `Global wiring: 9 dangling links, 2 path casings, 1 over-install — fix out of band`, or `Global wiring: not run — read refused; run the operator-private fleet script scripts/grant-global-skill-read.sh`. Like the SOP-currency verdict this **does not block commit-go**: agent homes are machine state and no file in this cut can carry the fix. The §7.1 *local* half is not reported here — it blocks upstream and is already resolved by the time this gate is reached.
-
-- **Completed-rotation verdict (advisory backstop)** — carry the §7.1 completed-rotation count into the closure review as one line, e.g. `Completed rotation: 36 rows (bound 60)` or `Completed rotation: 88 rows (>60) — missed rotation; Step 8 rotates it`. Like the two verdicts above this **does not block commit-go**: every closure rotates on its own (`SPEC/plan-filing.md` §"`## Completed` rotation"), so the count should read under the bound, and a miss is repaired by this release's own post-closure rotation (Step 8), in a local `chore:` commit after the release commit that rides the next push.
-
-- **Viz-majors-outdated verdict (advisory)** — carry the §7.1 majors list into the closure review as one line, e.g. `Viz majors: none pending` or `Viz majors: typescript 5.9.3→7.0.2, js-yaml 4.3.2→5.4.2 — bump or re-park out of band`. Like the three verdicts above this **does not block commit-go**: `npm outdated` is registry-time state (`docs/CONVENTIONS.md` §"Dependency audit cadence") and a release cut never bumps majors inline.
+- **Four advisory verdicts** — none blocks commit-go; each fragment says why. Carry each into the closure review as one line:
+  - **SOP currency** (§5) — e.g. `SOP currency: clean` or `SOP currency: ft-task behind source (2 candidates) → filed CORE-NNN`.
+  - **Global self-wiring** (§7.1 machine-global half; the local half blocks upstream) — e.g. `Global wiring: clean`, `Global wiring: 9 dangling links, 2 path casings, 1 over-install — fix out of band`, or `Global wiring: not run — read refused; run the operator-private fleet script scripts/grant-global-skill-read.sh`.
+  - **Completed rotation** (§7.1 backstop) — e.g. `Completed rotation: 36 rows (bound 60)` or `Completed rotation: 88 rows (>60) — missed rotation; Step 8 rotates it`.
+  - **Viz majors** (§7.1) — e.g. `Viz majors: none pending` or `Viz majors: typescript 5.9.3→7.0.2, js-yaml 4.3.2→5.4.2 — bump or re-park out of band`.
 
 - **Push-go prompt** — AskUserQuestion with default Yes, a bundled in-📦 prompt (per SPEC/gates.md §"Conditional skip rule" bundled-prompt override):
 
@@ -373,7 +343,7 @@ Surface the bundled 📦 ready-to-commit gate per SPEC/gates.md §"Operator-gate
 
 - **Commit message** — `feat: <TASK-ID> — flaitron vA.B.C (<one-clause summary>)`.
 
-- **Tag message** — locked at §7.2; included by reference (the user has already approved it). Surfaced here so the user sees the full atomic motion — commit + tag + optional push — when granting commit-go.
+- **Tag message** — locked at §7.2; included by reference, so the user sees the full atomic motion — commit + tag + optional push — when granting commit-go.
 
 The commit-go prompt carries the canonical `🟢 GO` prefix (e.g., `🟢 GO: Reply commit / go to land.`). Do not commit unprompted. The single 🟢 GO commit-go authorizes the atomic sequence: commit → tag → push (if push-go Yes).
 
@@ -383,10 +353,10 @@ On 🟢 GO commit-go (push-go answer already captured in the §7.4 bundle), run 
 
 1. ▶️ RUN: `git commit` with the surfaced message.
 2. ▶️ RUN: `git tag -a vA.B.C -F -` with the approved message from §7.2 (HEREDOC).
-3. **If push-go was Yes** — ▶️ RUN: `git push origin <current-branch>` then `git push origin vA.B.C`, then ▶️ RUN: `gh release create vA.B.C --latest --title "<title>" --notes "<notes>"` — title is the §7.2 locked tag message's first line (`flaitron vA.B.C — <headline>`), notes is everything after it, `--latest` marks it the repo's latest release (flaitron cuts releases linearly off `main`, so this is always correct — no need to ask). A release can't be created for a tag that isn't on origin yet, so this always runs after the tag push, never before or in place of it.
+3. **If push-go was Yes** — ▶️ RUN: `git push origin <current-branch>` then `git push origin vA.B.C`, then ▶️ RUN: `gh release create vA.B.C --latest --title "<title>" --notes "<notes>"` — title is the §7.2 locked tag message's first line (`flaitron vA.B.C — <headline>`), notes is everything after it, `--latest` is always correct (releases cut linearly off `main`). It runs after the tag push, never in place of it — a release needs the tag on origin.
    **If push-go was No** — stop after the tag; §8's 🏁 marker names the manual push + `gh release create` commands as a follow-up step.
 
-Verify each operation before the next (`git log -1 --stat`, `git tag --list vA.B.C`, and on push-go Yes also `git ls-remote --tags origin vA.B.C` and `gh release view vA.B.C`). The separate prose "ask explicitly before pushing" pause from earlier revisions is collapsed — push approval is captured upstream as the bundled push-go prompt at §7.4, per SPEC §"Operator-gate cues" ("skill-level extensions (e.g., release push-go) bundle into 📦").
+Verify each operation before the next (`git log -1 --stat`, `git tag --list vA.B.C`, and on push-go Yes also `git ls-remote --tags origin vA.B.C` and `gh release view vA.B.C`). There is no separate push pause: push approval is the §7.4 push-go answer.
 
 ## Step 8 — Post-closure protocol (🏁 marker + suggest-next-move + copy-paste)
 
@@ -429,7 +399,5 @@ The post-closure protocol is canonical in `SPEC/post-closure.md` — **Read it n
 
 ## Notes
 
-- **flaitron-self only.** This skill is never symlinked into adopter projects. Adopters consume flaitron via submodule pin and the manual bump procedure in `docs/MIGRATION.md` §"Pinning and bumping".
-- **Context-budget escape hatch (Step 2.5).** A full cut is a long session. If the remaining context budget looks tight at invocation, the skill offers to defer the whole cut to a fresh `/ft-release` chat (re-entry is `/ft-release`, not `/ft-task <TASK-ID>` — the recipe lives here) rather than driving inline on thin headroom. Comfortable budgets skip the hatch and drive inline as before.
-- **Why no args.** A flaitron release is a coordinated cut — there is at most one pending `release v*` task in PLAN at a time. The PLAN-line filing normally happens before `/ft-release` runs, or Step 1.1 drafts and files it on the spot when none exists yet. That filing does not ask; it prints the line it filed, which stays uncommitted until the release commit. Multiple un-cut releases queued is a process smell; the skill bails to surface it.
-- **Tag-message review is mandatory.** The auto-draft seeds the structure; the user is expected to review and edit. CORE-048's deviation from CORE-046's `No required project-side edits` boilerplate (calling out CORE-047's adopter action item) is the canonical example of context-sensitive editing — a rote auto-draft would have missed it.
+- **Why no args.** A flaitron release is a coordinated cut — at most one pending `release v*` task in PLAN at a time. Multiple un-cut releases queued is a process smell; Step 1 bails to surface it.
+- **Tag-message review is mandatory.** The auto-draft seeds the structure; the user is expected to review and edit (CORE-048's Migration block, calling out CORE-047's adopter action, is the canonical example a rote draft would have missed).

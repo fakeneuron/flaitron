@@ -11,7 +11,9 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-(none)
+- [ ] **TEST-004** [moderate]🧩 [unattended] | isolate-updater-test-refs — Move ref-mutating cases into a disposable clone. Verify pre-existing branch and tag SHAs survive the suite. Surfaced by audit 2026-11-25 (Finding #1, Critical).
+- [ ] **CORE-943** [moderate]🧩 | verify-installer-index-pin — Detect a parent index pin that differs from the verified release before reporting update success. Preserve staged intent and test the checkout/index mismatch. Surfaced by audit 2026-11-25 (Finding #2, High).
+- [ ] **FE-153** [moderate]🧩 | recover-board-loads — Clear initial loading when a full refresh supersedes it and retain current tasks when optional archive retrieval fails. Cover both cases in hook tests. Surfaced by audit 2026-11-25 (Findings #3–4, High).
 
 ## Medium
 

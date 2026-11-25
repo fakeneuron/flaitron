@@ -2,15 +2,13 @@ import { dirname, sep } from 'node:path';
 import type { ChangeScope } from './sseChange.ts';
 import type { ProjectDescriptor } from './workspace.ts';
 
-// Each project's `.flaitron/` dir — the root both watchers watch. Not the
-// tasknote or archive dirs themselves: either may be absent at dev-server
-// start, and chokidar never fires for a watch path that was missing then. The
-// hot (polled) and archive (native) reach lives in the `depth` + `ignored`
-// options beside the watchers in `flaitronWatch.ts`.
+// Both watchers start at each project's `.flaitron/` directory, which exists
+// at dev-server startup even if the tasknote and archive directories appear
+// later. The hot and archive reach lives in the `depth` and `ignored` options
+// in `flaitronWatch.ts`.
 //
-// These are literal paths, not globs: chokidar 4 removed glob support
-// and v5 treats every path literally, so escaping `[` or `*` in a project
-// directory name would corrupt the path rather than protect it.
+// Chokidar treats these paths literally. Pass directory names with `[` or `*`
+// through unchanged.
 export function watchRoots(projects: Iterable<ProjectDescriptor>): string[] {
   return [...projects].map((p) => dirname(p.planPath));
 }

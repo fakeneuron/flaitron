@@ -1,3 +1,6 @@
+// @vitest-environment node
+// Chokidar's polling backend uses Node timer handles.
+
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import type { Stats } from 'node:fs';
@@ -86,15 +89,15 @@ function descriptor(base: string, name: string): ProjectDescriptor {
 const FILE = { isFile: () => true, isDirectory: () => false } as unknown as Stats;
 const DIR = { isFile: () => false, isDirectory: () => true } as unknown as Stats;
 
-describe('watcher option pins (chokidar 5 depths from the .flaitron/ root)', () => {
+describe('watcher options relative to the .flaitron/ root', () => {
   const alpha = descriptor('/ws', 'alpha');
 
   it('polls the hot set at WATCH_POLL_MS with depth 1', () => {
     expect(hotWatchOptions([alpha])).toMatchObject({
       ignoreInitial: true,
       depth: 1,
-      usePolling: true,
-      interval: WATCH_POLL_MS,
+      backend: 'polling',
+      pollingInterval: WATCH_POLL_MS,
     });
     expect(typeof hotWatchOptions([alpha]).ignored).toBe('function');
   });
@@ -103,7 +106,7 @@ describe('watcher option pins (chokidar 5 depths from the .flaitron/ root)', () 
     expect(archiveWatchOptions([alpha])).toMatchObject({
       ignoreInitial: true,
       depth: 3,
-      usePolling: false,
+      backend: 'native',
     });
     expect(typeof archiveWatchOptions([alpha]).ignored).toBe('function');
   });
@@ -194,9 +197,8 @@ describe('ignoreOutsideArchiveReach (reader-matching reach)', () => {
   });
 });
 
-// The FE-127.4 failure: chokidar never fires for a watch path absent at start.
-// Real chokidar with the production options, on a project that has a PLAN.md
-// but no tasknote/ dir yet — the state of a freshly adopted project.
+// FE-127.4 regression coverage: use real chokidar with the production options
+// on a freshly adopted project that has PLAN.md and gains tasknote/ later.
 describe('watchers on a project whose tasknote dirs appear after start', () => {
   const watchers: FSWatcher[] = [];
 

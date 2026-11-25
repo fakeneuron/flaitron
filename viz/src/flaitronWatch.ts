@@ -12,11 +12,9 @@ export const SSE_DEBOUNCE_MS = 200;
 export const SSE_MAX_WAIT_MS = 1000;
 export const SSE_HEARTBEAT_MS = 30_000;
 
-// Both watchers watch each project's `.flaitron/` root (see `watchRoots`), not
-// `tasknote/` or `tasknote/archive/` directly: chokidar silently never fires for
-// a watch path that is absent at start, and a freshly adopted project has a
-// PLAN.md but no tasknote dir yet. The root always exists — discovery gates on
-// its PLAN.md — so the reach is carried entirely by `depth` + these predicates.
+// Both watchers start at each project's `.flaitron/` root (see `watchRoots`).
+// Discovery requires PLAN.md, so this root exists even on a freshly adopted
+// project. `depth` and these predicates define each watcher's reach from there.
 //
 // `ignored` gates traversal as well as events, and the root also holds the
 // `core/` submodule (a whole flaitron checkout), so the predicates prune by path
@@ -68,15 +66,15 @@ export function hotWatchOptions(projects: readonly ProjectDescriptor[]) {
   return {
     ignoreInitial: true,
     depth: 1,
-    usePolling: true,
-    interval: WATCH_POLL_MS,
+    backend: 'polling',
+    pollingInterval: WATCH_POLL_MS,
     ignored: ignoreOutsideHotReach(projects),
   } as const;
 }
 
 /**
- * Archives — native watch: at fleet scale the cost is the poll, not the
- * watch. `depth: 3` from the `.flaitron/` root reaches
+ * Archives use per-directory native watching so pruned subtrees stay outside
+ * the backend's watch scope. `depth: 3` from the `.flaitron/` root reaches
  * `tasknote/archive/<area>/<file>.md`. Anchoring at the root also puts native
  * handles on the root and tasknote dir, so PLAN.md and active-note saves wake
  * this watcher too and are dropped by the predicate — the accepted price of a
@@ -86,7 +84,7 @@ export function archiveWatchOptions(projects: readonly ProjectDescriptor[]) {
   return {
     ignoreInitial: true,
     depth: 3,
-    usePolling: false,
+    backend: 'native',
     ignored: ignoreOutsideArchiveReach(projects),
   } as const;
 }

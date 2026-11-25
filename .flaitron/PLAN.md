@@ -20,7 +20,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 ## Low
 
 - [ ] **CORE-933** [light]🔧 | epic-audit-drift-line-restore-read — Blocked by decay-window depth: once 5 `.N` audit tasknotes archive after window-start `f2887f37` (CORE-927), check whether any missed cumulative doc-drift the Phase 4 sweep did not catch; if one did, restore the Acceptance line in `claude/skills/ft-close-epic/SKILL.md` and un-window `SPEC/epic.md`; otherwise close the window.
-- [ ] **FE-156** [moderate]🧩 | viz-majors-wave — Bump the five viz majors pending at the v8.6.0 cut (@testing-library/jest-dom 8, chokidar 6, ignore 7, jsdom 31, typescript 7), or re-park each with a reason; run the full viz validation gate after each bump.
+- [ ] **FE-157** [moderate]🧩 | viz-typescript-7 — Retry TypeScript 7 when typescript-eslint supports it, resolve any compiler migration errors, and run the full visualizer gate.
 
 ## Future Opportunities
 
@@ -28,6 +28,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **FE-156** [moderate]🧩 | viz-majors-wave — Completed 2026-11-25.
 - [x] **CORE-944** [moderate]🧩 | release v8.6.0 — Completed 2026-11-25.
 - [x] **FE-155** [light] | time-out-board-fetches — Completed 2026-11-25.
 - [x] **FE-154** [light] | scope-body-read-failures — Completed 2026-11-25.

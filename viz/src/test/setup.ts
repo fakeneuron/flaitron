@@ -34,35 +34,37 @@ const makeStorage = (): Storage => {
     },
   };
 };
-Object.defineProperty(window, 'localStorage', {
-  value: makeStorage(),
-  writable: true,
-  configurable: true,
-});
-Object.defineProperty(window, 'sessionStorage', {
-  value: makeStorage(),
-  writable: true,
-  configurable: true,
-});
+if (typeof window !== 'undefined') {
+  Object.defineProperty(window, 'localStorage', {
+    value: makeStorage(),
+    writable: true,
+    configurable: true,
+  });
+  Object.defineProperty(window, 'sessionStorage', {
+    value: makeStorage(),
+    writable: true,
+    configurable: true,
+  });
 
-if (!Element.prototype.scrollIntoView) {
-  Element.prototype.scrollIntoView = function () {};
-}
+  if (!Element.prototype.scrollIntoView) {
+    Element.prototype.scrollIntoView = function () {};
+  }
 
-window.scrollTo = (() => {}) as typeof window.scrollTo;
+  window.scrollTo = (() => {}) as typeof window.scrollTo;
 
-if (typeof window.matchMedia !== 'function') {
-  window.matchMedia = (query: string) =>
-    ({
-      matches: false,
-      media: query,
-      onchange: null,
-      addListener: () => {},
-      removeListener: () => {},
-      addEventListener: () => {},
-      removeEventListener: () => {},
-      dispatchEvent: () => false,
-    }) as MediaQueryList;
+  if (typeof window.matchMedia !== 'function') {
+    window.matchMedia = (query: string) =>
+      ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: () => {},
+        removeListener: () => {},
+        addEventListener: () => {},
+        removeEventListener: () => {},
+        dispatchEvent: () => false,
+      }) as MediaQueryList;
+  }
 }
 
 // Real listener map + emit helper so tests can drive useProjectData's SSE

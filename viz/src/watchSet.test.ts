@@ -29,9 +29,7 @@ describe('watchRoots', () => {
     expect(watchRoots([])).toEqual([]);
   });
 
-  // chokidar 4 removed glob support, so v5 reads every watch path literally.
-  // Escaping glob metacharacters would corrupt such a path.
-  it('leaves glob metacharacters in project paths untouched (chokidar 5)', () => {
+  it('leaves glob metacharacters in literal watch paths untouched', () => {
     const bracketed = project('foo[wip]', '/ws');
     const [root] = watchRoots([bracketed]);
 

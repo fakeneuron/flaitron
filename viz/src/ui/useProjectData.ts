@@ -24,8 +24,9 @@ const NO_ERRORS: ScopeErrors = { plan: null, active: null, archive: null };
 
 // Fetch failures attributable to scopes, every failing one rather than just the
 // first, so two scopes failing in the same load each keep their own error.
-// Anything else thrown inside a load (a network rejection, a malformed body)
-// cannot be pinned to a scope, so it lands on every scope that load requested.
+// A thrown body read on a required endpoint is pinned the same way. A rejection
+// of the fetch batch itself still cannot be pinned, so it lands on every scope
+// that load requested.
 class ScopeLoadError extends Error {
   constructor(readonly failures: readonly [ChangeScope, string][]) {
     super(failures[0]![1]);
@@ -133,7 +134,20 @@ export function useProjectData(activeProject: string | null): {
         }
         // A failed scope must not hold back the healthy ones: their bodies are
         // read and committed below, and the collected failures are thrown after.
-        const md = planRes?.ok ? await planRes.text() : null;
+        // Each required body has its own guard, so a malformed payload errors
+        // only that scope and still lets the reads that succeeded commit.
+        const readRequired = async <T>(
+          scope: ChangeScope,
+          read: () => Promise<T>,
+        ): Promise<T | null> => {
+          try {
+            return await read();
+          } catch (e) {
+            failures.push([scope, (e as Error).message]);
+            return null;
+          }
+        };
+        const md = planRes?.ok ? await readRequired('plan', () => planRes.text()) : null;
         // Rotated `## Completed` history. Unlike the three above this one never
         // throws: the endpoint already answers an absent archive with an empty
         // body, and a board that PLAN.md alone can render must not be taken down
@@ -148,9 +162,13 @@ export function useProjectData(activeProject: string | null): {
         const archiveMd =
           freshArchiveMd ?? (lastArchive?.project === project ? lastArchive.md : '');
         const active = activeRes?.ok
-          ? ((await activeRes.json()) as ActiveTasknotesResponse | Tasknote[])
+          ? await readRequired('active', () =>
+              activeRes.json() as Promise<ActiveTasknotesResponse | Tasknote[]>,
+            )
           : null;
-        const archived = archiveRes?.ok ? ((await archiveRes.json()) as Tasknote[]) : null;
+        const archived = archiveRes?.ok
+          ? await readRequired('archive', () => archiveRes.json() as Promise<Tasknote[]>)
+          : null;
         if (activeProjectRef.current !== project) return;
         if (md !== null && stillLatest('plan')) {
           const parsed = parsePlanWithDiagnostics(md, archiveMd);

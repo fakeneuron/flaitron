@@ -886,6 +886,119 @@ describe('useProjectData — per-scope error', () => {
     expect(hook.result.current.tasks.map((t) => t.id)).toEqual(['FE-1']);
   });
 
+  // A thrown body is that scope's failure. The other required bodies in the
+  // same load still commit, and recovering the bad scope clears the only error.
+  describe('when a required body read throws', () => {
+    const note = (id: string) => ({ id, path: `${id}.md`, frontmatter: { title: id } });
+
+    const mountBody = (bad: '/api/plan' | '/api/active' | '/api/archive') => {
+      const fetchMock = vi.fn((url: string) => {
+        const route = url.split('?')[0]!;
+        if (routeIs(url, '/api/plan')) {
+          return Promise.resolve(
+            route === bad
+              ? { ok: true, status: 200, text: async () => Promise.reject(new Error('bad plan body')) }
+              : planRes(planWith('FE-1')),
+          );
+        }
+        if (routeIs(url, '/api/plan-archive')) return Promise.resolve(planRes(''));
+        if (routeIs(url, '/api/active')) {
+          return Promise.resolve(
+            route === bad
+              ? { ok: true, status: 200, json: async () => Promise.reject(new SyntaxError('bad active body')) }
+              : jsonRes([note('FE-A')]),
+          );
+        }
+        return Promise.resolve(
+          route === bad
+            ? { ok: true, status: 200, json: async () => Promise.reject(new SyntaxError('bad archive body')) }
+            : jsonRes([note('FE-Z')]),
+        );
+      });
+      vi.stubGlobal('fetch', fetchMock);
+      return { hook: renderHook(() => useProjectData('p1')), fetchMock };
+    };
+
+    const recover = async (
+      hook: ReturnType<typeof mountBody>['hook'],
+      fetchMock: ReturnType<typeof vi.fn>,
+      scope: 'plan' | 'active' | 'archive',
+    ) => {
+      fetchMock.mockImplementation((url: string) => {
+        if (routeIs(url, '/api/plan')) return Promise.resolve(planRes(planWith('FE-1')));
+        if (routeIs(url, '/api/plan-archive')) return Promise.resolve(planRes(''));
+        if (routeIs(url, '/api/active')) return Promise.resolve(jsonRes([note('FE-A')]));
+        return Promise.resolve(jsonRes([note('FE-Z')]));
+      });
+      await act(async () => {
+        hook.result.current.refresh([scope]);
+        await new Promise((r) => setTimeout(r, 0));
+      });
+    };
+
+    it('pins a malformed PLAN.md body to plan and still commits tasknotes', async () => {
+      const { hook, fetchMock } = mountBody('/api/plan');
+      await waitFor(() => expect(hook.result.current.error).toBe('bad plan body'));
+
+      expect(hook.result.current.tasks).toEqual([]);
+      expect([...hook.result.current.tasknotesById.keys()].sort()).toEqual(['FE-A', 'FE-Z']);
+
+      await recover(hook, fetchMock, 'plan');
+      expect(hook.result.current.error).toBeNull();
+      expect(hook.result.current.tasks.map((t) => t.id)).toEqual(['FE-1']);
+    });
+
+    it('pins a malformed active body to active and still commits the plan', async () => {
+      const { hook, fetchMock } = mountBody('/api/active');
+      await waitFor(() => expect(hook.result.current.error).toBe('bad active body'));
+
+      expect(hook.result.current.tasks.map((t) => t.id)).toEqual(['FE-1']);
+      expect([...hook.result.current.tasknotesById.keys()]).toEqual(['FE-Z']);
+
+      await recover(hook, fetchMock, 'active');
+      expect(hook.result.current.error).toBeNull();
+      expect([...hook.result.current.tasknotesById.keys()].sort()).toEqual(['FE-A', 'FE-Z']);
+    });
+
+    it('pins a malformed archive body to archive and still commits the plan', async () => {
+      const { hook, fetchMock } = mountBody('/api/archive');
+      await waitFor(() => expect(hook.result.current.error).toBe('bad archive body'));
+
+      expect(hook.result.current.tasks.map((t) => t.id)).toEqual(['FE-1']);
+      expect([...hook.result.current.tasknotesById.keys()]).toEqual(['FE-A']);
+
+      await recover(hook, fetchMock, 'archive');
+      expect(hook.result.current.error).toBeNull();
+      expect([...hook.result.current.tasknotesById.keys()].sort()).toEqual(['FE-A', 'FE-Z']);
+    });
+  });
+
+  it('stamps every requested scope when a required fetch rejects', async () => {
+    const fetchMock = vi.fn((url: string) => {
+      if (routeIs(url, '/api/plan')) return Promise.reject(new TypeError('Failed to fetch'));
+      if (routeIs(url, '/api/plan-archive')) return Promise.resolve(planRes(''));
+      return Promise.resolve(jsonRes([]));
+    });
+    vi.stubGlobal('fetch', fetchMock);
+    const hook = renderHook(() => useProjectData('p1'));
+    await waitFor(() => expect(hook.result.current.error).toBe('Failed to fetch'));
+
+    // `error` is the first standing message, so a plan-only stamp would clear
+    // as soon as plan recovers. Active and archive must each still hold it.
+    fetchMock.mockImplementation((url: string) => {
+      if (routeIs(url, '/api/plan')) return Promise.resolve(planRes(planWith('FE-1')));
+      if (routeIs(url, '/api/plan-archive')) return Promise.resolve(planRes(''));
+      return Promise.resolve(jsonRes([]));
+    });
+    await refreshAndSettle(hook, ['plan']);
+    expect(hook.result.current.error).toBe('Failed to fetch');
+    await refreshAndSettle(hook, ['active']);
+    expect(hook.result.current.error).toBe('Failed to fetch');
+    await refreshAndSettle(hook, ['archive']);
+    expect(hook.result.current.error).toBeNull();
+    expect(hook.result.current.tasks.map((t) => t.id)).toEqual(['FE-1']);
+  });
+
   it('clears standing load errors on reset()', async () => {
     const hook = mountFailing(new Set(['/api/plan']));
     await waitFor(() => expect(hook.result.current.error).toBe('PLAN.md fetch failed: HTTP 500'));

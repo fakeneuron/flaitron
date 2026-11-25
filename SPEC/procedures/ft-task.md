@@ -27,10 +27,6 @@ matches `<AREA>-<NUMBER>` (or `<AREA>-<NUMBER>.<SUB>` for an epic subtask)
 per [`SPEC.md` §"Task ID convention"](../../SPEC.md). If no valid ID is
 given, ask for one — do not guess.
 
-Step 1 advises whether a standalone row qualifies for direct edit or calls
-for a tasknote. See [`SPEC/tasknote-selection.md`](../tasknote-selection.md)
-for routing.
-
 ## Agent-neutral primitives
 
 This SOP names operations, not Claude Code tools. Substitute your platform's
@@ -43,24 +39,19 @@ equivalent where a step calls for one (full ledger:
 | **prose ask** | A free-text question to the operator. |
 | **trigger** | The operator's conversational request to start the task — there is no slash dispatch to rely on. |
 | **autonomous mode** | The operator may ask you to run without stopping at the conditional gates (Claude Code exposes this as `--fast`). Honor it as described under each gate. It is also **implied by a PLAN.md row's `[unattended]` marker** when no mode was requested — see Step 1. |
-| **debug mode** | The operator may ask you to drive the task hypothesis-first because the root cause is not yet known (Claude Code exposes this as `--debug`). **Explicit opt-in only** — never infer it from a bug-shaped task description. It adds *content* to Phases 1–4, no new phase, template, banner, or gate. When requested, **read [`claude/skills/ft-task/step-4-debug-mode.md`](../../claude/skills/ft-task/step-4-debug-mode.md) now** — the mode's single body for Phases 1–4. Read its `--fast` / `fast-mode` as autonomous mode and `AskUserQuestion` as a structured ask. |
-| **loop mode** | The operator may ask you to run the task as an execute→verify loop because "done" is one or more machine-checkable commands (Claude Code exposes this as `--loop`). **Explicit opt-in only.** It changes the Phase 2↔3 drive, not the phases; cycles run autonomously, destructive steps park. Read [`SPEC/loop.md`](../loop.md) and [`claude/skills/ft-task/step-5-loop-mode.md`](../../claude/skills/ft-task/step-5-loop-mode.md) now, and follow the fragment wherever it amends a step, from scaffold to post-convergence review. Translate `fast-mode` to autonomous mode and `AskUserQuestion` to a structured ask. |
+| **debug mode** | The operator may ask you to drive the task hypothesis-first because the root cause is not yet known (Claude Code exposes this as `--debug`). **Explicit opt-in only** — never infer it from a bug-shaped task description. When requested, **read [`claude/skills/ft-task/step-4-debug-mode.md`](../../claude/skills/ft-task/step-4-debug-mode.md) now** — the mode's single body for Phases 1–4. Read its `--fast` / `fast-mode` as autonomous mode and `AskUserQuestion` as a structured ask. |
+| **loop mode** | The operator may ask you to run the task as an execute→verify loop because "done" is one or more machine-checkable commands (Claude Code exposes this as `--loop`). **Explicit opt-in only.** Read [`SPEC/loop.md`](../loop.md) and [`claude/skills/ft-task/step-5-loop-mode.md`](../../claude/skills/ft-task/step-5-loop-mode.md) now, and follow the fragment wherever it amends a step, from scaffold to post-convergence review. Translate `fast-mode` to autonomous mode and `AskUserQuestion` to a structured ask. |
 | **micro mode** | The operator may ask for a micro-sized record (Claude Code exposes this as `--micro`). **Explicit opt-in only**, though it is the routing default for known work with no design question ([`SPEC/tasknote-selection.md`](../tasknote-selection.md)). Same phases, gates, and closure, logged in one `## ⚡ Notes` section. Read [`claude/skills/ft-task/micro-mode.md`](../../claude/skills/ft-task/micro-mode.md) now. Refuses loop and debug mode. |
-| **unattended mode** | The caller may declare that **no operator is present to answer a gate** (Claude Code exposes this as `--unattended`). It is autonomous mode's autonomy plus one behavior: the six gates nobody can answer **park the tasknote** instead of firing — the visual-confirmation ask and the Re-scope notice included, which autonomous mode only delegates to a present operator. **Read [`claude/skills/ft-task/unattended-mode.md`](../../claude/skills/ft-task/unattended-mode.md) now**, with [`SPEC/gate-postures.md` §"`--unattended` operator posture"](../gate-postures.md) and [`SPEC/blocked.md`](../blocked.md) beside it — the park recipe, the conversion map, the `park-reason:` codes. Translate as for debug mode, plus: its `/ft-task` steps are this SOP's steps, and `/ft-file-task --unattended` is the platform-neutral filing motion of [`SPEC.md` §"Deferred hand-off filing"](../../SPEC.md). |
+| **unattended mode** | The caller may declare that **no operator is present to answer a gate** (Claude Code exposes this as `--unattended`). It is autonomous mode's autonomy plus one behavior: the six gates nobody can answer **park the tasknote** instead of firing. **Read [`claude/skills/ft-task/unattended-mode.md`](../../claude/skills/ft-task/unattended-mode.md) now**, with [`SPEC/gate-postures.md` §"`--unattended` operator posture"](../gate-postures.md) and [`SPEC/blocked.md`](../blocked.md) beside it — the park recipe, the conversion map, the `park-reason:` codes. Translate as for debug mode, plus: its `/ft-task` steps are this SOP's steps, and `/ft-file-task --unattended` is the platform-neutral filing motion of [`SPEC.md` §"Deferred hand-off filing"](../../SPEC.md). |
 
-Autonomous mode and debug mode are **orthogonal and compose** (the repro
-re-verify is not a gate autonomous mode may suppress). Loop mode composes the
-same way — autonomous mode reaches only its pre-loop Phase 1 surface, since
-the loop already runs autonomously.
-Micro mode composes with autonomous mode.
-Unattended mode composes with all four, never replacing any of them.
+The modes compose, except that micro mode refuses loop and debug mode, and
+unattended mode already includes autonomous mode, so never request both
+([`claude/skills/ft-task/step-0-flags.md`](../../claude/skills/ft-task/step-0-flags.md)).
 
-**Parking.** How an unattended park writes, commits, and stops, and what it
-never does: `claude/skills/ft-task/unattended-mode.md` §"The park recipe";
-resume is the ordinary [`SPEC/blocked.md`](../blocked.md) path. What no
-unattended run relaxes — the paper-complete guard, deferred hand-off filing
-and its `unattended-candidates:` copy, and that a park files nothing:
-`claude/skills/ft-task/unattended-mode.md` §"What `--unattended` never relaxes".
+**Parking.** How an unattended park writes, commits, and stops:
+`claude/skills/ft-task/unattended-mode.md` §"The park recipe"; resume is the
+ordinary [`SPEC/blocked.md`](../blocked.md) path. What no unattended run
+relaxes: the same file's §"What `--unattended` never relaxes".
 
 **Cross-repo work** is filed in the repo it belongs to, never edited from
 this cycle: [`SPEC.md` §"Cross-repo edit remit"](../../SPEC.md).
@@ -143,8 +134,7 @@ stop and ask.
 Before the model check, run Step 3's in-flight refusal, then its foreign-dirt
 guard and archived refusal, then (unattended mode, a literal `.N` ID only) its
 open-siblings stop — once, so a retag never lands on a note this run then
-refuses, and so Step 3 never mistakes this run's approved writes for foreign
-dirt.
+refuses.
 
 Then, before any heavy thinking, check the `[model]` tag against the model
 you are running as, per [`SPEC/model.md`](../model.md). On a concrete
@@ -301,15 +291,11 @@ After the Phase 1→2 gate clears, Phase 2 → Phase 3 → Phase 4 closure ops f
 - **Phase 3: Testing & Linting** — [`SPEC.md` §"🧪 Phase 3"](../../SPEC.md).
   Run targeted tests + lint/type-check on changed code (full suite only for
   broad/cross-cutting changes). **Under unattended mode** first take the scope
-  guardrails (cited below), then
-  run the repo's full validation set instead — when the justfile defines any of `check` /
-  `test` / `lint` / `typecheck`, `just check` if defined plus each other
-  one it defines that `check` does not reach (`just --show check`), else
-  `AGENTS.md`/`CLAUDE.md` commands, else CI steps — never the
-  targeted default; a red the
-  diff caused returns to Phase 2, and a red the run cannot make green parks
-  `input-needed` rather than closing over it
-  ([`SPEC/gate-postures.md` §"What `--unattended` never relaxes"](../gate-postures.md)).
+  guardrails (cited below), then run the repo's full validation set, never the
+  targeted default; a red the diff caused returns to Phase 2, and a red the
+  run cannot make green parks `input-needed` rather than closing over it
+  ([`SPEC/gate-postures.md` §"What `--unattended` never relaxes"](../gate-postures.md)
+  names the set).
   Record a **Verification receipt** in Testing Notes: each Acceptance verify
   command as `command → exit code` (+ the first failure line when non-zero),
   read from the runner's tail, with SPEC's structural half folded in. Then the

@@ -256,24 +256,47 @@ checkout_tag() {
   git -C "$1" -c advice.detachedHead=false checkout -q "$VERSION" || die "checkout $VERSION failed in $1"
 }
 
+# Only a resolved gitlink counts as a parent index pin.
+index_core_commit() {
+  git ls-files --stage -- .flaitron/core |
+    awk '$1 == "160000" && $3 == "0" && $4 == ".flaitron/core" { print $2 }'
+}
+
 install_submodule() {
-  if [ -n "$CORE_PIN$CORE_HEAD" ]; then
+  if [ -n "$CORE_HEAD" ]; then
+    index_commit=$(index_core_commit)
+    # Only move a pin that agrees with the checkout, or already names the target.
+    if [ "$index_commit" != "$EXPECTED" ] &&
+      { [ "$CORE_HEAD" = "$EXPECTED" ] || [ "$index_commit" != "$CORE_HEAD" ]; }; then
+      die ".flaitron/core parent index has ${index_commit:-no resolved gitlink}, checkout has $CORE_HEAD, requested $VERSION is $EXPECTED; reconcile the index and checkout first"
+    fi
     if [ "$CORE_HEAD" = "$EXPECTED" ]; then
-      say "submodule .flaitron/core already at $VERSION"
+      report="submodule .flaitron/core already at $VERSION"
     else
       [ -z "$(git -C .flaitron/core status --porcelain)" ] || die ".flaitron/core has local changes; resolve them first"
       checkout_tag .flaitron/core
-      git add .flaitron/core
-      say "MOVED   .flaitron/core ${CORE_PIN:-$CORE_HEAD} -> $VERSION"
+      report="MOVED   .flaitron/core ${CORE_PIN:-$CORE_HEAD} -> $VERSION"
     fi
   else
     mkdir -p .flaitron
     git submodule add -q "$REPO_URL" .flaitron/core || die "git submodule add failed"
+    index_commit=$(index_core_commit)
     checkout_tag .flaitron/core
-    git add .flaitron/core
-    say "CREATED .flaitron/core (submodule) at $VERSION"
+    report="CREATED .flaitron/core (submodule) at $VERSION"
   fi
   verify_commit .flaitron/core
+  if [ "$CORE_HEAD" != "$EXPECTED" ]; then
+    current_index=$(index_core_commit)
+    if [ "$current_index" != "$EXPECTED" ]; then
+      [ "$current_index" = "$index_commit" ] ||
+        die ".flaitron/core parent index changed during checkout; reconcile the index and checkout first"
+      git add .flaitron/core || die "could not stage .flaitron/core"
+    fi
+  fi
+  index_commit=$(index_core_commit)
+  [ "$index_commit" = "$EXPECTED" ] ||
+    die ".flaitron/core parent index has ${index_commit:-no resolved gitlink}, expected $VERSION at $EXPECTED"
+  say "$report"
 }
 
 install_global() {

@@ -33,6 +33,7 @@ out_has() { grep -q -- "$1" "$W/out"; }
 out_lacks() { ! grep -Eq -- "$1" "$W/out"; }
 mkproj() { mkdir -p "$1" && git -C "$1" init -q && echo '# p' >"$1/AGENTS.md" && git -C "$1" add . && git -C "$1" commit -qm init; }
 pin() { git -C "$1/.flaitron/core" describe --tags --exact-match HEAD 2>/dev/null; }
+index_pin() { git -C "$1" rev-parse --verify :.flaitron/core; }
 snap() { (cd "$1" && git status --porcelain --untracked-files=all; ls -A); }
 links_ok() { for l in "$1"/ft-*; do [ -L "$l" ] && [ -e "$l" ] || return 1; done; }
 
@@ -49,6 +50,8 @@ check "prints GitHub commit" out_has "^tag commit (GitHub): [0-9a-f]\{40\}$"
 SHA=$(sed -n 's/^tag commit (GitHub): //p' "$W/out")
 check "prints verified line" out_has "^verified .flaitron/core HEAD = $LATEST = "
 check "pin is latest ($LATEST)" [ "$(pin "$P1")" = "$LATEST" ]
+check "fresh gitlink matches the release" [ "$(index_pin "$P1")" = "$SHA" ]
+check "fresh staged pin has gitlink mode" [ "$(git -C "$P1" ls-files --stage -- .flaitron/core | cut -d ' ' -f 1)" = 160000 ]
 check "claude links resolve" links_ok "$P1/.claude/skills"
 check "codex links resolve" links_ok "$P1/.agents/skills"
 ROSTER=$(grep -c '^ln -s .* \.claude/skills/ft-' "$P1/.flaitron/core/claude/AGENTS-snippet.md")
@@ -74,12 +77,15 @@ check "exit 0" [ "$(rc)" = 0 ]
 check "no CREATED/BACKUP/REPLACED/MOVED" out_lacks '^(CREATED|BACKUP|REPLACED|MOVED)'
 check "keeps pin" out_has "source: existing pin"
 check "pin unchanged" [ "$(pin "$P1")" = "$LATEST" ]
+check "rerun keeps the gitlink" [ "$(index_pin "$P1")" = "$SHA" ]
 
 say "3 update to $PREV, then back to latest"
 CMD=update
 run "$P1" FLAITRON_VERSION="$PREV"
 check "exit 0" [ "$(rc)" = 0 ]
 check "pin moved to $PREV" [ "$(pin "$P1")" = "$PREV" ]
+PREV_SHA=$(git -C "$P1/.flaitron/core" rev-parse HEAD)
+check "pinned update stages the release" [ "$(index_pin "$P1")" = "$PREV_SHA" ]
 check "global moved to $PREV" [ "$(git -C "$HOME/code/flaitron" describe --tags --exact-match HEAD)" = "$PREV" ]
 run "$P1"
 check "exit 0" [ "$(rc)" = 0 ]
@@ -88,8 +94,22 @@ check "exit 0" [ "$(rc)" = 0 ]
 RESOLVED=$(sed -n 's/^flaitron \(v[0-9.]*\) (source: .*)$/\1/p' "$W/out")
 check "update printed its resolution" [ -n "$RESOLVED" ]
 check "pin moved to resolved latest ($RESOLVED)" [ "$(pin "$P1")" = "$RESOLVED" ]
+LATEST_SHA=$(sed -n 's/^tag commit (GitHub): //p' "$W/out")
+check "latest update stages the release" [ "$(index_pin "$P1")" = "$LATEST_SHA" ]
 LATEST=$RESOLVED
 check "links still resolve" links_ok "$P1/.claude/skills"
+
+say "3a update refuses a different gitlink with the requested release checked out"
+check "fixture uses two distinct release commits" [ "$PREV_SHA" != "$LATEST_SHA" ]
+git -C "$P1" update-index --cacheinfo "160000,$PREV_SHA,.flaitron/core"
+run "$P1" FLAITRON_VERSION="$LATEST"
+check "index mismatch refused" [ "$(rc)" != 0 ]
+check "reports the staged SHA and requested SHA" out_has "parent index.*$PREV_SHA.*$LATEST_SHA"
+check "keeps the staged gitlink" [ "$(index_pin "$P1")" = "$PREV_SHA" ]
+check "keeps the requested checkout" [ "$(git -C "$P1/.flaitron/core" rev-parse HEAD)" = "$LATEST_SHA" ]
+check "stops before verification, wiring or handoff" out_lacks '^(verified |wiring |staged, |Next:)'
+git -C "$P1" add .flaitron/core
+
 CMD=''
 run "$P1" FLAITRON_VERSION="$PREV"
 check "install never moves a pin" [ "$(rc)" != 0 ]

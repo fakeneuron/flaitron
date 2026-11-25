@@ -11,7 +11,6 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## High
 
-- [ ] **CORE-943** [moderate]🧩 | verify-installer-index-pin — Detect a parent index pin that differs from the verified release before reporting update success. Preserve staged intent and test the checkout/index mismatch. Surfaced by audit 2026-11-25 (Finding #2, High).
 - [ ] **FE-153** [moderate]🧩 | recover-board-loads — Clear initial loading when a full refresh supersedes it and retain current tasks when optional archive retrieval fails. Cover both cases in hook tests. Surfaced by audit 2026-11-25 (Findings #3–4, High).
 
 ## Medium
@@ -28,6 +27,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-943** [moderate]🧩 | verify-installer-index-pin — Completed 2026-11-25.
 - [x] **TEST-004** [moderate]🧩 [unattended] | isolate-updater-test-refs — Completed 2026-11-25.
 - [x] **CORE-935** [light] | updater-node-guard-order — Completed 2026-11-24.
 - [x] **CORE-941** [light] | paste-fence-opener-forms — Completed 2026-11-24.

@@ -15,11 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **CORE-EPIC-920** [heavy]🧠 | near-cap-trims-2 — Six budgeted surfaces sit at 95–97% of their caps 18 days after CORE-869.5 trimmed the last such set, so each next edit to them pays a trim first. Discovery supplied by audit-repo 2026-11-24. Surfaced by audit-repo 2026-11-24 (Theme: Budget trims don't hold)
-  - [x] **CORE-920.2** [heavy]🧠 | headroom-spec-modules — Completed 2026-11-24.
-  - [x] **CORE-920.3** [heavy]🧠 | headroom-runner-bodies — Completed 2026-11-24.
-  - [x] **CORE-920.4** [heavy]🧠 | headroom-release-skill — Completed 2026-11-24.
-  - [ ] **CORE-920.N** [heavy]🧠 | near-cap-trims-2 audit
+(none)
 
 ## Low
 
@@ -27,6 +23,8 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 - [ ] **CORE-935** [light] | updater-node-guard-order — The Node ≥20 guard in `tools/update-adopters.mjs` now runs after six static module imports load; move it into a first-imported module or drop it.
 - [ ] **CORE-939** [light] | ft-update-fence-close-prose — `ft-update` Step 3.5 says a "same-length" backtick line closes the paste fence; `text.mjs` `fenceOpeners` accepts any run at least as long. Reword the prose.
 - [ ] **CORE-940** [light] | reconciled-pin-source-rule — `drift-checks.sh` header and `docs/CONVENTIONS.md` count `reconciled_pin` among checks with no source rule, but `/ft-release` Step 5 states it; regroup it and fix both counts.
+- [ ] **CORE-941** [light] | paste-fence-opener-forms — `tools/update-adopters/text.mjs` `workflowPasteBlock` opens the paste fence only on a column-0 backtick run, though `fenceOpeners` admits tilde and indented fences. Align the opener test or document the narrower contract. Surfaced by [[CORE-920.2]]'s review.
+- [ ] **CORE-942** [light] | updater-roster-whitespace — `drift-checks.sh` `updater_roster`'s anchored sed skips an AGENTS.md roster line with leading or trailing whitespace, failing closed with a spurious `UNLISTED MODULE`, `STALE ROSTER LINE` or `VACUOUS`. Tolerate surrounding whitespace. Surfaced by [[CORE-920.2]]'s review.
 
 ## Future Opportunities
 
@@ -34,6 +32,11 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-EPIC-920** [heavy]🧠 | near-cap-trims-2 — Completed 2026-11-24.
+  - [x] **CORE-920.2** [heavy]🧠 | headroom-spec-modules — Completed 2026-11-24.
+  - [x] **CORE-920.3** [heavy]🧠 | headroom-runner-bodies — Completed 2026-11-24.
+  - [x] **CORE-920.4** [heavy]🧠 | headroom-release-skill — Completed 2026-11-24.
+  - [x] **CORE-920.N** [heavy]🧠 | near-cap-trims-2 audit — Completed 2026-11-24.
 - [x] **CORE-EPIC-919** [moderate]🧩 | derived-figures — Completed 2026-11-24.
   - [x] **CORE-919.2** [light]🔧 [unattended] | overlay-figures-to-commands — Completed 2026-11-24.
   - [x] **CORE-919.3** [heavy]🧠 | reconciled-pin-guard — Completed 2026-11-24.

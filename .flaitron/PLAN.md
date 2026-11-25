@@ -15,7 +15,8 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-(none)
+- [ ] **FE-154** [light] | scope-body-read-failures — Read each required board-load body under its own guard so a malformed response errors only its scope. Surfaced by FE-153 review.
+- [ ] **FE-155** [light] | time-out-board-fetches — Add a timeout to required board-load fetches so a hung request surfaces as a scope error instead of holding the skeleton. Surfaced by FE-153 review.
 
 ## Low
 

@@ -202,8 +202,8 @@ only the link.
   fence is the first line opening a fence at column 0 with 3+ backticks (not
   tildes), optional spaces or tabs, then `markdown` as its info string's first
   word (not ```` ```markdown-example ````), and it
-  closes where that fence does (an inner tilde fence is body; a same-length
-  backtick line ends it). A CRLF AGENTS.md (its
+  closes where that fence does (an inner tilde fence is body; a backtick line
+  at least as long as the opener ends it). A CRLF AGENTS.md (its
   `## Workflow` heading line ends in CR) gets the block in CRLF.
   **The bytes and skips are pinned by
   `<FT>/SPEC/fixtures/workflow-block/cases.json`** (its `describes` states

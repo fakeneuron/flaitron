@@ -15,7 +15,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Medium
 
-- [ ] **FE-155** [light] | time-out-board-fetches — Add a timeout to required board-load fetches so a hung request surfaces as a scope error instead of holding the skeleton. Surfaced by FE-153 review.
+(none)
 
 ## Low
 
@@ -27,6 +27,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **FE-155** [light] | time-out-board-fetches — Completed 2026-11-25.
 - [x] **FE-154** [light] | scope-body-read-failures — Completed 2026-11-25.
 - [x] **FE-153** [moderate]🧩 | recover-board-loads — Completed 2026-11-25.
 - [x] **CORE-943** [moderate]🧩 | verify-installer-index-pin — Completed 2026-11-25.

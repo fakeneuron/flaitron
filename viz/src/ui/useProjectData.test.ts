@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { renderHook, act, waitFor, cleanup } from '@testing-library/react';
-import { LIVE_RECOVERY_MS, useProjectData } from './useProjectData';
+import { BOARD_FETCH_TIMEOUT_MS, LIVE_RECOVERY_MS, useProjectData } from './useProjectData';
 
 // The upgraded MockEventSource (src/test/setup.ts) records every instance and
 // exposes emit(type). Reach the EventSource a hook mounted to drive its SSE
@@ -970,6 +970,121 @@ describe('useProjectData — per-scope error', () => {
       await recover(hook, fetchMock, 'archive');
       expect(hook.result.current.error).toBeNull();
       expect([...hook.result.current.tasknotesById.keys()].sort()).toEqual(['FE-A', 'FE-Z']);
+    });
+  });
+
+  // A hung required fetch aborts on the board deadline and pins only that
+  // scope. The optional archive fetch shares the deadline and stays silent.
+  describe('when a board fetch never settles', () => {
+    const note = (id: string) => ({ id, path: `${id}.md`, frontmatter: { title: id } });
+
+    // Node's AbortSignal.timeout does not listen to Vitest's fake clock, so
+    // the spy arms the same deadline through setTimeout. The hook still calls
+    // AbortSignal.timeout with BOARD_FETCH_TIMEOUT_MS.
+    const installDeadline = () => {
+      vi.useFakeTimers();
+      vi.spyOn(AbortSignal, 'timeout').mockImplementation((ms: number) => {
+        const controller = new AbortController();
+        setTimeout(() => {
+          controller.abort(
+            new DOMException('The operation was aborted due to timeout', 'TimeoutError'),
+          );
+        }, ms);
+        return controller.signal;
+      });
+    };
+
+    const hangUntilAbort = (init?: RequestInit) =>
+      new Promise<never>((_resolve, reject) => {
+        const signal = init?.signal;
+        const fail = () => {
+          const reason = signal?.reason;
+          reject(
+            reason instanceof DOMException
+              ? reason
+              : new DOMException('The operation was aborted due to timeout', 'TimeoutError'),
+          );
+        };
+        if (!signal) {
+          reject(new Error('missing signal'));
+          return;
+        }
+        if (signal.aborted) fail();
+        else signal.addEventListener('abort', fail, { once: true });
+      });
+
+    const okFetch = (url: string) => {
+      if (routeIs(url, '/api/plan')) return Promise.resolve(planRes(planWith('FE-1')));
+      if (routeIs(url, '/api/plan-archive')) return Promise.resolve(planRes(''));
+      if (routeIs(url, '/api/active')) return Promise.resolve(jsonRes([note('FE-A')]));
+      return Promise.resolve(jsonRes([note('FE-Z')]));
+    };
+
+    it('pins a hung PLAN.md fetch to plan and still commits tasknotes', async () => {
+      installDeadline();
+      try {
+        const fetchMock = vi.fn((url: string, init?: RequestInit) =>
+          routeIs(url, '/api/plan') ? hangUntilAbort(init) : okFetch(url),
+        );
+        vi.stubGlobal('fetch', fetchMock);
+        const hook = renderHook(() => useProjectData('p1'));
+
+        // Still owed one millisecond short of the deadline: an immediate
+        // rejection would already have lowered the skeleton.
+        await act(async () => {
+          await vi.advanceTimersByTimeAsync(BOARD_FETCH_TIMEOUT_MS - 1);
+        });
+        expect(hook.result.current.loading).toBe(true);
+
+        await act(async () => {
+          await vi.advanceTimersByTimeAsync(1);
+        });
+
+        expect(AbortSignal.timeout).toHaveBeenCalledWith(BOARD_FETCH_TIMEOUT_MS);
+        expect(hook.result.current.loading).toBe(false);
+        expect(hook.result.current.error).toBe('PLAN.md fetch failed: timed out');
+        expect(hook.result.current.tasks).toEqual([]);
+        expect([...hook.result.current.tasknotesById.keys()].sort()).toEqual(['FE-A', 'FE-Z']);
+
+        fetchMock.mockImplementation((url: string) => okFetch(url));
+        await act(async () => {
+          hook.result.current.refresh(['plan']);
+          await vi.advanceTimersByTimeAsync(0);
+        });
+        expect(hook.result.current.error).toBeNull();
+        expect(hook.result.current.tasks.map((t) => t.id)).toEqual(['FE-1']);
+      } finally {
+        vi.useRealTimers();
+      }
+    });
+
+    it('drops a hung PLAN-ARCHIVE fetch without an error and still commits PLAN.md', async () => {
+      installDeadline();
+      try {
+        vi.stubGlobal('fetch', (url: string, init?: RequestInit) =>
+          routeIs(url, '/api/plan-archive') ? hangUntilAbort(init) : okFetch(url),
+        );
+        const hook = renderHook(() => useProjectData('p1'));
+
+        // `fetchArchive` swallows every rejection, so this has to prove the
+        // hang is still open until the deadline and only then aborts.
+        await act(async () => {
+          await vi.advanceTimersByTimeAsync(BOARD_FETCH_TIMEOUT_MS - 1);
+        });
+        expect(hook.result.current.loading).toBe(true);
+        expect(hook.result.current.error).toBeNull();
+
+        await act(async () => {
+          await vi.advanceTimersByTimeAsync(1);
+        });
+
+        expect(AbortSignal.timeout).toHaveBeenCalledWith(BOARD_FETCH_TIMEOUT_MS);
+        expect(hook.result.current.loading).toBe(false);
+        expect(hook.result.current.error).toBeNull();
+        expect(hook.result.current.tasks.map((t) => t.id)).toEqual(['FE-1']);
+      } finally {
+        vi.useRealTimers();
+      }
     });
   });
 

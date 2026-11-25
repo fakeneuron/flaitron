@@ -17,6 +17,12 @@ import {
 // while live updates are down, and how often a CLOSED stream is retried.
 export const LIVE_RECOVERY_MS = 5000;
 
+// A board fetch that stays open past this deadline aborts. Long enough for a
+// local archive read, short enough that a hung socket cannot hold the skeleton.
+// Required fetches pin the resulting TimeoutError to their own scope. The
+// optional PLAN-ARCHIVE fetch uses the same deadline and stays best-effort.
+export const BOARD_FETCH_TIMEOUT_MS = 10_000;
+
 type ScopeSeqs = Record<ChangeScope, number>;
 type ScopeErrors = Record<ChangeScope, string | null>;
 
@@ -24,9 +30,9 @@ const NO_ERRORS: ScopeErrors = { plan: null, active: null, archive: null };
 
 // Fetch failures attributable to scopes, every failing one rather than just the
 // first, so two scopes failing in the same load each keep their own error.
-// A thrown body read on a required endpoint is pinned the same way. A rejection
-// of the fetch batch itself still cannot be pinned, so it lands on every scope
-// that load requested.
+// A thrown body read, and a TimeoutError from that scope's own fetch, are
+// pinned the same way. Any other rejection of the fetch batch still cannot
+// be pinned, so it lands on every scope that load requested.
 class ScopeLoadError extends Error {
   constructor(readonly failures: readonly [ChangeScope, string][]) {
     super(failures[0]![1]);
@@ -115,14 +121,37 @@ export function useProjectData(activeProject: string | null): {
         // deliberately unwatched: rotation always edits PLAN.md in the
         // same motion, so the planPath event is the only signal that rotated
         // history moved, and splitting these two apart would strand it.
-        const [planRes, planArchiveRes, activeRes, archiveRes] = await Promise.all([
-          want.has('plan') ? fetch(`/api/plan${q}`) : undefined,
-          // Optional, so a rejection here must not reject the whole batch.
-          want.has('plan') ? fetch(`/api/plan-archive${q}`).catch(() => undefined) : undefined,
-          want.has('active') ? fetch(`/api/active${q}`) : undefined,
-          want.has('archive') ? fetch(`/api/archive${q}`) : undefined,
-        ]);
         const failures: [ChangeScope, string][] = [];
+        // A timeout is this scope's failure. Any other rejection still rejects
+        // the batch, which the catch below cannot attribute to one scope.
+        const fetchRequired = (scope: ChangeScope, url: string) =>
+          fetch(url, { signal: AbortSignal.timeout(BOARD_FETCH_TIMEOUT_MS) }).catch(
+            (e: unknown) => {
+              if (e instanceof DOMException && e.name === 'TimeoutError') {
+                const what =
+                  scope === 'plan'
+                    ? 'PLAN.md fetch'
+                    : scope === 'active'
+                      ? 'Tasknote list'
+                      : 'Archive list';
+                failures.push([scope, `${what} failed: timed out`]);
+                return undefined;
+              }
+              throw e;
+            },
+          );
+        const fetchArchive = (url: string) =>
+          fetch(url, { signal: AbortSignal.timeout(BOARD_FETCH_TIMEOUT_MS) }).catch(
+            () => undefined,
+          );
+        const [planRes, planArchiveRes, activeRes, archiveRes] = await Promise.all([
+          want.has('plan') ? fetchRequired('plan', `/api/plan${q}`) : undefined,
+          // Optional, so a rejection or timeout here must not reject the batch
+          // or pin `plan`.
+          want.has('plan') ? fetchArchive(`/api/plan-archive${q}`) : undefined,
+          want.has('active') ? fetchRequired('active', `/api/active${q}`) : undefined,
+          want.has('archive') ? fetchRequired('archive', `/api/archive${q}`) : undefined,
+        ]);
         if (planRes && !planRes.ok) {
           failures.push(['plan', `PLAN.md fetch failed: HTTP ${planRes.status}`]);
         }

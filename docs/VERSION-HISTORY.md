@@ -22,6 +22,14 @@ unless correcting a factual error.
 
 ---
 
+## v8.6.0 — a defined direct-edit path, safer bumps and installs, three new drift checks
+
+- Skipping the tasknote is now a defined direct-edit path with its own isolate → diff → check → commit protocol. `/ft-task` offers it for open standalone rows, and `/ft-audit`'s inline fixes follow it, with a failing fix backed out.
+- `/ft-update` keeps a marked section that follows the AGENTS.md Workflow block, and reads the paste block more strictly (CRLF, fence forms, heading anchor). The installer refuses to report success over a conflicting parent gitlink.
+- flaitron's own CI gains `updater_roster`, `plan_placeholder` and `reconciled_pin` drift checks, and the fleet updater is split into six modules.
+
+Also: closures restore an emptied section's `(none)`; seeder stays sharing a reason are grouped on one line; visualizer board loads recover from failed and hung fetches; epic `.N` audits no longer scaffold the fixed doc-drift line.
+
 ## v8.5.0 — /ft-import-task, a sharper seeder, supply-chain drift checks
 
 - /ft-import-task files starter-shaped notes written elsewhere (file, folder or paste) into a repo's own plan: it dedupes by source id, allocates real IDs, records provenance, sizes each note as row, starter or epic, and files everything behind one proposal table and one filing commit. Wired for Claude, Codex, Cursor and Grok.

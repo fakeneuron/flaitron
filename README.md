@@ -21,8 +21,8 @@ actually review. No scripts, daemons, databases, or schemas to maintain.
 
 ![The flaitron visualizer showing flaitron's own PLAN.md — open tasks by priority, phase-progress dots, and the completed archive](.flaitron/screenshots/viz-board.png)
 
-flaitron is built with flaitron: **1339 tasks** closed through this exact
-workflow between 2026-04-28 and 2026-11-14 (as of 2026-11-14) — each one with
+flaitron is built with flaitron: **1389 tasks** closed through this exact
+workflow between 2026-04-28 and 2026-11-25 (as of 2026-11-25) — each one with
 a tasknote preserved in [`.flaitron/tasknote/archive/`](.flaitron/tasknote/archive/).
 Count and date range are recomputed each release by `/ft-release` §7.1's
 "Standing README task-counter check" (one archived tasknote per closed task,
@@ -34,7 +34,7 @@ standalone or epic child) — see `claude/skills/ft-release/step-7.1-standing-ch
 or `CLAUDE.md`):
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/fakeneuron/flaitron/v8.5.0/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/fakeneuron/flaitron/v8.6.0/install.sh | sh
 ```
 
 [`install.sh`](install.sh) does five things, and commits nothing:
@@ -316,7 +316,7 @@ runtime lives in the runner; the contract lives in flaitron.
 ## Repo layout
 
 - `SPEC.md` — workflow contract (authoritative)
-- `SPEC/` — lazy SPEC modules (epic, starter, blocked, model, versioning, gates, gate-postures, cue-vocabulary, post-closure, tasknote-selection, plan-filing, loop, layout, plan-parser, task-line-segments, scope-boundaries, tasknote-inserts, superseded-claims, unattended-candidacy) plus `procedures/` (pasteable skill procedures) and `fixtures/plan/` (task-line grammar conformance fixtures shared by every PLAN.md parser); loaded on demand by skills
+- `SPEC/` — lazy SPEC modules (epic, starter, blocked, model, versioning, gates, gate-postures, cue-vocabulary, post-closure, tasknote-selection, plan-filing, loop, layout, plan-parser, task-line-segments, scope-boundaries, tasknote-inserts, superseded-claims, unattended-candidacy) plus `procedures/` (pasteable skill procedures) and `fixtures/` (`plan/` task-line grammar conformance fixtures shared by every PLAN.md parser, `fence/` shared fenced-block cases, `workflow-block/` AGENTS.md `## Workflow` replace cases); loaded on demand by skills
 - `templates/` — canonical markdown templates and seed files (roster: `SPEC/layout.md` §"Working in the flaitron repo itself")
 - `claude/` — Claude Code skills (adopter-facing snippet plus the full shipped `ft-*` inventory; adopter projects wire the policy subset, while flaitron-self-only skills like `/ft-release` stay upstream-only)
 - `codex/` — Codex skill wrappers for the full `ft-*` inventory plus Codex-specific wiring notes

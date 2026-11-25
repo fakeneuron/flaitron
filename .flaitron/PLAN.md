@@ -27,6 +27,7 @@ See [SPEC.md](../SPEC.md) for the canonical workflow contract.
 
 ## Completed
 
+- [x] **CORE-944** [moderate]🧩 | release v8.6.0 — Completed 2026-11-25.
 - [x] **FE-155** [light] | time-out-board-fetches — Completed 2026-11-25.
 - [x] **FE-154** [light] | scope-body-read-failures — Completed 2026-11-25.
 - [x] **FE-153** [moderate]🧩 | recover-board-loads — Completed 2026-11-25.

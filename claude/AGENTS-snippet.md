@@ -70,7 +70,7 @@ Five surfaces are *derived* from it and must never be edited independently:
 
 The last two derive their commands from this block at run time and restate no
 path list. The three platform blocks stay literal `ln -s` lines — they are
-copy-pasted by adopters and parsed by `tools/update-adopters.mjs`
+copy-pasted by adopters and parsed by `tools/update-adopters/text.mjs`
 (`snippetLinks()` / `codexRoster()`), `install.sh` (`wire_project`), `/ft-update` Step 4, and (Codex block)
 `codex/reconcile-skills.md` — so **adding or removing a skill
 means editing this block first, then regenerating the three platform blocks by
